@@ -1,0 +1,612 @@
+<html>
+<head>
+<title>Sterling Reference Guide</title>
+<link href="../style.css" rel="stylesheet" type="text/css">
+<script src="../actions.js"></script>
+<link rel="icon" href="images/favicon.png" type="image/x-icon">
+</head>
+<body class="Sterling">
+<div id="header-logo">
+<a href="index.html">
+<img class="header-logo" src="images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<div class="section">
+  <h1>Reference Guide</h1>
+  <p>
+    Sterling is a system for defining extensible languages using
+    inference rules.  It has three parts for defining languages: the
+    semantic portion, describing the abstract syntax and judgments in
+    the language; the concrete portion, describing the concrete syntax
+    of the language; and the main function portion, describing how the
+    language should be run on a program.
+  </p>
+
+  <p>
+    This is a reference for specific features, not a tutorial.  A
+    Sterling <a href="tutorial.html">tutorial</a> can be found
+    elsewhere.
+  </p>
+</div>
+
+<div class="section" id="semantic">
+  <h2>Semantic Portion</h2>
+  <p>
+    The semantic portion of the language is written
+    in <code>.sos</code> files.  It includes declaring abstract syntax
+    and declaring and defining judgments.  This is also where modules
+    on which the current one builds are declared, with builds-on
+    declarations like
+    <pre class="code sterling">Builds on mo:du:le</pre>
+  </p>
+
+  <h3>Declaring Abstract Syntax</h3>
+  <p>
+    Syntactic categories and sets of constructors for them are
+    declared together:
+    <pre class="code sterling">
+expr ::= or(expr, expr)
+       | and(expr, expr)
+       | true
+       | false
+       | abs(string, ty, expr)
+       | app(expr, expr) </pre>
+    If a constructor takes no arguments we may leave the parentheses
+    off, as with <code>true</code> above.
+  </p>
+
+  <p>
+    We can add new constructors to an existing category by starting
+    the declaration of constructors with an ellipsis:
+    <pre class="code sterling">
+expr ::= ...
+       | plus(expr, expr)
+       | num(int)
+       | greater(expr, expr) </pre>
+  </p>
+
+  <p>
+    Each new syntactic category requires a declaration of its
+    translation type.  For example, we might define translation for an
+    expression to depend on a typing context:
+    <pre class="code sterling">Translation expr : typingCtx</pre>
+    Quite often, we find we don't want translations to depend on
+    anything, so we can have no arguments:
+    <pre class="code sterling">Translation stmt :</pre>
+  </p>
+
+  <p>
+    We might translate a <code>repeat-while</code> construct into a
+    regular <code>while</code> loop:
+    <pre class="code sterling">
+
+----------------------------------------------------------------- [Trans-RepeatWhile]
+|{stmt}- repeatWhile(Body, Cond) ~~> seq(Body, while(Cond, Body)) </pre>
+    We might translate a <code>let</code> binding to the basic
+    simply-typed lambda calculus by checking the type of the bound
+    expression:
+    <pre class="code sterling">
+typeOf Ctx E1 Ty
+------------------------------------------------------- [Trans-Let]
+Ctx |{expr}- let(X, E1, E2) ~~> app(abs(X, Ty, E2), E1) </pre>
+  </p>
+
+  <h3>Declaring and Defining Judgments</h3>
+  <p>
+    The syntax of terms in Sterling includes the following constructs:
+    <table class="syntax-table display-syntax-table">
+      <tr>
+        <td><code>c(t1, t2, t3)</code></td>
+        <td>constructor application (parentheses optional for
+          constructors without arguments)</td>
+      </tr>
+      <tr>
+        <td><code>Var</code></td>
+        <td>variable (starts with capital letter)</td>
+      </tr>
+      <tr>
+        <td><code>&lt;integer&gt;</code></td>
+        <td>integer literal</td>
+      </tr>
+      <tr>
+        <td><code>"string"</code></td>
+        <td>string literal</td>
+      </tr>
+      <tr>
+        <td><code>(t1, t2, t3)</code></td>
+        <td>tuple literal</td>
+      </tr>
+      <tr>
+        <td><code>t1::t2</code></td>
+        <td>cons list</td>
+      </tr>
+      <tr>
+        <td><code>[]</code></td>
+        <td>empty list</td>
+      </tr>
+      <tr>
+        <td><code>[t1, t2, t3]</code></td>
+        <td>list literal</td>
+      </tr>
+      <tr>
+        <td><code>(t : ty)</code></td>
+        <td>ascription</td>
+      </tr>
+    </table>
+  </p>
+
+  <p>
+    The syntax of judgments in Sterling includes the following
+    constructs:
+    <table class="syntax-table display-syntax-table">
+      <tr>
+        <td><code>t1 = t2</code></td>
+        <td>equality check</td>
+      </tr>
+      <tr>
+        <td><code>t1 != t2</code></td>
+        <td>inequality check</td>
+      </tr>
+      <tr>
+        <td><code>t1 < t2</code></td>
+        <td>less than for integers</td>
+      </tr>
+      <tr>
+        <td><code>t1 > t2</code></td>
+        <td>greater than for integers</td>
+      </tr>
+      <tr>
+        <td><code>t1 <= t2</code></td>
+        <td>less than or equal to for integers</td>
+      </tr>
+      <tr>
+        <td><code>t1 >= t2</code></td>
+        <td>greater than or equal to for integers</td>
+      </tr>
+      <tr>
+        <td><code>t1 + t2 = t3</code></td>
+        <td>integer addition</td>
+      </tr>
+      <tr>
+        <td><code>t1 - t2 = t3</code></td>
+        <td>integer subtraction</td>
+      </tr>
+      <tr>
+        <td><code>t1 * t2 = t3</code></td>
+        <td>integer multiplication</td>
+      </tr>
+      <tr>
+        <td><code>t1 / t2 = t3</code></td>
+        <td>integer division</td>
+      </tr>
+      <tr>
+        <td><code>t1 % t2 = t3</code></td>
+        <td>integer modulus</td>
+      </tr>
+      <tr>
+        <td><code>t1 ++ t2 = t3</code></td>
+        <td>append for two strings or two lists</td>
+      </tr>
+      <tr>
+        <td><code>t1, t2, t3 |{c}- t4 ~~> t5</code></td>
+        <td>translation</td>
+      </tr>
+      <tr>
+        <td><code>rel t1 t2 t3</code></td>
+        <td>relation judgment</td>
+      </tr>
+      <tr>
+        <td><code>!rel t1 t2 t3</code></td>
+        <td>negation of a relation judgment</td>
+      </tr>
+    </table>
+  </p>
+
+  <p>
+    Fixed judgments have all their rules defined in the module
+    introducing them.  We can declare a fixed ternary
+    judgment <code>frel</code> as
+    <pre class="code sterling">Fixed Judgment frel : a b c</pre>
+    Rules for fixed judgments have the form
+    <pre class="code sterling">
+&lt;premise judgment 1&gt;
+...
+&lt;premise judgment n&gt;
+===================== [&lt;rule name&gt;]
+&lt;conclusion judgment&gt; </pre>
+    The line must include at least five equals signs.  Rule names are
+    expected to be unique.
+  </p>
+
+  <p>
+    Fixed judgments may be declared to be polymorphic by including
+    type variables, written using capital letters, in their type
+    declarations.  For example,
+    <pre class="code sterling">Fixed Judgment rel : [A] A</pre>
+    declares a relation relating a list containing some type of
+    element to a term of that type.
+  </p>
+
+  <p>
+    Extensible judgments have their rules extended by further
+    extensions building on the module in which they are introduced.
+    We can declare an extensible binary judgment <code>erel</code> as
+    <pre class="code sterling">Judgment erel : a b*</pre>
+    The <code>*</code> marks the primary component around which the
+    relation is defined, required for each extensible judgment.  Rules
+    for extensible judgments have the form
+    <pre class="code sterling">
+&lt;premise judgment 1&gt;
+...
+&lt;premise judgment n&gt;
+--------------------- [&lt;rule name&gt;]
+&lt;conclusion judgment&gt; </pre>
+    The line must include at least five hyphens.  Extensions building
+    on the module introducing a relation may add new rules defining
+    it, provided the conclusion of each new rule has its primary
+    component built at the top level by a constructor introduced by
+    the extension introducing the rule.
+  </p>
+
+  <p>
+    Extensible judgments declared with a primary component category
+    from a module on which the current one builds (as opposed to a
+    category the current module introduces) must declare a lifting
+    rule, marked with <code>*</code> after the rule name.  These often
+    have the form of a copy rule,
+    <pre class="code sterling">
+|{cat}- B ~~> B_Trans
+erel A B_Trans
+--------------------- [Erel-Trans]*
+erel A B </pre>
+    but may have any form.  The conclusion must have a variable as its
+    primary component argument.
+  </p>
+</div>
+
+
+<div class="section" id="concrete">
+  <h2>Concrete Portion</h2>
+  <p>
+    Terminals are declared with names and regular expressions, such as
+    <pre class="code sterling conc">name_t /[a-z][a-zA-Z0-9_]*</pre>
+    Regular expressions are as expected.  Special characters must be
+    escaped using backslashes.  Spaces are ignored by default, but can
+    be included by backslash escaping them.
+  </p>
+
+  <p>
+    Terminals that will be ignored by all productions in the grammar
+    can be declared as ignore terminals, such us
+    <pre class="code sterling conc">ignore /[\n\r\t\ ]+/</pre>
+    Strings matching ignore terminals may occur anywhere in a string
+    being parsed by the grammar and will be skipped.
+  </p>
+
+  <p>
+    Nonterminals and productions are declared together, similar to how
+    abstract syntax categories and constructors are declared.
+    Nonterminals are also declared with the type of abstract syntax
+    built for them:
+    <pre class="code sterling conc">
+nt&lt;abs ty&gt; ::= &lt;prod 1&gt;
+            | &lt;prod 2&gt;
+            | &lt;prod 3&gt; </pre>
+    When adding new productions to existing nonterminals, the
+    nonterminal type is given without an abstract syntax type and the
+    productions are prefaced with an ellipsis:
+    <pre class="code sterling conc">
+nt ::= ..
+     | &lt;new prod 1&gt;
+     | &lt;new prod 2&gt; </pre>
+  </p>
+
+  <p>
+    Productions have two parts, the signature and the abstract syntax
+    term, joined by <code>~~></code>.  Production signatures are built
+    from terminals and nonterminals, which may be given names to
+    reference them.  For example,
+    <pre class="code sterling conc">backslash_t Name::name_t dot_t Body::term_c</pre>
+    might be the signature for a lambda abstract,
+    where <code>backslash_t</code>, <code>name_t</code>,
+    and <code>dot_t</code> are terminals and <code>term_c</code> is a
+    nonterminal.
+  </p>
+
+  <p>
+    The syntax of terms for building abstract syntax in Sterling:
+    <table class="syntax-table display-syntax-table">
+      <tr>
+        <td><code>Name</code></td>
+        <td>names of production elements from the signature</td>
+      </tr>
+      <tr>
+        <td><code>c(t1, t2, t3)</code></td>
+        <td>abstract syntax constructors</td>
+      </tr>
+      <tr>
+        <td><code>"string"</code></td>
+        <td>string literals</td>
+      </tr>
+      <tr>
+        <td><code>&lt;integer&gt;</code></td>
+        <td>integer literal</td>
+      </tr>
+      <tr>
+        <td><code>$to_int(t)</code></td>
+        <td>convert a string to an integer</td>
+      </tr>
+      <tr>
+        <td><code>t1[t2:t3]</code></td>
+        <td>substring of a string with zero-based indices</td>
+      </tr>
+      <tr>
+        <td><code>t1::t2</code></td>
+        <td>cons list</td>
+      </tr>
+      <tr>
+        <td><code>[]</code></td>
+        <td>empty list</td>
+      </tr>
+      <tr>
+        <td><code>[t1, t2, t3]</code></td>
+        <td>list literal</td>
+      </tr>
+      <tr>
+        <td><code>(t1, t2, t3)</code></td>
+        <td>tuple literal</td>
+      </tr>
+    </table>
+    Note that the type of a named production element is string for a
+    terminal and, for a nonterminal, the type of its built abstract
+    syntax tree.
+  </p>
+</div>
+
+
+<div class="section" id="mainFunction">
+  <h2>Main Function Portion</h2>
+  <p>
+    The main function portion of the language uses functions to tie
+    together the parsing and judgments written in the other two parts
+    of the language.  Functions are declared as
+    <pre class="code sterling mainFun">
+Function &lt;name&gt; : &lt;name 1 : type 1&gt; &lt;name 2 : type 2&gt; &lt;name 3 : type 3&gt; -&gt; &lt;return type&gt;{
+   &lt;body&gt;
+} </pre>
+    Each parameter name must be capitalized.  The types may be the
+    types in the <a href="#semantic">semantic portion of the
+    language</a> as well as <code>bool</code> and <code>unit</code>
+    types in only this portion of the language.
+  </p>
+
+  <p>
+    The starting point for running a Sterling module is the
+    <code>main</code> function with type
+    <code>[string] -&gt; int</code>.
+  </p>
+
+  <p>
+    Each function's body is a single expression:
+    <table class="syntax-table display-syntax-table">
+      <tr>
+        <td><code>true</code></td>
+        <td>Boolean true</td>
+      </tr>
+      <tr>
+        <td><code>false</code></td>
+        <td>Boolean false</td>
+      </tr>
+      <tr>
+        <td><code>e1 || e2</code></td>
+        <td>Boolean disjunction</td>
+      </tr>
+      <tr>
+        <td><code>e1 && e2</code></td>
+        <td>Boolean conjunction</td>
+      </tr>
+      <tr>
+        <td><code>If e1 Then e2 Else e3</code></td>
+        <td>conditional</td>
+      </tr>
+      <tr>
+        <td><code>e1 + e2</code></td>
+        <td>integer addition</td>
+      </tr>
+      <tr>
+        <td><code>e1 - e2</code></td>
+        <td>integer subtraction</td>
+      </tr>
+      <tr>
+        <td><code>e1 * e2</code></td>
+        <td>integer multiplication</td>
+      </tr>
+      <tr>
+        <td><code>e1 / e2</code></td>
+        <td>integer division</td>
+      </tr>
+      <tr>
+        <td><code>e1 % e2</code></td>
+        <td>integer modulus</td>
+      </tr>
+      <tr>
+        <td><code>&lt;integer&gt;</code></td>
+        <td>integer literal</td>
+      </tr>
+      <tr>
+        <td><code>e1 &lt; e2</code></td>
+        <td>integer less than</td>
+      </tr>
+      <tr>
+        <td><code>e1 &gt; e2</code></td>
+        <td>integer greater than</td>
+      </tr>
+      <tr>
+        <td><code>e1 &lt;= e2</code></td>
+        <td>integer less than or equal to</td>
+      </tr>
+      <tr>
+        <td><code>e1 &gt;= e2</code></td>
+        <td>integer greater than or equal to</td>
+      </tr>
+      <tr>
+        <td><code>e1 = e2</code></td>
+        <td>equality comparison</td>
+      </tr>
+      <tr>
+        <td><code>"string"</code></td>
+        <td>string literals</td>
+      </tr>
+      <tr>
+        <td><code>fun(e1, e2, e3)</code></td>
+        <td>function call</td>
+      </tr>
+      <tr>
+        <td><code>e1[e2]</code></td>
+        <td>zero-based list indexing</td>
+      </tr>
+      <tr>
+        <td><code>e1 ++ e2</code></td>
+        <td>list and string concatenation</td>
+      </tr>
+      <tr>
+        <td><code>Let &lt;Var&gt; := e1 In e2</code></td>
+        <td>let binding (variable must be capitalized)</td>
+      </tr>
+      <tr>
+        <td><code>&lt;Var&gt;</code></td>
+        <td>variables referring to arguments to the function or
+          let-bound variables</td>
+      </tr>
+      <tr>
+        <td><code>e1 Before e2</code></td>
+        <td>expression sequencing (first expression must have
+          type <code>unit</code>)</td>
+      </tr>
+      <tr>
+        <td><code>Print e</code></td>
+        <td>print the string form of the expression's value</td>
+      </tr>
+      <tr>
+        <td><code>Write e1 to e2</code></td>
+        <td>write the string form of expression <code>e1</code>'s
+          value to a file with name <code>e2</code></td>
+      </tr>
+      <tr>
+        <td><code>Read e</code></td>
+        <td>read the contents of a file</td>
+      </tr>
+      <tr>
+        <td><code>Parse &lt;nt&gt; from e</code></td>
+        <td>parse the given nonterminal from the string expression
+          (detailed discussion below)</td>
+      </tr>
+      <tr>
+        <td><code>Derive {&lt;judgment&gt;} for &lt;input vars&gt;
+            assigning [&lt;output vars&gt;]</code></td>
+        <td>derive the given relation for the given arguments,
+          setting the output variables (detailed discussion
+          below)</td>
+      </tr>
+    </table>
+  </p>
+
+  <p>
+    Parsing takes a nonterminal name, for the nonterminal to parse,
+    and a string expression for the string from which to parse it.
+    A <code>Parse</code> returns a triple of type <code>(bool,
+      &lt;abstract syntax&gt;, string)</code>.  These are
+    <ol>
+      <li> whether the parse was successful (<code>true</code>) or not
+      <li> the abstract syntax produced from the parse tree (only
+        defined if the first element is <code>true</code>)
+      <li> errors describing why the string didn't parse (only defined
+        if the first element is <code>false</code>)
+    </ol>
+    A common structure for parsing, then, is
+    <pre class="code sterling mainFun">
+Let Success, A, Err := Parse nt from String
+In
+  If Success
+  Then &lt;use A&gt;
+  Else &lt;use Err&gt; </pre>
+  </p>
+
+  <p>
+    In deriving judgments, we need to treat them as functions so we
+    identify both input variables and output variables.  Input
+    variables take their values from the current environment and
+    output variables produce values.  For example, in
+    <pre class="code sterling mainFun">
+      Derive {typeOf [] Tm Ty} for Tm assigning [Ty]</pre>
+    This reads the value of <code>Tm</code>, then derives a type for
+    it.  Deriving a judgment produces a tuple of <i>n + 1</i> values,
+    where <i>n</i> is the number of output variables.  The first
+    element of the tuple has type <code>bool</code> and tells whether
+    the derivation is successful.  The other elements in the tuple are
+    the values found for the output variables.  In the example, the
+    output type of the expression would be <code>(bool, ty)</code>.
+  </p>
+</div>
+
+
+<div class="section" id="miscellaneous">
+  <h2>Miscellaneous</h2>
+
+  <h3 id="names">Names</h3>
+  <p>
+    All defined names start with a lowercase letter, followed by zero
+    or more lowercase letters, capital letters, digits, and
+    underscores.  All variables must start with capital letters.
+  </p>
+
+  <h3 id="qualifiedNames">Qualified Names</h3>
+  <p>
+    All names introduced in any portion of the language are implicitly
+    qualified by the module in which they are declared.  For example,
+    a type <code>expr</code> declared in a
+    module <code>mo:du:le</code> has as its qualified
+    name <code>mo:du:le:expr</code>.  The non-qualified name, the
+    short name, can be used as long as no other name for the same type
+    of thing is in scope, in which case the qualified names must be
+    used for both.  For example, if two categories <code>a:c</code>
+    and <code>b:c</code> are both in scope, they must be referenced by
+    their qualified names.  If instead <code>b:c</code> is a
+    constructor, they do not interfere and may be referenced by their
+    short names.
+  </p>
+
+  <h3 id="builtInTypes">Built-In Types</h3>
+  <p>
+    Sterling has a few built-in types:
+    <ul>
+      <li> <code>string</code>
+      <li> <code>int</code>
+      <li> lists, written <code>[ty]</code>
+      <li> <i>n</i>-ary tuples, written as comma-separated lists of
+        types in parentheses (e.g. <code>(int, expr, [int])</code>)
+    </ul>
+  </p>
+</div>
+
+
+<div class="section">
+  <h2>Emacs Support</h2>
+  <p>
+    Sterling has modes written for Emacs for each part of the
+    language, found in
+    the <a href="https://github.com/RandomActsOfGrammar/sterling/tree/master/ide">Sterling
+    GitHub repository</a>.  To use these, load them in
+    your <code>.emacs</code> file with the following lines:
+    <pre class="code">
+(load "path/to/sterling/ide/sterling.el")
+(load "path/to/sterling/ide/sterling-conc.el")
+(load "path/to/sterling/ide/sterling-main.el") </pre>
+    This will make Emacs know to open Sterling files using the
+    appropriate mode automatically.
+  </p>
+</div>
+
+
+</body>
+</html>

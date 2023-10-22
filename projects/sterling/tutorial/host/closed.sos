@@ -1,0 +1,19 @@
+Module tutorial:host
+
+/*whether a tm is closed, that it does not use any free vars*/
+Judgment closed : [string] tm*
+
+mem X Vars
+------------------ [C-Var]
+closed Vars var(X)
+
+
+closed X::Vars T
+--------------------- [C-Abs]
+closed Vars abs(X, T)
+
+
+closed Vars T1
+closed Vars T2
+----------------------- [C-App]
+closed Vars app(T1, T2)

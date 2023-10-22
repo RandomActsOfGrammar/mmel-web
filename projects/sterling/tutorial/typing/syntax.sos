@@ -1,0 +1,41 @@
+Module tutorial:typing
+
+Builds on tutorial:host
+
+tm ::= ...
+     | tyAbs(string, ty, tm)
+
+------------------------------------ [Trans-TyAbs]
+|{tm}- tyAbs(X, Ty, T) ~~> abs(X, T)
+
+
+ty ::= baseTy /*because we don't have any particular types*/
+     | arrowTy(ty, ty)
+
+Translation ty :
+
+
+X != Y
+subst X R B S
+----------------------------------------- [S-TyAbs-NEq]
+subst X R tyAbs(Y, Ty, B) tyAbs(Y, Ty, S)
+
+
+----------------------------------------- [S-TyAbs-Eq]
+subst X R tyAbs(X, Ty, B) tyAbs(X, Ty, B)
+
+
+
+--------------------- [V-TyAbs]
+value tyAbs(X, Ty, T)
+
+
+
+--------------------------- [AF-TyAbs]
+absForm tyAbs(X, Ty, T) X T
+
+
+
+closed X::Vars T
+--------------------------- [C-TyAbs]
+closed Vars tyAbs(X, Ty, T)

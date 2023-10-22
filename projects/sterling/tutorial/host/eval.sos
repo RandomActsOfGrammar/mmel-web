@@ -1,0 +1,66 @@
+Module tutorial:host
+
+/*eval T1 T2:  small-step evaluation, where T1 steps to T2*/
+Judgment eval : tm* tm
+
+/*subst X R B S:  substitute R for X in B yielding S*/
+Judgment subst : string tm tm* tm
+
+/*value T:  T is a value*/
+Judgment value : tm*
+
+/*absForm T X B:  T is like the abstraction abs(X, T)*/
+Judgment absForm : tm* string tm
+
+eval T1 T11
+----------------------------- [E-App-Step1]
+eval app(T1, T2) app(T11, T2)
+
+
+value T1
+eval T2 T21
+----------------------------- [E-App-Step2]
+eval app(T1, T2) app(T1, T21)
+
+
+absForm T1 X Body
+value T2
+subst X T2 Body V
+------------------ [E-App-Subst]
+eval app(T1, T2) V
+
+
+
+X != Y
+----------------------- [S-Var-NEq]
+subst X R var(Y) var(Y)
+
+
+------------------ [S-Var-Eq]
+subst X R var(X) R
+
+
+X != Y
+subst X R B S
+----------------------------- [S-Abs-NEq]
+subst X R abs(Y, B) abs(Y, S)
+
+
+----------------------------- [S-Abs-Eq]
+subst X R abs(X, B) abs(X, B)
+
+
+subst X R T1 S1
+subst X R T2 S2
+--------------------------------- [S-App]
+subst X R app(T1, T2) app(S1, S2)
+
+
+
+--------------- [V-Abs]
+value abs(X, T)
+
+
+
+--------------------- [AF-Abs]
+absForm abs(X, T) X T

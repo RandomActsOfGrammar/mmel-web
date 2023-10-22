@@ -1,0 +1,29 @@
+Module tutorial:typing
+
+Judgment typeOf : [(string, ty)] tm* ty
+
+lookup G X Ty
+------------------ [T-Var]
+typeOf G var(X) Ty
+
+
+typeOf G T1 arrowTy(Ty1, Ty2)
+typeOf G T2 Ty1
+----------------------------- [T-App]
+typeOf G app(T1, T2) Ty2
+
+
+typeOf (X, Ty1)::G T Ty2
+------------------------------------------- [T-TyAbs]
+typeOf G tyAbs(X, Ty1, T) arrowTy(Ty1, Ty2)
+
+
+typeOf (X, Ty1)::G T Ty2
+------------------------------------ [T-Abs]
+typeOf G abs(X, T) arrowTy(Ty1, Ty2)
+
+
+|{tm}- T ~~> T_T
+typeOf G T_T Ty
+---------------- [T-Trans]*
+typeOf G T Ty

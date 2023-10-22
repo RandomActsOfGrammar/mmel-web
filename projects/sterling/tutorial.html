@@ -1,0 +1,669 @@
+<html>
+<head>
+<title>Sterling Tutorial</title>
+<link href="../style.css" rel="stylesheet" type="text/css">
+<script src="../actions.js"></script>
+<link rel="icon" href="images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="index.html">
+<img class="header-logo" src="images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<div class="section">
+  <h1>Tutorial</h1>
+  <p>
+    This tutorial introduces developing an extensible language in
+    Sterling.  It builds an example with a host language and a few
+    extensions.  Note this only covers the semantic portion of the
+    language, describing abstract syntax and language semantics.
+  </p>
+
+  <p>
+    Sterling languages are built by modules.  These modules build on
+    each other, adding to the definitions given by the modules on
+    which they build.  Because extensions to a module are written
+    separately, they may introduce the same name for different uses.
+    To avoid confusion, each name introduced in a module is qualified
+    with the module's name.  For example,
+    our <code>tutorial:host</code> module introduces a constructor
+    with the short name <code>var</code>.  The full name of this
+    constructor is <code>tutorial:host:var</code>.  Either the full
+    name or the short name may be used generally.  However, if two
+    constructs with the same name are in the module, perhaps from two
+    separate built-on modules, the full name must be used to
+    differentiate them.
+  </p>
+
+  <p>
+    Modules in Sterling are defined as collections of files in a
+    single directory.  Modules are named after their directories, so
+    the <code>tutorial:host</code> module would be a collection of
+    files in a directory named <code>host</code> inside a directory
+    named <code>tutorial</code> (<code>tutorial/host</code>).  When we
+    run Sterling and tell it to process the <code>tutorial:host</code>
+    module, it looks for this directory structure to identify the
+    files belonging to the module.
+  </p>
+
+  <p>
+    The language we build here has four modules:
+    <ul>
+      <li> <a href="#host">Host language</a>
+        (<code>tutorial:host</code>)
+      <li> <a href="#letExtension">Extension adding <code>let</code>
+          bindings</a> (<code>tutorial:let</code>)
+      <li> <a href="#typingExtension">Extension adding typing</a>
+        (<code>tutorial:typing</code>)
+      <li> <a href="#numExtension">Extension adding numbers</a>
+        (<code>tutorial:num</code>)
+    </ul>
+  </p>
+</div>
+
+<div class="section" id="host">
+  <h2>Host Language</h2>
+  <p>
+    Languages in Sterling start with a host language, a module on
+    which all others build.  Our host language will be the untyped
+    lambda calculus.
+  </p>
+
+  <p>
+    We start each file in a module with a declaration of which module
+    we are defining.  In our case, this will be
+    the <code>tutorial:host</code> module:
+<pre class="code sterling">
+Module tutorial:host
+</pre>
+    This name will be used to identify this module for other modules
+    to build on it, adding to its definitions.
+  </p>
+
+  <h3>Defining Syntax</h3>
+  <p>
+    We start by defining our abstract syntax:
+<pre class="code sterling">
+tm ::= var(string)
+     | abs(string, tm)
+     | app(tm, tm)
+</pre>
+    This defines one syntactic category, <code>tm</code>, with three
+    constructors:
+    <ul>
+      <li> The <code>var</code> constructor represents lambda calculus
+        variables.  We use the Sterling built-in <code>string</code>
+        type for variable names.
+      <li> The <code>abs</code> constructor represents lambda calculus
+        abstractions.  This uses the Sterling <code>string</code> type
+        for the bound variable and the <code>tm</code> type for lambda
+        calculus terms for the body.
+      <li> The <code>app</code> constructor represents the application
+        of one term to another.
+    </ul>
+    These are the only constructors we introduce in the host language,
+    although extensions may add to them.
+  </p>
+
+  <p>
+    For each syntactic category we introduce, we must also give its
+    translation type:
+<pre class="code sterling">
+Translation tm :
+</pre>
+    Each constructor of a syntactic category introduced by an
+    extension will introduce a translation of terms built by that
+    constructor.  These translations can then be used to define
+    relations extensions introduce for constructs from other
+    extensions, as we shall see below.
+  </p>
+
+  <p>
+    The empty translation type we have for <code>tm</code> means the
+    translation will relation two terms of type <code>tm</code>.  In
+    some cases, it is useful to condition the translation on other
+    arguments.  For example, we might want to be able to condition the
+    translation on the object-level types of sub-terms.  In that case,
+    we would want a translation type with a typing context so we could
+    determine the types of sub-terms in the rules for translation.
+  </p>
+
+  <h3>Defining Relations</h3>
+  <p>
+    We start by defining a relation checking whether a <code>tm</code>
+    is closed.  We first declare it:
+<pre class="code sterling">
+<span class="comment">/*whether a tm is closed, that it does not use any free vars*/</span>
+Judgment closed : [string] tm*
+</pre>
+    This declares a relation named <code>closed</code> with two
+    arguments, a list of strings and a <code>tm</code>.  Additionally,
+    the <code>tm</code> is marked as the <em>primary component</em> of
+    the relation.  Conceptually, the primary component is the argument
+    the relation is <em>about</em>.  Here the <code>closed</code>
+    relation is <em>about</em> the <code>tm</code>, with the list of
+    variable names being present only to support determining something
+    about the <code>tm</code>.
+  </p>
+
+  <p>
+    We will use the primary component to ensure the semantics of
+    relations for known constructs are not changed by extensions.
+    When an extension introduces a rule defining a relation introduced
+    by a built-on module, the primary component must be built by a
+    constructor introduced by that extension.  This prevents
+    extensions from introducing rules applicable to pre-existing
+    constructs and modifying their semantics.
+  </p>
+
+  <p>
+    We write rules for the relation, which are as one would expect:
+<pre class="code sterling">
+mem X Vars
+------------------ [C-Var]
+closed Vars var(X)
+
+
+closed X::Vars T
+--------------------- [C-Abs]
+closed Vars abs(X, T)
+
+
+closed Vars T1
+closed Vars T2
+----------------------- [C-App]
+closed Vars app(T1, T2)
+</pre>
+    In the <code>C-Var</code> rule we check whether the
+    variable <code>X</code> is in the list of bound variables.  This
+    uses the <code>mem</code> relation in the Sterling standard
+    library rather than a relation defined in this module.
+  </p>
+
+  <p>
+    We also define evaluation for <code>tm</code>s, with several
+    relations to support it:
+<pre class="code sterling">
+<span class="comment">/*eval T1 T2:  small-step evaluation, where T1 steps to T2*/</span>
+Judgment eval : tm* tm
+
+<span class="comment">/*subst X R B S:  substitute R for X in B yielding S*/</span>
+Judgment subst : string tm tm* tm
+
+<span class="comment">/*value T:  T is a value*/</span>
+Judgment value : tm*
+</pre>
+    These relations have rules generally as we would expect:
+<pre class="code sterling">
+X != Y
+----------------------- [S-Var-NEq]
+subst X R var(Y) var(Y)
+
+
+------------------ [S-Var-Eq]
+subst X R var(X) R
+
+
+X != Y
+subst X R B S
+----------------------------- [S-Abs-NEq]
+subst X R abs(Y, B) abs(Y, S)
+
+
+----------------------------- [S-Abs-Eq]
+subst X R abs(X, B) abs(X, B)
+
+
+subst X R T1 S1
+subst X R T2 S2
+--------------------------------- [S-App]
+subst X R app(T1, T2) app(S1, S2)
+
+
+
+--------------- [V-Abs]
+value abs(X, T)
+
+
+
+eval T1 T11
+----------------------------- [E-App-Step1]
+eval app(T1, T2) app(T11, T2)
+
+
+value T1
+eval T2 T21
+----------------------------- [E-App-Step2]
+eval app(T1, T2) app(T1, T21)
+
+
+absForm T1 X Body
+value T2
+subst X T2 Body V
+------------------ [E-App-Subst]
+eval app(T1, T2) V
+</pre>
+    The exception is the <code>E-App-Subst</code> rule.  We would
+    expect this rule to have as its conclusion <code>eval app(abs(X,
+    Body), T2) V</code>, explicitly stating the first term is an
+    abstraction.  The reason we do not write this is that it prevents
+    extensions from introducing new abstract-like constructs that may
+    be applied.  An extension cannot introduce a new rule defining
+    evaluation for <code>app</code> because of the restrictions for
+    the primary component, so, if we want to allow <code>app</code> to
+    apply extension-introduced function constructors, we cannot put
+    the <code>abs</code> form into the rule directly.
+  </p>
+
+  <p>
+    To solve the problem of extensibility while still getting the
+    information we need, we define a relation <code>absForm</code>
+    that checks if a <code>tm</code> is
+    somehow <code>abs</code>-shaped, pulling out the bound variable
+    name and body if so:
+<pre class="code sterling">
+<span class="comment">/*absForm T X B:  T is like the abstraction abs(X, T)*/</span>
+Judgment absForm : tm* string tm
+
+--------------------- [AF-Abs]
+absForm abs(X, T) X T
+</pre>
+    This relation can be extended by extensions so their constructs
+    can also be applied using <code>app</code>.
+  </p>
+</div>
+
+
+<div class="section" id="letExtension">
+  <h2>Let Extension</h2>
+  <p>
+    Some extensions only add new constructors and define existing
+    judgments over them.  This extension adds a new <code>let</code>
+    constructor and defines the host language's judgments on it.
+  </p>
+
+  <p>
+    The extension declares its name and that it builds on the host
+    language:
+<pre class="code sterling">
+Module tutorial:let
+
+Builds on tutorial:host
+</pre>
+  </p>
+
+  <p>
+    This adds one new constructor of the <code>tm</code> category:
+<pre class="code sterling">
+tm ::= ...
+     | let(string, tm, tm)
+</pre>
+    We start the constructor declaration with an ellipsis
+    (<code>...</code>) to show this is an addition to the pre-existing
+    constructors of <code>tm</code> rather than a new <code>tm</code>
+    category.
+  </p>
+
+  <p>
+    Because <code>let</code> builds a syntactic category from a
+    built-on module, we need to give it a translation that eliminates
+    the <code>let</code> constructor:
+<pre class="code sterling">
+
+--------------------------------------------- [Trans-Let]
+|{tm}- let(X, T1, T2) ~~> app(abs(X, T2), T1)
+</pre>
+    This says a term built by the <code>let</code> constructor is
+    similar to an application of a built abstraction over the same
+    sub-terms.
+  </p>
+
+  <p>
+    We also define the host language's relations for the
+    new <code>let</code> constructor:
+<pre class="code sterling">
+eval T1 T11
+----------------------------------- [E-Let-Step]
+eval let(X, T1, T2) let(X, T11, T2)
+
+
+value T1
+subst X T1 T2 V
+--------------------- [E-Let-Subst]
+eval let(X, T1, T2) V
+
+
+
+X != Y
+subst X R T1 S1
+subst X R T2 S2
+--------------------------------------- [S-Let-NEq]
+subst X R let(Y, T1, T2) let(Y, S1, S2)
+
+
+subst X R T1 S1
+--------------------------------------- [S-Let-Eq]
+subst X R let(X, T1, T2) let(X, S1, T2)
+
+
+
+closed Vars T1
+closed X::Vars T2
+-------------------------- [C-Let]
+closed Vars let(X, T1, T2)
+</pre>
+    Note that each rule has a term built by the <code>let</code>
+    constructor as the primary component in the conclusion.  Each new
+    rule introduced in an extension for a relation introduced by a
+    built-on module must have the primary component built by a
+    constructor introduced by the extension so the semantics of
+    constructs not introduced by the extension are not affected by the
+    extension's new rules.
+  </p>
+</div>
+
+
+<div class="section" id="typingExtension">
+  <h2>Typing Extension</h2>
+  <p>
+    Extensions may also introduce new syntactic categories and new
+    judgments.  This extension introduces a notion of typing for the
+    language.
+  </p>
+
+  <p>
+    As in all extensions, we declare the module name and the module on
+    which it builds:
+<pre class="code sterling">
+Module tutorial:typing
+
+Builds on tutorial:host
+</pre>
+  </p>
+
+  <p>
+    Because we will be typing <code>tm</code>s, we need a way to
+    describe types.  We introduce a new syntactic
+    category <code>ty</code>:
+<pre class="code sterling">
+ty ::= baseTy
+     | arrowTy(ty, ty)
+
+Translation ty :
+</pre>
+  </p>
+
+  <p>
+    We also add a typed version of an abstraction, translating to a
+    basic abstraction (<code>abs</code>) and define the host
+    language's judgments on it:
+<pre class="code sterling">
+tm ::= ...
+     | tyAbs(string, ty, tm)
+
+------------------------------------ [Trans-TyAbs]
+|{tm}- tyAbs(X, Ty, T) ~~> abs(X, T)
+
+
+
+X != Y
+subst X R B S
+----------------------------------------- [S-TyAbs-NEq]
+subst X R tyAbs(Y, Ty, B) tyAbs(Y, Ty, S)
+
+
+----------------------------------------- [S-TyAbs-Eq]
+subst X R tyAbs(X, Ty, B) tyAbs(X, Ty, B)
+
+
+
+--------------------- [V-TyAbs]
+value tyAbs(X, Ty, T)
+
+
+
+--------------------------- [AF-TyAbs]
+absForm tyAbs(X, Ty, T) X T
+
+
+
+closed X::Vars T
+--------------------------- [C-TyAbs]
+closed Vars tyAbs(X, Ty, T)
+</pre>
+    Note that rule <code>AF-TyAbs</code> takes a <code>tyAbs</code>
+    apart as an abstraction so <code>app(tyAbs("x", var("x")),
+    ...)</code> can evaluate.
+  </p>
+
+  <p>
+    We introduce a judgment <code>typeOf</code> for
+    typing <code>tm</code>s:
+<pre class="code sterling">
+Judgment typeOf : [(string, ty)] tm* ty
+</pre>
+    We define typing rules for all known constructs, those introduced
+    by the typing extension and the host language:
+<pre class="code sterling">
+lookup G X Ty
+------------------ [T-Var]
+typeOf G var(X) Ty
+
+
+typeOf G T1 arrowTy(Ty1, Ty2)
+typeOf G T2 Ty1
+----------------------------- [T-App]
+typeOf G app(T1, T2) Ty2
+
+
+typeOf (X, Ty1)::G T Ty2
+------------------------------------------- [T-TyAbs]
+typeOf G tyAbs(X, Ty1, T) arrowTy(Ty1, Ty2)
+
+
+typeOf (X, Ty1)::G T Ty2
+------------------------------------ [T-Abs]
+typeOf G abs(X, T) arrowTy(Ty1, Ty2)
+</pre>
+    Note that in the <code>T-Abs</code> rule we use a meta-variable
+    for the argument type.  This gives us the same semantics
+    as <code>T-TyAbs</code> in that the function must have exactly one
+    type when used, but a program's writer does not need to specify
+    what that type is.
+  </p>
+
+  <p>
+    If we left the description of the <code>typeOf</code> relation at
+    this point, it would work in the context of the host language and
+    typing extension.  However, if we included the <code>let</code>
+    extension in the language composition, typing would not be defined
+    for it.  Thus we include a special rule, marked
+    with <code>*</code> after the rule name, to define the relation
+    for terms built by constructors from other extensions that do not
+    build on the current one:
+<pre class="code sterling">
+|{tm}- T ~~> T_T
+typeOf G T_T Ty
+---------------- [T-Trans]*
+typeOf G T Ty
+</pre>
+    For example, this rule would be instantiated for
+    the <code>let</code> extension's <code>let</code> constructor,
+    defining its typing by the typing of its translation.
+  </p>
+
+  <p>
+    Each relation introduced by an extension with a primary component
+    introduced by one of the modules on which it builds must include a
+    single default rule.  Often this takes the form seen
+    in <code>T-Trans</code>, where the other arguments to the relation
+    are copied directly from the translation of the primary component.
+    However, this form is not required, and default rules may take any
+    form.  The only requirement is that the primary component in the
+    conclusion must be a meta-variable, as it will be filled with
+    constructors from other extensions.
+  </p>
+</div>
+
+
+<div class="section" id="numExtension">
+  <h2>Number Extension</h2>
+  <p>
+    Extensions can also build on other extensions.  We add an
+    extension introducing numbers, building on top of
+    the <code>typing</code> extension.
+  </p>
+
+  <p>
+    We declare the module's name and that it builds on
+    the <code>typing</code> extension:
+<pre class="code sterling">
+Module tutorial:num
+
+Builds on tutorial:typing
+</pre>
+    This single <code>Builds on</code> declaration will transitively
+    include the modules on which <code>tutorial:typing</code> builds,
+    so the current extension knows both the <code>typing</code>
+    extension and the host language.
+  </p>
+
+  <p>
+    We extend both <code>tm</code> from the host language
+    and <code>ty</code> from the <code>typing</code> extension, giving
+    translations for the new constructors from both:
+<pre class="code sterling">
+tm ::= ...
+     | num(int)
+     | plus(tm, tm)
+
+ty ::= ...
+     | intTy
+
+---------------------------------------------------------- [Trans-IntTy]
+|{ty}- intTy ~~> arrowTy(arrowTy(Ty, Ty), arrowTy(Ty, Ty))
+
+
+---------------------------------------------------------- [Trans-Plus]
+|{tm}- plus(T1, T2) ~~>
+       abs("m", abs("n", abs("f", abs("x",
+          app(var("m"), app(var("f"),
+              app(var("n"), app(var("f"), var("x")))))))))
+
+
+buildNumTerm I T
+--------------------------------------- [Trans-Num]
+|{tm}- num(I) ~~> abs("f", abs("x", T))
+</pre>
+    The <code>[Trans-Num]</code> rule uses another relation to build
+    the appropriate Church encoding for its number:
+<pre class="code sterling">
+<span class="comment">/*Build the body of a Church encoding of a number,
+  using names "f" and "x"*/</span>
+Fixed Judgment buildNumTerm : int tm
+
+======================= [BNT-Zero]
+buildNumTerm 0 var("x")
+
+
+N - 1 = NSub
+buildNumTerm NSub T
+=============================== [BNT-Step]
+buildNumTerm N app(var("f"), T)
+</pre>
+    Unlike the other relations we have seen, this is a <em>fixed</em>
+    judgment.  It is not extensible; all its rules are given by the
+    module introducing it.  Because it is not extensible, it does not
+    have a primary component.  Fixed judgments are useful for defining
+    relations over non-extensible types, such as lists, or to tie
+    together multiple extensible relations into a single relation that
+    uses them all.  To remind the writer that the relation being
+    defined is fixed rather than extensible, the rules use a line made
+    from equals signs rather than hyphens.
+  </p>
+
+  <p>
+    The extension defines the relations introduced by both the host
+    language and the <code>typing</code> extension for the constructs
+    it introduces:
+<pre class="code sterling">
+eval T1 T11
+------------------------------- [E-Plus-Step1]
+eval plus(T1, T2) plus(T11, T2)
+
+
+value T1
+eval T2 T21
+------------------------------- [E-Plus-Step2]
+eval plus(T1, T2) plus(T1, T21)
+
+
+I1 + I2 = I
+---------------------------------- [E-Plus-Add]
+eval plus(num(I1), num(I2)) num(I)
+
+
+
+----------------------- [S-Num]
+subst X R num(I) num(I)
+
+
+subst X R T1 S1
+subst X R T2 S2
+----------------------------------- [S-Plus]
+subst X R plus(T1, T2) plus(S1, S2)
+
+
+
+------------ [V-Num]
+value num(I)
+
+
+
+------------------ [C-Num]
+closed Vars num(I)
+
+
+closed Vars T1
+closed Vars T2
+------------------------ [C-Plus]
+closed Vars plus(T1, T2)
+
+
+
+--------------------- [T-Num]
+typeOf G num(I) intTy
+
+
+typeOf G T1 intTy
+typeOf G T2 intTy
+--------------------------- [T-Plus]
+typeOf G plus(T1, T2) intTy
+</pre>
+    The restrictions on extending the relations are the same whether
+    the relation was introduced by the host language or
+    the <code>typing</code> extension.
+  </p>
+
+  <p>
+    Note that the translation of <code>plus</code> will not evaluate
+    with the rules above because it relies on the Church encoding of
+    numbers, that is, the translation of <code>num(I)</code>.  If we
+    believe it is important the translation capture evaluation
+    behavior, we can add a rule for <code>absForm</code>
+    for <code>num</code> capturing its Church encoding:
+<pre class="code sterling">
+buildNumTerm I T
+------------------------------ [AF-Num]
+absForm num(I) "f" abs("x", T)
+</pre>
+    This rule will also have the effect of making <code>app(num(3),
+    ...)</code> evaluable.  Strange as this may seem, the extension
+    writer can decide it is fine, especially in light of building on
+    the <code>typing</code> extension that will rule out such a term
+    as ill-typed.
+  </p>
+</div>
+</body>
+</html>
