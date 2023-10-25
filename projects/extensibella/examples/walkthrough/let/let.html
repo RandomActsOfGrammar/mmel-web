@@ -1,0 +1,158 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  walkthrough:let</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  walkthrough:let</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  def.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggledef.sos" onclick="toggleFile('def.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="def.sos">[Raw File]</a>
+<pre class="code sterling" id="def.sos">
+Module walkthrough:let
+
+Builds on walkthrough:host
+
+tm ::= ...
+     | let(string, tm, tm)
+
+
+typeOf Ctx T1 Ty
+----------------------------------------------------- [Trans-Let]
+Ctx |{tm}- let(X, T1, T2) ~~> app(abs(X, Ty, T2), T1)
+
+
+
+eval T1 T11
+----------------------------------- [E-Let-Step]
+eval let(X, T1, T2) let(X, T11, T2)
+
+
+value T1
+subst X T1 T2 V
+--------------------- [E-Let-Subst]
+eval let(X, T1, T2) V
+
+
+
+X != Y
+subst X R T1 S1
+subst X R T2 S2
+--------------------------------------- [S-Let-NEq]
+subst X R let(Y, T1, T2) let(Y, S1, S2)
+
+
+subst X R T1 S1
+--------------------------------------- [S-Let-Eq]
+subst X R let(X, T1, T2) let(X, S1, T2)
+
+
+
+typeOf Ctx T1 Ty1
+typeOf (X, Ty1)::Ctx T2 Ty2
+----------------------------- [T-Let]
+typeOf Ctx let(X, T1, T2) Ty2
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="let.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="let-details.html#1">Module walkthrough:let.</a>
+
+<a class="command" href="let-details.html#2">Prove walkthrough:host:subst_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(3);" id="toggleproof3">[Show Proof]</a>
+<div class="proof" id="proof3" style="display: none;">
+<span class="comment">%S-Let-NEq</span>
+ <a class="tactic" href="let-details.html#3">SB: case SB.</a>
+   <span class="comment">%S-Let-NEq</span>
+    <a class="tactic" href="let-details.html#4">apply IH to SA2 SB1.</a> <a class="tactic" href="let-details.html#5">apply IH to SA3 SB2.</a> <a class="tactic" href="let-details.html#6">search.</a>
+   <span class="comment">%S-Let-Eq</span>
+    <a class="tactic" href="let-details.html#7">apply SA1 to _.</a>
+<span class="comment">%S-Let-Eq</span>
+ <a class="tactic" href="let-details.html#8">SB: case SB.</a>
+   <span class="comment">%S-Let-NEq</span>
+    <a class="tactic" href="let-details.html#9">apply SB to _.</a>
+   <span class="comment">%S-Let-Eq</span>
+    <a class="tactic" href="let-details.html#10">apply IH to SA1 SB.</a> <a class="tactic" href="let-details.html#11">search.</a></div>
+
+
+<a class="command" href="let-details.html#12">Prove walkthrough:host:value_eval_false.</a>
+
+
+<a class="command" href="let-details.html#13">Prove walkthrough:host:eval_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(14);" id="toggleproof14">[Show Proof]</a>
+<div class="proof" id="proof14" style="display: none;">
+<span class="comment">%E-Let-Step</span>
+ <a class="tactic" href="let-details.html#14">EvB: case EvB.</a>
+   <span class="comment">%E-Let-Step</span>
+    <a class="tactic" href="let-details.html#15">apply IH to EvA1 EvB.</a> <a class="tactic" href="let-details.html#16">search.</a>
+   <span class="comment">%E-Let-Subst</span>
+    <a class="tactic" href="let-details.html#17">apply value_eval_false to EvB EvA1.</a>
+<span class="comment">%E-Let-Subst</span>
+ <a class="tactic" href="let-details.html#18">EvB: case EvB.</a>
+   <span class="comment">%E-Let-Step</span>
+    <a class="tactic" href="let-details.html#19">apply value_eval_false to EvA1 EvB.</a>
+   <span class="comment">%E-Let-Subst</span>
+    <a class="tactic" href="let-details.html#20">apply subst_unique to EvA2 EvB1.</a> <a class="tactic" href="let-details.html#21">search.</a></div>
+
+
+<a class="command" href="let-details.html#22">Prove walkthrough:host:ty_lookup.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(23);" id="toggleproof23">[Show Proof]</a>
+<div class="proof" id="proof23" style="display: none;">
+<span class="comment">%T-Let</span>
+ <a class="tactic" href="let-details.html#23">apply IH to Ty1 L.</a> <a class="tactic" href="let-details.html#24">apply IH to Ty2 _ with Ctx2 = (X, Ty1)::Ctx2.</a>
+   <a class="tactic" href="let-details.html#25">intros Lkp.</a> <a class="tactic" href="let-details.html#26">Lkp: case Lkp.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="let-details.html#27">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="let-details.html#28">apply L to Lkp1.</a> <a class="tactic" href="let-details.html#29">search.</a>
+ <a class="tactic" href="let-details.html#30">search.</a></div>
+
+
+<a class="command" href="let-details.html#31">Prove walkthrough:host:subst_type_preservation.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(32);" id="toggleproof32">[Show Proof]</a>
+<div class="proof" id="proof32" style="display: none;">
+<span class="comment">%S-Let-NEq</span>
+ <a class="tactic" href="let-details.html#32">Ty: case TTy.</a> <a class="tactic" href="let-details.html#33">apply IH to Ty S2 RTy.</a>
+ <a class="tactic" href="let-details.html#34">Ty': apply ty_lookup to Ty1 _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.</a>
+   <a class="tactic" href="let-details.html#35">intros L.</a> <a class="tactic" href="let-details.html#36">L: case L.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="let-details.html#37">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="let-details.html#38">L: case L1.</a>
+        <span class="comment">%Lkp-Here</span>
+         <a class="tactic" href="let-details.html#39">search.</a>
+        <span class="comment">%Lkp-Later</span>
+         <a class="tactic" href="let-details.html#40">search.</a>
+ <a class="tactic" href="let-details.html#41">apply IH to Ty' S3 RTy.</a> <a class="tactic" href="let-details.html#42">search.</a>
+<span class="comment">%S-Let-Eq</span>
+ <a class="tactic" href="let-details.html#43">Ty: case TTy.</a> <a class="tactic" href="let-details.html#44">apply IH to Ty S1 RTy.</a>
+ <a class="tactic" href="let-details.html#45">apply ty_lookup to Ty1 _ with Ctx2 = (X, Ty1)::Ctx.</a>
+   <a class="tactic" href="let-details.html#46">intros L.</a> <a class="tactic" href="let-details.html#47">L: case L.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="let-details.html#48">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="let-details.html#49">L: case L1.</a>
+        <span class="comment">%Lkp-Here</span>
+         <a class="tactic" href="let-details.html#50">apply L to _.</a>
+        <span class="comment">%Lkp-Later</span>
+         <a class="tactic" href="let-details.html#51">search.</a>
+ <a class="tactic" href="let-details.html#52">search.</a></div>
+
+
+<a class="command" href="let-details.html#53">Prove walkthrough:host:type_preservation.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(54);" id="toggleproof54">[Show Proof]</a>
+<div class="proof" id="proof54" style="display: none;">
+<span class="comment">%E-Let-Step</span>
+ <a class="tactic" href="let-details.html#54">Ty: case Ty.</a> <a class="tactic" href="let-details.html#55">apply IH to Ty Ev1.</a> <a class="tactic" href="let-details.html#56">search.</a>
+<span class="comment">%E-Let-Subst</span>
+ <a class="tactic" href="let-details.html#57">Ty: case Ty.</a> <a class="tactic" href="let-details.html#58">apply subst_type_preservation to Ty1 Ev2 Ty.</a> <a class="tactic" href="let-details.html#59">search.</a></div>
+<a class="command" href="let-details.html#60"></a>
+</pre>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+Module simple_imp:security
+
+Builds on simple_imp:host
+
+/*New Statement and Translation*/
+c ::= ...
+    | declareSec(string, seclevel, ty, e)
+
+
+--------------------------------------------------- [Trans-DeclareSec]
+|{c}- declareSec(X, S, Ty, E) ~~> declare(X, Ty, E)
+
+
+seclevel ::= public | private
+Translation seclevel :
+
+
+
+
+/*Typing and Evaluation for New Statement*/
+
+no_lookup G X /*still can't overwrite existing decls*/
+typeOf G E Ty
+------------------------------------------- [T-DeclareSec]
+typeOK G declareSec(X, S, Ty, E) (X, Ty)::G
+
+
+eval_e G E V
+------------------------------------------ [E-DeclareSec]
+eval_c G declareSec(X, S, Ty, E) (X, V)::G
+

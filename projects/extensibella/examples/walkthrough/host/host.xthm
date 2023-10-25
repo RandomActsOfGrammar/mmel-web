@@ -1,0 +1,208 @@
+Module walkthrough:host.
+
+Extensible_Theorem
+  subst_unique : forall X R T VA VB,
+    SA : subst X R T VA ->
+    SB : subst X R T VB ->
+    VA = VB
+  on SA.
+%S-Var-NEq
+ SB: case SB.
+   %S-Var-NEq
+    search.
+   %S-Var-Eq
+    apply SA1 to _.
+%S-Var-Eq
+ SB: case SB.
+   %S-Var-NEq
+    apply SB to _.
+   %S-Var-Eq
+    search.
+%S-Abs-NEq
+ SB: case SB.
+   %S-Abs-NEq
+    apply IH to SA2 SB1. search.
+   %S-Abs-Eq
+    apply SA1 to _.
+%S-Abs-Eq
+ SB: case SB.
+   %S-Abs-NEq
+    apply SB to _.
+   %S-Abs-Eq
+    search.
+%S-App
+ SB: case SB. apply IH to SA1 SB. apply IH to SA2 SB1. search.
+%S-Num
+ SB: case SB. search.
+%S-Plus
+ SB: case SB. apply IH to SA1 SB. apply IH to SA2 SB1. search.
+
+
+Extensible_Theorem
+  value_eval_false : forall T V,
+    Val : value T ->
+    Ev : eval T V ->
+    false
+  on Val.
+%V-Abs
+ case Ev.
+%V-Num
+ case Ev.
+
+
+Extensible_Theorem
+  eval_unique : forall T VA VB,
+    EvA : eval T VA ->
+    EvB : eval T VB ->
+    VA = VB
+  on EvA.
+%E-App-Step1
+ EvB: case EvB.
+   %E-App-Step1
+    apply IH to EvA1 EvB. search.
+   %E-App-Step2
+    apply value_eval_false to EvB EvA1.
+   %E-App-Subst
+    apply value_eval_false to _ EvA1.
+%E-App-Step2
+ EvB: case EvB.
+   %E-App-Step1
+    apply value_eval_false to EvA1 EvB.
+   %E-App-Step2
+    apply IH to EvA2 EvB1. search.
+   %E-App-Subst
+    apply value_eval_false to EvB EvA2.
+%E-App-Subst
+ EvB: case EvB.
+   %E-App-Step1
+    case EvB.
+   %E-App-Step2
+    apply value_eval_false to EvA1 EvB1.
+   %E-App-Subst
+    apply subst_unique to EvA2 EvB1. search.
+%E-Plus-Step1
+ EvB: case EvB.
+   %E-Plus-Step1
+    apply IH to EvA1 EvB. search.
+   %E-Plus-Step2
+    apply value_eval_false to EvB EvA1.
+   %E-Plus-Add
+    case EvA1.
+%E-Plus-Step2
+ EvB: case EvB.
+   %E-Plus-Step1
+    apply value_eval_false to EvA1 EvB.
+   %E-Plus-Step2
+    apply IH to EvA2 EvB1. search.
+   %E-Plus-Add
+    case EvA2.
+%E-Plus-Add
+ EvB: case EvB.
+   %E-Plus-Step1
+    case EvB.
+   %E-Plus-Step2
+    case EvB1.
+   %E-Plus-Add
+    apply plus_integer_unique to EvA1 EvB. search.
+
+
+Extensible_Theorem
+  ty_lookup : forall Ctx1 Ctx2 T Ty,
+    Ty : typeOf Ctx1 T Ty ->
+    L : (forall X XTy, lookup Ctx1 X XTy -> lookup Ctx2 X XTy) ->
+    typeOf Ctx2 T Ty
+  on Ty.
+%T-Var
+ apply L to Ty1. search.
+%T-Abs
+ apply IH to Ty1 _ with Ctx2 = (X, Ty1)::Ctx2.
+   intros LkpX. LkpX: case LkpX.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply L to LkpX1. search.
+ search.
+%T-App
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+%T-Num
+ search.
+%T-Plus
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+
+
+Theorem empty_ty_any : forall T Ty Ctx,
+  typeOf [] T Ty -> typeOf Ctx T Ty.
+intros T. backchain ty_lookup. intros L. case L.
+
+
+Extensible_Theorem
+  subst_type_preservation : forall T Ctx X XTy Ty R S,
+    TTy : typeOf ((X, XTy)::Ctx) T Ty ->
+    S : subst X R T S ->
+    RTy : typeOf [] R XTy ->
+    typeOf Ctx S Ty
+  on S.
+%S-Var-NEq
+ Ty: case TTy. Lkp: case Ty.
+   %Lkp-Here
+    apply S1 to _.
+   %Lkp-Later
+    search.
+%S-Var-Eq
+ Ty: case TTy. L: case Ty.
+   %Lkp-Here
+    backchain empty_ty_any.
+   %Lkp-Later
+    apply L to _.
+%S-Abs-NEq
+ Ty: case TTy.
+ Ty': apply ty_lookup to Ty _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      L: case L1.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         search.
+ apply IH to Ty' S2 _. search.
+%S-Abs-Eq
+ Ty: case TTy. apply ty_lookup to Ty _ with Ctx2 = (X, Ty1)::Ctx.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      L: case L1.
+        %Lkp-Here
+         apply L to _.
+        %Lkp-Later
+         search.
+ search.
+%S-App
+ Ty: case TTy. apply IH to Ty S1 _. apply IH to Ty1 S2 _. search.
+%S-Num
+ case TTy. search.
+%S-Plus
+ Ty: case TTy. apply IH to Ty S1 _. apply IH to Ty1 S2 _. search.
+
+
+Extensible_Theorem
+  type_preservation : forall T Ty T',
+    Ty : typeOf [] T Ty ->
+    Ev : eval T T' ->
+    typeOf [] T' Ty
+  on Ev.
+%E-App-Step1
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-App-Step2
+ Ty: case Ty. apply IH to Ty1 Ev2. search.
+%E-App-Subst
+ Ty: case Ty. Ty: case Ty.
+ apply subst_type_preservation to Ty Ev2 Ty1. search.
+%E-Plus-Step1
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-Plus-Step2
+ Ty: case Ty. apply IH to Ty1 Ev2. search.
+%E-Plus-Add
+ Ty: case Ty. search.

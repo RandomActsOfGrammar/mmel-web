@@ -7,26 +7,27 @@ import extensibella_to_html as eth
 import sterling_to_html as sth
 
 #Write out text starting the HTML for the basic file
-def writeInitialText(outF, titleInfo):
+def writeInitialText(outF, depth, titleInfo):
+    depthText = "../" * depth
     text = "<html>\n"
     #start head
     text += "<head>\n"
     #title
     text += '<title>Extensibella:  ' + titleInfo + '</title>\n'
     #style sheet
-    text += '<link href="../style.css" rel="stylesheet" type="text/css">\n'
+    text += '<link href="' + depthText + '../style.css" rel="stylesheet" type="text/css">\n'
     #script
-    text += '<script src="../actions.js"></script>\n'
+    text += '<script src="' + depthText + '../actions.js"></script>\n'
     #favicon
-    text += '<link rel="icon" href="images/favicon.png" type="image/x-icon">\n'
+    text += '<link rel="icon" href="' + depthText + 'images/favicon.png" type="image/x-icon">\n'
     #end head
     text += "</head>\n"
     #start body
     text += "<body class=\"extensibella\">\n"
     #logo
     text += '<div id="header-logo">\n'
-    text += '<a href="index.html">\n'
-    text += '<img class="header-logo" src="images/Extensibella.png" '
+    text += '<a href="' + depthText + 'index.html">\n'
+    text += '<img class="header-logo" src="' + depthText + 'images/Extensibella.png" '
     text += 'alt="Extensibella logo">\n'
     text += '</a>\n'
     text += '</div>\n'
@@ -50,7 +51,10 @@ def writeSpec(outF, sosFilenames):
         foldLink = '<a class="fold-link" href="javascript:void" '
         foldLink += 'id="toggle' + shortName + '" '
         foldLink += 'onclick="toggleFile(\'' + shortName + '\')">'
-        foldLink += '[Shrink File]</a>'
+        foldLink += '[Reduce File]</a>'
+        foldLink += '<span> </span>'
+        foldLink += '<a class="fold-link" href="' + fname + '">'
+        foldLink += '[Raw File]</a>\n'
         outF.write(foldLink)
         #text of the body
         f = open(fname, "r")
@@ -71,6 +75,9 @@ def writeProof(outF, extensibellaFilename, detailsFile):
     links += '<span> </span>'
     links += '<a class="fold-link" href="javascript:void" '
     links += 'onclick="allProofHide();">[Hide All Proofs]</a>\n'
+    links += '<span> </span>'
+    links += '<a class="fold-link" href="' + extensibellaFilename + '">'
+    links += '[Raw File]</a>\n'
     outF.write(links)
     text = "<p>Click on a command or tactic to see a detailed view "
     text += "of its use.</p>"
@@ -85,10 +92,10 @@ def writeProof(outF, extensibellaFilename, detailsFile):
 
 
 #Write the full HTML file
-def writeHTMLFile(outFilename, extensibellaFilename, sosFilenames,
-                  titleInfo, detailsFile):
+def writeHTMLFile(depth, outFilename, extensibellaFilename,
+                  sosFilenames, titleInfo, detailsFile):
     outF = open(outFilename, "w")
-    writeInitialText(outF, titleInfo)
+    writeInitialText(outF, depth, titleInfo)
     outF.write('<h1>' + titleInfo + '</h1>')
     writeSpec(outF, sosFilenames)
     writeProof(outF, extensibellaFilename, detailsFile)
@@ -100,9 +107,10 @@ def writeHTMLFile(outFilename, extensibellaFilename, sosFilenames,
 
 
 #Write the details file
-def writeDetailsFile(outFilename, extensibellaFilename, titleInfo):
+def writeDetailsFile(depth, outFilename, extensibellaFilename,
+                     titleInfo):
     outF = open(outFilename, "w")
-    writeInitialText(outF, titleInfo + " - Details")
+    writeInitialText(outF, depth, titleInfo + " - Details")
     outF.write("<h2>Reasoning Details</h2>\n")
     outF.write('<div class="section">\n')
     outF.close()
@@ -120,27 +128,30 @@ def writeDetailsFile(outFilename, extensibellaFilename, titleInfo):
 
 
 #Write both files
-def fullProcess(outFilebase, extensibellaFilename, sosFilenames,
-                titleInfo):
+def fullProcess(depth, outFilebase, extensibellaFilename,
+                sosFilenames, titleInfo):
     detailsFile = outFilebase + "-details.html"
-    writeHTMLFile(outFilebase + ".html", extensibellaFilename,
+    writeHTMLFile(depth, outFilebase + ".html", extensibellaFilename,
                   sosFilenames, titleInfo, detailsFile)
-    writeDetailsFile(detailsFile, extensibellaFilename, titleInfo)
+    writeDetailsFile(depth, detailsFile, extensibellaFilename,
+                     titleInfo)
 
 
 
 
 
 def main(args):
-    if len(args) < 5:
-        print("Usage:  " + args[0] + " <out filename base> " +
-              "<title info> <.xthm file> <.sos files>")
+    if len(args) < 6:
+        print("Usage:  " + args[0] + " <depth from root> " +
+              "<out filename base> <title info> <.xthm file> " +
+              "<.sos files>")
         return
-    fbase = args[1]
-    titleInfo = args[2]
-    extensibellaFile = args[3]
-    sosFiles = args[4:]
-    fullProcess(fbase, extensibellaFile, sosFiles, titleInfo)
+    depth = int(args[1])
+    fbase = args[2]
+    titleInfo = args[3]
+    extensibellaFile = args[4]
+    sosFiles = args[5:]
+    fullProcess(depth, fbase, extensibellaFile, sosFiles, titleInfo)
 
 
 if __name__ == "__main__":

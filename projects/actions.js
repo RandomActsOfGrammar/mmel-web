@@ -48,13 +48,13 @@ function allProofHide(){
 function toggleFile(fname){
     var toggler = document.getElementById("toggle" + fname);
     var file = document.getElementById(fname);
-    if (toggler.innerHTML == "[Shrink File]"){
+    if (toggler.innerHTML == "[Reduce File]"){
         file.style = "height: 100px;";
         toggler.innerHTML = "[Expand File]";
     }
     else{
         file.style = "";
-        toggler.innerHTML = "[Shrink File]";
+        toggler.innerHTML = "[Reduce File]";
     }
     console.log("I don't know why it is giving the syntax error:");
 }

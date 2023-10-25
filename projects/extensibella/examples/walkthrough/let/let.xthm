@@ -1,0 +1,80 @@
+Module walkthrough:let.
+
+Prove walkthrough:host:subst_unique.
+%S-Let-NEq
+ SB: case SB.
+   %S-Let-NEq
+    apply IH to SA2 SB1. apply IH to SA3 SB2. search.
+   %S-Let-Eq
+    apply SA1 to _.
+%S-Let-Eq
+ SB: case SB.
+   %S-Let-NEq
+    apply SB to _.
+   %S-Let-Eq
+    apply IH to SA1 SB. search.
+
+
+Prove walkthrough:host:value_eval_false.
+
+
+Prove walkthrough:host:eval_unique.
+%E-Let-Step
+ EvB: case EvB.
+   %E-Let-Step
+    apply IH to EvA1 EvB. search.
+   %E-Let-Subst
+    apply value_eval_false to EvB EvA1.
+%E-Let-Subst
+ EvB: case EvB.
+   %E-Let-Step
+    apply value_eval_false to EvA1 EvB.
+   %E-Let-Subst
+    apply subst_unique to EvA2 EvB1. search.
+
+
+Prove walkthrough:host:ty_lookup.
+%T-Let
+ apply IH to Ty1 L. apply IH to Ty2 _ with Ctx2 = (X, Ty1)::Ctx2.
+   intros Lkp. Lkp: case Lkp.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply L to Lkp1. search.
+ search.
+
+
+Prove walkthrough:host:subst_type_preservation.
+%S-Let-NEq
+ Ty: case TTy. apply IH to Ty S2 RTy.
+ Ty': apply ty_lookup to Ty1 _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      L: case L1.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         search.
+ apply IH to Ty' S3 RTy. search.
+%S-Let-Eq
+ Ty: case TTy. apply IH to Ty S1 RTy.
+ apply ty_lookup to Ty1 _ with Ctx2 = (X, Ty1)::Ctx.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      L: case L1.
+        %Lkp-Here
+         apply L to _.
+        %Lkp-Later
+         search.
+ search.
+
+
+Prove walkthrough:host:type_preservation.
+%E-Let-Step
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-Let-Subst
+ Ty: case Ty. apply subst_type_preservation to Ty1 Ev2 Ty. search.

@@ -1,0 +1,262 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  simple_imp:repeatWhile</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  simple_imp:repeatWhile</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  repeatWhile.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglerepeatWhile.sos" onclick="toggleFile('repeatWhile.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="repeatWhile.sos">[Raw File]</a>
+<pre class="code sterling" id="repeatWhile.sos">
+Module simple_imp:repeatWhile
+
+Builds on simple_imp:host
+
+<span class="comment">/*Add a repeat-while construct*/</span>
+c ::= ...
+    | repeatWhile(c, e)
+
+
+------------------------------------- [Trans-RepeatWhile]
+|{c}- repeatWhile(Body, Cond) ~~>
+         seq(Body, while(Cond, Body))
+
+
+
+<span class="comment">/*Evaluation*/</span>
+
+eval_c G Body G1
+eval_e G1 Cond trueVal
+eval_c G1 repeatWhile(Body, Cond) G2
+------------------------------------ [E-RepeatWhileTrue]
+eval_c G repeatWhile(Body, Cond) G2
+
+
+eval_c G Body G1
+eval_e G1 Cond falseVal
+----------------------------------- [E-RepeatWhileFalse]
+eval_c G repeatWhile(Body, Cond) G1
+
+
+
+<span class="comment">/*Typing*/</span>
+
+typeOK G Body GB
+typeOf G E boolTy
+---------------------------------- [T-RepeatWhile]
+typeOK G repeatWhile(Body, Cond) G
+<span class="comment">/*body opens a new scope*/</span>
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="repeatWhile_thms.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="repeatWhile-details.html#1">Module simple_imp:repeatWhile.</a>
+
+
+<a class="command" href="repeatWhile-details.html#2">Prove_Constraint simple_imp:host:trans_e_unique.</a>
+<a class="command" href="repeatWhile-details.html#3">Prove_Constraint simple_imp:host:trans_e_is.</a>
+<a class="command" href="repeatWhile-details.html#4">Prove_Constraint simple_imp:host:trans_rf_unique.</a>
+<a class="command" href="repeatWhile-details.html#5">Prove_Constraint simple_imp:host:trans_rf_is.</a>
+
+
+<a class="command" href="repeatWhile-details.html#6">Prove_Constraint simple_imp:host:trans_c_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(7);" id="toggleproof7">[Show Proof]</a>
+<div class="proof" id="proof7" style="display: none;">
+<span class="comment">%repeatWhile</span>
+ <a class="tactic" href="repeatWhile-details.html#7">case Hyp1.</a> <a class="tactic" href="repeatWhile-details.html#8">search.</a></div>
+
+<a class="command" href="repeatWhile-details.html#9">Prove_Constraint simple_imp:host:trans_c_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(10);" id="toggleproof10">[Show Proof]</a>
+<div class="proof" id="proof10" style="display: none;">
+<span class="comment">%repeatWhile</span>
+ <a class="tactic" href="repeatWhile-details.html#10">case Hyp1.</a> <a class="tactic" href="repeatWhile-details.html#11">search.</a></div>
+
+
+<a class="command" href="repeatWhile-details.html#12">Prove_Constraint simple_imp:host:trans_recFields_unique.</a>
+<a class="command" href="repeatWhile-details.html#13">Prove_Constraint simple_imp:host:trans_recFields_is.</a>
+<a class="command" href="repeatWhile-details.html#14">Prove_Constraint simple_imp:host:trans_ty_unique.</a>
+<a class="command" href="repeatWhile-details.html#15">Prove_Constraint simple_imp:host:trans_ty_is.</a>
+<a class="command" href="repeatWhile-details.html#16">Prove_Constraint simple_imp:host:trans_value_unique.</a>
+<a class="command" href="repeatWhile-details.html#17">Prove_Constraint simple_imp:host:trans_value_is.</a>
+
+
+<a class="command" href="repeatWhile-details.html#18">Prove simple_imp:host:vars_join,
+      simple_imp:host:vars_rf_join.</a>
+<a class="command" href="repeatWhile-details.html#19">Prove simple_imp:host:vars_unique,
+      simple_imp:host:vars_rf_unique.</a>
+
+
+<a class="command" href="repeatWhile-details.html#20">Prove_Constraint simple_imp:host:trans_e_vars_exist.</a>
+<a class="command" href="repeatWhile-details.html#21">Prove_Constraint simple_imp:host:trans_e_vars.</a>
+<a class="command" href="repeatWhile-details.html#22">Prove_Constraint simple_imp:host:trans_rf_vars_exist.</a>
+<a class="command" href="repeatWhile-details.html#23">Prove_Constraint simple_imp:host:trans_rf_vars.</a>
+
+
+<a class="command" href="repeatWhile-details.html#24">Prove simple_imp:host:vars_is,
+      simple_imp:host:vars_rf_is.</a>
+<a class="command" href="repeatWhile-details.html#25">Prove simple_imp:host:vars_exist,
+      simple_imp:host:vars_rf_exist.</a>
+
+
+<a class="command" href="repeatWhile-details.html#26">Prove simple_imp:host:typeOf_unique,
+      simple_imp:host:typeRecFields_unique.</a>
+
+
+<a class="command" href="repeatWhile-details.html#27">Prove simple_imp:host:typeOK_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(28);" id="toggleproof28">[Show Proof]</a>
+<div class="proof" id="proof28" style="display: none;">
+<span class="comment">%repeatWhile</span>
+ <a class="tactic" href="repeatWhile-details.html#28">case Ty2.</a> <a class="tactic" href="repeatWhile-details.html#29">search.</a></div>
+
+
+<a class="command" href="repeatWhile-details.html#30">Prove_Constraint simple_imp:host:trans_eval_e.</a>
+
+
+<a class="command" href="repeatWhile-details.html#31">Prove simple_imp:host:eval_e_unique,
+      simple_imp:host:eval_rf_unique.</a>
+
+<a class="command" href="repeatWhile-details.html#32">Prove simple_imp:host:update_rec_fields_unique.</a>
+
+
+<a class="command" href="repeatWhile-details.html#33">Theorem repeatWhile_transEval : forall G Body Cond G1,
+    eval_c G (repeatWhile Body Cond) G1 ->
+    exists G2, eval_c G (seq Body (while Cond Body)) G2.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(34);" id="toggleproof34">[Show Proof]</a>
+<div class="proof" id="proof34" style="display: none;">
+<a class="tactic" href="repeatWhile-details.html#34">induction on 1.</a> <a class="tactic" href="repeatWhile-details.html#35">intros Ev.</a> <a class="tactic" href="repeatWhile-details.html#36">Ev: case Ev (keep).</a>
+<span class="comment">%E-RepeatWhileTrue</span>
+ <a class="tactic" href="repeatWhile-details.html#37">EvSeq: apply IH to Ev3.</a> <a class="tactic" href="repeatWhile-details.html#38">EvSeq: case EvSeq.</a> <a class="tactic" href="repeatWhile-details.html#39">search.</a>
+<span class="comment">%E-RepeatWhileFalse</span>
+ <a class="tactic" href="repeatWhile-details.html#40">search.</a></div>
+
+<a class="command" href="repeatWhile-details.html#41">Prove_Constraint simple_imp:host:trans_c_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(42);" id="toggleproof42">[Show Proof]</a>
+<div class="proof" id="proof42" style="display: none;">
+<span class="comment">%repeatWhile</span>
+ <a class="tactic" href="repeatWhile-details.html#42">apply repeatWhile_transEval to Hyp1.</a> <a class="tactic" href="repeatWhile-details.html#43">search.</a></div>
+
+
+<a class="command" href="repeatWhile-details.html#44">Prove_Ext_Ind simple_imp:host:eval_c.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(45);" id="toggleproof45">[Show Proof]</a>
+<div class="proof" id="proof45" style="display: none;">
+<span class="comment">%E-RepeatWhileTrue</span>
+ <span class="comment">%We need this as a lemma for the rest of the proof</span>
+ <a class="tactic" href="repeatWhile-details.html#45">RW_to_SW: assert forall C B EG EG' N,
+             <eval_c {ES}> EG (repeatWhile B C) EG' N ->
+             exists N', <eval_c {ES}> EG (seq B (while C B)) EG' N' /\
+                        N' < N.</a>
+   <a class="tactic" href="repeatWhile-details.html#46">clear IH IH1 Rel Acc Rel1 Rel2 Rel3 Rel4 Rel5.</a> <span class="comment">%not needed here</span>
+   <a class="tactic" href="repeatWhile-details.html#47">induction on 1.</a> <a class="tactic" href="repeatWhile-details.html#48">intros EvalRep.</a> <a class="tactic" href="repeatWhile-details.html#49">Ev: case EvalRep.</a>
+     <span class="comment">%E-RepeatWhileTrue</span>
+      <a class="tactic" href="repeatWhile-details.html#50">SubSeq: apply IH to Ev4.</a> <a class="tactic" href="repeatWhile-details.html#51">EvSub: case SubSeq.</a>
+      <a class="tactic" href="repeatWhile-details.html#52">IsN8: apply ext_ind_is_int_eval_c to EvSub1.</a>
+      <a class="tactic" href="repeatWhile-details.html#53">IsN9: apply ext_ind_is_int_eval_c to EvSub2.</a>
+      <a class="tactic" href="repeatWhile-details.html#54">IsN': apply plus_integer_is_integer to _ _ EvSub.</a>
+      <a class="tactic" href="repeatWhile-details.html#55">IsN5: apply ext_ind_is_int_eval_c to Ev2.</a>
+      <a class="tactic" href="repeatWhile-details.html#56">N5+N': apply plus_integer_total to IsN5 IsN'.</a>
+      <a class="tactic" href="repeatWhile-details.html#57">exists N10.</a> <a class="tactic" href="repeatWhile-details.html#58">split.</a>
+        <span class="comment">%eval for the sequence</span>
+         <a class="tactic" href="repeatWhile-details.html#59">search.</a>
+        <span class="comment">%N10 < N1</span>
+         <a class="tactic" href="repeatWhile-details.html#60">IsN6: apply ext_ind_is_int_eval_c to Ev4.</a>
+         <a class="tactic" href="repeatWhile-details.html#61">IsN7: apply plus_integer_is_integer to _ _ Ev1.</a>
+         <a class="tactic" href="repeatWhile-details.html#62">LN7N1: apply lt_plus_one to Ev _.</a>
+         <a class="tactic" href="repeatWhile-details.html#63">LN10N7: apply less_sums to N5+N' Ev1 _ _.</a>
+         <a class="tactic" href="repeatWhile-details.html#64">apply less_integer_transitive to LN10N7 LN7N1.</a> <a class="tactic" href="repeatWhile-details.html#65">search.</a>
+     <span class="comment">%E-RepeatWhileFalse</span>
+      <a class="tactic" href="repeatWhile-details.html#66">IsN5: apply ext_ind_is_int_eval_c to Ev1.</a>
+      <a class="tactic" href="repeatWhile-details.html#67">LN5N1: apply lt_plus_one to Ev _.</a>
+      <a class="tactic" href="repeatWhile-details.html#68">N5+0: apply plus_integer_total to IsN5 _ with N2 = 0.</a>
+      <a class="tactic" href="repeatWhile-details.html#69">apply plus_zero_right to N5+0.</a> <a class="tactic" href="repeatWhile-details.html#70">search.</a>
+ <span class="comment">%Rest of the proof:</span>
+ <a class="tactic" href="repeatWhile-details.html#71">Acc: case Acc.</a> <a class="tactic" href="repeatWhile-details.html#72">IsN2: apply ext_ind_is_int_eval_c to Rel3.</a>
+ <a class="tactic" href="repeatWhile-details.html#73">IsN3: apply ext_ind_is_int_eval_c to Rel5.</a>
+ <a class="tactic" href="repeatWhile-details.html#74">IsN4: apply plus_integer_is_integer to _ _ Rel2.</a>
+ <a class="tactic" href="repeatWhile-details.html#75">PosN2: apply ext_ind_pos_eval_c to Rel3.</a>
+ <a class="tactic" href="repeatWhile-details.html#76">PosN3: apply ext_ind_pos_eval_c to Rel5.</a>
+ <a class="tactic" href="repeatWhile-details.html#77">LN4N: apply lt_plus_one to Rel1 _.</a>
+ <a class="tactic" href="repeatWhile-details.html#78">LN2N: assert N2 < N.</a>
+    <a class="tactic" href="repeatWhile-details.html#79">OrN2: apply lt_left to Rel2 _ _.</a> <a class="tactic" href="repeatWhile-details.html#80">L: case OrN2.</a>
+       <a class="tactic" href="repeatWhile-details.html#81">apply less_integer_transitive to L LN4N.</a> <a class="tactic" href="repeatWhile-details.html#82">search.</a>
+       <a class="tactic" href="repeatWhile-details.html#83">search.</a>
+ <a class="tactic" href="repeatWhile-details.html#84">LN3N: assert N3 < N.</a>
+    <a class="tactic" href="repeatWhile-details.html#85">OrN3: apply lt_right to Rel2 _ _ _.</a> <a class="tactic" href="repeatWhile-details.html#86">L: case OrN3.</a>
+       <a class="tactic" href="repeatWhile-details.html#87">apply less_integer_transitive to L LN4N.</a> <a class="tactic" href="repeatWhile-details.html#88">search.</a>
+       <a class="tactic" href="repeatWhile-details.html#89">search.</a>
+ <a class="tactic" href="repeatWhile-details.html#90">AccN2: apply Acc to _ LN2N.</a> <a class="tactic" href="repeatWhile-details.html#91">AccN3: apply Acc to _ LN3N.</a>
+ <a class="tactic" href="repeatWhile-details.html#92">EvalTBody: apply IH to Rel3 AccN2.</a> <a class="tactic" href="repeatWhile-details.html#93">EvalTRep: apply IH to Rel5 AccN3.</a>
+ <a class="tactic" href="repeatWhile-details.html#94">Trans: assert |{c}- repeatWhile Body Cond ~~>
+                     seq Body (while Cond Body).</a>
+ <a class="tactic" href="repeatWhile-details.html#95">SW: apply RW_to_SW to Rel5.</a>
+ <a class="tactic" href="repeatWhile-details.html#96">LN'N: apply less_integer_transitive to SW1 LN3N.</a>
+ <a class="tactic" href="repeatWhile-details.html#97">L0N': apply ext_ind_pos_eval_c to SW.</a> <a class="tactic" href="repeatWhile-details.html#98">AccN': apply Acc to _ LN'N.</a>
+ <a class="tactic" href="repeatWhile-details.html#99">EvalTSeq: apply IH to SW AccN'.</a> <a class="tactic" href="repeatWhile-details.html#100">EvalTParts: case EvalTSeq.</a>
+ <a class="tactic" href="repeatWhile-details.html#101">search.</a>
+<span class="comment">%E-RepeatWhileFalse</span>
+ <a class="tactic" href="repeatWhile-details.html#102">Acc: case Acc.</a> <a class="tactic" href="repeatWhile-details.html#103">L0N2: apply ext_ind_pos_eval_c to Rel2.</a>
+ <a class="tactic" href="repeatWhile-details.html#104">IsN2: apply ext_ind_is_int_eval_c to Rel2.</a>
+ <a class="tactic" href="repeatWhile-details.html#105">LN2N: apply lt_plus_one to Rel1 _.</a> <a class="tactic" href="repeatWhile-details.html#106">AccN2: apply Acc to _ LN2N.</a>
+ <a class="tactic" href="repeatWhile-details.html#107">EvalTBody: apply IH to Rel2 AccN2.</a>
+ <a class="tactic" href="repeatWhile-details.html#108">Trans: assert |{c}- repeatWhile Body Cond ~~>
+                     seq Body (while Cond Body).</a> <a class="tactic" href="repeatWhile-details.html#109">search.</a></div>
+
+
+<a class="command" href="repeatWhile-details.html#110">Prove simple_imp:host:eval_c_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(111);" id="toggleproof111">[Show Proof]</a>
+<div class="proof" id="proof111" style="display: none;">
+<span class="comment">%E-RepeatWhileTrue</span>
+ <a class="tactic" href="repeatWhile-details.html#111">Ev2: case Ev2.</a>
+   <span class="comment">%E-RepeatWhileTrue for 2</span>
+    <a class="tactic" href="repeatWhile-details.html#112">apply IH to Ev3 Ev2.</a> <a class="tactic" href="repeatWhile-details.html#113">apply IH to Ev5 Ev7.</a> <a class="tactic" href="repeatWhile-details.html#114">search.</a>
+   <span class="comment">%E-RepeatWhileFalse for 2</span>
+    <a class="tactic" href="repeatWhile-details.html#115">apply IH to Ev3 Ev2.</a> <a class="tactic" href="repeatWhile-details.html#116">apply eval_e_unique to Ev4 Ev6.</a>
+<span class="comment">%E-RepeatWhileFalse</span>
+ <a class="tactic" href="repeatWhile-details.html#117">Ev2: case Ev2.</a>
+   <span class="comment">%E-RepeatWhileTrue for 2</span>
+    <a class="tactic" href="repeatWhile-details.html#118">apply IH to Ev3 Ev2.</a> <a class="tactic" href="repeatWhile-details.html#119">apply eval_e_unique to Ev4 Ev5.</a>
+   <span class="comment">%E-RepeatWhileFalse for 2</span>
+    <a class="tactic" href="repeatWhile-details.html#120">apply IH to Ev3 Ev2.</a> <a class="tactic" href="repeatWhile-details.html#121">search.</a></div>
+
+
+<a class="command" href="repeatWhile-details.html#122">Theorem repeatWhile_transSame : forall G Body Cond G1 G2,
+    eval_c G (repeatWhile Body Cond) G1 ->
+    eval_c G (seq Body (while Cond Body)) G2 ->
+    G1 = G2.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(123);" id="toggleproof123">[Show Proof]</a>
+<div class="proof" id="proof123" style="display: none;">
+<a class="tactic" href="repeatWhile-details.html#123">induction on 1.</a> <a class="tactic" href="repeatWhile-details.html#124">intros EvRW EvSW.</a> <a class="tactic" href="repeatWhile-details.html#125">EvRW: case EvRW (keep).</a>
+<span class="comment">%E-RepeatWhileTrue</span>
+ <a class="tactic" href="repeatWhile-details.html#126">EvSW: case EvSW.</a> <a class="tactic" href="repeatWhile-details.html#127">apply eval_c_unique to EvRW1 EvSW.</a> <a class="tactic" href="repeatWhile-details.html#128">EvW': case EvSW1.</a>
+   <span class="comment">%E-WhileFalse</span>
+    <a class="tactic" href="repeatWhile-details.html#129">apply eval_e_unique to EvRW2 EvW'.</a>
+   <span class="comment">%E-WhileTrue</span>
+    <a class="tactic" href="repeatWhile-details.html#130">EvSeq: assert eval_c G4 (seq Body (while Cond Body)) G2.</a>
+    <a class="tactic" href="repeatWhile-details.html#131">apply IH to EvRW3 EvSeq.</a> <a class="tactic" href="repeatWhile-details.html#132">search.</a>
+<span class="comment">%E-RepeatWhileFalse</span>
+ <a class="tactic" href="repeatWhile-details.html#133">EvSW: case EvSW.</a> <a class="tactic" href="repeatWhile-details.html#134">apply eval_c_unique to EvRW1 EvSW.</a> <a class="tactic" href="repeatWhile-details.html#135">EvW: case EvSW1.</a>
+   <span class="comment">%E-WhileFalse</span>
+    <a class="tactic" href="repeatWhile-details.html#136">search.</a>
+   <span class="comment">%E-WhileTrue</span>
+    <a class="tactic" href="repeatWhile-details.html#137">apply eval_e_unique to EvRW2 EvW.</a></div>
+
+<a class="command" href="repeatWhile-details.html#138">Prove_Constraint simple_imp:host:trans_c_eval_results.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(139);" id="toggleproof139">[Show Proof]</a>
+<div class="proof" id="proof139" style="display: none;">
+<span class="comment">%repeatWhile</span>
+ <a class="tactic" href="repeatWhile-details.html#139">apply repeatWhile_transSame to Hyp1 Hyp2.</a> <a class="tactic" href="repeatWhile-details.html#140">search.</a></div>
+
+
+<a class="command" href="repeatWhile-details.html#141">Prove_Constraint simple_imp:host:trans_c_eval_results_back.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(142);" id="toggleproof142">[Show Proof]</a>
+<div class="proof" id="proof142" style="display: none;">
+<span class="comment">%repeatWhile</span>
+ <a class="tactic" href="repeatWhile-details.html#142">apply repeatWhile_transSame to Hyp1 Hyp2.</a> <a class="tactic" href="repeatWhile-details.html#143">search.</a></div>
+
+
+<a class="command" href="repeatWhile-details.html#144">Prove simple_imp:host:vars_eval_same_result,
+      simple_imp:host:vars_equal_rf_same_result.</a>
+</pre>
+</div>
+</body>
+</html>

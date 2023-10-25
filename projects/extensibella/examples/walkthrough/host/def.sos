@@ -1,0 +1,126 @@
+Module walkthrough:host
+
+tm ::= var(string)
+     | abs(string, ty, tm)
+     | app(tm, tm)
+     | num(int)
+     | plus(tm, tm)
+
+Translation tm : [(string, ty)]
+
+ty ::= arrowTy(ty, ty)
+     | intTy
+
+Translation ty :
+
+
+
+Judgment eval : tm* tm
+Judgment subst : string tm tm* tm
+Judgment value : tm*
+
+eval T1 T11
+----------------------------- [E-App-Step1]
+eval app(T1, T2) app(T11, T2)
+
+
+value T1
+eval T2 T21
+----------------------------- [E-App-Step2]
+eval app(T1, T2) app(T1, T21)
+
+
+value T2
+subst X T2 Body V
+-------------------------------- [E-App-Subst]
+eval app(abs(X, Ty, Body), T2) V
+
+
+eval T1 T11
+------------------------------- [E-Plus-Step1]
+eval plus(T1, T2) plus(T11, T2)
+
+
+value T1
+eval T2 T21
+------------------------------- [E-Plus-Step2]
+eval plus(T1, T2) plus(T1, T21)
+
+
+I1 + I2 = I
+---------------------------------- [E-Plus-Add]
+eval plus(num(I1), num(I2)) num(I)
+
+
+
+X != Y
+----------------------- [S-Var-NEq]
+subst X R var(Y) var(Y)
+
+
+------------------ [S-Var-Eq]
+subst X R var(X) R
+
+
+X != Y
+subst X R B S
+------------------------------------- [S-Abs-NEq]
+subst X R abs(Y, Ty, B) abs(Y, Ty, S)
+
+
+------------------------------------- [S-Abs-Eq]
+subst X R abs(X, Ty, B) abs(X, Ty, B)
+
+
+subst X R T1 S1
+subst X R T2 S2
+--------------------------------- [S-App]
+subst X R app(T1, T2) app(S1, S2)
+
+
+----------------------- [S-Num]
+subst X R num(I) num(I)
+
+
+subst X R T1 S1
+subst X R T2 S2
+----------------------------------- [S-Plus]
+subst X R plus(T1, T2) plus(S1, S2)
+
+
+
+------------------- [V-Abs]
+value abs(X, Ty, T)
+
+
+------------ [V-Num]
+value num(I)
+
+
+
+Judgment typeOf : [(string, ty)] tm* ty
+
+lookup Ctx X Ty
+-------------------- [T-Var]
+typeOf Ctx var(X) Ty
+
+
+typeOf (X, Ty1)::Ctx Body Ty2
+---------------------------------------------- [T-Abs]
+typeOf Ctx abs(X, Ty1, Body) arrowTy(Ty1, Ty2)
+
+
+typeOf Ctx T1 arrowTy(Ty1, Ty2)
+typeOf Ctx T2 Ty1
+------------------------------- [T-App]
+typeOf Ctx app(T1, T2) Ty2
+
+
+----------------------- [T-Num]
+typeOf Ctx num(I) intTy
+
+
+typeOf Ctx T1 intTy
+typeOf Ctx T2 intTy
+----------------------------- [T-Plus]
+typeOf Ctx plus(T1, T2) intTy

@@ -1,0 +1,371 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  walkthrough:host</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  walkthrough:host</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  def.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggledef.sos" onclick="toggleFile('def.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="def.sos">[Raw File]</a>
+<pre class="code sterling" id="def.sos">
+Module walkthrough:host
+
+tm ::= var(string)
+     | abs(string, ty, tm)
+     | app(tm, tm)
+     | num(int)
+     | plus(tm, tm)
+
+Translation tm : [(string, ty)]
+
+ty ::= arrowTy(ty, ty)
+     | intTy
+
+Translation ty :
+
+
+
+Judgment eval : tm* tm
+Judgment subst : string tm tm* tm
+Judgment value : tm*
+
+eval T1 T11
+----------------------------- [E-App-Step1]
+eval app(T1, T2) app(T11, T2)
+
+
+value T1
+eval T2 T21
+----------------------------- [E-App-Step2]
+eval app(T1, T2) app(T1, T21)
+
+
+value T2
+subst X T2 Body V
+-------------------------------- [E-App-Subst]
+eval app(abs(X, Ty, Body), T2) V
+
+
+eval T1 T11
+------------------------------- [E-Plus-Step1]
+eval plus(T1, T2) plus(T11, T2)
+
+
+value T1
+eval T2 T21
+------------------------------- [E-Plus-Step2]
+eval plus(T1, T2) plus(T1, T21)
+
+
+I1 + I2 = I
+---------------------------------- [E-Plus-Add]
+eval plus(num(I1), num(I2)) num(I)
+
+
+
+X != Y
+----------------------- [S-Var-NEq]
+subst X R var(Y) var(Y)
+
+
+------------------ [S-Var-Eq]
+subst X R var(X) R
+
+
+X != Y
+subst X R B S
+------------------------------------- [S-Abs-NEq]
+subst X R abs(Y, Ty, B) abs(Y, Ty, S)
+
+
+------------------------------------- [S-Abs-Eq]
+subst X R abs(X, Ty, B) abs(X, Ty, B)
+
+
+subst X R T1 S1
+subst X R T2 S2
+--------------------------------- [S-App]
+subst X R app(T1, T2) app(S1, S2)
+
+
+----------------------- [S-Num]
+subst X R num(I) num(I)
+
+
+subst X R T1 S1
+subst X R T2 S2
+----------------------------------- [S-Plus]
+subst X R plus(T1, T2) plus(S1, S2)
+
+
+
+------------------- [V-Abs]
+value abs(X, Ty, T)
+
+
+------------ [V-Num]
+value num(I)
+
+
+
+Judgment typeOf : [(string, ty)] tm* ty
+
+lookup Ctx X Ty
+-------------------- [T-Var]
+typeOf Ctx var(X) Ty
+
+
+typeOf (X, Ty1)::Ctx Body Ty2
+---------------------------------------------- [T-Abs]
+typeOf Ctx abs(X, Ty1, Body) arrowTy(Ty1, Ty2)
+
+
+typeOf Ctx T1 arrowTy(Ty1, Ty2)
+typeOf Ctx T2 Ty1
+------------------------------- [T-App]
+typeOf Ctx app(T1, T2) Ty2
+
+
+----------------------- [T-Num]
+typeOf Ctx num(I) intTy
+
+
+typeOf Ctx T1 intTy
+typeOf Ctx T2 intTy
+----------------------------- [T-Plus]
+typeOf Ctx plus(T1, T2) intTy
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="host.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="host-details.html#1">Module walkthrough:host.</a>
+
+<a class="command" href="host-details.html#2">Extensible_Theorem
+  subst_unique : forall X R T VA VB,
+    SA : subst X R T VA ->
+    SB : subst X R T VB ->
+    VA = VB
+  on SA.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(3);" id="toggleproof3">[Show Proof]</a>
+<div class="proof" id="proof3" style="display: none;">
+<span class="comment">%S-Var-NEq</span>
+ <a class="tactic" href="host-details.html#3">SB: case SB.</a>
+   <span class="comment">%S-Var-NEq</span>
+    <a class="tactic" href="host-details.html#4">search.</a>
+   <span class="comment">%S-Var-Eq</span>
+    <a class="tactic" href="host-details.html#5">apply SA1 to _.</a>
+<span class="comment">%S-Var-Eq</span>
+ <a class="tactic" href="host-details.html#6">SB: case SB.</a>
+   <span class="comment">%S-Var-NEq</span>
+    <a class="tactic" href="host-details.html#7">apply SB to _.</a>
+   <span class="comment">%S-Var-Eq</span>
+    <a class="tactic" href="host-details.html#8">search.</a>
+<span class="comment">%S-Abs-NEq</span>
+ <a class="tactic" href="host-details.html#9">SB: case SB.</a>
+   <span class="comment">%S-Abs-NEq</span>
+    <a class="tactic" href="host-details.html#10">apply IH to SA2 SB1.</a> <a class="tactic" href="host-details.html#11">search.</a>
+   <span class="comment">%S-Abs-Eq</span>
+    <a class="tactic" href="host-details.html#12">apply SA1 to _.</a>
+<span class="comment">%S-Abs-Eq</span>
+ <a class="tactic" href="host-details.html#13">SB: case SB.</a>
+   <span class="comment">%S-Abs-NEq</span>
+    <a class="tactic" href="host-details.html#14">apply SB to _.</a>
+   <span class="comment">%S-Abs-Eq</span>
+    <a class="tactic" href="host-details.html#15">search.</a>
+<span class="comment">%S-App</span>
+ <a class="tactic" href="host-details.html#16">SB: case SB.</a> <a class="tactic" href="host-details.html#17">apply IH to SA1 SB.</a> <a class="tactic" href="host-details.html#18">apply IH to SA2 SB1.</a> <a class="tactic" href="host-details.html#19">search.</a>
+<span class="comment">%S-Num</span>
+ <a class="tactic" href="host-details.html#20">SB: case SB.</a> <a class="tactic" href="host-details.html#21">search.</a>
+<span class="comment">%S-Plus</span>
+ <a class="tactic" href="host-details.html#22">SB: case SB.</a> <a class="tactic" href="host-details.html#23">apply IH to SA1 SB.</a> <a class="tactic" href="host-details.html#24">apply IH to SA2 SB1.</a> <a class="tactic" href="host-details.html#25">search.</a></div>
+
+
+<a class="command" href="host-details.html#26">Extensible_Theorem
+  value_eval_false : forall T V,
+    Val : value T ->
+    Ev : eval T V ->
+    false
+  on Val.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(27);" id="toggleproof27">[Show Proof]</a>
+<div class="proof" id="proof27" style="display: none;">
+<span class="comment">%V-Abs</span>
+ <a class="tactic" href="host-details.html#27">case Ev.</a>
+<span class="comment">%V-Num</span>
+ <a class="tactic" href="host-details.html#28">case Ev.</a></div>
+
+
+<a class="command" href="host-details.html#29">Extensible_Theorem
+  eval_unique : forall T VA VB,
+    EvA : eval T VA ->
+    EvB : eval T VB ->
+    VA = VB
+  on EvA.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(30);" id="toggleproof30">[Show Proof]</a>
+<div class="proof" id="proof30" style="display: none;">
+<span class="comment">%E-App-Step1</span>
+ <a class="tactic" href="host-details.html#30">EvB: case EvB.</a>
+   <span class="comment">%E-App-Step1</span>
+    <a class="tactic" href="host-details.html#31">apply IH to EvA1 EvB.</a> <a class="tactic" href="host-details.html#32">search.</a>
+   <span class="comment">%E-App-Step2</span>
+    <a class="tactic" href="host-details.html#33">apply value_eval_false to EvB EvA1.</a>
+   <span class="comment">%E-App-Subst</span>
+    <a class="tactic" href="host-details.html#34">apply value_eval_false to _ EvA1.</a>
+<span class="comment">%E-App-Step2</span>
+ <a class="tactic" href="host-details.html#35">EvB: case EvB.</a>
+   <span class="comment">%E-App-Step1</span>
+    <a class="tactic" href="host-details.html#36">apply value_eval_false to EvA1 EvB.</a>
+   <span class="comment">%E-App-Step2</span>
+    <a class="tactic" href="host-details.html#37">apply IH to EvA2 EvB1.</a> <a class="tactic" href="host-details.html#38">search.</a>
+   <span class="comment">%E-App-Subst</span>
+    <a class="tactic" href="host-details.html#39">apply value_eval_false to EvB EvA2.</a>
+<span class="comment">%E-App-Subst</span>
+ <a class="tactic" href="host-details.html#40">EvB: case EvB.</a>
+   <span class="comment">%E-App-Step1</span>
+    <a class="tactic" href="host-details.html#41">case EvB.</a>
+   <span class="comment">%E-App-Step2</span>
+    <a class="tactic" href="host-details.html#42">apply value_eval_false to EvA1 EvB1.</a>
+   <span class="comment">%E-App-Subst</span>
+    <a class="tactic" href="host-details.html#43">apply subst_unique to EvA2 EvB1.</a> <a class="tactic" href="host-details.html#44">search.</a>
+<span class="comment">%E-Plus-Step1</span>
+ <a class="tactic" href="host-details.html#45">EvB: case EvB.</a>
+   <span class="comment">%E-Plus-Step1</span>
+    <a class="tactic" href="host-details.html#46">apply IH to EvA1 EvB.</a> <a class="tactic" href="host-details.html#47">search.</a>
+   <span class="comment">%E-Plus-Step2</span>
+    <a class="tactic" href="host-details.html#48">apply value_eval_false to EvB EvA1.</a>
+   <span class="comment">%E-Plus-Add</span>
+    <a class="tactic" href="host-details.html#49">case EvA1.</a>
+<span class="comment">%E-Plus-Step2</span>
+ <a class="tactic" href="host-details.html#50">EvB: case EvB.</a>
+   <span class="comment">%E-Plus-Step1</span>
+    <a class="tactic" href="host-details.html#51">apply value_eval_false to EvA1 EvB.</a>
+   <span class="comment">%E-Plus-Step2</span>
+    <a class="tactic" href="host-details.html#52">apply IH to EvA2 EvB1.</a> <a class="tactic" href="host-details.html#53">search.</a>
+   <span class="comment">%E-Plus-Add</span>
+    <a class="tactic" href="host-details.html#54">case EvA2.</a>
+<span class="comment">%E-Plus-Add</span>
+ <a class="tactic" href="host-details.html#55">EvB: case EvB.</a>
+   <span class="comment">%E-Plus-Step1</span>
+    <a class="tactic" href="host-details.html#56">case EvB.</a>
+   <span class="comment">%E-Plus-Step2</span>
+    <a class="tactic" href="host-details.html#57">case EvB1.</a>
+   <span class="comment">%E-Plus-Add</span>
+    <a class="tactic" href="host-details.html#58">apply plus_integer_unique to EvA1 EvB.</a> <a class="tactic" href="host-details.html#59">search.</a></div>
+
+
+<a class="command" href="host-details.html#60">Extensible_Theorem
+  ty_lookup : forall Ctx1 Ctx2 T Ty,
+    Ty : typeOf Ctx1 T Ty ->
+    L : (forall X XTy, lookup Ctx1 X XTy -> lookup Ctx2 X XTy) ->
+    typeOf Ctx2 T Ty
+  on Ty.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(61);" id="toggleproof61">[Show Proof]</a>
+<div class="proof" id="proof61" style="display: none;">
+<span class="comment">%T-Var</span>
+ <a class="tactic" href="host-details.html#61">apply L to Ty1.</a> <a class="tactic" href="host-details.html#62">search.</a>
+<span class="comment">%T-Abs</span>
+ <a class="tactic" href="host-details.html#63">apply IH to Ty1 _ with Ctx2 = (X, Ty1)::Ctx2.</a>
+   <a class="tactic" href="host-details.html#64">intros LkpX.</a> <a class="tactic" href="host-details.html#65">LkpX: case LkpX.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="host-details.html#66">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="host-details.html#67">apply L to LkpX1.</a> <a class="tactic" href="host-details.html#68">search.</a>
+ <a class="tactic" href="host-details.html#69">search.</a>
+<span class="comment">%T-App</span>
+ <a class="tactic" href="host-details.html#70">apply IH to Ty1 L.</a> <a class="tactic" href="host-details.html#71">apply IH to Ty2 L.</a> <a class="tactic" href="host-details.html#72">search.</a>
+<span class="comment">%T-Num</span>
+ <a class="tactic" href="host-details.html#73">search.</a>
+<span class="comment">%T-Plus</span>
+ <a class="tactic" href="host-details.html#74">apply IH to Ty1 L.</a> <a class="tactic" href="host-details.html#75">apply IH to Ty2 L.</a> <a class="tactic" href="host-details.html#76">search.</a></div>
+
+
+<a class="command" href="host-details.html#77">Theorem empty_ty_any : forall T Ty Ctx,
+  typeOf [] T Ty -> typeOf Ctx T Ty.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(78);" id="toggleproof78">[Show Proof]</a>
+<div class="proof" id="proof78" style="display: none;">
+<a class="tactic" href="host-details.html#78">intros T.</a> <a class="tactic" href="host-details.html#79">backchain ty_lookup.</a> <a class="tactic" href="host-details.html#80">intros L.</a> <a class="tactic" href="host-details.html#81">case L.</a></div>
+
+
+<a class="command" href="host-details.html#82">Extensible_Theorem
+  subst_type_preservation : forall T Ctx X XTy Ty R S,
+    TTy : typeOf ((X, XTy)::Ctx) T Ty ->
+    S : subst X R T S ->
+    RTy : typeOf [] R XTy ->
+    typeOf Ctx S Ty
+  on S.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(83);" id="toggleproof83">[Show Proof]</a>
+<div class="proof" id="proof83" style="display: none;">
+<span class="comment">%S-Var-NEq</span>
+ <a class="tactic" href="host-details.html#83">Ty: case TTy.</a> <a class="tactic" href="host-details.html#84">Lkp: case Ty.</a>
+   <span class="comment">%Lkp-Here</span>
+    <a class="tactic" href="host-details.html#85">apply S1 to _.</a>
+   <span class="comment">%Lkp-Later</span>
+    <a class="tactic" href="host-details.html#86">search.</a>
+<span class="comment">%S-Var-Eq</span>
+ <a class="tactic" href="host-details.html#87">Ty: case TTy.</a> <a class="tactic" href="host-details.html#88">L: case Ty.</a>
+   <span class="comment">%Lkp-Here</span>
+    <a class="tactic" href="host-details.html#89">backchain empty_ty_any.</a>
+   <span class="comment">%Lkp-Later</span>
+    <a class="tactic" href="host-details.html#90">apply L to _.</a>
+<span class="comment">%S-Abs-NEq</span>
+ <a class="tactic" href="host-details.html#91">Ty: case TTy.</a>
+ <a class="tactic" href="host-details.html#92">Ty': apply ty_lookup to Ty _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.</a>
+   <a class="tactic" href="host-details.html#93">intros L.</a> <a class="tactic" href="host-details.html#94">L: case L.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="host-details.html#95">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="host-details.html#96">L: case L1.</a>
+        <span class="comment">%Lkp-Here</span>
+         <a class="tactic" href="host-details.html#97">search.</a>
+        <span class="comment">%Lkp-Later</span>
+         <a class="tactic" href="host-details.html#98">search.</a>
+ <a class="tactic" href="host-details.html#99">apply IH to Ty' S2 _.</a> <a class="tactic" href="host-details.html#100">search.</a>
+<span class="comment">%S-Abs-Eq</span>
+ <a class="tactic" href="host-details.html#101">Ty: case TTy.</a> <a class="tactic" href="host-details.html#102">apply ty_lookup to Ty _ with Ctx2 = (X, Ty1)::Ctx.</a>
+   <a class="tactic" href="host-details.html#103">intros L.</a> <a class="tactic" href="host-details.html#104">L: case L.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="host-details.html#105">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="host-details.html#106">L: case L1.</a>
+        <span class="comment">%Lkp-Here</span>
+         <a class="tactic" href="host-details.html#107">apply L to _.</a>
+        <span class="comment">%Lkp-Later</span>
+         <a class="tactic" href="host-details.html#108">search.</a>
+ <a class="tactic" href="host-details.html#109">search.</a>
+<span class="comment">%S-App</span>
+ <a class="tactic" href="host-details.html#110">Ty: case TTy.</a> <a class="tactic" href="host-details.html#111">apply IH to Ty S1 _.</a> <a class="tactic" href="host-details.html#112">apply IH to Ty1 S2 _.</a> <a class="tactic" href="host-details.html#113">search.</a>
+<span class="comment">%S-Num</span>
+ <a class="tactic" href="host-details.html#114">case TTy.</a> <a class="tactic" href="host-details.html#115">search.</a>
+<span class="comment">%S-Plus</span>
+ <a class="tactic" href="host-details.html#116">Ty: case TTy.</a> <a class="tactic" href="host-details.html#117">apply IH to Ty S1 _.</a> <a class="tactic" href="host-details.html#118">apply IH to Ty1 S2 _.</a> <a class="tactic" href="host-details.html#119">search.</a></div>
+
+
+<a class="command" href="host-details.html#120">Extensible_Theorem
+  type_preservation : forall T Ty T',
+    Ty : typeOf [] T Ty ->
+    Ev : eval T T' ->
+    typeOf [] T' Ty
+  on Ev.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(121);" id="toggleproof121">[Show Proof]</a>
+<div class="proof" id="proof121" style="display: none;">
+<span class="comment">%E-App-Step1</span>
+ <a class="tactic" href="host-details.html#121">Ty: case Ty.</a> <a class="tactic" href="host-details.html#122">apply IH to Ty Ev1.</a> <a class="tactic" href="host-details.html#123">search.</a>
+<span class="comment">%E-App-Step2</span>
+ <a class="tactic" href="host-details.html#124">Ty: case Ty.</a> <a class="tactic" href="host-details.html#125">apply IH to Ty1 Ev2.</a> <a class="tactic" href="host-details.html#126">search.</a>
+<span class="comment">%E-App-Subst</span>
+ <a class="tactic" href="host-details.html#127">Ty: case Ty.</a> <a class="tactic" href="host-details.html#128">Ty: case Ty.</a>
+ <a class="tactic" href="host-details.html#129">apply subst_type_preservation to Ty Ev2 Ty1.</a> <a class="tactic" href="host-details.html#130">search.</a>
+<span class="comment">%E-Plus-Step1</span>
+ <a class="tactic" href="host-details.html#131">Ty: case Ty.</a> <a class="tactic" href="host-details.html#132">apply IH to Ty Ev1.</a> <a class="tactic" href="host-details.html#133">search.</a>
+<span class="comment">%E-Plus-Step2</span>
+ <a class="tactic" href="host-details.html#134">Ty: case Ty.</a> <a class="tactic" href="host-details.html#135">apply IH to Ty1 Ev2.</a> <a class="tactic" href="host-details.html#136">search.</a>
+<span class="comment">%E-Plus-Add</span>
+ <a class="tactic" href="host-details.html#137">Ty: case Ty.</a> <a class="tactic" href="host-details.html#138">search.</a></div>
+<a class="command" href="host-details.html#139"></a>
+</pre>
+</div>
+</body>
+</html>

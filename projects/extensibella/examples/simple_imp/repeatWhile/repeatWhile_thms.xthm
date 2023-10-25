@@ -1,0 +1,185 @@
+Module simple_imp:repeatWhile.
+
+
+Prove_Constraint simple_imp:host:trans_e_unique.
+Prove_Constraint simple_imp:host:trans_e_is.
+Prove_Constraint simple_imp:host:trans_rf_unique.
+Prove_Constraint simple_imp:host:trans_rf_is.
+
+
+Prove_Constraint simple_imp:host:trans_c_unique.
+%repeatWhile
+ case Hyp1. search.
+
+Prove_Constraint simple_imp:host:trans_c_is.
+%repeatWhile
+ case Hyp1. search.
+
+
+Prove_Constraint simple_imp:host:trans_recFields_unique.
+Prove_Constraint simple_imp:host:trans_recFields_is.
+Prove_Constraint simple_imp:host:trans_ty_unique.
+Prove_Constraint simple_imp:host:trans_ty_is.
+Prove_Constraint simple_imp:host:trans_value_unique.
+Prove_Constraint simple_imp:host:trans_value_is.
+
+
+Prove simple_imp:host:vars_join,
+      simple_imp:host:vars_rf_join.
+Prove simple_imp:host:vars_unique,
+      simple_imp:host:vars_rf_unique.
+
+
+Prove_Constraint simple_imp:host:trans_e_vars_exist.
+Prove_Constraint simple_imp:host:trans_e_vars.
+Prove_Constraint simple_imp:host:trans_rf_vars_exist.
+Prove_Constraint simple_imp:host:trans_rf_vars.
+
+
+Prove simple_imp:host:vars_is,
+      simple_imp:host:vars_rf_is.
+Prove simple_imp:host:vars_exist,
+      simple_imp:host:vars_rf_exist.
+
+
+Prove simple_imp:host:typeOf_unique,
+      simple_imp:host:typeRecFields_unique.
+
+
+Prove simple_imp:host:typeOK_unique.
+%repeatWhile
+ case Ty2. search.
+
+
+Prove_Constraint simple_imp:host:trans_eval_e.
+
+
+Prove simple_imp:host:eval_e_unique,
+      simple_imp:host:eval_rf_unique.
+
+Prove simple_imp:host:update_rec_fields_unique.
+
+
+Theorem repeatWhile_transEval : forall G Body Cond G1,
+    eval_c G (repeatWhile Body Cond) G1 ->
+    exists G2, eval_c G (seq Body (while Cond Body)) G2.
+induction on 1. intros Ev. Ev: case Ev (keep).
+%E-RepeatWhileTrue
+ EvSeq: apply IH to Ev3. EvSeq: case EvSeq. search.
+%E-RepeatWhileFalse
+ search.
+
+Prove_Constraint simple_imp:host:trans_c_eval.
+%repeatWhile
+ apply repeatWhile_transEval to Hyp1. search.
+
+
+Prove_Ext_Ind simple_imp:host:eval_c.
+%E-RepeatWhileTrue
+ %We need this as a lemma for the rest of the proof
+ RW_to_SW: assert forall C B EG EG' N,
+             <eval_c {ES}> EG (repeatWhile B C) EG' N ->
+             exists N', <eval_c {ES}> EG (seq B (while C B)) EG' N' /\
+                        N' < N.
+   clear IH IH1 Rel Acc Rel1 Rel2 Rel3 Rel4 Rel5. %not needed here
+   induction on 1. intros EvalRep. Ev: case EvalRep.
+     %E-RepeatWhileTrue
+      SubSeq: apply IH to Ev4. EvSub: case SubSeq.
+      IsN8: apply ext_ind_is_int_eval_c to EvSub1.
+      IsN9: apply ext_ind_is_int_eval_c to EvSub2.
+      IsN': apply plus_integer_is_integer to _ _ EvSub.
+      IsN5: apply ext_ind_is_int_eval_c to Ev2.
+      N5+N': apply plus_integer_total to IsN5 IsN'.
+      exists N10. split.
+        %eval for the sequence
+         search.
+        %N10 < N1
+         IsN6: apply ext_ind_is_int_eval_c to Ev4.
+         IsN7: apply plus_integer_is_integer to _ _ Ev1.
+         LN7N1: apply lt_plus_one to Ev _.
+         LN10N7: apply less_sums to N5+N' Ev1 _ _.
+         apply less_integer_transitive to LN10N7 LN7N1. search.
+     %E-RepeatWhileFalse
+      IsN5: apply ext_ind_is_int_eval_c to Ev1.
+      LN5N1: apply lt_plus_one to Ev _.
+      N5+0: apply plus_integer_total to IsN5 _ with N2 = 0.
+      apply plus_zero_right to N5+0. search.
+ %Rest of the proof:
+ Acc: case Acc. IsN2: apply ext_ind_is_int_eval_c to Rel3.
+ IsN3: apply ext_ind_is_int_eval_c to Rel5.
+ IsN4: apply plus_integer_is_integer to _ _ Rel2.
+ PosN2: apply ext_ind_pos_eval_c to Rel3.
+ PosN3: apply ext_ind_pos_eval_c to Rel5.
+ LN4N: apply lt_plus_one to Rel1 _.
+ LN2N: assert N2 < N.
+    OrN2: apply lt_left to Rel2 _ _. L: case OrN2.
+       apply less_integer_transitive to L LN4N. search.
+       search.
+ LN3N: assert N3 < N.
+    OrN3: apply lt_right to Rel2 _ _ _. L: case OrN3.
+       apply less_integer_transitive to L LN4N. search.
+       search.
+ AccN2: apply Acc to _ LN2N. AccN3: apply Acc to _ LN3N.
+ EvalTBody: apply IH to Rel3 AccN2. EvalTRep: apply IH to Rel5 AccN3.
+ Trans: assert |{c}- repeatWhile Body Cond ~~>
+                     seq Body (while Cond Body).
+ SW: apply RW_to_SW to Rel5.
+ LN'N: apply less_integer_transitive to SW1 LN3N.
+ L0N': apply ext_ind_pos_eval_c to SW. AccN': apply Acc to _ LN'N.
+ EvalTSeq: apply IH to SW AccN'. EvalTParts: case EvalTSeq.
+ search.
+%E-RepeatWhileFalse
+ Acc: case Acc. L0N2: apply ext_ind_pos_eval_c to Rel2.
+ IsN2: apply ext_ind_is_int_eval_c to Rel2.
+ LN2N: apply lt_plus_one to Rel1 _. AccN2: apply Acc to _ LN2N.
+ EvalTBody: apply IH to Rel2 AccN2.
+ Trans: assert |{c}- repeatWhile Body Cond ~~>
+                     seq Body (while Cond Body). search.
+
+
+Prove simple_imp:host:eval_c_unique.
+%E-RepeatWhileTrue
+ Ev2: case Ev2.
+   %E-RepeatWhileTrue for 2
+    apply IH to Ev3 Ev2. apply IH to Ev5 Ev7. search.
+   %E-RepeatWhileFalse for 2
+    apply IH to Ev3 Ev2. apply eval_e_unique to Ev4 Ev6.
+%E-RepeatWhileFalse
+ Ev2: case Ev2.
+   %E-RepeatWhileTrue for 2
+    apply IH to Ev3 Ev2. apply eval_e_unique to Ev4 Ev5.
+   %E-RepeatWhileFalse for 2
+    apply IH to Ev3 Ev2. search.
+
+
+Theorem repeatWhile_transSame : forall G Body Cond G1 G2,
+    eval_c G (repeatWhile Body Cond) G1 ->
+    eval_c G (seq Body (while Cond Body)) G2 ->
+    G1 = G2.
+induction on 1. intros EvRW EvSW. EvRW: case EvRW (keep).
+%E-RepeatWhileTrue
+ EvSW: case EvSW. apply eval_c_unique to EvRW1 EvSW. EvW': case EvSW1.
+   %E-WhileFalse
+    apply eval_e_unique to EvRW2 EvW'.
+   %E-WhileTrue
+    EvSeq: assert eval_c G4 (seq Body (while Cond Body)) G2.
+    apply IH to EvRW3 EvSeq. search.
+%E-RepeatWhileFalse
+ EvSW: case EvSW. apply eval_c_unique to EvRW1 EvSW. EvW: case EvSW1.
+   %E-WhileFalse
+    search.
+   %E-WhileTrue
+    apply eval_e_unique to EvRW2 EvW.
+
+Prove_Constraint simple_imp:host:trans_c_eval_results.
+%repeatWhile
+ apply repeatWhile_transSame to Hyp1 Hyp2. search.
+
+
+Prove_Constraint simple_imp:host:trans_c_eval_results_back.
+%repeatWhile
+ apply repeatWhile_transSame to Hyp1 Hyp2. search.
+
+
+Prove simple_imp:host:vars_eval_same_result,
+      simple_imp:host:vars_equal_rf_same_result.

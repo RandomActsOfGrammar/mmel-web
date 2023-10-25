@@ -1,0 +1,91 @@
+Module walkthrough:pair.
+
+
+Prove walkthrough:host:subst_unique.
+%S-Pair
+ SB: case SB. apply IH to SA1 SB. apply IH to SA2 SB1. search.
+%S-Fst
+ SB: case SB. apply IH to SA1 SB. search.
+%S-Snd
+ SB: case SB. apply IH to SA1 SB. search.
+
+
+Prove walkthrough:host:value_eval_false.
+%V-Pair
+ Ev: case Ev.
+   %E-Pair-Step1
+    apply IH to Val1 Ev.
+   %E-Pair-Step2
+    apply IH to Val2 Ev1.
+
+
+Prove walkthrough:host:eval_unique.
+%E-Pair-Step1
+ EvB: case EvB.
+   %E-Pair-Step1
+    apply IH to EvA1 EvB. search.
+   %E-Pair-Step2
+    apply value_eval_false to EvB EvA1.
+%E-Pair-Step2
+ EvB: case EvB.
+   %E-Pair-Step1
+    apply value_eval_false to EvA1 EvB.
+   %E-Pair-Step2
+    apply IH to EvA2 EvB1. search.
+%E-Fst-Step
+ EvB: case EvB.
+   %E-Fst-Step
+    apply IH to EvA1 EvB. search.
+   %E-Fst-Pair
+    apply value_eval_false to EvB EvA1.
+%E-Fst-Pair
+ EvB: case EvB.
+   %E-Fst-Step
+    apply value_eval_false to EvA1 EvB.
+   %E-Fst-Pair
+    search.
+%E-Snd-Step
+ EvB: case EvB.
+   %E-Snd-Step
+    apply IH to EvA1 EvB. search.
+   %E-Snd-Pair
+    apply value_eval_false to EvB EvA1.
+%E-Snd-Pair
+ EvB: case EvB.
+   %E-Snd-Step
+    apply value_eval_false to EvA1 EvB.
+   %E-Snd-Pair
+    search.
+
+
+Prove walkthrough:host:ty_lookup.
+%T-Pair
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+%T-Fst
+ apply IH to Ty1 L. search.
+%T-Snd
+ apply IH to Ty1 L. search.
+
+
+Prove walkthrough:host:subst_type_preservation.
+%S-Pair
+ Ty: case TTy. apply IH to Ty S1 RTy. apply IH to Ty1 S2 RTy. search.
+%S-Fst
+ Ty: case TTy. apply IH to Ty S1 RTy. search.
+%S-Snd
+ Ty: case TTy. apply IH to Ty S1 RTy. search.
+
+
+Prove walkthrough:host:type_preservation.
+%E-Pair-Step1
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-Pair-Step2
+ Ty: case Ty. apply IH to Ty1 Ev2. search.
+%E-Fst-Step
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-Fst-Pair
+ Ty: case Ty. case Ty. search.
+%E-Snd-Step
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-Snd-Pair
+ Ty: case Ty. case Ty. search.
