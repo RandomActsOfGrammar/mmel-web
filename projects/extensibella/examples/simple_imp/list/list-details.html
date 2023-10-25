@@ -21,9 +21,9 @@
 
 Subgoal 1:
 
-Variables: E2
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
-Hyp1 : |{e}- nil ~~&gt; E2
+Variables: E2 Ty
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Hyp1 : |{e}- nil Ty ~~&gt; E2
 ============================
  recBuild (addRecFieldExprs "null" true endRecFieldExprs) = E2
 </pre>
@@ -32,7 +32,8 @@ Hyp1 : |{e}- nil ~~&gt; E2
 
 Subgoal 1:
 
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Variables: Ty
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
 ============================
  recBuild (addRecFieldExprs "null" true endRecFieldExprs) = recBuild (addRecFieldExprs "null" true endRecFieldExprs)
 </pre>
@@ -172,8 +173,9 @@ Proof completed.
 
 Subgoal 1:
 
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
-Hyp1 : is_e nil
+Variables: Ty
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Hyp1 : is_e (nil Ty)
 ============================
  is_e (recBuild (addRecFieldExprs "null" true endRecFieldExprs))
 </pre>
@@ -481,10 +483,10 @@ Proof completed.
 
 Subgoal 1.12:
 
-Variables: D
+Variables: D Ty
 IH : forall E V D, vars E V * -&gt; exists D', V ++ D = D'
 IH1 : forall RF V D, vars_rf RF V * -&gt; exists D', V ++ D = D'
-Vars : vars nil [] @
+Vars : vars (nil Ty) [] @
 ============================
  exists D', [] ++ D = D'
 </pre>
@@ -787,11 +789,11 @@ Proof completed.
 
 Subgoal 1.12:
 
-Variables: V2
+Variables: V2 Ty
 IH : forall E V1 V2, vars E V1 * -&gt; vars E V2 -&gt; V1 = V2
 IH1 : forall RF V1 V2, vars_rf RF V1 * -&gt; vars_rf RF V2 -&gt; V1 = V2
-Vars1 : vars nil [] @
-Vars2 : vars nil V2
+Vars1 : vars (nil Ty) [] @
+Vars2 : vars (nil Ty) V2
 ============================
  [] = V2
 </pre>
@@ -800,9 +802,10 @@ Vars2 : vars nil V2
 
 Subgoal 1.12:
 
+Variables: Ty
 IH : forall E V1 V2, vars E V1 * -&gt; vars E V2 -&gt; V1 = V2
 IH1 : forall RF V1 V2, vars_rf RF V1 * -&gt; vars_rf RF V2 -&gt; V1 = V2
-Vars1 : vars nil [] @
+Vars1 : vars (nil Ty) [] @
 ============================
  [] = []
 </pre>
@@ -1160,9 +1163,9 @@ Proof completed.
 
 Subgoal 1:
 
-Variables: V
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
-Hyp1 : vars nil V
+Variables: V Ty
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Hyp1 : vars (nil Ty) V
 ============================
  exists V', vars (recBuild (addRecFieldExprs "null" true endRecFieldExprs)) V'
 </pre>
@@ -1574,9 +1577,9 @@ Proof completed.
 
 Subgoal 1:
 
-Variables: V V' X
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
-Hyp1 : vars nil V
+Variables: V V' X Ty
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Hyp1 : vars (nil Ty) V
 Hyp2 : vars (recBuild (addRecFieldExprs "null" true endRecFieldExprs)) V'
 Hyp3 : mem X V
 ============================
@@ -1587,9 +1590,9 @@ Hyp3 : mem X V
 
 Subgoal 1:
 
-Variables: V V' X
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
-Hyp1 : vars nil V
+Variables: V V' X Ty
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Hyp1 : vars (nil Ty) V
 Hyp3 : mem X V
 H1 : vars_rf (addRecFieldExprs "null" true endRecFieldExprs) V'
 ============================
@@ -1600,9 +1603,9 @@ H1 : vars_rf (addRecFieldExprs "null" true endRecFieldExprs) V'
 
 Subgoal 1:
 
-Variables: V V' X DRest DE
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
-Hyp1 : vars nil V
+Variables: V V' X Ty DRest DE
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Hyp1 : vars (nil Ty) V
 Hyp3 : mem X V
 H2 : vars_rf endRecFieldExprs DRest
 H3 : vars true DE
@@ -1615,9 +1618,9 @@ H4 : DE ++ DRest = V'
 
 Subgoal 1:
 
-Variables: V V' X DE
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
-Hyp1 : vars nil V
+Variables: V V' X Ty DE
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Hyp1 : vars (nil Ty) V
 Hyp3 : mem X V
 H3 : vars true DE
 H4 : DE ++ [] = V'
@@ -1629,9 +1632,9 @@ H4 : DE ++ [] = V'
 
 Subgoal 1:
 
-Variables: V V' X
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
-Hyp1 : vars nil V
+Variables: V V' X Ty
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Hyp1 : vars (nil Ty) V
 Hyp3 : mem X V
 H4 : [] ++ [] = V'
 ============================
@@ -1642,9 +1645,9 @@ H4 : [] ++ [] = V'
 
 Subgoal 1:
 
-Variables: V X
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
-Hyp1 : vars nil V
+Variables: V X Ty
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Hyp1 : vars (nil Ty) V
 Hyp3 : mem X V
 ============================
  mem X []
@@ -1654,8 +1657,8 @@ Hyp3 : mem X V
 
 Subgoal 1:
 
-Variables: X
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Variables: X Ty
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
 Hyp3 : mem X []
 ============================
  mem X []
@@ -2310,10 +2313,11 @@ Proof completed.
 
 Subgoal 1.12:
 
+Variables: Ty
 IH : forall E V, is_e E -&gt; vars E V * -&gt; is_list is_string V
 IH1 : forall RF V, is_recFieldExprs RF -&gt; vars_rf RF V * -&gt; is_list is_string V
-IsE : is_e nil
-Vars : vars nil [] @
+IsE : is_e (nil Ty)
+Vars : vars (nil Ty) [] @
 ============================
  is_list is_string []
 </pre>
@@ -2680,11 +2684,13 @@ Proof completed.
 
 Subgoal 1.12:
 
+Variables: Ty
 IH : forall E, is_e E * -&gt; exists V, vars E V
 IH1 : forall RF, is_recFieldExprs RF * -&gt; exists V, vars_rf RF V
-IsE : is_e nil @
+IsE : is_e (nil Ty) @
+IsE1 : is_ty Ty
 ============================
- exists V, vars nil V
+ exists V, vars (nil Ty) V
 </pre>
 <pre class="code extensibella"id="203">
  &lt; <b>search.</b>
@@ -3007,8 +3013,8 @@ Variables: G T2 Ty
 IH : forall G E T1 T2, typeOf G E T1 * -&gt; typeOf G E T2 -&gt; T1 = T2
 IH1 : forall G RF T1 T2,
         typeRecFields G RF T1 * -&gt; typeRecFields G RF T2 -&gt; T1 = T2
-Ty1 : typeOf G nil (listTy Ty) @
-Ty2 : typeOf G nil T2
+Ty1 : typeOf G (nil Ty) (listTy Ty) @
+Ty2 : typeOf G (nil Ty) T2
 ============================
  listTy Ty = T2
 </pre>
@@ -3017,16 +3023,16 @@ Ty2 : typeOf G nil T2
 
 Subgoal 1.12:
 
-Variables: G Ty Ty1
+Variables: G Ty
 IH : forall G E T1 T2, typeOf G E T1 * -&gt; typeOf G E T2 -&gt; T1 = T2
 IH1 : forall G RF T1 T2,
         typeRecFields G RF T1 * -&gt; typeRecFields G RF T2 -&gt; T1 = T2
-Ty1 : typeOf G nil (listTy Ty) @
+Ty1 : typeOf G (nil Ty) (listTy Ty) @
 ============================
- listTy Ty = listTy Ty1
+ listTy Ty = listTy Ty
 </pre>
 <pre class="code extensibella"id="226">
- &lt; <b>skip.</b>
+ &lt; <b>search.</b>
 
 Subgoal 1.13:
 
@@ -3307,9 +3313,9 @@ Proof completed.
 
 Subgoal 1:
 
-Variables: G V
-Hyp : |{e}- nil ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
-Hyp1 : eval_e G nil V
+Variables: G V Ty
+Hyp : |{e}- nil Ty ~~&gt; recBuild (addRecFieldExprs "null" true endRecFieldExprs)
+Hyp1 : eval_e G (nil Ty) V
 ============================
  exists V',
    eval_e G (recBuild (addRecFieldExprs "null" true endRecFieldExprs)) V'
@@ -4113,11 +4119,11 @@ Proof completed.
 
 Subgoal 1.18:
 
-Variables: G V2
+Variables: G V2 Ty
 IH : forall G E V1 V2, eval_e G E V1 * -&gt; eval_e G E V2 -&gt; V1 = V2
 IH1 : forall G RF V1 V2, eval_rf G RF V1 * -&gt; eval_rf G RF V2 -&gt; V1 = V2
-Ev1 : eval_e G nil nilVal @
-Ev2 : eval_e G nil V2
+Ev1 : eval_e G (nil Ty) nilVal @
+Ev2 : eval_e G (nil Ty) V2
 ============================
  nilVal = V2
 </pre>
@@ -4126,10 +4132,10 @@ Ev2 : eval_e G nil V2
 
 Subgoal 1.18:
 
-Variables: G
+Variables: G Ty
 IH : forall G E V1 V2, eval_e G E V1 * -&gt; eval_e G E V2 -&gt; V1 = V2
 IH1 : forall G RF V1 V2, eval_rf G RF V1 * -&gt; eval_rf G RF V2 -&gt; V1 = V2
-Ev1 : eval_e G nil nilVal @
+Ev1 : eval_e G (nil Ty) nilVal @
 ============================
  nilVal = nilVal
 </pre>
@@ -4556,7 +4562,7 @@ Proof completed.
 
 Subgoal 1.18:
 
-Variables: G1 G2 D V2
+Variables: G1 G2 D V2 Ty
 IH : forall G1 G2 E D V1 V2,
        (forall X U1 U2, mem X D -&gt; lookup G1 X U1 -&gt; lookup G2 X U2 -&gt; U1 = U2) -&gt;
        vars E D -&gt; eval_e G1 E V1 * -&gt; eval_e G2 E V2 -&gt; V1 = V2
@@ -4564,9 +4570,9 @@ IH1 : forall G1 G2 RF D V1 V2,
         (forall X U1 U2, mem X D -&gt; lookup G1 X U1 -&gt; lookup G2 X U2 -&gt; U1 = U2) -&gt;
         vars_rf RF D -&gt; eval_rf G1 RF V1 * -&gt; eval_rf G2 RF V2 -&gt; V1 = V2
 Equiv : forall X U1 U2, mem X D -&gt; lookup G1 X U1 -&gt; lookup G2 X U2 -&gt; U1 = U2
-Vars : vars nil D
-Ev1 : eval_e G1 nil nilVal @
-Ev2 : eval_e G2 nil V2
+Vars : vars (nil Ty) D
+Ev1 : eval_e G1 (nil Ty) nilVal @
+Ev2 : eval_e G2 (nil Ty) V2
 ============================
  nilVal = V2
 </pre>
@@ -4575,7 +4581,7 @@ Ev2 : eval_e G2 nil V2
 
 Subgoal 1.18:
 
-Variables: G1 G2 D
+Variables: G1 G2 D Ty
 IH : forall G1 G2 E D V1 V2,
        (forall X U1 U2, mem X D -&gt; lookup G1 X U1 -&gt; lookup G2 X U2 -&gt; U1 = U2) -&gt;
        vars E D -&gt; eval_e G1 E V1 * -&gt; eval_e G2 E V2 -&gt; V1 = V2
@@ -4583,8 +4589,8 @@ IH1 : forall G1 G2 RF D V1 V2,
         (forall X U1 U2, mem X D -&gt; lookup G1 X U1 -&gt; lookup G2 X U2 -&gt; U1 = U2) -&gt;
         vars_rf RF D -&gt; eval_rf G1 RF V1 * -&gt; eval_rf G2 RF V2 -&gt; V1 = V2
 Equiv : forall X U1 U2, mem X D -&gt; lookup G1 X U1 -&gt; lookup G2 X U2 -&gt; U1 = U2
-Vars : vars nil D
-Ev1 : eval_e G1 nil nilVal @
+Vars : vars (nil Ty) D
+Ev1 : eval_e G1 (nil Ty) nilVal @
 ============================
  nilVal = nilVal
 </pre>

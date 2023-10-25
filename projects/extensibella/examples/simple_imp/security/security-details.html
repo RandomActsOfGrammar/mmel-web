@@ -7145,7 +7145,7 @@ Sec2 : secure NewPC SG' Body G3
 
 Subgoal 2.1:
 
-Variables: PC SG' Cond Body S G G2 G1 S1 NewPC G3
+Variables: PC SG' Cond Body S G G2 G1 S1 G3
 IH : forall PC SG SG' Cond Body S G G2,
        secure PC SG (while Cond Body) SG' -&gt;
        level SG Cond S -&gt;
@@ -7158,17 +7158,17 @@ Ev1 : eval_c G Body G1 *
 Ev2 : eval_c G1 (while Cond Body) G2 *
 EqG1G2 : public_equiv SG' G1 G2
 Sec : level SG' Cond S1
-Sec1 : join PC S1 NewPC
-Sec2 : secure NewPC SG' Body G3
+Sec1 : join PC S1 public
+Sec2 : secure public SG' Body G3
 ============================
- NewPC = public -&gt; false
+ public = public -&gt; false
 </pre>
 <pre class="code extensibella"id="438">
  &lt; <b>intros Eq.</b>
 
 Subgoal 2.1:
 
-Variables: PC SG' Cond Body S G G2 G1 S1 NewPC G3
+Variables: PC SG' Cond Body S G G2 G1 S1 G3
 IH : forall PC SG SG' Cond Body S G G2,
        secure PC SG (while Cond Body) SG' -&gt;
        level SG Cond S -&gt;
@@ -7181,9 +7181,9 @@ Ev1 : eval_c G Body G1 *
 Ev2 : eval_c G1 (while Cond Body) G2 *
 EqG1G2 : public_equiv SG' G1 G2
 Sec : level SG' Cond S1
-Sec1 : join PC S1 NewPC
-Sec2 : secure NewPC SG' Body G3
-Eq : NewPC = public
+Sec1 : join PC S1 public
+Sec2 : secure public SG' Body G3
+Eq : public = public
 ============================
  false
 </pre>
@@ -7261,7 +7261,7 @@ Sec2 : secure public SG' Body G3
 
 Subgoal 2:
 
-Variables: PC SG' Cond Body S G G2 G1 S1 NewPC G3
+Variables: PC SG' Cond Body S G G2 G1 S1 G3
 IH : forall PC SG SG' Cond Body S G G2,
        secure PC SG (while Cond Body) SG' -&gt;
        level SG Cond S -&gt;
@@ -7274,8 +7274,8 @@ Ev1 : eval_c G Body G1 *
 Ev2 : eval_c G1 (while Cond Body) G2 *
 EqG1G2 : public_equiv SG' G1 G2
 Sec : level SG' Cond S1
-Sec1 : join PC S1 NewPC
-Sec2 : secure NewPC SG' Body G3
+Sec1 : join PC S1 public
+Sec2 : secure public SG' Body G3
 EqGG1 : public_equiv SG' G G1
 ============================
  public_equiv SG' G G2
@@ -7285,7 +7285,7 @@ EqGG1 : public_equiv SG' G G1
 
 Subgoal 2:
 
-Variables: PC SG' Cond Body S G G2 G1 S1 NewPC G3
+Variables: PC SG' Cond Body S G G2 G1 S1 G3
 IH : forall PC SG SG' Cond Body S G G2,
        secure PC SG (while Cond Body) SG' -&gt;
        level SG Cond S -&gt;
@@ -7298,8 +7298,8 @@ Ev1 : eval_c G Body G1 *
 Ev2 : eval_c G1 (while Cond Body) G2 *
 EqG1G2 : public_equiv SG' G1 G2
 Sec : level SG' Cond S1
-Sec1 : join PC S1 NewPC
-Sec2 : secure NewPC SG' Body G3
+Sec1 : join PC S1 public
+Sec2 : secure public SG' Body G3
 EqGG1 : public_equiv SG' G G1
 H1 : public_equiv SG' G G2
 ============================
@@ -10146,7 +10146,7 @@ NEq : S = public -&gt; false
 
 Subgoal 5.2.2:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10160,21 +10160,21 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond falseVal
 EvB1 : eval_c GB Else GB'
 NEq : S = public -&gt; false
 ============================
- NewPC = public -&gt; false
+ public = public -&gt; false
 </pre>
 <pre class="code extensibella"id="557">
  &lt; <b>intros E.</b>
 
 Subgoal 5.2.2:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10188,13 +10188,13 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond falseVal
 EvB1 : eval_c GB Else GB'
 NEq : S = public -&gt; false
-E : NewPC = public
+E : public = public
 ============================
  false
 </pre>
@@ -10259,7 +10259,7 @@ NEq : public = public -&gt; false
 
 Subgoal 5.2:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10273,9 +10273,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond falseVal
 EvB1 : eval_c GB Else GB'
 NEq : S = public -&gt; false
@@ -10288,7 +10288,7 @@ EqGAGA' : public_equiv SG1 GA GA'
 
 Subgoal 5.2.3:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10302,22 +10302,22 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond falseVal
 EvB1 : eval_c GB Else GB'
 NEq : S = public -&gt; false
 EqGAGA' : public_equiv SG1 GA GA'
 ============================
- NewPC = public -&gt; false
+ public = public -&gt; false
 </pre>
 <pre class="code extensibella"id="562">
  &lt; <b>intros E.</b>
 
 Subgoal 5.2.3:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10331,14 +10331,14 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond falseVal
 EvB1 : eval_c GB Else GB'
 NEq : S = public -&gt; false
 EqGAGA' : public_equiv SG1 GA GA'
-E : NewPC = public
+E : public = public
 ============================
  false
 </pre>
@@ -10405,7 +10405,7 @@ EqGAGA' : public_equiv SG1 GA GA'
 
 Subgoal 5.2:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10419,9 +10419,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond falseVal
 EvB1 : eval_c GB Else GB'
 NEq : S = public -&gt; false
@@ -10435,7 +10435,7 @@ EqGBGB' : public_equiv SG1 GB GB'
 
 Subgoal 5.2:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10449,9 +10449,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond falseVal
 EvB1 : eval_c GB Else GB'
 NEq : S = public -&gt; false
@@ -10466,7 +10466,7 @@ EqGAGB' : public_equiv SG1 GA GB'
 
 Subgoal 5.2:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10480,9 +10480,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond falseVal
 EvB1 : eval_c GB Else GB'
 NEq : S = public -&gt; false
@@ -10498,7 +10498,7 @@ EqGA'GA : public_equiv SG1 GA' GA
 
 Subgoal 5.2:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10512,9 +10512,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond falseVal
 EvB1 : eval_c GB Else GB'
 NEq : S = public -&gt; false
@@ -10531,7 +10531,7 @@ EqGA'GB : public_equiv SG1 GA' GB
 
 Subgoal 5.2:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10545,9 +10545,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond falseVal
 EvB1 : eval_c GB Else GB'
 NEq : S = public -&gt; false
@@ -10773,7 +10773,7 @@ NEq : S = public -&gt; false
 
 Subgoal 6.1.2:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10787,21 +10787,21 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Then GB'
 NEq : S = public -&gt; false
 ============================
- NewPC = public -&gt; false
+ public = public -&gt; false
 </pre>
 <pre class="code extensibella"id="579">
  &lt; <b>intros E.</b>
 
 Subgoal 6.1.2:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10815,13 +10815,13 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Then GB'
 NEq : S = public -&gt; false
-E : NewPC = public
+E : public = public
 ============================
  false
 </pre>
@@ -10886,7 +10886,7 @@ NEq : public = public -&gt; false
 
 Subgoal 6.1:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10900,9 +10900,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Then GB'
 NEq : S = public -&gt; false
@@ -10915,7 +10915,7 @@ EqGAGA' : public_equiv SG1 GA GA'
 
 Subgoal 6.1.3:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10929,22 +10929,22 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Then GB'
 NEq : S = public -&gt; false
 EqGAGA' : public_equiv SG1 GA GA'
 ============================
- NewPC = public -&gt; false
+ public = public -&gt; false
 </pre>
 <pre class="code extensibella"id="584">
  &lt; <b>intros E.</b>
 
 Subgoal 6.1.3:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -10958,14 +10958,14 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Then GB'
 NEq : S = public -&gt; false
 EqGAGA' : public_equiv SG1 GA GA'
-E : NewPC = public
+E : public = public
 ============================
  false
 </pre>
@@ -11032,7 +11032,7 @@ EqGAGA' : public_equiv SG1 GA GA'
 
 Subgoal 6.1:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11046,9 +11046,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Then GB'
 NEq : S = public -&gt; false
@@ -11062,7 +11062,7 @@ EqGBGB' : public_equiv SG1 GB GB'
 
 Subgoal 6.1:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11076,9 +11076,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Then GB'
 NEq : S = public -&gt; false
@@ -11093,7 +11093,7 @@ EqGAGB' : public_equiv SG1 GA GB'
 
 Subgoal 6.1:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11107,9 +11107,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Then GB'
 NEq : S = public -&gt; false
@@ -11125,7 +11125,7 @@ EqGA'GA : public_equiv SG1 GA' GA
 
 Subgoal 6.1:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11139,9 +11139,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Then GB'
 NEq : S = public -&gt; false
@@ -11158,7 +11158,7 @@ EqGA'GB : public_equiv SG1 GA' GB
 
 Subgoal 6.1:
 
-Variables: PC SG1 GA GA' GB GB' Else Then Cond S NewPC GTh GEl
+Variables: PC SG1 GA GA' GB GB' Else Then Cond S GTh GEl
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11172,9 +11172,9 @@ Is : is_e Cond
 Is1 : is_c Then
 Is2 : is_c Else
 Sec : level SG1 Cond S
-Sec1 : join PC S NewPC
-Sec2 : secure NewPC SG1 Then GTh
-Sec3 : secure NewPC SG1 Else GEl
+Sec1 : join PC S public
+Sec2 : secure public SG1 Then GTh
+Sec3 : secure public SG1 Else GEl
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Then GB'
 NEq : S = public -&gt; false
@@ -11624,7 +11624,7 @@ SNEq : S = public -&gt; false
 
 Subgoal 7.2.2:
 
-Variables: PC SG1 GA' GB GB' Body Cond S NewPC G1 G2
+Variables: PC SG1 GA' GB GB' Body Cond S G1 G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11638,21 +11638,21 @@ EvA1 : eval_e GA' Cond falseVal
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G1
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G1
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Body G2
 EvB2 : eval_c G2 (while Cond Body) GB'
 SNEq : S = public -&gt; false
 ============================
- NewPC = public -&gt; false
+ public = public -&gt; false
 </pre>
 <pre class="code extensibella"id="609">
  &lt; <b>intros Eq.</b>
 
 Subgoal 7.2.2:
 
-Variables: PC SG1 GA' GB GB' Body Cond S NewPC G1 G2
+Variables: PC SG1 GA' GB GB' Body Cond S G1 G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11666,13 +11666,13 @@ EvA1 : eval_e GA' Cond falseVal
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G1
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G1
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Body G2
 EvB2 : eval_c G2 (while Cond Body) GB'
 SNEq : S = public -&gt; false
-Eq : NewPC = public
+Eq : public = public
 ============================
  false
 </pre>
@@ -11737,7 +11737,7 @@ SNEq : public = public -&gt; false
 
 Subgoal 7.2:
 
-Variables: PC SG1 GA' GB GB' Body Cond S NewPC G1 G2
+Variables: PC SG1 GA' GB GB' Body Cond S G1 G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11751,8 +11751,8 @@ EvA1 : eval_e GA' Cond falseVal
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G1
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G1
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Body G2
 EvB2 : eval_c G2 (while Cond Body) GB'
@@ -11766,7 +11766,7 @@ EqGBG2 : public_equiv SG1 GB G2
 
 Subgoal 7.2:
 
-Variables: PC SG1 GA' GB GB' Body Cond S NewPC G1 G2
+Variables: PC SG1 GA' GB GB' Body Cond S G1 G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11780,8 +11780,8 @@ EvA1 : eval_e GA' Cond falseVal
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G1
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G1
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Body G2
 EvB2 : eval_c G2 (while Cond Body) GB'
@@ -11796,7 +11796,7 @@ EqGA'G2 : public_equiv SG1 GA' G2
 
 Subgoal 7.2:
 
-Variables: PC SG1 GA' GB GB' Body Cond S NewPC G1 G2
+Variables: PC SG1 GA' GB GB' Body Cond S G1 G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11810,8 +11810,8 @@ EvA1 : eval_e GA' Cond falseVal
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G1
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G1
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Body G2
 EvB2 : eval_c G2 (while Cond Body) GB'
@@ -11827,7 +11827,7 @@ EqG2GB' : public_equiv SG1 G2 GB'
 
 Subgoal 7.2:
 
-Variables: PC SG1 GA' GB GB' Body Cond S NewPC G1 G2
+Variables: PC SG1 GA' GB GB' Body Cond S G1 G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -11841,8 +11841,8 @@ EvA1 : eval_e GA' Cond falseVal
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G1
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G1
 EvB : eval_e GB Cond trueVal
 EvB1 : eval_c GB Body G2
 EvB2 : eval_c G2 (while Cond Body) GB'
@@ -12070,7 +12070,7 @@ SNEq : S = public -&gt; false
 
 Subgoal 8.1.2:
 
-Variables: PC SG1 GA GA' GB' G1 Body Cond S NewPC G2
+Variables: PC SG1 GA GA' GB' G1 Body Cond S G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -12086,19 +12086,19 @@ EvA3 : eval_c G1 (while Cond Body) GA' *
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G2
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G2
 EvB : eval_e GB' Cond falseVal
 SNEq : S = public -&gt; false
 ============================
- NewPC = public -&gt; false
+ public = public -&gt; false
 </pre>
 <pre class="code extensibella"id="625">
  &lt; <b>intros Eq.</b>
 
 Subgoal 8.1.2:
 
-Variables: PC SG1 GA GA' GB' G1 Body Cond S NewPC G2
+Variables: PC SG1 GA GA' GB' G1 Body Cond S G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -12114,11 +12114,11 @@ EvA3 : eval_c G1 (while Cond Body) GA' *
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G2
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G2
 EvB : eval_e GB' Cond falseVal
 SNEq : S = public -&gt; false
-Eq : NewPC = public
+Eq : public = public
 ============================
  false
 </pre>
@@ -12183,7 +12183,7 @@ SNEq : public = public -&gt; false
 
 Subgoal 8.1:
 
-Variables: PC SG1 GA GA' GB' G1 Body Cond S NewPC G2
+Variables: PC SG1 GA GA' GB' G1 Body Cond S G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -12199,8 +12199,8 @@ EvA3 : eval_c G1 (while Cond Body) GA' *
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G2
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G2
 EvB : eval_e GB' Cond falseVal
 SNEq : S = public -&gt; false
 EqGAG1 : public_equiv SG1 GA G1
@@ -12212,7 +12212,7 @@ EqGAG1 : public_equiv SG1 GA G1
 
 Subgoal 8.1:
 
-Variables: PC SG1 GA GA' GB' G1 Body Cond S NewPC G2
+Variables: PC SG1 GA GA' GB' G1 Body Cond S G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -12228,8 +12228,8 @@ EvA3 : eval_c G1 (while Cond Body) GA' *
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G2
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G2
 EvB : eval_e GB' Cond falseVal
 SNEq : S = public -&gt; false
 EqGAG1 : public_equiv SG1 GA G1
@@ -12242,7 +12242,7 @@ EqG1GA' : public_equiv SG1 G1 GA'
 
 Subgoal 8.1:
 
-Variables: PC SG1 GA GA' GB' G1 Body Cond S NewPC G2
+Variables: PC SG1 GA GA' GB' G1 Body Cond S G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -12258,8 +12258,8 @@ EvA3 : eval_c G1 (while Cond Body) GA' *
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G2
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G2
 EvB : eval_e GB' Cond falseVal
 SNEq : S = public -&gt; false
 EqGAG1 : public_equiv SG1 GA G1
@@ -12273,7 +12273,7 @@ EqGAGA' : public_equiv SG1 GA GA'
 
 Subgoal 8.1:
 
-Variables: PC SG1 GA GA' GB' G1 Body Cond S NewPC G2
+Variables: PC SG1 GA GA' GB' G1 Body Cond S G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -12289,8 +12289,8 @@ EvA3 : eval_c G1 (while Cond Body) GA' *
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G2
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G2
 EvB : eval_e GB' Cond falseVal
 SNEq : S = public -&gt; false
 EqGAG1 : public_equiv SG1 GA G1
@@ -12305,7 +12305,7 @@ EqGA'GA : public_equiv SG1 GA' GA
 
 Subgoal 8.1:
 
-Variables: PC SG1 GA GA' GB' G1 Body Cond S NewPC G2
+Variables: PC SG1 GA GA' GB' G1 Body Cond S G2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt;
        secure PC SG C SG1 -&gt;
@@ -12321,8 +12321,8 @@ EvA3 : eval_c G1 (while Cond Body) GA' *
 Is1 : is_e Cond
 Is2 : is_c Body
 Sec1 : level SG1 Cond S
-Sec2 : join PC S NewPC
-Sec3 : secure NewPC SG1 Body G2
+Sec2 : join PC S public
+Sec3 : secure public SG1 Body G2
 EvB : eval_e GB' Cond falseVal
 SNEq : S = public -&gt; false
 EqGAG1 : public_equiv SG1 GA G1

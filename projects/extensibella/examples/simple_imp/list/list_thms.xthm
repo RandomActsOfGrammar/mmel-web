@@ -215,7 +215,7 @@ Prove simple_imp:host:typeOf_unique,
       simple_imp:host:typeRecFields_unique.
 %typeOf_unique
   %nil list
-   Ty2: case Ty2. skip. %This isn't actually true
+   Ty2: case Ty2. search. %This is why we need nil(Ty) instead of just nil
   %cons list
    Ty2: case Ty2. apply IH to Ty3 Ty2. apply IH to Ty4 Ty5. search.
   %null check
@@ -249,6 +249,14 @@ Prove_Constraint simple_imp:host:trans_eval_e.
 %tail
  case Hyp1. search.
 %index
+ /*This is why we need E-Index to specify consVal.  Without that, we
+   have no way of determining if (null Lst) will evaluate.  We might
+   try proving
+     forall E L I V G, indexRel L I V -> eval_e G E L ->
+                                 exists V', eval_e G (null E) V'
+   but this fails in the preservability case because the definition of
+   indexRel is copied from L's translation, but E still evaluates to
+   the original L, so we can't apply the IH.*/
  Ev: case Hyp1. search.
 %length
  Ev: case Hyp1. search.

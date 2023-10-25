@@ -145,7 +145,8 @@ def readFullFile(fContents, cmdID, linkedFile):
 #Mark the text, adding the start and end markers
 def markFullFile(fContents, linkedFile):
     text = '<pre class="code extensibella">\n'
-    text += readFullFile(fContents, 1, linkedFile)
+    #need to start at 0 so module decl doesn't map to command
+    text += readFullFile(fContents, 0, linkedFile)
     text += '</pre>\n'
     return text
 
