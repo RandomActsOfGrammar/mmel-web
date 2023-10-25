@@ -1,0 +1,37 @@
+Module stlc:host
+
+
+/*Syntax Constructors*/
+term ::= app(term, term)
+       | abs(string, type, term)
+       | var(string)
+
+type ::= arrow(type, type)
+       | base
+
+
+
+/*Judgments*/
+Judgment typeOf : [(string, type)] term* type
+
+/*Translation Types*/
+Translation term : [(string, type)] /*ctx |- term ~~> term*/
+Translation type :                  /*|- type ~~> type*/
+
+
+/*Typing Rules*/
+
+typeOf G T1 arrow(Ty1, Ty2)
+typeOf G T2 Ty1
+--------------------------- [T-App]
+typeOf G app(T1, T2) Ty2
+
+
+typeOf (X, Ty1)::G Body Ty2
+------------------------------------------ [T-Abs]
+typeOf G abs(X, Ty1, Body) arrow(Ty1, Ty2)
+
+
+lookup G X Ty
+------------------ [T-Var]
+typeOf G var(X) Ty

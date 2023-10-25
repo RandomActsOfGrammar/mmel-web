@@ -44,6 +44,15 @@ def writeFiles(outF, sosFilenames):
         shortName = fname.split("/")[-1]
         #heading for file
         outF.write("<h3>File:  " + shortName + "</h3>\n")
+        #links
+        foldLink = '<a class="fold-link" href="javascript:void" '
+        foldLink += 'id="toggle' + shortName + '" '
+        foldLink += 'onclick="toggleFile(\'' + shortName + '\')">'
+        foldLink += '[Reduce File]</a>'
+        foldLink += '<span> </span>'
+        foldLink += '<a class="fold-link" href="' + fname + '">'
+        foldLink += '[Raw File]</a>\n'
+        outF.write(foldLink)
         #text of the body
         f = open(fname, "r")
         text = f.read()
@@ -57,7 +66,9 @@ def writeHTMLFile(depth, outFilename, titleInfo, sosFilenames):
     outF = open(outFilename, "w")
     writeInitialText(outF, depth, titleInfo)
     outF.write('<h1>' + titleInfo + '</h1>')
+    outF.write('<div class="section">\n')
     writeFiles(outF, sosFilenames)
+    outF.write('<div>\n')
     writeEndText(outF)
     outF.close()
 

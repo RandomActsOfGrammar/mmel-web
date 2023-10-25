@@ -1,0 +1,301 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  simple_imp:list</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  simple_imp:list</h1><div class="section">
+<h3>File:  list.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglelist.sos" onclick="toggleFile('list.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="list.sos">[Raw File]</a>
+<pre class="code sterling" id="list.sos">
+Module simple_imp:list
+
+Builds on simple_imp:host
+
+<span class="comment">/*New Expressions and Translations*/</span>
+e ::= ...
+    | nil
+    | cons(e, e)
+    | null(e)
+    | head(e)
+    | tail(e)
+    | index(e, e) <span class="comment">/*lst[i]*/</span>
+    | length(e)
+
+
+--------------------------------------------- [Trans-Nil]
+|{e}- nil ~~>
+      recBuild(addRecFieldExprs("null", true,
+               endRecFieldExprs))
+
+
+---------------------------------------------------------- [Trans-Cons]
+|{e}- cons(E1, E2) ~~>
+      recBuild(
+         addRecFieldExprs("null", false,
+         addRecFieldExprs("head", E1,
+         addRecFieldExprs("tail", E2, endRecFieldExprs))))
+
+
+------------------- [Trans-Null]
+|{e}- null(E) ~~> E
+
+
+------------------- [Trans-Head]
+|{e}- head(E) ~~> E
+
+
+------------------- [Trans-Tail]
+|{e}- tail(E) ~~> E
+
+
+-------------------------------------------------- [Trans-Index]
+|{e}- index(Lst, Index) ~~> and(null(Lst),
+                                eq(num(0), Index))
+
+
+--------------------- [Trans-Length]
+|{e}- length(E) ~~> E
+
+
+
+<span class="comment">/*New Type and Translation*/</span>
+ty ::= ...
+     | listTy(ty)
+
+
+----------------------------------------------- [Trans-ListTy]
+|{ty}- listTy(T) ~~>
+       recTy([("head", T), ("tail", listTy(T)),
+              ("null", boolTy)])
+
+
+
+<span class="comment">/*New Value and Translation*/</span>
+value ::= ...
+        | nilVal
+        | consVal(value, value)
+
+
+------------------------------------------------ [Trans-NilVal]
+|{value}- nilVal ~~> recVal([("null", trueVal)])
+
+
+--------------------------------------------- [Trans-ConsVal]
+|{value}- consVal(Hd, Tl) ~~>
+          recVal([("head", Hd), ("tail", Tl),
+                  ("null", falseVal)])
+</pre>
+<h3>File:  list_vars.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglelist_vars.sos" onclick="toggleFile('list_vars.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="list_vars.sos">[Raw File]</a>
+<pre class="code sterling" id="list_vars.sos">
+Module simple_imp:list
+
+<span class="comment">/*Expression Vars*/</span>
+
+----------- [V-Nil]
+vars nil []
+
+
+vars E1 D1
+vars E2 D2
+D1 ++ D2 = D
+------------------- [V-Cons]
+vars cons(E1, E2) D
+
+
+vars E D
+-------------- [V-Null]
+vars null(E) D
+
+
+vars E D
+-------------- [V-Head]
+vars head(E) D
+
+
+vars E D
+-------------- [V-Tail]
+vars tail(E) D
+
+
+vars E1 D1
+vars E2 D2
+D1 ++ D2 = D
+-------------------- [V-Index]
+vars index(E1, E2) D
+
+
+vars E D
+---------------- [V-Length]
+vars length(E) D
+
+</pre>
+<h3>File:  list_typing.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglelist_typing.sos" onclick="toggleFile('list_typing.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="list_typing.sos">[Raw File]</a>
+<pre class="code sterling" id="list_typing.sos">
+Module simple_imp:list
+
+<span class="comment">/*Expression Typing*/</span>
+
+----------------------- [T-Nil]
+typeOf G nil listTy(Ty)
+
+
+typeOf G E1 Ty
+typeOf G E2 listTy(Ty)
+-------------------------------- [T-Cons]
+typeOf G cons(E1, E2) listTy(Ty)
+
+
+typeOf G E listTy(Ty)
+----------------------- [T-Null]
+typeOf G null(E) boolTy
+
+
+typeOf G E listTy(Ty)
+--------------------- [T-Head]
+typeOf G head(E) Ty
+
+
+typeOf G E listTy(Ty)
+--------------------------- [T-Tail]
+typeOf G tail(E) listTy(Ty)
+
+
+typeOf G List listTy(Ty)
+typeOf G Index intTy
+------------------------------ [T-Index]
+typeOf G index(List, Index) Ty
+
+
+typeOf G Lst listTy(Ty)
+-------------------------- [T-Length]
+typeOf G length(Lst) intTy
+
+
+
+
+<span class="comment">/*Value Typing*/</span>
+
+--------------------------- [TV-Nil]
+typeOfVal nilVal listTy(Ty)
+
+
+typeOfVal V1 Ty
+typeOfVal V2 listTy(Ty)
+------------------------------------ [TV-Cons]
+typeOfVal consVal(V1, V2) listTy(Ty)
+
+</pre>
+<h3>File:  list_eval.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglelist_eval.sos" onclick="toggleFile('list_eval.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="list_eval.sos">[Raw File]</a>
+<pre class="code sterling" id="list_eval.sos">
+Module simple_imp:list
+
+<span class="comment">/*Expression Evaluation*/</span>
+
+------------------- [E-Nil]
+eval_e G nil nilVal
+
+
+eval_e G E1 V1
+eval_e G E2 V2
+------------------------------------- [E-Cons]
+eval_e G cons(E1, E2) consVal(V1, V2)
+
+
+eval_e G E nilVal
+---------------------- [E-NullTrue]
+eval_e G null(E) trueVal
+
+
+eval_e G E consVal(V1, V2)
+-------------------------- [E-NullFalse]
+eval_e G null(E) falseVal
+
+
+eval_e G E consVal(V1, V2)
+-------------------------- [E-Head]
+eval_e G head(E) V1
+
+
+eval_e G E consVal(V1, V2)
+-------------------------- [E-Tail]
+eval_e G tail(E) V2
+
+
+eval_e G E1 VL
+eval_e G E2 intVal(I)
+indexRel VL I V
+------------------------ [E-Index]
+eval_e G index(E1, E2) V
+
+
+eval_e G E ListVal
+lengthRel ListVal Length
+--------------------------------- [E-Length]
+eval_e G length(E) intVal(Length)
+
+
+<span class="comment">/*Support for list expression evaluation*/</span>
+Judgment indexRel : value* int value
+
+----------------------------- [Index-0]
+indexRel consVal(Hd, Tl) 0 Hd
+
+
+Index - 1 = SubIndex
+indexRel Tl SubIndex V
+-------------------------------- [Index-Step]
+indexRel consVal(Hd, Tl) Index V
+
+
+|{value}- V ~~> VT
+indexRel VT I Result
+-------------------- [Index-Trans]*
+indexRel V I Result
+
+
+Judgment lengthRel : value* int
+
+--------------- [Len-Nil]
+lengthRel nilVal 0
+
+
+lengthRel Tl SubLen
+SubLen + 1 = Len
+----------------------------- [Len-Cons]
+lengthRel consVal(Hd, Tl) Len
+
+
+|{value}- V ~~> VT
+lengthRel VT Len
+------------------ [Len-Trans]*
+lengthRel V Len
+
+
+
+
+<span class="comment">/*Value Equality*/</span>
+
+-------------------- [VE-NilVal]
+val_eq nilVal nilVal
+
+
+val_eq V11 V21
+val_eq V12 V22
+------------------------------------------ [VE-ConsVal]
+val_eq consVal(V11, V12) consVal(V21, V22)
+
+</pre>
+<div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  stlc:host</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  stlc:host</h1><div class="section">
+<h3>File:  stlc.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglestlc.sos" onclick="toggleFile('stlc.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="stlc.sos">[Raw File]</a>
+<pre class="code sterling" id="stlc.sos">
+Module stlc:host
+
+
+<span class="comment">/*Syntax Constructors*/</span>
+term ::= app(term, term)
+       | abs(string, type, term)
+       | var(string)
+
+type ::= arrow(type, type)
+       | base
+
+
+
+<span class="comment">/*Judgments*/</span>
+Judgment typeOf : [(string, type)] term* type
+
+<span class="comment">/*Translation Types*/</span>
+Translation term : [(string, type)] <span class="comment">/*ctx |- term ~~> term*/</span>
+Translation type :                  <span class="comment">/*|- type ~~> type*/</span>
+
+
+<span class="comment">/*Typing Rules*/</span>
+
+typeOf G T1 arrow(Ty1, Ty2)
+typeOf G T2 Ty1
+--------------------------- [T-App]
+typeOf G app(T1, T2) Ty2
+
+
+typeOf (X, Ty1)::G Body Ty2
+------------------------------------------ [T-Abs]
+typeOf G abs(X, Ty1, Body) arrow(Ty1, Ty2)
+
+
+lookup G X Ty
+------------------ [T-Var]
+typeOf G var(X) Ty
+</pre>
+<div>
+</body>
+</html>

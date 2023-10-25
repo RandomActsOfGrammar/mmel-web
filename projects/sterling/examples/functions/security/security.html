@@ -1,0 +1,496 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  functions:security</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  functions:security</h1><div class="section">
+<h3>File:  security.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesecurity.sos" onclick="toggleFile('security.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="security.sos">[Raw File]</a>
+<pre class="code sterling" id="security.sos">
+Module functions:security
+
+Builds on functions:host
+
+<span class="comment">/*New Statement and Translation*/</span>
+c ::= ...
+    | declareSec(string, seclevel, ty, e)
+
+
+--------------------------------------------------- [Trans-DeclareSec]
+|{c}- declareSec(X, S, Ty, E) ~~> declare(X, Ty, E)
+
+
+<span class="comment">/*New way to declare function parameters*/</span>
+params ::= ...
+         | addSecParams(string, seclevel, ty, params)
+
+
+------------------------------------------- [Trans-AddSecParams]
+|{params}- addSecParams(X, S, Ty, Rest) ~~>
+           addParams(X, Ty, Rest)
+
+
+<span class="comment">/*New way to declare a function, with a minimum program counter to 
+  start checking*/</span>
+fun ::= ...
+      | secfun(string, seclevel, ty, seclevel, string, params, c)
+
+------------------------------------------------------- [Trans-Secfun]
+|{fun}- secfun(Name, Sec, RetTy, RetSec, RetName, Params, Body) ~~>
+        fun(Name, RetTy, RetName, Params, Body)
+
+
+seclevel ::= public | private
+Translation seclevel :
+
+
+
+
+<span class="comment">/*Typing and Evaluation for New Statement*/</span>
+
+no_lookup G X <span class="comment">/*still can't overwrite existing decls*/</span>
+typeOf FG G E Ty
+---------------------------------------------- [T-DeclareSec]
+typeOK FG G declareSec(X, S, Ty, E) (X, Ty)::G
+
+
+eval_e FG G E V O
+----------------------------------------------- [E-DeclareSec]
+eval_c FG G declareSec(X, S, Ty, E) (X, V)::G O
+
+
+
+<span class="comment">/*Host Relations for New Parameter*/</span>
+
+paramsToTyList Rest TRest
+----------------------------------------------------- [PtTL-AddSec]
+paramsToTyList addSecParams(X, S, Ty, Rest) Ty::TRest
+
+
+paramsToTyCtx Rest TRest
+--------------------------------------------------------- [PtTC-AddSec]
+paramsToTyCtx addSecParams(X, S, Ty, Rest) (X, Ty)::TRest
+
+
+paramsToNameList Rest NRest
+------------------------------------------------------ [PtNL-AddSec]
+paramsToNameList addSecParams(X, S, Ty, Rest) X::NRest
+
+
+
+<span class="comment">/*Host Relations for New Fun*/</span>
+
+paramsToTyCtx Params G
+typeOK FG (RetName, RetTy)::G Body G2 <span class="comment">/*ret name declared*/</span>
+------------------------------------------------------------ [T-Secfun]
+funTyOK FG secfun(Name, Level, RetTy, RetSec, RetName, Params, Body)
+
+
+paramsToTyList Params ArgTys
+--------------------------------------------------------- [GFT-Secfun]
+getFunTy secfun(Name, Level, RetTy, RetSec, RetName, Params, Body
+               ) Name RetTy ArgTys
+
+
+paramsToNameList Params Names
+--------------------------------------------------------- [EF-Secfun]
+{eval_fun secfun(Name, Level, RetTy, RetSec, RetName, Params, Body)
+                  Name RetName Names Body}
+
+</pre>
+<h3>File:  analysis.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggleanalysis.sos" onclick="toggleFile('analysis.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="analysis.sos">[Raw File]</a>
+<pre class="code sterling" id="analysis.sos">
+Module functions:security
+
+funsecctx ::= emptyFunSec
+      | addFunSec(string, seclevel, seclevel, [seclevel], funsecctx)
+           <span class="comment">/*name, starting PC, return level, param sec levels, rest*/</span>
+Translation funsecctx :
+
+
+Judgment lookupFunSec : funsecctx* string seclevel seclevel [seclevel]
+
+-------------------------------------------------------- [LFS-Here]
+lookupFunSec addFunSec(X, S, RetS, SL, Rest) X S RetS SL
+
+
+lookupFunSec Rest X XS XRet XSL
+X != Y
+---------------------------------------------------------- [LFS-Later]
+lookupFunSec addFunSec(Y, YS, YRet, YSL, Rest) X XS XRet XSL
+
+
+Judgment paramsToSecList : params* [seclevel]
+
+---------------------------- [PtSL-End]
+paramsToSecList endParams []
+
+
+paramsToSecList Rest SRest
+---------------------------------------------------- [PtSL-Add]
+paramsToSecList addParams(X, Ty, Rest) public::SRest
+
+
+paramsToSecList Rest SRest
+----------------------------------------------------- [PtSL-AddSec]
+paramsToSecList addSecParams(X, S, Ty, Rest) S::SRest
+
+
+|{params}- P ~~> PT
+paramsToSecList PT S
+-------------------- [PtSL-Trans]*
+paramsToSecList P S
+
+
+
+
+<span class="comment">/*Take two security levels and the get the higher one*/</span>
+Judgment join : seclevel* seclevel seclevel
+
+------------------------- [J-Publics]
+join public public public
+
+
+---------------------- [J-Private1]
+join private S private
+
+
+---------------------- [J-Private2]
+join S private private
+
+
+
+
+<span class="comment">/*Expressions*/</span>
+Judgment level : seclevel funsecctx [(string, seclevel)] e* seclevel
+Judgment rf_level : seclevel funsecctx [(string, seclevel)] recFieldExprs* seclevel
+Judgment level_args : seclevel funsecctx [(string, seclevel)] args* [seclevel]
+<span class="comment">/*Statements*/</span>
+Judgment secure : seclevel funsecctx [(string, seclevel)] c* [(string, seclevel)]
+<span class="comment">/*Functions*/</span>
+Judgment secure_fun : funsecctx fun*
+Judgment paramsToSecCtx : params* [(string, seclevel)]
+<span class="comment">/*Program*/</span>
+Judgment secure_program : funsecctx program*
+Judgment buildFunSecCtx : program* funsecctx
+Judgment getFunSec : fun* string seclevel seclevel [seclevel]
+                <span class="comment">/*name, starting level, return level, arg sec levels*/</span>
+<span class="comment">/*The actual check for the program*/</span>
+Fixed Judgment programSecCheck : program
+
+
+<span class="comment">/*Expression Security Level*/</span>
+
+--------------------------- [S-Num]
+level PC FG G num(I) public
+
+
+level PC FG G E1 S1
+level PC FG G E2 S2
+join S1 S2 S
+---------------------------- [S-Plus]
+level PC FG G plus(E1, E2) S
+
+
+lookup G X S
+----------------------- [S-Name]
+level PC FG G name(X) S
+
+
+level PC FG G E1 S1
+level PC FG G E2 S2
+join S1 S2 S
+------------------------------- [S-Greater]
+level PC FG G greater(E1, E2) S
+
+
+level PC FG G E1 S1
+level PC FG G E2 S2
+join S1 S2 S
+-------------------------- [S-Eq]
+level PC FG G eq(E1, E2) S
+
+
+level PC FG G E1 S1
+level PC FG G E2 S2
+join S1 S2 S
+--------------------------- [S-And]
+level PC FG G and(E1, E2) S
+
+
+level PC FG G E1 S1
+level PC FG G E2 S2
+join S1 S2 S
+-------------------------- [S-Or]
+level PC FG G or(E1, E2) S
+
+
+------------------------- [S-True]
+level PC FG G true public
+
+
+-------------------------- [S-False]
+level PC FG G false public
+
+
+lookupFunSec FG Fun private RetLev Levels
+level_args PC FG G Args Levels
+----------------------------------------- [S-CallPrivate]
+level PC FG G call(Fun, Args) RetLev
+<span class="comment">/*can always call a function starting in a private state*/</span>
+
+
+lookupFunSec FG Fun public RetLev Levels
+level_args PC FG G Args Levels
+---------------------------------------- [S-CallPublic]
+level public FG G call(Fun, Args) RetLev
+<span class="comment">/*can only call a function starting in a public state if we are also
+  in a public state (didn't branch on private vars)*/</span>
+
+
+rf_level PC FG G Fields S
+----------------------------- [S-RecBuild]
+level PC FG G recBuild(Fields) S
+
+
+level PC FG G Rec S
+------------------------------------------ [S-RecField]
+level PC FG G recFieldAccess(Rec, Field) S
+
+
+|{e}- E ~~> ET
+level PC FG G ET S
+------------------ [S-TransExpr]*
+level PC FG G E S
+
+
+
+<span class="comment">/*Record Field Security Level*/</span>
+
+---------------------------------------- [S-RFEnd]
+rf_level PC FG G endRecFieldExprs public
+
+
+level PC FG G E S1
+rf_level PC FG G Rest S2
+join S1 S2 S
+----------------------------------------------- [S-RFAdd]
+rf_level PC FG G addRecFieldExprs(L, E, Rest) S
+
+
+|{recFieldExprs}- RF ~~> RFT
+rf_level PC FG G RFT S
+---------------------------- [S-RFTrans]*
+rf_level PC FG G RF S
+
+
+
+<span class="comment">/*Argument Security Levels*/</span>
+
+----------------------------- [LA-End]
+level_args PC FG G endArgs []
+
+
+level PC FG G E S
+level_args PC FG G Rest SRest
+-------------------------------------------- [LA-Add]
+level_args PC FG G addArgs(E, Rest) S::SRest
+
+
+|{args}- A ~~> AT
+level_args PC FG G AT S
+----------------------- [LA-Trans]*
+level_args PC FG G A S
+
+
+
+<span class="comment">/*Statement Security*/</span>
+
+--------------------- [S-Noop]
+secure PC FG G noop G
+
+
+secure PC FG G C1 G1
+secure PC FG G1 C2 G2
+----------------------------- [S-Seq]
+secure PC FG G seq(C1, C2) G2
+
+
+level PC FG G E public
+----------------------------------------------- [S-Declare]
+secure PC FG G declare(X, Ty, E) (X, public)::G
+
+
+level PC FG G E S
+--------------------------------------------- [S-DeclareSecPrivate]
+{secure PC FG G declareSec(X, private, Ty, E)
+             (X, private)::G}
+
+
+level PC FG G E public
+------------------------------------------------ [S-DeclareSecPublic]
+{secure public FG G declareSec(X, public, Ty, E)
+                   (X, public)::G}
+
+
+<span class="comment">/*To assign to public var, need both PC and expr to be public*/</span>
+level PC FG G E public
+lookup G X public
+--------------------------------- [S-AssignPublic]
+secure public FG G assign(X, E) G
+
+
+<span class="comment">/*Can assign anything to a private var, anytime*/</span>
+level PC FG G E S
+lookup G X private
+----------------------------- [S-AssignPrivate]
+secure PC FG G assign(X, E) G
+
+
+level PC FG G Cond S
+join PC S NewPC
+secure NewPC FG G Then GTh
+secure NewPC FG G Else GEl
+--------------------------------------------- [S-IfThenElse]
+secure PC FG G ifThenElse(Cond, Then, Else) G
+<span class="comment">/*branches are new scopes, so we throw their security updates away*/</span>
+
+
+level PC FG G Cond S
+join PC S NewPC
+secure NewPC FG G Body G1
+---------------------------------- [S-While]
+secure PC FG G while(Cond, Body) G
+<span class="comment">/*body is a new scope*/</span>
+
+
+level PC FG G E public
+-------------------------------- [S-Print]
+secure public FG G printVal(E) G
+<span class="comment">/*can only print public values, and can only print if we didn't use
+  private variables to get here*/</span>
+
+
+|{c}- C ~~> CT
+secure PC FG G CT G1
+-------------------- [S-Trans]*
+secure PC FG G C G1
+
+
+
+<span class="comment">/*Function Security*/</span>
+
+paramsToSecCtx Params G
+secure public FG G Body G2
+----------------------------------------------------- [SF-Fun]
+secure_fun FG fun(Name, RetTy, RetName, Params, Body)
+
+
+paramsToSecCtx Params G
+secure PC FG (RetName, RetSec)::G Body G2
+------------------------------------------------------ [SF-Secfun]
+secure_fun FG secfun(Name, PC, RetTy, RetSec, RetName,
+                     Params, Body)
+
+
+|{fun}- F ~~> FT
+secure_fun FG FT
+---------------- [SF-Trans]*
+secure_fun FG F
+
+
+
+--------------------------- [PtSC-End]
+paramsToSecCtx endParams []
+
+
+paramsToSecCtx Rest SRest
+-------------------------------------------------------- [PtSC-Add]
+paramsToSecCtx addParams(X, Ty, Rest) (X, public)::SRest
+
+
+paramsToSecCtx Rest SRest
+--------------------------------------------------------- [PtSC-AddSec]
+paramsToSecCtx addSecParams(X, S, Ty, Rest) (X, S)::SRest
+
+
+|{params}- P ~~> PT
+paramsToSecCtx PT S
+------------------- [PtSC-Trans]*
+paramsToSecCtx P S
+
+
+
+<span class="comment">/*Program Security*/</span>
+
+---------------------------- [SP-End]
+secure_program FG endProgram
+
+
+secure_fun FG Fun
+secure_program FG Rest
+--------------------------------------- [SP-Add]
+secure_program FG addProgram(Fun, Rest)
+
+
+|{program}- P ~~> PT
+secure_program FG PT
+-------------------- [SP-Trans]*
+secure_program FG P
+
+
+
+------------------------------------- [BFSC-End]
+buildFunSecCtx endProgram emptyFunSec
+
+
+buildFunSecCtx Rest SRest
+getFunSec Fun Name Lev RetLev Secs
+----------------------------------------------------------- [BFSC-Add]
+buildFunSecCtx addProgram(Fun, Rest
+                  ) addFunSec(Name, Lev, RetLev, Secs, SRest)
+
+
+|{program}- P ~~> PT
+buildFunSecCtx PT GS
+-------------------- [BFSC-Trans]*
+buildFunSecCtx P GS
+
+
+
+paramsToSecList Params SL
+------------------------------------------------ [GFS-Fun]
+getFunSec fun(Name, RetTy, RetName, Params, Body
+             ) Name public public SL
+
+
+paramsToSecList Params SL
+--------------------------------------------------------- [GFS-Secfun]
+getFunSec secfun(Name, S, RetTy, RetSec, RetName, Params, Body
+                ) Name S RetSec SL
+
+
+|{fun}- F ~~> FT
+getFunSec FT Name S Ret SL
+-------------------------- [GFS-Trans]*
+getFunSec F Name S Ret SL
+
+
+
+buildFunSecCtx P FG
+secure_program FG P
+=================== [PSecCheck]
+programSecCheck P
+</pre>
+<div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  tutorial:num</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  tutorial:num</h1><div class="section">
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module tutorial:num
+
+Builds on tutorial:typing
+
+tm ::= ...
+     | num(int)
+     | plus(tm, tm)
+
+ty ::= ...
+     | intTy
+
+buildNumTerm I T
+--------------------------------------- [Trans-Num]
+|{tm}- num(I) ~~> abs("f", abs("x", T))
+
+
+---------------------------------------------------------- [Trans-Plus]
+|{tm}- plus(T1, T2) ~~>
+       abs("m", abs("n", abs("f", abs("x",
+          app(var("m"), app(var("f"),
+              app(var("n"), app(var("f"), var("x")))))))))
+
+
+---------------------------------------------------------- [Trans-IntTy]
+|{ty}- intTy ~~> arrowTy(arrowTy(Ty, Ty), arrowTy(Ty, Ty))
+
+
+<span class="comment">/*Build the body of a Church encoding of a number,
+  using names "f" and "x"*/</span>
+Fixed Judgment buildNumTerm : int tm
+
+======================= [BNT-Zero]
+buildNumTerm 0 var("x")
+
+
+N - 1 = NSub
+buildNumTerm NSub T
+=============================== [BNT-Step]
+buildNumTerm N app(var("f"), T)
+
+
+
+eval T1 T11
+------------------------------- [E-Plus-Step1]
+eval plus(T1, T2) plus(T11, T2)
+
+
+value T1
+eval T2 T21
+------------------------------- [E-Plus-Step2]
+eval plus(T1, T2) plus(T1, T21)
+
+
+I1 + I2 = I
+---------------------------------- [E-Plus-Add]
+eval plus(num(I1), num(I2)) num(I)
+
+
+
+----------------------- [S-Num]
+subst X R num(I) num(I)
+
+
+subst X R T1 S1
+subst X R T2 S2
+----------------------------------- [S-Plus]
+subst X R plus(T1, T2) plus(S1, S2)
+
+
+
+------------ [V-Num]
+value num(I)
+
+
+
+buildNumTerm I T
+------------------------------ [AF-Num]
+absForm num(I) "f" abs("x", T)
+
+
+
+------------------ [C-Num]
+closed Vars num(I)
+
+
+closed Vars T1
+closed Vars T2
+------------------------ [C-Plus]
+closed Vars plus(T1, T2)
+
+
+
+--------------------- [T-Num]
+typeOf G num(I) intTy
+
+
+typeOf G T1 intTy
+typeOf G T2 intTy
+--------------------------- [T-Plus]
+typeOf G plus(T1, T2) intTy
+</pre>
+<div>
+</body>
+</html>

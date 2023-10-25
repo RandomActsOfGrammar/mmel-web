@@ -1,0 +1,121 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  tutorial:host</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  tutorial:host</h1><div class="section">
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module tutorial:host
+
+tm ::= var(string)
+     | abs(string, tm)
+     | app(tm, tm)
+
+Translation tm :
+</pre>
+<h3>File:  closed.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggleclosed.sos" onclick="toggleFile('closed.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="closed.sos">[Raw File]</a>
+<pre class="code sterling" id="closed.sos">
+Module tutorial:host
+
+<span class="comment">/*whether a tm is closed, that it does not use any free vars*/</span>
+Judgment closed : [string] tm*
+
+mem X Vars
+------------------ [C-Var]
+closed Vars var(X)
+
+
+closed X::Vars T
+--------------------- [C-Abs]
+closed Vars abs(X, T)
+
+
+closed Vars T1
+closed Vars T2
+----------------------- [C-App]
+closed Vars app(T1, T2)
+</pre>
+<h3>File:  eval.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggleeval.sos" onclick="toggleFile('eval.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="eval.sos">[Raw File]</a>
+<pre class="code sterling" id="eval.sos">
+Module tutorial:host
+
+<span class="comment">/*eval T1 T2:  small-step evaluation, where T1 steps to T2*/</span>
+Judgment eval : tm* tm
+
+<span class="comment">/*subst X R B S:  substitute R for X in B yielding S*/</span>
+Judgment subst : string tm tm* tm
+
+<span class="comment">/*value T:  T is a value*/</span>
+Judgment value : tm*
+
+<span class="comment">/*absForm T X B:  T is like the abstraction abs(X, T)*/</span>
+Judgment absForm : tm* string tm
+
+eval T1 T11
+----------------------------- [E-App-Step1]
+eval app(T1, T2) app(T11, T2)
+
+
+value T1
+eval T2 T21
+----------------------------- [E-App-Step2]
+eval app(T1, T2) app(T1, T21)
+
+
+absForm T1 X Body
+value T2
+subst X T2 Body V
+------------------ [E-App-Subst]
+eval app(T1, T2) V
+
+
+
+X != Y
+----------------------- [S-Var-NEq]
+subst X R var(Y) var(Y)
+
+
+------------------ [S-Var-Eq]
+subst X R var(X) R
+
+
+X != Y
+subst X R B S
+----------------------------- [S-Abs-NEq]
+subst X R abs(Y, B) abs(Y, S)
+
+
+----------------------------- [S-Abs-Eq]
+subst X R abs(X, B) abs(X, B)
+
+
+subst X R T1 S1
+subst X R T2 S2
+--------------------------------- [S-App]
+subst X R app(T1, T2) app(S1, S2)
+
+
+
+--------------- [V-Abs]
+value abs(X, T)
+
+
+
+--------------------- [AF-Abs]
+absForm abs(X, T) X T
+</pre>
+<div>
+</body>
+</html>

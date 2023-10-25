@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  simple_imp:repeatWhile</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  simple_imp:repeatWhile</h1><div class="section">
+<h3>File:  repeatWhile.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglerepeatWhile.sos" onclick="toggleFile('repeatWhile.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="repeatWhile.sos">[Raw File]</a>
+<pre class="code sterling" id="repeatWhile.sos">
+Module simple_imp:repeatWhile
+
+Builds on simple_imp:host
+
+<span class="comment">/*Add a repeat-while construct*/</span>
+c ::= ...
+    | repeatWhile(c, e)
+
+
+------------------------------------- [Trans-RepeatWhile]
+|{c}- repeatWhile(Body, Cond) ~~>
+         seq(Body, while(Cond, Body))
+
+
+
+<span class="comment">/*Evaluation*/</span>
+
+eval_c G Body G1
+eval_e G1 Cond trueVal
+eval_c G1 repeatWhile(Body, Cond) G2
+------------------------------------ [E-RepeatWhileTrue]
+eval_c G repeatWhile(Body, Cond) G2
+
+
+eval_c G Body G1
+eval_e G1 Cond falseVal
+----------------------------------- [E-RepeatWhileFalse]
+eval_c G repeatWhile(Body, Cond) G1
+
+
+
+<span class="comment">/*Typing*/</span>
+
+typeOK G Body GB
+typeOf G E boolTy
+---------------------------------- [T-RepeatWhile]
+typeOK G repeatWhile(Body, Cond) G
+<span class="comment">/*body opens a new scope*/</span>
+</pre>
+<div>
+</body>
+</html>

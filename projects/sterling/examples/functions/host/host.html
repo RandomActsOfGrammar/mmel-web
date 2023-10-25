@@ -1,0 +1,915 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  functions:host</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  functions:host</h1><div class="section">
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module functions:host
+
+<span class="comment">/*Expressions*/</span>
+e ::= num(int)
+    | plus(e, e)
+    | name(string)
+    | greater(e, e)
+    | eq(e, e)
+    | and(e, e)
+    | or(e, e)
+    | true
+    | false
+    | call(string, args)
+    | recBuild(recFieldExprs)
+    | recFieldAccess(e, string)
+Translation e :
+
+recFieldExprs ::= endRecFieldExprs
+                | addRecFieldExprs(string, e, recFieldExprs)
+Translation recFieldExprs :
+
+args ::= endArgs
+       | addArgs(e, args)
+Translation args :
+
+
+<span class="comment">/*Statement Commands*/</span>
+c ::= noop
+    | seq(c, c)
+    | declare(string, ty, e)
+    | assign(string, e)
+    | ifThenElse(e, c, c)
+    | while(e, c)
+    | recUpdate(string, recFields, e) <span class="comment">/*rec.field = e*/</span>
+    | printVal(e)
+Translation c :
+
+recFields ::= oneField(string)
+            | addField(string, recFields)
+Translation recFields :
+
+
+<span class="comment">/*Functions*/</span>
+fun ::= fun(string, ty, string, params, c)
+          <span class="comment">/*name, return type, return var, params, body*/</span>
+Translation fun :
+
+params ::= endParams
+         | addParams(string, ty, params)
+Translation params :
+
+
+<span class="comment">/*Program*/</span>
+program ::= endProgram
+          | addProgram(fun, program) <span class="comment">/*other functions*/</span>
+Translation program :
+
+
+<span class="comment">/*Types*/</span>
+ty ::= intTy
+     | boolTy
+     | recTy([(string, ty)])
+Translation ty :
+
+
+<span class="comment">/*Evaluation Values*/</span>
+value ::= intVal(int)
+        | trueVal
+        | falseVal
+        | recVal([(string, value)])
+Translation value :
+
+</pre>
+<h3>File:  vars.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglevars.sos" onclick="toggleFile('vars.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="vars.sos">[Raw File]</a>
+<pre class="code sterling" id="vars.sos">
+Module functions:host
+
+
+Judgment vars : e* [string]
+Judgment vars_rf : recFieldExprs* [string]
+Judgment vars_args : args* [string]
+
+
+<span class="comment">/*Vars in Expressions*/</span>
+
+-------------- [V-Num]
+vars num(I) []
+
+
+vars E1 D1
+vars E2 D2
+D1 ++ D2 = D
+------------------- [V-Plus]
+vars plus(E1, E2) D
+
+
+---------------- [V-Name]
+vars name(X) [X]
+
+
+vars E1 D1
+vars E2 D2
+D1 ++ D2 = D
+---------------------- [V-Greater]
+vars greater(E1, E2) D
+
+
+vars E1 D1
+vars E2 D2
+D1 ++ D2 = D
+------------------- [V-Eq]
+vars eq(E1, E2) D
+
+
+vars E1 D1
+vars E2 D2
+D1 ++ D2 = D
+------------------- [V-And]
+vars and(E1, E2) D
+
+
+vars E1 D1
+vars E2 D2
+D1 ++ D2 = D
+------------------- [V-Or]
+vars or(E1, E2) D
+
+
+------------ [V-True]
+vars true []
+
+
+------------- [V-False]
+vars false []
+
+
+vars_args Args D
+-------------------- [V-Call]
+vars call(F, Args) D
+
+
+vars_rf Fields D
+----------------------- [V-RecBuild]
+vars recBuild(Fields) D
+
+
+vars Rec D
+--------------------------------- [V-RecAccess]
+vars recFieldAccess(Rec, Field) D
+
+
+
+<span class="comment">/*Vars in Record Fields*/</span>
+
+--------------------------- [VRF-Empty]
+vars_rf endRecFieldExprs []
+
+
+vars_rf Rest DRest
+vars E DE
+DE ++ DRest = D
+-------------------------------------- [VRF-Add]
+vars_rf addRecFieldExprs(X, E, Rest) D
+
+
+
+<span class="comment">/*Vars in Args*/</span>
+
+-------------------- [VA-Empty]
+vars_args endArgs []
+
+
+vars_args Rest DRest
+vars E DE
+DE ++ DRest = D
+---------------------------- [VA-Add]
+vars_args addArgs(E, Rest) D
+
+</pre>
+<h3>File:  typing.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggletyping.sos" onclick="toggleFile('typing.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="typing.sos">[Raw File]</a>
+<pre class="code sterling" id="typing.sos">
+Module functions:host
+
+funtyctx ::= emptyFunTy
+           | addFunTy(string, ty, [ty], funtyctx)
+            <span class="comment">/*function name, return type, parameter types, rest*/</span>
+Translation funtyctx :
+
+
+Judgment lookupFunTy : funtyctx* string ty [ty]
+
+----------------------------------------------- [LFT-Here]
+lookupFunTy addFunTy(F, Ret, TL, Rest) F Ret TL
+
+
+lookupFunTy Rest X XRet XTL
+X != Y
+--------------------------------------------------- [LFT-Later]
+lookupFunTy addFunTy(Y, YRet, YTL, Rest) F XRet FTL
+
+
+Judgment paramsToTyList : params* [ty]
+
+--------------------------- [PtTL-End]
+paramsToTyList endParams []
+
+
+paramsToTyList Rest TyRest
+------------------------------------------------ [PtTL-Add]
+paramsToTyList addParams(X, Ty, Rest) Ty::TyRest
+
+
+
+
+<span class="comment">/*Expressions*/</span>
+Judgment typeOf : funtyctx [(string, ty)] e* ty
+Judgment typeRecFields : funtyctx [(string, ty)] recFieldExprs* [(string, ty)]
+<span class="comment">/*Statements*/</span>
+Judgment typeOK : funtyctx [(string, ty)] c* [(string, ty)]
+Judgment typeArgs : funtyctx [(string, ty)] args* [ty]
+<span class="comment">/*Functions*/</span>
+Judgment funTyOK : funtyctx fun*
+Judgment paramsToTyCtx : params* [(string, ty)]
+<span class="comment">/*Program*/</span>
+Judgment programTyOK : funtyctx  program*
+Judgment buildFunTyCtx : program* funtyctx
+Judgment getFunTy : fun* string ty [ty] <span class="comment">/*name, ret ty, arg types*/</span>
+<span class="comment">/*The actual check for the program*/</span>
+Fixed Judgment programChecks : program
+
+
+<span class="comment">/*Expression Typing*/</span>
+
+------------------------ [T-Num]
+typeOf FG G num(I) intTy
+
+
+typeOf FG G E1 intTy
+typeOf FG G E2 intTy
+------------------------------ [T-Plus]
+typeOf FG G plus(E1, E2) intTy
+
+
+lookup G X Ty
+---------------------- [T-Name]
+typeOf FG G name(X) Ty
+
+
+typeOf FG G E1 intTy
+typeOf FG G E2 intTy
+--------------------------------- [T-Greater]
+typeOf FG G greater(E1, E2) intTy
+
+
+typeOf FG G E1 Ty
+typeOf FG G E2 Ty
+------------------------- [T-Eq]
+typeOf FG G eq(E1, E2) Ty
+
+
+typeOf FG G E1 boolTy
+typeOf FG G E2 boolTy
+------------------------------ [T-And]
+typeOf FG G and(E1, E2) boolTy
+
+
+typeOf FG G E1 boolTy
+typeOf FG G E2 boolTy
+----------------------------- [T-Or]
+typeOf FG G or(E1, E2) boolTy
+
+
+----------------------- [T-True]
+typeOf FG G true boolTy
+
+
+------------------------ [T-False]
+typeOf FG G false boolTy
+
+
+lookupFunTy FG F Ret ArgTys
+typeArgs FG G Args ArgTys
+----------------------------- [T-Call]
+typeOf FG G call(F, Args) Ret
+
+
+typeRecFields FG G Fields FTys
+---------------------------------------- [T-RecBuild]
+typeOf FG G recBuild(Fields) recTy(FTys)
+
+
+typeOf FG G Rec recTy(Fields)
+lookup Fields Field FTy
+------------------------------------------ [T-RecField]
+typeOf FG G recFieldAccess(Rec, Field) FTy
+
+
+
+<span class="comment">/*Record Field Typing*/</span>
+
+-------------------------------------- [TRF-End]
+typeRecFields FG G endRecFieldExprs []
+
+
+typeOf FG G E Ty
+typeRecFields FG G Rest FTys
+no_lookup FTys L <span class="comment">/*each label only occurs once*/</span>
+------------------------------------------------------------- [TRF-Add]
+typeRecFields FG G addRecFieldExprs(L, E, Rest) (L, Ty)::FTys
+
+
+
+<span class="comment">/*Args Typing*/</span>
+
+------------------------ [TA-End]
+typeArgs FG G endArgs []
+
+
+typeArgs FG G Rest RestTys
+typeOf FG G E Ty
+------------------------------------------ [TA-Add]
+typeArgs FG G addArgs(E, Rest) Ty::RestTys
+
+
+
+<span class="comment">/*Statement Typing*/</span>
+
+------------------ [T-Noop]
+typeOK FG G noop G
+
+
+typeOK FG G C1 G1
+typeOK FG G1 C2 G2
+-------------------------- [T-Seq]
+typeOK FG G seq(C1, C2) G2
+
+
+no_lookup G X <span class="comment">/*can't overwrite existing decls*/</span>
+typeOf FG G E Ty
+---------------------------------------- [T-Declare]
+typeOK FG G declare(X, Ty, E) (X, Ty)::G
+
+
+typeOf FG G E Ty
+lookup G X Ty
+-------------------------- [T-Assign]
+typeOK FG G assign(X, E) G
+
+
+typeOf FG G Cond boolTy
+typeOK FG G Then GT
+typeOK FG G Else GE
+------------------------------------------ [T-IfThenElse]
+typeOK FG G ifThenElse(Cond, Then, Else) G
+<span class="comment">/*branches open new scopes*/</span>
+
+
+typeOf FG G Cond boolTy
+typeOK FG G Body GB
+------------------------------- [T-While]
+typeOK FG G while(Cond, Body) G
+<span class="comment">/*body opens a new scope*/</span>
+
+
+lookup G Rec recTy(FFields)
+checkRecUpdate Fields FFields Ty
+typeOf FG G E Ty
+--------------------------------------- [T-RecUpdate]
+typeOK FG G recUpdate(Rec, Fields, E) G
+
+
+typeOf FG G E Ty
+------------------------- [T-Print]
+typeOK FG G printVal(E) G
+
+
+
+<span class="comment">/*Check whether the update to the nested fields is valid
+  The tyctx is the fields of the record*/</span>
+Judgment checkRecUpdate : recFields* [(string, ty)] ty
+
+lookup RecFieldTys F Ty
+----------------------------------------- [CRU-OneField]
+checkRecUpdate oneField(F) RecFieldTys Ty
+
+
+lookup RecFieldTys F recTy(FFieldTys)
+checkRecUpdate Rest FFieldTys Ty
+----------------------------------------------- [CRU-AddField]
+checkRecUpdate addField(F, Rest) RecFieldTys Ty
+
+
+
+<span class="comment">/*Function Typing*/</span>
+
+paramsToTyCtx Params G
+typeOK FG (RetName, RetTy)::G Body G2 <span class="comment">/*ret name declared*/</span>
+-------------------------------------------------- [T-Fun]
+funTyOK FG fun(Name, RetTy, RetName, Params, Body)
+
+
+-------------------------- [PtTC-End]
+paramsToTyCtx endParams []
+
+
+paramsToTyCtx Rest TRest
+----------------------------------------------------- [PtTC-Add]
+paramsToTyCtx addParams(X, Ty, Rest) (X, Ty)::TRest
+
+
+
+<span class="comment">/*Program Typing*/</span>
+
+------------------------- [T-ProgramEnd]
+programTyOK FG endProgram
+
+
+funTyOK FG Fun
+programTyOK FG Rest
+------------------------------------ [T-ProgramAdd]
+programTyOK FG addProgram(Fun, Rest)
+
+
+
+----------------------------------- [BFTC-End]
+buildFunTyCtx endProgram emptyFunTy
+
+
+buildFunTyCtx Rest FRest
+getFunTy Fun Name Ret ArgTys
+----------------------------------------------------------- [BFTC-Add]
+buildFunTyCtx addProgram(Fun, Rest) addFunTy(Name, Ret, ArgTys, FRest)
+
+
+
+paramsToTyList Params ArgTys
+---------------------------------------------------------------- [GFT]
+getFunTy fun(Name, RetTy, RetName, Params, Body) Name RetTy ArgTys
+
+
+
+<span class="comment">/*Gather the function types, then typecheck the program*/</span>
+buildFunTyCtx P FG
+programTyOK FG P
+lookupFunTy FG "main" Ret Args
+============================== [PCheck]
+programChecks P
+
+
+
+
+<span class="comment">/*Typing for values to allow type soundness*/</span>
+Judgment typeOfVal : value* ty
+
+------------------------- [TV-Int]
+typeOfVal intVal(I) intTy
+
+
+------------------------ [TV-True]
+typeOfVal trueVal boolTy
+
+
+------------------------- [TV-False]
+typeOfVal falseVal boolTy
+
+
+typeOfEvalctx Fields FTys
+------------------------------------ [TV-Rec]
+typeOfVal recVal(Fields) recTy(FTys)
+
+
+
+
+<span class="comment">/*Typing for evaluation contexts to allow type soundness and recVal
+  typing*/</span>
+Fixed Judgment typeOfEvalctx : [(string, value)] [(string, ty)]
+
+=================== [TEC-Empty]
+typeOfEvalctx [] []
+
+
+typeOfVal V Ty
+typeOfEvalctx Rest RestTys
+=========================================== [TEC-Add]
+typeOfEvalctx (X, V)::Rest (X, Ty)::RestTys
+
+</pre>
+<h3>File:  eval.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggleeval.sos" onclick="toggleFile('eval.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="eval.sos">[Raw File]</a>
+<pre class="code sterling" id="eval.sos">
+Module functions:host
+
+functx ::= emptyFun
+         | addFun(string, string, [string], c, functx)
+                <span class="comment">/*fun name, ret name, params, body, rest*/</span>
+Translation functx :
+
+
+Judgment lookupFun : functx* string string [string] c
+                   <span class="comment">/*functx fun name, ret name, param names, body*/</span>
+
+------------------------------------------------------ [LF-Here]
+lookupFun addFun(F, Ret, NL, Body, Rest) F Ret NL Body
+
+
+lookupFun Rest X XRet XNL XBody
+X != Y
+----------------------------------------------------------- [LF-Later]
+lookupFun addFun(Y, YRet, YNL, YBody, Rest) X XRet XNL Body
+
+
+Judgment paramsToNameList : params* [string]
+
+----------------------------- [PtNL-End]
+paramsToNameList endParams []
+
+
+paramsToNameList Rest NRest
+------------------------------------------------ [PtNL-Add]
+paramsToNameList addParams(X, Ty, Rest) X::NRest
+
+
+
+<span class="comment">/*Output from the program printing*/</span>
+output ::= emptyOutput
+         | addOutput(output, value) <span class="comment">/*snoc for appending always*/</span>
+Translation output :
+
+Judgment appendOutput : output output* output
+
+---------------------------- [AO-Empty]
+appendOutput O emptyOutput O
+
+
+appendOutput O1 O2 O3
+------------------------------------------------- [AO-Add]
+appendOutput O1 addOutput(O2, V) addOutput(O3, V)
+
+
+
+
+<span class="comment">/*Expressions need output, functx because of function calls*/</span>
+Judgment eval_e : functx [(string, value)] e* value output
+Judgment eval_rf : functx [(string, value)] recFieldExprs* [(string, value)] output
+<span class="comment">/*given arguments and names, produce an eval ctx for the function*/</span>
+Judgment eval_args : functx [(string, value)] args* [string] [(string, value)] output
+<span class="comment">/*Statements produce a new eval ctx and some output*/</span>
+Judgment eval_c : functx [(string, value)] c* [(string, value)] output
+<span class="comment">/*get the evaluation information from a function
+  (name, return name, parameter names, body)*/</span>
+Judgment eval_fun : fun* string string [string] c
+<span class="comment">/*evaluate a program to find its output under a fun ctx*/</span>
+Judgment eval_program : [value] functx program* output
+<span class="comment">/*Evaluate a full program to get its output*/</span>
+Fixed Judgment full_eval : [value] program output
+
+
+<span class="comment">/*Expression Evaluation*/</span>
+
+---------------------------------------- [E-Num]
+eval_e FG G num(I) intVal(I) emptyOutput
+
+
+eval_e FG G E1 intVal(I1) O1
+eval_e FG G E2 intVal(I2) O2
+I1 + I2 = I
+appendOutput O1 O2 O
+------------------------------------ [E-Plus]
+eval_e FG G plus(E1, E2) intVal(I) O
+
+
+lookup G X V
+--------------------------------- [E-Name]
+eval_e FG G name(X) V emptyOutput
+
+
+eval_e FG G E1 intVal(I1) O1
+eval_e FG G E2 intVal(I2) O2
+I1 > I2
+appendOutput O1 O2 O
+------------------------------------- [E-GreaterTrue]
+eval_e FG G greater(E1, E2) trueVal O
+
+
+eval_e FG G E1 intVal(I1) O1
+eval_e FG G E2 intVal(I2) O2
+I1 <= I2
+appendOutput O1 O2 O
+-------------------------------------- [E-GreaterFalse]
+eval_e FG G greater(E1, E2) falseVal O
+
+
+eval_e FG G E1 V1 O1
+eval_e FG G E2 V2 O2
+val_eq V1 V2
+appendOutput O1 O2 O
+-------------------------------- [E-EqTrue]
+eval_e FG G eq(E1, E2) trueVal O
+
+
+eval_e FG G E1 V1 O1
+eval_e FG G E2 V2 O2
+! val_eq V1 V2
+appendOutput O1 O2 O
+--------------------------------- [E-EqFalse]
+eval_e FG G eq(E1, E2) falseVal O
+
+
+eval_e FG G E1 trueVal O1
+eval_e FG G E2 trueVal O2
+appendOutput O1 O2 O
+--------------------------------- [E-AndTrue]
+eval_e FG G and(E1, E2) trueVal O
+
+
+eval_e FG G E1 falseVal O
+---------------------------------- [E-AndFalse1]
+eval_e FG G and(E1, E2) falseVal O
+
+
+eval_e FG G E1 trueVal O1
+eval_e FG G E2 falseVal O2
+appendOutput O1 O2 O
+---------------------------------- [E-AndFalse2]
+eval_e FG G and(E1, E2) falseVal O
+
+
+eval_e FG G E1 trueVal O
+-------------------------------- [E-OrTrue1]
+eval_e FG G or(E1, E2) trueVal O
+
+
+eval_e FG G E1 falseVal O1
+eval_e FG G E2 trueVal O2
+appendOutput O1 O2 O
+-------------------------------- [E-OrTrue2]
+eval_e FG G or(E1, E2) trueVal O
+
+
+eval_e FG G E1 falseVal O1
+eval_e FG G E2 falseVal O2
+appendOutput O1 O2 O
+--------------------------------- [E-OrFalse]
+eval_e FG G or(E1, E2) falseVal O
+
+
+------------------------------------ [E-True]
+eval_e FG G true trueVal emptyOutput
+
+
+-------------------------------------- [E-False]
+eval_e FG G false falseVal emptyOutput
+
+
+lookupFun FG Fun RetName ParamNames Body
+eval_args FG G Args ParamNames ArgsCtx O1
+eval_c FG ArgsCtx Body G2 O2
+lookup G2 RetName V
+appendOutput O1 O2 O
+----------------------------------------- [E-Call]
+eval_e FG G call(F, Args) V O
+
+
+eval_rf FG G Fields FieldVals O
+------------------------------------------------ [E-RecBuild]
+eval_e FG G recBuild(Fields) recVal(FieldVals) O
+
+
+eval_e FG G Rec recVal(Fields) O
+lookup Fields Field V
+------------------------------------------ [E-RecField]
+eval_e FG G recFieldAccess(Rec, Field) V O
+
+
+
+<span class="comment">/*Record Field Evaluation*/</span>
+
+-------------------------------------------- [ERF-End]
+eval_rf FG G endRecFieldExprs [] emptyOutput
+
+
+eval_e FG G E V O1
+eval_rf FG G Rest FVs O2
+appendOutput O1 O2 O
+------------------------------------------------------- [ERF-Add]
+eval_rf FG G addRecFieldExprs(L, E, Rest) (L, V)::FVs O
+
+
+
+<span class="comment">/*Argument Evaluation*/</span>
+
+---------------------------------------- [EA-End]
+eval_args FG G endArgs [] [] emptyOutput
+
+
+eval_e FG G E V O1
+eval_args FG G Rest NRest C O2
+appendOutput O1 O2 O
+---------------------------------------------------- [EA-Add]
+eval_args FG G addArgs(E, Rest) X::NRest (X, V)::C O
+
+
+
+<span class="comment">/*Command Evaluation*/</span>
+
+------------------------------ [E-Noop]
+eval_c FG G noop G emptyOutput
+
+
+eval_c FG G C1 G1 O1
+eval_c FG G1 C2 G2 O2
+appendOutput O1 O2 O
+---------------------------- [E-Seq]
+eval_c FG G seq(C1, C2) G2 O
+
+
+eval_e FG G E V O
+----------------------------------------- [E-Declare]
+eval_c FG G declare(X, Ty, E) (X, V)::G O
+
+
+eval_e FG G E V O
+------------------------------------ [E-Assign]
+eval_c FG G assign(X, E) (X, V)::G O
+
+
+eval_e FG G Cond trueVal O1
+eval_c FG G Then G1 O2
+appendOutput O1 O2 O
+--------------------------------------------- [E-IfThenElseTrue]
+eval_c FG G ifThenElse(Cond, Then, Else) G1 O
+
+
+eval_e FG G Cond falseVal O1
+eval_c FG G Else G1 O2
+appendOutput O1 O2 O
+--------------------------------------------- [E-IfThenElseFalse]
+eval_c FG G ifThenElse(Cond, Then, Else) G1 O
+
+
+eval_e FG G Cond falseVal O
+--------------------------------- [E-WhileFalse]
+eval_c FG G while(Cond, Body) G O
+
+
+eval_e FG G Cond trueVal O1
+eval_c FG G Body G1 O2
+eval_c FG G1 while(Cond, Body) G2 O3
+appendOutput O1 O2 O4
+appendOutput O4 O3 O
+------------------------------------ [E-WhileTrue]
+eval_c FG G while(Cond, Body) G2 O
+
+
+eval_e FG G E V O
+lookup G Rec recVal(Fields)
+update_rec_fields RecFields Fields V Result
+------------------------------------------------- [E-RecUpdate]
+eval_c FG G recUpdate(Rec, RecFields, E) Result O
+
+
+eval_e FG G E V O
+----------------------------------------- [E-Print]
+eval_c FG G printVal(E) G addOutput(O, V)
+
+
+<span class="comment">/*Update the associations in the first tyCtx for the fields,
+  descending through it to place the value in the final one, producing
+  the ending tyCtx*/</span>
+Judgment update_rec_fields : recFields* [(string, value)] value [(string, value)]
+
+--------------------------------------------------- [URF-One]
+update_rec_fields oneField(F) Init V (F, V)::Init
+
+
+lookup Init F recVal(FFields)
+update_rec_fields Rest FFields V UpdatedFFields
+----------------------------------------------------- [URF-Step]
+{update_rec_fields addField(F, Rest) Init V
+                   (F, recVal(UpdatedFFields))::Init}
+
+
+
+<span class="comment">/*Program Evaluation*/</span>
+
+eval_fun Fun Name RetName Names Body
+{eval_program MainArgs addFun(Name, RetName, Names,
+                              Body, FG) Rest O}
+--------------------------------------------------- [EP-Add]
+eval_program ManArgs FG addProgram(Fun, Rest) O
+
+
+lookupFun FG "main" RetName Params Body
+buildEvalctx Params MainArgs G
+eval_c FG G Body G O
+--------------------------------------- [EP-End]
+eval_program MainArgs FG endProgram O
+
+
+paramsToNameList Params Names
+----------------------------------------------- [EF-Fun]
+eval_fun fun(Name, RetTy, RetName, Params, Body
+            ) Name RetName Names Body
+
+
+eval_program Args emptyFun P O
+============================== [FE-Program]
+full_eval Args P O
+
+
+
+<span class="comment">/*Turn a list of names and a list of values into an evalctx*/</span>
+Fixed Judgment buildEvalctx : [string] [value] [(string, value)]
+
+===================== [BEC-End]
+buildEvalctx [] [] []
+
+
+buildEvalctx PRest VRest ERest
+============================================ [BEC-Add]
+buildEvalctx N::PRest V::VRest (N, V)::ERest
+
+
+
+<span class="comment">/*Check equality in a way appropriate to each value type*/</span>
+Judgment val_eq : value* value
+
+-------------------------- [VE-Int]
+val_eq intVal(I) intVal(I)
+
+
+---------------------- [VE-True]
+val_eq trueVal trueVal
+
+
+------------------------ [VE-False]
+val_eq falseVal falseVal
+
+
+evalctx_eq Fields1 Fields2
+-------------------------------------- [VE-Rec]
+val_eq recVal(Fields1) recVal(Fields2)
+
+</pre>
+<h3>File:  domains.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggledomains.sos" onclick="toggleFile('domains.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="domains.sos">[Raw File]</a>
+<pre class="code sterling" id="domains.sos">
+Module functions:host
+
+<span class="comment">/*Equality for Type Contexts*/</span>
+Fixed Judgment tyctx_eq : [(string, ty)] [(string, ty)]
+
+all_same_ty G1 G2
+all_same_ty G2 G1
+================= [TCE]
+tyctx_eq G1 G2
+
+
+Fixed Judgment all_same_ty : [(string, ty)] [(string, ty)]
+
+================ [AST-Nil]
+all_same_ty [] G
+
+
+lookup G N Ty
+all_same_ty Rest G
+=========================== [AST-Cons]
+all_same_ty (N, Ty)::Rest G
+
+
+
+
+<span class="comment">/*Equality for Evaluation Contexts*/</span>
+Fixed Judgment evalctx_eq : [(string, value)] [(string, value)]
+
+all_same_val G1 G2
+all_same_val G2 G1
+================== [ECE]
+evalctx_eq G1 G2
+
+
+Fixed Judgment all_same_val : [(string, value)] [(string, value)]
+
+================= [ASV-Nil]
+all_same_val [] G
+
+
+lookup G N V2
+val_eq V1 V2
+all_same_val Rest G
+============================ [ASV-Cons]
+all_same_val (N, V1)::Rest G
+</pre>
+<div>
+</body>
+</html>

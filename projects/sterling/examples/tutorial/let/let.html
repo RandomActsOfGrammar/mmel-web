@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  tutorial:let</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  tutorial:let</h1><div class="section">
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module tutorial:let
+
+Builds on tutorial:host
+
+tm ::= ...
+     | let(string, tm, tm)
+
+
+--------------------------------------------- [Trans-Let]
+|{tm}- let(X, T1, T2) ~~> app(abs(X, T2), T1)
+
+
+
+eval T1 T11
+----------------------------------- [E-Let-Step]
+eval let(X, T1, T2) let(X, T11, T2)
+
+
+value T1
+subst X T1 T2 V
+--------------------- [E-Let-Subst]
+eval let(X, T1, T2) V
+
+
+
+X != Y
+subst X R T1 S1
+subst X R T2 S2
+--------------------------------------- [S-Let-NEq]
+subst X R let(Y, T1, T2) let(Y, S1, S2)
+
+
+subst X R T1 S1
+--------------------------------------- [S-Let-Eq]
+subst X R let(X, T1, T2) let(X, S1, T2)
+
+
+
+closed Vars T1
+closed X::Vars T2
+-------------------------- [C-Let]
+closed Vars let(X, T1, T2)
+</pre>
+<div>
+</body>
+</html>

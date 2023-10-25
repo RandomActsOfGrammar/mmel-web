@@ -1,0 +1,45 @@
+Module functions:host
+
+/*Equality for Type Contexts*/
+Fixed Judgment tyctx_eq : [(string, ty)] [(string, ty)]
+
+all_same_ty G1 G2
+all_same_ty G2 G1
+================= [TCE]
+tyctx_eq G1 G2
+
+
+Fixed Judgment all_same_ty : [(string, ty)] [(string, ty)]
+
+================ [AST-Nil]
+all_same_ty [] G
+
+
+lookup G N Ty
+all_same_ty Rest G
+=========================== [AST-Cons]
+all_same_ty (N, Ty)::Rest G
+
+
+
+
+/*Equality for Evaluation Contexts*/
+Fixed Judgment evalctx_eq : [(string, value)] [(string, value)]
+
+all_same_val G1 G2
+all_same_val G2 G1
+================== [ECE]
+evalctx_eq G1 G2
+
+
+Fixed Judgment all_same_val : [(string, value)] [(string, value)]
+
+================= [ASV-Nil]
+all_same_val [] G
+
+
+lookup G N V2
+val_eq V1 V2
+all_same_val Rest G
+============================ [ASV-Cons]
+all_same_val (N, V1)::Rest G

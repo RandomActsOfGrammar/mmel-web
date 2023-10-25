@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  stlc:letPair</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  stlc:letPair</h1><div class="section">
+<h3>File:  letPair.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggleletPair.sos" onclick="toggleFile('letPair.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="letPair.sos">[Raw File]</a>
+<pre class="code sterling" id="letPair.sos">
+Module stlc:letPair
+
+Builds on stlc:let
+Builds on stlc:pair
+
+
+<span class="comment">/*New syntax*/</span>
+term ::= ...
+       | letPair(string, string, term, term)
+
+
+<span class="comment">/*Typing Rule*/</span>
+typeOf G T1 pairTy(Ty1)
+typeOf (X, Ty1)::(Y, Ty1)::G T2 Ty2
+----------------------------------- [T-LetPair]
+typeOf G letPair(X, Y, T1, T2) Ty2
+
+
+<span class="comment">/*Translation Rule*/</span>
+typeOf G T1 pairTy(Ty)
+-------------------------- [Trans-LetPair]
+<span class="comment">/*G |- let x, y = T1 in T2  ~~>
+       let X = T1 in let Y = snd(X) in let X = fst(X) in T2*/</span>
+G |{term}- letPair(X, Y, T1, T2) ~~>
+           let(X, T1, let(Y, snd(var(X)), let(X, fst(var(X)), T2)))
+
+</pre>
+<div>
+</body>
+</html>
