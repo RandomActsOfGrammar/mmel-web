@@ -1,0 +1,52 @@
+Module sat_proofs:clauses
+
+
+Low <= X
+X <= High
+mem pos(X) A
+----------------------------------- [SC-RangeClause]
+sat_clause A rangeClause(Low, High)
+
+
+sat_clause A Clause
+------------------------------------- [SC-NoteClause]
+sat_clause A noteClause(Note, Clause)
+
+
+
+
+
+range Low High R
+negs R N
+subset N A
+------------------------------------- [USC-RangeClause]
+unsat_clause A rangeClause(Low, High)
+
+
+unsat_clause A Clause
+--------------------------------------- [USC-NoteClause]
+unsat_clause A noteClause(Note, Clause)
+
+
+
+Fixed Judgment negs : [int] [lit]
+
+========== [Negs-Nil]
+negs [] []
+
+
+negs Rest LRest
+=========================== [Negs-Cons]
+negs I::Rest neg(I)::LRest
+
+
+
+Fixed Judgment posLits : [int] [lit]
+
+============= [PL-Nil]
+posLits [] []
+
+
+posLits Rest LRest
+============================= [PL-Cons]
+posLits I::Rest pos(I)::LRest

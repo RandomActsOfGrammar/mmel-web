@@ -1,0 +1,34 @@
+Module sat_proofs:lrat
+
+/*
+  Variables are integers
+*/
+lit ::= pos(int)
+      | neg(int)
+
+Translation lit :
+
+
+clause ::= emptyClause
+         | or(lit, clause)
+
+Translation clause :
+
+
+formula ::= emptyFormula
+          | and(clause, formula)
+
+Translation formula :
+
+
+
+
+
+/*
+  Clause ID is an integer
+*/
+proof ::= emptyLrat(int, [int])
+        | addLrupProof(int, clause, [int], proof)
+        | deleteLratProof(int, proof)
+
+Translation proof : [(int, clause)]

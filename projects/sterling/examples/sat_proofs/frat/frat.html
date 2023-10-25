@@ -1,0 +1,402 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  sat_proofs:frat</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  sat_proofs:frat</h1><div class="section">
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module sat_proofs:frat
+
+Builds on sat_proofs:lrat
+
+
+<span class="comment">/*original clauses (o lines) at the start of the proof
+  Note that, unlike regular FRAT, we require all o lines to be at the
+  start (in full FRAT, o lines may mix with a and d lines).*/</span>
+fratProof ::= addOriginal(int, clause, fratProof)
+            | endOriginal(proof)
+
+Translation fratProof :
+
+
+
+
+
+proof ::= ...
+        <span class="comment">/*final clauses (f lines) at the end of the proof, with and
+          without hints*/</span>
+        | endFrat(int, finalClauses)
+        | endFratPrf(int, [int], finalClauses)
+        <span class="comment">/*add a middle clause without a hint*/</span>
+        | addProofless(int, clause, proof)
+        <span class="comment">/*move a known clause from one ID to another
+          (relocateClause(From, To, Rest)*/</span>
+        | relocateClause(int, int, proof)
+        <span class="comment">/*delete the specific clause with its ID*/</span>
+        | deleteFrat(int, clause, proof)
+        <span class="comment">/*text comment in the proof (c lines)*/</span>
+        | commentProof(string, proof)
+
+
+rupProof Known emptyClause Prf
+------------------------------------------------------ [Trans-EndFrat]
+Known |{proof}- endFrat(ID, FC) ~~> emptyLrat(ID, Prf)
+
+
+------------------------------------------- [Trans-EndFratPrf]
+Known |{proof}- endFratPrf(ID, Prf, FC) ~~>
+                emptyLrat(ID, Prf)
+
+
+rupProof Known C Prf
+---------------------------------------------- [Trans-AddProofless]
+Known |{proof}- addProofless(ID, C, Rest) ~~>
+                addLrupProof(ID, C, Prf, Rest)
+
+
+<span class="comment">/*
+  Adds clause again, but with the new ID, then deletes the original
+*/</span>
+T != F
+mem (F, C) Known
+---------------------------------------------- [Trans-RelocateProof]
+Known |{proof}- relocateClause(F, T, Rest) ~~>
+                addLrupProof(T, C, [F],
+                     deleteLratProof(F, Rest))
+
+
+----------------------------------------------------- [Trans-RelocateProofSame]
+Known |{proof}- relocateClause(ID, ID, Rest) ~~> Rest
+
+
+--------------------------------------- [Trans-DeleteFrat]
+K |{proof}- deleteFrat(ID, C, Rest) ~~>
+            deleteLratProof(ID, Rest)
+
+
+------------------------------------------------ [Trans-CommentProof]
+K |{proof}- commentProof(Comment, Rest) ~~> Rest
+
+
+
+
+
+finalClauses ::= addFClause(int, clause, finalClauses)
+               | endFClause
+
+Translation finalClauses :
+</pre>
+<h3>File:  check.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglecheck.sos" onclick="toggleFile('check.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="check.sos">[Raw File]</a>
+<pre class="code sterling" id="check.sos">
+Module sat_proofs:frat
+
+
+Fixed Judgment fratProveFormula : formula fratProof
+
+formulaToKnown 1 F KnownClauses
+checkFratProof KnownClauses [] Prf
+================================== [FratProveFormula]
+fratProveFormula F Prf
+
+
+
+
+
+    <span class="comment">/*clauses in the formula, known clauses, o lines + regular proof*/</span>
+Judgment checkFratProof : [(int, clause)] [(int, clause)] fratProof*
+
+select (ID, C) CRest Clauses <span class="comment">/*pull out this clause*/</span>
+checkFratProof CRest (ID, C)::Known Rest
+----------------------------------------------------- [CFP-AddOriginal]
+checkFratProof Clauses Known addOriginal(ID, C, Rest)
+
+
+checkProof Known Prf <span class="comment">/*transition to checking the regular proof*/</span>
+--------------------------------------------- [CFP-EndOriginal]
+checkFratProof Clauses Known endOriginal(Prf)
+
+
+
+
+
+<span class="comment">/*Check Proof*/</span>
+
+remove_all Known ID KRest
+rupProof Known emptyClause Prf <span class="comment">/*creates proof itself*/</span>
+checkFinalClauses (ID, emptyClause)::KRest Final
+------------------------------------------------ [CP-EndFrat]
+checkProof Known endFrat(ID, Final)
+
+
+remove_all Known ID KRest
+rupProof Known emptyClause Prf
+checkFinalClauses (ID, emptyClause)::KRest Final
+------------------------------------------------ [CP-EndFratPrf]
+checkProof Known endFratPrf(ID, Prf, Final)
+
+
+remove_all Known ID KRest
+rupProof Known C Prf
+checkProof (ID, C)::KRest Rest
+------------------------------------------ [CP-AddProofless]
+checkProof Known addProofless(ID, C, Rest)
+
+
+To != From
+remove_all Known To KRest
+select (From, C) KRest2 KRest
+checkProof (To, C)::KRest2 Rest
+----------------------------------------------- [CP-RelocateClause]
+checkProof Known relocateClause(From, To, Rest)
+
+
+select (ID, C) KRest Known
+checkProof KRest Rest
+---------------------------------------- [CP-DeleteFrat]
+checkProof Known deleteFrat(ID, C, Rest)
+
+
+checkProof Known Rest
+-------------------------------------------- [CP-CommentProof]
+checkProof Known commentProof(Comment, Rest)
+
+
+
+
+
+Judgment checkFinalClauses : [(int, clause)] finalClauses*
+
+select (ID, C) KRest Known
+checkFinalClauses KRest Rest
+----------------------------------------------- [CFC-AddFClause]
+checkFinalClauses Known addFClause(ID, C, Rest)
+
+
+------------------------------- [CFC-EndOriginal]
+checkFinalClauses [] endFClause
+</pre>
+<h3>File:  elaboration.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggleelaboration.sos" onclick="toggleFile('elaboration.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="elaboration.sos">[Raw File]</a>
+<pre class="code sterling" id="elaboration.sos">
+Module sat_proofs:frat
+
+<span class="comment">/*
+  Note on elaboration:
+  The second pass in FRAT elaboration is done after we have produced
+  only LRAT clauses.  This part is not extensibly interesting because
+  of this, so we do not define it here.
+*/</span>
+
+<span class="comment">/*
+  In elaboration, we work backward and don't initially know if a
+  clause will be necessary, so we mark it as unknown.  Once we find a
+  use of it, we mark it as needed.  If it is still marked as unknown
+  once we reach where it was added, we know it is not needed and can
+  drop it.
+*/</span>
+clauseUsedness ::= needed | unknown
+Translation clauseUsedness :
+
+                <span class="comment">/*clauses coming down, original proof, clauses needed,
+                  output proof*/</span>
+Judgment elaborate : {[(int, clause)] proof* [(int, clauseUsedness)]
+                      proof}
+
+
+endKnownClauses FC Needed
+select (ID, needed) NRest Needed
+rupProof Known emptyClause Prf
+makeUsed NRest Prf Updated
+---------------------------------------- [Ela-EndFrat]
+{elaborate Known endFrat(ID, FC) Updated
+           emptyLrat(ID, Prf)}
+
+
+endKnownClauses FC Needed
+select (ID, needed) NRest Needed
+makeUsed NRest Prf Updated
+------------------------------------------------ [Ela-EndFratPrf]
+{elaborate Known endFratPrf(ID, Prf, FC) Updated
+             emptyLrat(ID, Prf)}
+
+
+<span class="comment">/*Note we do not have rules for proof endings without the set of final
+  clauses.  This is because we need the final clauses for the
+  elaboration step to know the remaining clauses.*/</span>
+
+
+select (ID, C) KRest Known
+elaborate KRest Rest Needed ERest
+----------------------------------------- [Ela-DeleteFrat]
+{elaborate Known deleteFrat(ID, C, Rest)
+             (ID, unknown)::Needed ERest}
+<span class="comment">/*Add as unknown because this is the first time we've seen it, going
+  thourgh the proof backward, so we don't know if it is used*/</span>
+
+
+select (ID, C) KRest Known
+elaborate KRest Rest Needed ERest
+------------------------------------------ [Ela-DeleteLratProof]
+{elaborate Known deleteLratProof(ID, Rest)
+           (ID, unknown)::Needed ERest}
+
+
+remove_all Known ID KRest
+elaborate (ID, C)::KRest Rest Needed ERest
+select (ID, needed) NRest Needed
+makeUsed NRest Prf Updated
+--------------------------------------------- [Ela-AddLrupProofNeeded]
+{elaborate Known
+     addLrupProof(ID, C, Prf, Rest)
+     Updated addLrupProof(ID, C, Prf, ERest)}
+
+
+remove_all Known ID KRest
+elaborate (ID, C)::KRest Rest Needed ERest
+select (ID, unknown) NRest Needed
+------------------------------------------ [Ela-AddLrupProofUnknown]
+{elaborate Known
+     addLrupProof(ID, C, Prf, Rest)
+     NRest ERest}
+
+
+remove_all Known ID KRest
+elaborate (ID, C)::KRest Rest Needed ERest
+select (ID, needed) NRest Needed
+rupProof Known C Prf
+makeUsed NRest Prf Updated
+-------------------------------------------- [Ela-AddProoflessNeeded]
+{elaborate Known addProofless(ID, C, Rest)
+    Updated addLrupProof(ID, C, Prf, ERest)}
+
+
+remove_all Known ID KRest
+elaborate (ID, C)::KRest Rest Needed ERest
+select (ID, unknown) NRest Needed
+------------------------------------------ [Ela-AddProoflessUnknown]
+{elaborate Known addProofless(ID, C, Rest)
+           NRest ERest}
+
+
+select (From, C) KRest Known
+elaborate (To, C)::KRest Rest Needed ERest
+select (To, needed) NRest Needed
+----------------------------------------------- [Ela-RelocateNeeded]
+{elaborate Known relocateClause(From, To, Rest)
+           (From, needed)::NRest
+           relocateClause(From, To, ERest)}
+
+
+select (From, C) KRest Known
+elaborate (To, C)::KRest Rest Needed ERest
+select (To, unknown) NRest Needed
+----------------------------------------------- [Ela-RelocateUnknown]
+{elaborate Known relocateClause(From, To, Rest)
+           (From, unknown)::NRest ERest}
+
+
+elaborate Known Rest Needed ERest
+-------------------------------------------------------- [Ela-Comment]
+elaborate Known commentProof(Comment, Rest) Needed ERest
+
+
+Known |{proof}- P ~~> PT
+elaborate Known PT Needed EP
+---------------------------- [Ela-Trans]*
+elaborate Known P Needed EP
+
+
+
+
+
+<span class="comment">/*produce the set of clauses known at the end of the proof*/</span>
+Judgment endKnownClauses : finalClauses* [(int, clauseUsedness)]
+
+
+----------------------------- [EKC-End]
+endKnownClauses endFClause []
+
+
+isEmpty C
+endKnownClauses Rest KRest
+---------------------------------------- [EKC-AddEmpty]
+{endKnownClauses addFClause(ID, C, Rest)
+                 (ID, needed)::KRest}
+
+
+!isEmpty C
+endKnownClauses Rest KRest
+----------------------------------------- [EKC-AddNonEmpty]
+{endKnownClauses addFClause(ID, C, Rest)
+                 (ID, unknown)::KRest}
+
+
+
+
+
+<span class="comment">/*
+  This relation permits us to have empty-ish clause constructors from
+  other extensions that still work here
+*/</span>
+Judgment isEmpty : clause*
+
+------------------- [IsEmpty-EmptyClause]
+isEmpty emptyClause
+
+
+|{clause}- C ~~> CT
+isEmpty CT
+------------------- [IsEmpty-Trans]*
+isEmpty C
+
+
+
+
+
+<span class="comment">/*Mark everything in the proof as needed
+  {original known clauses, proof, updated clauses}*/</span>
+Fixed Judgment makeUsed : {[(int, clauseUsedness)] [int]
+                           [(int, clauseUsedness)]}
+
+======================= [MU-Nil]
+makeUsed Known [] Known
+
+
+select (ID, needed) KRest Known
+makeUsed KRest Rest KOut
+========================================== [MU-ConsNeeded]
+makeUsed Known ID::Rest (ID, needed)::KOut
+
+
+select (ID, unknown) KRest Known
+makeUsed KRest Rest KOut
+========================================== [MU-ConsUnknown]
+makeUsed Known ID::Rest (ID, needed)::KOut
+
+
+<span class="comment">/*Add the delete clauses to the given proof
+ {known clauses, clause ID's to delete, original proof, output proof}*/</span>
+Fixed Judgment addDeletes : [int] proof proof
+
+================= [AD-Nil]
+addDeletes [] P P
+
+
+addDeletes Rest P PRest
+================================================ [AD-Cons]
+addDeletes ID::Rest P deleteLratProof(ID, PRest)
+</pre>
+<div>
+</body>
+</html>

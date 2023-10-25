@@ -1,0 +1,133 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  sat_proofs:clauses</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  sat_proofs:clauses</h1><div class="section">
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module sat_proofs:clauses
+
+Builds on sat_proofs:lrat
+
+clause ::= ...
+         | rangeClause(int, int)
+         | noteClause(string, clause)
+
+
+Low <= High
+1 + Low = PlusOne
+---------------------------------------------- [Trans-RangeClauseStep]
+|{clause}- rangeClause(Low, High) ~~>
+      or(pos(Low), rangeClause(PlusOne, High))
+
+
+Low > High
+------------------------------------------------- [Trans-RangeClauseEnd]
+|{clause}- rangeClause(Low, High) ~~> emptyClause
+
+
+---------------------------------------------- [Trans-NoteClause]
+|{clause}- noteClause(Note, Clause) ~~> Clause
+</pre>
+<h3>File:  sat.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesat.sos" onclick="toggleFile('sat.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="sat.sos">[Raw File]</a>
+<pre class="code sterling" id="sat.sos">
+Module sat_proofs:clauses
+
+
+Low <= X
+X <= High
+mem pos(X) A
+----------------------------------- [SC-RangeClause]
+sat_clause A rangeClause(Low, High)
+
+
+sat_clause A Clause
+------------------------------------- [SC-NoteClause]
+sat_clause A noteClause(Note, Clause)
+
+
+
+
+
+range Low High R
+negs R N
+subset N A
+------------------------------------- [USC-RangeClause]
+unsat_clause A rangeClause(Low, High)
+
+
+unsat_clause A Clause
+--------------------------------------- [USC-NoteClause]
+unsat_clause A noteClause(Note, Clause)
+
+
+
+Fixed Judgment negs : [int] [lit]
+
+========== [Negs-Nil]
+negs [] []
+
+
+negs Rest LRest
+=========================== [Negs-Cons]
+negs I::Rest neg(I)::LRest
+
+
+
+Fixed Judgment posLits : [int] [lit]
+
+============= [PL-Nil]
+posLits [] []
+
+
+posLits Rest LRest
+============================= [PL-Cons]
+posLits I::Rest pos(I)::LRest
+</pre>
+<h3>File:  check.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglecheck.sos" onclick="toggleFile('check.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="check.sos">[Raw File]</a>
+<pre class="code sterling" id="check.sos">
+Module sat_proofs:clauses
+
+
+range Low High R
+posLits R L
+----------------------------------- [GL-RangeClause]
+gatherLits rangeClause(Low, High) L
+
+
+gatherLits Clause L
+------------------------------------- [GL-NoteClause]
+gatherLits noteClause(Note, Clause) L
+
+
+
+
+range Low High Range
+select I RangeRest Range
+!mem pos(I) A
+!mem neg(I) A
+negs RangeRest N
+subset N A
+------------------------------------------- [UC-RangeClause]
+unit_clause A rangeClause(Low, High) pos(I)
+
+
+unit_clause A Clause L
+---------------------------------------- [UC-NoteClause]
+unit_clause A noteClause(Note, Clause) L
+</pre>
+<div>
+</body>
+</html>

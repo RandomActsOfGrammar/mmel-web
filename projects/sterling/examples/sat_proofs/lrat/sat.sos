@@ -1,0 +1,51 @@
+Module sat_proofs:lrat
+
+Judgment sat_clause : [lit] clause*
+Judgment sat_formula : [lit] formula*
+
+mem L A
+------------------------ [SC-Here]
+sat_clause A or(L, Rest)
+
+
+sat_clause A Rest
+------------------------ [SC-Later]
+sat_clause A or(L, Rest)
+
+
+
+-------------------------- [SF-Empty]
+sat_formula A emptyFormula
+
+
+sat_clause A C
+sat_formula A Rest
+-------------------------- [SF-And]
+sat_formula A and(C, Rest)
+
+
+
+
+Judgment negate_lit : lit* lit
+
+------------------------ [N-Pos]
+negate_lit pos(V) neg(V)
+
+
+------------------------ [N-Neg]
+negate_lit neg(V) pos(V)
+
+
+
+
+Judgment unsat_clause : [lit] clause*
+
+-------------------------- [USC-EmptyClause]
+unsat_clause A emptyClause
+
+
+negate_lit L NL
+mem NL A
+unsat_clause A Rest
+-------------------------- [USC-Step]
+unsat_clause A or(L, Rest)

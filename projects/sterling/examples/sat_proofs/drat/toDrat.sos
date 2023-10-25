@@ -1,0 +1,26 @@
+Module sat_proofs:drat
+
+Judgment toDrat : [(int, clause)] proof* dratProof
+
+-------------------------------------------- [TD-EmptyLrat]
+toDrat Known emptyLrat(ID, Prf) addDratEmpty
+
+
+remove_all Known ID KRest
+toDrat (ID, C)::KRest Rest DRest
+-------------------------------------------- [TD-AddLrup]
+{toDrat Known addLrupProof(ID, C, Prf, Rest)
+              addDratClause(C, DRest)}
+
+
+select (ID, C) KRest Known
+toDrat KRest Rest DRest
+------------------------------------------- [TD-DeleteLrat]
+{toDrat Known deleteLratProof(ID, Rest)
+                      deleteDrat(C, DRest)}
+
+
+Known |{proof}- P ~~> PT
+toDrat Known PT D
+------------------------ [TD-Trans]*
+toDrat Known P D
