@@ -1,0 +1,29 @@
+Module lambda_calculus:typing
+
+Judgment typeOf : [(string, ty)] e* ty
+
+lookup G X Ty
+------------------ [T-Var]
+typeOf G var(X) Ty
+
+
+typeOf (X, Ty1)::G Body Ty2
+--------------------------------------- [T-Abs]
+typeOf G abs(X, Body) arrowTy(Ty1, Ty2)
+
+
+typeOf (X, Ty1)::G Body Ty2
+---------------------------------------------- [T-Tyabs]
+typeOf G tyabs(X, Ty1, Body) arrowTy(Ty1, Ty2)
+
+
+typeOf G E1 arrowTy(Ty1, Ty2)
+typeOf G E2 Ty1
+----------------------------- [T-App]
+typeOf G app(E1, E2) Ty2
+
+
+|{e}- E ~~> E_T
+typeOf G E_T Ty
+--------------- [T-Trans]*
+typeOf G E Ty

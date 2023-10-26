@@ -1,0 +1,244 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  lambda_calculus:host</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  lambda_calculus:host</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module lambda_calculus:host
+
+e ::= var(string)
+    | abs(string, e)
+    | app(e, e)
+
+Translation e :
+</pre>
+<h3>File:  eval.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggleeval.sos" onclick="toggleFile('eval.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="eval.sos">[Raw File]</a>
+<pre class="code sterling" id="eval.sos">
+Module lambda_calculus:host
+
+Judgment eval : e* e
+
+------------------------------ [E-Abs]
+eval abs(X, Body) abs(X, Body)
+
+
+eval E1 abs(X, Body)
+eval E2 V2
+subst X V2 Body B
+eval B V
+-------------------- [E-App]
+eval app(E1, E2) V
+
+
+
+Judgment subst : string e e* e
+
+------------------ [S-Var-Eq]
+subst X R var(X) R
+
+
+X != Y
+----------------------- [S-Var-NEq]
+subst X R var(Y) var(Y)
+
+
+----------------------------------- [S-Abs-Eq]
+subst X R abs(X, Body) abs(X, Body)
+
+
+X != Y
+subst X R Body B
+-------------------------------- [S-Abs-NEq]
+subst X R abs(Y, Body) abs(Y, B)
+
+
+subst X R E1 S1
+subst X R E2 S2
+--------------------------------- [S-App]
+subst X R app(E1, E2) app(S1, S2)
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="host.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="host-details.html#0">Module lambda_calculus:host.</a>
+
+<a class="command" href="host-details.html#1">Translation_Constraint trans_is : forall E E',
+  |{e}- E ~~> E' -> is_e E -> is_e E'.</a>
+
+
+<span class="comment">%Generally a good idea to include this so extensions can prove things</span>
+<span class="comment">%based on the structure of a term</span>
+<a class="command" href="host-details.html#2">Ext_Ind is_e E with |{e}- E ~~> E'.</a>
+
+
+<a class="command" href="host-details.html#3">Translation_Constraint trans_same : forall E E1 E2,
+  |{e}- E ~~> E1 -> |{e}- E ~~> E2 -> E1 = E2.</a>
+
+
+<a class="command" href="host-details.html#4">Extensible_Theorem
+  subst_exists : forall X R E,
+    IsE : is_e E ->
+    IsX : is_string X ->
+    IsR : is_e R ->
+    exists S, subst X R E S
+  on IsE.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(5);" id="toggleproof5">[Show Proof]</a>
+<div class="proof" id="proof5" style="display: none;">
+<span class="comment">%var</span>
+ <a class="tactic" href="host-details.html#5">Or: apply is_string_eq_or_not to IsX IsE1.</a> <a class="tactic" href="host-details.html#6">Eq: case Or.</a>
+   <span class="comment">%X = S</span>
+    <a class="tactic" href="host-details.html#7">search.</a>
+   <span class="comment">%X != S</span>
+    <a class="tactic" href="host-details.html#8">search.</a>
+<span class="comment">%abs</span>
+ <a class="tactic" href="host-details.html#9">Or: apply is_string_eq_or_not to IsX IsE1.</a> <a class="tactic" href="host-details.html#10">Eq: case Or.</a>
+   <span class="comment">%X = S</span>
+    <a class="tactic" href="host-details.html#11">search.</a>
+   <span class="comment">%X != S</span>
+    <a class="tactic" href="host-details.html#12">apply IH to IsE2 IsX IsR.</a> <a class="tactic" href="host-details.html#13">search.</a>
+<span class="comment">%app</span>
+ <a class="tactic" href="host-details.html#14">apply IH to IsE1 IsX IsR.</a> <a class="tactic" href="host-details.html#15">apply IH to IsE2 IsX IsR.</a> <a class="tactic" href="host-details.html#16">search.</a></div>
+
+
+<a class="command" href="host-details.html#17">Extensible_Theorem
+  subst_is : forall X R E S,
+    IsE : is_e E ->
+    IsX : is_string X ->
+    IsR : is_e R ->
+    S : subst X R E S ->
+    is_e S
+  on S.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(18);" id="toggleproof18">[Show Proof]</a>
+<div class="proof" id="proof18" style="display: none;">
+<span class="comment">%S-Var-Eq</span>
+ <a class="tactic" href="host-details.html#18">search.</a>
+<span class="comment">%S-Var-NEq</span>
+ <a class="tactic" href="host-details.html#19">search.</a>
+<span class="comment">%S-Abs-Eq</span>
+ <a class="tactic" href="host-details.html#20">search.</a>
+<span class="comment">%S-Abs-NEq</span>
+ <a class="tactic" href="host-details.html#21">Is: case IsE.</a> <a class="tactic" href="host-details.html#22">apply IH to _ _ _ S2.</a> <a class="tactic" href="host-details.html#23">search.</a>
+<span class="comment">%S-App</span>
+ <a class="tactic" href="host-details.html#24">Is: case IsE.</a> <a class="tactic" href="host-details.html#25">apply IH to _ _ _ S1.</a> <a class="tactic" href="host-details.html#26">apply IH to _ _ _ S2.</a> <a class="tactic" href="host-details.html#27">search.</a></div>
+
+
+<a class="command" href="host-details.html#28">Extensible_Theorem
+  eval_is : forall E V,
+    IsE : is_e E ->
+    Ev : eval E V ->
+    is_e V
+  on Ev.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(29);" id="toggleproof29">[Show Proof]</a>
+<div class="proof" id="proof29" style="display: none;">
+<span class="comment">%E-Abs</span>
+ <a class="tactic" href="host-details.html#29">search.</a>
+<span class="comment">%E-App</span>
+ <a class="tactic" href="host-details.html#30">Is: case IsE.</a> <a class="tactic" href="host-details.html#31">IsAbs: apply IH to _ Ev1.</a> <a class="tactic" href="host-details.html#32">apply IH to _ Ev2.</a>
+ <a class="tactic" href="host-details.html#33">case IsAbs.</a> <a class="tactic" href="host-details.html#34">apply subst_is to _ _ _ Ev3.</a> <a class="tactic" href="host-details.html#35">apply IH to _ Ev4.</a> <a class="tactic" href="host-details.html#36">search.</a></div>
+
+
+<a class="command" href="host-details.html#37">Extensible_Theorem
+  subst_unique : forall X R E SA SB,
+    IsE : is_e E ->
+    IsX : is_string X ->
+    IsR : is_e R ->
+    SA : subst X R E SA ->
+    SB : subst X R E SB ->
+    SA = SB
+  on SA.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(38);" id="toggleproof38">[Show Proof]</a>
+<div class="proof" id="proof38" style="display: none;">
+<span class="comment">%S-Var-Eq</span>
+ <a class="tactic" href="host-details.html#38">SB: case SB.</a>
+   <span class="comment">%S-Var-Eq</span>
+    <a class="tactic" href="host-details.html#39">search.</a>
+   <span class="comment">%S-Var-NEq</span>
+    <a class="tactic" href="host-details.html#40">apply SB to _.</a>
+<span class="comment">%S-Var-NEq</span>
+ <a class="tactic" href="host-details.html#41">SB: case SB.</a>
+   <span class="comment">%S-Var-Eq</span>
+    <a class="tactic" href="host-details.html#42">apply SA1 to _.</a>
+   <span class="comment">%S-Var-NEq</span>
+    <a class="tactic" href="host-details.html#43">search.</a>
+<span class="comment">%S-Abs-Eq</span>
+ <a class="tactic" href="host-details.html#44">SB: case SB.</a>
+   <span class="comment">%S-Abs-Eq</span>
+    <a class="tactic" href="host-details.html#45">search.</a>
+   <span class="comment">%S-Abs-NEq</span>
+    <a class="tactic" href="host-details.html#46">apply SB to _.</a>
+<span class="comment">%S-Abs-NEq</span>
+ <a class="tactic" href="host-details.html#47">SB: case SB.</a>
+   <span class="comment">%S-Abs-Eq</span>
+    <a class="tactic" href="host-details.html#48">apply SA1 to _.</a>
+   <span class="comment">%S-Abs-NEq</span>
+    <a class="tactic" href="host-details.html#49">Is: case IsE.</a> <a class="tactic" href="host-details.html#50">apply IH to _ _ _ SA2 SB1.</a> <a class="tactic" href="host-details.html#51">search.</a>
+<span class="comment">%S-App</span>
+ <a class="tactic" href="host-details.html#52">Is: case IsE.</a> <a class="tactic" href="host-details.html#53">SB: case SB.</a> <a class="tactic" href="host-details.html#54">apply IH to _ _ _ SA1 SB.</a>
+ <a class="tactic" href="host-details.html#55">apply IH to _ _ _ SA2 SB1.</a> <a class="tactic" href="host-details.html#56">search.</a></div>
+
+
+<a class="command" href="host-details.html#57">Extensible_Theorem
+  eval_unique : forall E VA VB,
+    IsE : is_e E ->
+    EvA : eval E VA ->
+    EvB : eval E VB ->
+    VA = VB
+  on EvA.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(58);" id="toggleproof58">[Show Proof]</a>
+<div class="proof" id="proof58" style="display: none;">
+<span class="comment">%E-Abs</span>
+ <a class="tactic" href="host-details.html#58">EvB: case EvB.</a> <a class="tactic" href="host-details.html#59">search.</a>
+<span class="comment">%E-App</span>
+ <a class="tactic" href="host-details.html#60">Is: case IsE.</a> <a class="tactic" href="host-details.html#61">EvB: case EvB.</a> <a class="tactic" href="host-details.html#62">apply IH to _ EvA1 EvB.</a>
+ <a class="tactic" href="host-details.html#63">apply IH to _ EvA2 EvB1.</a> <a class="tactic" href="host-details.html#64">IsAbs: apply eval_is to _ EvA1.</a> <a class="tactic" href="host-details.html#65">case IsAbs.</a>
+ <a class="tactic" href="host-details.html#66">apply eval_is to _ EvA2.</a> <a class="tactic" href="host-details.html#67">apply subst_is to _ _ _ EvA3.</a>
+ <a class="tactic" href="host-details.html#68">apply subst_unique to _ _ _ EvA3 EvB2.</a> <a class="tactic" href="host-details.html#69">apply IH to _ EvA4 EvB3.</a>
+ <a class="tactic" href="host-details.html#70">search.</a></div>
+
+
+<span class="comment">%anything evaluation-related must be the same across translation</span>
+<a class="command" href="host-details.html#71">Translation_Constraint trans_subst : forall X R E S E',
+  Trans : |{e}- E ~~> E' ->
+  IsE : is_e E ->
+  IsX : is_string X ->
+  IsR : is_e R ->
+  S : subst X R E S ->
+  exists S', subst X R E' S'.</a>
+<a class="command" href="host-details.html#72">Translation_Constraint trans_subst_same : forall X R E S E' S',
+  Trans : |{e}- E ~~> E' ->
+  IsE : is_e E ->
+  isX : is_string X ->
+  IsR : is_e R ->
+  S : subst X R E S ->
+  S' : subst X R E' S' ->
+  S = S'.</a>
+
+<a class="command" href="host-details.html#73">Translation_Constraint trans_eval : forall E E' V,
+  Trans : |{e}- E ~~> E' ->
+  IsE : is_e E ->
+  Ev : eval E V ->
+  exists V', eval E' V'.</a>
+<a class="command" href="host-details.html#74">Translation_Constraint trans_eval_same : forall E E' V V',
+  Trans : |{e}- E ~~> E' ->
+  IsE : is_e E ->
+  Ev : eval E V ->
+  Ev' : eval E' V' ->
+  V = V'.</a>
+
+
+<a class="command" href="host-details.html#75">Ext_Ind eval E V with |{e}- E ~~> E'.</a>
+</pre>
+</div>
+</body>
+</html>

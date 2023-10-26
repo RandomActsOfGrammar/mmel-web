@@ -1,0 +1,32 @@
+Module lambda_calculus:typing
+
+Builds on lambda_calculus:host
+
+e ::= ...
+    | tyabs(string, ty, e)
+
+ty ::= baseTy /*just so we can have concrete types*/
+     | arrowTy(ty, ty)
+
+Translation ty :
+
+
+----------------------------------------- [Trans-Tyabs]
+|{e}- tyabs(X, Ty, Body) ~~> abs(X, Body)
+
+
+
+
+------------------------------------ [E-Tyabs]
+eval tyabs(X, Ty, Body) abs(X, Body)
+
+
+
+----------------------------------------- [S-Tyabs-Eq]
+subst X R tyabs(X, Ty, Body) abs(X, Body)
+
+
+X != Y
+subst X R Body B
+-------------------------------------- [S-Tyabs-NEq]
+subst X R tyabs(Y, Ty, Body) abs(Y, B)

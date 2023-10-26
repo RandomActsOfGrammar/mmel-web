@@ -1,0 +1,19 @@
+Module lambda_calculus:bool
+
+Builds on lambda_calculus:host
+
+e ::= ...
+    | trueE
+    | falseE
+    | if(e, e, e)
+
+-------------------------------------------- [Trans-True]
+|{e}- trueE ~~> abs("a", abs("b", var("a")))
+
+
+--------------------------------------------- [Trans-False]
+|{e}- falseE ~~> abs("a", abs("b", var("b")))
+
+
+--------------------------------------------- [Trans-If]
+|{e}- if(Cond, T, F) ~~> app(app(Cond, T), F)

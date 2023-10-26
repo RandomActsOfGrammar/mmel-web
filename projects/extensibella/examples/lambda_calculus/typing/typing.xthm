@@ -1,0 +1,242 @@
+Module lambda_calculus:typing.
+
+
+Prove_Constraint lambda_calculus:host:trans_is.
+%tyabs
+ case Hyp1. search.
+
+
+Prove_Ext_Ind lambda_calculus:host:is_e.
+%tyabs
+ apply ext_ind_is_int_is_e to Rel4. apply ext_ind_pos_is_e to Rel4.
+ L: apply lt_plus_one to Rel1 _. Acc: case Acc. A2: apply Acc to _ L.
+ apply IH to Rel4 A2. search.
+
+
+Prove_Constraint lambda_calculus:host:trans_same.
+%tyabs
+ case Hyp1. search.
+
+
+Prove lambda_calculus:host:subst_exists.
+%tyabs
+ Or: apply is_string_eq_or_not to IsX IsE1. Eq: case Or.
+   %X = S
+    search.
+   %X != S
+    apply IH to IsE3 IsX IsR. search.
+
+
+Prove lambda_calculus:host:subst_is.
+%S-Tyabs-Eq
+ case IsE. search.
+%S-Tyabs-NEq
+ Is: case IsE. apply IH to _ _ _ S2. search.
+
+
+Prove lambda_calculus:host:eval_is.
+%E-Tyabs
+ Is: case IsE. search.
+
+
+Prove lambda_calculus:host:subst_unique.
+%S-Tyabs-Eq
+ SB: case SB.
+   %S-Tyabs-Eq
+    search.
+   %S-Tyabs-NEq
+    apply SB to _.
+%S-Tyabs-NEq
+ SB: case SB.
+   %S-Tyabs-Eq
+    apply SA1 to _.
+   %S-Tyabs-NEq
+    Is: case IsE. apply IH to _ _ _ SA2 SB1. search.
+
+
+Prove lambda_calculus:host:eval_unique.
+%E-Tyabs
+ case EvB. search.
+
+
+Prove_Constraint lambda_calculus:host:trans_subst.
+%tyabs
+ S: case S.
+   %S-Tyabs-Eq
+    search.
+   %S-Tyabs-NEq
+    search.
+
+Prove_Constraint lambda_calculus:host:trans_subst_same.
+%tyabs
+ S: case S.
+   %S-Tyabs-Eq
+    S': case S'.
+      %S-Abs-Eq
+       search.
+      %S-Abs-NEq
+       apply S' to _.
+   %S-Tyabs-NEq
+    S': case S'.
+      %S-Abs-Eq
+       apply S to _.
+      %S-Abs-NEq
+       case IsE. apply subst_unique to _ _ _ S1 S'1. search.
+
+
+Prove_Constraint lambda_calculus:host:trans_eval.
+%tyabs
+ case Ev. search.
+
+Prove_Constraint lambda_calculus:host:trans_eval_same.
+%tyabs
+ case Ev. case Ev'. search.
+
+
+Prove_Ext_Ind lambda_calculus:host:eval.
+%E-Tyabs
+ search.
+
+
+Extensible_Theorem
+  type_weakening : forall G E Ty G',
+    IsE : is_e E ->
+    Ty : typeOf G E Ty ->
+    Lkp : (forall X XTy, lookup G X XTy -> lookup G' X XTy) ->
+    typeOf G' E Ty
+  on Ty.
+%T-Var
+ apply Lkp to Ty1. search.
+%T-Abs
+ Is: case IsE. apply IH to _ Ty1 _ with G' = (X, Ty1)::G'.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply Lkp to L1. search.
+ search.
+%T-Tyabs
+ Is: case IsE. apply IH to _ Ty1 _ with G' = (X, Ty1)::G'.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply Lkp to L1. search.
+ search.
+%T-App
+ Is: case IsE. apply IH to _ Ty1 _. apply IH to _ Ty2 _. search.
+%Preservability
+ apply trans_is to Ty1 IsE. apply IH to _ Ty2 _. search.
+
+Theorem any_ctx : forall E Ty G,
+  is_e E -> typeOf [] E Ty -> typeOf G E Ty.
+intros Is Ty. backchain type_weakening with G = []. intros L. case L.
+
+
+Extensible_Theorem
+  tyabs_or_not : forall E,
+    IsE : is_e E ->
+    (exists X Ty B, E = tyabs X Ty B) \/
+    ((exists X Ty B, E = tyabs X Ty B) -> false)
+  on IsE.
+%var
+ right. intros E. case E.
+%abs
+ right. intros E. case E.
+%app
+ right. intros E. case E.
+%tyabs
+ search.
+%other
+ right. intros E. case E.
+
+
+Extensible_Theorem
+  subst_type_preservation : forall X R E S G TyE TyX G',
+    IsE : is_e E ->
+    IsX : is_string X ->
+    IsR : is_e R ->
+    S : subst X R E S ->
+    TyE : typeOf G E TyE ->
+    TyR : typeOf [] R TyX ->
+    Lkp : lookup G X TyX ->
+    Slct : select (X, TyX) G' G ->
+    typeOf G' S TyE
+  on TyE.
+%T-Var
+ S: case S.
+   %T-Var-Eq
+    apply any_ctx to _ TyR with G = G'.
+    apply lookup_unique to Lkp TyE1. search.
+   %T-Var-NEq
+    NEq: assert X1 = X -> false. intros E. case E. backchain S.
+    apply select_lookup to TyE1 Slct NEq. search.
+%T-Abs
+ Is: case IsE. S: case S.
+   %T-Abs-Eq
+    L: assert forall Z ZTy,
+          lookup ((X1, Ty1)::G) Z ZTy -> lookup ((X1, Ty1)::G') Z ZTy.
+      intros L. L: case L.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         NEq: assert Z = X1 -> false. intros E. case E. backchain L.
+         apply select_lookup to L1 Slct NEq. search.
+    apply type_weakening to _ TyE1 L. search.
+   %T-Abs-NEq
+    assert X1 = X -> false. intros E. case E. backchain S.
+    apply IH to _ _ _ S1 TyE1 _ _ _ with G' = (X1, Ty1)::G'. search.
+%T-Tyabs
+ Is: case IsE. S: case S.
+   %T-Abs-Eq
+    L: assert forall Z ZTy,
+          lookup ((X1, Ty1)::G) Z ZTy -> lookup ((X1, Ty1)::G') Z ZTy.
+      intros L. L: case L.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         NEq: assert Z = X1 -> false. intros E. case E. backchain L.
+         apply select_lookup to L1 Slct NEq. search.
+    apply type_weakening to _ TyE1 L. search.
+   %T-Abs-NEq
+    assert X1 = X -> false. intros E. case E. backchain S.
+    apply IH to _ _ _ S1 TyE1 _ _ _ with G' = (X1, Ty1)::G'. search.
+%T-App
+ Is: case IsE. S: case S. apply IH to _ _ _ S TyE1 _ _ _.
+ apply IH to _ _ _ S1 TyE2 _ _ _. search.
+%Preservability
+ ST: apply trans_subst to TyE1 _ _ _ S. apply trans_is to TyE1 _.
+ apply trans_subst_same to TyE1 _ _ _ S ST.
+ apply IH to _ _ _ ST TyE2 _ _ _. search.
+
+
+Extensible_Theorem
+  type_preservation : forall E Ty V,
+    IsE : is_e E ->
+    Ty : typeOf [] E Ty ->
+    Ev : eval E V ->
+    typeOf [] V Ty
+  on Ev.
+%E-Abs
+ search.
+%E-App
+ Is: case IsE. Ty: case Ty. AbsTy: apply IH to _ Ty Ev1.
+ Ty': case AbsTy. apply IH to _ Ty1 Ev2. apply eval_is to _ Ev2.
+ IsAbs: apply eval_is to _ Ev1. case IsAbs.
+ TyB: apply subst_type_preservation to _ _ _ Ev3 Ty' _ _ _.
+ apply subst_is to _ _ _ Ev3. apply IH to _ TyB Ev4. search.
+%E-Tyabs
+ case Ty. search.
+%Preservability
+ Ty: case Ty. apply trans_same to Ev2 Ty. apply trans_is to Ty _.
+ apply IH to _ Ty1 Ev1. search.
+
+/*
+  Note we do not have type uniqueness because abs(X, var(X)) could
+  have any type.
+
+  We also cannot prove progress because, in the preservability case,
+  we could show the translation would evaluate, but we do not have a
+  translation constraint that would allow us to lift this back to the
+  new syntax.
+*/

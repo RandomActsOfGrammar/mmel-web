@@ -1,0 +1,42 @@
+Module lambda_calculus:host
+
+Judgment eval : e* e
+
+------------------------------ [E-Abs]
+eval abs(X, Body) abs(X, Body)
+
+
+eval E1 abs(X, Body)
+eval E2 V2
+subst X V2 Body B
+eval B V
+-------------------- [E-App]
+eval app(E1, E2) V
+
+
+
+Judgment subst : string e e* e
+
+------------------ [S-Var-Eq]
+subst X R var(X) R
+
+
+X != Y
+----------------------- [S-Var-NEq]
+subst X R var(Y) var(Y)
+
+
+----------------------------------- [S-Abs-Eq]
+subst X R abs(X, Body) abs(X, Body)
+
+
+X != Y
+subst X R Body B
+-------------------------------- [S-Abs-NEq]
+subst X R abs(Y, Body) abs(Y, B)
+
+
+subst X R E1 S1
+subst X R E2 S2
+--------------------------------- [S-App]
+subst X R app(E1, E2) app(S1, S2)

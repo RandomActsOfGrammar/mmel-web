@@ -1,0 +1,29 @@
+Module lambda_calculus:bool
+
+--------------------------------------- [E-True]
+eval trueE abs("a", abs("b", var("a")))
+
+
+---------------------------------------- [E-False]
+eval falseE abs("a", abs("b", var("b")))
+
+
+eval app(app(Cond, T), F) V
+--------------------------- [E-If]
+eval if(Cond, T, F) V
+
+
+
+-------------------------------------------- [S-True]
+subst X R trueE abs("a", abs("b", var("a")))
+
+
+--------------------------------------------- [S-False]
+subst X R falseE abs("a", abs("b", var("b")))
+
+
+subst X R Cond CS
+subst X R T TS
+subst X R F FS
+--------------------------------------------- [S-If]
+subst X R if(Cond, T, F) app(app(CS, TS), FS)

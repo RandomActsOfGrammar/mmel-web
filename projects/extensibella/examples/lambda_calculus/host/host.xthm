@@ -1,0 +1,157 @@
+Module lambda_calculus:host.
+
+Translation_Constraint trans_is : forall E E',
+  |{e}- E ~~> E' -> is_e E -> is_e E'.
+
+
+%Generally a good idea to include this so extensions can prove things
+%based on the structure of a term
+Ext_Ind is_e E with |{e}- E ~~> E'.
+
+
+Translation_Constraint trans_same : forall E E1 E2,
+  |{e}- E ~~> E1 -> |{e}- E ~~> E2 -> E1 = E2.
+
+
+Extensible_Theorem
+  subst_exists : forall X R E,
+    IsE : is_e E ->
+    IsX : is_string X ->
+    IsR : is_e R ->
+    exists S, subst X R E S
+  on IsE.
+%var
+ Or: apply is_string_eq_or_not to IsX IsE1. Eq: case Or.
+   %X = S
+    search.
+   %X != S
+    search.
+%abs
+ Or: apply is_string_eq_or_not to IsX IsE1. Eq: case Or.
+   %X = S
+    search.
+   %X != S
+    apply IH to IsE2 IsX IsR. search.
+%app
+ apply IH to IsE1 IsX IsR. apply IH to IsE2 IsX IsR. search.
+
+
+Extensible_Theorem
+  subst_is : forall X R E S,
+    IsE : is_e E ->
+    IsX : is_string X ->
+    IsR : is_e R ->
+    S : subst X R E S ->
+    is_e S
+  on S.
+%S-Var-Eq
+ search.
+%S-Var-NEq
+ search.
+%S-Abs-Eq
+ search.
+%S-Abs-NEq
+ Is: case IsE. apply IH to _ _ _ S2. search.
+%S-App
+ Is: case IsE. apply IH to _ _ _ S1. apply IH to _ _ _ S2. search.
+
+
+Extensible_Theorem
+  eval_is : forall E V,
+    IsE : is_e E ->
+    Ev : eval E V ->
+    is_e V
+  on Ev.
+%E-Abs
+ search.
+%E-App
+ Is: case IsE. IsAbs: apply IH to _ Ev1. apply IH to _ Ev2.
+ case IsAbs. apply subst_is to _ _ _ Ev3. apply IH to _ Ev4. search.
+
+
+Extensible_Theorem
+  subst_unique : forall X R E SA SB,
+    IsE : is_e E ->
+    IsX : is_string X ->
+    IsR : is_e R ->
+    SA : subst X R E SA ->
+    SB : subst X R E SB ->
+    SA = SB
+  on SA.
+%S-Var-Eq
+ SB: case SB.
+   %S-Var-Eq
+    search.
+   %S-Var-NEq
+    apply SB to _.
+%S-Var-NEq
+ SB: case SB.
+   %S-Var-Eq
+    apply SA1 to _.
+   %S-Var-NEq
+    search.
+%S-Abs-Eq
+ SB: case SB.
+   %S-Abs-Eq
+    search.
+   %S-Abs-NEq
+    apply SB to _.
+%S-Abs-NEq
+ SB: case SB.
+   %S-Abs-Eq
+    apply SA1 to _.
+   %S-Abs-NEq
+    Is: case IsE. apply IH to _ _ _ SA2 SB1. search.
+%S-App
+ Is: case IsE. SB: case SB. apply IH to _ _ _ SA1 SB.
+ apply IH to _ _ _ SA2 SB1. search.
+
+
+Extensible_Theorem
+  eval_unique : forall E VA VB,
+    IsE : is_e E ->
+    EvA : eval E VA ->
+    EvB : eval E VB ->
+    VA = VB
+  on EvA.
+%E-Abs
+ EvB: case EvB. search.
+%E-App
+ Is: case IsE. EvB: case EvB. apply IH to _ EvA1 EvB.
+ apply IH to _ EvA2 EvB1. IsAbs: apply eval_is to _ EvA1. case IsAbs.
+ apply eval_is to _ EvA2. apply subst_is to _ _ _ EvA3.
+ apply subst_unique to _ _ _ EvA3 EvB2. apply IH to _ EvA4 EvB3.
+ search.
+
+
+%anything evaluation-related must be the same across translation
+Translation_Constraint trans_subst : forall X R E S E',
+  Trans : |{e}- E ~~> E' ->
+  IsE : is_e E ->
+  IsX : is_string X ->
+  IsR : is_e R ->
+  S : subst X R E S ->
+  exists S', subst X R E' S'.
+Translation_Constraint trans_subst_same : forall X R E S E' S',
+  Trans : |{e}- E ~~> E' ->
+  IsE : is_e E ->
+  isX : is_string X ->
+  IsR : is_e R ->
+  S : subst X R E S ->
+  S' : subst X R E' S' ->
+  S = S'.
+
+Translation_Constraint trans_eval : forall E E' V,
+  Trans : |{e}- E ~~> E' ->
+  IsE : is_e E ->
+  Ev : eval E V ->
+  exists V', eval E' V'.
+Translation_Constraint trans_eval_same : forall E E' V V',
+  Trans : |{e}- E ~~> E' ->
+  IsE : is_e E ->
+  Ev : eval E V ->
+  Ev' : eval E' V' ->
+  V = V'.
+
+
+Ext_Ind eval E V with |{e}- E ~~> E'.

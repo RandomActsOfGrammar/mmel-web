@@ -1,0 +1,209 @@
+Module lambda_calculus:bool.
+
+
+Prove_Constraint lambda_calculus:host:trans_is.
+%true
+ search 6.
+%false
+ search 6.
+%if
+ case Hyp1. search.
+
+
+Prove_Ext_Ind lambda_calculus:host:is_e.
+%true
+ search 7.
+%false
+ search 7.
+%if
+ IsN3: apply ext_ind_is_int_is_e to Rel4.
+ IsN2: apply ext_ind_is_int_is_e to Rel5.
+ IsN4: apply ext_ind_is_int_is_e to Rel6.
+ IsN6: apply plus_integer_is_integer to _ _ Rel3.
+ IsN5: apply plus_integer_is_integer to _ _ Rel2.
+ L_N5_N: apply lt_plus_one to Rel1 _.
+ GN3: apply ext_ind_pos_is_e to Rel4.
+ GN2: apply ext_ind_pos_is_e to Rel5.
+ GN4: apply ext_ind_pos_is_e to Rel6.
+ GN6: apply lesseq_integer__add_positive to GN2 _ Rel3.
+ GN5: apply lesseq_integer__add_positive to GN3 _ Rel2.
+ L_N3_N: assert N3 < N.
+   Or: apply lesseq_integer_less_or_eq to GN6. case Or.
+     %0 < N6
+      G: apply greater_plus_positive to _ _ Rel2 _.
+      L: apply greater_integer_flip_less to G.
+      apply less_integer_transitive to L L_N5_N. search.
+     %N6 = 0
+      apply plus_zero_right to Rel2. search.
+ Acc: case Acc. A3: apply Acc to _ L_N3_N. apply IH to Rel4 A3.
+ LE_N6_N5: assert N6 <= N5.
+   Or: apply lt_right to Rel2 _ _ _. L: case Or.
+     %N6 < N5
+      backchain less_integer_lesseq.
+     %N6 = N5
+      backchain is_integer_lesseq.
+ L_N2_N: assert N2 < N.
+   Or: apply lt_left to Rel3 _ _. L: case Or.
+     %N2 < N6
+      L': apply less_lesseq_integer_transitive to L LE_N6_N5.
+      apply less_integer_transitive to L' L_N5_N. search.
+     %N2 = N6
+      apply lesseq_less_integer_transitive to LE_N6_N5 L_N5_N. search.
+ A2: apply Acc to _ L_N2_N. apply IH to Rel5 A2.
+ L_N4_N: assert N4 < N.
+   Or: apply lt_right to Rel3 _ _ _. L: case Or.
+     %N4 < N6
+      L': apply less_lesseq_integer_transitive to L LE_N6_N5.
+      apply less_integer_transitive to L' L_N5_N. search.
+     %N4 = N6
+      apply lesseq_less_integer_transitive to LE_N6_N5 L_N5_N. search.
+ A4: apply Acc to _ L_N4_N. apply IH to Rel6 A4. search.
+
+
+Prove_Constraint lambda_calculus:host:trans_same.
+%true
+ case Hyp1. search.
+%false
+ case Hyp1. search.
+%if
+ case Hyp1. search.
+
+
+Prove lambda_calculus:host:subst_exists.
+%true
+ search.
+%false
+ search.
+%if
+ apply IH to IsE1 _ IsR. apply IH to IsE2 _ IsR.
+ apply IH to IsE3 _ IsR. search.
+
+
+Prove lambda_calculus:host:subst_is.
+%S-True
+ search 7.
+%S-False
+ search 7.
+%S-If
+ Is: case IsE. apply IH to _ _ _ S1. apply IH to _ _ _ S2.
+ apply IH to _ _ _ S3. search.
+
+
+Prove lambda_calculus:host:eval_is.
+%E-True
+ search 7.
+%E-False
+ search 7.
+%E-If
+ Is: case IsE. IsC: apply IH to _ Ev1. search.
+
+
+Prove lambda_calculus:host:subst_unique.
+%S-True
+ case SB. search.
+%S-False
+ case SB. search.
+%S-If
+ SB: case SB. Is: case IsE. apply IH to _ _ _ SA1 SB.
+ apply IH to _ _ _ SA2 SB1. apply IH to _ _ _ SA3 SB2. search.
+
+
+Prove lambda_calculus:host:eval_unique.
+%E-True
+ case EvB. search.
+%E-False
+ case EvB. search.
+%E-If
+ EvB: case EvB. Is: case IsE. apply IH to _ EvA1 EvB. search.
+
+
+Prove_Constraint lambda_calculus:host:trans_subst.
+%true
+ OrA: apply is_string_eq_or_not to IsX _ with S2 = "a".
+ OrB: apply is_string_eq_or_not to IsX _ with S2 = "b". A: case OrA.
+   %X = "a"
+    search.
+   %X != "a"
+    B: case OrB.
+      %X = "b"
+       search.
+      %X != "b"
+       search.
+%false
+ OrA: apply is_string_eq_or_not to IsX _ with S2 = "a".
+ OrB: apply is_string_eq_or_not to IsX _ with S2 = "b". A: case OrA.
+   %X = "a"
+    search.
+   %X != "a"
+    B: case OrB.
+      %X = "b"
+       search.
+      %X != "b"
+       search.
+%if
+ Is: case IsE. S: case S. search.
+
+
+Prove_Constraint lambda_calculus:host:trans_subst_same.
+%true
+ case S. S': case S'.
+   %S-Abs-Eq
+    search.
+   %S-Abs-NEq
+    T: case S'1.
+      %S-Abs-Eq
+       search.
+      %S-Abs-NEq
+       U: case T1.
+         %S-Var-Eq
+          apply S' to _.
+         %S-Var-NEq
+          search.
+%false
+ case S. S': case S'.
+   %S-Abs-Eq
+    search.
+   %S-Abs-NEq
+    T: case S'1.
+      %S-Abs-Eq
+       search.
+      %S-Abs-NEq
+       U: case T1.
+         %S-Var-Eq
+          apply T to _.
+         %S-Var-NEq
+          search.
+%if
+ S: case S. S': case S'. S'': case S'. Is: case IsE.
+ apply subst_unique to _ _ _ S S''.
+ apply subst_unique to _ _ _ S1 S''1.
+ apply subst_unique to _ _ _ S2 S'1. search.
+
+
+Prove_Constraint lambda_calculus:host:trans_eval.
+%true
+ search.
+%false
+ search.
+%if
+ Ev: case Ev. search.
+
+
+Prove_Constraint lambda_calculus:host:trans_eval_same.
+%true
+ case Ev. case Ev'. search.
+%false
+ case Ev. case Ev'. search.
+%if
+ Ev: case Ev. case IsE. apply eval_unique to _ Ev' Ev. search.
+
+
+Prove_Ext_Ind lambda_calculus:host:eval.
+%true
+ search.
+%false
+ search.
+%if
+ apply ext_ind_is_int_eval to Rel2. L: apply lt_plus_one to Rel1 _.
+ apply ext_ind_pos_eval to Rel2. Acc: case Acc. A: apply Acc to _ L.
+ apply IH to Rel2 A. search.
