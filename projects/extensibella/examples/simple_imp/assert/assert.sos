@@ -1,0 +1,21 @@
+Module simple_imp:assert
+
+Builds on simple_imp:host
+
+c ::= ...
+    | assert(e)
+
+------------------------ [Trans-Assert]
+|{c}- assert(E) ~~> noop
+
+
+
+typeOf G E boolTy
+-------------------- [T-Assert]
+typeOK G assert(E) G
+
+
+
+eval_e G E trueVal
+-------------------- [E-Assert]
+eval_c G assert(E) G
