@@ -1,0 +1,527 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  nonExtensible:lists</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  nonExtensible:lists</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  lists.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglelists.sos" onclick="toggleFile('lists.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="lists.sos">[Raw File]</a>
+<pre class="code sterling" id="lists.sos">
+Module nonExtensible:lists
+
+<span class="comment">/*Holds if the first list contains everything in the second list and
+  the first list contains everything in the second list*/</span>
+Fixed Judgment perm : [A] [A]
+
+<span class="comment">/*Count haw many times an item occurs in a list*/</span>
+Fixed Judgment countItem : A [A] int
+
+<span class="comment">/*Build a range list, inclusive*/</span>
+Fixed Judgment intRange : int int [int]
+
+
+
+
+========== [Prm-Nil]
+perm [] []
+
+
+select A L2 L
+perm Rest L2
+================ [Prm-Cons]
+perm (A::Rest) L
+
+
+
+
+================ [Cnt-Nil]
+countItem X [] 0
+
+
+countItem X Rest N
+1 + N = N1
+====================== [Cnt-ConsEq]
+countItem X X::Rest N1
+
+
+X != Y
+countItem X Rest N
+===================== [Cnt-ConsNEq]
+countItem X Y::Rest N
+
+
+
+
+Low > High
+==================== [IR-End]
+intRange Low High []
+
+
+Low <= High
+1 + Low = PlusOne
+intRange PlusOne High Rest
+=========================== [IntRange-Step]
+intRange Low High Low::Rest
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="thms.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="lists-details.html#0">Module nonExtensible:lists.</a>
+
+
+<a class="command" href="lists-details.html#1">Theorem perm_mem [Item] : forall (L M : list Item) I,
+  perm L M -> mem I L -> mem I M.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<a class="tactic" href="lists-details.html#2">induction on 2.</a> <a class="tactic" href="lists-details.html#3">intros P M.</a> <a class="tactic" href="lists-details.html#4">M: case M.</a>
+  <span class="comment">%1:  Mem-Here</span>
+   <a class="tactic" href="lists-details.html#5">P: case P.</a> <a class="tactic" href="lists-details.html#6">apply select_mem to P.</a> <a class="tactic" href="lists-details.html#7">search.</a>
+  <span class="comment">%2:  Mem-Later</span>
+   <a class="tactic" href="lists-details.html#8">P: case P.</a> <a class="tactic" href="lists-details.html#9">M': apply IH to P1 M.</a>
+   <a class="tactic" href="lists-details.html#10">apply mem_after_select_before to _ M'.</a> <a class="tactic" href="lists-details.html#11">search.</a></div>
+
+
+<span class="comment">%Based on http://abella-prover.org/examples/first-order/lists.html</span>
+<a class="command" href="lists-details.html#12">Theorem prm_lemma [Item] : forall A B B' (X : Item),
+  perm B' A -> select X B' B -> perm B (X::A).</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(13);" id="toggleproof13">[Show Proof]</a>
+<div class="proof" id="proof13" style="display: none;">
+<a class="tactic" href="lists-details.html#13">induction on 2.</a> <a class="tactic" href="lists-details.html#14">intros P S.</a> <a class="tactic" href="lists-details.html#15">S: case S.</a>
+  <span class="comment">%1:  Prm-Nil</span>
+   <a class="tactic" href="lists-details.html#16">search.</a>
+  <span class="comment">%2:  Prm-Cons</span>
+   <a class="tactic" href="lists-details.html#17">P: case P.</a> <a class="tactic" href="lists-details.html#18">apply IH to P1 S.</a> <a class="tactic" href="lists-details.html#19">search.</a></div>
+
+
+<a class="command" href="lists-details.html#20">Theorem perm_symmetric [Item] : forall (L M : list Item),
+  perm L M -> perm M L.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(21);" id="toggleproof21">[Show Proof]</a>
+<div class="proof" id="proof21" style="display: none;">
+<a class="tactic" href="lists-details.html#21">induction on 1.</a> <a class="tactic" href="lists-details.html#22">intros P.</a> <a class="tactic" href="lists-details.html#23">P: case P.</a>
+  <span class="comment">%1:  Prm-Nil</span>
+   <a class="tactic" href="lists-details.html#24">search.</a>
+  <span class="comment">%2:  Prm-Cons</span>
+   <a class="tactic" href="lists-details.html#25">PSub: apply IH to P1.</a> <a class="tactic" href="lists-details.html#26">apply prm_lemma to PSub P.</a> <a class="tactic" href="lists-details.html#27">search.</a></div>
+
+
+<a class="command" href="lists-details.html#28">Theorem no_lookup_perm [Key, Value] :
+  forall (L P : list (pair Key Value)) (Key : Key),
+    no_lookup L Key -> perm L P -> no_lookup P Key.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(29);" id="toggleproof29">[Show Proof]</a>
+<div class="proof" id="proof29" style="display: none;">
+<a class="tactic" href="lists-details.html#29">induction on 1.</a> <a class="tactic" href="lists-details.html#30">intros NLkp P.</a> <a class="tactic" href="lists-details.html#31">NLkp: case NLkp.</a>
+  <span class="comment">%1:  NLkp-Nil</span>
+   <a class="tactic" href="lists-details.html#32">case P.</a> <a class="tactic" href="lists-details.html#33">search.</a>
+  <span class="comment">%2:  NLkp-Cons</span>
+   <a class="tactic" href="lists-details.html#34">P: case P.</a> <a class="tactic" href="lists-details.html#35">NLkp': apply IH to NLkp1 P1.</a>
+   <a class="tactic" href="lists-details.html#36">apply no_lookup_after_select_before to NLkp' P NLkp.</a> <a class="tactic" href="lists-details.html#37">search.</a></div>
+
+
+<a class="command" href="lists-details.html#38">Theorem countItem_is_integer [Item] : forall (I : Item) L N,
+  countItem I L N -> is_integer N.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(39);" id="toggleproof39">[Show Proof]</a>
+<div class="proof" id="proof39" style="display: none;">
+<a class="tactic" href="lists-details.html#39">induction on 1.</a> <a class="tactic" href="lists-details.html#40">intros C.</a> <a class="tactic" href="lists-details.html#41">C: case C.</a>
+  <span class="comment">%1:  Cnt-Nil</span>
+   <a class="tactic" href="lists-details.html#42">search.</a>
+  <span class="comment">%2:  Cnt-ConsEq</span>
+   <a class="tactic" href="lists-details.html#43">apply IH to C.</a> <a class="tactic" href="lists-details.html#44">apply plus_integer_is_integer to _ _ C1.</a> <a class="tactic" href="lists-details.html#45">search.</a>
+  <span class="comment">%3:  Cnt-ConsNEq</span>
+   <a class="tactic" href="lists-details.html#46">apply IH to C1.</a> <a class="tactic" href="lists-details.html#47">search.</a></div>
+
+
+<a class="command" href="lists-details.html#48">Theorem countItem_geq_0 [Item] : forall (I : Item) L N,
+  countItem I L N -> N >= 0.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(49);" id="toggleproof49">[Show Proof]</a>
+<div class="proof" id="proof49" style="display: none;">
+<a class="tactic" href="lists-details.html#49">induction on 1.</a> <a class="tactic" href="lists-details.html#50">intros C.</a> <a class="tactic" href="lists-details.html#51">C: case C.</a>
+  <span class="comment">%1:  Cnt-Nil</span>
+   <a class="tactic" href="lists-details.html#52">search.</a>
+  <span class="comment">%2:  Cnt-ConsEq</span>
+   <a class="tactic" href="lists-details.html#53">GEq: apply IH to C.</a>
+   <a class="tactic" href="lists-details.html#54">apply greatereq_integer__add_positive to _ GEq C1.</a> <a class="tactic" href="lists-details.html#55">search.</a>
+  <span class="comment">%3:  Cnt-ConsNEq</span>
+   <a class="tactic" href="lists-details.html#56">apply IH to C1.</a> <a class="tactic" href="lists-details.html#57">search.</a></div>
+
+
+<a class="command" href="lists-details.html#58">Theorem select_countItem [Item] : forall (I : Item) L Rest N N',
+  countItem I L N -> select I Rest L -> N - 1 = N' ->
+  countItem I Rest N'.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(59);" id="toggleproof59">[Show Proof]</a>
+<div class="proof" id="proof59" style="display: none;">
+<a class="tactic" href="lists-details.html#59">induction on 2.</a> <a class="tactic" href="lists-details.html#60">intros C S Minus.</a> <a class="tactic" href="lists-details.html#61">S: case S.</a>
+  <span class="comment">%1:  Slct-First</span>
+   <a class="tactic" href="lists-details.html#62">IsN: apply countItem_is_integer to C.</a> <a class="tactic" href="lists-details.html#63">C: case C.</a>
+     <span class="comment">%1.1:  Cnt-ConsEq</span>
+      <a class="tactic" href="lists-details.html#64">IsN1: apply countItem_is_integer to C.</a>
+      <a class="tactic" href="lists-details.html#65">P: apply plus_integer_comm to _ _ C1.</a>
+      <a class="tactic" href="lists-details.html#66">M2: apply plus_minus_same_integer to _ _ P.</a>
+      <a class="tactic" href="lists-details.html#67">apply minus_integer_unique to Minus M2.</a> <a class="tactic" href="lists-details.html#68">search.</a>
+     <span class="comment">%1.2:  Cnt-ConsNEq</span>
+      <a class="tactic" href="lists-details.html#69">apply C to _.</a>
+  <span class="comment">%2:  Slct-Later</span>
+   <a class="tactic" href="lists-details.html#70">IsN: apply countItem_is_integer to C.</a> <a class="tactic" href="lists-details.html#71">C: case C.</a>
+     <span class="comment">%2.1:  Cnt-ConsEq</span>
+      <a class="tactic" href="lists-details.html#72">IsN1: apply countItem_is_integer to C.</a>
+      <a class="tactic" href="lists-details.html#73">P: apply plus_integer_comm to _ _ C1.</a>
+      <a class="tactic" href="lists-details.html#74">M2: apply plus_minus_same_integer to _ _ P.</a>
+      <a class="tactic" href="lists-details.html#75">apply minus_integer_unique to Minus M2.</a>
+      <a class="tactic" href="lists-details.html#76">Sub: apply minus_integer_total to IsN1 _ with N2 = 1.</a>
+      <a class="tactic" href="lists-details.html#77">C': apply IH to C S Sub.</a>
+      <a class="tactic" href="lists-details.html#78">P': apply minus_plus_same_integer to _ _ Sub.</a>
+      <a class="tactic" href="lists-details.html#79">apply countItem_is_integer to C'.</a>
+      <a class="tactic" href="lists-details.html#80">apply plus_integer_comm to _ _ P'.</a> <a class="tactic" href="lists-details.html#81">search.</a>
+     <span class="comment">%2.2:  Cnt-ConsNEq</span>
+      <a class="tactic" href="lists-details.html#82">apply IH to C1 S _.</a> <a class="tactic" href="lists-details.html#83">search.</a></div>
+
+
+<a class="command" href="lists-details.html#84">Theorem countItem_select [Item] : forall (I : Item) L Rest N' N,
+  countItem I Rest N' -> select I Rest L -> 1 + N' = N ->
+  countItem I L N.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(85);" id="toggleproof85">[Show Proof]</a>
+<div class="proof" id="proof85" style="display: none;">
+<a class="tactic" href="lists-details.html#85">induction on 2.</a> <a class="tactic" href="lists-details.html#86">intros C S P.</a> <a class="tactic" href="lists-details.html#87">S: case S.</a>
+  <span class="comment">%1:  Slct-First</span>
+   <a class="tactic" href="lists-details.html#88">search.</a>
+  <span class="comment">%2:  Slct-Later</span>
+   <a class="tactic" href="lists-details.html#89">C: case C.</a>
+     <span class="comment">%2.1:  Cnt-ConsEq</span>
+      <a class="tactic" href="lists-details.html#90">apply IH to C S _.</a> <a class="tactic" href="lists-details.html#91">search.</a>
+     <span class="comment">%2.2:  Cnt-ConsNEq</span>
+      <a class="tactic" href="lists-details.html#92">apply IH to C1 S _.</a> <a class="tactic" href="lists-details.html#93">search.</a></div>
+
+
+<a class="command" href="lists-details.html#94">Theorem select_countItem_neq [Item] : forall (I J : Item) L Rest N,
+  countItem I L N -> select J Rest L -> (I = J -> false) ->
+  countItem I Rest N.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(95);" id="toggleproof95">[Show Proof]</a>
+<div class="proof" id="proof95" style="display: none;">
+<a class="tactic" href="lists-details.html#95">induction on 2.</a> <a class="tactic" href="lists-details.html#96">intros C S NEq.</a> <a class="tactic" href="lists-details.html#97">S: case S.</a>
+  <span class="comment">%1:  Slct-First</span>
+   <a class="tactic" href="lists-details.html#98">C: case C.</a>
+     <span class="comment">%1.1:  Cnt-ConsEq</span>
+      <a class="tactic" href="lists-details.html#99">apply NEq to _.</a>
+     <span class="comment">%1.2:  Cnt-ConsNEq</span>
+      <a class="tactic" href="lists-details.html#100">search.</a>
+  <span class="comment">%2:  Slct-Later</span>
+   <a class="tactic" href="lists-details.html#101">C: case C.</a>
+     <span class="comment">%2.1:  Cnt-ConsEq</span>
+      <a class="tactic" href="lists-details.html#102">apply IH to C S _.</a> <a class="tactic" href="lists-details.html#103">search.</a>
+     <span class="comment">%2.2:  Cnt-ConsNEq</span>
+      <a class="tactic" href="lists-details.html#104">apply IH to C1 S _.</a> <a class="tactic" href="lists-details.html#105">search.</a></div>
+
+
+<a class="command" href="lists-details.html#106">Theorem countItem_select_neq [Item] : forall (I J : Item) L Rest N,
+  countItem I Rest N -> select J Rest L -> (I = J -> false) ->
+  countItem I L N.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(107);" id="toggleproof107">[Show Proof]</a>
+<div class="proof" id="proof107" style="display: none;">
+<a class="tactic" href="lists-details.html#107">induction on 2.</a> <a class="tactic" href="lists-details.html#108">intros C S NEq.</a> <a class="tactic" href="lists-details.html#109">S: case S.</a>
+  <span class="comment">%1:  Slct-First</span>
+   <a class="tactic" href="lists-details.html#110">search.</a>
+  <span class="comment">%2:  Slct-Later</span>
+   <a class="tactic" href="lists-details.html#111">C: case C.</a>
+     <span class="comment">%2.1:  Cnt-ConsEq</span>
+      <a class="tactic" href="lists-details.html#112">apply IH to C S _.</a> <a class="tactic" href="lists-details.html#113">search.</a>
+     <span class="comment">%2.2:  Cnt-ConsNEq</span>
+      <a class="tactic" href="lists-details.html#114">apply IH to C1 S _.</a> <a class="tactic" href="lists-details.html#115">search.</a></div>
+
+
+<a class="command" href="lists-details.html#116">Theorem countItem_unique [Item] : forall (I : Item) NA NB L,
+  countItem I L NA -> countItem I L NB -> NA = NB.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(117);" id="toggleproof117">[Show Proof]</a>
+<div class="proof" id="proof117" style="display: none;">
+<a class="tactic" href="lists-details.html#117">induction on 1.</a> <a class="tactic" href="lists-details.html#118">intros CA CB.</a> <a class="tactic" href="lists-details.html#119">CA: case CA.</a>
+  <span class="comment">%1:  Cnt-Nil</span>
+   <a class="tactic" href="lists-details.html#120">case CB.</a> <a class="tactic" href="lists-details.html#121">search.</a>
+  <span class="comment">%2:  Cnt-ConsEq</span>
+   <a class="tactic" href="lists-details.html#122">CB: case CB.</a>
+     <span class="comment">%2.1:  Cnt-ConsEq</span>
+      <a class="tactic" href="lists-details.html#123">apply IH to CA CB.</a> <a class="tactic" href="lists-details.html#124">apply plus_integer_unique to CA1 CB1.</a> <a class="tactic" href="lists-details.html#125">search.</a>
+     <span class="comment">%2.2:  Cnt-ConsNEq</span>
+      <a class="tactic" href="lists-details.html#126">apply CB to _.</a>
+  <span class="comment">%3:  Cnt-ConsNEq</span>
+   <a class="tactic" href="lists-details.html#127">CB: case CB.</a>
+     <span class="comment">%3.1:  Cnt-ConsEq</span>
+      <a class="tactic" href="lists-details.html#128">apply CA to _.</a>
+     <span class="comment">%3.2:  Cnt-ConsNEq</span>
+      <a class="tactic" href="lists-details.html#129">apply IH to CA1 CB1.</a> <a class="tactic" href="lists-details.html#130">search.</a></div>
+
+
+<a class="command" href="lists-details.html#131">Theorem countItem_mem [Item] : forall (I : Item) N L,
+  countItem I L N -> N > 0 -> mem I L.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(132);" id="toggleproof132">[Show Proof]</a>
+<div class="proof" id="proof132" style="display: none;">
+<a class="tactic" href="lists-details.html#132">induction on 1.</a> <a class="tactic" href="lists-details.html#133">intros C G.</a> <a class="tactic" href="lists-details.html#134">C: case C.</a>
+  <span class="comment">%1:  Cnt-Nil</span>
+   <a class="tactic" href="lists-details.html#135">L: apply greater_integer_flip_less to G.</a>
+   <a class="tactic" href="lists-details.html#136">apply less_integer_not_eq to L.</a>
+  <span class="comment">%2:  Cnt-ConsEq</span>
+   <a class="tactic" href="lists-details.html#137">search.</a>
+  <span class="comment">%3:  Cnt-ConsNEq</span>
+   <a class="tactic" href="lists-details.html#138">apply IH to C1 _.</a> <a class="tactic" href="lists-details.html#139">search.</a></div>
+
+
+<a class="command" href="lists-details.html#140">Theorem countItem_not_mem [Item] : forall (I : Item) L,
+  countItem I L 0 -> mem I L -> false.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(141);" id="toggleproof141">[Show Proof]</a>
+<div class="proof" id="proof141" style="display: none;">
+<a class="tactic" href="lists-details.html#141">induction on 1.</a> <a class="tactic" href="lists-details.html#142">intros C Mem.</a> <a class="tactic" href="lists-details.html#143">C: case C.</a>
+  <span class="comment">%1:  Cnt-Nil</span>
+   <a class="tactic" href="lists-details.html#144">case Mem.</a>
+  <span class="comment">%2:  Cnt-ConsEq</span>
+   <a class="tactic" href="lists-details.html#145">G: apply countItem_geq_0 to C.</a> <a class="tactic" href="lists-details.html#146">IsN: apply countItem_is_integer to C.</a>
+   <a class="tactic" href="lists-details.html#147">P:  apply plus_integer_comm to _ _ C1.</a>
+   <a class="tactic" href="lists-details.html#148">Or: apply greatereq_integer_greater_or_eq to G.</a> <a class="tactic" href="lists-details.html#149">G': case Or.</a>
+     <span class="comment">%2.1:  N > 0</span>
+      <a class="tactic" href="lists-details.html#150">G'': apply greater_plus_positive to _ _ C1 _.</a> <a class="tactic" href="lists-details.html#151">case G''.</a> <a class="tactic" href="lists-details.html#152">case H1.</a>
+     <span class="comment">%2.2:  N = 0</span>
+      <a class="tactic" href="lists-details.html#153">case P.</a>
+  <span class="comment">%3:  Cnt-ConsNEq</span>
+   <a class="tactic" href="lists-details.html#154">Mem: case Mem.</a>
+     <span class="comment">%3.1:  Mem-Here</span>
+      <a class="tactic" href="lists-details.html#155">backchain C.</a>
+     <span class="comment">%3.2:  Mem-Later</span>
+      <a class="tactic" href="lists-details.html#156">apply IH to C1 Mem.</a></div>
+
+
+<a class="command" href="lists-details.html#157">Theorem countItem_greater_0 [Item] : forall (I : Item) L N,
+  countItem I (I::L) N -> N > 0.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(158);" id="toggleproof158">[Show Proof]</a>
+<div class="proof" id="proof158" style="display: none;">
+<a class="tactic" href="lists-details.html#158">induction on 1.</a> <a class="tactic" href="lists-details.html#159">intros C.</a> <a class="tactic" href="lists-details.html#160">C: case C.</a>
+  <span class="comment">%1:  Cnt-ConsEq</span>
+   <a class="tactic" href="lists-details.html#161">GEq: apply countItem_geq_0 to C.</a>
+   <a class="tactic" href="lists-details.html#162">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="lists-details.html#163">G: case Or.</a>
+     <span class="comment">%N1 > 0</span>
+      <a class="tactic" href="lists-details.html#164">IsN1: apply countItem_is_integer to C.</a>
+      <a class="tactic" href="lists-details.html#165">P: apply plus_integer_comm to _ _ C1.</a>
+      <a class="tactic" href="lists-details.html#166">G': apply greater_plus_positive to _ _ P _.</a>
+      <a class="tactic" href="lists-details.html#167">apply greater_integer_transitive to G' G.</a> <a class="tactic" href="lists-details.html#168">search.</a>
+     <span class="comment">%N1 = 0</span>
+      <a class="tactic" href="lists-details.html#169">P: apply plus_integer_comm to _ _ C1.</a> <a class="tactic" href="lists-details.html#170">case P.</a> <a class="tactic" href="lists-details.html#171">search.</a>
+  <span class="comment">%2:  Cnt-ConsNEq</span>
+   <a class="tactic" href="lists-details.html#172">apply C to _.</a></div>
+
+
+<a class="command" href="lists-details.html#173">Theorem perm_countItems [Item] : forall L P (I : Item) NL NP,
+  perm L P -> countItem I L NL -> countItem I P NP -> NL = NP.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(174);" id="toggleproof174">[Show Proof]</a>
+<div class="proof" id="proof174" style="display: none;">
+<a class="tactic" href="lists-details.html#174">induction on 2.</a> <a class="tactic" href="lists-details.html#175">intros P CL CP.</a> <a class="tactic" href="lists-details.html#176">CL: case CL.</a>
+  <span class="comment">%1:  Cnt-Nil</span>
+   <a class="tactic" href="lists-details.html#177">case P.</a> <a class="tactic" href="lists-details.html#178">case CP.</a> <a class="tactic" href="lists-details.html#179">search.</a>
+  <span class="comment">%2:  Cnt-ConsEq</span>
+   <a class="tactic" href="lists-details.html#180">P: case P.</a> <a class="tactic" href="lists-details.html#181">S: case P (keep).</a>
+     <span class="comment">%2.1:  Slct-First</span>
+      <a class="tactic" href="lists-details.html#182">CP: case CP.</a>
+        <span class="comment">%2.1.1:  Cnt-ConsEq</span>
+         <a class="tactic" href="lists-details.html#183">apply IH to  P1 CL CP.</a> <a class="tactic" href="lists-details.html#184">apply plus_integer_unique to CL1 CP1.</a>
+         <a class="tactic" href="lists-details.html#185">search.</a>
+        <span class="comment">%2.1.2:  Cnt-ConsNEq</span>
+         <a class="tactic" href="lists-details.html#186">apply CP to _.</a>
+     <span class="comment">%2.2:  Slct-Later</span>
+      <a class="tactic" href="lists-details.html#187">IsNP: apply countItem_is_integer to CP.</a>
+      <a class="tactic" href="lists-details.html#188">Minus: apply minus_integer_total to IsNP _ with N2 = 1.</a>
+      <a class="tactic" href="lists-details.html#189">C': apply select_countItem to CP P Minus.</a>
+      <a class="tactic" href="lists-details.html#190">P': apply minus_plus_same_integer to _ _ Minus.</a>
+      <a class="tactic" href="lists-details.html#191">IsN3: apply minus_integer_is_integer to _ _ Minus.</a>
+      <a class="tactic" href="lists-details.html#192">Plus: apply plus_integer_comm to _ _ P'.</a> <a class="tactic" href="lists-details.html#193">apply IH to P1 CL _.</a>
+      <a class="tactic" href="lists-details.html#194">apply plus_integer_unique to CL1 Plus.</a> <a class="tactic" href="lists-details.html#195">search.</a>
+  <span class="comment">%3:  Cnt-ConsNEq</span>
+   <a class="tactic" href="lists-details.html#196">P: case P.</a> <a class="tactic" href="lists-details.html#197">C: apply select_countItem_neq to CP P CL.</a>
+   <a class="tactic" href="lists-details.html#198">apply IH to P1 CL1 C.</a> <a class="tactic" href="lists-details.html#199">search.</a></div>
+
+
+
+<a class="command" href="lists-details.html#200">Theorem intRange_is : forall Low High R,
+  is_integer Low -> intRange Low High R -> is_list is_integer R.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(201);" id="toggleproof201">[Show Proof]</a>
+<div class="proof" id="proof201" style="display: none;">
+<a class="tactic" href="lists-details.html#201">induction on 2.</a> <a class="tactic" href="lists-details.html#202">intros IsLow R.</a> <a class="tactic" href="lists-details.html#203">R: case R.</a>
+  <span class="comment">%1:  IR-End</span>
+   <a class="tactic" href="lists-details.html#204">search.</a>
+  <span class="comment">%2:  IR-Step</span>
+   <a class="tactic" href="lists-details.html#205">IsPlusOne: apply plus_integer_is_integer to _ _ R1.</a>
+   <a class="tactic" href="lists-details.html#206">apply IH to IsPlusOne R2.</a> <a class="tactic" href="lists-details.html#207">search.</a></div>
+
+
+<a class="command" href="lists-details.html#208">Theorem intRange_low_lesseq : forall Low High R X,
+  is_integer Low -> intRange Low High R -> mem X R -> Low <= X.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(209);" id="toggleproof209">[Show Proof]</a>
+<div class="proof" id="proof209" style="display: none;">
+<a class="tactic" href="lists-details.html#209">induction on 3.</a> <a class="tactic" href="lists-details.html#210">intros IsLow Range Mem.</a>
+<a class="tactic" href="lists-details.html#211">apply intRange_is to IsLow Range.</a> <a class="tactic" href="lists-details.html#212">IsX: apply is_list_int_mem to _ Mem.</a>
+<a class="tactic" href="lists-details.html#213">Mem: case Mem.</a>
+  <span class="comment">%1:  Mem-Here</span>
+   <a class="tactic" href="lists-details.html#214">R: case Range.</a> <a class="tactic" href="lists-details.html#215">apply is_integer_lesseq to IsX.</a> <a class="tactic" href="lists-details.html#216">search.</a>
+  <span class="comment">%2:  Mem-Later</span>
+   <a class="tactic" href="lists-details.html#217">R: case Range.</a> <a class="tactic" href="lists-details.html#218">apply plus_integer_is_integer to _ _ R1.</a>
+   <a class="tactic" href="lists-details.html#219">LEq: apply IH to _ R2 Mem.</a> <a class="tactic" href="lists-details.html#220">L: apply lt_plus_one to R1 _.</a>
+   <a class="tactic" href="lists-details.html#221">LEq': apply less_integer_lesseq to L.</a>
+   <a class="tactic" href="lists-details.html#222">apply lesseq_integer_transitive to LEq' LEq.</a> <a class="tactic" href="lists-details.html#223">search.</a></div>
+
+
+<a class="command" href="lists-details.html#224">Theorem intRange_high_lesseq : forall Low High R X,
+  is_integer Low -> intRange Low High R -> mem X R -> X <= High.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(225);" id="toggleproof225">[Show Proof]</a>
+<div class="proof" id="proof225" style="display: none;">
+<a class="tactic" href="lists-details.html#225">induction on 2.</a> <a class="tactic" href="lists-details.html#226">intros IsLow Range Mem.</a> <a class="tactic" href="lists-details.html#227">Range: case Range.</a>
+  <span class="comment">%1:  IR-End</span>
+   <a class="tactic" href="lists-details.html#228">case Mem.</a>
+  <span class="comment">%2:  IR-Step</span>
+   <a class="tactic" href="lists-details.html#229">Mem: case Mem.</a>
+     <span class="comment">%2.1:  Mem-Here</span>
+      <a class="tactic" href="lists-details.html#230">search.</a>
+     <span class="comment">%2.2:  Mem-Later</span>
+      <a class="tactic" href="lists-details.html#231">apply plus_integer_is_integer to _ _ Range1.</a>
+      <a class="tactic" href="lists-details.html#232">apply IH to _ Range2 Mem.</a> <a class="tactic" href="lists-details.html#233">search.</a></div>
+
+
+<a class="command" href="lists-details.html#234">Theorem in_intRange : forall Low High R X,
+  is_integer Low -> is_integer X ->
+  intRange Low High R -> Low <= X -> X <= High ->
+  mem X R.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(235);" id="toggleproof235">[Show Proof]</a>
+<div class="proof" id="proof235" style="display: none;">
+<a class="tactic" href="lists-details.html#235">induction on 3.</a> <a class="tactic" href="lists-details.html#236">intros IsLow IsX R LowX XHigh.</a> <a class="tactic" href="lists-details.html#237">R: case R.</a>
+  <span class="comment">%1:  IR-End</span>
+   <a class="tactic" href="lists-details.html#238">L: apply lesseq_integer_transitive to LowX XHigh.</a>
+   <a class="tactic" href="lists-details.html#239">apply greater_lesseq_integer_false to R L.</a>
+  <span class="comment">%2:  IR-Step</span>
+   <a class="tactic" href="lists-details.html#240">Or: apply lesseq_integer_less_or_eq to LowX.</a> <a class="tactic" href="lists-details.html#241">L: case Or.</a>
+     <span class="comment">%2.1:  Low X X</span>
+      <a class="tactic" href="lists-details.html#242">P: apply plus_integer_comm to _ _ R1.</a>
+      <a class="tactic" href="lists-details.html#243">IsPlusOne: apply plus_integer_is_integer to _ _ P.</a>
+      <a class="tactic" href="lists-details.html#244">apply less_lesseq_plus_one to _ _ L P.</a>
+      <a class="tactic" href="lists-details.html#245">apply IH to _ _ R2 _ _.</a> <a class="tactic" href="lists-details.html#246">search.</a>
+     <span class="comment">%2.2:  Low = X</span>
+      <a class="tactic" href="lists-details.html#247">search.</a></div>
+
+
+<a class="command" href="lists-details.html#248">Theorem intRange_unique : forall Low High R1 R2,
+  intRange Low High R1 -> intRange Low High R2 -> R1 = R2.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(249);" id="toggleproof249">[Show Proof]</a>
+<div class="proof" id="proof249" style="display: none;">
+<a class="tactic" href="lists-details.html#249">induction on 1.</a> <a class="tactic" href="lists-details.html#250">intros RA RB.</a> <a class="tactic" href="lists-details.html#251">RA: case RA.</a>
+  <span class="comment">%1:  IR-End</span>
+   <a class="tactic" href="lists-details.html#252">RB: case RB.</a>
+     <span class="comment">%1.1:  IR-End</span>
+      <a class="tactic" href="lists-details.html#253">search.</a>
+     <span class="comment">%1.2:  IR-Step</span>
+      <a class="tactic" href="lists-details.html#254">apply greater_lesseq_integer_false to RA RB.</a>
+  <span class="comment">%2:  IR-Step</span>
+   <a class="tactic" href="lists-details.html#255">RB: case RB.</a>
+     <span class="comment">%2.1:  IR-End</span>
+      <a class="tactic" href="lists-details.html#256">apply greater_lesseq_integer_false to RB RA.</a>
+     <span class="comment">%2.2:  IR-Step</span>
+      <a class="tactic" href="lists-details.html#257">apply plus_integer_unique to RA1 RB1.</a> <a class="tactic" href="lists-details.html#258">apply IH to RA2 RB2.</a>
+      <a class="tactic" href="lists-details.html#259">search.</a></div>
+
+
+<a class="command" href="lists-details.html#260">Theorem intRange_smaller_exists : forall Low High R Low',
+  is_integer Low -> is_integer Low' -> intRange Low High R ->
+  Low < Low' -> exists R', intRange Low' High R'.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(261);" id="toggleproof261">[Show Proof]</a>
+<div class="proof" id="proof261" style="display: none;">
+<a class="tactic" href="lists-details.html#261">induction on 3.</a> <a class="tactic" href="lists-details.html#262">intros IsLow IsLow' R L.</a> <a class="tactic" href="lists-details.html#263">R: case R.</a>
+  <span class="comment">%1:  IR-End</span>
+   <a class="tactic" href="lists-details.html#264">G: apply less_integer_flip_greater to L.</a>
+   <a class="tactic" href="lists-details.html#265">apply greater_integer_transitive to G R.</a> <a class="tactic" href="lists-details.html#266">search.</a>
+  <span class="comment">%2:  IR-Step</span>
+   <a class="tactic" href="lists-details.html#267">IsPlusOne: apply plus_integer_is_integer to _ _ R1.</a>
+   <a class="tactic" href="lists-details.html#268">P: apply plus_integer_comm to _ _ R1.</a>
+   <a class="tactic" href="lists-details.html#269">LEq: apply less_lesseq_plus_one to _ _ L P.</a>
+   <a class="tactic" href="lists-details.html#270">Or: apply lesseq_integer_less_or_eq to LEq.</a> <a class="tactic" href="lists-details.html#271">L: case Or.</a>
+     <span class="comment">%2.1:  PlusOne < Low'</span>
+      <a class="tactic" href="lists-details.html#272">apply IH to _ _ R2 L1.</a> <a class="tactic" href="lists-details.html#273">search.</a>
+     <span class="comment">%2.2:  PlusOne = Low'</span>
+      <a class="tactic" href="lists-details.html#274">search.</a></div>
+
+
+<a class="command" href="lists-details.html#275">Theorem intRange_subset : forall Low Low' High R R',
+  is_integer Low -> is_integer Low' ->
+  intRange Low High R -> intRange Low' High R' -> Low < Low' ->
+  subset R' R.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(276);" id="toggleproof276">[Show Proof]</a>
+<div class="proof" id="proof276" style="display: none;">
+<a class="tactic" href="lists-details.html#276">induction on 4.</a> <a class="tactic" href="lists-details.html#277">intros IsLow IsLow' R R' L.</a> <a class="tactic" href="lists-details.html#278">R': case R'.</a>
+  <span class="comment">%1:  IR-End</span>
+   <a class="tactic" href="lists-details.html#279">search.</a>
+  <span class="comment">%2:  IR-Step</span>
+   <a class="tactic" href="lists-details.html#280">P: apply plus_integer_comm to _ _ R'1.</a>
+   <a class="tactic" href="lists-details.html#281">LEq: apply less_integer_lesseq to L.</a>
+   <a class="tactic" href="lists-details.html#282">M: apply in_intRange to _ _ R _ R'.</a> <a class="tactic" href="lists-details.html#283">L': apply lt_plus_one to R'1 _.</a>
+   <a class="tactic" href="lists-details.html#284">apply less_integer_transitive to L L'.</a>
+   <a class="tactic" href="lists-details.html#285">apply plus_integer_is_integer to _ _ R'1.</a> <a class="tactic" href="lists-details.html#286">apply IH to _ _ R R'2 _.</a>
+   <a class="tactic" href="lists-details.html#287">search.</a></div>
+
+
+<a class="command" href="lists-details.html#288">Theorem intRange_select_unique : forall Low High R X Rest Rest',
+  is_integer Low -> intRange Low High R ->
+  select X Rest R -> select X Rest' R ->
+  Rest = Rest'.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(289);" id="toggleproof289">[Show Proof]</a>
+<div class="proof" id="proof289" style="display: none;">
+<a class="tactic" href="lists-details.html#289">induction on 2.</a> <a class="tactic" href="lists-details.html#290">intros IsLow Range Slct Slct'.</a> <a class="tactic" href="lists-details.html#291">Range: case Range.</a>
+  <span class="comment">%1:  IR-End</span>
+   <a class="tactic" href="lists-details.html#292">case Slct.</a>
+  <span class="comment">%2:  IR-Step</span>
+   <a class="tactic" href="lists-details.html#293">Slct: case Slct.</a>
+     <span class="comment">%2.1:  Slct-First</span>
+      <a class="tactic" href="lists-details.html#294">Slct': case Slct'.</a>
+        <span class="comment">%2.1.1:  Slct-First</span>
+         <a class="tactic" href="lists-details.html#295">search.</a>
+        <span class="comment">%2.1.2:  Slct-Later</span>
+         <a class="tactic" href="lists-details.html#296">L: apply lt_plus_one to Range1 _.</a>
+         <a class="tactic" href="lists-details.html#297">M: apply select_mem to Slct'.</a>
+         <a class="tactic" href="lists-details.html#298">IsPlusOne: apply plus_integer_is_integer to _ _ Range1.</a>
+         <a class="tactic" href="lists-details.html#299">LEq: apply intRange_low_lesseq to _ Range2 M.</a>
+         <a class="tactic" href="lists-details.html#300">G: apply less_integer_flip_greater to L.</a>
+         <a class="tactic" href="lists-details.html#301">apply greater_lesseq_integer_false to G LEq.</a>
+     <span class="comment">%2.2:  Slct-Later</span>
+      <a class="tactic" href="lists-details.html#302">Slct': case Slct'.</a>
+        <span class="comment">%2.2.1:  Slct-First</span>
+         <a class="tactic" href="lists-details.html#303">L: apply lt_plus_one to Range1 _.</a>
+         <a class="tactic" href="lists-details.html#304">M: apply select_mem to Slct.</a>
+         <a class="tactic" href="lists-details.html#305">IsPlusOne: apply plus_integer_is_integer to _ _ Range1.</a>
+         <a class="tactic" href="lists-details.html#306">LEq: apply intRange_low_lesseq to _ Range2 M.</a>
+         <a class="tactic" href="lists-details.html#307">G: apply less_integer_flip_greater to L.</a>
+         <a class="tactic" href="lists-details.html#308">apply greater_lesseq_integer_false to G LEq.</a>
+        <span class="comment">%2.2.2:  Slct-Later</span>
+         <a class="tactic" href="lists-details.html#309">apply plus_integer_is_integer to _ _ Range1.</a>
+         <a class="tactic" href="lists-details.html#310">apply IH to _ Range2 Slct Slct'.</a> <a class="tactic" href="lists-details.html#311">search.</a></div>
+
+
+<a class="command" href="lists-details.html#312">Theorem intRange_exists : forall Low High,
+  is_integer Low -> is_integer High -> exists R, intRange Low High R.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(313);" id="toggleproof313">[Show Proof]</a>
+<div class="proof" id="proof313" style="display: none;">
+<a class="tactic" href="lists-details.html#313">assert forall Low High Diff,
+          is_integer Low -> is_integer High ->
+          High - Low = Diff -> acc Diff ->
+          exists R, intRange Low High R.</a>
+  <a class="tactic" href="lists-details.html#314">induction on 4.</a> <a class="tactic" href="lists-details.html#315">intros IsLow IsHigh Minus Acc.</a>
+  <a class="tactic" href="lists-details.html#316">Or: apply integer_compare_total to IsLow IsHigh.</a> <a class="tactic" href="lists-details.html#317">Comp: case Or.</a>
+    <span class="comment">%Low <= High</span>
+     <a class="tactic" href="lists-details.html#318">P: apply plus_integer_total to _ IsLow with N1 = 1.</a>
+     <a class="tactic" href="lists-details.html#319">IsN3: apply plus_integer_is_integer to _ _ P.</a>
+     <a class="tactic" href="lists-details.html#320">LowN3: apply lt_plus_one to P _.</a>
+     <a class="tactic" href="lists-details.html#321">Minus': apply minus_integer_total to IsHigh IsN3.</a>
+     <a class="tactic" href="lists-details.html#322">L: apply minus_larger to _ Minus Minus' LowN3.</a> <a class="tactic" href="lists-details.html#323">Acc: case Acc.</a>
+     <a class="tactic" href="lists-details.html#324">Or: apply integer_compare_total to IsN3 IsHigh.</a> <a class="tactic" href="lists-details.html#325">Comp: case Or.</a>
+       <span class="comment">%N3 <= High</span>
+        <a class="tactic" href="lists-details.html#326">Or: apply lesseq_integer_less_or_eq to Comp1.</a> <a class="tactic" href="lists-details.html#327">L': case Or.</a>
+          <span class="comment">%N3 < High</span>
+           <a class="tactic" href="lists-details.html#328">L0N1: apply minus_smaller_positive to Minus' L'.</a>
+           <a class="tactic" href="lists-details.html#329">LEq: apply less_integer_lesseq to L0N1.</a>
+           <a class="tactic" href="lists-details.html#330">A: apply Acc to LEq L.</a> <a class="tactic" href="lists-details.html#331">apply IH to _ _ Minus' A.</a> <a class="tactic" href="lists-details.html#332">search.</a>
+          <span class="comment">%N3 = High</span>
+           <a class="tactic" href="lists-details.html#333">M: apply minus_integer_same to IsHigh.</a>
+           <a class="tactic" href="lists-details.html#334">apply minus_integer_unique to M Minus'.</a>
+           <a class="tactic" href="lists-details.html#335">A: apply Acc to _ L.</a> <a class="tactic" href="lists-details.html#336">apply IH to _ _ Minus' A.</a> <a class="tactic" href="lists-details.html#337">search.</a>
+       <span class="comment">%N3 > High</span>
+        <a class="tactic" href="lists-details.html#338">search.</a>
+    <span class="comment">%Low > High</span>
+     <a class="tactic" href="lists-details.html#339">search.</a>
+<a class="tactic" href="lists-details.html#340">intros IsLow IsHigh.</a> <a class="tactic" href="lists-details.html#341">Minus: apply minus_integer_total to IsHigh IsLow.</a>
+<a class="tactic" href="lists-details.html#342">IsN3: apply minus_integer_is_integer to _ _ Minus.</a>
+<a class="tactic" href="lists-details.html#343">Or: apply integer_compare_total to _ IsN3 with A = 0.</a> <a class="tactic" href="lists-details.html#344">Comp: case Or.</a>
+  <span class="comment">%2:  0 <= N3</span>
+   <a class="tactic" href="lists-details.html#345">apply all_acc to IsN3 Comp.</a> <a class="tactic" href="lists-details.html#346">apply H1 to _ _ Minus _.</a> <a class="tactic" href="lists-details.html#347">search.</a>
+  <span class="comment">%0 > N3</span>
+   <a class="tactic" href="lists-details.html#348">NegN3: apply greater_integer_flip_less to Comp.</a>
+   <a class="tactic" href="lists-details.html#349">apply minus_integer_diff_neg to NegN3 Minus.</a> <a class="tactic" href="lists-details.html#350">search.</a></div>
+<a class="command" href="lists-details.html#351"></a>
+</pre>
+</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+Module nonExtensible:lists
+
+/*Holds if the first list contains everything in the second list and
+  the first list contains everything in the second list*/
+Fixed Judgment perm : [A] [A]
+
+/*Count haw many times an item occurs in a list*/
+Fixed Judgment countItem : A [A] int
+
+/*Build a range list, inclusive*/
+Fixed Judgment intRange : int int [int]
+
+
+
+
+========== [Prm-Nil]
+perm [] []
+
+
+select A L2 L
+perm Rest L2
+================ [Prm-Cons]
+perm (A::Rest) L
+
+
+
+
+================ [Cnt-Nil]
+countItem X [] 0
+
+
+countItem X Rest N
+1 + N = N1
+====================== [Cnt-ConsEq]
+countItem X X::Rest N1
+
+
+X != Y
+countItem X Rest N
+===================== [Cnt-ConsNEq]
+countItem X Y::Rest N
+
+
+
+
+Low > High
+==================== [IR-End]
+intRange Low High []
+
+
+Low <= High
+1 + Low = PlusOne
+intRange PlusOne High Rest
+=========================== [IntRange-Step]
+intRange Low High Low::Rest

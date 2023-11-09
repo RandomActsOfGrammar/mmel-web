@@ -1,0 +1,418 @@
+Module nonExtensible:lists.
+
+
+Theorem perm_mem [Item] : forall (L M : list Item) I,
+  perm L M -> mem I L -> mem I M.
+induction on 2. intros P M. M: case M.
+  %1:  Mem-Here
+   P: case P. apply select_mem to P. search.
+  %2:  Mem-Later
+   P: case P. M': apply IH to P1 M.
+   apply mem_after_select_before to _ M'. search.
+
+
+%Based on http://abella-prover.org/examples/first-order/lists.html
+Theorem prm_lemma [Item] : forall A B B' (X : Item),
+  perm B' A -> select X B' B -> perm B (X::A).
+induction on 2. intros P S. S: case S.
+  %1:  Prm-Nil
+   search.
+  %2:  Prm-Cons
+   P: case P. apply IH to P1 S. search.
+
+
+Theorem perm_symmetric [Item] : forall (L M : list Item),
+  perm L M -> perm M L.
+induction on 1. intros P. P: case P.
+  %1:  Prm-Nil
+   search.
+  %2:  Prm-Cons
+   PSub: apply IH to P1. apply prm_lemma to PSub P. search.
+
+
+Theorem no_lookup_perm [Key, Value] :
+  forall (L P : list (pair Key Value)) (Key : Key),
+    no_lookup L Key -> perm L P -> no_lookup P Key.
+induction on 1. intros NLkp P. NLkp: case NLkp.
+  %1:  NLkp-Nil
+   case P. search.
+  %2:  NLkp-Cons
+   P: case P. NLkp': apply IH to NLkp1 P1.
+   apply no_lookup_after_select_before to NLkp' P NLkp. search.
+
+
+Theorem countItem_is_integer [Item] : forall (I : Item) L N,
+  countItem I L N -> is_integer N.
+induction on 1. intros C. C: case C.
+  %1:  Cnt-Nil
+   search.
+  %2:  Cnt-ConsEq
+   apply IH to C. apply plus_integer_is_integer to _ _ C1. search.
+  %3:  Cnt-ConsNEq
+   apply IH to C1. search.
+
+
+Theorem countItem_geq_0 [Item] : forall (I : Item) L N,
+  countItem I L N -> N >= 0.
+induction on 1. intros C. C: case C.
+  %1:  Cnt-Nil
+   search.
+  %2:  Cnt-ConsEq
+   GEq: apply IH to C.
+   apply greatereq_integer__add_positive to _ GEq C1. search.
+  %3:  Cnt-ConsNEq
+   apply IH to C1. search.
+
+
+Theorem select_countItem [Item] : forall (I : Item) L Rest N N',
+  countItem I L N -> select I Rest L -> N - 1 = N' ->
+  countItem I Rest N'.
+induction on 2. intros C S Minus. S: case S.
+  %1:  Slct-First
+   IsN: apply countItem_is_integer to C. C: case C.
+     %1.1:  Cnt-ConsEq
+      IsN1: apply countItem_is_integer to C.
+      P: apply plus_integer_comm to _ _ C1.
+      M2: apply plus_minus_same_integer to _ _ P.
+      apply minus_integer_unique to Minus M2. search.
+     %1.2:  Cnt-ConsNEq
+      apply C to _.
+  %2:  Slct-Later
+   IsN: apply countItem_is_integer to C. C: case C.
+     %2.1:  Cnt-ConsEq
+      IsN1: apply countItem_is_integer to C.
+      P: apply plus_integer_comm to _ _ C1.
+      M2: apply plus_minus_same_integer to _ _ P.
+      apply minus_integer_unique to Minus M2.
+      Sub: apply minus_integer_total to IsN1 _ with N2 = 1.
+      C': apply IH to C S Sub.
+      P': apply minus_plus_same_integer to _ _ Sub.
+      apply countItem_is_integer to C'.
+      apply plus_integer_comm to _ _ P'. search.
+     %2.2:  Cnt-ConsNEq
+      apply IH to C1 S _. search.
+
+
+Theorem countItem_select [Item] : forall (I : Item) L Rest N' N,
+  countItem I Rest N' -> select I Rest L -> 1 + N' = N ->
+  countItem I L N.
+induction on 2. intros C S P. S: case S.
+  %1:  Slct-First
+   search.
+  %2:  Slct-Later
+   C: case C.
+     %2.1:  Cnt-ConsEq
+      apply IH to C S _. search.
+     %2.2:  Cnt-ConsNEq
+      apply IH to C1 S _. search.
+
+
+Theorem select_countItem_neq [Item] : forall (I J : Item) L Rest N,
+  countItem I L N -> select J Rest L -> (I = J -> false) ->
+  countItem I Rest N.
+induction on 2. intros C S NEq. S: case S.
+  %1:  Slct-First
+   C: case C.
+     %1.1:  Cnt-ConsEq
+      apply NEq to _.
+     %1.2:  Cnt-ConsNEq
+      search.
+  %2:  Slct-Later
+   C: case C.
+     %2.1:  Cnt-ConsEq
+      apply IH to C S _. search.
+     %2.2:  Cnt-ConsNEq
+      apply IH to C1 S _. search.
+
+
+Theorem countItem_select_neq [Item] : forall (I J : Item) L Rest N,
+  countItem I Rest N -> select J Rest L -> (I = J -> false) ->
+  countItem I L N.
+induction on 2. intros C S NEq. S: case S.
+  %1:  Slct-First
+   search.
+  %2:  Slct-Later
+   C: case C.
+     %2.1:  Cnt-ConsEq
+      apply IH to C S _. search.
+     %2.2:  Cnt-ConsNEq
+      apply IH to C1 S _. search.
+
+
+Theorem countItem_unique [Item] : forall (I : Item) NA NB L,
+  countItem I L NA -> countItem I L NB -> NA = NB.
+induction on 1. intros CA CB. CA: case CA.
+  %1:  Cnt-Nil
+   case CB. search.
+  %2:  Cnt-ConsEq
+   CB: case CB.
+     %2.1:  Cnt-ConsEq
+      apply IH to CA CB. apply plus_integer_unique to CA1 CB1. search.
+     %2.2:  Cnt-ConsNEq
+      apply CB to _.
+  %3:  Cnt-ConsNEq
+   CB: case CB.
+     %3.1:  Cnt-ConsEq
+      apply CA to _.
+     %3.2:  Cnt-ConsNEq
+      apply IH to CA1 CB1. search.
+
+
+Theorem countItem_mem [Item] : forall (I : Item) N L,
+  countItem I L N -> N > 0 -> mem I L.
+induction on 1. intros C G. C: case C.
+  %1:  Cnt-Nil
+   L: apply greater_integer_flip_less to G.
+   apply less_integer_not_eq to L.
+  %2:  Cnt-ConsEq
+   search.
+  %3:  Cnt-ConsNEq
+   apply IH to C1 _. search.
+
+
+Theorem countItem_not_mem [Item] : forall (I : Item) L,
+  countItem I L 0 -> mem I L -> false.
+induction on 1. intros C Mem. C: case C.
+  %1:  Cnt-Nil
+   case Mem.
+  %2:  Cnt-ConsEq
+   G: apply countItem_geq_0 to C. IsN: apply countItem_is_integer to C.
+   P:  apply plus_integer_comm to _ _ C1.
+   Or: apply greatereq_integer_greater_or_eq to G. G': case Or.
+     %2.1:  N > 0
+      G'': apply greater_plus_positive to _ _ C1 _. case G''. case H1.
+     %2.2:  N = 0
+      case P.
+  %3:  Cnt-ConsNEq
+   Mem: case Mem.
+     %3.1:  Mem-Here
+      backchain C.
+     %3.2:  Mem-Later
+      apply IH to C1 Mem.
+
+
+Theorem countItem_greater_0 [Item] : forall (I : Item) L N,
+  countItem I (I::L) N -> N > 0.
+induction on 1. intros C. C: case C.
+  %1:  Cnt-ConsEq
+   GEq: apply countItem_geq_0 to C.
+   Or: apply greatereq_integer_greater_or_eq to GEq. G: case Or.
+     %N1 > 0
+      IsN1: apply countItem_is_integer to C.
+      P: apply plus_integer_comm to _ _ C1.
+      G': apply greater_plus_positive to _ _ P _.
+      apply greater_integer_transitive to G' G. search.
+     %N1 = 0
+      P: apply plus_integer_comm to _ _ C1. case P. search.
+  %2:  Cnt-ConsNEq
+   apply C to _.
+
+
+Theorem perm_countItems [Item] : forall L P (I : Item) NL NP,
+  perm L P -> countItem I L NL -> countItem I P NP -> NL = NP.
+induction on 2. intros P CL CP. CL: case CL.
+  %1:  Cnt-Nil
+   case P. case CP. search.
+  %2:  Cnt-ConsEq
+   P: case P. S: case P (keep).
+     %2.1:  Slct-First
+      CP: case CP.
+        %2.1.1:  Cnt-ConsEq
+         apply IH to  P1 CL CP. apply plus_integer_unique to CL1 CP1.
+         search.
+        %2.1.2:  Cnt-ConsNEq
+         apply CP to _.
+     %2.2:  Slct-Later
+      IsNP: apply countItem_is_integer to CP.
+      Minus: apply minus_integer_total to IsNP _ with N2 = 1.
+      C': apply select_countItem to CP P Minus.
+      P': apply minus_plus_same_integer to _ _ Minus.
+      IsN3: apply minus_integer_is_integer to _ _ Minus.
+      Plus: apply plus_integer_comm to _ _ P'. apply IH to P1 CL _.
+      apply plus_integer_unique to CL1 Plus. search.
+  %3:  Cnt-ConsNEq
+   P: case P. C: apply select_countItem_neq to CP P CL.
+   apply IH to P1 CL1 C. search.
+
+
+
+Theorem intRange_is : forall Low High R,
+  is_integer Low -> intRange Low High R -> is_list is_integer R.
+induction on 2. intros IsLow R. R: case R.
+  %1:  IR-End
+   search.
+  %2:  IR-Step
+   IsPlusOne: apply plus_integer_is_integer to _ _ R1.
+   apply IH to IsPlusOne R2. search.
+
+
+Theorem intRange_low_lesseq : forall Low High R X,
+  is_integer Low -> intRange Low High R -> mem X R -> Low <= X.
+induction on 3. intros IsLow Range Mem.
+apply intRange_is to IsLow Range. IsX: apply is_list_int_mem to _ Mem.
+Mem: case Mem.
+  %1:  Mem-Here
+   R: case Range. apply is_integer_lesseq to IsX. search.
+  %2:  Mem-Later
+   R: case Range. apply plus_integer_is_integer to _ _ R1.
+   LEq: apply IH to _ R2 Mem. L: apply lt_plus_one to R1 _.
+   LEq': apply less_integer_lesseq to L.
+   apply lesseq_integer_transitive to LEq' LEq. search.
+
+
+Theorem intRange_high_lesseq : forall Low High R X,
+  is_integer Low -> intRange Low High R -> mem X R -> X <= High.
+induction on 2. intros IsLow Range Mem. Range: case Range.
+  %1:  IR-End
+   case Mem.
+  %2:  IR-Step
+   Mem: case Mem.
+     %2.1:  Mem-Here
+      search.
+     %2.2:  Mem-Later
+      apply plus_integer_is_integer to _ _ Range1.
+      apply IH to _ Range2 Mem. search.
+
+
+Theorem in_intRange : forall Low High R X,
+  is_integer Low -> is_integer X ->
+  intRange Low High R -> Low <= X -> X <= High ->
+  mem X R.
+induction on 3. intros IsLow IsX R LowX XHigh. R: case R.
+  %1:  IR-End
+   L: apply lesseq_integer_transitive to LowX XHigh.
+   apply greater_lesseq_integer_false to R L.
+  %2:  IR-Step
+   Or: apply lesseq_integer_less_or_eq to LowX. L: case Or.
+     %2.1:  Low X X
+      P: apply plus_integer_comm to _ _ R1.
+      IsPlusOne: apply plus_integer_is_integer to _ _ P.
+      apply less_lesseq_plus_one to _ _ L P.
+      apply IH to _ _ R2 _ _. search.
+     %2.2:  Low = X
+      search.
+
+
+Theorem intRange_unique : forall Low High R1 R2,
+  intRange Low High R1 -> intRange Low High R2 -> R1 = R2.
+induction on 1. intros RA RB. RA: case RA.
+  %1:  IR-End
+   RB: case RB.
+     %1.1:  IR-End
+      search.
+     %1.2:  IR-Step
+      apply greater_lesseq_integer_false to RA RB.
+  %2:  IR-Step
+   RB: case RB.
+     %2.1:  IR-End
+      apply greater_lesseq_integer_false to RB RA.
+     %2.2:  IR-Step
+      apply plus_integer_unique to RA1 RB1. apply IH to RA2 RB2.
+      search.
+
+
+Theorem intRange_smaller_exists : forall Low High R Low',
+  is_integer Low -> is_integer Low' -> intRange Low High R ->
+  Low < Low' -> exists R', intRange Low' High R'.
+induction on 3. intros IsLow IsLow' R L. R: case R.
+  %1:  IR-End
+   G: apply less_integer_flip_greater to L.
+   apply greater_integer_transitive to G R. search.
+  %2:  IR-Step
+   IsPlusOne: apply plus_integer_is_integer to _ _ R1.
+   P: apply plus_integer_comm to _ _ R1.
+   LEq: apply less_lesseq_plus_one to _ _ L P.
+   Or: apply lesseq_integer_less_or_eq to LEq. L: case Or.
+     %2.1:  PlusOne < Low'
+      apply IH to _ _ R2 L1. search.
+     %2.2:  PlusOne = Low'
+      search.
+
+
+Theorem intRange_subset : forall Low Low' High R R',
+  is_integer Low -> is_integer Low' ->
+  intRange Low High R -> intRange Low' High R' -> Low < Low' ->
+  subset R' R.
+induction on 4. intros IsLow IsLow' R R' L. R': case R'.
+  %1:  IR-End
+   search.
+  %2:  IR-Step
+   P: apply plus_integer_comm to _ _ R'1.
+   LEq: apply less_integer_lesseq to L.
+   M: apply in_intRange to _ _ R _ R'. L': apply lt_plus_one to R'1 _.
+   apply less_integer_transitive to L L'.
+   apply plus_integer_is_integer to _ _ R'1. apply IH to _ _ R R'2 _.
+   search.
+
+
+Theorem intRange_select_unique : forall Low High R X Rest Rest',
+  is_integer Low -> intRange Low High R ->
+  select X Rest R -> select X Rest' R ->
+  Rest = Rest'.
+induction on 2. intros IsLow Range Slct Slct'. Range: case Range.
+  %1:  IR-End
+   case Slct.
+  %2:  IR-Step
+   Slct: case Slct.
+     %2.1:  Slct-First
+      Slct': case Slct'.
+        %2.1.1:  Slct-First
+         search.
+        %2.1.2:  Slct-Later
+         L: apply lt_plus_one to Range1 _.
+         M: apply select_mem to Slct'.
+         IsPlusOne: apply plus_integer_is_integer to _ _ Range1.
+         LEq: apply intRange_low_lesseq to _ Range2 M.
+         G: apply less_integer_flip_greater to L.
+         apply greater_lesseq_integer_false to G LEq.
+     %2.2:  Slct-Later
+      Slct': case Slct'.
+        %2.2.1:  Slct-First
+         L: apply lt_plus_one to Range1 _.
+         M: apply select_mem to Slct.
+         IsPlusOne: apply plus_integer_is_integer to _ _ Range1.
+         LEq: apply intRange_low_lesseq to _ Range2 M.
+         G: apply less_integer_flip_greater to L.
+         apply greater_lesseq_integer_false to G LEq.
+        %2.2.2:  Slct-Later
+         apply plus_integer_is_integer to _ _ Range1.
+         apply IH to _ Range2 Slct Slct'. search.
+
+
+Theorem intRange_exists : forall Low High,
+  is_integer Low -> is_integer High -> exists R, intRange Low High R.
+assert forall Low High Diff,
+          is_integer Low -> is_integer High ->
+          High - Low = Diff -> acc Diff ->
+          exists R, intRange Low High R.
+  induction on 4. intros IsLow IsHigh Minus Acc.
+  Or: apply integer_compare_total to IsLow IsHigh. Comp: case Or.
+    %Low <= High
+     P: apply plus_integer_total to _ IsLow with N1 = 1.
+     IsN3: apply plus_integer_is_integer to _ _ P.
+     LowN3: apply lt_plus_one to P _.
+     Minus': apply minus_integer_total to IsHigh IsN3.
+     L: apply minus_larger to _ Minus Minus' LowN3. Acc: case Acc.
+     Or: apply integer_compare_total to IsN3 IsHigh. Comp: case Or.
+       %N3 <= High
+        Or: apply lesseq_integer_less_or_eq to Comp1. L': case Or.
+          %N3 < High
+           L0N1: apply minus_smaller_positive to Minus' L'.
+           LEq: apply less_integer_lesseq to L0N1.
+           A: apply Acc to LEq L. apply IH to _ _ Minus' A. search.
+          %N3 = High
+           M: apply minus_integer_same to IsHigh.
+           apply minus_integer_unique to M Minus'.
+           A: apply Acc to _ L. apply IH to _ _ Minus' A. search.
+       %N3 > High
+        search.
+    %Low > High
+     search.
+intros IsLow IsHigh. Minus: apply minus_integer_total to IsHigh IsLow.
+IsN3: apply minus_integer_is_integer to _ _ Minus.
+Or: apply integer_compare_total to _ IsN3 with A = 0. Comp: case Or.
+  %2:  0 <= N3
+   apply all_acc to IsN3 Comp. apply H1 to _ _ Minus _. search.
+  %0 > N3
+   NegN3: apply greater_integer_flip_less to Comp.
+   apply minus_integer_diff_neg to NegN3 Minus. search.
