@@ -1,0 +1,116 @@
+Module stlc:pair
+
+Builds on stlc:host
+
+tm ::= ...
+     | pair(tm, tm)
+     | fst(tm)
+     | snd(tm)
+
+
+ty ::= ...
+     | pairTy(ty)
+
+
+typeOf Ctx T1 Ty
+------------------------------------------------------ [Trans-Pair]
+Ctx |{tm}- pair(T1, T2) ~~>
+     abs("A", Ty, abs("B", Ty,
+         abs("S", arrowTy(Ty, arrowTy(Ty, Ty)),
+             app(app(var("S"), var("A")), var("B")))))
+
+
+typeOf Ctx T pairTy(Ty)
+------------------------------------------------- [Trans-Fst]
+Ctx |{tm}- fst(T) ~~>
+     app(T, abs("A", Ty, abs("B", Ty, var("A"))))
+
+
+typeOf Ctx T pairTy(Ty)
+------------------------------------------------- [Trans-Snd]
+Ctx |{tm}- snd(T) ~~>
+     app(T, abs("A", Ty, abs("B", Ty, var("B"))))
+
+
+---------------------------------------------------- [Trans-PairTy]
+|{ty}- pairTy(Ty) ~~>
+ arrowTy(Ty, arrowTy(Ty,
+         arrowTy(arrowTy(Ty, arrowTy(Ty, Ty)), Ty)))
+
+
+
+eval T1 T11
+------------------------------- [E-Pair-Step1]
+eval pair(T1, T2) pair(T11, T2)
+
+
+value T1
+eval T2 T21
+------------------------------- [E-Pair-Step2]
+eval pair(T1, T2) pair(T1, T21)
+
+
+eval T T1
+------------------- [E-Fst-Step]
+eval fst(T) fst(T1)
+
+
+value pair(T1, T2)
+------------------------- [E-Fst-Pair]
+eval fst(pair(T1, T2)) T1
+
+
+eval T T1
+------------------- [E-Snd-Step]
+eval snd(T) snd(T1)
+
+
+value pair(T1, T2)
+------------------------- [E-Snd-Pair]
+eval snd(pair(T1, T2)) T2
+
+
+
+subst X R T1 T11
+subst X R T2 T21
+------------------------------------- [S-Pair]
+subst X R pair(T1, T2) pair(T11, T21)
+
+
+subst X R T T1
+------------------------ [S-Fst]
+subst X R fst(T) fst(T1)
+
+
+subst X R T T1
+------------------------ [S-Snd]
+subst X R snd(T) snd(T1)
+
+
+
+value T1
+value T2
+------------------ [V-Pair]
+value pair(T1, T2)
+
+
+
+typeOf Ctx T1 Ty
+typeOf Ctx T2 Ty
+---------------------------------- [T-Pair]
+typeOf Ctx pair(T1, T2) pairTy(Ty)
+
+
+typeOf Ctx T pairTy(Ty)
+----------------------- [T-Fst]
+typeOf Ctx fst(T) Ty
+
+
+typeOf Ctx T pairTy(Ty)
+----------------------- [T-Snd]
+typeOf Ctx snd(T) Ty
+
+
+
+----------------------------------- [CF-Pair]
+canonicalForm pairTy(Ty) pair(A, B)

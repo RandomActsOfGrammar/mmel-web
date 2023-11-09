@@ -1,0 +1,43 @@
+Module stlc:let
+
+Builds on stlc:host
+
+tm ::= ...
+     | let(string, tm, tm)
+
+
+typeOf Ctx T1 Ty
+----------------------------------------------------- [Trans-Let]
+Ctx |{tm}- let(X, T1, T2) ~~> app(abs(X, Ty, T2), T1)
+
+
+
+eval T1 T11
+----------------------------------- [E-Let-Step]
+eval let(X, T1, T2) let(X, T11, T2)
+
+
+value T1
+subst X T1 T2 V
+--------------------- [E-Let-Subst]
+eval let(X, T1, T2) V
+
+
+
+X != Y
+subst X R T1 S1
+subst X R T2 S2
+--------------------------------------- [S-Let-NEq]
+subst X R let(Y, T1, T2) let(Y, S1, S2)
+
+
+subst X R T1 S1
+--------------------------------------- [S-Let-Eq]
+subst X R let(X, T1, T2) let(X, S1, T2)
+
+
+
+typeOf Ctx T1 Ty1
+typeOf (X, Ty1)::Ctx T2 Ty2
+----------------------------- [T-Let]
+typeOf Ctx let(X, T1, T2) Ty2

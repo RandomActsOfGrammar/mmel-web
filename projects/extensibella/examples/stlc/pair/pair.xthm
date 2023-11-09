@@ -1,0 +1,178 @@
+Module stlc:pair.
+
+Prove stlc:host:type_is.
+%T-Pair
+ Is: case IsT. apply IH to _ _ Ty1. search.
+%T-Fst
+ Is: case IsT. IsTy: apply IH to _ _ Ty1. case IsTy. search.
+%T-Snd
+ Is: case IsT. IsTy: apply IH to _ _ Ty1. case IsTy. search.
+
+
+Prove_Constraint stlc:host:trans_is.
+%Trans-Pair
+ case IsT. apply type_is to _ _ Trans1. search 9.
+%Trans-Fst
+ case IsT. IsTy: apply type_is to _ _ Trans1. case IsTy. search 7.
+%Trans-Snd
+ case IsT. IsTy: apply type_is to _ _ Trans1. case IsTy. search 7.
+
+
+Prove stlc:host:subst_is.
+%S-Pair
+ Is: case IsT. apply IH to _ _ _ S1. apply IH to _ _ _ S2. search.
+%S-Fst
+ Is: case IsT. apply IH to _ _ _ S1. search.
+%S-Snd
+ Is: case IsT. apply IH to _ _ _ S1. search.
+
+
+Prove stlc:host:eval_is.
+%E-Pair-Step1
+ Is: case IsT. apply IH to _ Ev1. search.
+%E-Pair-Step2
+ Is: case IsT. apply IH to _ Ev2. search.
+%E-Fst-Step
+ Is: case IsT. apply IH to _ Ev1. search.
+%E-Fst-Pair
+ Is: case IsT. case Is. search.
+%E-Snd-Step
+ Is: case IsT. apply IH to _ Ev1. search.
+%E-Snd-Pair
+ Is: case IsT. case Is. search.
+
+
+Prove stlc:host:subst_unique.
+%S-Pair
+ SB: case SB. apply IH to SA1 SB. apply IH to SA2 SB1. search.
+%S-Fst
+ SB: case SB. apply IH to SA1 SB. search.
+%S-Snd
+ SB: case SB. apply IH to SA1 SB. search.
+
+
+Prove stlc:host:value_eval_false.
+%V-Pair
+ Ev: case Ev.
+   %E-Pair-Step1
+    apply IH to Val1 Ev.
+   %E-Pair-Step2
+    apply IH to Val2 Ev1.
+
+
+Prove stlc:host:eval_unique.
+%E-Pair-Step1
+ EvB: case EvB.
+   %E-Pair-Step1
+    apply IH to EvA1 EvB. search.
+   %E-Pair-Step2
+    apply value_eval_false to EvB EvA1.
+%E-Pair-Step2
+ EvB: case EvB.
+   %E-Pair-Step1
+    apply value_eval_false to EvA1 EvB.
+   %E-Pair-Step2
+    apply IH to EvA2 EvB1. search.
+%E-Fst-Step
+ EvB: case EvB.
+   %E-Fst-Step
+    apply IH to EvA1 EvB. search.
+   %E-Fst-Pair
+    apply value_eval_false to EvB EvA1.
+%E-Fst-Pair
+ EvB: case EvB.
+   %E-Fst-Step
+    apply value_eval_false to EvA1 EvB.
+   %E-Fst-Pair
+    search.
+%E-Snd-Step
+ EvB: case EvB.
+   %E-Snd-Step
+    apply IH to EvA1 EvB. search.
+   %E-Snd-Pair
+    apply value_eval_false to EvB EvA1.
+%E-Snd-Pair
+ EvB: case EvB.
+   %E-Snd-Step
+    apply value_eval_false to EvA1 EvB.
+   %E-Snd-Pair
+    search.
+
+
+Prove stlc:host:ty_lookup.
+%T-Pair
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+%T-Fst
+ apply IH to Ty1 L. search.
+%T-Snd
+ apply IH to Ty1 L. search.
+
+
+Prove stlc:host:subst_type_preservation.
+%S-Pair
+ Ty: case TTy. apply IH to Ty S1 RTy. apply IH to Ty1 S2 RTy. search.
+%S-Fst
+ Ty: case TTy. apply IH to Ty S1 RTy. search.
+%S-Snd
+ Ty: case TTy. apply IH to Ty S1 RTy. search.
+
+
+Prove stlc:host:type_preservation.
+%E-Pair-Step1
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-Pair-Step2
+ Ty: case Ty. apply IH to Ty1 Ev2. search.
+%E-Fst-Step
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-Fst-Pair
+ Ty: case Ty. case Ty. search.
+%E-Snd-Step
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-Snd-Pair
+ Ty: case Ty. case Ty. search.
+
+
+Prove stlc:host:subst_total.
+%S-Pair
+ apply IH to IsT1 IsX with R = R. apply IH to IsT2 IsX with R = R.
+ search.
+%S-Fst
+ apply IH to IsT1 IsX with R = R. search.
+%S-Snd
+ apply IH to IsT1 IsX with R = R. search.
+
+
+Prove stlc:host:canonical_forms.
+%V-Pair
+ Ty: case Ty. search.
+
+%special case of canonical_forms, in the way we will use it here
+Theorem canonical_form_pairTy : forall V Ty,
+  value V -> typeOf [] V (pairTy Ty) -> exists A B, V = pair A B.
+intros V Ty. CF: apply canonical_forms to V Ty. case CF. search.
+
+
+Prove stlc:host:progress.
+%T-Pair
+ Is: case IsT. Or1: apply IH to _ Ty1. Or2: apply IH to _ Ty2.
+ EV1: case Or1.
+   %eval T1 T'
+    search.
+   %value T1
+    EV2: case Or2.
+      %eval T2 T'
+       search.
+      %value T2
+       search.
+%T-Fst
+ Is: case IsT. Or: apply IH to _ Ty1. EV: case Or.
+   %eval T1 T'
+    search.
+   %value T1
+    apply canonical_form_pairTy to EV Ty1. search.
+%T-Snd
+ Is: case IsT. Or: apply IH to _ Ty1. EV: case Or.
+   %eval T1 T'
+    search.
+   %value T1
+    apply canonical_form_pairTy to EV Ty1. search.

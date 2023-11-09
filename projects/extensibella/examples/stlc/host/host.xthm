@@ -1,0 +1,415 @@
+Module stlc:host.
+
+Theorem lookup_ty_is : forall Ctx X Ty,
+  is_list (is_pair is_string is_ty) Ctx -> lookup Ctx X Ty ->
+  is_ty Ty.
+induction on 2. intros Is L. L: case L.
+  %Lkp-Here
+   Is: case Is. case Is. search.
+  %Lkp-Later
+   Is: case Is. apply IH to _ L1. search.
+
+
+/*
+  This goes before trans_is because translation might depend on the
+  context, and thus the type, so we might need this to prove that.
+*/
+Extensible_Theorem
+  type_is : forall Ctx T Ty,
+    IsCtx : is_list (is_pair is_string is_ty) Ctx ->
+    IsT : is_tm T ->
+    Ty : typeOf Ctx T Ty ->
+    is_ty Ty
+  on Ty.
+%T-Var
+ apply lookup_ty_is to _ Ty1. search.
+%T-Abs
+ Is: case IsT. apply IH to _ _ Ty1. search.
+%T-App
+ Is: case IsT. IsTy: apply IH to _ _ Ty1. case IsTy. search.
+%T-Num
+ search.
+%T-Plus
+ search.
+
+
+Translation_Constraint
+  trans_is : forall Ctx T T',
+    Trans : Ctx |{tm}- T ~~> T' ->
+    IsCtx : is_list (is_pair is_string is_ty) Ctx ->
+    IsT : is_tm T ->
+    is_tm T'.
+
+
+Extensible_Theorem
+  subst_is : forall X R T S,
+    IsT : is_tm T ->
+    IsX : is_string X ->
+    IsR : is_tm R ->
+    S : subst X R T S ->
+    is_tm S
+  on S.
+%S-Var-NEq
+ search.
+%S-Var-Eq
+ search.
+%S-Abs-NEq
+ Is: case IsT. apply IH to _ _ _ S2. search.
+%S-Abs-Eq
+ search.
+%S-App
+ Is: case IsT. apply IH to _ _ _ S1. apply IH to _ _ _ S2. search.
+%S-Num
+ search.
+%S-Plus
+ Is: case IsT. apply IH to _ _ _ S1. apply IH to _ _ _ S2. search.
+
+
+Extensible_Theorem
+  eval_is : forall T T',
+    IsT : is_tm T ->
+    Ev : eval T T' ->
+    is_tm T'
+  on Ev.
+%E-App-Step1
+ Is: case IsT. apply IH to _ Ev1. search.
+%E-App-Step2
+ Is: case IsT. apply IH to _ Ev2. search.
+%E-App-Subst
+ Is: case IsT. case Is. apply subst_is to _ _ _ Ev2. search.
+%E-Plus-Step1
+ Is: case IsT. apply IH to _ Ev1. search.
+%E-Plus-Step2
+ Is: case IsT. apply IH to _ Ev2. search.
+%E-Plus-Add
+ Is: case IsT. case Is. case Is1.
+ apply plus_integer_is_integer to _ _ Ev1. search.
+
+
+Extensible_Theorem
+  subst_unique : forall X R T VA VB,
+    SA : subst X R T VA ->
+    SB : subst X R T VB ->
+    VA = VB
+  on SA.
+%S-Var-NEq
+ SB: case SB.
+   %S-Var-NEq
+    search.
+   %S-Var-Eq
+    apply SA1 to _.
+%S-Var-Eq
+ SB: case SB.
+   %S-Var-NEq
+    apply SB to _.
+   %S-Var-Eq
+    search.
+%S-Abs-NEq
+ SB: case SB.
+   %S-Abs-NEq
+    apply IH to SA2 SB1. search.
+   %S-Abs-Eq
+    apply SA1 to _.
+%S-Abs-Eq
+ SB: case SB.
+   %S-Abs-NEq
+    apply SB to _.
+   %S-Abs-Eq
+    search.
+%S-App
+ SB: case SB. apply IH to SA1 SB. apply IH to SA2 SB1. search.
+%S-Num
+ SB: case SB. search.
+%S-Plus
+ SB: case SB. apply IH to SA1 SB. apply IH to SA2 SB1. search.
+
+
+Extensible_Theorem
+  value_eval_false : forall T V,
+    Val : value T ->
+    Ev : eval T V ->
+    false
+  on Val.
+%V-Abs
+ case Ev.
+%V-Num
+ case Ev.
+
+
+Extensible_Theorem
+  eval_unique : forall T VA VB,
+    EvA : eval T VA ->
+    EvB : eval T VB ->
+    VA = VB
+  on EvA.
+%E-App-Step1
+ EvB: case EvB.
+   %E-App-Step1
+    apply IH to EvA1 EvB. search.
+   %E-App-Step2
+    apply value_eval_false to EvB EvA1.
+   %E-App-Subst
+    apply value_eval_false to _ EvA1.
+%E-App-Step2
+ EvB: case EvB.
+   %E-App-Step1
+    apply value_eval_false to EvA1 EvB.
+   %E-App-Step2
+    apply IH to EvA2 EvB1. search.
+   %E-App-Subst
+    apply value_eval_false to EvB EvA2.
+%E-App-Subst
+ EvB: case EvB.
+   %E-App-Step1
+    case EvB.
+   %E-App-Step2
+    apply value_eval_false to EvA1 EvB1.
+   %E-App-Subst
+    apply subst_unique to EvA2 EvB1. search.
+%E-Plus-Step1
+ EvB: case EvB.
+   %E-Plus-Step1
+    apply IH to EvA1 EvB. search.
+   %E-Plus-Step2
+    apply value_eval_false to EvB EvA1.
+   %E-Plus-Add
+    case EvA1.
+%E-Plus-Step2
+ EvB: case EvB.
+   %E-Plus-Step1
+    apply value_eval_false to EvA1 EvB.
+   %E-Plus-Step2
+    apply IH to EvA2 EvB1. search.
+   %E-Plus-Add
+    case EvA2.
+%E-Plus-Add
+ EvB: case EvB.
+   %E-Plus-Step1
+    case EvB.
+   %E-Plus-Step2
+    case EvB1.
+   %E-Plus-Add
+    apply plus_integer_unique to EvA1 EvB. search.
+
+
+Extensible_Theorem
+  ty_lookup : forall Ctx1 Ctx2 T Ty,
+    Ty : typeOf Ctx1 T Ty ->
+    L : (forall X XTy, lookup Ctx1 X XTy -> lookup Ctx2 X XTy) ->
+    typeOf Ctx2 T Ty
+  on Ty.
+%T-Var
+ apply L to Ty1. search.
+%T-Abs
+ apply IH to Ty1 _ with Ctx2 = (X, Ty1)::Ctx2.
+   intros LkpX. LkpX: case LkpX.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply L to LkpX1. search.
+ search.
+%T-App
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+%T-Num
+ search.
+%T-Plus
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+
+
+Theorem empty_ty_any : forall T Ty Ctx,
+  typeOf [] T Ty -> typeOf Ctx T Ty.
+intros T. backchain ty_lookup. intros L. case L.
+
+
+Extensible_Theorem
+  subst_type_preservation : forall T Ctx X XTy Ty R S,
+    TTy : typeOf ((X, XTy)::Ctx) T Ty ->
+    S : subst X R T S ->
+    RTy : typeOf [] R XTy ->
+    typeOf Ctx S Ty
+  on S.
+%S-Var-NEq
+ Ty: case TTy. Lkp: case Ty.
+   %Lkp-Here
+    apply S1 to _.
+   %Lkp-Later
+    search.
+%S-Var-Eq
+ Ty: case TTy. L: case Ty.
+   %Lkp-Here
+    backchain empty_ty_any.
+   %Lkp-Later
+    apply L to _.
+%S-Abs-NEq
+ Ty: case TTy.
+ Ty': apply ty_lookup to Ty _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      L: case L1.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         search.
+ apply IH to Ty' S2 _. search.
+%S-Abs-Eq
+ Ty: case TTy. apply ty_lookup to Ty _ with Ctx2 = (X, Ty1)::Ctx.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      L: case L1.
+        %Lkp-Here
+         apply L to _.
+        %Lkp-Later
+         search.
+ search.
+%S-App
+ Ty: case TTy. apply IH to Ty S1 _. apply IH to Ty1 S2 _. search.
+%S-Num
+ case TTy. search.
+%S-Plus
+ Ty: case TTy. apply IH to Ty S1 _. apply IH to Ty1 S2 _. search.
+
+
+Extensible_Theorem
+  type_preservation : forall T Ty T',
+    Ty : typeOf [] T Ty ->
+    Ev : eval T T' ->
+    typeOf [] T' Ty
+  on Ev.
+%E-App-Step1
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-App-Step2
+ Ty: case Ty. apply IH to Ty1 Ev2. search.
+%E-App-Subst
+ Ty: case Ty. Ty: case Ty.
+ apply subst_type_preservation to Ty Ev2 Ty1. search.
+%E-Plus-Step1
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%E-Plus-Step2
+ Ty: case Ty. apply IH to Ty1 Ev2. search.
+%E-Plus-Add
+ Ty: case Ty. search.
+
+
+Extensible_Theorem
+  subst_total : forall X R T,
+    IsT : is_tm T ->
+    IsX : is_string X ->
+    %explicit decision subst can only use R, not examine it
+    %including `is_tm R` could permit tricks to look at it
+    exists S, subst X R T S
+  on IsT.
+%var
+ Or: apply is_string_eq_or_not to IsX IsT1. E: case Or.
+   %X = S
+    search.
+   %X != S
+    search.
+%abs
+ Or: apply is_string_eq_or_not to IsX IsT1. E: case Or.
+   %X = S
+    search.
+   %X != S
+    apply IH to IsT3 IsX with R = R. search.
+%app
+ apply IH to IsT1 IsX with R = R. apply IH to IsT2 IsX with R = R.
+ search.
+%num
+ search.
+%plus
+ apply IH to IsT1 IsX with R = R. apply IH to IsT2 IsX with R = R.
+ search.
+
+
+/*
+  We can prove a single canonical form lemma by having an extensible
+  canonical form relation, then showing it holds for each new type
+  introduced in each module.
+
+  We can introduce and prove the canonical form lemmas for integers
+  and arrow types (shown below as fixed theorems) here and prove them
+  without any problem.  However, if we try to introduce and prove a
+  canonical form lemma in an extension, we need to show it also holds
+  for a generic construct from another extension.  We can't do that in
+  our language because another extension might have introduced a value
+  construct having any type from another extension.  While a relation
+  to pull apart the form solves that problem, we still don't have a
+  way to prove the extension-introduced form relation would hold
+  because, in the generic case, the translation might not have the
+  same type and then the IH would be unhelpful.
+
+  In summary, directly proving canonical form lemmas for
+  extension-introduced types is not possible here, but proving them
+  indirectly through this theorem is possible.
+ */
+Extensible_Theorem
+  canonical_forms : forall V Ty,
+    V : value V ->
+    Ty : typeOf [] V Ty ->
+    canonicalForm Ty V
+  on V.
+%V-Abs
+ case Ty. search.
+%V-Num
+ case Ty. search.
+
+%a couple of useful special cases of canonical_forms
+Theorem canonical_form_intTy : forall V,
+  value V -> typeOf [] V intTy -> exists I, V = num(I).
+intros V Ty. CF: apply canonical_forms to V Ty.
+/*
+  It is important we have the *type* as the primary component of the
+  canonicalForm relation, as the following case analysis is only
+  possible because of that.  However, we can also tell that is the
+  correct choice before writing the proof because canonicalForm is
+  telling us something *about* the type, that any term related to it
+  has a particular shape.
+*/
+case CF. search.
+
+Theorem canonical_form_arrowTy : forall V Ty1 Ty2,
+  value V -> typeOf [] V (arrowTy Ty1 Ty2) ->
+  exists X B, V = abs X Ty1 B.
+intros V Ty. CF: apply canonical_forms to V Ty. case CF. search.
+
+
+Extensible_Theorem
+  progress : forall T Ty,
+    IsT : is_tm T ->
+    Ty : typeOf [] T Ty ->
+    (exists T', eval T T') \/ value T
+  on Ty.
+%T-Var
+ case Ty1.
+%T-Abs
+ search.
+%T-App
+ Is: case IsT. Or1: apply IH to _ Ty1. Or2: apply IH to _ Ty2.
+ EV1: case Or1.
+   %eval T1 T'
+    search.
+   %value T1
+    EV2: case Or2.
+      %eval T2 T'
+       search.
+      %value T2
+       apply canonical_form_arrowTy to _ Ty1. IsAbs: case Is.
+       apply subst_total to IsAbs2 IsAbs with R = T2. search.
+%T-Num
+ search.
+%T-Plus
+ Is: case IsT. Or1: apply IH to _ Ty1. Or2: apply IH to _ Ty2.
+ EV1: case Or1.
+   %eval T1 T'
+    search.
+   %value T1
+    EV2: case Or2.
+      %eval T2 T'
+       search.
+      %value T2
+       apply canonical_form_intTy to _ Ty1. Is: case Is.
+       apply canonical_form_intTy to _ Ty2. Is1: case Is1.
+       apply plus_integer_total to Is Is1. search.
