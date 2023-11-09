@@ -17,270 +17,9 @@
  < <b>Module walkthrough:let.</b>
 </pre>
 <pre class="code extensibella"id="1">
- &lt; <b>Prove walkthrough:host:subst_unique.</b>
-
-Subgoal 8:
-
-Variables: X R VB S2 S1 Y T2 T1
-IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
-SA : subst X R (let Y T1 T2) (let Y S1 S2) @
-SB : subst X R (let Y T1 T2) VB
-SA1 : X = Y -&gt; false
-SA2 : subst X R T1 S1 *
-SA3 : subst X R T2 S2 *
-============================
- let Y S1 S2 = VB
-</pre>
-<pre class="code extensibella"id="2">
- &lt; <b>SB: case SB.</b>
-
-Subgoal 8.1:
-
-Variables: X R S2 S1 Y T2 T1 S4 S3
-IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
-SA : subst X R (let Y T1 T2) (let Y S1 S2) @
-SA1 : X = Y -&gt; false
-SA2 : subst X R T1 S1 *
-SA3 : subst X R T2 S2 *
-SB : X = Y -&gt; false
-SB1 : subst X R T1 S3
-SB2 : subst X R T2 S4
-============================
- let Y S1 S2 = let Y S3 S4
-</pre>
-<pre class="code extensibella"id="3">
- &lt; <b>apply IH to SA2 SB1.</b>
-
-Subgoal 8.1:
-
-Variables: X R S2 Y T2 T1 S4 S3
-IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
-SA : subst X R (let Y T1 T2) (let Y S3 S2) @
-SA1 : X = Y -&gt; false
-SA2 : subst X R T1 S3 *
-SA3 : subst X R T2 S2 *
-SB : X = Y -&gt; false
-SB1 : subst X R T1 S3
-SB2 : subst X R T2 S4
-============================
- let Y S3 S2 = let Y S3 S4
-</pre>
-<pre class="code extensibella"id="4">
- &lt; <b>apply IH to SA3 SB2.</b>
-
-Subgoal 8.1:
-
-Variables: X R Y T2 T1 S4 S3
-IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
-SA : subst X R (let Y T1 T2) (let Y S3 S4) @
-SA1 : X = Y -&gt; false
-SA2 : subst X R T1 S3 *
-SA3 : subst X R T2 S4 *
-SB : X = Y -&gt; false
-SB1 : subst X R T1 S3
-SB2 : subst X R T2 S4
-============================
- let Y S3 S4 = let Y S3 S4
-</pre>
-<pre class="code extensibella"id="5">
- &lt; <b>search.</b>
-
-Subgoal 8.2:
-
-Variables: R S2 S1 Y T2 T1 S3
-IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
-SA : subst Y R (let Y T1 T2) (let Y S1 S2) @
-SA1 : Y = Y -&gt; false
-SA2 : subst Y R T1 S1 *
-SA3 : subst Y R T2 S2 *
-SB : subst Y R T1 S3
-============================
- let Y S1 S2 = let Y S3 T2
-</pre>
-<pre class="code extensibella"id="6">
- &lt; <b>apply SA1 to _.</b>
-
-Subgoal 9:
-
-Variables: X R VB T2 S1 T1
-IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
-SA : subst X R (let X T1 T2) (let X S1 T2) @
-SB : subst X R (let X T1 T2) VB
-SA1 : subst X R T1 S1 *
-============================
- let X S1 T2 = VB
-</pre>
-<pre class="code extensibella"id="7">
- &lt; <b>SB: case SB.</b>
-
-Subgoal 9.1:
-
-Variables: X R T2 S1 T1 S3 S2
-IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
-SA : subst X R (let X T1 T2) (let X S1 T2) @
-SA1 : subst X R T1 S1 *
-SB : X = X -&gt; false
-SB1 : subst X R T1 S2
-SB2 : subst X R T2 S3
-============================
- let X S1 T2 = let X S2 S3
-</pre>
-<pre class="code extensibella"id="8">
- &lt; <b>apply SB to _.</b>
-
-Subgoal 9.2:
-
-Variables: X R T2 S1 T1 S2
-IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
-SA : subst X R (let X T1 T2) (let X S1 T2) @
-SA1 : subst X R T1 S1 *
-SB : subst X R T1 S2
-============================
- let X S1 T2 = let X S2 T2
-</pre>
-<pre class="code extensibella"id="9">
- &lt; <b>apply IH to SA1 SB.</b>
-
-Subgoal 9.2:
-
-Variables: X R T2 T1 S2
-IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
-SA : subst X R (let X T1 T2) (let X S2 T2) @
-SA1 : subst X R T1 S2 *
-SB : subst X R T1 S2
-============================
- let X S2 T2 = let X S2 T2
-</pre>
-<pre class="code extensibella"id="10">
- &lt; <b>search.</b>
-
-Proof completed.
-</pre>
-<pre class="code extensibella"id="11">
- &lt; <b>Prove walkthrough:host:value_eval_false.</b>
-
-Proof completed.
-</pre>
-<pre class="code extensibella"id="12">
- &lt; <b>Prove walkthrough:host:eval_unique.</b>
-
-Subgoal 7:
-
-Variables: VB T2 T11 X T1
-IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
-EvA : eval (let X T1 T2) (let X T11 T2) @
-EvB : eval (let X T1 T2) VB
-EvA1 : eval T1 T11 *
-============================
- let X T11 T2 = VB
-</pre>
-<pre class="code extensibella"id="13">
- &lt; <b>EvB: case EvB.</b>
-
-Subgoal 7.1:
-
-Variables: T2 T11 X T1 T5
-IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
-EvA : eval (let X T1 T2) (let X T11 T2) @
-EvA1 : eval T1 T11 *
-EvB : eval T1 T5
-============================
- let X T11 T2 = let X T5 T2
-</pre>
-<pre class="code extensibella"id="14">
- &lt; <b>apply IH to EvA1 EvB.</b>
-
-Subgoal 7.1:
-
-Variables: T2 X T1 T5
-IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
-EvA : eval (let X T1 T2) (let X T5 T2) @
-EvA1 : eval T1 T5 *
-EvB : eval T1 T5
-============================
- let X T5 T2 = let X T5 T2
-</pre>
-<pre class="code extensibella"id="15">
- &lt; <b>search.</b>
-
-Subgoal 7.2:
-
-Variables: VB T2 T11 X T1
-IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
-EvA : eval (let X T1 T2) (let X T11 T2) @
-EvA1 : eval T1 T11 *
-EvB : value T1
-EvB1 : subst X T1 T2 VB
-============================
- let X T11 T2 = VB
-</pre>
-<pre class="code extensibella"id="16">
- &lt; <b>apply value_eval_false to EvB EvA1.</b>
-
-Subgoal 8:
-
-Variables: VA VB T2 T1 X
-IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
-EvA : eval (let X T1 T2) VA @
-EvB : eval (let X T1 T2) VB
-EvA1 : value T1
-EvA2 : subst X T1 T2 VA
-============================
- VA = VB
-</pre>
-<pre class="code extensibella"id="17">
- &lt; <b>EvB: case EvB.</b>
-
-Subgoal 8.1:
-
-Variables: VA T2 T1 X T11
-IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
-EvA : eval (let X T1 T2) VA @
-EvA1 : value T1
-EvA2 : subst X T1 T2 VA
-EvB : eval T1 T11
-============================
- VA = let X T11 T2
-</pre>
-<pre class="code extensibella"id="18">
- &lt; <b>apply value_eval_false to EvA1 EvB.</b>
-
-Subgoal 8.2:
-
-Variables: VA VB T2 T1 X
-IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
-EvA : eval (let X T1 T2) VA @
-EvA1 : value T1
-EvA2 : subst X T1 T2 VA
-EvB : value T1
-EvB1 : subst X T1 T2 VB
-============================
- VA = VB
-</pre>
-<pre class="code extensibella"id="19">
- &lt; <b>apply subst_unique to EvA2 EvB1.</b>
-
-Subgoal 8.2:
-
-Variables: VB T2 T1 X
-IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
-EvA : eval (let X T1 T2) VB @
-EvA1 : value T1
-EvA2 : subst X T1 T2 VB
-EvB : value T1
-EvB1 : subst X T1 T2 VB
-============================
- VB = VB
-</pre>
-<pre class="code extensibella"id="20">
- &lt; <b>search.</b>
-
-Proof completed.
-</pre>
-<pre class="code extensibella"id="21">
  &lt; <b>Prove walkthrough:host:ty_lookup.</b>
 
-Subgoal 6:
+Subgoal 4:
 
 Variables: Ctx1 Ctx2 Ty Ty1 T2 T1 X
 IH : forall Ctx1 Ctx2 T Ty,
@@ -294,10 +33,10 @@ Ty2 : typeOf ((X, Ty1)::Ctx1) T2 Ty *
 ============================
  typeOf Ctx2 (let X T1 T2) Ty
 </pre>
-<pre class="code extensibella"id="22">
+<pre class="code extensibella"id="2">
  &lt; <b>apply IH to Ty1 L.</b>
 
-Subgoal 6:
+Subgoal 4:
 
 Variables: Ctx1 Ctx2 Ty Ty1 T2 T1 X
 IH : forall Ctx1 Ctx2 T Ty,
@@ -312,11 +51,11 @@ H1 : typeOf Ctx2 T1 Ty1
 ============================
  typeOf Ctx2 (let X T1 T2) Ty
 </pre>
-<pre class="code extensibella"id="23">
+<pre class="code extensibella"id="3">
  &lt; <b>apply IH to Ty2 _ with
      Ctx2 = (X, Ty1)::Ctx2.</b>
 
-Subgoal 6.1:
+Subgoal 4.1:
 
 Variables: Ctx1 Ctx2 Ty Ty1 T2 T1 X
 IH : forall Ctx1 Ctx2 T Ty,
@@ -331,10 +70,10 @@ H1 : typeOf Ctx2 T1 Ty1
 ============================
  forall X1 XTy, lookup ((X, Ty1)::Ctx1) X1 XTy -&gt; lookup ((X, Ty1)::Ctx2) X1 XTy
 </pre>
-<pre class="code extensibella"id="24">
+<pre class="code extensibella"id="4">
  &lt; <b>intros Lkp.</b>
 
-Subgoal 6.1:
+Subgoal 4.1:
 
 Variables: Ctx1 Ctx2 Ty Ty1 T2 T1 X X1 XTy
 IH : forall Ctx1 Ctx2 T Ty,
@@ -350,10 +89,10 @@ Lkp : lookup ((X, Ty1)::Ctx1) X1 XTy
 ============================
  lookup ((X, Ty1)::Ctx2) X1 XTy
 </pre>
-<pre class="code extensibella"id="25">
+<pre class="code extensibella"id="5">
  &lt; <b>Lkp: case Lkp.</b>
 
-Subgoal 6.1.1:
+Subgoal 4.1.1:
 
 Variables: Ctx1 Ctx2 Ty T2 T1 X1 XTy
 IH : forall Ctx1 Ctx2 T Ty,
@@ -368,10 +107,10 @@ H1 : typeOf Ctx2 T1 XTy
 ============================
  lookup ((X1, XTy)::Ctx2) X1 XTy
 </pre>
-<pre class="code extensibella"id="26">
+<pre class="code extensibella"id="6">
  &lt; <b>search.</b>
 
-Subgoal 6.1.2:
+Subgoal 4.1.2:
 
 Variables: Ctx1 Ctx2 Ty Ty1 T2 T1 X X1 XTy
 IH : forall Ctx1 Ctx2 T Ty,
@@ -388,10 +127,10 @@ Lkp1 : lookup Ctx1 X1 XTy
 ============================
  lookup ((X, Ty1)::Ctx2) X1 XTy
 </pre>
-<pre class="code extensibella"id="27">
+<pre class="code extensibella"id="7">
  &lt; <b>apply L to Lkp1.</b>
 
-Subgoal 6.1.2:
+Subgoal 4.1.2:
 
 Variables: Ctx1 Ctx2 Ty Ty1 T2 T1 X X1 XTy
 IH : forall Ctx1 Ctx2 T Ty,
@@ -409,10 +148,10 @@ H2 : lookup Ctx2 X1 XTy
 ============================
  lookup ((X, Ty1)::Ctx2) X1 XTy
 </pre>
-<pre class="code extensibella"id="28">
+<pre class="code extensibella"id="8">
  &lt; <b>search.</b>
 
-Subgoal 6:
+Subgoal 4:
 
 Variables: Ctx1 Ctx2 Ty Ty1 T2 T1 X
 IH : forall Ctx1 Ctx2 T Ty,
@@ -428,15 +167,15 @@ H2 : typeOf ((X, Ty1)::Ctx2) T2 Ty
 ============================
  typeOf Ctx2 (let X T1 T2) Ty
 </pre>
-<pre class="code extensibella"id="29">
+<pre class="code extensibella"id="9">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="30">
+<pre class="code extensibella"id="10">
  &lt; <b>Prove walkthrough:host:subst_type_preservation.</b>
 
-Subgoal 8:
+Subgoal 6:
 
 Variables: Ctx X XTy Ty R S2 S1 Y T2 T1
 IH : forall T Ctx X XTy Ty R S,
@@ -451,10 +190,10 @@ S3 : subst X R T2 S2 *
 ============================
  typeOf Ctx (let Y S1 S2) Ty
 </pre>
-<pre class="code extensibella"id="31">
+<pre class="code extensibella"id="11">
  &lt; <b>Ty: case TTy.</b>
 
-Subgoal 8:
+Subgoal 6:
 
 Variables: Ctx X XTy Ty R S2 S1 Y T2 T1 Ty1
 IH : forall T Ctx X XTy Ty R S,
@@ -470,10 +209,10 @@ Ty1 : typeOf ((Y, Ty1)::((X, XTy)::Ctx)) T2 Ty
 ============================
  typeOf Ctx (let Y S1 S2) Ty
 </pre>
-<pre class="code extensibella"id="32">
+<pre class="code extensibella"id="12">
  &lt; <b>apply IH to Ty S2 RTy.</b>
 
-Subgoal 8:
+Subgoal 6:
 
 Variables: Ctx X XTy Ty R S2 S1 Y T2 T1 Ty1
 IH : forall T Ctx X XTy Ty R S,
@@ -490,11 +229,11 @@ H1 : typeOf Ctx S1 Ty1
 ============================
  typeOf Ctx (let Y S1 S2) Ty
 </pre>
-<pre class="code extensibella"id="33">
+<pre class="code extensibella"id="13">
  &lt; <b>Ty': apply ty_lookup to Ty1 _ with
           Ctx2 = (X, XTy)::((Y, Ty1)::Ctx).</b>
 
-Subgoal 8.1:
+Subgoal 6.1:
 
 Variables: Ctx X XTy Ty R S2 S1 Y T2 T1 Ty1
 IH : forall T Ctx X XTy Ty R S,
@@ -513,10 +252,10 @@ H1 : typeOf Ctx S1 Ty1
    lookup ((Y, Ty1)::((X, XTy)::Ctx)) X1 XTy1 -&gt;
    lookup ((X, XTy)::((Y, Ty1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="34">
+<pre class="code extensibella"id="14">
  &lt; <b>intros L.</b>
 
-Subgoal 8.1:
+Subgoal 6.1:
 
 Variables: Ctx X XTy Ty R S2 S1 Y T2 T1 Ty1 X1 XTy1
 IH : forall T Ctx X XTy Ty R S,
@@ -534,10 +273,10 @@ L : lookup ((Y, Ty1)::((X, XTy)::Ctx)) X1 XTy1
 ============================
  lookup ((X, XTy)::((Y, Ty1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="35">
+<pre class="code extensibella"id="15">
  &lt; <b>L: case L.</b>
 
-Subgoal 8.1.1:
+Subgoal 6.1.1:
 
 Variables: Ctx X XTy Ty R S2 S1 T2 T1 X1 XTy1
 IH : forall T Ctx X XTy Ty R S,
@@ -554,10 +293,10 @@ H1 : typeOf Ctx S1 XTy1
 ============================
  lookup ((X, XTy)::((X1, XTy1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="36">
+<pre class="code extensibella"id="16">
  &lt; <b>search.</b>
 
-Subgoal 8.1.2:
+Subgoal 6.1.2:
 
 Variables: Ctx X XTy Ty R S2 S1 Y T2 T1 Ty1 X1 XTy1
 IH : forall T Ctx X XTy Ty R S,
@@ -576,10 +315,10 @@ L1 : lookup ((X, XTy)::Ctx) X1 XTy1
 ============================
  lookup ((X, XTy)::((Y, Ty1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="37">
+<pre class="code extensibella"id="17">
  &lt; <b>L: case L1.</b>
 
-Subgoal 8.1.2.1:
+Subgoal 6.1.2.1:
 
 Variables: Ctx Ty R S2 S1 Y T2 T1 Ty1 X1 XTy1
 IH : forall T Ctx X XTy Ty R S,
@@ -597,10 +336,10 @@ L : Y = X1 -&gt; false
 ============================
  lookup ((X1, XTy1)::((Y, Ty1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="38">
+<pre class="code extensibella"id="18">
  &lt; <b>search.</b>
 
-Subgoal 8.1.2.2:
+Subgoal 6.1.2.2:
 
 Variables: Ctx X XTy Ty R S2 S1 Y T2 T1 Ty1 X1 XTy1
 IH : forall T Ctx X XTy Ty R S,
@@ -620,10 +359,10 @@ L2 : lookup Ctx X1 XTy1
 ============================
  lookup ((X, XTy)::((Y, Ty1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="39">
+<pre class="code extensibella"id="19">
  &lt; <b>search.</b>
 
-Subgoal 8:
+Subgoal 6:
 
 Variables: Ctx X XTy Ty R S2 S1 Y T2 T1 Ty1
 IH : forall T Ctx X XTy Ty R S,
@@ -641,10 +380,10 @@ Ty' : typeOf ((X, XTy)::((Y, Ty1)::Ctx)) T2 Ty
 ============================
  typeOf Ctx (let Y S1 S2) Ty
 </pre>
-<pre class="code extensibella"id="40">
+<pre class="code extensibella"id="20">
  &lt; <b>apply IH to Ty' S3 RTy.</b>
 
-Subgoal 8:
+Subgoal 6:
 
 Variables: Ctx X XTy Ty R S2 S1 Y T2 T1 Ty1
 IH : forall T Ctx X XTy Ty R S,
@@ -663,10 +402,10 @@ H2 : typeOf ((Y, Ty1)::Ctx) S2 Ty
 ============================
  typeOf Ctx (let Y S1 S2) Ty
 </pre>
-<pre class="code extensibella"id="41">
+<pre class="code extensibella"id="21">
  &lt; <b>search.</b>
 
-Subgoal 9:
+Subgoal 7:
 
 Variables: Ctx X XTy Ty R T2 S1 T1
 IH : forall T Ctx X XTy Ty R S,
@@ -679,10 +418,10 @@ S1 : subst X R T1 S1 *
 ============================
  typeOf Ctx (let X S1 T2) Ty
 </pre>
-<pre class="code extensibella"id="42">
+<pre class="code extensibella"id="22">
  &lt; <b>Ty: case TTy.</b>
 
-Subgoal 9:
+Subgoal 7:
 
 Variables: Ctx X XTy Ty R T2 S1 T1 Ty1
 IH : forall T Ctx X XTy Ty R S,
@@ -696,10 +435,10 @@ Ty1 : typeOf ((X, Ty1)::((X, XTy)::Ctx)) T2 Ty
 ============================
  typeOf Ctx (let X S1 T2) Ty
 </pre>
-<pre class="code extensibella"id="43">
+<pre class="code extensibella"id="23">
  &lt; <b>apply IH to Ty S1 RTy.</b>
 
-Subgoal 9:
+Subgoal 7:
 
 Variables: Ctx X XTy Ty R T2 S1 T1 Ty1
 IH : forall T Ctx X XTy Ty R S,
@@ -714,11 +453,11 @@ H1 : typeOf Ctx S1 Ty1
 ============================
  typeOf Ctx (let X S1 T2) Ty
 </pre>
-<pre class="code extensibella"id="44">
+<pre class="code extensibella"id="24">
  &lt; <b>apply ty_lookup to Ty1 _ with
      Ctx2 = (X, Ty1)::Ctx.</b>
 
-Subgoal 9.1:
+Subgoal 7.1:
 
 Variables: Ctx X XTy Ty R T2 S1 T1 Ty1
 IH : forall T Ctx X XTy Ty R S,
@@ -734,10 +473,10 @@ H1 : typeOf Ctx S1 Ty1
  forall X1 XTy1,
    lookup ((X, Ty1)::((X, XTy)::Ctx)) X1 XTy1 -&gt; lookup ((X, Ty1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="45">
+<pre class="code extensibella"id="25">
  &lt; <b>intros L.</b>
 
-Subgoal 9.1:
+Subgoal 7.1:
 
 Variables: Ctx X XTy Ty R T2 S1 T1 Ty1 X1 XTy1
 IH : forall T Ctx X XTy Ty R S,
@@ -753,10 +492,10 @@ L : lookup ((X, Ty1)::((X, XTy)::Ctx)) X1 XTy1
 ============================
  lookup ((X, Ty1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="46">
+<pre class="code extensibella"id="26">
  &lt; <b>L: case L.</b>
 
-Subgoal 9.1.1:
+Subgoal 7.1.1:
 
 Variables: Ctx XTy Ty R T2 S1 T1 X1 XTy1
 IH : forall T Ctx X XTy Ty R S,
@@ -771,10 +510,10 @@ H1 : typeOf Ctx S1 XTy1
 ============================
  lookup ((X1, XTy1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="47">
+<pre class="code extensibella"id="27">
  &lt; <b>search.</b>
 
-Subgoal 9.1.2:
+Subgoal 7.1.2:
 
 Variables: Ctx X XTy Ty R T2 S1 T1 Ty1 X1 XTy1
 IH : forall T Ctx X XTy Ty R S,
@@ -791,10 +530,10 @@ L1 : lookup ((X, XTy)::Ctx) X1 XTy1
 ============================
  lookup ((X, Ty1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="48">
+<pre class="code extensibella"id="28">
  &lt; <b>L: case L1.</b>
 
-Subgoal 9.1.2.1:
+Subgoal 7.1.2.1:
 
 Variables: Ctx Ty R T2 S1 T1 Ty1 X1 XTy1
 IH : forall T Ctx X XTy Ty R S,
@@ -810,10 +549,10 @@ L : X1 = X1 -&gt; false
 ============================
  lookup ((X1, Ty1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="49">
+<pre class="code extensibella"id="29">
  &lt; <b>apply L to _.</b>
 
-Subgoal 9.1.2.2:
+Subgoal 7.1.2.2:
 
 Variables: Ctx X XTy Ty R T2 S1 T1 Ty1 X1 XTy1
 IH : forall T Ctx X XTy Ty R S,
@@ -831,10 +570,10 @@ L2 : lookup Ctx X1 XTy1
 ============================
  lookup ((X, Ty1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="50">
+<pre class="code extensibella"id="30">
  &lt; <b>search.</b>
 
-Subgoal 9:
+Subgoal 7:
 
 Variables: Ctx X XTy Ty R T2 S1 T1 Ty1
 IH : forall T Ctx X XTy Ty R S,
@@ -850,15 +589,15 @@ H2 : typeOf ((X, Ty1)::Ctx) T2 Ty
 ============================
  typeOf Ctx (let X S1 T2) Ty
 </pre>
-<pre class="code extensibella"id="51">
+<pre class="code extensibella"id="31">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="52">
+<pre class="code extensibella"id="32">
  &lt; <b>Prove walkthrough:host:type_preservation.</b>
 
-Subgoal 7:
+Subgoal 4:
 
 Variables: Ty T2 T11 X T1
 IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
@@ -868,10 +607,10 @@ Ev1 : eval T1 T11 *
 ============================
  typeOf [] (let X T11 T2) Ty
 </pre>
-<pre class="code extensibella"id="53">
+<pre class="code extensibella"id="33">
  &lt; <b>Ty: case Ty.</b>
 
-Subgoal 7:
+Subgoal 4:
 
 Variables: Ty T2 T11 X T1 Ty1
 IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
@@ -882,10 +621,10 @@ Ty1 : typeOf [(X, Ty1)] T2 Ty
 ============================
  typeOf [] (let X T11 T2) Ty
 </pre>
-<pre class="code extensibella"id="54">
+<pre class="code extensibella"id="34">
  &lt; <b>apply IH to Ty Ev1.</b>
 
-Subgoal 7:
+Subgoal 4:
 
 Variables: Ty T2 T11 X T1 Ty1
 IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
@@ -897,10 +636,10 @@ H1 : typeOf [] T11 Ty1
 ============================
  typeOf [] (let X T11 T2) Ty
 </pre>
-<pre class="code extensibella"id="55">
+<pre class="code extensibella"id="35">
  &lt; <b>search.</b>
 
-Subgoal 8:
+Subgoal 5:
 
 Variables: Ty T' T2 T1 X
 IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
@@ -911,10 +650,10 @@ Ev2 : subst X T1 T2 T'
 ============================
  typeOf [] T' Ty
 </pre>
-<pre class="code extensibella"id="56">
+<pre class="code extensibella"id="36">
  &lt; <b>Ty: case Ty.</b>
 
-Subgoal 8:
+Subgoal 5:
 
 Variables: Ty T' T2 T1 X Ty1
 IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
@@ -926,10 +665,10 @@ Ty1 : typeOf [(X, Ty1)] T2 Ty
 ============================
  typeOf [] T' Ty
 </pre>
-<pre class="code extensibella"id="57">
+<pre class="code extensibella"id="37">
  &lt; <b>apply subst_type_preservation to Ty1 Ev2 Ty.</b>
 
-Subgoal 8:
+Subgoal 5:
 
 Variables: Ty T' T2 T1 X Ty1
 IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
@@ -942,7 +681,7 @@ H1 : typeOf [] T' Ty
 ============================
  typeOf [] T' Ty
 </pre>
-<pre class="code extensibella"id="58">
+<pre class="code extensibella"id="38">
  &lt; <b>search.</b>
 
 Proof completed.
