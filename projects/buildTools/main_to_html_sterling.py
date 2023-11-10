@@ -35,6 +35,11 @@ def writeInitialText(outF, depth, titleInfo):
 
 #Write out text ending the HTML for the basic file
 def writeEndText(outF):
+    #link to navigate back to example home
+    outF.write('<div class="section">\n')
+    outF.write('<a class="navlink" href="../description.html">Back to example home</a>\n')
+    outF.write('</div>\n')
+    #close out file
     outF.write("</body>\n" + "</html>\n")
 
 
