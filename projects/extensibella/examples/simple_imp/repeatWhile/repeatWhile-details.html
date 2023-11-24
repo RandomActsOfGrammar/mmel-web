@@ -215,32 +215,32 @@ Proof completed.
 <pre class="code extensibella"id="32">
  &lt; <b>Theorem repeatWhile_transEval :
      forall G Body Cond G1,
-       eval_c G (repeatWhile Body Cond) G1 -&gt;
-       exists G2, eval_c G (seq Body (while Cond Body)) G2.</b>
+       eval_c G (repeatWhile Body Cond) G1 -&gt; exists G2,
+         eval_c G (seq Body (while Cond Body)) G2.</b>
 
 ============================
  forall G Body Cond G1,
-   eval_c G (repeatWhile Body Cond) G1 -&gt;
-   exists G2, eval_c G (seq Body (while Cond Body)) G2
+   eval_c G (repeatWhile Body Cond) G1 -&gt; exists G2,
+     eval_c G (seq Body (while Cond Body)) G2
 </pre>
 <pre class="code extensibella"id="33">
  &lt; <b>induction on 1.</b>
 
 IH : forall G Body Cond G1,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       exists G2, eval_c G (seq Body (while Cond Body)) G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; exists G2,
+         eval_c G (seq Body (while Cond Body)) G2
 ============================
  forall G Body Cond G1,
-   eval_c G (repeatWhile Body Cond) G1 @ -&gt;
-   exists G2, eval_c G (seq Body (while Cond Body)) G2
+   eval_c G (repeatWhile Body Cond) G1 @ -&gt; exists G2,
+     eval_c G (seq Body (while Cond Body)) G2
 </pre>
 <pre class="code extensibella"id="34">
  &lt; <b>intros Ev.</b>
 
 Variables: G Body Cond G1
 IH : forall G Body Cond G1,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       exists G2, eval_c G (seq Body (while Cond Body)) G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; exists G2,
+         eval_c G (seq Body (while Cond Body)) G2
 Ev : eval_c G (repeatWhile Body Cond) G1 @
 ============================
  exists G2, eval_c G (seq Body (while Cond Body)) G2
@@ -252,8 +252,8 @@ Subgoal 1:
 
 Variables: G Body Cond G1 G2
 IH : forall G Body Cond G1,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       exists G2, eval_c G (seq Body (while Cond Body)) G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; exists G2,
+         eval_c G (seq Body (while Cond Body)) G2
 Ev : eval_c G (repeatWhile Body Cond) G1 @
 Ev1 : eval_c G Body G2 *
 Ev2 : eval_e G2 Cond trueVal
@@ -268,8 +268,8 @@ Subgoal 1:
 
 Variables: G Body Cond G1 G2 G3
 IH : forall G Body Cond G1,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       exists G2, eval_c G (seq Body (while Cond Body)) G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; exists G2,
+         eval_c G (seq Body (while Cond Body)) G2
 Ev : eval_c G (repeatWhile Body Cond) G1 @
 Ev1 : eval_c G Body G2 *
 Ev2 : eval_e G2 Cond trueVal
@@ -285,8 +285,8 @@ Subgoal 1:
 
 Variables: G Body Cond G1 G2 G3 G4
 IH : forall G Body Cond G1,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       exists G2, eval_c G (seq Body (while Cond Body)) G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; exists G2,
+         eval_c G (seq Body (while Cond Body)) G2
 Ev : eval_c G (repeatWhile Body Cond) G1 @
 Ev1 : eval_c G Body G2 *
 Ev2 : eval_e G2 Cond trueVal
@@ -303,8 +303,8 @@ Subgoal 2:
 
 Variables: G Body Cond G1
 IH : forall G Body Cond G1,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       exists G2, eval_c G (seq Body (while Cond Body)) G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; exists G2,
+         eval_c G (seq Body (while Cond Body)) G2
 Ev : eval_c G (repeatWhile Body Cond) G1 @
 Ev1 : eval_c G Body G1 *
 Ev2 : eval_e G1 Cond falseVal
@@ -361,8 +361,8 @@ Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 </pre>
 <pre class="code extensibella"id="44">
  &lt; <b>RW_to_SW: assert forall C B EG EG' N,
-     &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-     exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N.</b>
+     &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+       &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N.</b>
 
 Subgoal 10.1:
 
@@ -379,8 +379,8 @@ Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 ============================
  forall C B EG EG' N,
-   &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-   exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+   &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+     &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 </pre>
 <pre class="code extensibella"id="45">
  &lt; <b>clear IH
@@ -398,8 +398,8 @@ Subgoal 10.1:
 Variables: N G G1 N2 N3 N4 G2 Cond Body
 ============================
  forall C B EG EG' N,
-   &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-   exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+   &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+     &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 </pre>
 <pre class="code extensibella"id="46">
  &lt; <b>induction on 1.</b>
@@ -408,12 +408,12 @@ Subgoal 10.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 ============================
  forall C B EG EG' N,
-   &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N @ -&gt;
-   exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+   &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N @ -&gt; exists N',
+     &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 </pre>
 <pre class="code extensibella"id="47">
  &lt; <b>intros EvalRep.</b>
@@ -422,8 +422,8 @@ Subgoal 10.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 EvalRep : &lt;eval_c {ES}&gt; EG (repeatWhile B C1) EG' N1 @
 ============================
  exists N', &lt;eval_c {ES}&gt; EG (seq B (while C1 B)) EG' N' /\ N' &lt; N1
@@ -435,8 +435,8 @@ Subgoal 10.1.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -452,8 +452,8 @@ Subgoal 10.1.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N'
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -471,8 +471,8 @@ Subgoal 10.1.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -492,8 +492,8 @@ Subgoal 10.1.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -514,8 +514,8 @@ Subgoal 10.1.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -537,8 +537,8 @@ Subgoal 10.1.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -561,8 +561,8 @@ Subgoal 10.1.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -586,8 +586,8 @@ Subgoal 10.1.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4 N10
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -612,8 +612,8 @@ Subgoal 10.1.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4 N10
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -638,8 +638,8 @@ Subgoal 10.1.1.1:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4 N10
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -664,8 +664,8 @@ Subgoal 10.1.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4 N10
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -690,8 +690,8 @@ Subgoal 10.1.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4 N10
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -717,8 +717,8 @@ Subgoal 10.1.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4 N10
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -745,8 +745,8 @@ Subgoal 10.1.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4 N10
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -774,8 +774,8 @@ Subgoal 10.1.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4 N10
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -804,8 +804,8 @@ Subgoal 10.1.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6 N7 G3 N' N8 N9 G4 N10
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N7 = N1
 Ev1 : N5 + N6 = N7
 Ev2 : &lt;eval_c {ES}&gt; EG B G3 N5 *
@@ -835,8 +835,8 @@ Subgoal 10.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N5 = N1
 Ev1 : &lt;eval_c {ES}&gt; EG B EG' N5 *
 Ev2 : eval_e EG' C1 falseVal
@@ -850,8 +850,8 @@ Subgoal 10.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N5 = N1
 Ev1 : &lt;eval_c {ES}&gt; EG B EG' N5 *
 Ev2 : eval_e EG' C1 falseVal
@@ -866,8 +866,8 @@ Subgoal 10.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N5 = N1
 Ev1 : &lt;eval_c {ES}&gt; EG B EG' N5 *
 Ev2 : eval_e EG' C1 falseVal
@@ -884,8 +884,8 @@ Subgoal 10.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5 N6
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N5 = N1
 Ev1 : &lt;eval_c {ES}&gt; EG B EG' N5 *
 Ev2 : eval_e EG' C1 falseVal
@@ -902,8 +902,8 @@ Subgoal 10.1.2:
 
 Variables: N G G1 N2 N3 N4 G2 Cond Body C1 B EG EG' N1 N5
 IH : forall C B EG EG' N,
-       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt;
-       exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+       &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N * -&gt; exists N',
+         &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Ev : 1 + N5 = N1
 Ev1 : &lt;eval_c {ES}&gt; EG B EG' N5 *
 Ev2 : eval_e EG' C1 falseVal
@@ -930,8 +930,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 ============================
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
 </pre>
@@ -951,8 +951,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 ============================
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
@@ -973,8 +973,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 ============================
@@ -996,8 +996,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1020,8 +1020,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1045,8 +1045,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1071,8 +1071,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1098,8 +1098,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1126,8 +1126,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1154,8 +1154,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1183,8 +1183,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1212,8 +1212,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1242,8 +1242,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N4 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N4
 IsN3 : is_integer N3
@@ -1270,8 +1270,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1299,8 +1299,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1328,8 +1328,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1358,8 +1358,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1388,8 +1388,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1419,8 +1419,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N4 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N4
@@ -1448,8 +1448,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1478,8 +1478,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1509,8 +1509,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1541,8 +1541,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1574,8 +1574,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1608,8 +1608,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1643,8 +1643,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1680,8 +1680,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1718,8 +1718,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1757,8 +1757,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1797,8 +1797,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -1838,8 +1838,8 @@ Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
 Rel4 : eval_e G2 Cond trueVal
 Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
 RW_to_SW : forall C B EG EG' N,
-             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt;
-             exists N', &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 IsN2 : is_integer N2
 IsN3 : is_integer N3
@@ -2208,32 +2208,32 @@ Proof completed.
 <pre class="code extensibella"id="121">
  &lt; <b>Theorem repeatWhile_transSame :
      forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2.</b>
+       eval_c G (repeatWhile Body Cond) G1 -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2.</b>
 
 ============================
  forall G Body Cond G1 G2,
-   eval_c G (repeatWhile Body Cond) G1 -&gt;
-   eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+   eval_c G (repeatWhile Body Cond) G1 -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+   G1 = G2
 </pre>
 <pre class="code extensibella"id="122">
  &lt; <b>induction on 1.</b>
 
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 ============================
  forall G Body Cond G1 G2,
-   eval_c G (repeatWhile Body Cond) G1 @ -&gt;
-   eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+   eval_c G (repeatWhile Body Cond) G1 @ -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+   G1 = G2
 </pre>
 <pre class="code extensibella"id="123">
  &lt; <b>intros EvRW EvSW.</b>
 
 Variables: G Body Cond G1 G2
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G1 @
 EvSW : eval_c G (seq Body (while Cond Body)) G2
 ============================
@@ -2246,8 +2246,8 @@ Subgoal 1:
 
 Variables: G Body Cond G1 G2 G3
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G1 @
 EvSW : eval_c G (seq Body (while Cond Body)) G2
 EvRW1 : eval_c G Body G3 *
@@ -2263,8 +2263,8 @@ Subgoal 1:
 
 Variables: G Body Cond G1 G2 G3 G4
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G1 @
 EvRW1 : eval_c G Body G3 *
 EvRW2 : eval_e G3 Cond trueVal
@@ -2281,8 +2281,8 @@ Subgoal 1:
 
 Variables: G Body Cond G1 G2 G4
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G1 @
 EvRW1 : eval_c G Body G4 *
 EvRW2 : eval_e G4 Cond trueVal
@@ -2299,8 +2299,8 @@ Subgoal 1.1:
 
 Variables: G Body Cond G1 G2
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G1 @
 EvRW1 : eval_c G Body G2 *
 EvRW2 : eval_e G2 Cond trueVal
@@ -2317,8 +2317,8 @@ Subgoal 1.2:
 
 Variables: G Body Cond G1 G2 G4 G5
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G1 @
 EvRW1 : eval_c G Body G4 *
 EvRW2 : eval_e G4 Cond trueVal
@@ -2337,8 +2337,8 @@ Subgoal 1.2:
 
 Variables: G Body Cond G1 G2 G4 G5
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G1 @
 EvRW1 : eval_c G Body G4 *
 EvRW2 : eval_e G4 Cond trueVal
@@ -2358,8 +2358,8 @@ Subgoal 1.2:
 
 Variables: G Body Cond G2 G4 G5
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G2 @
 EvRW1 : eval_c G Body G4 *
 EvRW2 : eval_e G4 Cond trueVal
@@ -2379,8 +2379,8 @@ Subgoal 2:
 
 Variables: G Body Cond G1 G2
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G1 @
 EvSW : eval_c G (seq Body (while Cond Body)) G2
 EvRW1 : eval_c G Body G1 *
@@ -2395,8 +2395,8 @@ Subgoal 2:
 
 Variables: G Body Cond G1 G2 G3
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G1 @
 EvRW1 : eval_c G Body G1 *
 EvRW2 : eval_e G1 Cond falseVal
@@ -2412,8 +2412,8 @@ Subgoal 2:
 
 Variables: G Body Cond G2 G3
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G3 @
 EvRW1 : eval_c G Body G3 *
 EvRW2 : eval_e G3 Cond falseVal
@@ -2429,8 +2429,8 @@ Subgoal 2.1:
 
 Variables: G Body Cond G2
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G2 @
 EvRW1 : eval_c G Body G2 *
 EvRW2 : eval_e G2 Cond falseVal
@@ -2446,8 +2446,8 @@ Subgoal 2.2:
 
 Variables: G Body Cond G2 G3 G4
 IH : forall G Body Cond G1 G2,
-       eval_c G (repeatWhile Body Cond) G1 * -&gt;
-       eval_c G (seq Body (while Cond Body)) G2 -&gt; G1 = G2
+       eval_c G (repeatWhile Body Cond) G1 * -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
+       G1 = G2
 EvRW : eval_c G (repeatWhile Body Cond) G3 @
 EvRW1 : eval_c G Body G3 *
 EvRW2 : eval_e G3 Cond falseVal

@@ -120,13 +120,16 @@ def writeDetailsFile(depth, outFilename, extensibellaFilename,
     outF.write('<div class="section">\n')
     outF.close()
     #run Extensibella for the main text
-    subprocess.run(["extensibella", "--annotate", outFilename,
-                    extensibellaFilename])
+    runRes = subprocess.run(["extensibella", "--annotate", outFilename,
+                             extensibellaFilename])
+    if runRes.returncode != 0:
+        return 1
     #write the end
     outF = open(outFilename, "a")
     outF.write('</div>\n')
     writeEndText(outF)
     outF.close()
+    return 0
 
 
 
@@ -138,8 +141,8 @@ def fullProcess(depth, outFilebase, extensibellaFilename,
     detailsFile = outFilebase + "-details.html"
     writeHTMLFile(depth, outFilebase + ".html", extensibellaFilename,
                   sosFilenames, titleInfo, detailsFile)
-    writeDetailsFile(depth, detailsFile, extensibellaFilename,
-                     titleInfo)
+    return writeDetailsFile(depth, detailsFile, extensibellaFilename,
+                            titleInfo)
 
 
 
@@ -156,8 +159,8 @@ def main(args):
     titleInfo = args[3]
     extensibellaFile = args[4]
     sosFiles = args[5:]
-    fullProcess(depth, fbase, extensibellaFile, sosFiles, titleInfo)
+    return fullProcess(depth, fbase, extensibellaFile, sosFiles, titleInfo)
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    sys.exit(main(sys.argv)) #return the error code

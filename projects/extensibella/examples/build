@@ -6,6 +6,11 @@ for dir in "${dirs[@]}"
 do
     cd "$dir"
     ./build
+    #check for failure to stop here
+    if [[ $? -ne 0 ]] ; then
+        exit 1
+    fi
+    #display the successful completion
     echo ""
     echo ""
     echo "============================================================"

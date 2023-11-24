@@ -1153,8 +1153,7 @@ Proof completed.
 <pre class="code extensibella"id="94">
  &lt; <b>Theorem select_countItem_neq  [Item] :
      forall (I : Item) (J : Item) L Rest N,
-       countItem I L N -&gt;
-       select J Rest L -&gt; (I = J -&gt; false) -&gt; countItem I Rest N.</b>
+       countItem I L N -&gt; select J Rest L -&gt; (I = J -&gt; false) -&gt; countItem I Rest N.</b>
 
 ============================
  forall I J L Rest N,
@@ -1164,20 +1163,17 @@ Proof completed.
  &lt; <b>induction on 2.</b>
 
 IH : forall I J L Rest N,
-       countItem I L N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 ============================
  forall I J L Rest N,
-   countItem I L N -&gt;
-   select J Rest L @ -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+   countItem I L N -&gt; select J Rest L @ -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 </pre>
 <pre class="code extensibella"id="96">
  &lt; <b>intros C S NEq.</b>
 
 Variables: I J L Rest N
 IH : forall I J L Rest N,
-       countItem I L N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 C : countItem I L N
 S : select J Rest L @
 NEq : I = J -&gt; false
@@ -1191,8 +1187,7 @@ Subgoal 1:
 
 Variables: I J Rest N
 IH : forall I J L Rest N,
-       countItem I L N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 C : countItem I (J::Rest) N
 NEq : I = J -&gt; false
 ============================
@@ -1205,8 +1200,7 @@ Subgoal 1.1:
 
 Variables: J Rest N N1
 IH : forall I J L Rest N,
-       countItem I L N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 NEq : J = J -&gt; false
 C : countItem J Rest N1
 C1 : 1 + N1 = N
@@ -1220,8 +1214,7 @@ Subgoal 1.2:
 
 Variables: I J Rest N
 IH : forall I J L Rest N,
-       countItem I L N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 NEq : I = J -&gt; false
 C : I = J -&gt; false
 C1 : countItem I Rest N
@@ -1235,8 +1228,7 @@ Subgoal 2:
 
 Variables: I J N L2 I1 L1
 IH : forall I J L Rest N,
-       countItem I L N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 C : countItem I (I1::L2) N
 NEq : I = J -&gt; false
 S : select J L1 L2 *
@@ -1250,8 +1242,7 @@ Subgoal 2.1:
 
 Variables: J N L2 I1 L1 N1
 IH : forall I J L Rest N,
-       countItem I L N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 NEq : I1 = J -&gt; false
 S : select J L1 L2 *
 C : countItem I1 L2 N1
@@ -1266,8 +1257,7 @@ Subgoal 2.1:
 
 Variables: J N L2 I1 L1 N1
 IH : forall I J L Rest N,
-       countItem I L N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 NEq : I1 = J -&gt; false
 S : select J L1 L2 *
 C : countItem I1 L2 N1
@@ -1283,8 +1273,7 @@ Subgoal 2.2:
 
 Variables: I J N L2 I1 L1
 IH : forall I J L Rest N,
-       countItem I L N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 NEq : I = J -&gt; false
 S : select J L1 L2 *
 C : I = I1 -&gt; false
@@ -1299,8 +1288,7 @@ Subgoal 2.2:
 
 Variables: I J N L2 I1 L1
 IH : forall I J L Rest N,
-       countItem I L N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
 NEq : I = J -&gt; false
 S : select J L1 L2 *
 C : I = I1 -&gt; false
@@ -1317,8 +1305,7 @@ Proof completed.
 <pre class="code extensibella"id="106">
  &lt; <b>Theorem countItem_select_neq  [Item] :
      forall (I : Item) (J : Item) L Rest N,
-       countItem I Rest N -&gt;
-       select J Rest L -&gt; (I = J -&gt; false) -&gt; countItem I L N.</b>
+       countItem I Rest N -&gt; select J Rest L -&gt; (I = J -&gt; false) -&gt; countItem I L N.</b>
 
 ============================
  forall I J L Rest N,
@@ -1328,20 +1315,17 @@ Proof completed.
  &lt; <b>induction on 2.</b>
 
 IH : forall I J L Rest N,
-       countItem I Rest N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
 ============================
  forall I J L Rest N,
-   countItem I Rest N -&gt;
-   select J Rest L @ -&gt; (I = J -&gt; false) -&gt; countItem I L N
+   countItem I Rest N -&gt; select J Rest L @ -&gt; (I = J -&gt; false) -&gt; countItem I L N
 </pre>
 <pre class="code extensibella"id="108">
  &lt; <b>intros C S NEq.</b>
 
 Variables: I J L Rest N
 IH : forall I J L Rest N,
-       countItem I Rest N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
 C : countItem I Rest N
 S : select J Rest L @
 NEq : I = J -&gt; false
@@ -1355,8 +1339,7 @@ Subgoal 1:
 
 Variables: I J Rest N
 IH : forall I J L Rest N,
-       countItem I Rest N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
 C : countItem I Rest N
 NEq : I = J -&gt; false
 ============================
@@ -1369,8 +1352,7 @@ Subgoal 2:
 
 Variables: I J N L2 I1 L1
 IH : forall I J L Rest N,
-       countItem I Rest N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
 C : countItem I (I1::L1) N
 NEq : I = J -&gt; false
 S : select J L1 L2 *
@@ -1384,8 +1366,7 @@ Subgoal 2.1:
 
 Variables: J N L2 I1 L1 N1
 IH : forall I J L Rest N,
-       countItem I Rest N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
 NEq : I1 = J -&gt; false
 S : select J L1 L2 *
 C : countItem I1 L1 N1
@@ -1400,8 +1381,7 @@ Subgoal 2.1:
 
 Variables: J N L2 I1 L1 N1
 IH : forall I J L Rest N,
-       countItem I Rest N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
 NEq : I1 = J -&gt; false
 S : select J L1 L2 *
 C : countItem I1 L1 N1
@@ -1417,8 +1397,7 @@ Subgoal 2.2:
 
 Variables: I J N L2 I1 L1
 IH : forall I J L Rest N,
-       countItem I Rest N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
 NEq : I = J -&gt; false
 S : select J L1 L2 *
 C : I = I1 -&gt; false
@@ -1433,8 +1412,7 @@ Subgoal 2.2:
 
 Variables: I J N L2 I1 L1
 IH : forall I J L Rest N,
-       countItem I Rest N -&gt;
-       select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
 NEq : I = J -&gt; false
 S : select J L1 L2 *
 C : I = I1 -&gt; false
@@ -3052,32 +3030,32 @@ Proof completed.
 <pre class="code extensibella"id="234">
  &lt; <b>Theorem in_intRange :
      forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R.</b>
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R.</b>
 
 ============================
  forall Low High R X,
-   is_integer Low -&gt;
-   is_integer X -&gt; intRange Low High R -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+   is_integer Low -&gt; is_integer X -&gt; intRange Low High R -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+   mem X R
 </pre>
 <pre class="code extensibella"id="235">
  &lt; <b>induction on 3.</b>
 
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 ============================
  forall Low High R X,
-   is_integer Low -&gt;
-   is_integer X -&gt; intRange Low High R @ -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+   is_integer Low -&gt; is_integer X -&gt; intRange Low High R @ -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+   mem X R
 </pre>
 <pre class="code extensibella"id="236">
  &lt; <b>intros IsLow IsX R LowX XHigh.</b>
 
 Variables: Low High R X
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer Low
 IsX : is_integer X
 R : intRange Low High R @
@@ -3093,8 +3071,8 @@ Subgoal 1:
 
 Variables: Low High X
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer Low
 IsX : is_integer X
 LowX : Low &lt;= X
@@ -3110,8 +3088,8 @@ Subgoal 1:
 
 Variables: Low High X
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer Low
 IsX : is_integer X
 LowX : Low &lt;= X
@@ -3128,8 +3106,8 @@ Subgoal 2:
 
 Variables: Low High X PlusOne Rest
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer Low
 IsX : is_integer X
 LowX : Low &lt;= X
@@ -3147,8 +3125,8 @@ Subgoal 2:
 
 Variables: Low High X PlusOne Rest
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer Low
 IsX : is_integer X
 LowX : Low &lt;= X
@@ -3167,8 +3145,8 @@ Subgoal 2.1:
 
 Variables: Low High X PlusOne Rest
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer Low
 IsX : is_integer X
 LowX : Low &lt;= X
@@ -3187,8 +3165,8 @@ Subgoal 2.1:
 
 Variables: Low High X PlusOne Rest
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer Low
 IsX : is_integer X
 LowX : Low &lt;= X
@@ -3208,8 +3186,8 @@ Subgoal 2.1:
 
 Variables: Low High X PlusOne Rest
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer Low
 IsX : is_integer X
 LowX : Low &lt;= X
@@ -3230,8 +3208,8 @@ Subgoal 2.1:
 
 Variables: Low High X PlusOne Rest
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer Low
 IsX : is_integer X
 LowX : Low &lt;= X
@@ -3253,8 +3231,8 @@ Subgoal 2.1:
 
 Variables: Low High X PlusOne Rest
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer Low
 IsX : is_integer X
 LowX : Low &lt;= X
@@ -3277,8 +3255,8 @@ Subgoal 2.2:
 
 Variables: High X PlusOne Rest
 IH : forall Low High R X,
-       is_integer Low -&gt;
-       is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt; mem X R
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
 IsLow : is_integer X
 IsX : is_integer X
 LowX : X &lt;= X
@@ -3452,37 +3430,32 @@ Proof completed.
 <pre class="code extensibella"id="260">
  &lt; <b>Theorem intRange_smaller_exists :
      forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'.</b>
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'.</b>
 
 ============================
  forall Low High R Low',
-   is_integer Low -&gt;
-   is_integer Low' -&gt;
-   intRange Low High R -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+   is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; Low &lt; Low' -&gt; exists R',
+     intRange Low' High R'
 </pre>
 <pre class="code extensibella"id="261">
  &lt; <b>induction on 3.</b>
 
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 ============================
  forall Low High R Low',
-   is_integer Low -&gt;
-   is_integer Low' -&gt;
-   intRange Low High R @ -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+   is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R @ -&gt; Low &lt; Low' -&gt; exists R',
+     intRange Low' High R'
 </pre>
 <pre class="code extensibella"id="262">
  &lt; <b>intros IsLow IsLow' R L.</b>
 
 Variables: Low High R Low'
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R @
@@ -3497,9 +3470,8 @@ Subgoal 1:
 
 Variables: Low High Low'
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3514,9 +3486,8 @@ Subgoal 1:
 
 Variables: Low High Low'
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3532,9 +3503,8 @@ Subgoal 1:
 
 Variables: Low High Low'
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3551,9 +3521,8 @@ Subgoal 2:
 
 Variables: Low High Low' PlusOne Rest
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3570,9 +3539,8 @@ Subgoal 2:
 
 Variables: Low High Low' PlusOne Rest
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3590,9 +3558,8 @@ Subgoal 2:
 
 Variables: Low High Low' PlusOne Rest
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3611,9 +3578,8 @@ Subgoal 2:
 
 Variables: Low High Low' PlusOne Rest
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3633,9 +3599,8 @@ Subgoal 2:
 
 Variables: Low High Low' PlusOne Rest
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3656,9 +3621,8 @@ Subgoal 2.1:
 
 Variables: Low High Low' PlusOne Rest
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3679,9 +3643,8 @@ Subgoal 2.1:
 
 Variables: Low High Low' PlusOne Rest R'
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3703,9 +3666,8 @@ Subgoal 2.2:
 
 Variables: Low High Low' Rest
 IH : forall Low High R Low',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R * -&gt; Low &lt; Low' -&gt; exists R', intRange Low' High R'
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 L : Low &lt; Low'
@@ -3726,39 +3688,32 @@ Proof completed.
 <pre class="code extensibella"id="275">
  &lt; <b>Theorem intRange_subset :
      forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt; intRange Low' High R' -&gt; Low &lt; Low' -&gt; subset R' R.</b>
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' -&gt;
+       Low &lt; Low' -&gt; subset R' R.</b>
 
 ============================
  forall Low Low' High R R',
-   is_integer Low -&gt;
-   is_integer Low' -&gt;
-   intRange Low High R -&gt; intRange Low' High R' -&gt; Low &lt; Low' -&gt; subset R' R
+   is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' -&gt;
+   Low &lt; Low' -&gt; subset R' R
 </pre>
 <pre class="code extensibella"id="276">
  &lt; <b>induction on 4.</b>
 
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 ============================
  forall Low Low' High R R',
-   is_integer Low -&gt;
-   is_integer Low' -&gt;
-   intRange Low High R -&gt; intRange Low' High R' @ -&gt; Low &lt; Low' -&gt; subset R' R
+   is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' @ -&gt;
+   Low &lt; Low' -&gt; subset R' R
 </pre>
 <pre class="code extensibella"id="277">
  &lt; <b>intros IsLow IsLow' R R' L.</b>
 
 Variables: Low Low' High R R'
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R
@@ -3774,10 +3729,8 @@ Subgoal 1:
 
 Variables: Low Low' High R
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R
@@ -3793,10 +3746,8 @@ Subgoal 2:
 
 Variables: Low Low' High R PlusOne Rest
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R
@@ -3814,10 +3765,8 @@ Subgoal 2:
 
 Variables: Low Low' High R PlusOne Rest
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R
@@ -3836,10 +3785,8 @@ Subgoal 2:
 
 Variables: Low Low' High R PlusOne Rest
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R
@@ -3859,10 +3806,8 @@ Subgoal 2:
 
 Variables: Low Low' High R PlusOne Rest
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R
@@ -3883,10 +3828,8 @@ Subgoal 2:
 
 Variables: Low Low' High R PlusOne Rest
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R
@@ -3908,10 +3851,8 @@ Subgoal 2:
 
 Variables: Low Low' High R PlusOne Rest
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R
@@ -3934,10 +3875,8 @@ Subgoal 2:
 
 Variables: Low Low' High R PlusOne Rest
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R
@@ -3961,10 +3900,8 @@ Subgoal 2:
 
 Variables: Low Low' High R PlusOne Rest
 IH : forall Low Low' High R R',
-       is_integer Low -&gt;
-       is_integer Low' -&gt;
-       intRange Low High R -&gt;
-       intRange Low' High R' * -&gt; Low &lt; Low' -&gt; subset R' R
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
 IsLow : is_integer Low
 IsLow' : is_integer Low'
 R : intRange Low High R
@@ -3990,35 +3927,32 @@ Proof completed.
 <pre class="code extensibella"id="288">
  &lt; <b>Theorem intRange_select_unique :
      forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'.</b>
+       is_integer Low -&gt; intRange Low High R -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'.</b>
 
 ============================
  forall Low High R X Rest Rest',
-   is_integer Low -&gt;
-   intRange Low High R -&gt; select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+   is_integer Low -&gt; intRange Low High R -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+   Rest = Rest'
 </pre>
 <pre class="code extensibella"id="289">
  &lt; <b>induction on 2.</b>
 
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 ============================
  forall Low High R X Rest Rest',
-   is_integer Low -&gt;
-   intRange Low High R @ -&gt; select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+   is_integer Low -&gt; intRange Low High R @ -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+   Rest = Rest'
 </pre>
 <pre class="code extensibella"id="290">
  &lt; <b>intros IsLow Range Slct Slct'.</b>
 
 Variables: Low High R X Rest Rest'
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : intRange Low High R @
 Slct : select X Rest R
@@ -4033,9 +3967,8 @@ Subgoal 1:
 
 Variables: Low High X Rest Rest'
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Slct : select X Rest []
 Slct' : select X Rest' []
@@ -4050,9 +3983,8 @@ Subgoal 2:
 
 Variables: Low High X Rest Rest' PlusOne Rest1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Slct : select X Rest (Low::Rest1)
 Slct' : select X Rest' (Low::Rest1)
@@ -4069,9 +4001,8 @@ Subgoal 2.1:
 
 Variables: Low High Rest' PlusOne Rest1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Slct' : select Low Rest' (Low::Rest1)
 Range : Low &lt;= High
@@ -4087,9 +4018,8 @@ Subgoal 2.1.1:
 
 Variables: Low High PlusOne Rest1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4104,9 +4034,8 @@ Subgoal 2.1.2:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4122,9 +4051,8 @@ Subgoal 2.1.2:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4141,9 +4069,8 @@ Subgoal 2.1.2:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4161,9 +4088,8 @@ Subgoal 2.1.2:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4182,9 +4108,8 @@ Subgoal 2.1.2:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4204,9 +4129,8 @@ Subgoal 2.1.2:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4227,9 +4151,8 @@ Subgoal 2.2:
 
 Variables: Low High X Rest' PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Slct' : select X Rest' (Low::Rest1)
 Range : Low &lt;= High
@@ -4246,9 +4169,8 @@ Subgoal 2.2.1:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4264,9 +4186,8 @@ Subgoal 2.2.1:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4283,9 +4204,8 @@ Subgoal 2.2.1:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4303,9 +4223,8 @@ Subgoal 2.2.1:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4324,9 +4243,8 @@ Subgoal 2.2.1:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4346,9 +4264,8 @@ Subgoal 2.2.1:
 
 Variables: Low High PlusOne Rest1 L1
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4369,9 +4286,8 @@ Subgoal 2.2.2:
 
 Variables: Low High X PlusOne Rest1 L1 L2
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4388,9 +4304,8 @@ Subgoal 2.2.2:
 
 Variables: Low High X PlusOne Rest1 L1 L2
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4408,9 +4323,8 @@ Subgoal 2.2.2:
 
 Variables: Low High X PlusOne Rest1 L2
 IH : forall Low High R X Rest Rest',
-       is_integer Low -&gt;
-       intRange Low High R * -&gt;
-       select X Rest R -&gt; select X Rest' R -&gt; Rest = Rest'
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
 IsLow : is_integer Low
 Range : Low &lt;= High
 Range1 : 1 + Low = PlusOne
@@ -4437,17 +4351,15 @@ Proof completed.
 </pre>
 <pre class="code extensibella"id="313">
  &lt; <b>assert forall Low High Diff,
-     is_integer Low -&gt;
-     is_integer High -&gt;
-     High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R.</b>
+     is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+       intRange Low High R.</b>
 
 Subgoal 1:
 
 ============================
  forall Low High Diff,
-   is_integer Low -&gt;
-   is_integer High -&gt;
-   High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+   is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+     intRange Low High R
 </pre>
 <pre class="code extensibella"id="314">
  &lt; <b>induction on 4.</b>
@@ -4455,14 +4367,12 @@ Subgoal 1:
 Subgoal 1:
 
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 ============================
  forall Low High Diff,
-   is_integer Low -&gt;
-   is_integer High -&gt;
-   High - Low = Diff -&gt; acc Diff @ -&gt; exists R, intRange Low High R
+   is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff @ -&gt; exists R,
+     intRange Low High R
 </pre>
 <pre class="code extensibella"id="315">
  &lt; <b>intros IsLow IsHigh Minus Acc.</b>
@@ -4471,9 +4381,8 @@ Subgoal 1:
 
 Variables: Low High Diff
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4488,9 +4397,8 @@ Subgoal 1:
 
 Variables: Low High Diff
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4506,9 +4414,8 @@ Subgoal 1.1:
 
 Variables: Low High Diff
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4525,9 +4432,8 @@ Subgoal 1.1:
 
 Variables: Low High Diff N3
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4544,9 +4450,8 @@ Subgoal 1.1:
 
 Variables: Low High Diff N3
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4564,9 +4469,8 @@ Subgoal 1.1:
 
 Variables: Low High Diff N3
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4585,9 +4489,8 @@ Subgoal 1.1:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4607,9 +4510,8 @@ Subgoal 1.1:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4630,9 +4532,8 @@ Subgoal 1.1:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4653,9 +4554,8 @@ Subgoal 1.1:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4677,9 +4577,8 @@ Subgoal 1.1.1:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4701,9 +4600,8 @@ Subgoal 1.1.1:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4726,9 +4624,8 @@ Subgoal 1.1.1.1:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4751,9 +4648,8 @@ Subgoal 1.1.1.1:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4777,9 +4673,8 @@ Subgoal 1.1.1.1:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4804,9 +4699,8 @@ Subgoal 1.1.1.1:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4832,9 +4726,8 @@ Subgoal 1.1.1.1:
 
 Variables: Low High Diff N3 N1 R
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4861,9 +4754,8 @@ Subgoal 1.1.1.2:
 
 Variables: Low High Diff N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4885,9 +4777,8 @@ Subgoal 1.1.1.2:
 
 Variables: Low High Diff N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4910,9 +4801,8 @@ Subgoal 1.1.1.2:
 
 Variables: Low High Diff
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4935,9 +4825,8 @@ Subgoal 1.1.1.2:
 
 Variables: Low High Diff
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4961,9 +4850,8 @@ Subgoal 1.1.1.2:
 
 Variables: Low High Diff R
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -4988,9 +4876,8 @@ Subgoal 1.1.2:
 
 Variables: Low High Diff N3 N1
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -5012,9 +4899,8 @@ Subgoal 1.2:
 
 Variables: Low High Diff
 IH : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff * -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = Diff
@@ -5027,9 +4913,8 @@ Comp : Low &gt; High
  &lt; <b>search.</b>
 
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 ============================
  forall Low High,
    is_integer Low -&gt; is_integer High -&gt; exists R, intRange Low High R
@@ -5039,9 +4924,8 @@ H1 : forall Low High Diff,
 
 Variables: Low High
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 ============================
@@ -5052,9 +4936,8 @@ IsHigh : is_integer High
 
 Variables: Low High N3
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = N3
@@ -5066,9 +4949,8 @@ Minus : High - Low = N3
 
 Variables: Low High N3
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = N3
@@ -5082,9 +4964,8 @@ IsN3 : is_integer N3
 
 Variables: Low High N3
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = N3
@@ -5100,9 +4981,8 @@ Subgoal 2:
 
 Variables: Low High N3
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = N3
@@ -5118,9 +4998,8 @@ Subgoal 2:
 
 Variables: Low High N3
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = N3
@@ -5137,9 +5016,8 @@ Subgoal 2:
 
 Variables: Low High N3 R
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = N3
@@ -5157,9 +5035,8 @@ Subgoal 3:
 
 Variables: Low High N3
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = N3
@@ -5175,9 +5052,8 @@ Subgoal 3:
 
 Variables: Low High N3
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = N3
@@ -5194,9 +5070,8 @@ Subgoal 3:
 
 Variables: Low High N3
 H1 : forall Low High Diff,
-       is_integer Low -&gt;
-       is_integer High -&gt;
-       High - Low = Diff -&gt; acc Diff -&gt; exists R, intRange Low High R
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
 IsLow : is_integer Low
 IsHigh : is_integer High
 Minus : High - Low = N3

@@ -19,8 +19,7 @@
 <pre class="code extensibella"id="1">
  &lt; <b>Translation_Constraint trans_is :
    forall E E',
-   |{e}- E ~~&gt; E' -&gt;
-   is_e E -&gt; is_e E'.</b>
+   |{e}- E ~~&gt; E' -&gt; is_e E -&gt; is_e E'.</b>
 
 Proof completed.
 </pre>
@@ -32,8 +31,7 @@ Proof completed.
 <pre class="code extensibella"id="3">
  &lt; <b>Translation_Constraint trans_same :
    forall E E1 E2,
-   |{e}- E ~~&gt; E1 -&gt;
-   |{e}- E ~~&gt; E2 -&gt; E1 = E2.</b>
+   |{e}- E ~~&gt; E1 -&gt; |{e}- E ~~&gt; E2 -&gt; E1 = E2.</b>
 
 Proof completed.
 </pre>
@@ -590,8 +588,7 @@ Subgoal 1:
 
 Variables: X SA SB
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (var X)
 IsX : is_string X
 IsR : is_e SA
@@ -607,8 +604,7 @@ Subgoal 1.1:
 
 Variables: X SB
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (var X)
 IsX : is_string X
 IsR : is_e SB
@@ -623,8 +619,7 @@ Subgoal 1.2:
 
 Variables: X SA
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (var X)
 IsX : is_string X
 IsR : is_e SA
@@ -640,8 +635,7 @@ Subgoal 2:
 
 Variables: X R SB Y
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (var Y)
 IsX : is_string X
 IsR : is_e R
@@ -658,8 +652,7 @@ Subgoal 2.1:
 
 Variables: SB Y
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (var Y)
 IsX : is_string Y
 IsR : is_e SB
@@ -675,8 +668,7 @@ Subgoal 2.2:
 
 Variables: X R Y
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (var Y)
 IsX : is_string X
 IsR : is_e R
@@ -693,8 +685,7 @@ Subgoal 3:
 
 Variables: X R SB Body
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (abs X Body)
 IsX : is_string X
 IsR : is_e R
@@ -710,8 +701,7 @@ Subgoal 3.1:
 
 Variables: X R Body
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (abs X Body)
 IsX : is_string X
 IsR : is_e R
@@ -726,8 +716,7 @@ Subgoal 3.2:
 
 Variables: X R Body B
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (abs X Body)
 IsX : is_string X
 IsR : is_e R
@@ -744,8 +733,7 @@ Subgoal 4:
 
 Variables: X R SB B Y Body
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (abs Y Body)
 IsX : is_string X
 IsR : is_e R
@@ -763,8 +751,7 @@ Subgoal 4.1:
 
 Variables: R B Y Body
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (abs Y Body)
 IsX : is_string Y
 IsR : is_e R
@@ -781,8 +768,7 @@ Subgoal 4.2:
 
 Variables: X R B Y Body B1
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (abs Y Body)
 IsX : is_string X
 IsR : is_e R
@@ -801,8 +787,7 @@ Subgoal 4.2:
 
 Variables: X R B Y Body B1
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsX : is_string X
 IsR : is_e R
 SA : subst X R (abs Y Body) (abs Y B) @
@@ -822,8 +807,7 @@ Subgoal 4.2:
 
 Variables: X R Y Body B1
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsX : is_string X
 IsR : is_e R
 SA : subst X R (abs Y Body) (abs Y B1) @
@@ -843,8 +827,7 @@ Subgoal 5:
 
 Variables: X R SB S2 S1 E2 E1
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsE : is_e (app E1 E2)
 IsX : is_string X
 IsR : is_e R
@@ -862,8 +845,7 @@ Subgoal 5:
 
 Variables: X R SB S2 S1 E2 E1
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsX : is_string X
 IsR : is_e R
 SA : subst X R (app E1 E2) (app S1 S2) @
@@ -882,8 +864,7 @@ Subgoal 5:
 
 Variables: X R S2 S1 E2 E1 S4 S3
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsX : is_string X
 IsR : is_e R
 SA : subst X R (app E1 E2) (app S1 S2) @
@@ -903,8 +884,7 @@ Subgoal 5:
 
 Variables: X R S2 E2 E1 S4 S3
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsX : is_string X
 IsR : is_e R
 SA : subst X R (app E1 E2) (app S3 S2) @
@@ -924,8 +904,7 @@ Subgoal 5:
 
 Variables: X R E2 E1 S4 S3
 IH : forall X R E SA SB,
-       is_e E -&gt;
-       is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
 IsX : is_string X
 IsR : is_e R
 SA : subst X R (app E1 E2) (app S3 S4) @
