@@ -1,0 +1,537 @@
+Module unsat_proofs:drat.
+
+
+Prove_Constraint unsat_proofs:lrat:trans_lit_unique.
+Prove_Constraint unsat_proofs:lrat:trans_lit_is.
+Prove_Constraint unsat_proofs:lrat:trans_clause_unique.
+Prove_Constraint unsat_proofs:lrat:trans_clause_is.
+Prove_Constraint unsat_proofs:lrat:trans_formula_unique.
+Prove_Constraint unsat_proofs:lrat:trans_formula_is.
+
+
+Prove_Ext_Ind unsat_proofs:lrat:is_clause.
+
+
+Prove unsat_proofs:lrat:is_lit_eq_or_not__pos.
+Prove unsat_proofs:lrat:is_lit_eq_or_not__neg.
+Prove unsat_proofs:lrat:is_lit_eq_or_not.
+
+Prove unsat_proofs:lrat:is_clause_empty_or_not.
+Prove unsat_proofs:lrat:is_clause_or_or_not.
+Prove unsat_proofs:lrat:is_clause_eq_or_not.
+
+
+Prove unsat_proofs:lrat:negate_lit_unique.
+Prove unsat_proofs:lrat:negate_lit_reverse.
+Prove unsat_proofs:lrat:negate_lit_not_same.
+Prove unsat_proofs:lrat:negate_lit_is_lit.
+Prove unsat_proofs:lrat:negate_lit_is_lit_back.
+Prove unsat_proofs:lrat:negate_lit_exists.
+
+
+Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.
+Prove_Constraint unsat_proofs:lrat:sat_clause_trans_to_ext.
+Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_trans.
+Prove_Constraint unsat_proofs:lrat:unsat_clause_trans_to_ext.
+Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_trans.
+Prove_Constraint unsat_proofs:lrat:sat_formula_trans_to_ext.
+
+
+Prove unsat_proofs:lrat:unsat_sat_clause.
+
+
+Prove unsat_proofs:lrat:sat_clause_orderless.
+Prove unsat_proofs:lrat:sat_formula_orderless.
+Prove unsat_proofs:lrat:unsat_clause_orderless.
+
+
+Prove unsat_proofs:lrat:unit_clause_is.
+Prove unsat_proofs:lrat:unit_clause_unique.
+Prove unsat_proofs:lrat:unit_clause_not_assigned.
+Prove unsat_proofs:lrat:unit_clause_not_assigned_negate.
+Prove unsat_proofs:lrat:unit_clause_expand.
+Prove unsat_proofs:lrat:unit_clause_add.
+
+
+Prove unsat_proofs:lrat:gatherLits_is.
+Prove unsat_proofs:lrat:gatherLits_exists.
+Prove unsat_proofs:lrat:gatherLits_permutation.
+
+Prove_Constraint unsat_proofs:lrat:trans_gatherLits.
+Prove_Constraint unsat_proofs:lrat:trans_gatherLits_permutation.
+
+Prove unsat_proofs:lrat:gatherLits_sat.
+Prove unsat_proofs:lrat:gatherLits_mem_sat.
+Prove unsat_proofs:lrat:gatherLits_unsat.
+Prove unsat_proofs:lrat:negate_lits_unsat.
+
+
+Prove_Constraint unsat_proofs:lrat:trans_proof_is.
+
+
+Prove unsat_proofs:lrat:check_proof_correct.
+Prove unsat_proofs:lrat:checkProof_orderless.
+
+
+Prove_Ext_Ind unsat_proofs:lrat:checkProof.
+
+
+Prove_Constraint unsat_proofs:lrat:trans_checkProof.
+
+
+Prove unsat_proofs:lrat:formulaToKnown_all_greater.
+Prove unsat_proofs:lrat:formulaToKnown_all_unique.
+Prove unsat_proofs:lrat:formulaToKnown_sat_formula.
+Prove unsat_proofs:lrat:formulaToKnown_is.
+
+
+Theorem rupProof_help__drup_help : forall KnownL KnownD A Prf,
+  rupProof_help KnownL A Prf -> values KnownL KnownD ->
+  drup_help KnownD A.
+induction on 1. intros RUP V. RUP: case RUP.
+  %RUPPH-End
+   MemL: apply lookup_mem to RUP. MemD: apply values_mem to MemL V.
+   search.
+  %RUPPH-Step
+   MemL: apply lookup_mem to RUP. MemD: apply values_mem to MemL V.
+   apply IH to RUP2 _. search.
+
+
+Theorem rupProof__drup : forall KnownL KnownD C Prf,
+  rupProof KnownL C Prf -> values KnownL KnownD -> drup KnownD C.
+intros R Vals. R: case R. apply rupProof_help__drup_help to R2 Vals.
+search.
+
+
+Theorem remove_all_no_mem_same : forall K ID KRest,
+  remove_all K ID KRest -> ((exists C, mem (ID, C) K) -> false) ->
+  K = KRest.
+induction on 1. intros RA NEq. RA: case RA.
+  %RA-Nil
+   search.
+  %RA-Remove
+   apply NEq to _.
+  %RA-Step
+   assert (exists C, mem (ID, C) IRest) -> false.
+     intros Ex. case Ex. backchain NEq.
+   apply IH to RA1 _. search.
+
+
+Theorem remove_all_good_clause_list_select : forall K ID KRA C KS,
+  good_clause_list K -> remove_all K ID KRA -> select (ID, C) KS K ->
+  KRA = KS.
+induction on 2. intros GCL RA Slct. RA: case RA.
+  %RA-Nil
+   case Slct.
+  %RA-Remove
+   Slct: case Slct.
+     %Slct-First
+      assert (exists C', mem (ID, C') IRest) -> false.
+        intros Ex. M: case Ex. GCL: case GCL. backchain GCL.
+      apply remove_all_no_mem_same to RA _. search.
+     %Slct-Later
+      M: apply select_mem to Slct. GCL: case GCL.
+      apply GCL to _ M.
+  %RA-Step
+   Slct: case Slct.
+     %Slct-First
+      apply RA to _.
+     %Slct-Later
+      apply good_clause_list_drop to GCL. apply IH to _ RA1 Slct.
+      search.
+
+
+Theorem remove_all_subset : forall K ID KRest,
+  remove_all K ID KRest -> subset KRest K.
+induction on 1. intros RA. RA: case RA.
+  %RA-Nil
+   search.
+  %RA-Remove
+   S: apply IH to RA. backchain subset_add_right.
+  %RA-Step
+   S: apply IH to RA1. apply subset_add_right to S with A = (A, C).
+   search.
+
+
+Theorem subset_values[A, B] : forall (A B : list (pair A B)) VA VB,
+  subset A B -> values A VA -> values B VB -> subset VA VB.
+induction on 1. intros S VA VB. S: case S.
+  %Sbst-Nil
+   case VA. search.
+  %Sbst-Cons
+   VA: case VA. apply IH to S1 VA VB. apply values_mem to S VB.
+   search.
+
+
+Theorem values_exist : forall K,
+  is_list (is_pair is_integer is_clause) K -> exists V, values K V.
+induction on 1. intros Is. Is: case Is.
+  %nil
+   search.
+  %cons
+   case Is. apply IH to Is1. search.
+
+
+Theorem remove_all_unique : forall K ID KA KB,
+  remove_all K ID KA -> remove_all K ID KB -> KA = KB.
+induction on 1. intros RAA RAB. RAA: case RAA.
+  %RA-Nil
+   case RAB. search.
+  %RA-Remove
+   RAB: case RAB.
+     %RA-Remove
+      apply IH to RAA RAB. search.
+     %RA-Step
+      apply RAB to _.
+  %RA-Step
+   RAB: case RAB.
+     %RA-Remove
+      apply RAA to _.
+     %RA-Step
+      apply IH to RAA1 RAB1. search.
+
+
+Theorem drup_help_subset : forall KA C KB,
+  drup_help KA C -> subset KA KB -> drup_help KB C.
+induction on 1. intros D S. D: case D.
+  %DRUPH-End
+   apply subset_mem to S D. search.
+  %DRUPH-Step
+   apply IH to D2 S. apply subset_mem to S D. search.
+
+
+Theorem drup_subset : forall KA C KB,
+  drup KA C -> subset KA KB -> drup KB C.
+intros D S. D: case D. apply drup_help_subset to D2 S. search.
+
+
+Theorem good_clause_list_selects : forall K ID CA KA CB KB,
+  good_clause_list K -> select (ID, CA) KA K ->
+  select (ID, CB) KB K -> KA = KB.
+induction on 2. intros GCL SA SB. SA: case SA.
+  %SA by Slct-First
+   SB: case SB.
+     %SB by Slct-First
+      search.
+     %SB by Slct-Later
+      GCL: case GCL. M: apply select_mem to SB. apply GCL to _ M.
+  %SA by Slct-Later
+   SB: case SB.
+     %SB by Slct-First
+      GCL: case GCL. M: apply select_mem to SA. apply GCL to _ M.
+     %SB by Slct-Later
+      apply good_clause_list_drop to GCL. apply IH to _ SA SB. search.
+
+
+Theorem values_is : forall K V,
+  is_list (is_pair is_integer is_clause) K -> values K V ->
+  is_list is_clause V.
+induction on 2. intros IsK V. V: case V.
+  %Vals-Nil
+   search.
+  %Vals-Cons
+   Is: case IsK. apply IH to Is1 V. case Is. search.
+
+
+Theorem select_is_clause : forall Known KRest IDC,
+  is_list is_clause Known -> select IDC KRest Known ->
+  is_list is_clause KRest.
+induction on 2. intros Is Slct. Slct: case Slct.
+  %Slct-First
+   case Is. search.
+  %Slct-Later
+   Is: case Is. apply IH to _ Slct. search.
+
+
+Theorem mem_is_clause : forall Known C,
+  is_list is_clause Known -> mem C Known -> is_clause C.
+induction on 2. intros Is Mem. Mem: case Mem.
+  %Mem-Here
+   Is: case Is. search.
+  %Mem-Later
+   Is: case Is. apply IH to _ Mem. search.
+
+
+Theorem is_count_exists_clause : forall L C,
+  is_list is_clause L -> is_clause C -> exists N, count C L N.
+induction on 1. intros IsL IsC. Is: case IsL.
+  %is_list []
+   search.
+  %is_list (H::T)
+   Or: apply is_clause_eq_or_not to IsC Is. C: apply IH to Is1 IsC.
+   Eq: case Or.
+     %C = H
+      IsN: apply count_is_integer to C.
+      apply plus_integer_total to _ IsN with N1 = 1. search.
+     %C != H
+      search.
+
+
+Theorem counts_drop_head[A] : forall (H : A) T X N N',
+  count X (H::T) N -> count X T N' -> N >= N'.
+intros C CT. C: case C.
+  %Cnt-ConsEq
+   apply count_unique to C CT. apply count_is_integer to C.
+   L: apply lt_plus_one to C1 _. apply less_integer_lesseq to L.
+   search.
+  %Cnt-ConsNEq
+   apply count_unique to CT C1. apply count_is_integer to CT.
+   backchain is_integer_greatereq.
+
+
+Theorem counts_subset : forall A B,
+  is_list is_clause A -> is_list is_clause B ->
+  (forall C NA NB, count C A NA -> count C B NB -> NB >= NA) ->
+  subset A B.
+induction on 1. intros IsA IsB Counts. IsA: case IsA.
+  %nil
+   search.
+  %cons
+   CA: apply is_count_exists_clause to IsA1 IsA.
+   IsN: apply count_is_integer to CA.
+   P: apply plus_integer_total to _ IsN with N1 = 1.
+   CB: apply is_count_exists_clause to IsB IsA.
+   CAA: assert count H (H::T) N3. GEq: apply Counts to CAA CB.
+   IsN: apply count_is_integer to CA. N0: apply count_geq_0 to CA.
+   NN3: apply lt_plus_one to P _. G: assert N3 > 0.
+     Or: apply greatereq_integer_greater_or_eq to N0. G: case Or.
+       %N > 0
+        G2: apply less_integer_flip_greater to NN3.
+        apply greater_integer_transitive to G2 G. search.
+       %N = 0
+        apply less_integer_flip_greater to NN3. search.
+   N10: assert N1 > 0.
+     Or: apply greatereq_integer_greater_or_eq to GEq. E: case Or.
+       %N1 > N3
+        apply greater_integer_transitive to E G. search.
+       %N1 = N3
+        search.
+   MHB: apply count_mem to CB N10.
+   assert forall C NA NB, count C T NA -> count C B NB -> NB >= NA.
+     intros CT CB'. GEqNA: apply count_geq_0 to CT.
+     Or: apply greatereq_integer_greater_or_eq to GEqNA. E: case Or.
+       %NA > 0
+        M: apply count_mem to CT E. IsC: apply mem_is_clause to _ M.
+        Or: apply is_clause_eq_or_not to IsC IsA. Eq: case Or.
+          %C = H
+           apply count_unique to CA CT. apply count_unique to CB CB'.
+           Or: apply greatereq_integer_greater_or_eq to GEq.
+           C: case Or.
+             %NB > N3
+              L: apply greater_integer_flip_less to C.
+              L': apply less_integer_transitive to NN3 L.
+              apply less_integer_lesseq to L'. search.
+             %NB = N3
+              apply less_integer_lesseq to NN3. search.
+          %C != H
+           backchain Counts.
+       %NA = 0
+        apply count_geq_0 to CB'. search.
+   apply IH to IsA1 IsB _. search.
+
+
+Theorem remove_all_reduce_counts : forall K ID KRest V VR X N N',
+  remove_all K ID KRest -> values K V -> values KRest VR ->
+  count X V N -> count X VR N' ->
+  N >= N'.
+induction on 1. intros RA VK VKR CV CVR. RA: case RA.
+  %RA-Nil
+   case VK. case VKR. case CV. case CVR. search.
+  %RA-Remove
+   VK: case VK. CV: case CV.
+     %Cnt-ConsEq
+      GEq: apply IH to RA VK VKR CV CVR. apply count_is_integer to CV.
+      L: apply lt_plus_one to CV1 _.
+      Or: apply greatereq_integer_greater_or_eq to GEq. E: case Or.
+        %N1 > N'
+         L': apply greater_integer_flip_less to E.
+         L2: apply less_integer_transitive to L' L.
+         apply less_integer_lesseq to L2. search.
+        %N1 = N'
+         apply less_integer_lesseq to L. search.
+     %Cnt-ConsNEq
+      apply IH to RA VK VKR CV1 CVR. search.
+  %RA-Step
+   VK: case VK. VKR: case VKR. CV: case CV.
+     %CV by Cnt-ConsEq
+      CVR: case CVR.
+        %CVR by Cnt-ConsEq
+         GEq: apply IH to RA1 VK VKR CV CVR.
+         Or: apply greatereq_integer_greater_or_eq to GEq. E: case Or.
+           %N1 > N2
+            L: apply greater_integer_flip_less to E.
+            L': apply less_sums to CVR1 CV1 _ _.
+            apply less_integer_lesseq to L'. search.
+           %N1 = N2
+            apply plus_integer_unique to CV1 CVR1.
+            apply count_is_integer to CV.
+            apply plus_integer_is_integer to _ _ CV1.
+            backchain is_integer_greatereq.
+        %CVR by Cnt-ConsNEq
+         apply CVR to _.
+     %CV by Cnt-ConsNEq
+      CVR: case CVR.
+        %CVR by Cnt-ConsEq
+         apply CV to _.
+        %CVR by Cnt-ConsNEq
+         apply IH to RA1 VK VKR CV1 CVR1. search.
+
+
+Extensible_Theorem
+  toDrat_maintains_proof : forall P D KnownL KnownD V,
+    IsKnownL : is_list (is_pair is_integer is_clause) KnownL ->
+    IsKnownD : is_list is_clause KnownD ->
+    IsP : is_proof P ->
+    CP : checkProof KnownL P ->
+    GCL : good_clause_list KnownL ->
+    TD : toDrat KnownL P D ->
+    Vals : values KnownL V -> %same clauses are
+    Counts : (forall C NA NB,
+                count C V NA -> count C KnownD NB -> NB >= NA) ->
+    checkDrat KnownD D
+  on TD.
+%TD-EmptyLrat
+ CP: case CP. IsV: apply values_is to _ Vals.
+ S: apply counts_subset to IsV IsKnownD Counts.
+ D: apply rupProof__drup to CP Vals. D': apply drup_subset to D S.
+ search.
+%TD-AddLrup
+ CP: case CP. Is: case IsP. IsV: apply values_is to _ Vals.
+ S: apply counts_subset to IsV IsKnownD Counts.
+ D: apply rupProof__drup to CP1 Vals. D': apply drup_subset to D S.
+ apply remove_all_unique to CP TD1.
+ GCL_KR: apply good_clause_list_remove_all_add to _ TD1 with C = C.
+ IsKR: apply remove_all_is to _ TD1. VKR: apply values_exist to IsKR.
+ VKR+: assert values ((ID, C)::KRest) (C::V1).
+ assert forall C1 NA NB,
+          count C1 (C::V1) NA -> count C1 (C::KnownD) NB -> NB >= NA.
+   intros CA CB. CA: case CA.
+     %CA by Cnt-ConsEq
+      CB: case CB.
+        %CB by Cnt-ConsEq
+         CV: apply is_count_exists_clause to IsV Is1.
+         GEq: apply Counts to CV CB.
+         GEq': apply remove_all_reduce_counts to TD1 Vals VKR CV CA.
+         GEq'': apply greatereq_integer_transitive to GEq GEq'.
+         Or: apply greatereq_integer_greater_or_eq to GEq''.
+         E: case Or.
+           %N1 > N
+            L: apply greater_integer_flip_less to E.
+            L': apply less_sums to CA1 CB1 _ _.
+            apply less_integer_lesseq to L'. search.
+           %N1 = N
+            apply plus_integer_unique to CA1 CB1.
+            apply count_is_integer to CA.
+            apply plus_integer_is_integer to _ _ CB1.
+            backchain is_integer_greatereq.
+        %CB by Cnt-ConsNEq
+         apply CB to _.
+     %CA by Cnt-ConsNeq
+      CB: case CB.
+        %CB by Cnt-ConsEq
+         apply CA to _.
+        %CB by Cnt-ConsNEq
+         GEq: apply count_geq_0 to CB1.
+         GEq': apply count_geq_0 to CA1.
+         Or: apply greatereq_integer_greater_or_eq to GEq.
+         Or': apply greatereq_integer_greater_or_eq to GEq'.
+         E: case Or'.
+           %NA > 0
+            M: apply count_mem to CA1 E.
+            IsV1: apply values_is to _ VKR.
+            IsC1: apply mem_is_clause to _ M.
+            CV: apply is_count_exists_clause to IsV IsC1.
+            GEq2: apply Counts to CV CB1.
+            GEq3: apply remove_all_reduce_counts to TD1 Vals VKR CV CA1.
+            apply greatereq_integer_transitive to GEq2 GEq3. search.
+           %NA = 0
+            E: case Or.
+              %NB > 0
+               search.
+              %NB = 0
+               search.
+ apply IH to _ _ Is3 CP2 GCL_KR TD2 VKR+ _ with KnownD = C::KnownD.
+ search.
+%TD-DeleteLrat
+ CP: case CP. Is: case IsP. IsKR: apply select_is to _ TD1.
+ apply good_clause_list_selects to _ CP TD1.
+ VS: apply values_select to _ TD1. M: apply select_mem to TD1.
+ Is: apply mem_is to _ M. IsV: apply values_is to _ Vals.
+ CV: apply is_count_exists_clause to IsV Is3.
+ CKD: apply is_count_exists_clause to IsKnownD Is3.
+ NPos: assert N > 0.
+   GEq: apply count_geq_0 to CV.
+   Or: apply greatereq_integer_greater_or_eq to GEq. L: case Or.
+     %N > 0
+      search.
+     %N = 0
+      MV: apply select_mem to VS. apply count_not_mem to CV MV.
+ N1N: apply Counts to CV CKD. N1Pos: assert N1 > 0.
+   Or: apply greatereq_integer_greater_or_eq to N1N. G: case Or.
+     %N1 > N
+      apply greater_integer_transitive to G NPos. search.
+     %N1 = N
+      search.
+ clear N1N. MKD: apply count_mem to CKD N1Pos.
+ SKD: apply mem_select to MKD. IsL': apply select_is_clause to _ SKD.
+ GCL_KR: apply good_clause_list_select to _ TD1.
+ assert forall C NA NB, count C VRest NA -> count C L' NB -> NB >= NA.
+   intros CA CB. GEq: apply count_geq_0 to CB.
+   GEq': apply count_geq_0 to CA.
+   Or: apply greatereq_integer_greater_or_eq to GEq.
+   Or': apply greatereq_integer_greater_or_eq to GEq'. E: case Or'.
+     %NA > 0
+      M': apply count_mem to CA E. IsVRest: apply values_is to _ VS1.
+      IsC3: apply mem_is_clause to _ M'.
+      CV: apply is_count_exists_clause to IsV IsC3.
+      IsC2: apply mem_is_clause to _ MKD.
+      Or'': apply is_clause_eq_or_not to IsC3 IsC2. CE: case Or''.
+        %C3 = C2
+         IsN2: apply count_is_integer to CV1.
+         Minus: apply minus_integer_total to IsN2 _ with N2 = 1.
+         P: apply minus_plus_same_integer to _ _ Minus.
+         IsN3: apply minus_integer_is_integer to _ _ Minus.
+         P': apply plus_integer_comm to _ _ P.
+         CVRest: apply select_count to CV1 VS _.
+         apply count_unique to CVRest CA.
+         IsN1: apply count_is_integer to CKD.
+         Minus': apply minus_integer_total to IsN1 _ with N2 = 1.
+         P1: apply minus_plus_same_integer to _ _ Minus'.
+         IsN4: apply minus_integer_is_integer to _ _ Minus'.
+         P2: apply plus_integer_comm to _ _ P1.
+         CDRest: apply select_count to CKD SKD Minus'.
+         apply count_unique to CDRest CB.
+         GEq1: apply Counts to CV CKD. apply count_unique to CV1 CV.
+         Or1: apply greatereq_integer_greater_or_eq to GEq1.
+         G: case Or1.
+           %N1 > N
+            L: apply greater_integer_flip_less to G.
+            OrRel: apply is_integer_related to IsN3 IsN4.
+            C: case OrRel.
+              %NA = NB
+               backchain is_integer_greatereq.
+              %NA < NB
+               G': apply less_integer_flip_greater to C.
+               backchain greater_integer_greatereq.
+              %NA > NB
+               apply greater_integer_flip_less to C.
+               L': apply less_sums to P2 P' _ _. G': assert N > N1.
+               apply greater_less_impossible to G' L.
+           %N1 = N
+            apply minus_integer_unique to Minus Minus'.
+            backchain is_integer_greatereq.
+        %C3 != C2
+         CV: apply count_select_neq to CA VS _.
+         CKD': apply count_select_neq to CB SKD _.
+         apply Counts to CV2 CKD'. search.
+     %NA = 0
+      E: case Or.
+        %NB > 0
+         search.
+        %NB = 0
+         search.
+ apply IH to _ IsL' Is1 CP1 _ TD2 VS1 _. search.
+%preservability
+ CP': apply trans_checkProof to TD1 CP _ _.
+ apply trans_proof_is to TD1 IsP _. apply IH to _ _ _ CP' _ TD2 _ _.
+ search.

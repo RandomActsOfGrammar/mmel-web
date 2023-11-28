@@ -1,0 +1,146 @@
+Module unsat_proofs:lrat
+
+
+Fixed Judgment proveFormula : formula proof
+
+formulaToKnown 1 F KnownClauses
+checkProof KnownClauses Prf
+=============================== [ProveFormula]
+proveFormula F Prf
+
+
+
+
+
+/*Turn a formula into a list of known clauses, numbering them with the
+  first argument*/
+Judgment formulaToKnown : int formula* [(int, clause)]
+
+--------------------------------- [FTK-Empty]
+formulaToKnown ID emptyFormula []
+
+
+ID + 1 = NewID
+formulaToKnown NewID Rest KRest
+--------------------------------------------- [FTK-And]
+formulaToKnown ID and(C, Rest) (ID, C)::KRest
+
+
+
+
+
+Judgment checkProof : [(int, clause)] proof*
+
+rupProof Known emptyClause Prf
+----------------------------------- [CP-EmptyLrat]
+checkProof Known emptyLrat(ID, Prf)
+
+
+remove_all Known ID KRest
+rupProof Known C Prf
+checkProof (ID, C)::KRest Rest
+----------------------------------------------- [CP-AddLrup]
+checkProof Known addLrupProof(ID, C, Prf, Rest)
+
+
+select (ID, C) KRest Known
+checkProof KRest Rest
+------------------------------------------ [CP-DeleteLrat]
+checkProof Known deleteLratProof(ID, Rest)
+
+
+
+
+Judgment gatherLits : clause* [lit]
+
+------------------------- [GL-EmptyClause]
+gatherLits emptyClause []
+
+
+gatherLits Rest LRest
+------------------------------- [GL-Or]
+gatherLits or(L, Rest) L::LRest
+
+
+
+
+Fixed Judgment negateLitList : [lit] [lit]
+
+=================== [NLL-Nil]
+negateLitList [] []
+
+
+negate_lit L N
+negateLitList LRest NRest
+=================================== [NLL-Cons]
+negateLitList (L::LRest) (N::NRest)
+
+
+
+
+                         /*known clauses, clause, proof*/
+Fixed Judgment rupProof : [(int, clause)] clause [int]
+                          /*known clauses, assignment, proof*/
+Fixed Judgment rupProof_help : [(int, clause)] [lit] [int]
+
+gatherLits C Lits
+negateLitList Lits A
+rupProof_help Known A Prf
+========================= [RUPP]
+rupProof Known C Prf
+
+
+
+lookup Known ID C
+unsat_clause A C
+========================= [RUPPH-End]
+rupProof_help Known A [ID]
+
+
+lookup Known ID C
+unit_clause A C L
+rupProof_help Known L::A Prf
+============================= [RUPPH-Step]
+rupProof_help Known A ID::Prf
+
+
+
+
+                     /*assignment, clause, unit ID*/
+Judgment unit_clause : [lit] clause* lit
+
+!mem L A
+negate_lit L NL
+!mem NL A
+unsat_clause A C
+------------------------ [UC-Here]
+unit_clause A or(L, C) L
+
+
+negate_lit L NL
+mem NL A
+unit_clause A C UL
+------------------------- [UC-Later]
+unit_clause A or(L, C) UL
+
+
+
+
+
+/*remove all the bindings for the given ID
+  succeeds even if no bindings are present*/
+Fixed Judgment remove_all : [(int, clause)] int [(int, clause)]
+
+================== [RA-Nil]
+remove_all [] I []
+
+
+remove_all IRest I Rest
+=============================== [RA-Remove]
+remove_all (I, C)::IRest I Rest
+
+
+A != I
+remove_all IRest I Rest
+======================================= [RA-Step]
+remove_all (A, C)::IRest I (A, C)::Rest

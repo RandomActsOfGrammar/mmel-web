@@ -1,0 +1,563 @@
+Module unsat_proofs:clauses.
+
+
+Prove_Constraint unsat_proofs:lrat:trans_lit_unique.
+Prove_Constraint unsat_proofs:lrat:trans_lit_is.
+
+
+Prove_Constraint unsat_proofs:lrat:trans_clause_unique.
+%Trans-RangeClauseStep
+ TransB: case TransB.
+   %Trans-RangeClauseStep
+    apply plus_integer_unique to TransA2 TransB1. search.
+   %Trans-RangeClauseEnd
+    apply greater_lesseq_integer_false to TransB TransA1.
+%Trans-RangeClauseEnd
+ TransB: case TransB.
+   %Trans-RangeClauseStep
+    apply greater_lesseq_integer_false to TransA1 TransB.
+   %Trans-RangeClauseEnd
+    search.
+%Trans-NoteClause
+ case TransB. search.
+
+
+Prove_Constraint unsat_proofs:lrat:trans_clause_is.
+%Trans-RangeClauseStep
+ Is: case IsC. apply plus_integer_is_integer to _ _ Trans2. search.
+%Trans-RangeClauseEnd
+ search.
+%Trans-NoteClause
+ case IsC. search.
+
+
+Prove_Constraint unsat_proofs:lrat:trans_formula_unique.
+Prove_Constraint unsat_proofs:lrat:trans_formula_is.
+
+Prove_Ext_Ind unsat_proofs:lrat:is_clause.
+%is_clause (rangeClause I1 I)
+ Helper: assert forall Low High R,
+           is_integer Low -> is_integer High -> range Low High R ->
+           <is_clause {T}> (rangeClause Low High).
+   induction on 3. intros IsLow IsHigh R. R: case R.
+     %Range-End
+      unfold. exists emptyClause. search.
+     %Range-Step
+      unfold. IsPlusOne: apply plus_integer_is_integer to _ _ R1.
+      IsCT: apply IH2 to _ _ R2.
+      Tr: assert |{clause}- rangeClause Low High ~~>
+                            or (pos Low) (rangeClause PlusOne High).
+      search.
+ R: apply range_exists to Rel1 Rel2. apply Helper to _ _ R. search.
+%is_clause (noteClause S Clause)
+ assert |{clause}- noteClause S Clause ~~> Clause. Acc: case Acc.
+ apply ext_ind_is_int_is_clause to Rel3.
+ L: apply lt_plus_one to Rel1 _. apply ext_ind_pos_is_clause to Rel3.
+ A: apply Acc to _ L. apply IH to Rel3 A. search.
+
+
+Prove unsat_proofs:lrat:is_lit_eq_or_not__pos.
+Prove unsat_proofs:lrat:is_lit_eq_or_not__neg.
+Prove unsat_proofs:lrat:is_lit_eq_or_not.
+
+
+Prove unsat_proofs:lrat:is_clause_empty_or_not.
+%rangeClause I1 I
+ search.
+%noteClause S Clause
+ search.
+Prove unsat_proofs:lrat:is_clause_or_or_not.
+%rangeClause I1 I
+ search.
+%noteClause S Clause
+ search.
+Extensible_Theorem
+  is_clause_rangeClause_or_not : forall C,
+    IsC : is_clause C ->
+    (exists L H, C = rangeClause L H) \/
+    ((exists L H, C = rangeClause L H) -> false)
+  on IsC.
+%rangeClause
+ search.
+%noteClause
+ search.
+%emptyClause
+ search.
+%or
+ search.
+%preservability
+ search.
+Extensible_Theorem
+  is_clause_noteClause_or_not : forall C,
+    IsC : is_clause C ->
+    (exists Note C', C = noteClause Note C') \/
+    ((exists Note C', C = noteClause Note C') -> false)
+  on IsC.
+%rangeClause
+ search.
+%noteClause
+ search.
+%emptyClause
+ search.
+%or
+ search.
+%preservability
+ search.
+Prove unsat_proofs:lrat:is_clause_eq_or_not.
+%is_clause (rangeClause I1 I)
+ Or: apply is_clause_rangeClause_or_not to IsC2. E: case Or.
+   %C2 = rangeClause L H
+    Is: case IsC2. Or: apply is_integer_eq_or_not to IsC3 Is.
+    E: case Or.
+      %I1 = L
+       Or: apply is_integer_eq_or_not to IsC4 Is1. E: case Or.
+         %I = H
+          search.
+         %I != H
+          right. intros Eq. case Eq. backchain E.
+      %I1 != L
+       right. intros Eq. case Eq. backchain E.
+   %C2 != rangeClause L H
+    right. intros Eq. case Eq. backchain E.
+%is_clause (noteClause S Clause)
+ Or: apply is_clause_noteClause_or_not to IsC2. E: case Or.
+   %C2 = noteClause Note C'
+    Is: case IsC2. Or: apply is_string_eq_or_not to IsC3 Is.
+    E: case Or.
+      %S = Note
+       Or: apply IH to IsC4 Is1. E: case Or.
+         %Clause = C'
+          search.
+         %Clause != C'
+          right. intros Eq. case Eq. backchain E.
+      %S != Note
+       right. intros Eq. case Eq. backchain E.
+   %C2 != noteClause Note C'
+    right. intros Eq. case Eq. backchain E.
+
+
+Prove unsat_proofs:lrat:negate_lit_unique.
+Prove unsat_proofs:lrat:negate_lit_reverse.
+Prove unsat_proofs:lrat:negate_lit_not_same.
+Prove unsat_proofs:lrat:negate_lit_is_lit.
+Prove unsat_proofs:lrat:negate_lit_is_lit_back.
+Prove unsat_proofs:lrat:negate_lit_exists.
+
+
+Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.
+%Trans-RangeClauseStep
+ Sat: case Hyp3. Or: apply lesseq_integer_less_or_eq to Sat.
+ L: case Or.
+   %Low < X
+    Is: case Hyp2. P: apply plus_integer_comm to _ _ Hyp5.
+    IsPosX: apply mem_is_lit to _ Sat2. case IsPosX.
+    apply less_lesseq_plus_one to _ _ L P. search.
+   %Low = X
+    search.
+%Trans-RangeClauseEnd
+ Sat: case Hyp3. Or: apply lesseq_integer_less_or_eq to Sat.
+ L: case Or.
+   %Low < X
+    HL: apply greater_integer_flip_less to Hyp4.
+    HX: apply less_integer_transitive to HL L.
+    apply greater_lesseq_integer_false to _ Sat1.
+   %Low = X
+    apply greater_lesseq_integer_false to Hyp4 Sat1.
+%Trans-NoteClause
+ case Hyp3. search.
+
+Prove_Constraint unsat_proofs:lrat:sat_clause_trans_to_ext.
+%Trans-RangeClauseStep
+ Sat: case Hyp3.
+   %SC-Here
+    Is: case Hyp2. apply is_integer_lesseq to Is. search.
+   %SC-Later
+    Sat: case Sat. IsPosX: apply mem_is_lit to _ Sat2.
+    IsX: case IsPosX. Or: apply lesseq_integer_less_or_eq to Sat.
+    L: case Or.
+      %PlusOne < X
+       Is: case Hyp2. P: apply plus_integer_comm to _ _ Hyp5.
+       L: apply lt_plus_one to Hyp5 _.
+       LE: apply less_integer_lesseq to L1.
+       apply lesseq_integer_transitive to LE Sat. search.
+      %PlusOne = X
+       Is: case Hyp2. L: apply lt_plus_one to Hyp5 _.
+       apply less_integer_lesseq to L. search.
+%Trans-RangeClauseEnd
+ case Hyp3.
+%Trans-NoteClause
+ search.
+
+Theorem negs_total : forall L,
+  is_list is_integer L -> exists N, negs L N.
+induction on 1. intros IsL. IsL: case IsL.
+  %nil
+   search.
+  %cons
+   apply IH to IsL1. search.
+
+Theorem negs_mem : forall L N X,
+  mem X L -> negs L N -> mem (neg X) N.
+induction on 1. intros Mem Negs. Mem: case Mem.
+  %Mem-Here
+   case Negs. search.
+  %Mem-Later
+   Negs: case Negs. apply IH to Mem Negs. search.
+
+Theorem negs_subset : forall LA LB NA NB,
+  subset LA LB -> negs LA NA -> negs LB NB -> subset NA NB.
+induction on 1. intros S NA NB. S: case S.
+  %Sbst-Nil
+   case NA. search.
+  %Sbst-Cons
+   NA: case NA. apply IH to S1 NA NB. apply negs_mem to S NB. search.
+
+Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_trans.
+%Trans-RangeClauseStep
+ Is: case Hyp2. IsPlusOne: apply plus_integer_is_integer to _ _ Hyp5.
+ Unsat: case Hyp3. L: apply lt_plus_one to Hyp5 _.
+ R: apply range_smaller_exists to _ _ Unsat L.
+ SRR': apply range_subset to _ _ Unsat R _.
+ IsPlusOne: apply plus_integer_is_integer to _ _ Hyp5.
+ IsR': apply range_is to _ R. N: apply negs_total to IsR'.
+ S': apply negs_subset to SRR' N Unsat1.
+ Mem: assert mem Low R.
+   case Unsat.
+     apply greater_lesseq_integer_false to _ Hyp4.
+     search.
+ MemN: apply negs_mem to Mem Unsat1. unfold. exists neg Low. split.
+   %negate_lit (pos Low) NL
+     search.
+   %mem NL Unsat
+    apply subset_mem to Unsat2 MemN. search.
+   %unsat_clause Unsat (rangeClause PlusOne High)
+    unfold. exists R', N1. split.
+      %range PlusOne High R'
+       search.
+      %negs R' N1
+       search.
+      %subset N1 Unsat
+       apply subset_trans to S' Unsat2. search.
+%Trans-RangeClauseEnd
+ search.
+%Trans-NoteClause
+ case Hyp3. search.
+
+Prove_Constraint unsat_proofs:lrat:unsat_clause_trans_to_ext.
+%Trans-RangeClauseStep
+ Unsat: case Hyp3. Is: case Hyp2. US: case Unsat2.
+ R: assert range Low High (Low::R).
+ N: assert negs (Low::R) (neg Low::N). case Unsat.
+ assert subset (neg Low::N) Unsat. search.
+%Trans-RangeClauseEnd
+ R: assert range Low High []. assert negs [] []. search.
+%Trans-NoteClause
+ search.
+
+
+Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_trans.
+Prove_Constraint unsat_proofs:lrat:sat_formula_trans_to_ext.
+
+
+Theorem negs_form : forall L N X,
+  negs L N -> mem X N -> exists I, X = neg I.
+induction on 2. intros N M. M: case M.
+  %Mem-Here
+   case N. search.
+  %Mem-Later
+   N: case N. apply IH to _ M. search.
+
+Prove unsat_proofs:lrat:unsat_sat_clause.
+%USC-RangeClause
+ SAT: case SAT. Is: case IsC. IsR: apply range_is to _ UNSAT1.
+ IsX: apply between_integers_is_integer to _ _ SAT SAT1.
+ M: apply in_range to _ _ UNSAT1 SAT SAT1.
+ M': apply negs_mem to M UNSAT2. M3: apply subset_mem to UNSAT3 M'.
+ GA: case GA. apply GA to SAT2 _ M3.
+%USC-NoteClause
+ SAT: case SAT. case IsC. apply IH to _ _ UNSAT1 SAT GA.
+
+
+Prove unsat_proofs:lrat:sat_clause_orderless.
+%SC-RangeClause
+ apply MemA1A2 to SAT3. search.
+%SC-NoteClause
+ case IsC. apply IH to _ _ _ SAT1 MemA1A2. search.
+
+
+Prove unsat_proofs:lrat:sat_formula_orderless.
+
+
+Theorem mems_subset : forall Sub Sup,
+  is_list is_lit Sub -> (forall X, mem X Sub -> mem X Sup) ->
+  subset Sub Sup.
+induction on 1. intros Is Mems. Is: case Is.
+  %nil
+   search.
+  %cons
+   Mems': assert forall X, mem X T -> mem X Sup.
+     intros M. apply Mems to _ with X = X. search.
+   M: apply Mems to _ with X = H. apply IH to Is1 Mems'. search.
+
+Theorem mems_subset2 [A] : forall (Sub Sup1 Sup2 : list A),
+  subset Sub Sup1 -> (forall X, mem X Sup1 -> mem X Sup2) ->
+  subset Sub Sup2.
+induction on 1. intros S Mems. S: case S.
+  %Sbst-Nil
+   search.
+  %Sbst-Cons
+   apply Mems to S. apply IH to S1 _. search.
+
+Prove unsat_proofs:lrat:unsat_clause_orderless.
+%USC-RangeClause
+ apply mems_subset2 to UNSAT3 MemA1A2. search.
+%USC-NoteClause
+ Is: case IsC. apply IH to _ _ _ UNSAT1 MemA1A2. search.
+
+
+Prove unsat_proofs:lrat:unit_clause_is.
+%USC-RangeClause
+ Is: case IsC. IsRange: apply range_is to _ Unit1.
+ Mem: apply select_mem to Unit2. apply is_list_int_mem to _ Mem.
+ search.
+%USC-NoteClause
+ case IsC. apply IH to _ _ Unit1. search.
+
+
+Prove unsat_proofs:lrat:unit_clause_unique.
+%UC-RangeClause
+ UnitB: case UnitB. apply range_unique to UnitB UnitA1. Is: case IsC.
+ IsRange: apply range_is to _ UnitB. MA: apply select_mem to UnitA2.
+ MB: apply select_mem to UnitB1. IsI: apply is_list_int_mem to _ MA.
+ IsI1: apply is_list_int_mem to _ MB.
+ Or: apply is_integer_eq_or_not to IsI1 IsI. E: case Or.
+   %I1 = I
+    search.
+   %I1 != I
+    M: apply mem_before_select_after to UnitB1 _ E.
+    MN: apply negs_mem to M UnitB4. MB: apply subset_mem to UnitB5 MN.
+    Prm': apply permutation_symmetric to Prm.
+    MA: apply permutation_mem to Prm' MB1. apply UnitA4 to _.
+            %`apply UnitA4 to MA1.` fails with a unification error
+%UC-NoteClause
+ UnitB: case UnitB. Is: case IsC. apply IH to _ _ _ UnitA1 _ _.
+ search.
+
+
+Prove unsat_proofs:lrat:unit_clause_not_assigned.
+%UC-RangeClause
+ backchain UC3.
+%UC-NoteClause
+ Is: case IsC. apply IH to _ _ UC1 _.
+
+
+Prove unsat_proofs:lrat:unit_clause_not_assigned_negate.
+%UC-RangeClause
+ case Neg. backchain UC4.
+%UC-NoteClause
+ case IsC. apply IH to _ _ UC1 _ _.
+
+
+Prove unsat_proofs:lrat:unit_clause_expand.
+%UC-RangeClause
+ Is: case IsC. SAT: case SAT. IsPX: apply mem_is_lit to _ SAT2.
+ IsX: case IsPX. MXR: apply in_range to _ _ UC1 SAT SAT1.
+ M: apply select_mem to UC2. apply range_is to _ UC1.
+ IsI: apply is_list_int_mem to _ M.
+ Or: apply is_integer_eq_or_not to IsI IsX. E: case Or.
+   %I = X
+    search.
+   %I != X
+    MXRR: apply mem_before_select_after to UC2 MXR _.
+    MXN: apply negs_mem to MXRR UC5. MXA: apply subset_mem to UC6 MXN.
+    MXE: apply Expand to MXA. GA_E: case GA_E.
+    apply GA_E to MXE _ SAT2.
+%UC-NoteClause
+ SAT: case SAT. case IsC. apply IH to _ _ _ UC1 SAT _ _ _. search.
+
+
+Prove unsat_proofs:lrat:unit_clause_add.
+%UC-RangeClause
+ Is: case IsC. M: apply select_mem to UC2.
+ Low: apply range_low_lesseq to _ UC1 _.
+ High: apply range_high_lesseq to _ UC1 _. search.
+%UC-NoteClause
+ case IsC. apply IH to _ _ _ UC1 _. search.
+
+
+Theorem posLits_total : forall L,
+  is_list is_integer L -> exists P, posLits L P.
+induction on 1. intros Is. Is: case Is.
+  %nil
+   search.
+  %cons
+   apply IH to Is1. search.
+
+Theorem posLits_unique : forall L P1 P2,
+  posLits L P1 -> posLits L P2 -> P1 = P2.
+induction on 1. intros PL1 PL2. PL1: case PL1.
+  %PL-Nil
+   case PL2. search.
+  %PL-Cons
+   PL2: case PL2. apply IH to PL1 PL2. search.
+
+Theorem posLits_is : forall L P,
+  is_list is_integer L -> posLits L P -> is_list is_lit P.
+induction on 2. intros IsL PL. PL: case PL.
+  %PL-Nil
+   search.
+  %PL-Cons
+   Is: case IsL. apply IH to _ PL. search.
+
+Theorem posLits_mem : forall L P X,
+  mem X L -> posLits L P -> mem (pos X) P.
+induction on 1. intros Mem PL. Mem: case Mem.
+  %Mem-Here
+   case PL. search.
+  %Mem-Later
+   case PL. apply IH to Mem _. search.
+
+Theorem posLits_form : forall L P X,
+  posLits L P -> mem X P -> exists I, X = pos I.
+induction on 2. intros PL Mem. Mem: case Mem.
+  %Mem-Here
+   case PL. search.
+  %Mem-Later
+   case PL. apply IH to _ Mem. search.
+
+Theorem mem_after_posLits_before : forall L P I,
+  posLits L P -> mem (pos I) P -> mem I L.
+induction on 2. intros PL Mem. Mem: case Mem.
+  %Mem-Here
+   case PL. search.
+  %Mem-Later
+   PL: case PL. apply IH to _ Mem. search.
+
+Prove unsat_proofs:lrat:gatherLits_is.
+%GL-RangeClause
+ Is: case IsC. apply range_is to _ GL1. apply posLits_is to _ GL2.
+ search.
+%GL-NoteClause
+ case IsC. apply IH to _ GL1. search.
+
+Prove unsat_proofs:lrat:gatherLits_exists.
+%nil
+ R: apply range_exists to IsC1 IsC2. IsR: apply range_is to _ R.
+ apply posLits_total to IsR. search.
+%cons
+ apply IH to IsC2. search.
+
+Theorem permutation_reflexive_lits : forall L,
+  is_list is_lit L -> permutation L L.
+induction on 1. intros Is. Is: case Is.
+  %nil
+   search.
+  %cons
+   apply IH to Is1. search.
+
+Prove unsat_proofs:lrat:gatherLits_permutation.
+%GL-RangeClause
+ GL': case GL2. apply range_unique to GL' GL3.
+ apply posLits_unique to GL4 GL'1. case IsC.
+ IsR: apply range_is to _ GL3. apply posLits_is to _ GL4.
+ backchain permutation_reflexive_lits.
+%GL-NoteClause
+ GL': case GL2. case IsC. apply IH to _ GL3 GL'. search.
+
+Prove_Constraint unsat_proofs:lrat:trans_gatherLits.
+%Trans-RangeClauseStep
+ GL: case Hyp2. Is: case Hyp1. L: apply lt_plus_one to Hyp4 _.
+ IsPlusOne: apply plus_integer_is_integer to _ _ Hyp4.
+ R: apply range_smaller_exists to _ _ GL L.
+ IsR': apply range_is to _ R. apply posLits_total to IsR'. search.
+%Trans-RangeClauseEnd
+ search.
+%Trans-NoteClause
+ case Hyp2. search.
+
+Prove_Constraint unsat_proofs:lrat:trans_gatherLits_permutation.
+%Trans-RangeClauseStep
+ GL: case Hyp2. GL': case Hyp3. GL': case GL'. R: case GL.
+   %Range-End
+    apply greater_lesseq_integer_false to R Hyp4.
+   %Range-Step
+    apply plus_integer_unique to R1 Hyp5.
+    apply range_unique to GL' R2. PL: case GL1.
+    apply posLits_unique to GL'1 PL. Is: case Hyp1.
+    apply plus_integer_is_integer to _ _ R1.
+    apply range_is to _ GL'. IsLRest1: apply posLits_is to _ PL.
+    apply permutation_reflexive_lits to IsLRest1. search.
+%Trans-RangeClauseEnd
+ GL: case Hyp2. case Hyp3. R: case GL.
+   %Range-End
+    case GL1. search.
+   %Range-Step
+    apply greater_lesseq_integer_false to Hyp4 R.
+%Trans-NoteClause
+ GL: case Hyp2. Is: case Hyp1.
+ apply gatherLits_permutation to _ GL Hyp3. search.
+
+Prove unsat_proofs:lrat:gatherLits_sat.
+%SC-RangeClause
+ GL: case GL. Is: case IsC. IsPX: apply mem_is_lit to _ Sat3.
+ IsX: case IsPX. Mem: apply in_range to Is _ GL Sat1 Sat2.
+ apply posLits_mem to Mem GL1. search.
+%SC-NoteClause
+ Is: case IsC. GL: case GL. apply IH to _ _ GL Sat1. search.
+
+Prove unsat_proofs:lrat:gatherLits_mem_sat.
+%GL-RangeClause
+ apply posLits_form to GL2 MemLits.
+ MemIR: apply mem_after_posLits_before to GL2 MemLits. Is: case IsC.
+ apply range_low_lesseq to _ GL1 MemIR.
+ apply range_high_lesseq to _ GL1 MemIR. search.
+%GL-NoteClause
+ Is: case IsC. apply IH to _ _ GL1 MemLits MemSat. search.
+
+Prove unsat_proofs:lrat:gatherLits_unsat.
+%USC-RangeClause
+ Is: case IsC. GL: case GL. apply range_unique to GL Unsat1.
+ apply posLits_form to GL1 MemLits.
+ MR: apply mem_after_posLits_before to GL1 MemLits.
+ MN: apply negs_mem to MR Unsat2. MU: apply subset_mem to Unsat3 MN.
+ GA: case GA. apply GA to MU _ MemUnsat.
+%USC-NoteClause
+ case IsC. case GL. apply IH to GA _ _ _ Unsat1 _ _.
+
+Theorem posLits_negateLitList_negs : forall L P N,
+  posLits L P -> negateLitList P N -> negs L N.
+induction on 1. intros PL N. PL: case PL.
+  %PL-Nil
+   case N. search.
+  %PL-Cons
+   N: case N. apply IH to PL N1. case N. search.
+
+Theorem negs_is : forall L N,
+  is_list is_integer L -> negs L N -> is_list is_lit N.
+induction on 1. intros Is N. Is: case Is.
+  %nil
+   case N. search.
+  %cons
+   N: case N. apply IH to Is1 N. search.
+
+Prove unsat_proofs:lrat:negate_lits_unsat.
+%GL-RangeClause
+ Is: case IsC. Negs: apply posLits_negateLitList_negs to GL2 NLL.
+ IsR: apply range_is to _ GL1. IsNL: apply negs_is to IsR Negs.
+ apply mems_subset to IsNL _ with Sup = NL. search.
+%GL-NoteClause
+ case IsC. apply IH to _ GL1 _. search.
+
+
+Prove_Constraint unsat_proofs:lrat:trans_proof_is.
+Prove unsat_proofs:lrat:check_proof_correct.
+Prove unsat_proofs:lrat:checkProof_orderless.
+Prove_Ext_Ind unsat_proofs:lrat:checkProof.
+Prove_Constraint unsat_proofs:lrat:trans_checkProof.
+
+
+Prove unsat_proofs:lrat:formulaToKnown_all_greater.
+Prove unsat_proofs:lrat:formulaToKnown_all_unique.
+Prove unsat_proofs:lrat:formulaToKnown_sat_formula.
+Prove unsat_proofs:lrat:formulaToKnown_is.
+

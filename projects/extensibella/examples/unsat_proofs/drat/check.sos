@@ -1,0 +1,45 @@
+Module unsat_proofs:drat
+
+Judgment checkDrat : [clause] dratProof*
+
+drup Known emptyClause
+---------------------------- [CD-Empty]
+checkDrat Known addDratEmpty
+
+
+drup Known C
+checkDrat C::Known Rest
+-------------------------------------- [CD-Add]
+checkDrat Known addDratClause(C, Rest)
+
+
+select C KRest Known
+checkDrat KRest Rest
+----------------------------------- [CD-Delete]
+checkDrat Known deleteDrat(C, Rest)
+
+
+              /*known clauses, clause*/
+Fixed Judgment drup : [clause] clause
+                   /*known clauses, assignment*/
+Fixed Judgment drup_help : [clause] [lit]
+
+gatherLits C L
+negateLitList L NL
+drup_help Known NL
+================== [DRUP]
+drup Known C
+
+
+
+mem C Known
+unsat_clause A C
+==================== [DRUPH-End]
+drup_help Known A
+
+
+mem C Known
+unit_clause A C L
+drup_help Known L::A
+==================== [DRUPH-Step]
+drup_help Known A

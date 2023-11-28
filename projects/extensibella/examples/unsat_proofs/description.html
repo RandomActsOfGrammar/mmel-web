@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>Extensibella Examples:  UNSAT Proofs</title>
+<link href="../../../style.css" rel="stylesheet" type="text/css">
+<script src="../actions.js"></script>
+<link rel="icon" href="../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../index.html">
+<img class="header-logo" src="../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<div class="section">
+  <h1>Unsatisfiability Proofs</h1>
+  <p>
+    SAT solvers determine whether formulas in conjunctive normal form
+    are satisfiable or not.  If a formula is satisfiable, the solver
+    outputs a satisfying assignment, which can then be checked against
+    the original formula.  If a formula is not satisfiable, the solver
+    can write a proof demonstrating that fact, again giving an
+    independent way to check the solver's solution is correct.  This
+    language describes some such proof languages.
+  </p>
+  <ul>
+    <li> <a href="lrat/lrat.html">LRAT proof format</a>:
+      The <a href="https://link.springer.com/chapter/10.1007/978-3-319-63046-5_14">LRAT
+        proof format</a> is our host language on which the other
+      extensions build, defining what it means for a formula to be
+      satisfiable, the proof format, and a check for a given proof
+      being valid, proving the original formula is unsatisfiable if
+      the proof of its unsatisfiability checks out.  Strictly
+      speaking, this only implements the RUP subset of the LRAT
+      format; adding the RAT portion is not extensibly interesting.
+    <li> <a href="drat/drat.html">DRAT extension</a>:
+      The <a href="https://link.springer.com/chapter/10.1007/978-3-319-09284-3_31">DRAT
+        proof format</a> is the current standard for unsatisfiability
+      proofs, which does not contain proof hints like LRAT does.  This
+      extension adds an extraction of LRAT proofs to DRAT proofs and a
+      check for a DRAT proof being valid.  As before, this only
+      implements the RUP subset of the DRAT format, and proves the
+      extracted DRAT proof is valid if the original is.
+    <li> <a href="clauses/clauses.html">Clauses extension</a>:  This
+      extension adds a new clause constructor to represent certain
+      clauses more efficiently.
+  </ul>
+</div>
+
+<div class="section">
+  <a class="navlink" href="../examples.html">Back to examples</a>
+</div>
+
+</body>
+</html>

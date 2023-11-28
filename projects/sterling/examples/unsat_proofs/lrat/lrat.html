@@ -1,0 +1,263 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  unsat_proofs:lrat</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  unsat_proofs:lrat</h1><div class="section">
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module unsat_proofs:lrat
+
+<span class="comment">/*
+  Variables are integers
+*/</span>
+lit ::= pos(int)
+      | neg(int)
+
+Translation lit :
+
+
+clause ::= emptyClause
+         | or(lit, clause)
+
+Translation clause :
+
+
+formula ::= emptyFormula
+          | and(clause, formula)
+
+Translation formula :
+
+
+
+
+
+<span class="comment">/*
+  Clause ID is an integer
+*/</span>
+proof ::= emptyLrat(int, [int])
+        | addLrupProof(int, clause, [int], proof)
+        | deleteLratProof(int, proof)
+
+Translation proof : [(int, clause)]
+</pre>
+<h3>File:  sat.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesat.sos" onclick="toggleFile('sat.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="sat.sos">[Raw File]</a>
+<pre class="code sterling" id="sat.sos">
+Module unsat_proofs:lrat
+
+Judgment sat_clause : [lit] clause*
+Judgment sat_formula : [lit] formula*
+
+mem L A
+------------------------ [SC-Here]
+sat_clause A or(L, Rest)
+
+
+sat_clause A Rest
+------------------------ [SC-Later]
+sat_clause A or(L, Rest)
+
+
+
+-------------------------- [SF-Empty]
+sat_formula A emptyFormula
+
+
+sat_clause A C
+sat_formula A Rest
+-------------------------- [SF-And]
+sat_formula A and(C, Rest)
+
+
+
+
+Judgment negate_lit : lit* lit
+
+------------------------ [N-Pos]
+negate_lit pos(V) neg(V)
+
+
+------------------------ [N-Neg]
+negate_lit neg(V) pos(V)
+
+
+
+
+Judgment unsat_clause : [lit] clause*
+
+-------------------------- [USC-EmptyClause]
+unsat_clause A emptyClause
+
+
+negate_lit L NL
+mem NL A
+unsat_clause A Rest
+-------------------------- [USC-Step]
+unsat_clause A or(L, Rest)
+</pre>
+<h3>File:  check.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglecheck.sos" onclick="toggleFile('check.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="check.sos">[Raw File]</a>
+<pre class="code sterling" id="check.sos">
+Module unsat_proofs:lrat
+
+
+Fixed Judgment proveFormula : formula proof
+
+formulaToKnown 1 F KnownClauses
+checkProof KnownClauses Prf
+=============================== [ProveFormula]
+proveFormula F Prf
+
+
+
+
+
+<span class="comment">/*Turn a formula into a list of known clauses, numbering them with the
+  first argument*/</span>
+Judgment formulaToKnown : int formula* [(int, clause)]
+
+--------------------------------- [FTK-Empty]
+formulaToKnown ID emptyFormula []
+
+
+ID + 1 = NewID
+formulaToKnown NewID Rest KRest
+--------------------------------------------- [FTK-And]
+formulaToKnown ID and(C, Rest) (ID, C)::KRest
+
+
+
+
+
+Judgment checkProof : [(int, clause)] proof*
+
+rupProof Known emptyClause Prf
+----------------------------------- [CP-EmptyLrat]
+checkProof Known emptyLrat(ID, Prf)
+
+
+remove_all Known ID KRest
+rupProof Known C Prf
+checkProof (ID, C)::KRest Rest
+----------------------------------------------- [CP-AddLrup]
+checkProof Known addLrupProof(ID, C, Prf, Rest)
+
+
+select (ID, C) KRest Known
+checkProof KRest Rest
+------------------------------------------ [CP-DeleteLrat]
+checkProof Known deleteLratProof(ID, Rest)
+
+
+
+
+Judgment gatherLits : clause* [lit]
+
+------------------------- [GL-EmptyClause]
+gatherLits emptyClause []
+
+
+gatherLits Rest LRest
+------------------------------- [GL-Or]
+gatherLits or(L, Rest) L::LRest
+
+
+
+
+Fixed Judgment negateLitList : [lit] [lit]
+
+=================== [NLL-Nil]
+negateLitList [] []
+
+
+negate_lit L N
+negateLitList LRest NRest
+=================================== [NLL-Cons]
+negateLitList (L::LRest) (N::NRest)
+
+
+
+
+                         <span class="comment">/*known clauses, clause, proof*/</span>
+Fixed Judgment rupProof : [(int, clause)] clause [int]
+                          <span class="comment">/*known clauses, assignment, proof*/</span>
+Fixed Judgment rupProof_help : [(int, clause)] [lit] [int]
+
+gatherLits C Lits
+negateLitList Lits A
+rupProof_help Known A Prf
+========================= [RUPP]
+rupProof Known C Prf
+
+
+
+lookup Known ID C
+unsat_clause A C
+========================= [RUPPH-End]
+rupProof_help Known A [ID]
+
+
+lookup Known ID C
+unit_clause A C L
+rupProof_help Known L::A Prf
+============================= [RUPPH-Step]
+rupProof_help Known A ID::Prf
+
+
+
+
+                     <span class="comment">/*assignment, clause, unit ID*/</span>
+Judgment unit_clause : [lit] clause* lit
+
+!mem L A
+negate_lit L NL
+!mem NL A
+unsat_clause A C
+------------------------ [UC-Here]
+unit_clause A or(L, C) L
+
+
+negate_lit L NL
+mem NL A
+unit_clause A C UL
+------------------------- [UC-Later]
+unit_clause A or(L, C) UL
+
+
+
+
+
+<span class="comment">/*remove all the bindings for the given ID
+  succeeds even if no bindings are present*/</span>
+Fixed Judgment remove_all : [(int, clause)] int [(int, clause)]
+
+================== [RA-Nil]
+remove_all [] I []
+
+
+remove_all IRest I Rest
+=============================== [RA-Remove]
+remove_all (I, C)::IRest I Rest
+
+
+A != I
+remove_all IRest I Rest
+======================================= [RA-Step]
+remove_all (A, C)::IRest I (A, C)::Rest
+</pre>
+<div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

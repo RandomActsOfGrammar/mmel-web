@@ -1,0 +1,23 @@
+Module unsat_proofs:clauses
+
+Builds on unsat_proofs:lrat
+
+clause ::= ...
+         | rangeClause(int, int)
+         | noteClause(string, clause)
+
+
+Low <= High
+1 + Low = PlusOne
+---------------------------------------------- [Trans-RangeClauseStep]
+|{clause}- rangeClause(Low, High) ~~>
+      or(pos(Low), rangeClause(PlusOne, High))
+
+
+Low > High
+------------------------------------------------- [Trans-RangeClauseEnd]
+|{clause}- rangeClause(Low, High) ~~> emptyClause
+
+
+---------------------------------------------- [Trans-NoteClause]
+|{clause}- noteClause(Note, Clause) ~~> Clause
