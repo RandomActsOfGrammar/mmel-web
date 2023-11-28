@@ -138,3 +138,61 @@ canonicalForm intTy num(I)
 
 ---------------------------------------------- [CF-Arrow]
 canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
+
+
+
+/*
+  We define here desugaring as a fixed relation to ensure the terms
+  are fully translated and an extension doesn't define desugaring in a
+  way that doesn't actually desugar fully.
+ */
+Fixed Judgment desugar_ty : ty ty
+Fixed Judgment desugar_tm : [(string, ty)] tm tm
+
+desugar_ty TyA TyA1
+desugar_ty TyB TyB1
+================================================ [DS-ArrowTy]
+desugar_ty arrowTy(TyA, TyB) arrowTy(TyA1, TyB1)
+
+
+====================== [DS-IntTy]
+desugar_ty intTy intTy
+
+
+|{ty}- Ty ~~> Ty_T
+desugar_ty Ty_T Ty1
+=================== [DS-OtherTy]
+desugar_ty Ty Ty1
+
+
+
+============================ [DS-Var]
+desugar_tm Ctx var(X) var(X)
+
+
+desugar_ty Ty Ty1
+desugar_tm (X, Ty)::Ctx Tm Tm1
+============================================== [DS-Abs]
+desugar_tm Ctx abs(X, Ty, Tm) abs(X, Ty1, Tm1)
+
+
+desugar_tm Ctx TmA TmA1
+desugar_tm Ctx TmB TmB1
+============================================ [DS-App]
+desugar_tm Ctx app(TmA, TmB) app(TmA1, TmB1)
+
+
+============================ [DS-Num]
+desugar_tm Ctx num(I) num(I)
+
+
+desugar_tm Ctx TmA TmA1
+desugar_tm Ctx TmB TmB1
+============================================== [DS-Plus]
+desugar_tm Ctx plus(TmA, TmB) plus(TmA1, TmB1)
+
+
+Ctx |{tm}- T ~~> T_T
+desugar_tm Ctx T_T T1
+===================== [DS-OtherTm]
+desugar_tm Ctx T T1

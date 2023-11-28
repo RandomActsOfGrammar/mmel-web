@@ -13,11 +13,15 @@ ty ::= ...
 
 
 typeOf Ctx T1 Ty
------------------------------------------------------- [Trans-Pair]
+----------------------------------------------------------- [Trans-Pair]
 Ctx |{tm}- pair(T1, T2) ~~>
-     abs("A", Ty, abs("B", Ty,
-         abs("S", arrowTy(Ty, arrowTy(Ty, Ty)),
-             app(app(var("S"), var("A")), var("B")))))
+     app(
+       app(
+         abs("A", Ty, abs("B", Ty,
+             abs("S", arrowTy(Ty, arrowTy(Ty, Ty)),
+                 app(app(var("S"), var("A")), var("B"))))),
+         T1),
+       T2)
 
 
 typeOf Ctx T pairTy(Ty)
@@ -32,10 +36,9 @@ Ctx |{tm}- snd(T) ~~>
      app(T, abs("A", Ty, abs("B", Ty, var("B"))))
 
 
----------------------------------------------------- [Trans-PairTy]
+------------------------------------------------ [Trans-PairTy]
 |{ty}- pairTy(Ty) ~~>
- arrowTy(Ty, arrowTy(Ty,
-         arrowTy(arrowTy(Ty, arrowTy(Ty, Ty)), Ty)))
+       arrowTy(arrowTy(Ty, arrowTy(Ty, Ty)), Ty)
 
 
 

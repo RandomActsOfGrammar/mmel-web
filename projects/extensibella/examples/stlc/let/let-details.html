@@ -17,6 +17,11 @@
  < <b>Module stlc:let.</b>
 </pre>
 <pre class="code extensibella"id="1">
+ &lt; <b>Prove_Constraint stlc:host:trans_ty_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="2">
  &lt; <b>Prove stlc:host:type_is.</b>
 
 Subgoal 6:
@@ -32,7 +37,7 @@ Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
 ============================
  is_ty Ty
 </pre>
-<pre class="code extensibella"id="2">
+<pre class="code extensibella"id="3">
  &lt; <b>Is: case IsT.</b>
 
 Subgoal 6:
@@ -50,7 +55,7 @@ Is2 : is_tm T2
 ============================
  is_ty Ty
 </pre>
-<pre class="code extensibella"id="3">
+<pre class="code extensibella"id="4">
  &lt; <b>apply IH to _ Is1 Ty1.</b>
 
 Subgoal 6:
@@ -69,7 +74,7 @@ H1 : is_ty Ty1
 ============================
  is_ty Ty
 </pre>
-<pre class="code extensibella"id="4">
+<pre class="code extensibella"id="5">
  &lt; <b>apply IH to _ Is2 Ty2.</b>
 
 Subgoal 6:
@@ -89,12 +94,12 @@ H2 : is_ty Ty
 ============================
  is_ty Ty
 </pre>
-<pre class="code extensibella"id="5">
+<pre class="code extensibella"id="6">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="6">
+<pre class="code extensibella"id="7">
  &lt; <b>Prove_Constraint stlc:host:trans_is.</b>
 
 Variables: Ctx T1 T2 Ty X
@@ -105,7 +110,7 @@ Trans1 : typeOf Ctx T1 Ty
 ============================
  is_tm (app (abs X Ty T2) T1)
 </pre>
-<pre class="code extensibella"id="7">
+<pre class="code extensibella"id="8">
  &lt; <b>case IsT.</b>
 
 Variables: Ctx T1 T2 Ty X
@@ -118,7 +123,7 @@ H3 : is_tm T2
 ============================
  is_tm (app (abs X Ty T2) T1)
 </pre>
-<pre class="code extensibella"id="8">
+<pre class="code extensibella"id="9">
  &lt; <b>apply type_is to _ _ Trans1.</b>
 
 Variables: Ctx T1 T2 Ty X
@@ -132,12 +137,202 @@ H4 : is_ty Ty
 ============================
  is_tm (app (abs X Ty T2) T1)
 </pre>
-<pre class="code extensibella"id="9">
+<pre class="code extensibella"id="10">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="10">
+<pre class="code extensibella"id="11">
+ &lt; <b>Prove stlc:host:type_unique.</b>
+
+Subgoal 6:
+
+Variables: Ctx TyA TyB Ty1 T2 T1 X
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (let X T1 T2)
+TyA : typeOf Ctx (let X T1 T2) TyA @
+TyB : typeOf Ctx (let X T1 T2) TyB
+TyA1 : typeOf Ctx T1 Ty1 *
+TyA2 : typeOf ((X, Ty1)::Ctx) T2 TyA *
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="12">
+ &lt; <b>TyB: case TyB.</b>
+
+Subgoal 6:
+
+Variables: Ctx TyA TyB Ty1 T2 T1 X Ty2
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (let X T1 T2)
+TyA : typeOf Ctx (let X T1 T2) TyA @
+TyA1 : typeOf Ctx T1 Ty1 *
+TyA2 : typeOf ((X, Ty1)::Ctx) T2 TyA *
+TyB : typeOf Ctx T1 Ty2
+TyB1 : typeOf ((X, Ty2)::Ctx) T2 TyB
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="13">
+ &lt; <b>case IsT.</b>
+
+Subgoal 6:
+
+Variables: Ctx TyA TyB Ty1 T2 T1 X Ty2
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (let X T1 T2) TyA @
+TyA1 : typeOf Ctx T1 Ty1 *
+TyA2 : typeOf ((X, Ty1)::Ctx) T2 TyA *
+TyB : typeOf Ctx T1 Ty2
+TyB1 : typeOf ((X, Ty2)::Ctx) T2 TyB
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="14">
+ &lt; <b>apply IH to _ _ TyA1 TyB.</b>
+
+Subgoal 6:
+
+Variables: Ctx TyA TyB T2 T1 X Ty2
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (let X T1 T2) TyA @
+TyA1 : typeOf Ctx T1 Ty2 *
+TyA2 : typeOf ((X, Ty2)::Ctx) T2 TyA *
+TyB : typeOf Ctx T1 Ty2
+TyB1 : typeOf ((X, Ty2)::Ctx) T2 TyB
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="15">
+ &lt; <b>apply type_is to _ _ TyA1.</b>
+
+Subgoal 6:
+
+Variables: Ctx TyA TyB T2 T1 X Ty2
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (let X T1 T2) TyA @
+TyA1 : typeOf Ctx T1 Ty2 *
+TyA2 : typeOf ((X, Ty2)::Ctx) T2 TyA *
+TyB : typeOf Ctx T1 Ty2
+TyB1 : typeOf ((X, Ty2)::Ctx) T2 TyB
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+H4 : is_ty Ty2
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="16">
+ &lt; <b>apply IH to _ _ TyA2 TyB1.</b>
+
+Subgoal 6:
+
+Variables: Ctx TyB T2 T1 X Ty2
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (let X T1 T2) TyB @
+TyA1 : typeOf Ctx T1 Ty2 *
+TyA2 : typeOf ((X, Ty2)::Ctx) T2 TyB *
+TyB : typeOf Ctx T1 Ty2
+TyB1 : typeOf ((X, Ty2)::Ctx) T2 TyB
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+H4 : is_ty Ty2
+============================
+ TyB = TyB
+</pre>
+<pre class="code extensibella"id="17">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="18">
+ &lt; <b>Prove_Constraint stlc:host:trans_ty_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="19">
+ &lt; <b>Prove_Constraint stlc:host:trans_tm_unique.</b>
+
+Variables: Ctx TB T1 T2 Ty X
+Hyp : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty T2) T1
+Hyp1 : Ctx |{tm}- let X T1 T2 ~~&gt; TB
+Hyp2 : is_tm (let X T1 T2)
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 Ty
+============================
+ app (abs X Ty T2) T1 = TB
+</pre>
+<pre class="code extensibella"id="20">
+ &lt; <b>case Hyp1.</b>
+
+Variables: Ctx T1 T2 Ty X Ty1
+Hyp : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty T2) T1
+Hyp2 : is_tm (let X T1 T2)
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 Ty
+H1 : typeOf Ctx T1 Ty1
+============================
+ app (abs X Ty T2) T1 = app (abs X Ty1 T2) T1
+</pre>
+<pre class="code extensibella"id="21">
+ &lt; <b>case Hyp2.</b>
+
+Variables: Ctx T1 T2 Ty X Ty1
+Hyp : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty T2) T1
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 Ty
+H1 : typeOf Ctx T1 Ty1
+H2 : is_string X
+H3 : is_tm T1
+H4 : is_tm T2
+============================
+ app (abs X Ty T2) T1 = app (abs X Ty1 T2) T1
+</pre>
+<pre class="code extensibella"id="22">
+ &lt; <b>apply type_unique to _ _ Hyp4 H1.</b>
+
+Variables: Ctx T1 T2 X Ty1
+Hyp : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 Ty1
+H1 : typeOf Ctx T1 Ty1
+H2 : is_string X
+H3 : is_tm T1
+H4 : is_tm T2
+============================
+ app (abs X Ty1 T2) T1 = app (abs X Ty1 T2) T1
+</pre>
+<pre class="code extensibella"id="23">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="24">
  &lt; <b>Prove stlc:host:subst_is.</b>
 
 Subgoal 8:
@@ -155,7 +350,7 @@ S3 : subst X R T2 S2 *
 ============================
  is_tm (let Y S1 S2)
 </pre>
-<pre class="code extensibella"id="11">
+<pre class="code extensibella"id="25">
  &lt; <b>Is: case IsT.</b>
 
 Subgoal 8:
@@ -175,7 +370,7 @@ Is2 : is_tm T2
 ============================
  is_tm (let Y S1 S2)
 </pre>
-<pre class="code extensibella"id="12">
+<pre class="code extensibella"id="26">
  &lt; <b>apply IH to _ _ _ S2.</b>
 
 Subgoal 8:
@@ -196,7 +391,7 @@ H1 : is_tm S1
 ============================
  is_tm (let Y S1 S2)
 </pre>
-<pre class="code extensibella"id="13">
+<pre class="code extensibella"id="27">
  &lt; <b>apply IH to _ _ _ S3.</b>
 
 Subgoal 8:
@@ -218,7 +413,7 @@ H2 : is_tm S2
 ============================
  is_tm (let Y S1 S2)
 </pre>
-<pre class="code extensibella"id="14">
+<pre class="code extensibella"id="28">
  &lt; <b>search.</b>
 
 Subgoal 9:
@@ -234,7 +429,7 @@ S1 : subst X R T1 S1 *
 ============================
  is_tm (let X S1 T2)
 </pre>
-<pre class="code extensibella"id="15">
+<pre class="code extensibella"id="29">
  &lt; <b>Is: case IsT.</b>
 
 Subgoal 9:
@@ -252,7 +447,7 @@ Is2 : is_tm T2
 ============================
  is_tm (let X S1 T2)
 </pre>
-<pre class="code extensibella"id="16">
+<pre class="code extensibella"id="30">
  &lt; <b>apply IH to _ _ _ S1.</b>
 
 Subgoal 9:
@@ -271,12 +466,12 @@ H1 : is_tm S1
 ============================
  is_tm (let X S1 T2)
 </pre>
-<pre class="code extensibella"id="17">
+<pre class="code extensibella"id="31">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="18">
+<pre class="code extensibella"id="32">
  &lt; <b>Prove stlc:host:eval_is.</b>
 
 Subgoal 7:
@@ -289,7 +484,7 @@ Ev1 : eval T1 T11 *
 ============================
  is_tm (let X T11 T2)
 </pre>
-<pre class="code extensibella"id="19">
+<pre class="code extensibella"id="33">
  &lt; <b>Is: case IsT.</b>
 
 Subgoal 7:
@@ -304,7 +499,7 @@ Is2 : is_tm T2
 ============================
  is_tm (let X T11 T2)
 </pre>
-<pre class="code extensibella"id="20">
+<pre class="code extensibella"id="34">
  &lt; <b>apply IH to _ Ev1.</b>
 
 Subgoal 7:
@@ -320,7 +515,7 @@ H1 : is_tm T11
 ============================
  is_tm (let X T11 T2)
 </pre>
-<pre class="code extensibella"id="21">
+<pre class="code extensibella"id="35">
  &lt; <b>search.</b>
 
 Subgoal 8:
@@ -334,7 +529,7 @@ Ev2 : subst X T1 T2 T'
 ============================
  is_tm T'
 </pre>
-<pre class="code extensibella"id="22">
+<pre class="code extensibella"id="36">
  &lt; <b>Is: case IsT.</b>
 
 Subgoal 8:
@@ -350,7 +545,7 @@ Is2 : is_tm T2
 ============================
  is_tm T'
 </pre>
-<pre class="code extensibella"id="23">
+<pre class="code extensibella"id="37">
  &lt; <b>apply subst_is to _ _ _ Ev2.</b>
 
 Subgoal 8:
@@ -367,12 +562,12 @@ H1 : is_tm T'
 ============================
  is_tm T'
 </pre>
-<pre class="code extensibella"id="24">
+<pre class="code extensibella"id="38">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="25">
+<pre class="code extensibella"id="39">
  &lt; <b>Prove stlc:host:subst_unique.</b>
 
 Subgoal 8:
@@ -387,7 +582,7 @@ SA3 : subst X R T2 S2 *
 ============================
  let Y S1 S2 = VB
 </pre>
-<pre class="code extensibella"id="26">
+<pre class="code extensibella"id="40">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 8.1:
@@ -404,7 +599,7 @@ SB2 : subst X R T2 S4
 ============================
  let Y S1 S2 = let Y S3 S4
 </pre>
-<pre class="code extensibella"id="27">
+<pre class="code extensibella"id="41">
  &lt; <b>apply IH to SA2 SB1.</b>
 
 Subgoal 8.1:
@@ -421,7 +616,7 @@ SB2 : subst X R T2 S4
 ============================
  let Y S3 S2 = let Y S3 S4
 </pre>
-<pre class="code extensibella"id="28">
+<pre class="code extensibella"id="42">
  &lt; <b>apply IH to SA3 SB2.</b>
 
 Subgoal 8.1:
@@ -438,7 +633,7 @@ SB2 : subst X R T2 S4
 ============================
  let Y S3 S4 = let Y S3 S4
 </pre>
-<pre class="code extensibella"id="29">
+<pre class="code extensibella"id="43">
  &lt; <b>search.</b>
 
 Subgoal 8.2:
@@ -453,7 +648,7 @@ SB : subst Y R T1 S3
 ============================
  let Y S1 S2 = let Y S3 T2
 </pre>
-<pre class="code extensibella"id="30">
+<pre class="code extensibella"id="44">
  &lt; <b>apply SA1 to _.</b>
 
 Subgoal 9:
@@ -466,7 +661,7 @@ SA1 : subst X R T1 S1 *
 ============================
  let X S1 T2 = VB
 </pre>
-<pre class="code extensibella"id="31">
+<pre class="code extensibella"id="45">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 9.1:
@@ -481,7 +676,7 @@ SB2 : subst X R T2 S3
 ============================
  let X S1 T2 = let X S2 S3
 </pre>
-<pre class="code extensibella"id="32">
+<pre class="code extensibella"id="46">
  &lt; <b>apply SB to _.</b>
 
 Subgoal 9.2:
@@ -494,7 +689,7 @@ SB : subst X R T1 S2
 ============================
  let X S1 T2 = let X S2 T2
 </pre>
-<pre class="code extensibella"id="33">
+<pre class="code extensibella"id="47">
  &lt; <b>apply IH to SA1 SB.</b>
 
 Subgoal 9.2:
@@ -507,17 +702,17 @@ SB : subst X R T1 S2
 ============================
  let X S2 T2 = let X S2 T2
 </pre>
-<pre class="code extensibella"id="34">
+<pre class="code extensibella"id="48">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="35">
+<pre class="code extensibella"id="49">
  &lt; <b>Prove stlc:host:value_eval_false.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="36">
+<pre class="code extensibella"id="50">
  &lt; <b>Prove stlc:host:eval_unique.</b>
 
 Subgoal 7:
@@ -530,7 +725,7 @@ EvA1 : eval T1 T11 *
 ============================
  let X T11 T2 = VB
 </pre>
-<pre class="code extensibella"id="37">
+<pre class="code extensibella"id="51">
  &lt; <b>EvB: case EvB.</b>
 
 Subgoal 7.1:
@@ -543,7 +738,7 @@ EvB : eval T1 T5
 ============================
  let X T11 T2 = let X T5 T2
 </pre>
-<pre class="code extensibella"id="38">
+<pre class="code extensibella"id="52">
  &lt; <b>apply IH to EvA1 EvB.</b>
 
 Subgoal 7.1:
@@ -556,7 +751,7 @@ EvB : eval T1 T5
 ============================
  let X T5 T2 = let X T5 T2
 </pre>
-<pre class="code extensibella"id="39">
+<pre class="code extensibella"id="53">
  &lt; <b>search.</b>
 
 Subgoal 7.2:
@@ -570,7 +765,7 @@ EvB1 : subst X T1 T2 VB
 ============================
  let X T11 T2 = VB
 </pre>
-<pre class="code extensibella"id="40">
+<pre class="code extensibella"id="54">
  &lt; <b>apply value_eval_false to EvB EvA1.</b>
 
 Subgoal 8:
@@ -584,7 +779,7 @@ EvA2 : subst X T1 T2 VA
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="41">
+<pre class="code extensibella"id="55">
  &lt; <b>EvB: case EvB.</b>
 
 Subgoal 8.1:
@@ -598,7 +793,7 @@ EvB : eval T1 T11
 ============================
  VA = let X T11 T2
 </pre>
-<pre class="code extensibella"id="42">
+<pre class="code extensibella"id="56">
  &lt; <b>apply value_eval_false to EvA1 EvB.</b>
 
 Subgoal 8.2:
@@ -613,7 +808,7 @@ EvB1 : subst X T1 T2 VB
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="43">
+<pre class="code extensibella"id="57">
  &lt; <b>apply subst_unique to EvA2 EvB1.</b>
 
 Subgoal 8.2:
@@ -628,12 +823,12 @@ EvB1 : subst X T1 T2 VB
 ============================
  VB = VB
 </pre>
-<pre class="code extensibella"id="44">
+<pre class="code extensibella"id="58">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="45">
+<pre class="code extensibella"id="59">
  &lt; <b>Prove stlc:host:ty_lookup.</b>
 
 Subgoal 6:
@@ -649,7 +844,7 @@ Ty2 : typeOf ((X, Ty1)::Ctx1) T2 Ty *
 ============================
  typeOf Ctx2 (let X T1 T2) Ty
 </pre>
-<pre class="code extensibella"id="46">
+<pre class="code extensibella"id="60">
  &lt; <b>apply IH to Ty1 L.</b>
 
 Subgoal 6:
@@ -666,7 +861,7 @@ H1 : typeOf Ctx2 T1 Ty1
 ============================
  typeOf Ctx2 (let X T1 T2) Ty
 </pre>
-<pre class="code extensibella"id="47">
+<pre class="code extensibella"id="61">
  &lt; <b>apply IH to Ty2 _ with
      Ctx2 = (X, Ty1)::Ctx2.</b>
 
@@ -684,7 +879,7 @@ H1 : typeOf Ctx2 T1 Ty1
 ============================
  forall X1 XTy, lookup ((X, Ty1)::Ctx1) X1 XTy -&gt; lookup ((X, Ty1)::Ctx2) X1 XTy
 </pre>
-<pre class="code extensibella"id="48">
+<pre class="code extensibella"id="62">
  &lt; <b>intros Lkp.</b>
 
 Subgoal 6.1:
@@ -702,7 +897,7 @@ Lkp : lookup ((X, Ty1)::Ctx1) X1 XTy
 ============================
  lookup ((X, Ty1)::Ctx2) X1 XTy
 </pre>
-<pre class="code extensibella"id="49">
+<pre class="code extensibella"id="63">
  &lt; <b>Lkp: case Lkp.</b>
 
 Subgoal 6.1.1:
@@ -719,7 +914,7 @@ H1 : typeOf Ctx2 T1 XTy
 ============================
  lookup ((X1, XTy)::Ctx2) X1 XTy
 </pre>
-<pre class="code extensibella"id="50">
+<pre class="code extensibella"id="64">
  &lt; <b>search.</b>
 
 Subgoal 6.1.2:
@@ -738,7 +933,7 @@ Lkp1 : lookup Ctx1 X1 XTy
 ============================
  lookup ((X, Ty1)::Ctx2) X1 XTy
 </pre>
-<pre class="code extensibella"id="51">
+<pre class="code extensibella"id="65">
  &lt; <b>apply L to Lkp1.</b>
 
 Subgoal 6.1.2:
@@ -758,7 +953,7 @@ H2 : lookup Ctx2 X1 XTy
 ============================
  lookup ((X, Ty1)::Ctx2) X1 XTy
 </pre>
-<pre class="code extensibella"id="52">
+<pre class="code extensibella"id="66">
  &lt; <b>search.</b>
 
 Subgoal 6:
@@ -776,12 +971,12 @@ H2 : typeOf ((X, Ty1)::Ctx2) T2 Ty
 ============================
  typeOf Ctx2 (let X T1 T2) Ty
 </pre>
-<pre class="code extensibella"id="53">
+<pre class="code extensibella"id="67">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="54">
+<pre class="code extensibella"id="68">
  &lt; <b>Prove stlc:host:subst_type_preservation.</b>
 
 Subgoal 8:
@@ -798,7 +993,7 @@ S3 : subst X R T2 S2 *
 ============================
  typeOf Ctx (let Y S1 S2) Ty
 </pre>
-<pre class="code extensibella"id="55">
+<pre class="code extensibella"id="69">
  &lt; <b>Ty: case TTy.</b>
 
 Subgoal 8:
@@ -816,7 +1011,7 @@ Ty1 : typeOf ((Y, Ty1)::((X, XTy)::Ctx)) T2 Ty
 ============================
  typeOf Ctx (let Y S1 S2) Ty
 </pre>
-<pre class="code extensibella"id="56">
+<pre class="code extensibella"id="70">
  &lt; <b>apply IH to Ty S2 RTy.</b>
 
 Subgoal 8:
@@ -835,7 +1030,7 @@ H1 : typeOf Ctx S1 Ty1
 ============================
  typeOf Ctx (let Y S1 S2) Ty
 </pre>
-<pre class="code extensibella"id="57">
+<pre class="code extensibella"id="71">
  &lt; <b>Ty': apply ty_lookup to Ty1 _ with
           Ctx2 = (X, XTy)::((Y, Ty1)::Ctx).</b>
 
@@ -856,7 +1051,7 @@ H1 : typeOf Ctx S1 Ty1
  forall X1 XTy1,
    lookup ((Y, Ty1)::((X, XTy)::Ctx)) X1 XTy1 -&gt; lookup ((X, XTy)::((Y, Ty1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="58">
+<pre class="code extensibella"id="72">
  &lt; <b>intros L.</b>
 
 Subgoal 8.1:
@@ -876,7 +1071,7 @@ L : lookup ((Y, Ty1)::((X, XTy)::Ctx)) X1 XTy1
 ============================
  lookup ((X, XTy)::((Y, Ty1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="59">
+<pre class="code extensibella"id="73">
  &lt; <b>L: case L.</b>
 
 Subgoal 8.1.1:
@@ -895,7 +1090,7 @@ H1 : typeOf Ctx S1 XTy1
 ============================
  lookup ((X, XTy)::((X1, XTy1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="60">
+<pre class="code extensibella"id="74">
  &lt; <b>search.</b>
 
 Subgoal 8.1.2:
@@ -916,7 +1111,7 @@ L1 : lookup ((X, XTy)::Ctx) X1 XTy1
 ============================
  lookup ((X, XTy)::((Y, Ty1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="61">
+<pre class="code extensibella"id="75">
  &lt; <b>L: case L1.</b>
 
 Subgoal 8.1.2.1:
@@ -936,7 +1131,7 @@ L : Y = X1 -&gt; false
 ============================
  lookup ((X1, XTy1)::((Y, Ty1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="62">
+<pre class="code extensibella"id="76">
  &lt; <b>search.</b>
 
 Subgoal 8.1.2.2:
@@ -958,7 +1153,7 @@ L2 : lookup Ctx X1 XTy1
 ============================
  lookup ((X, XTy)::((Y, Ty1)::Ctx)) X1 XTy1
 </pre>
-<pre class="code extensibella"id="63">
+<pre class="code extensibella"id="77">
  &lt; <b>search.</b>
 
 Subgoal 8:
@@ -978,7 +1173,7 @@ Ty' : typeOf ((X, XTy)::((Y, Ty1)::Ctx)) T2 Ty
 ============================
  typeOf Ctx (let Y S1 S2) Ty
 </pre>
-<pre class="code extensibella"id="64">
+<pre class="code extensibella"id="78">
  &lt; <b>apply IH to Ty' S3 RTy.</b>
 
 Subgoal 8:
@@ -999,7 +1194,7 @@ H2 : typeOf ((Y, Ty1)::Ctx) S2 Ty
 ============================
  typeOf Ctx (let Y S1 S2) Ty
 </pre>
-<pre class="code extensibella"id="65">
+<pre class="code extensibella"id="79">
  &lt; <b>search.</b>
 
 Subgoal 9:
@@ -1014,7 +1209,7 @@ S1 : subst X R T1 S1 *
 ============================
  typeOf Ctx (let X S1 T2) Ty
 </pre>
-<pre class="code extensibella"id="66">
+<pre class="code extensibella"id="80">
  &lt; <b>Ty: case TTy.</b>
 
 Subgoal 9:
@@ -1030,7 +1225,7 @@ Ty1 : typeOf ((X, Ty1)::((X, XTy)::Ctx)) T2 Ty
 ============================
  typeOf Ctx (let X S1 T2) Ty
 </pre>
-<pre class="code extensibella"id="67">
+<pre class="code extensibella"id="81">
  &lt; <b>apply IH to Ty S1 RTy.</b>
 
 Subgoal 9:
@@ -1047,7 +1242,7 @@ H1 : typeOf Ctx S1 Ty1
 ============================
  typeOf Ctx (let X S1 T2) Ty
 </pre>
-<pre class="code extensibella"id="68">
+<pre class="code extensibella"id="82">
  &lt; <b>apply ty_lookup to Ty1 _ with
      Ctx2 = (X, Ty1)::Ctx.</b>
 
@@ -1066,7 +1261,7 @@ H1 : typeOf Ctx S1 Ty1
  forall X1 XTy1,
    lookup ((X, Ty1)::((X, XTy)::Ctx)) X1 XTy1 -&gt; lookup ((X, Ty1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="69">
+<pre class="code extensibella"id="83">
  &lt; <b>intros L.</b>
 
 Subgoal 9.1:
@@ -1084,7 +1279,7 @@ L : lookup ((X, Ty1)::((X, XTy)::Ctx)) X1 XTy1
 ============================
  lookup ((X, Ty1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="70">
+<pre class="code extensibella"id="84">
  &lt; <b>L: case L.</b>
 
 Subgoal 9.1.1:
@@ -1101,7 +1296,7 @@ H1 : typeOf Ctx S1 XTy1
 ============================
  lookup ((X1, XTy1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="71">
+<pre class="code extensibella"id="85">
  &lt; <b>search.</b>
 
 Subgoal 9.1.2:
@@ -1120,7 +1315,7 @@ L1 : lookup ((X, XTy)::Ctx) X1 XTy1
 ============================
  lookup ((X, Ty1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="72">
+<pre class="code extensibella"id="86">
  &lt; <b>L: case L1.</b>
 
 Subgoal 9.1.2.1:
@@ -1138,7 +1333,7 @@ L : X1 = X1 -&gt; false
 ============================
  lookup ((X1, Ty1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="73">
+<pre class="code extensibella"id="87">
  &lt; <b>apply L to _.</b>
 
 Subgoal 9.1.2.2:
@@ -1158,7 +1353,7 @@ L2 : lookup Ctx X1 XTy1
 ============================
  lookup ((X, Ty1)::Ctx) X1 XTy1
 </pre>
-<pre class="code extensibella"id="74">
+<pre class="code extensibella"id="88">
  &lt; <b>search.</b>
 
 Subgoal 9:
@@ -1176,12 +1371,12 @@ H2 : typeOf ((X, Ty1)::Ctx) T2 Ty
 ============================
  typeOf Ctx (let X S1 T2) Ty
 </pre>
-<pre class="code extensibella"id="75">
+<pre class="code extensibella"id="89">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="76">
+<pre class="code extensibella"id="90">
  &lt; <b>Prove stlc:host:type_preservation.</b>
 
 Subgoal 7:
@@ -1194,7 +1389,7 @@ Ev1 : eval T1 T11 *
 ============================
  typeOf [] (let X T11 T2) Ty
 </pre>
-<pre class="code extensibella"id="77">
+<pre class="code extensibella"id="91">
  &lt; <b>Ty: case Ty.</b>
 
 Subgoal 7:
@@ -1208,7 +1403,7 @@ Ty1 : typeOf [(X, Ty1)] T2 Ty
 ============================
  typeOf [] (let X T11 T2) Ty
 </pre>
-<pre class="code extensibella"id="78">
+<pre class="code extensibella"id="92">
  &lt; <b>apply IH to Ty Ev1.</b>
 
 Subgoal 7:
@@ -1223,7 +1418,7 @@ H1 : typeOf [] T11 Ty1
 ============================
  typeOf [] (let X T11 T2) Ty
 </pre>
-<pre class="code extensibella"id="79">
+<pre class="code extensibella"id="93">
  &lt; <b>search.</b>
 
 Subgoal 8:
@@ -1237,7 +1432,7 @@ Ev2 : subst X T1 T2 T'
 ============================
  typeOf [] T' Ty
 </pre>
-<pre class="code extensibella"id="80">
+<pre class="code extensibella"id="94">
  &lt; <b>Ty: case Ty.</b>
 
 Subgoal 8:
@@ -1252,7 +1447,7 @@ Ty1 : typeOf [(X, Ty1)] T2 Ty
 ============================
  typeOf [] T' Ty
 </pre>
-<pre class="code extensibella"id="81">
+<pre class="code extensibella"id="95">
  &lt; <b>apply subst_type_preservation to Ty1 Ev2 Ty.</b>
 
 Subgoal 8:
@@ -1268,12 +1463,12 @@ H1 : typeOf [] T' Ty
 ============================
  typeOf [] T' Ty
 </pre>
-<pre class="code extensibella"id="82">
+<pre class="code extensibella"id="96">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="83">
+<pre class="code extensibella"id="97">
  &lt; <b>Prove stlc:host:subst_total.</b>
 
 Subgoal 6:
@@ -1288,7 +1483,7 @@ IsT3 : is_tm Tm *
 ============================
  exists S1, subst X R (let S Tm1 Tm) S1
 </pre>
-<pre class="code extensibella"id="84">
+<pre class="code extensibella"id="98">
  &lt; <b>Or: apply is_string_eq_or_not to IsX IsT1.</b>
 
 Subgoal 6:
@@ -1304,7 +1499,7 @@ Or : X = S \/ (X = S -&gt; false)
 ============================
  exists S1, subst X R (let S Tm1 Tm) S1
 </pre>
-<pre class="code extensibella"id="85">
+<pre class="code extensibella"id="99">
  &lt; <b>E: case Or.</b>
 
 Subgoal 6.1:
@@ -1319,7 +1514,7 @@ IsT3 : is_tm Tm *
 ============================
  exists S1, subst S R (let S Tm1 Tm) S1
 </pre>
-<pre class="code extensibella"id="86">
+<pre class="code extensibella"id="100">
  &lt; <b>apply IH to IsT2 IsX with
      R = R.</b>
 
@@ -1336,7 +1531,7 @@ H1 : subst S R Tm1 S1
 ============================
  exists S1, subst S R (let S Tm1 Tm) S1
 </pre>
-<pre class="code extensibella"id="87">
+<pre class="code extensibella"id="101">
  &lt; <b>search.</b>
 
 Subgoal 6.2:
@@ -1352,7 +1547,7 @@ E : X = S -&gt; false
 ============================
  exists S1, subst X R (let S Tm1 Tm) S1
 </pre>
-<pre class="code extensibella"id="88">
+<pre class="code extensibella"id="102">
  &lt; <b>apply IH to IsT2 IsX with
      R = R.</b>
 
@@ -1370,7 +1565,7 @@ H1 : subst X R Tm1 S1
 ============================
  exists S1, subst X R (let S Tm1 Tm) S1
 </pre>
-<pre class="code extensibella"id="89">
+<pre class="code extensibella"id="103">
  &lt; <b>apply IH to IsT3 IsX with
      R = R.</b>
 
@@ -1389,17 +1584,17 @@ H2 : subst X R Tm S2
 ============================
  exists S1, subst X R (let S Tm1 Tm) S1
 </pre>
-<pre class="code extensibella"id="90">
+<pre class="code extensibella"id="104">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="91">
+<pre class="code extensibella"id="105">
  &lt; <b>Prove stlc:host:canonical_forms.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="92">
+<pre class="code extensibella"id="106">
  &lt; <b>Prove stlc:host:progress.</b>
 
 Subgoal 6:
@@ -1414,7 +1609,7 @@ Ty2 : typeOf [(X, Ty1)] T2 Ty *
 ============================
  (exists T', eval (let X T1 T2) T') \/ value (let X T1 T2)
 </pre>
-<pre class="code extensibella"id="93">
+<pre class="code extensibella"id="107">
  &lt; <b>Is: case IsT.</b>
 
 Subgoal 6:
@@ -1431,7 +1626,7 @@ Is2 : is_tm T2
 ============================
  (exists T', eval (let X T1 T2) T') \/ value (let X T1 T2)
 </pre>
-<pre class="code extensibella"id="94">
+<pre class="code extensibella"id="108">
  &lt; <b>Or: apply IH to _ Ty1.</b>
 
 Subgoal 6:
@@ -1449,7 +1644,7 @@ Or : (exists T', eval T1 T') \/ value T1
 ============================
  (exists T', eval (let X T1 T2) T') \/ value (let X T1 T2)
 </pre>
-<pre class="code extensibella"id="95">
+<pre class="code extensibella"id="109">
  &lt; <b>EV: case Or.</b>
 
 Subgoal 6.1:
@@ -1467,7 +1662,7 @@ EV : eval T1 T'
 ============================
  (exists T', eval (let X T1 T2) T') \/ value (let X T1 T2)
 </pre>
-<pre class="code extensibella"id="96">
+<pre class="code extensibella"id="110">
  &lt; <b>search.</b>
 
 Subgoal 6.2:
@@ -1485,7 +1680,7 @@ EV : value T1
 ============================
  (exists T', eval (let X T1 T2) T') \/ value (let X T1 T2)
 </pre>
-<pre class="code extensibella"id="97">
+<pre class="code extensibella"id="111">
  &lt; <b>apply subst_total to Is2 Is with
      R = T1.</b>
 
@@ -1505,8 +1700,310 @@ H1 : subst X T1 T2 S
 ============================
  (exists T', eval (let X T1 T2) T') \/ value (let X T1 T2)
 </pre>
-<pre class="code extensibella"id="98">
+<pre class="code extensibella"id="112">
  &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="113">
+ &lt; <b>Prove stlc:host:desugar_ty_exists.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="114">
+ &lt; <b>Prove stlc:host:desugar_ty_rel.</b>
+
+Subgoal 6:
+
+Variables: Ctx Ty T' Ty' Ctx' Ty1 T2 T1 X
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsT : is_tm (let X T1 T2)
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DT : desugar_tm Ctx (let X T1 T2) T'
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="115">
+ &lt; <b>case IsT.</b>
+
+Subgoal 6:
+
+Variables: Ctx Ty T' Ty' Ctx' Ty1 T2 T1 X
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DT : desugar_tm Ctx (let X T1 T2) T'
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="116">
+ &lt; <b>DT: case DT.</b>
+
+Subgoal 6:
+
+Variables: Ctx Ty T' Ty' Ctx' Ty1 T2 T1 X T_T
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+DT : Ctx |{tm}- let X T1 T2 ~~&gt; T_T
+DT1 : desugar_tm Ctx T_T T'
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="117">
+ &lt; <b>DT: case DT.</b>
+
+Subgoal 6:
+
+Variables: Ctx Ty T' Ty' Ctx' Ty1 T2 T1 X Ty2
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+DT1 : desugar_tm Ctx (app (abs X Ty2 T2) T1) T'
+DT : typeOf Ctx T1 Ty2
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="118">
+ &lt; <b>DT: case DT1.</b>
+
+Subgoal 6.1:
+
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X Ty2 TmB1 TmA1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT1 : desugar_tm Ctx (abs X Ty2 T2) TmA1
+DT2 : desugar_tm Ctx T1 TmB1
+============================
+ typeOf Ctx' (app TmA1 TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="119">
+ &lt; <b>DT: case DT1.</b>
+
+Subgoal 6.1.1:
+
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X Ty2 TmB1 Tm1 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T1 TmB1
+DT1 : desugar_ty Ty2 Ty4
+DT3 : desugar_tm ((X, Ty2)::Ctx) T2 Tm1
+============================
+ typeOf Ctx' (app (abs X Ty4 Tm1) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="120">
+ &lt; <b>apply type_unique to _ _ DT Ty1.</b>
+
+Subgoal 6.1.1:
+
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB1 Tm1 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+DT : typeOf Ctx T1 Ty1
+DT2 : desugar_tm Ctx T1 TmB1
+DT1 : desugar_ty Ty1 Ty4
+DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm1
+============================
+ typeOf Ctx' (app (abs X Ty4 Tm1) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="121">
+ &lt; <b>apply IH to _ _ Ty1 _ _ _.</b>
+
+Subgoal 6.1.1:
+
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB1 Tm1 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+DT : typeOf Ctx T1 Ty1
+DT2 : desugar_tm Ctx T1 TmB1
+DT1 : desugar_ty Ty1 Ty4
+DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm1
+H4 : typeOf Ctx' TmB1 Ty4
+============================
+ typeOf Ctx' (app (abs X Ty4 Tm1) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="122">
+ &lt; <b>apply type_is to _ _ Ty1.</b>
+
+Subgoal 6.1.1:
+
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB1 Tm1 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+DT : typeOf Ctx T1 Ty1
+DT2 : desugar_tm Ctx T1 TmB1
+DT1 : desugar_ty Ty1 Ty4
+DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm1
+H4 : typeOf Ctx' TmB1 Ty4
+H5 : is_ty Ty1
+============================
+ typeOf Ctx' (app (abs X Ty4 Tm1) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="123">
+ &lt; <b>apply IH to _ _ Ty2 _ _ _.</b>
+
+Subgoal 6.1.1:
+
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB1 Tm1 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+DT : typeOf Ctx T1 Ty1
+DT2 : desugar_tm Ctx T1 TmB1
+DT1 : desugar_ty Ty1 Ty4
+DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm1
+H4 : typeOf Ctx' TmB1 Ty4
+H5 : is_ty Ty1
+H6 : typeOf ((X, Ty4)::Ctx') Tm1 Ty'
+============================
+ typeOf Ctx' (app (abs X Ty4 Tm1) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="124">
+ &lt; <b>search.</b>
+
+Subgoal 6.1.2:
+
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X Ty2 TmB1 TmA1 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T1 TmB1
+DT1 : Ctx |{tm}- abs X Ty2 T2 ~~&gt; T_T1
+DT3 : desugar_tm Ctx T_T1 TmA1
+============================
+ typeOf Ctx' (app TmA1 TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="125">
+ &lt; <b>case DT1.</b>
+
+Subgoal 6.2:
+
+Variables: Ctx Ty T' Ty' Ctx' Ty1 T2 T1 X Ty2 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (let X T1 T2) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf ((X, Ty1)::Ctx) T2 Ty *
+H1 : is_string X
+H2 : is_tm T1
+H3 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT1 : Ctx |{tm}- app (abs X Ty2 T2) T1 ~~&gt; T_T1
+DT2 : desugar_tm Ctx T_T1 T'
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="126">
+ &lt; <b>case DT1.</b>
 
 Proof completed.
 </pre>
