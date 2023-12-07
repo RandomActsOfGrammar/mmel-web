@@ -1,0 +1,5674 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  stlc:pair - Details</title>
+<link href="../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h2>Reasoning Details</h2>
+<div class="section">
+<pre class="code extensibella">
+ < <b>Module stlc:pair.</b>
+</pre>
+<pre class="code extensibella"id="1">
+ &lt; <b>Prove_Constraint stlc:host:trans_ty_is.</b>
+
+Variables: Ty1
+Trans : |{ty}- pairTy Ty1 ~~&gt; arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1
+IsTy : is_ty (pairTy Ty1)
+============================
+ is_ty (arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1)
+</pre>
+<pre class="code extensibella"id="2">
+ &lt; <b>case IsTy.</b>
+
+Variables: Ty1
+Trans : |{ty}- pairTy Ty1 ~~&gt; arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1
+H1 : is_ty Ty1
+============================
+ is_ty (arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1)
+</pre>
+<pre class="code extensibella"id="3">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="4">
+ &lt; <b>Prove stlc:host:type_is.</b>
+
+Subgoal 6:
+
+Variables: Ctx Ty1 T2 T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (pair T1 T2)
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+============================
+ is_ty (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="5">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 6:
+
+Variables: Ctx Ty1 T2 T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+Is : is_tm T1
+Is1 : is_tm T2
+============================
+ is_ty (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="6">
+ &lt; <b>apply IH to _ _ Ty1.</b>
+
+Subgoal 6:
+
+Variables: Ctx Ty1 T2 T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+Is : is_tm T1
+Is1 : is_tm T2
+H1 : is_ty Ty1
+============================
+ is_ty (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="7">
+ &lt; <b>search.</b>
+
+Subgoal 7:
+
+Variables: Ctx Ty T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (fst T1)
+Ty : typeOf Ctx (fst T1) Ty @
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+============================
+ is_ty Ty
+</pre>
+<pre class="code extensibella"id="8">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 7:
+
+Variables: Ctx Ty T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+Is : is_tm T1
+============================
+ is_ty Ty
+</pre>
+<pre class="code extensibella"id="9">
+ &lt; <b>IsTy: apply IH to _ _ Ty1.</b>
+
+Subgoal 7:
+
+Variables: Ctx Ty T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+Is : is_tm T1
+IsTy : is_ty (pairTy Ty)
+============================
+ is_ty Ty
+</pre>
+<pre class="code extensibella"id="10">
+ &lt; <b>case IsTy.</b>
+
+Subgoal 7:
+
+Variables: Ctx Ty T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+Is : is_tm T1
+H1 : is_ty Ty
+============================
+ is_ty Ty
+</pre>
+<pre class="code extensibella"id="11">
+ &lt; <b>search.</b>
+
+Subgoal 8:
+
+Variables: Ctx Ty T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (snd T1)
+Ty : typeOf Ctx (snd T1) Ty @
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+============================
+ is_ty Ty
+</pre>
+<pre class="code extensibella"id="12">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 8:
+
+Variables: Ctx Ty T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+Is : is_tm T1
+============================
+ is_ty Ty
+</pre>
+<pre class="code extensibella"id="13">
+ &lt; <b>IsTy: apply IH to _ _ Ty1.</b>
+
+Subgoal 8:
+
+Variables: Ctx Ty T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+Is : is_tm T1
+IsTy : is_ty (pairTy Ty)
+============================
+ is_ty Ty
+</pre>
+<pre class="code extensibella"id="14">
+ &lt; <b>case IsTy.</b>
+
+Subgoal 8:
+
+Variables: Ctx Ty T1
+IH : forall Ctx T Ty,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T Ty * -&gt; is_ty Ty
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+Is : is_tm T1
+H1 : is_ty Ty
+============================
+ is_ty Ty
+</pre>
+<pre class="code extensibella"id="15">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="16">
+ &lt; <b>Prove_Constraint stlc:host:trans_is.</b>
+
+Subgoal 1:
+
+Variables: Ctx T2 T1 Ty
+Trans : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (pair T1 T2)
+Trans1 : typeOf Ctx T1 Ty
+============================
+ is_tm (app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2)
+</pre>
+<pre class="code extensibella"id="17">
+ &lt; <b>case IsT.</b>
+
+Subgoal 1:
+
+Variables: Ctx T2 T1 Ty
+Trans : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Trans1 : typeOf Ctx T1 Ty
+H1 : is_tm T1
+H2 : is_tm T2
+============================
+ is_tm (app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2)
+</pre>
+<pre class="code extensibella"id="18">
+ &lt; <b>apply type_is to _ _ Trans1.</b>
+
+Subgoal 1:
+
+Variables: Ctx T2 T1 Ty
+Trans : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Trans1 : typeOf Ctx T1 Ty
+H1 : is_tm T1
+H2 : is_tm T2
+H3 : is_ty Ty
+============================
+ is_tm (app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2)
+</pre>
+<pre class="code extensibella"id="19">
+ &lt; <b>search 11.</b>
+
+Subgoal 2:
+
+Variables: Ctx Ty T1
+Trans : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (fst T1)
+Trans1 : typeOf Ctx T1 (pairTy Ty)
+============================
+ is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "A"))))
+</pre>
+<pre class="code extensibella"id="20">
+ &lt; <b>case IsT.</b>
+
+Subgoal 2:
+
+Variables: Ctx Ty T1
+Trans : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Trans1 : typeOf Ctx T1 (pairTy Ty)
+H1 : is_tm T1
+============================
+ is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "A"))))
+</pre>
+<pre class="code extensibella"id="21">
+ &lt; <b>IsTy: apply type_is to _ _ Trans1.</b>
+
+Subgoal 2:
+
+Variables: Ctx Ty T1
+Trans : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Trans1 : typeOf Ctx T1 (pairTy Ty)
+H1 : is_tm T1
+IsTy : is_ty (pairTy Ty)
+============================
+ is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "A"))))
+</pre>
+<pre class="code extensibella"id="22">
+ &lt; <b>case IsTy.</b>
+
+Subgoal 2:
+
+Variables: Ctx Ty T1
+Trans : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Trans1 : typeOf Ctx T1 (pairTy Ty)
+H1 : is_tm T1
+H2 : is_ty Ty
+============================
+ is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "A"))))
+</pre>
+<pre class="code extensibella"id="23">
+ &lt; <b>search 7.</b>
+
+Subgoal 3:
+
+Variables: Ctx Ty T1
+Trans : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (snd T1)
+Trans1 : typeOf Ctx T1 (pairTy Ty)
+============================
+ is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "B"))))
+</pre>
+<pre class="code extensibella"id="24">
+ &lt; <b>case IsT.</b>
+
+Subgoal 3:
+
+Variables: Ctx Ty T1
+Trans : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Trans1 : typeOf Ctx T1 (pairTy Ty)
+H1 : is_tm T1
+============================
+ is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "B"))))
+</pre>
+<pre class="code extensibella"id="25">
+ &lt; <b>IsTy: apply type_is to _ _ Trans1.</b>
+
+Subgoal 3:
+
+Variables: Ctx Ty T1
+Trans : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Trans1 : typeOf Ctx T1 (pairTy Ty)
+H1 : is_tm T1
+IsTy : is_ty (pairTy Ty)
+============================
+ is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "B"))))
+</pre>
+<pre class="code extensibella"id="26">
+ &lt; <b>case IsTy.</b>
+
+Subgoal 3:
+
+Variables: Ctx Ty T1
+Trans : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Trans1 : typeOf Ctx T1 (pairTy Ty)
+H1 : is_tm T1
+H2 : is_ty Ty
+============================
+ is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "B"))))
+</pre>
+<pre class="code extensibella"id="27">
+ &lt; <b>search 7.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="28">
+ &lt; <b>Prove stlc:host:type_unique.</b>
+
+Subgoal 6:
+
+Variables: Ctx TyB Ty T2 T1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (pair T1 T2)
+TyA : typeOf Ctx (pair T1 T2) (pairTy Ty) @
+TyB : typeOf Ctx (pair T1 T2) TyB
+TyA1 : typeOf Ctx T1 Ty *
+TyA2 : typeOf Ctx T2 Ty *
+============================
+ pairTy Ty = TyB
+</pre>
+<pre class="code extensibella"id="29">
+ &lt; <b>case IsT.</b>
+
+Subgoal 6:
+
+Variables: Ctx TyB Ty T2 T1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (pair T1 T2) (pairTy Ty) @
+TyB : typeOf Ctx (pair T1 T2) TyB
+TyA1 : typeOf Ctx T1 Ty *
+TyA2 : typeOf Ctx T2 Ty *
+H1 : is_tm T1
+H2 : is_tm T2
+============================
+ pairTy Ty = TyB
+</pre>
+<pre class="code extensibella"id="30">
+ &lt; <b>TyB: case TyB.</b>
+
+Subgoal 6:
+
+Variables: Ctx Ty T2 T1 Ty1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (pair T1 T2) (pairTy Ty) @
+TyA1 : typeOf Ctx T1 Ty *
+TyA2 : typeOf Ctx T2 Ty *
+H1 : is_tm T1
+H2 : is_tm T2
+TyB : typeOf Ctx T1 Ty1
+TyB1 : typeOf Ctx T2 Ty1
+============================
+ pairTy Ty = pairTy Ty1
+</pre>
+<pre class="code extensibella"id="31">
+ &lt; <b>apply IH to _ _ TyA1 TyB.</b>
+
+Subgoal 6:
+
+Variables: Ctx T2 T1 Ty1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+TyA1 : typeOf Ctx T1 Ty1 *
+TyA2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+TyB : typeOf Ctx T1 Ty1
+TyB1 : typeOf Ctx T2 Ty1
+============================
+ pairTy Ty1 = pairTy Ty1
+</pre>
+<pre class="code extensibella"id="32">
+ &lt; <b>search.</b>
+
+Subgoal 7:
+
+Variables: Ctx TyA TyB T1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (fst T1)
+TyA : typeOf Ctx (fst T1) TyA @
+TyB : typeOf Ctx (fst T1) TyB
+TyA1 : typeOf Ctx T1 (pairTy TyA) *
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="33">
+ &lt; <b>case IsT.</b>
+
+Subgoal 7:
+
+Variables: Ctx TyA TyB T1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (fst T1) TyA @
+TyB : typeOf Ctx (fst T1) TyB
+TyA1 : typeOf Ctx T1 (pairTy TyA) *
+H1 : is_tm T1
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="34">
+ &lt; <b>TyB: case TyB.</b>
+
+Subgoal 7:
+
+Variables: Ctx TyA TyB T1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (fst T1) TyA @
+TyA1 : typeOf Ctx T1 (pairTy TyA) *
+H1 : is_tm T1
+TyB : typeOf Ctx T1 (pairTy TyB)
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="35">
+ &lt; <b>apply IH to _ _ TyA1 TyB.</b>
+
+Subgoal 7:
+
+Variables: Ctx TyB T1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (fst T1) TyB @
+TyA1 : typeOf Ctx T1 (pairTy TyB) *
+H1 : is_tm T1
+TyB : typeOf Ctx T1 (pairTy TyB)
+============================
+ TyB = TyB
+</pre>
+<pre class="code extensibella"id="36">
+ &lt; <b>search.</b>
+
+Subgoal 8:
+
+Variables: Ctx TyA TyB T1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+IsT : is_tm (snd T1)
+TyA : typeOf Ctx (snd T1) TyA @
+TyB : typeOf Ctx (snd T1) TyB
+TyA1 : typeOf Ctx T1 (pairTy TyA) *
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="37">
+ &lt; <b>case IsT.</b>
+
+Subgoal 8:
+
+Variables: Ctx TyA TyB T1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (snd T1) TyA @
+TyB : typeOf Ctx (snd T1) TyB
+TyA1 : typeOf Ctx T1 (pairTy TyA) *
+H1 : is_tm T1
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="38">
+ &lt; <b>TyB: case TyB.</b>
+
+Subgoal 8:
+
+Variables: Ctx TyA TyB T1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (snd T1) TyA @
+TyA1 : typeOf Ctx T1 (pairTy TyA) *
+H1 : is_tm T1
+TyB : typeOf Ctx T1 (pairTy TyB)
+============================
+ TyA = TyB
+</pre>
+<pre class="code extensibella"id="39">
+ &lt; <b>apply IH to _ _ TyA1 TyB.</b>
+
+Subgoal 8:
+
+Variables: Ctx TyB T1
+IH : forall Ctx T TyA TyB,
+       is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt; typeOf Ctx T TyA * -&gt;
+       typeOf Ctx T TyB -&gt; TyA = TyB
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+TyA : typeOf Ctx (snd T1) TyB @
+TyA1 : typeOf Ctx T1 (pairTy TyB) *
+H1 : is_tm T1
+TyB : typeOf Ctx T1 (pairTy TyB)
+============================
+ TyB = TyB
+</pre>
+<pre class="code extensibella"id="40">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="41">
+ &lt; <b>Prove_Constraint stlc:host:trans_ty_unique.</b>
+
+Variables: TyB Ty1
+Hyp : |{ty}- pairTy Ty1 ~~&gt; arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1
+Hyp1 : |{ty}- pairTy Ty1 ~~&gt; TyB
+Hyp2 : is_ty (pairTy Ty1)
+============================
+ arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1 = TyB
+</pre>
+<pre class="code extensibella"id="42">
+ &lt; <b>case Hyp1.</b>
+
+Variables: Ty1
+Hyp : |{ty}- pairTy Ty1 ~~&gt; arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1
+Hyp2 : is_ty (pairTy Ty1)
+============================
+ arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1 = arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1
+</pre>
+<pre class="code extensibella"id="43">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="44">
+ &lt; <b>Prove_Constraint stlc:host:trans_tm_unique.</b>
+
+Subgoal 1:
+
+Variables: Ctx TB T2 T1 Ty
+Hyp : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+Hyp1 : Ctx |{tm}- pair T1 T2 ~~&gt; TB
+Hyp2 : is_tm (pair T1 T2)
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 Ty
+============================
+ app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2 = TB
+</pre>
+<pre class="code extensibella"id="45">
+ &lt; <b>case Hyp1.</b>
+
+Subgoal 1:
+
+Variables: Ctx T2 T1 Ty Ty1
+Hyp : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+Hyp2 : is_tm (pair T1 T2)
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 Ty
+H1 : typeOf Ctx T1 Ty1
+============================
+ app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2 = app (app (abs "A" Ty1 (abs "B" Ty1 (abs "S" (arrowTy Ty1 (arrowTy Ty1 Ty1)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+</pre>
+<pre class="code extensibella"id="46">
+ &lt; <b>case Hyp2.</b>
+
+Subgoal 1:
+
+Variables: Ctx T2 T1 Ty Ty1
+Hyp : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 Ty
+H1 : typeOf Ctx T1 Ty1
+H2 : is_tm T1
+H3 : is_tm T2
+============================
+ app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2 = app (app (abs "A" Ty1 (abs "B" Ty1 (abs "S" (arrowTy Ty1 (arrowTy Ty1 Ty1)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+</pre>
+<pre class="code extensibella"id="47">
+ &lt; <b>apply type_unique to _ _ Hyp4 H1.</b>
+
+Subgoal 1:
+
+Variables: Ctx T2 T1 Ty1
+Hyp : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty1 (abs "B" Ty1 (abs "S" (arrowTy Ty1 (arrowTy Ty1 Ty1)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 Ty1
+H1 : typeOf Ctx T1 Ty1
+H2 : is_tm T1
+H3 : is_tm T2
+============================
+ app (app (abs "A" Ty1 (abs "B" Ty1 (abs "S" (arrowTy Ty1 (arrowTy Ty1 Ty1)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2 = app (app (abs "A" Ty1 (abs "B" Ty1 (abs "S" (arrowTy Ty1 (arrowTy Ty1 Ty1)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+</pre>
+<pre class="code extensibella"id="48">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: Ctx TB Ty T1
+Hyp : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+Hyp1 : Ctx |{tm}- fst T1 ~~&gt; TB
+Hyp2 : is_tm (fst T1)
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 (pairTy Ty)
+============================
+ app T1 (abs "A" Ty (abs "B" Ty (var "A"))) = TB
+</pre>
+<pre class="code extensibella"id="49">
+ &lt; <b>case Hyp1.</b>
+
+Subgoal 2:
+
+Variables: Ctx Ty T1 Ty1
+Hyp : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+Hyp2 : is_tm (fst T1)
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 (pairTy Ty)
+H1 : typeOf Ctx T1 (pairTy Ty1)
+============================
+ app T1 (abs "A" Ty (abs "B" Ty (var "A"))) = app T1 (abs "A" Ty1 (abs "B" Ty1 (var "A")))
+</pre>
+<pre class="code extensibella"id="50">
+ &lt; <b>case Hyp2.</b>
+
+Subgoal 2:
+
+Variables: Ctx Ty T1 Ty1
+Hyp : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 (pairTy Ty)
+H1 : typeOf Ctx T1 (pairTy Ty1)
+H2 : is_tm T1
+============================
+ app T1 (abs "A" Ty (abs "B" Ty (var "A"))) = app T1 (abs "A" Ty1 (abs "B" Ty1 (var "A")))
+</pre>
+<pre class="code extensibella"id="51">
+ &lt; <b>apply type_unique to _ _ Hyp4 H1.</b>
+
+Subgoal 2:
+
+Variables: Ctx T1 Ty1
+Hyp : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty1 (abs "B" Ty1 (var "A")))
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 (pairTy Ty1)
+H1 : typeOf Ctx T1 (pairTy Ty1)
+H2 : is_tm T1
+============================
+ app T1 (abs "A" Ty1 (abs "B" Ty1 (var "A"))) = app T1 (abs "A" Ty1 (abs "B" Ty1 (var "A")))
+</pre>
+<pre class="code extensibella"id="52">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: Ctx TB Ty T1
+Hyp : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+Hyp1 : Ctx |{tm}- snd T1 ~~&gt; TB
+Hyp2 : is_tm (snd T1)
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 (pairTy Ty)
+============================
+ app T1 (abs "A" Ty (abs "B" Ty (var "B"))) = TB
+</pre>
+<pre class="code extensibella"id="53">
+ &lt; <b>case Hyp1.</b>
+
+Subgoal 3:
+
+Variables: Ctx Ty T1 Ty1
+Hyp : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+Hyp2 : is_tm (snd T1)
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 (pairTy Ty)
+H1 : typeOf Ctx T1 (pairTy Ty1)
+============================
+ app T1 (abs "A" Ty (abs "B" Ty (var "B"))) = app T1 (abs "A" Ty1 (abs "B" Ty1 (var "B")))
+</pre>
+<pre class="code extensibella"id="54">
+ &lt; <b>case Hyp2.</b>
+
+Subgoal 3:
+
+Variables: Ctx Ty T1 Ty1
+Hyp : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 (pairTy Ty)
+H1 : typeOf Ctx T1 (pairTy Ty1)
+H2 : is_tm T1
+============================
+ app T1 (abs "A" Ty (abs "B" Ty (var "B"))) = app T1 (abs "A" Ty1 (abs "B" Ty1 (var "B")))
+</pre>
+<pre class="code extensibella"id="55">
+ &lt; <b>apply type_unique to _ _ Hyp4 H1.</b>
+
+Subgoal 3:
+
+Variables: Ctx T1 Ty1
+Hyp : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty1 (abs "B" Ty1 (var "B")))
+Hyp3 : is_list (is_pair is_string is_ty) Ctx
+Hyp4 : typeOf Ctx T1 (pairTy Ty1)
+H1 : typeOf Ctx T1 (pairTy Ty1)
+H2 : is_tm T1
+============================
+ app T1 (abs "A" Ty1 (abs "B" Ty1 (var "B"))) = app T1 (abs "A" Ty1 (abs "B" Ty1 (var "B")))
+</pre>
+<pre class="code extensibella"id="56">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="57">
+ &lt; <b>Prove stlc:host:subst_is.</b>
+
+Subgoal 8:
+
+Variables: X R T21 T11 T2 T1
+IH : forall X R T S,
+       is_tm T -&gt; is_string X -&gt; is_tm R -&gt; subst X R T S * -&gt; is_tm S
+IsT : is_tm (pair T1 T2)
+IsX : is_string X
+IsR : is_tm R
+S : subst X R (pair T1 T2) (pair T11 T21) @
+S1 : subst X R T1 T11 *
+S2 : subst X R T2 T21 *
+============================
+ is_tm (pair T11 T21)
+</pre>
+<pre class="code extensibella"id="58">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 8:
+
+Variables: X R T21 T11 T2 T1
+IH : forall X R T S,
+       is_tm T -&gt; is_string X -&gt; is_tm R -&gt; subst X R T S * -&gt; is_tm S
+IsX : is_string X
+IsR : is_tm R
+S : subst X R (pair T1 T2) (pair T11 T21) @
+S1 : subst X R T1 T11 *
+S2 : subst X R T2 T21 *
+Is : is_tm T1
+Is1 : is_tm T2
+============================
+ is_tm (pair T11 T21)
+</pre>
+<pre class="code extensibella"id="59">
+ &lt; <b>apply IH to _ _ _ S1.</b>
+
+Subgoal 8:
+
+Variables: X R T21 T11 T2 T1
+IH : forall X R T S,
+       is_tm T -&gt; is_string X -&gt; is_tm R -&gt; subst X R T S * -&gt; is_tm S
+IsX : is_string X
+IsR : is_tm R
+S : subst X R (pair T1 T2) (pair T11 T21) @
+S1 : subst X R T1 T11 *
+S2 : subst X R T2 T21 *
+Is : is_tm T1
+Is1 : is_tm T2
+H1 : is_tm T11
+============================
+ is_tm (pair T11 T21)
+</pre>
+<pre class="code extensibella"id="60">
+ &lt; <b>apply IH to _ _ _ S2.</b>
+
+Subgoal 8:
+
+Variables: X R T21 T11 T2 T1
+IH : forall X R T S,
+       is_tm T -&gt; is_string X -&gt; is_tm R -&gt; subst X R T S * -&gt; is_tm S
+IsX : is_string X
+IsR : is_tm R
+S : subst X R (pair T1 T2) (pair T11 T21) @
+S1 : subst X R T1 T11 *
+S2 : subst X R T2 T21 *
+Is : is_tm T1
+Is1 : is_tm T2
+H1 : is_tm T11
+H2 : is_tm T21
+============================
+ is_tm (pair T11 T21)
+</pre>
+<pre class="code extensibella"id="61">
+ &lt; <b>search.</b>
+
+Subgoal 9:
+
+Variables: X R T2 T1
+IH : forall X R T S,
+       is_tm T -&gt; is_string X -&gt; is_tm R -&gt; subst X R T S * -&gt; is_tm S
+IsT : is_tm (fst T1)
+IsX : is_string X
+IsR : is_tm R
+S : subst X R (fst T1) (fst T2) @
+S1 : subst X R T1 T2 *
+============================
+ is_tm (fst T2)
+</pre>
+<pre class="code extensibella"id="62">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 9:
+
+Variables: X R T2 T1
+IH : forall X R T S,
+       is_tm T -&gt; is_string X -&gt; is_tm R -&gt; subst X R T S * -&gt; is_tm S
+IsX : is_string X
+IsR : is_tm R
+S : subst X R (fst T1) (fst T2) @
+S1 : subst X R T1 T2 *
+Is : is_tm T1
+============================
+ is_tm (fst T2)
+</pre>
+<pre class="code extensibella"id="63">
+ &lt; <b>apply IH to _ _ _ S1.</b>
+
+Subgoal 9:
+
+Variables: X R T2 T1
+IH : forall X R T S,
+       is_tm T -&gt; is_string X -&gt; is_tm R -&gt; subst X R T S * -&gt; is_tm S
+IsX : is_string X
+IsR : is_tm R
+S : subst X R (fst T1) (fst T2) @
+S1 : subst X R T1 T2 *
+Is : is_tm T1
+H1 : is_tm T2
+============================
+ is_tm (fst T2)
+</pre>
+<pre class="code extensibella"id="64">
+ &lt; <b>search.</b>
+
+Subgoal 10:
+
+Variables: X R T2 T1
+IH : forall X R T S,
+       is_tm T -&gt; is_string X -&gt; is_tm R -&gt; subst X R T S * -&gt; is_tm S
+IsT : is_tm (snd T1)
+IsX : is_string X
+IsR : is_tm R
+S : subst X R (snd T1) (snd T2) @
+S1 : subst X R T1 T2 *
+============================
+ is_tm (snd T2)
+</pre>
+<pre class="code extensibella"id="65">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 10:
+
+Variables: X R T2 T1
+IH : forall X R T S,
+       is_tm T -&gt; is_string X -&gt; is_tm R -&gt; subst X R T S * -&gt; is_tm S
+IsX : is_string X
+IsR : is_tm R
+S : subst X R (snd T1) (snd T2) @
+S1 : subst X R T1 T2 *
+Is : is_tm T1
+============================
+ is_tm (snd T2)
+</pre>
+<pre class="code extensibella"id="66">
+ &lt; <b>apply IH to _ _ _ S1.</b>
+
+Subgoal 10:
+
+Variables: X R T2 T1
+IH : forall X R T S,
+       is_tm T -&gt; is_string X -&gt; is_tm R -&gt; subst X R T S * -&gt; is_tm S
+IsX : is_string X
+IsR : is_tm R
+S : subst X R (snd T1) (snd T2) @
+S1 : subst X R T1 T2 *
+Is : is_tm T1
+H1 : is_tm T2
+============================
+ is_tm (snd T2)
+</pre>
+<pre class="code extensibella"id="67">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="68">
+ &lt; <b>Prove stlc:host:eval_is.</b>
+
+Subgoal 7:
+
+Variables: T2 T11 T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+IsT : is_tm (pair T1 T2)
+Ev : eval (pair T1 T2) (pair T11 T2) @
+Ev1 : eval T1 T11 *
+============================
+ is_tm (pair T11 T2)
+</pre>
+<pre class="code extensibella"id="69">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 7:
+
+Variables: T2 T11 T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (pair T1 T2) (pair T11 T2) @
+Ev1 : eval T1 T11 *
+Is : is_tm T1
+Is1 : is_tm T2
+============================
+ is_tm (pair T11 T2)
+</pre>
+<pre class="code extensibella"id="70">
+ &lt; <b>apply IH to _ Ev1.</b>
+
+Subgoal 7:
+
+Variables: T2 T11 T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (pair T1 T2) (pair T11 T2) @
+Ev1 : eval T1 T11 *
+Is : is_tm T1
+Is1 : is_tm T2
+H1 : is_tm T11
+============================
+ is_tm (pair T11 T2)
+</pre>
+<pre class="code extensibella"id="71">
+ &lt; <b>search.</b>
+
+Subgoal 8:
+
+Variables: T21 T1 T2
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+IsT : is_tm (pair T1 T2)
+Ev : eval (pair T1 T2) (pair T1 T21) @
+Ev1 : value T1
+Ev2 : eval T2 T21 *
+============================
+ is_tm (pair T1 T21)
+</pre>
+<pre class="code extensibella"id="72">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 8:
+
+Variables: T21 T1 T2
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (pair T1 T2) (pair T1 T21) @
+Ev1 : value T1
+Ev2 : eval T2 T21 *
+Is : is_tm T1
+Is1 : is_tm T2
+============================
+ is_tm (pair T1 T21)
+</pre>
+<pre class="code extensibella"id="73">
+ &lt; <b>apply IH to _ Ev2.</b>
+
+Subgoal 8:
+
+Variables: T21 T1 T2
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (pair T1 T2) (pair T1 T21) @
+Ev1 : value T1
+Ev2 : eval T2 T21 *
+Is : is_tm T1
+Is1 : is_tm T2
+H1 : is_tm T21
+============================
+ is_tm (pair T1 T21)
+</pre>
+<pre class="code extensibella"id="74">
+ &lt; <b>search.</b>
+
+Subgoal 9:
+
+Variables: T2 T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+IsT : is_tm (fst T1)
+Ev : eval (fst T1) (fst T2) @
+Ev1 : eval T1 T2 *
+============================
+ is_tm (fst T2)
+</pre>
+<pre class="code extensibella"id="75">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 9:
+
+Variables: T2 T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (fst T1) (fst T2) @
+Ev1 : eval T1 T2 *
+Is : is_tm T1
+============================
+ is_tm (fst T2)
+</pre>
+<pre class="code extensibella"id="76">
+ &lt; <b>apply IH to _ Ev1.</b>
+
+Subgoal 9:
+
+Variables: T2 T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (fst T1) (fst T2) @
+Ev1 : eval T1 T2 *
+Is : is_tm T1
+H1 : is_tm T2
+============================
+ is_tm (fst T2)
+</pre>
+<pre class="code extensibella"id="77">
+ &lt; <b>search.</b>
+
+Subgoal 10:
+
+Variables: T' T2
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+IsT : is_tm (fst (pair T' T2))
+Ev : eval (fst (pair T' T2)) T' @
+Ev1 : value (pair T' T2)
+============================
+ is_tm T'
+</pre>
+<pre class="code extensibella"id="78">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 10:
+
+Variables: T' T2
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (fst (pair T' T2)) T' @
+Ev1 : value (pair T' T2)
+Is : is_tm (pair T' T2)
+============================
+ is_tm T'
+</pre>
+<pre class="code extensibella"id="79">
+ &lt; <b>case Is.</b>
+
+Subgoal 10:
+
+Variables: T' T2
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (fst (pair T' T2)) T' @
+Ev1 : value (pair T' T2)
+H1 : is_tm T'
+H2 : is_tm T2
+============================
+ is_tm T'
+</pre>
+<pre class="code extensibella"id="80">
+ &lt; <b>search.</b>
+
+Subgoal 11:
+
+Variables: T2 T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+IsT : is_tm (snd T1)
+Ev : eval (snd T1) (snd T2) @
+Ev1 : eval T1 T2 *
+============================
+ is_tm (snd T2)
+</pre>
+<pre class="code extensibella"id="81">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 11:
+
+Variables: T2 T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (snd T1) (snd T2) @
+Ev1 : eval T1 T2 *
+Is : is_tm T1
+============================
+ is_tm (snd T2)
+</pre>
+<pre class="code extensibella"id="82">
+ &lt; <b>apply IH to _ Ev1.</b>
+
+Subgoal 11:
+
+Variables: T2 T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (snd T1) (snd T2) @
+Ev1 : eval T1 T2 *
+Is : is_tm T1
+H1 : is_tm T2
+============================
+ is_tm (snd T2)
+</pre>
+<pre class="code extensibella"id="83">
+ &lt; <b>search.</b>
+
+Subgoal 12:
+
+Variables: T' T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+IsT : is_tm (snd (pair T1 T'))
+Ev : eval (snd (pair T1 T')) T' @
+Ev1 : value (pair T1 T')
+============================
+ is_tm T'
+</pre>
+<pre class="code extensibella"id="84">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 12:
+
+Variables: T' T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (snd (pair T1 T')) T' @
+Ev1 : value (pair T1 T')
+Is : is_tm (pair T1 T')
+============================
+ is_tm T'
+</pre>
+<pre class="code extensibella"id="85">
+ &lt; <b>case Is.</b>
+
+Subgoal 12:
+
+Variables: T' T1
+IH : forall T T', is_tm T -&gt; eval T T' * -&gt; is_tm T'
+Ev : eval (snd (pair T1 T')) T' @
+Ev1 : value (pair T1 T')
+H1 : is_tm T1
+H2 : is_tm T'
+============================
+ is_tm T'
+</pre>
+<pre class="code extensibella"id="86">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="87">
+ &lt; <b>Prove stlc:host:subst_unique.</b>
+
+Subgoal 8:
+
+Variables: X R VB T21 T11 T2 T1
+IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
+SA : subst X R (pair T1 T2) (pair T11 T21) @
+SB : subst X R (pair T1 T2) VB
+SA1 : subst X R T1 T11 *
+SA2 : subst X R T2 T21 *
+============================
+ pair T11 T21 = VB
+</pre>
+<pre class="code extensibella"id="88">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 8:
+
+Variables: X R T21 T11 T2 T1 T6 T5
+IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
+SA : subst X R (pair T1 T2) (pair T11 T21) @
+SA1 : subst X R T1 T11 *
+SA2 : subst X R T2 T21 *
+SB : subst X R T1 T5
+SB1 : subst X R T2 T6
+============================
+ pair T11 T21 = pair T5 T6
+</pre>
+<pre class="code extensibella"id="89">
+ &lt; <b>apply IH to SA1 SB.</b>
+
+Subgoal 8:
+
+Variables: X R T21 T2 T1 T6 T5
+IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
+SA : subst X R (pair T1 T2) (pair T5 T21) @
+SA1 : subst X R T1 T5 *
+SA2 : subst X R T2 T21 *
+SB : subst X R T1 T5
+SB1 : subst X R T2 T6
+============================
+ pair T5 T21 = pair T5 T6
+</pre>
+<pre class="code extensibella"id="90">
+ &lt; <b>apply IH to SA2 SB1.</b>
+
+Subgoal 8:
+
+Variables: X R T2 T1 T6 T5
+IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
+SA : subst X R (pair T1 T2) (pair T5 T6) @
+SA1 : subst X R T1 T5 *
+SA2 : subst X R T2 T6 *
+SB : subst X R T1 T5
+SB1 : subst X R T2 T6
+============================
+ pair T5 T6 = pair T5 T6
+</pre>
+<pre class="code extensibella"id="91">
+ &lt; <b>search.</b>
+
+Subgoal 9:
+
+Variables: X R VB T2 T1
+IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
+SA : subst X R (fst T1) (fst T2) @
+SB : subst X R (fst T1) VB
+SA1 : subst X R T1 T2 *
+============================
+ fst T2 = VB
+</pre>
+<pre class="code extensibella"id="92">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 9:
+
+Variables: X R T2 T1 T4
+IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
+SA : subst X R (fst T1) (fst T2) @
+SA1 : subst X R T1 T2 *
+SB : subst X R T1 T4
+============================
+ fst T2 = fst T4
+</pre>
+<pre class="code extensibella"id="93">
+ &lt; <b>apply IH to SA1 SB.</b>
+
+Subgoal 9:
+
+Variables: X R T1 T4
+IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
+SA : subst X R (fst T1) (fst T4) @
+SA1 : subst X R T1 T4 *
+SB : subst X R T1 T4
+============================
+ fst T4 = fst T4
+</pre>
+<pre class="code extensibella"id="94">
+ &lt; <b>search.</b>
+
+Subgoal 10:
+
+Variables: X R VB T2 T1
+IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
+SA : subst X R (snd T1) (snd T2) @
+SB : subst X R (snd T1) VB
+SA1 : subst X R T1 T2 *
+============================
+ snd T2 = VB
+</pre>
+<pre class="code extensibella"id="95">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 10:
+
+Variables: X R T2 T1 T4
+IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
+SA : subst X R (snd T1) (snd T2) @
+SA1 : subst X R T1 T2 *
+SB : subst X R T1 T4
+============================
+ snd T2 = snd T4
+</pre>
+<pre class="code extensibella"id="96">
+ &lt; <b>apply IH to SA1 SB.</b>
+
+Subgoal 10:
+
+Variables: X R T1 T4
+IH : forall X R T VA VB, subst X R T VA * -&gt; subst X R T VB -&gt; VA = VB
+SA : subst X R (snd T1) (snd T4) @
+SA1 : subst X R T1 T4 *
+SB : subst X R T1 T4
+============================
+ snd T4 = snd T4
+</pre>
+<pre class="code extensibella"id="97">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="98">
+ &lt; <b>Prove stlc:host:value_eval_false.</b>
+
+Subgoal 3:
+
+Variables: V T2 T1
+IH : forall T V, value T * -&gt; eval T V -&gt; false
+Val : value (pair T1 T2) @
+Ev : eval (pair T1 T2) V
+Val1 : value T1 *
+Val2 : value T2 *
+============================
+ false
+</pre>
+<pre class="code extensibella"id="99">
+ &lt; <b>Ev: case Ev.</b>
+
+Subgoal 3.1:
+
+Variables: T2 T1 T11
+IH : forall T V, value T * -&gt; eval T V -&gt; false
+Val : value (pair T1 T2) @
+Val1 : value T1 *
+Val2 : value T2 *
+Ev : eval T1 T11
+============================
+ false
+</pre>
+<pre class="code extensibella"id="100">
+ &lt; <b>apply IH to Val1 Ev.</b>
+
+Subgoal 3.2:
+
+Variables: T2 T1 T21
+IH : forall T V, value T * -&gt; eval T V -&gt; false
+Val : value (pair T1 T2) @
+Val1 : value T1 *
+Val2 : value T2 *
+Ev : value T1
+Ev1 : eval T2 T21
+============================
+ false
+</pre>
+<pre class="code extensibella"id="101">
+ &lt; <b>apply IH to Val2 Ev1.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="102">
+ &lt; <b>Prove stlc:host:eval_unique.</b>
+
+Subgoal 7:
+
+Variables: VB T2 T11 T1
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (pair T1 T2) (pair T11 T2) @
+EvB : eval (pair T1 T2) VB
+EvA1 : eval T1 T11 *
+============================
+ pair T11 T2 = VB
+</pre>
+<pre class="code extensibella"id="103">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 7.1:
+
+Variables: T2 T11 T1 T5
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (pair T1 T2) (pair T11 T2) @
+EvA1 : eval T1 T11 *
+EvB : eval T1 T5
+============================
+ pair T11 T2 = pair T5 T2
+</pre>
+<pre class="code extensibella"id="104">
+ &lt; <b>apply IH to EvA1 EvB.</b>
+
+Subgoal 7.1:
+
+Variables: T2 T1 T5
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (pair T1 T2) (pair T5 T2) @
+EvA1 : eval T1 T5 *
+EvB : eval T1 T5
+============================
+ pair T5 T2 = pair T5 T2
+</pre>
+<pre class="code extensibella"id="105">
+ &lt; <b>search.</b>
+
+Subgoal 7.2:
+
+Variables: T2 T11 T1 T21
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (pair T1 T2) (pair T11 T2) @
+EvA1 : eval T1 T11 *
+EvB : value T1
+EvB1 : eval T2 T21
+============================
+ pair T11 T2 = pair T1 T21
+</pre>
+<pre class="code extensibella"id="106">
+ &lt; <b>apply value_eval_false to EvB EvA1.</b>
+
+Subgoal 8:
+
+Variables: VB T21 T1 T2
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (pair T1 T2) (pair T1 T21) @
+EvB : eval (pair T1 T2) VB
+EvA1 : value T1
+EvA2 : eval T2 T21 *
+============================
+ pair T1 T21 = VB
+</pre>
+<pre class="code extensibella"id="107">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 8.1:
+
+Variables: T21 T1 T2 T11
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (pair T1 T2) (pair T1 T21) @
+EvA1 : value T1
+EvA2 : eval T2 T21 *
+EvB : eval T1 T11
+============================
+ pair T1 T21 = pair T11 T2
+</pre>
+<pre class="code extensibella"id="108">
+ &lt; <b>apply value_eval_false to EvA1 EvB.</b>
+
+Subgoal 8.2:
+
+Variables: T21 T1 T2 T5
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (pair T1 T2) (pair T1 T21) @
+EvA1 : value T1
+EvA2 : eval T2 T21 *
+EvB : value T1
+EvB1 : eval T2 T5
+============================
+ pair T1 T21 = pair T1 T5
+</pre>
+<pre class="code extensibella"id="109">
+ &lt; <b>apply IH to EvA2 EvB1.</b>
+
+Subgoal 8.2:
+
+Variables: T1 T2 T5
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (pair T1 T2) (pair T1 T5) @
+EvA1 : value T1
+EvA2 : eval T2 T5 *
+EvB : value T1
+EvB1 : eval T2 T5
+============================
+ pair T1 T5 = pair T1 T5
+</pre>
+<pre class="code extensibella"id="110">
+ &lt; <b>search.</b>
+
+Subgoal 9:
+
+Variables: VB T2 T1
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (fst T1) (fst T2) @
+EvB : eval (fst T1) VB
+EvA1 : eval T1 T2 *
+============================
+ fst T2 = VB
+</pre>
+<pre class="code extensibella"id="111">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 9.1:
+
+Variables: T2 T1 T4
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (fst T1) (fst T2) @
+EvA1 : eval T1 T2 *
+EvB : eval T1 T4
+============================
+ fst T2 = fst T4
+</pre>
+<pre class="code extensibella"id="112">
+ &lt; <b>apply IH to EvA1 EvB.</b>
+
+Subgoal 9.1:
+
+Variables: T1 T4
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (fst T1) (fst T4) @
+EvA1 : eval T1 T4 *
+EvB : eval T1 T4
+============================
+ fst T4 = fst T4
+</pre>
+<pre class="code extensibella"id="113">
+ &lt; <b>search.</b>
+
+Subgoal 9.2:
+
+Variables: VB T2 T4
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (fst (pair VB T4)) (fst T2) @
+EvA1 : eval (pair VB T4) T2 *
+EvB : value (pair VB T4)
+============================
+ fst T2 = VB
+</pre>
+<pre class="code extensibella"id="114">
+ &lt; <b>apply value_eval_false to EvB EvA1.</b>
+
+Subgoal 10:
+
+Variables: VA VB T2
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (fst (pair VA T2)) VA @
+EvB : eval (fst (pair VA T2)) VB
+EvA1 : value (pair VA T2)
+============================
+ VA = VB
+</pre>
+<pre class="code extensibella"id="115">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 10.1:
+
+Variables: VA T2 T3
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (fst (pair VA T2)) VA @
+EvA1 : value (pair VA T2)
+EvB : eval (pair VA T2) T3
+============================
+ VA = fst T3
+</pre>
+<pre class="code extensibella"id="116">
+ &lt; <b>apply value_eval_false to EvA1 EvB.</b>
+
+Subgoal 10.2:
+
+Variables: VB T2
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (fst (pair VB T2)) VB @
+EvA1 : value (pair VB T2)
+EvB : value (pair VB T2)
+============================
+ VB = VB
+</pre>
+<pre class="code extensibella"id="117">
+ &lt; <b>search.</b>
+
+Subgoal 11:
+
+Variables: VB T2 T1
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (snd T1) (snd T2) @
+EvB : eval (snd T1) VB
+EvA1 : eval T1 T2 *
+============================
+ snd T2 = VB
+</pre>
+<pre class="code extensibella"id="118">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 11.1:
+
+Variables: T2 T1 T4
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (snd T1) (snd T2) @
+EvA1 : eval T1 T2 *
+EvB : eval T1 T4
+============================
+ snd T2 = snd T4
+</pre>
+<pre class="code extensibella"id="119">
+ &lt; <b>apply IH to EvA1 EvB.</b>
+
+Subgoal 11.1:
+
+Variables: T1 T4
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (snd T1) (snd T4) @
+EvA1 : eval T1 T4 *
+EvB : eval T1 T4
+============================
+ snd T4 = snd T4
+</pre>
+<pre class="code extensibella"id="120">
+ &lt; <b>search.</b>
+
+Subgoal 11.2:
+
+Variables: VB T2 T3
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (snd (pair T3 VB)) (snd T2) @
+EvA1 : eval (pair T3 VB) T2 *
+EvB : value (pair T3 VB)
+============================
+ snd T2 = VB
+</pre>
+<pre class="code extensibella"id="121">
+ &lt; <b>apply value_eval_false to EvB EvA1.</b>
+
+Subgoal 12:
+
+Variables: VA VB T1
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (snd (pair T1 VA)) VA @
+EvB : eval (snd (pair T1 VA)) VB
+EvA1 : value (pair T1 VA)
+============================
+ VA = VB
+</pre>
+<pre class="code extensibella"id="122">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 12.1:
+
+Variables: VA T1 T3
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (snd (pair T1 VA)) VA @
+EvA1 : value (pair T1 VA)
+EvB : eval (pair T1 VA) T3
+============================
+ VA = snd T3
+</pre>
+<pre class="code extensibella"id="123">
+ &lt; <b>apply value_eval_false to EvA1 EvB.</b>
+
+Subgoal 12.2:
+
+Variables: VB T1
+IH : forall T VA VB, eval T VA * -&gt; eval T VB -&gt; VA = VB
+EvA : eval (snd (pair T1 VB)) VB @
+EvA1 : value (pair T1 VB)
+EvB : value (pair T1 VB)
+============================
+ VB = VB
+</pre>
+<pre class="code extensibella"id="124">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="125">
+ &lt; <b>Prove stlc:host:ty_lookup.</b>
+
+Subgoal 6:
+
+Variables: Ctx1 Ctx2 Ty1 T2 T1
+IH : forall Ctx1 Ctx2 T Ty,
+       typeOf Ctx1 T Ty * -&gt; (forall X XTy,
+         lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy) -&gt; typeOf Ctx2 T Ty
+Ty : typeOf Ctx1 (pair T1 T2) (pairTy Ty1) @
+L : forall X XTy, lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy
+Ty1 : typeOf Ctx1 T1 Ty1 *
+Ty2 : typeOf Ctx1 T2 Ty1 *
+============================
+ typeOf Ctx2 (pair T1 T2) (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="126">
+ &lt; <b>apply IH to Ty1 L.</b>
+
+Subgoal 6:
+
+Variables: Ctx1 Ctx2 Ty1 T2 T1
+IH : forall Ctx1 Ctx2 T Ty,
+       typeOf Ctx1 T Ty * -&gt; (forall X XTy,
+         lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy) -&gt; typeOf Ctx2 T Ty
+Ty : typeOf Ctx1 (pair T1 T2) (pairTy Ty1) @
+L : forall X XTy, lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy
+Ty1 : typeOf Ctx1 T1 Ty1 *
+Ty2 : typeOf Ctx1 T2 Ty1 *
+H1 : typeOf Ctx2 T1 Ty1
+============================
+ typeOf Ctx2 (pair T1 T2) (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="127">
+ &lt; <b>apply IH to Ty2 L.</b>
+
+Subgoal 6:
+
+Variables: Ctx1 Ctx2 Ty1 T2 T1
+IH : forall Ctx1 Ctx2 T Ty,
+       typeOf Ctx1 T Ty * -&gt; (forall X XTy,
+         lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy) -&gt; typeOf Ctx2 T Ty
+Ty : typeOf Ctx1 (pair T1 T2) (pairTy Ty1) @
+L : forall X XTy, lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy
+Ty1 : typeOf Ctx1 T1 Ty1 *
+Ty2 : typeOf Ctx1 T2 Ty1 *
+H1 : typeOf Ctx2 T1 Ty1
+H2 : typeOf Ctx2 T2 Ty1
+============================
+ typeOf Ctx2 (pair T1 T2) (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="128">
+ &lt; <b>search.</b>
+
+Subgoal 7:
+
+Variables: Ctx1 Ctx2 Ty T1
+IH : forall Ctx1 Ctx2 T Ty,
+       typeOf Ctx1 T Ty * -&gt; (forall X XTy,
+         lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy) -&gt; typeOf Ctx2 T Ty
+Ty : typeOf Ctx1 (fst T1) Ty @
+L : forall X XTy, lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy
+Ty1 : typeOf Ctx1 T1 (pairTy Ty) *
+============================
+ typeOf Ctx2 (fst T1) Ty
+</pre>
+<pre class="code extensibella"id="129">
+ &lt; <b>apply IH to Ty1 L.</b>
+
+Subgoal 7:
+
+Variables: Ctx1 Ctx2 Ty T1
+IH : forall Ctx1 Ctx2 T Ty,
+       typeOf Ctx1 T Ty * -&gt; (forall X XTy,
+         lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy) -&gt; typeOf Ctx2 T Ty
+Ty : typeOf Ctx1 (fst T1) Ty @
+L : forall X XTy, lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy
+Ty1 : typeOf Ctx1 T1 (pairTy Ty) *
+H1 : typeOf Ctx2 T1 (pairTy Ty)
+============================
+ typeOf Ctx2 (fst T1) Ty
+</pre>
+<pre class="code extensibella"id="130">
+ &lt; <b>search.</b>
+
+Subgoal 8:
+
+Variables: Ctx1 Ctx2 Ty T1
+IH : forall Ctx1 Ctx2 T Ty,
+       typeOf Ctx1 T Ty * -&gt; (forall X XTy,
+         lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy) -&gt; typeOf Ctx2 T Ty
+Ty : typeOf Ctx1 (snd T1) Ty @
+L : forall X XTy, lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy
+Ty1 : typeOf Ctx1 T1 (pairTy Ty) *
+============================
+ typeOf Ctx2 (snd T1) Ty
+</pre>
+<pre class="code extensibella"id="131">
+ &lt; <b>apply IH to Ty1 L.</b>
+
+Subgoal 8:
+
+Variables: Ctx1 Ctx2 Ty T1
+IH : forall Ctx1 Ctx2 T Ty,
+       typeOf Ctx1 T Ty * -&gt; (forall X XTy,
+         lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy) -&gt; typeOf Ctx2 T Ty
+Ty : typeOf Ctx1 (snd T1) Ty @
+L : forall X XTy, lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy
+Ty1 : typeOf Ctx1 T1 (pairTy Ty) *
+H1 : typeOf Ctx2 T1 (pairTy Ty)
+============================
+ typeOf Ctx2 (snd T1) Ty
+</pre>
+<pre class="code extensibella"id="132">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="133">
+ &lt; <b>Prove stlc:host:subst_type_preservation.</b>
+
+Subgoal 8:
+
+Variables: Ctx X XTy Ty R T21 T11 T2 T1
+IH : forall T Ctx X XTy Ty R S,
+       typeOf ((X, XTy)::Ctx) T Ty -&gt; subst X R T S * -&gt; typeOf [] R XTy -&gt; typeOf Ctx S Ty
+TTy : typeOf ((X, XTy)::Ctx) (pair T1 T2) Ty
+S : subst X R (pair T1 T2) (pair T11 T21) @
+RTy : typeOf [] R XTy
+S1 : subst X R T1 T11 *
+S2 : subst X R T2 T21 *
+============================
+ typeOf Ctx (pair T11 T21) Ty
+</pre>
+<pre class="code extensibella"id="134">
+ &lt; <b>Ty: case TTy.</b>
+
+Subgoal 8:
+
+Variables: Ctx X XTy R T21 T11 T2 T1 Ty1
+IH : forall T Ctx X XTy Ty R S,
+       typeOf ((X, XTy)::Ctx) T Ty -&gt; subst X R T S * -&gt; typeOf [] R XTy -&gt; typeOf Ctx S Ty
+S : subst X R (pair T1 T2) (pair T11 T21) @
+RTy : typeOf [] R XTy
+S1 : subst X R T1 T11 *
+S2 : subst X R T2 T21 *
+Ty : typeOf ((X, XTy)::Ctx) T1 Ty1
+Ty1 : typeOf ((X, XTy)::Ctx) T2 Ty1
+============================
+ typeOf Ctx (pair T11 T21) (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="135">
+ &lt; <b>apply IH to Ty S1 RTy.</b>
+
+Subgoal 8:
+
+Variables: Ctx X XTy R T21 T11 T2 T1 Ty1
+IH : forall T Ctx X XTy Ty R S,
+       typeOf ((X, XTy)::Ctx) T Ty -&gt; subst X R T S * -&gt; typeOf [] R XTy -&gt; typeOf Ctx S Ty
+S : subst X R (pair T1 T2) (pair T11 T21) @
+RTy : typeOf [] R XTy
+S1 : subst X R T1 T11 *
+S2 : subst X R T2 T21 *
+Ty : typeOf ((X, XTy)::Ctx) T1 Ty1
+Ty1 : typeOf ((X, XTy)::Ctx) T2 Ty1
+H1 : typeOf Ctx T11 Ty1
+============================
+ typeOf Ctx (pair T11 T21) (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="136">
+ &lt; <b>apply IH to Ty1 S2 RTy.</b>
+
+Subgoal 8:
+
+Variables: Ctx X XTy R T21 T11 T2 T1 Ty1
+IH : forall T Ctx X XTy Ty R S,
+       typeOf ((X, XTy)::Ctx) T Ty -&gt; subst X R T S * -&gt; typeOf [] R XTy -&gt; typeOf Ctx S Ty
+S : subst X R (pair T1 T2) (pair T11 T21) @
+RTy : typeOf [] R XTy
+S1 : subst X R T1 T11 *
+S2 : subst X R T2 T21 *
+Ty : typeOf ((X, XTy)::Ctx) T1 Ty1
+Ty1 : typeOf ((X, XTy)::Ctx) T2 Ty1
+H1 : typeOf Ctx T11 Ty1
+H2 : typeOf Ctx T21 Ty1
+============================
+ typeOf Ctx (pair T11 T21) (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="137">
+ &lt; <b>search.</b>
+
+Subgoal 9:
+
+Variables: Ctx X XTy Ty R T2 T1
+IH : forall T Ctx X XTy Ty R S,
+       typeOf ((X, XTy)::Ctx) T Ty -&gt; subst X R T S * -&gt; typeOf [] R XTy -&gt; typeOf Ctx S Ty
+TTy : typeOf ((X, XTy)::Ctx) (fst T1) Ty
+S : subst X R (fst T1) (fst T2) @
+RTy : typeOf [] R XTy
+S1 : subst X R T1 T2 *
+============================
+ typeOf Ctx (fst T2) Ty
+</pre>
+<pre class="code extensibella"id="138">
+ &lt; <b>Ty: case TTy.</b>
+
+Subgoal 9:
+
+Variables: Ctx X XTy Ty R T2 T1
+IH : forall T Ctx X XTy Ty R S,
+       typeOf ((X, XTy)::Ctx) T Ty -&gt; subst X R T S * -&gt; typeOf [] R XTy -&gt; typeOf Ctx S Ty
+S : subst X R (fst T1) (fst T2) @
+RTy : typeOf [] R XTy
+S1 : subst X R T1 T2 *
+Ty : typeOf ((X, XTy)::Ctx) T1 (pairTy Ty)
+============================
+ typeOf Ctx (fst T2) Ty
+</pre>
+<pre class="code extensibella"id="139">
+ &lt; <b>apply IH to Ty S1 RTy.</b>
+
+Subgoal 9:
+
+Variables: Ctx X XTy Ty R T2 T1
+IH : forall T Ctx X XTy Ty R S,
+       typeOf ((X, XTy)::Ctx) T Ty -&gt; subst X R T S * -&gt; typeOf [] R XTy -&gt; typeOf Ctx S Ty
+S : subst X R (fst T1) (fst T2) @
+RTy : typeOf [] R XTy
+S1 : subst X R T1 T2 *
+Ty : typeOf ((X, XTy)::Ctx) T1 (pairTy Ty)
+H1 : typeOf Ctx T2 (pairTy Ty)
+============================
+ typeOf Ctx (fst T2) Ty
+</pre>
+<pre class="code extensibella"id="140">
+ &lt; <b>search.</b>
+
+Subgoal 10:
+
+Variables: Ctx X XTy Ty R T2 T1
+IH : forall T Ctx X XTy Ty R S,
+       typeOf ((X, XTy)::Ctx) T Ty -&gt; subst X R T S * -&gt; typeOf [] R XTy -&gt; typeOf Ctx S Ty
+TTy : typeOf ((X, XTy)::Ctx) (snd T1) Ty
+S : subst X R (snd T1) (snd T2) @
+RTy : typeOf [] R XTy
+S1 : subst X R T1 T2 *
+============================
+ typeOf Ctx (snd T2) Ty
+</pre>
+<pre class="code extensibella"id="141">
+ &lt; <b>Ty: case TTy.</b>
+
+Subgoal 10:
+
+Variables: Ctx X XTy Ty R T2 T1
+IH : forall T Ctx X XTy Ty R S,
+       typeOf ((X, XTy)::Ctx) T Ty -&gt; subst X R T S * -&gt; typeOf [] R XTy -&gt; typeOf Ctx S Ty
+S : subst X R (snd T1) (snd T2) @
+RTy : typeOf [] R XTy
+S1 : subst X R T1 T2 *
+Ty : typeOf ((X, XTy)::Ctx) T1 (pairTy Ty)
+============================
+ typeOf Ctx (snd T2) Ty
+</pre>
+<pre class="code extensibella"id="142">
+ &lt; <b>apply IH to Ty S1 RTy.</b>
+
+Subgoal 10:
+
+Variables: Ctx X XTy Ty R T2 T1
+IH : forall T Ctx X XTy Ty R S,
+       typeOf ((X, XTy)::Ctx) T Ty -&gt; subst X R T S * -&gt; typeOf [] R XTy -&gt; typeOf Ctx S Ty
+S : subst X R (snd T1) (snd T2) @
+RTy : typeOf [] R XTy
+S1 : subst X R T1 T2 *
+Ty : typeOf ((X, XTy)::Ctx) T1 (pairTy Ty)
+H1 : typeOf Ctx T2 (pairTy Ty)
+============================
+ typeOf Ctx (snd T2) Ty
+</pre>
+<pre class="code extensibella"id="143">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="144">
+ &lt; <b>Prove stlc:host:type_preservation.</b>
+
+Subgoal 7:
+
+Variables: Ty T2 T11 T1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ty : typeOf [] (pair T1 T2) Ty
+Ev : eval (pair T1 T2) (pair T11 T2) @
+Ev1 : eval T1 T11 *
+============================
+ typeOf [] (pair T11 T2) Ty
+</pre>
+<pre class="code extensibella"id="145">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 7:
+
+Variables: T2 T11 T1 Ty1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (pair T1 T2) (pair T11 T2) @
+Ev1 : eval T1 T11 *
+Ty : typeOf [] T1 Ty1
+Ty1 : typeOf [] T2 Ty1
+============================
+ typeOf [] (pair T11 T2) (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="146">
+ &lt; <b>apply IH to Ty Ev1.</b>
+
+Subgoal 7:
+
+Variables: T2 T11 T1 Ty1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (pair T1 T2) (pair T11 T2) @
+Ev1 : eval T1 T11 *
+Ty : typeOf [] T1 Ty1
+Ty1 : typeOf [] T2 Ty1
+H1 : typeOf [] T11 Ty1
+============================
+ typeOf [] (pair T11 T2) (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="147">
+ &lt; <b>search.</b>
+
+Subgoal 8:
+
+Variables: Ty T21 T1 T2
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ty : typeOf [] (pair T1 T2) Ty
+Ev : eval (pair T1 T2) (pair T1 T21) @
+Ev1 : value T1
+Ev2 : eval T2 T21 *
+============================
+ typeOf [] (pair T1 T21) Ty
+</pre>
+<pre class="code extensibella"id="148">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 8:
+
+Variables: T21 T1 T2 Ty1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (pair T1 T2) (pair T1 T21) @
+Ev1 : value T1
+Ev2 : eval T2 T21 *
+Ty : typeOf [] T1 Ty1
+Ty1 : typeOf [] T2 Ty1
+============================
+ typeOf [] (pair T1 T21) (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="149">
+ &lt; <b>apply IH to Ty1 Ev2.</b>
+
+Subgoal 8:
+
+Variables: T21 T1 T2 Ty1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (pair T1 T2) (pair T1 T21) @
+Ev1 : value T1
+Ev2 : eval T2 T21 *
+Ty : typeOf [] T1 Ty1
+Ty1 : typeOf [] T2 Ty1
+H1 : typeOf [] T21 Ty1
+============================
+ typeOf [] (pair T1 T21) (pairTy Ty1)
+</pre>
+<pre class="code extensibella"id="150">
+ &lt; <b>search.</b>
+
+Subgoal 9:
+
+Variables: Ty T2 T1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ty : typeOf [] (fst T1) Ty
+Ev : eval (fst T1) (fst T2) @
+Ev1 : eval T1 T2 *
+============================
+ typeOf [] (fst T2) Ty
+</pre>
+<pre class="code extensibella"id="151">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 9:
+
+Variables: Ty T2 T1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (fst T1) (fst T2) @
+Ev1 : eval T1 T2 *
+Ty : typeOf [] T1 (pairTy Ty)
+============================
+ typeOf [] (fst T2) Ty
+</pre>
+<pre class="code extensibella"id="152">
+ &lt; <b>apply IH to Ty Ev1.</b>
+
+Subgoal 9:
+
+Variables: Ty T2 T1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (fst T1) (fst T2) @
+Ev1 : eval T1 T2 *
+Ty : typeOf [] T1 (pairTy Ty)
+H1 : typeOf [] T2 (pairTy Ty)
+============================
+ typeOf [] (fst T2) Ty
+</pre>
+<pre class="code extensibella"id="153">
+ &lt; <b>search.</b>
+
+Subgoal 10:
+
+Variables: Ty T' T2
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ty : typeOf [] (fst (pair T' T2)) Ty
+Ev : eval (fst (pair T' T2)) T' @
+Ev1 : value (pair T' T2)
+============================
+ typeOf [] T' Ty
+</pre>
+<pre class="code extensibella"id="154">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 10:
+
+Variables: Ty T' T2
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (fst (pair T' T2)) T' @
+Ev1 : value (pair T' T2)
+Ty : typeOf [] (pair T' T2) (pairTy Ty)
+============================
+ typeOf [] T' Ty
+</pre>
+<pre class="code extensibella"id="155">
+ &lt; <b>case Ty.</b>
+
+Subgoal 10:
+
+Variables: Ty T' T2
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (fst (pair T' T2)) T' @
+Ev1 : value (pair T' T2)
+H1 : typeOf [] T' Ty
+H2 : typeOf [] T2 Ty
+============================
+ typeOf [] T' Ty
+</pre>
+<pre class="code extensibella"id="156">
+ &lt; <b>search.</b>
+
+Subgoal 11:
+
+Variables: Ty T2 T1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ty : typeOf [] (snd T1) Ty
+Ev : eval (snd T1) (snd T2) @
+Ev1 : eval T1 T2 *
+============================
+ typeOf [] (snd T2) Ty
+</pre>
+<pre class="code extensibella"id="157">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 11:
+
+Variables: Ty T2 T1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (snd T1) (snd T2) @
+Ev1 : eval T1 T2 *
+Ty : typeOf [] T1 (pairTy Ty)
+============================
+ typeOf [] (snd T2) Ty
+</pre>
+<pre class="code extensibella"id="158">
+ &lt; <b>apply IH to Ty Ev1.</b>
+
+Subgoal 11:
+
+Variables: Ty T2 T1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (snd T1) (snd T2) @
+Ev1 : eval T1 T2 *
+Ty : typeOf [] T1 (pairTy Ty)
+H1 : typeOf [] T2 (pairTy Ty)
+============================
+ typeOf [] (snd T2) Ty
+</pre>
+<pre class="code extensibella"id="159">
+ &lt; <b>search.</b>
+
+Subgoal 12:
+
+Variables: Ty T' T1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ty : typeOf [] (snd (pair T1 T')) Ty
+Ev : eval (snd (pair T1 T')) T' @
+Ev1 : value (pair T1 T')
+============================
+ typeOf [] T' Ty
+</pre>
+<pre class="code extensibella"id="160">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 12:
+
+Variables: Ty T' T1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (snd (pair T1 T')) T' @
+Ev1 : value (pair T1 T')
+Ty : typeOf [] (pair T1 T') (pairTy Ty)
+============================
+ typeOf [] T' Ty
+</pre>
+<pre class="code extensibella"id="161">
+ &lt; <b>case Ty.</b>
+
+Subgoal 12:
+
+Variables: Ty T' T1
+IH : forall T Ty T', typeOf [] T Ty -&gt; eval T T' * -&gt; typeOf [] T' Ty
+Ev : eval (snd (pair T1 T')) T' @
+Ev1 : value (pair T1 T')
+H1 : typeOf [] T1 Ty
+H2 : typeOf [] T' Ty
+============================
+ typeOf [] T' Ty
+</pre>
+<pre class="code extensibella"id="162">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="163">
+ &lt; <b>Prove stlc:host:subst_total.</b>
+
+Subgoal 6:
+
+Variables: X R Tm Tm1
+IH : forall X R T, is_tm T * -&gt; is_string X -&gt; exists S, subst X R T S
+IsT : is_tm (pair Tm1 Tm) @
+IsX : is_string X
+IsT1 : is_tm Tm1 *
+IsT2 : is_tm Tm *
+============================
+ exists S, subst X R (pair Tm1 Tm) S
+</pre>
+<pre class="code extensibella"id="164">
+ &lt; <b>apply IH to IsT1 IsX with
+     R = R.</b>
+
+Subgoal 6:
+
+Variables: X R Tm Tm1 S
+IH : forall X R T, is_tm T * -&gt; is_string X -&gt; exists S, subst X R T S
+IsT : is_tm (pair Tm1 Tm) @
+IsX : is_string X
+IsT1 : is_tm Tm1 *
+IsT2 : is_tm Tm *
+H1 : subst X R Tm1 S
+============================
+ exists S, subst X R (pair Tm1 Tm) S
+</pre>
+<pre class="code extensibella"id="165">
+ &lt; <b>apply IH to IsT2 IsX with
+     R = R.</b>
+
+Subgoal 6:
+
+Variables: X R Tm Tm1 S S1
+IH : forall X R T, is_tm T * -&gt; is_string X -&gt; exists S, subst X R T S
+IsT : is_tm (pair Tm1 Tm) @
+IsX : is_string X
+IsT1 : is_tm Tm1 *
+IsT2 : is_tm Tm *
+H1 : subst X R Tm1 S
+H2 : subst X R Tm S1
+============================
+ exists S, subst X R (pair Tm1 Tm) S
+</pre>
+<pre class="code extensibella"id="166">
+ &lt; <b>search.</b>
+
+Subgoal 7:
+
+Variables: X R Tm
+IH : forall X R T, is_tm T * -&gt; is_string X -&gt; exists S, subst X R T S
+IsT : is_tm (fst Tm) @
+IsX : is_string X
+IsT1 : is_tm Tm *
+============================
+ exists S, subst X R (fst Tm) S
+</pre>
+<pre class="code extensibella"id="167">
+ &lt; <b>apply IH to IsT1 IsX with
+     R = R.</b>
+
+Subgoal 7:
+
+Variables: X R Tm S
+IH : forall X R T, is_tm T * -&gt; is_string X -&gt; exists S, subst X R T S
+IsT : is_tm (fst Tm) @
+IsX : is_string X
+IsT1 : is_tm Tm *
+H1 : subst X R Tm S
+============================
+ exists S, subst X R (fst Tm) S
+</pre>
+<pre class="code extensibella"id="168">
+ &lt; <b>search.</b>
+
+Subgoal 8:
+
+Variables: X R Tm
+IH : forall X R T, is_tm T * -&gt; is_string X -&gt; exists S, subst X R T S
+IsT : is_tm (snd Tm) @
+IsX : is_string X
+IsT1 : is_tm Tm *
+============================
+ exists S, subst X R (snd Tm) S
+</pre>
+<pre class="code extensibella"id="169">
+ &lt; <b>apply IH to IsT1 IsX with
+     R = R.</b>
+
+Subgoal 8:
+
+Variables: X R Tm S
+IH : forall X R T, is_tm T * -&gt; is_string X -&gt; exists S, subst X R T S
+IsT : is_tm (snd Tm) @
+IsX : is_string X
+IsT1 : is_tm Tm *
+H1 : subst X R Tm S
+============================
+ exists S, subst X R (snd Tm) S
+</pre>
+<pre class="code extensibella"id="170">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="171">
+ &lt; <b>Prove stlc:host:canonical_forms.</b>
+
+Subgoal 3:
+
+Variables: Ty T2 T1
+IH : forall V Ty, value V * -&gt; typeOf [] V Ty -&gt; canonicalForm Ty V
+V : value (pair T1 T2) @
+Ty : typeOf [] (pair T1 T2) Ty
+V1 : value T1 *
+V2 : value T2 *
+============================
+ canonicalForm Ty (pair T1 T2)
+</pre>
+<pre class="code extensibella"id="172">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 3:
+
+Variables: T2 T1 Ty1
+IH : forall V Ty, value V * -&gt; typeOf [] V Ty -&gt; canonicalForm Ty V
+V : value (pair T1 T2) @
+V1 : value T1 *
+V2 : value T2 *
+Ty : typeOf [] T1 Ty1
+Ty1 : typeOf [] T2 Ty1
+============================
+ canonicalForm (pairTy Ty1) (pair T1 T2)
+</pre>
+<pre class="code extensibella"id="173">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="174">
+ &lt; <b>Theorem canonical_form_pairTy :
+     forall V Ty, value V -&gt; typeOf [] V (pairTy Ty) -&gt; exists A B, V = pair A B.</b>
+
+============================
+ forall V Ty, value V -&gt; typeOf [] V (pairTy Ty) -&gt; exists A B, V = pair A B
+</pre>
+<pre class="code extensibella"id="175">
+ &lt; <b>intros V Ty.</b>
+
+Variables: V Ty
+V : value V
+Ty : typeOf [] V (pairTy Ty)
+============================
+ exists A B, V = pair A B
+</pre>
+<pre class="code extensibella"id="176">
+ &lt; <b>CF: apply canonical_forms to V Ty.</b>
+
+Variables: V Ty
+V : value V
+Ty : typeOf [] V (pairTy Ty)
+CF : canonicalForm (pairTy Ty) V
+============================
+ exists A B, V = pair A B
+</pre>
+<pre class="code extensibella"id="177">
+ &lt; <b>case CF.</b>
+
+Variables: Ty B A
+V : value (pair A B)
+Ty : typeOf [] (pair A B) (pairTy Ty)
+============================
+ exists A1 B1, pair A B = pair A1 B1
+</pre>
+<pre class="code extensibella"id="178">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="179">
+ &lt; <b>Prove stlc:host:progress.</b>
+
+Subgoal 6:
+
+Variables: Ty1 T2 T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+IsT : is_tm (pair T1 T2)
+Ty : typeOf [] (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf [] T1 Ty1 *
+Ty2 : typeOf [] T2 Ty1 *
+============================
+ (exists T', eval (pair T1 T2) T') \/ value (pair T1 T2)
+</pre>
+<pre class="code extensibella"id="180">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 6:
+
+Variables: Ty1 T2 T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf [] T1 Ty1 *
+Ty2 : typeOf [] T2 Ty1 *
+Is : is_tm T1
+Is1 : is_tm T2
+============================
+ (exists T', eval (pair T1 T2) T') \/ value (pair T1 T2)
+</pre>
+<pre class="code extensibella"id="181">
+ &lt; <b>Or1: apply IH to _ Ty1.</b>
+
+Subgoal 6:
+
+Variables: Ty1 T2 T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf [] T1 Ty1 *
+Ty2 : typeOf [] T2 Ty1 *
+Is : is_tm T1
+Is1 : is_tm T2
+Or1 : (exists T', eval T1 T') \/ value T1
+============================
+ (exists T', eval (pair T1 T2) T') \/ value (pair T1 T2)
+</pre>
+<pre class="code extensibella"id="182">
+ &lt; <b>Or2: apply IH to _ Ty2.</b>
+
+Subgoal 6:
+
+Variables: Ty1 T2 T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf [] T1 Ty1 *
+Ty2 : typeOf [] T2 Ty1 *
+Is : is_tm T1
+Is1 : is_tm T2
+Or1 : (exists T', eval T1 T') \/ value T1
+Or2 : (exists T', eval T2 T') \/ value T2
+============================
+ (exists T', eval (pair T1 T2) T') \/ value (pair T1 T2)
+</pre>
+<pre class="code extensibella"id="183">
+ &lt; <b>EV1: case Or1.</b>
+
+Subgoal 6.1:
+
+Variables: Ty1 T2 T1 T'
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf [] T1 Ty1 *
+Ty2 : typeOf [] T2 Ty1 *
+Is : is_tm T1
+Is1 : is_tm T2
+Or2 : (exists T', eval T2 T') \/ value T2
+EV1 : eval T1 T'
+============================
+ (exists T', eval (pair T1 T2) T') \/ value (pair T1 T2)
+</pre>
+<pre class="code extensibella"id="184">
+ &lt; <b>search.</b>
+
+Subgoal 6.2:
+
+Variables: Ty1 T2 T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf [] T1 Ty1 *
+Ty2 : typeOf [] T2 Ty1 *
+Is : is_tm T1
+Is1 : is_tm T2
+Or2 : (exists T', eval T2 T') \/ value T2
+EV1 : value T1
+============================
+ (exists T', eval (pair T1 T2) T') \/ value (pair T1 T2)
+</pre>
+<pre class="code extensibella"id="185">
+ &lt; <b>EV2: case Or2.</b>
+
+Subgoal 6.2.1:
+
+Variables: Ty1 T2 T1 T'
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf [] T1 Ty1 *
+Ty2 : typeOf [] T2 Ty1 *
+Is : is_tm T1
+Is1 : is_tm T2
+EV1 : value T1
+EV2 : eval T2 T'
+============================
+ (exists T', eval (pair T1 T2) T') \/ value (pair T1 T2)
+</pre>
+<pre class="code extensibella"id="186">
+ &lt; <b>search.</b>
+
+Subgoal 6.2.2:
+
+Variables: Ty1 T2 T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (pair T1 T2) (pairTy Ty1) @
+Ty1 : typeOf [] T1 Ty1 *
+Ty2 : typeOf [] T2 Ty1 *
+Is : is_tm T1
+Is1 : is_tm T2
+EV1 : value T1
+EV2 : value T2
+============================
+ (exists T', eval (pair T1 T2) T') \/ value (pair T1 T2)
+</pre>
+<pre class="code extensibella"id="187">
+ &lt; <b>search.</b>
+
+Subgoal 7:
+
+Variables: Ty T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+IsT : is_tm (fst T1)
+Ty : typeOf [] (fst T1) Ty @
+Ty1 : typeOf [] T1 (pairTy Ty) *
+============================
+ (exists T', eval (fst T1) T') \/ value (fst T1)
+</pre>
+<pre class="code extensibella"id="188">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 7:
+
+Variables: Ty T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (fst T1) Ty @
+Ty1 : typeOf [] T1 (pairTy Ty) *
+Is : is_tm T1
+============================
+ (exists T', eval (fst T1) T') \/ value (fst T1)
+</pre>
+<pre class="code extensibella"id="189">
+ &lt; <b>Or: apply IH to _ Ty1.</b>
+
+Subgoal 7:
+
+Variables: Ty T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (fst T1) Ty @
+Ty1 : typeOf [] T1 (pairTy Ty) *
+Is : is_tm T1
+Or : (exists T', eval T1 T') \/ value T1
+============================
+ (exists T', eval (fst T1) T') \/ value (fst T1)
+</pre>
+<pre class="code extensibella"id="190">
+ &lt; <b>EV: case Or.</b>
+
+Subgoal 7.1:
+
+Variables: Ty T1 T'
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (fst T1) Ty @
+Ty1 : typeOf [] T1 (pairTy Ty) *
+Is : is_tm T1
+EV : eval T1 T'
+============================
+ (exists T', eval (fst T1) T') \/ value (fst T1)
+</pre>
+<pre class="code extensibella"id="191">
+ &lt; <b>search.</b>
+
+Subgoal 7.2:
+
+Variables: Ty T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (fst T1) Ty @
+Ty1 : typeOf [] T1 (pairTy Ty) *
+Is : is_tm T1
+EV : value T1
+============================
+ (exists T', eval (fst T1) T') \/ value (fst T1)
+</pre>
+<pre class="code extensibella"id="192">
+ &lt; <b>apply canonical_form_pairTy to EV Ty1.</b>
+
+Subgoal 7.2:
+
+Variables: Ty A B
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (fst (pair A B)) Ty @
+Ty1 : typeOf [] (pair A B) (pairTy Ty) *
+Is : is_tm (pair A B)
+EV : value (pair A B)
+============================
+ (exists T', eval (fst (pair A B)) T') \/ value (fst (pair A B))
+</pre>
+<pre class="code extensibella"id="193">
+ &lt; <b>search.</b>
+
+Subgoal 8:
+
+Variables: Ty T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+IsT : is_tm (snd T1)
+Ty : typeOf [] (snd T1) Ty @
+Ty1 : typeOf [] T1 (pairTy Ty) *
+============================
+ (exists T', eval (snd T1) T') \/ value (snd T1)
+</pre>
+<pre class="code extensibella"id="194">
+ &lt; <b>Is: case IsT.</b>
+
+Subgoal 8:
+
+Variables: Ty T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (snd T1) Ty @
+Ty1 : typeOf [] T1 (pairTy Ty) *
+Is : is_tm T1
+============================
+ (exists T', eval (snd T1) T') \/ value (snd T1)
+</pre>
+<pre class="code extensibella"id="195">
+ &lt; <b>Or: apply IH to _ Ty1.</b>
+
+Subgoal 8:
+
+Variables: Ty T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (snd T1) Ty @
+Ty1 : typeOf [] T1 (pairTy Ty) *
+Is : is_tm T1
+Or : (exists T', eval T1 T') \/ value T1
+============================
+ (exists T', eval (snd T1) T') \/ value (snd T1)
+</pre>
+<pre class="code extensibella"id="196">
+ &lt; <b>EV: case Or.</b>
+
+Subgoal 8.1:
+
+Variables: Ty T1 T'
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (snd T1) Ty @
+Ty1 : typeOf [] T1 (pairTy Ty) *
+Is : is_tm T1
+EV : eval T1 T'
+============================
+ (exists T', eval (snd T1) T') \/ value (snd T1)
+</pre>
+<pre class="code extensibella"id="197">
+ &lt; <b>search.</b>
+
+Subgoal 8.2:
+
+Variables: Ty T1
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (snd T1) Ty @
+Ty1 : typeOf [] T1 (pairTy Ty) *
+Is : is_tm T1
+EV : value T1
+============================
+ (exists T', eval (snd T1) T') \/ value (snd T1)
+</pre>
+<pre class="code extensibella"id="198">
+ &lt; <b>apply canonical_form_pairTy to EV Ty1.</b>
+
+Subgoal 8.2:
+
+Variables: Ty A B
+IH : forall T Ty,
+       is_tm T -&gt; typeOf [] T Ty * -&gt; (exists T', eval T T') \/ value T
+Ty : typeOf [] (snd (pair A B)) Ty @
+Ty1 : typeOf [] (pair A B) (pairTy Ty) *
+Is : is_tm (pair A B)
+EV : value (pair A B)
+============================
+ (exists T', eval (snd (pair A B)) T') \/ value (snd (pair A B))
+</pre>
+<pre class="code extensibella"id="199">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="200">
+ &lt; <b>Prove stlc:host:desugar_ty_exists.</b>
+
+Subgoal 3:
+
+Variables: Ty1
+IH : forall Ty, is_ty Ty * -&gt; exists Ty', desugar_ty Ty Ty'
+IsTy : is_ty (pairTy Ty1) @
+IsTy1 : is_ty Ty1 *
+============================
+ exists Ty', desugar_ty (pairTy Ty1) Ty'
+</pre>
+<pre class="code extensibella"id="201">
+ &lt; <b>apply IH to IsTy1.</b>
+
+Subgoal 3:
+
+Variables: Ty1 Ty'
+IH : forall Ty, is_ty Ty * -&gt; exists Ty', desugar_ty Ty Ty'
+IsTy : is_ty (pairTy Ty1) @
+IsTy1 : is_ty Ty1 *
+H1 : desugar_ty Ty1 Ty'
+============================
+ exists Ty', desugar_ty (pairTy Ty1) Ty'
+</pre>
+<pre class="code extensibella"id="202">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="203">
+ &lt; <b>Prove stlc:host:desugar_ty_rel.</b>
+
+Subgoal 6:
+
+Variables: Ctx T' Ty' Ctx' Ty1 T2 T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsT : is_tm (pair T1 T2)
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DT : desugar_tm Ctx (pair T1 T2) T'
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="204">
+ &lt; <b>case IsT.</b>
+
+Subgoal 6:
+
+Variables: Ctx T' Ty' Ctx' Ty1 T2 T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DT : desugar_tm Ctx (pair T1 T2) T'
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="205">
+ &lt; <b>DT: case DT.</b>
+
+Subgoal 6:
+
+Variables: Ctx T' Ty' Ctx' Ty1 T2 T1 T_T
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : Ctx |{tm}- pair T1 T2 ~~&gt; T_T
+DT1 : desugar_tm Ctx T_T T'
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="206">
+ &lt; <b>DT: case DT.</b>
+
+Subgoal 6:
+
+Variables: Ctx T' Ty' Ctx' Ty1 T2 T1 Ty2
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT1 : desugar_tm Ctx (app (app (abs "A" Ty2 (abs "B" Ty2 (abs "S" (arrowTy Ty2 (arrowTy Ty2 Ty2)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2) T'
+DT : typeOf Ctx T1 Ty2
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="207">
+ &lt; <b>DT: case DT1.</b>
+
+Subgoal 6.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmA1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT1 : desugar_tm Ctx (app (abs "A" Ty2 (abs "B" Ty2 (abs "S" (arrowTy Ty2 (arrowTy Ty2 Ty2)) (app (app (var "S") (var "A")) (var "B"))))) T1) TmA1
+DT2 : desugar_tm Ctx T2 TmB1
+============================
+ typeOf Ctx' (app TmA1 TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="208">
+ &lt; <b>DT: case DT1.</b>
+
+Subgoal 6.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 TmA2
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT1 : desugar_tm Ctx (abs "A" Ty2 (abs "B" Ty2 (abs "S" (arrowTy Ty2 (arrowTy Ty2 Ty2)) (app (app (var "S") (var "A")) (var "B"))))) TmA2
+DT3 : desugar_tm Ctx T1 TmB2
+============================
+ typeOf Ctx' (app (app TmA2 TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="209">
+ &lt; <b>DT: case DT1.</b>
+
+Subgoal 6.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Tm1 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_tm (("A", Ty2)::Ctx) (abs "B" Ty2 (abs "S" (arrowTy Ty2 (arrowTy Ty2 Ty2)) (app (app (var "S") (var "A")) (var "B")))) Tm1
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 Tm1) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="210">
+ &lt; <b>DT: case DT4.</b>
+
+Subgoal 6.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Tm2 Ty5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_tm (("B", Ty2)::(("A", Ty2)::Ctx)) (abs "S" (arrowTy Ty2 (arrowTy Ty2 Ty2)) (app (app (var "S") (var "A")) (var "B"))) Tm2
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 Tm2)) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="211">
+ &lt; <b>DT: case DT5.</b>
+
+Subgoal 6.1.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 Tm3 Ty6
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty (arrowTy Ty2 (arrowTy Ty2 Ty2)) Ty6
+DT6 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (app (app (var "S") (var "A")) (var "B")) Tm3
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" Ty6 Tm3))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="212">
+ &lt; <b>DT: case DT5.</b>
+
+Subgoal 6.1.1.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 Tm3 TyB1 TyA1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT6 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (app (app (var "S") (var "A")) (var "B")) Tm3
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty (arrowTy Ty2 Ty2) TyB1
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 TyB1) Tm3))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="213">
+ &lt; <b>DT: case DT6.</b>
+
+Subgoal 6.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyB1 TyA1 TmB3 TmA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty (arrowTy Ty2 Ty2) TyB1
+DT6 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (app (var "S") (var "A")) TmA3
+DT8 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "B") TmB3
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 TyB1) (app TmA3 TmB3)))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="214">
+ &lt; <b>DT: case DT7.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TmB3 TmA3 TyB2 TyA2
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT6 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (app (var "S") (var "A")) TmA3
+DT8 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "B") TmB3
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app TmA3 TmB3)))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="215">
+ &lt; <b>DT: case DT6.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TmB3 TyB2 TyA2 TmB4 TmA4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT8 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "B") TmB3
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DT6 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "S") TmA4
+DT10 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "A") TmB4
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app TmA4 TmB4) TmB3)))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="216">
+ &lt; <b>DT: case DT8.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TmB4 TmA4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DT6 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "S") TmA4
+DT10 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "A") TmB4
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app TmA4 TmB4) (var "B"))))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="217">
+ &lt; <b>DT: case DT6.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TmB4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DT10 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "A") TmB4
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") TmB4) (var "B"))))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="218">
+ &lt; <b>DT: case DT10.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="219">
+ &lt; <b>DTy: case DTy.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 Ty_T
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy : |{ty}- pairTy Ty1 ~~&gt; Ty_T
+DTy1 : desugar_ty Ty_T Ty'
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="220">
+ &lt; <b>DTy: case DTy.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty (arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1) Ty'
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="221">
+ &lt; <b>DTy: case DTy1.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy : desugar_ty (arrowTy Ty1 (arrowTy Ty1 Ty1)) TyA3
+DTy1 : desugar_ty Ty1 TyB3
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy TyA3 TyB3)
+</pre>
+<pre class="code extensibella"id="222">
+ &lt; <b>DTy: case DTy.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TyB3 TyB4 TyA4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty Ty1 TyB3
+DTy : desugar_ty Ty1 TyA4
+DTy2 : desugar_ty (arrowTy Ty1 Ty1) TyB4
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 TyB4) TyB3)
+</pre>
+<pre class="code extensibella"id="223">
+ &lt; <b>DTy: case DTy2.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TyB3 TyA4 TyB5 TyA5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty Ty1 TyB3
+DTy : desugar_ty Ty1 TyA4
+DTy2 : desugar_ty Ty1 TyA5
+DTy3 : desugar_ty Ty1 TyB5
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 (arrowTy TyA5 TyB5)) TyB3)
+</pre>
+<pre class="code extensibella"id="224">
+ &lt; <b>apply type_is to _ _ DT.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TyB3 TyA4 TyB5 TyA5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty Ty1 TyB3
+DTy : desugar_ty Ty1 TyA4
+DTy2 : desugar_ty Ty1 TyA5
+DTy3 : desugar_ty Ty1 TyB5
+H3 : is_ty Ty2
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 (arrowTy TyA5 TyB5)) TyB3)
+</pre>
+<pre class="code extensibella"id="225">
+ &lt; <b>apply type_unique to _ _ Ty1 DT.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TyB3 TyA4 TyB5 TyA5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty Ty2 TyB3
+DTy : desugar_ty Ty2 TyA4
+DTy2 : desugar_ty Ty2 TyA5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 (arrowTy TyA5 TyB5)) TyB3)
+</pre>
+<pre class="code extensibella"id="226">
+ &lt; <b>apply desugar_ty_unique to _ DT1 DT4.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 Ty5 TyA1 TyB2 TyA2 TyB3 TyA4 TyB5 TyA5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty5
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty Ty2 TyB3
+DTy : desugar_ty Ty2 TyA4
+DTy2 : desugar_ty Ty2 TyA5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+============================
+ typeOf Ctx' (app (app (abs "A" Ty5 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 (arrowTy TyA5 TyB5)) TyB3)
+</pre>
+<pre class="code extensibella"id="227">
+ &lt; <b>apply desugar_ty_unique to _ DT1 DT5.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 TyA1 TyB2 TyA2 TyB3 TyA4 TyB5 TyA5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 TyA1
+DT4 : desugar_ty Ty2 TyA1
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty Ty2 TyB3
+DTy : desugar_ty Ty2 TyA4
+DTy2 : desugar_ty Ty2 TyA5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+============================
+ typeOf Ctx' (app (app (abs "A" TyA1 (abs "B" TyA1 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 (arrowTy TyA5 TyB5)) TyB3)
+</pre>
+<pre class="code extensibella"id="228">
+ &lt; <b>apply desugar_ty_unique to _ DT1 DT7.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 TyB2 TyA2 TyB3 TyA4 TyB5 TyA5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 TyA2
+DT4 : desugar_ty Ty2 TyA2
+DT5 : desugar_ty Ty2 TyA2
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty Ty2 TyB3
+DTy : desugar_ty Ty2 TyA4
+DTy2 : desugar_ty Ty2 TyA5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+============================
+ typeOf Ctx' (app (app (abs "A" TyA2 (abs "B" TyA2 (abs "S" (arrowTy TyA2 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 (arrowTy TyA5 TyB5)) TyB3)
+</pre>
+<pre class="code extensibella"id="229">
+ &lt; <b>apply desugar_ty_unique to _ DT1 DT9.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 TyB2 TyB3 TyA4 TyB5 TyA5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 TyB2
+DT4 : desugar_ty Ty2 TyB2
+DT5 : desugar_ty Ty2 TyB2
+DT7 : desugar_ty Ty2 TyB2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty Ty2 TyB3
+DTy : desugar_ty Ty2 TyA4
+DTy2 : desugar_ty Ty2 TyA5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+============================
+ typeOf Ctx' (app (app (abs "A" TyB2 (abs "B" TyB2 (abs "S" (arrowTy TyB2 (arrowTy TyB2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 (arrowTy TyA5 TyB5)) TyB3)
+</pre>
+<pre class="code extensibella"id="230">
+ &lt; <b>apply desugar_ty_unique to _ DT1 DTy1.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 TyB3 TyA4 TyB5 TyA5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 TyB3
+DT4 : desugar_ty Ty2 TyB3
+DT5 : desugar_ty Ty2 TyB3
+DT7 : desugar_ty Ty2 TyB3
+DT9 : desugar_ty Ty2 TyB3
+DTy1 : desugar_ty Ty2 TyB3
+DTy : desugar_ty Ty2 TyA4
+DTy2 : desugar_ty Ty2 TyA5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+============================
+ typeOf Ctx' (app (app (abs "A" TyB3 (abs "B" TyB3 (abs "S" (arrowTy TyB3 (arrowTy TyB3 TyB3)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 (arrowTy TyA5 TyB5)) TyB3)
+</pre>
+<pre class="code extensibella"id="231">
+ &lt; <b>apply desugar_ty_unique to _ DT1 DTy.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 TyA4 TyB5 TyA5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 TyA4
+DT4 : desugar_ty Ty2 TyA4
+DT5 : desugar_ty Ty2 TyA4
+DT7 : desugar_ty Ty2 TyA4
+DT9 : desugar_ty Ty2 TyA4
+DTy1 : desugar_ty Ty2 TyA4
+DTy : desugar_ty Ty2 TyA4
+DTy2 : desugar_ty Ty2 TyA5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+============================
+ typeOf Ctx' (app (app (abs "A" TyA4 (abs "B" TyA4 (abs "S" (arrowTy TyA4 (arrowTy TyA4 TyA4)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 (arrowTy TyA5 TyB5)) TyA4)
+</pre>
+<pre class="code extensibella"id="232">
+ &lt; <b>apply desugar_ty_unique to _ DT1 DTy2.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 TyB5 TyA5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 TyA5
+DT4 : desugar_ty Ty2 TyA5
+DT5 : desugar_ty Ty2 TyA5
+DT7 : desugar_ty Ty2 TyA5
+DT9 : desugar_ty Ty2 TyA5
+DTy1 : desugar_ty Ty2 TyA5
+DTy : desugar_ty Ty2 TyA5
+DTy2 : desugar_ty Ty2 TyA5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+============================
+ typeOf Ctx' (app (app (abs "A" TyA5 (abs "B" TyA5 (abs "S" (arrowTy TyA5 (arrowTy TyA5 TyA5)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA5 (arrowTy TyA5 TyB5)) TyA5)
+</pre>
+<pre class="code extensibella"id="233">
+ &lt; <b>apply desugar_ty_unique to _ DT1 DTy3.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 TyB5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 TyB5
+DT4 : desugar_ty Ty2 TyB5
+DT5 : desugar_ty Ty2 TyB5
+DT7 : desugar_ty Ty2 TyB5
+DT9 : desugar_ty Ty2 TyB5
+DTy1 : desugar_ty Ty2 TyB5
+DTy : desugar_ty Ty2 TyB5
+DTy2 : desugar_ty Ty2 TyB5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+============================
+ typeOf Ctx' (app (app (abs "A" TyB5 (abs "B" TyB5 (abs "S" (arrowTy TyB5 (arrowTy TyB5 TyB5)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyB5 (arrowTy TyB5 TyB5)) TyB5)
+</pre>
+<pre class="code extensibella"id="234">
+ &lt; <b>apply IH to _ _ Ty1 DT3 _ _.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 TyB5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 TyB5
+DT4 : desugar_ty Ty2 TyB5
+DT5 : desugar_ty Ty2 TyB5
+DT7 : desugar_ty Ty2 TyB5
+DT9 : desugar_ty Ty2 TyB5
+DTy1 : desugar_ty Ty2 TyB5
+DTy : desugar_ty Ty2 TyB5
+DTy2 : desugar_ty Ty2 TyB5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+H4 : typeOf Ctx' TmB2 TyB5
+============================
+ typeOf Ctx' (app (app (abs "A" TyB5 (abs "B" TyB5 (abs "S" (arrowTy TyB5 (arrowTy TyB5 TyB5)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyB5 (arrowTy TyB5 TyB5)) TyB5)
+</pre>
+<pre class="code extensibella"id="235">
+ &lt; <b>apply IH to _ _ Ty2 DT2 _ _.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1:
+
+Variables: Ctx Ctx' T2 T1 Ty2 TmB1 TmB2 TyB5
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty2) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty2 *
+Ty2 : typeOf Ctx T2 Ty2 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 TyB5
+DT4 : desugar_ty Ty2 TyB5
+DT5 : desugar_ty Ty2 TyB5
+DT7 : desugar_ty Ty2 TyB5
+DT9 : desugar_ty Ty2 TyB5
+DTy1 : desugar_ty Ty2 TyB5
+DTy : desugar_ty Ty2 TyB5
+DTy2 : desugar_ty Ty2 TyB5
+DTy3 : desugar_ty Ty2 TyB5
+H3 : is_ty Ty2
+H4 : typeOf Ctx' TmB2 TyB5
+H5 : typeOf Ctx' TmB1 TyB5
+============================
+ typeOf Ctx' (app (app (abs "A" TyB5 (abs "B" TyB5 (abs "S" (arrowTy TyB5 (arrowTy TyB5 TyB5)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyB5 (arrowTy TyB5 TyB5)) TyB5)
+</pre>
+<pre class="code extensibella"id="236">
+ &lt; <b>search 11.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.1.2:
+
+Variables: Ctx Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TyB3 TyB4 TyA4 Ty_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty Ty1 TyB3
+DTy : desugar_ty Ty1 TyA4
+DTy2 : |{ty}- arrowTy Ty1 Ty1 ~~&gt; Ty_T1
+DTy3 : desugar_ty Ty_T1 TyB4
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy (arrowTy TyA4 TyB4) TyB3)
+</pre>
+<pre class="code extensibella"id="237">
+ &lt; <b>case DTy2.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.1.2:
+
+Variables: Ctx Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TyB3 TyA3 Ty_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy1 : desugar_ty Ty1 TyB3
+DTy : |{ty}- arrowTy Ty1 (arrowTy Ty1 Ty1) ~~&gt; Ty_T1
+DTy2 : desugar_ty Ty_T1 TyA3
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) (arrowTy TyA3 TyB3)
+</pre>
+<pre class="code extensibella"id="238">
+ &lt; <b>case DTy.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 Ty_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DTy : |{ty}- arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1 ~~&gt; Ty_T1
+DTy1 : desugar_ty Ty_T1 Ty'
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") (var "A")) (var "B"))))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="239">
+ &lt; <b>case DTy.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TmB4 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DT6 : (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) |{tm}- var "A" ~~&gt; T_T1
+DT8 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) T_T1 TmB4
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app (var "S") TmB4) (var "B"))))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="240">
+ &lt; <b>case DT6.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TyB2 TyA2 TmB4 TmA4 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DT10 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "A") TmB4
+DT6 : (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) |{tm}- var "S" ~~&gt; T_T1
+DT8 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) T_T1 TmA4
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app TmA4 TmB4) (var "B"))))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="241">
+ &lt; <b>case DT6.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TmB3 TyB2 TyA2 TmB4 TmA4 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DT6 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "S") TmA4
+DT10 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "A") TmB4
+DT8 : (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) |{tm}- var "B" ~~&gt; T_T1
+DT11 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) T_T1 TmB3
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app (app TmA4 TmB4) TmB3)))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="242">
+ &lt; <b>case DT8.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyA1 TmB3 TmA3 TyB2 TyA2 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT8 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "B") TmB3
+DT7 : desugar_ty Ty2 TyA2
+DT9 : desugar_ty Ty2 TyB2
+DT6 : (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) |{tm}- app (var "S") (var "A") ~~&gt; T_T1
+DT10 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) T_T1 TmA3
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 (arrowTy TyA2 TyB2)) (app TmA3 TmB3)))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="243">
+ &lt; <b>case DT6.</b>
+
+Subgoal 6.1.1.1.1.1.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 TyB1 TyA1 TmB3 TmA3 Ty_T
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT6 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (app (var "S") (var "A")) TmA3
+DT8 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (var "B") TmB3
+DT7 : |{ty}- arrowTy Ty2 Ty2 ~~&gt; Ty_T
+DT9 : desugar_ty Ty_T TyB1
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 TyB1) (app TmA3 TmB3)))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="244">
+ &lt; <b>case DT7.</b>
+
+Subgoal 6.1.1.1.1.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 Tm3 TyB1 TyA1 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : desugar_ty Ty2 TyA1
+DT7 : desugar_ty (arrowTy Ty2 Ty2) TyB1
+DT6 : (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) |{tm}- app (app (var "S") (var "A")) (var "B") ~~&gt; T_T1
+DT8 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) T_T1 Tm3
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" (arrowTy TyA1 TyB1) Tm3))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="245">
+ &lt; <b>case DT6.</b>
+
+Subgoal 6.1.1.1.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Ty5 Tm3 Ty6 Ty_T
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT6 : desugar_tm (("S", arrowTy Ty2 (arrowTy Ty2 Ty2))::(("B", Ty2)::(("A", Ty2)::Ctx))) (app (app (var "S") (var "A")) (var "B")) Tm3
+DT5 : |{ty}- arrowTy Ty2 (arrowTy Ty2 Ty2) ~~&gt; Ty_T
+DT7 : desugar_ty Ty_T Ty6
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 (abs "S" Ty6 Tm3))) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="246">
+ &lt; <b>case DT5.</b>
+
+Subgoal 6.1.1.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Ty4 Tm2 Ty5 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : desugar_ty Ty2 Ty5
+DT5 : (("B", Ty2)::(("A", Ty2)::Ctx)) |{tm}- abs "S" (arrowTy Ty2 (arrowTy Ty2 Ty2)) (app (app (var "S") (var "A")) (var "B")) ~~&gt; T_T1
+DT6 : desugar_tm (("B", Ty2)::(("A", Ty2)::Ctx)) T_T1 Tm2
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 (abs "B" Ty5 Tm2)) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="247">
+ &lt; <b>case DT5.</b>
+
+Subgoal 6.1.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 Tm1 Ty4 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : desugar_ty Ty2 Ty4
+DT4 : (("A", Ty2)::Ctx) |{tm}- abs "B" Ty2 (abs "S" (arrowTy Ty2 (arrowTy Ty2 Ty2)) (app (app (var "S") (var "A")) (var "B"))) ~~&gt; T_T1
+DT5 : desugar_tm (("A", Ty2)::Ctx) T_T1 Tm1
+============================
+ typeOf Ctx' (app (app (abs "A" Ty4 Tm1) TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="248">
+ &lt; <b>case DT4.</b>
+
+Subgoal 6.1.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmB2 TmA2 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT3 : desugar_tm Ctx T1 TmB2
+DT1 : Ctx |{tm}- abs "A" Ty2 (abs "B" Ty2 (abs "S" (arrowTy Ty2 (arrowTy Ty2 Ty2)) (app (app (var "S") (var "A")) (var "B")))) ~~&gt; T_T1
+DT4 : desugar_tm Ctx T_T1 TmA2
+============================
+ typeOf Ctx' (app (app TmA2 TmB2) TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="249">
+ &lt; <b>case DT1.</b>
+
+Subgoal 6.1.2:
+
+Variables: Ctx Ty' Ctx' Ty1 T2 T1 Ty2 TmB1 TmA1 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT2 : desugar_tm Ctx T2 TmB1
+DT1 : Ctx |{tm}- app (abs "A" Ty2 (abs "B" Ty2 (abs "S" (arrowTy Ty2 (arrowTy Ty2 Ty2)) (app (app (var "S") (var "A")) (var "B"))))) T1 ~~&gt; T_T1
+DT3 : desugar_tm Ctx T_T1 TmA1
+============================
+ typeOf Ctx' (app TmA1 TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="250">
+ &lt; <b>case DT1.</b>
+
+Subgoal 6.2:
+
+Variables: Ctx T' Ty' Ctx' Ty1 T2 T1 Ty2 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (pair T1 T2) (pairTy Ty1) @
+DTy : desugar_ty (pairTy Ty1) Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 Ty1 *
+Ty2 : typeOf Ctx T2 Ty1 *
+H1 : is_tm T1
+H2 : is_tm T2
+DT : typeOf Ctx T1 Ty2
+DT1 : Ctx |{tm}- app (app (abs "A" Ty2 (abs "B" Ty2 (abs "S" (arrowTy Ty2 (arrowTy Ty2 Ty2)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2 ~~&gt; T_T1
+DT2 : desugar_tm Ctx T_T1 T'
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="251">
+ &lt; <b>case DT1.</b>
+
+Subgoal 7:
+
+Variables: Ctx Ty T' Ty' Ctx' T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsT : is_tm (fst T1)
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DT : desugar_tm Ctx (fst T1) T'
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="252">
+ &lt; <b>case IsT.</b>
+
+Subgoal 7:
+
+Variables: Ctx Ty T' Ty' Ctx' T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DT : desugar_tm Ctx (fst T1) T'
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="253">
+ &lt; <b>DT: case DT.</b>
+
+Subgoal 7:
+
+Variables: Ctx Ty T' Ty' Ctx' T1 T_T
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : Ctx |{tm}- fst T1 ~~&gt; T_T
+DT1 : desugar_tm Ctx T_T T'
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="254">
+ &lt; <b>DT: case DT.</b>
+
+Subgoal 7:
+
+Variables: Ctx Ty T' Ty' Ctx' T1 Ty1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT1 : desugar_tm Ctx (app T1 (abs "A" Ty1 (abs "B" Ty1 (var "A")))) T'
+DT : typeOf Ctx T1 (pairTy Ty1)
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="255">
+ &lt; <b>DT: case DT1.</b>
+
+Subgoal 7.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmB1 TmA1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_tm Ctx (abs "A" Ty1 (abs "B" Ty1 (var "A"))) TmB1
+============================
+ typeOf Ctx' (app TmA1 TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="256">
+ &lt; <b>DT: case DT2.</b>
+
+Subgoal 7.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmA1 Tm1 Ty3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty1 Ty3
+DT3 : desugar_tm (("A", Ty1)::Ctx) (abs "B" Ty1 (var "A")) Tm1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 Tm1)) Ty'
+</pre>
+<pre class="code extensibella"id="257">
+ &lt; <b>DT: case DT3.</b>
+
+Subgoal 7.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmA1 Ty3 Tm2 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty1 Ty3
+DT3 : desugar_ty Ty1 Ty4
+DT4 : desugar_tm (("B", Ty1)::(("A", Ty1)::Ctx)) (var "A") Tm2
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 Tm2))) Ty'
+</pre>
+<pre class="code extensibella"id="258">
+ &lt; <b>DT: case DT4.</b>
+
+Subgoal 7.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmA1 Ty3 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty1 Ty3
+DT3 : desugar_ty Ty1 Ty4
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="259">
+ &lt; <b>apply type_unique to _ _ DT Ty1.</b>
+
+Subgoal 7.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="260">
+ &lt; <b>IsP: apply type_is to _ _ Ty1.</b>
+
+Subgoal 7.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+IsP : is_ty (pairTy Ty)
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="261">
+ &lt; <b>case IsP.</b>
+
+Subgoal 7.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="262">
+ &lt; <b>DP: apply desugar_ty_exists to _ with
+         Ty = pairTy Ty.</b>
+
+Subgoal 7.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 Ty'1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+DP : desugar_ty (pairTy Ty) Ty'1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="263">
+ &lt; <b>apply IH to _ _ Ty1 DT1 _ _.</b>
+
+Subgoal 7.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 Ty'1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+DP : desugar_ty (pairTy Ty) Ty'1
+H3 : typeOf Ctx' TmA1 Ty'1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="264">
+ &lt; <b>DP: case DP.</b>
+
+Subgoal 7.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 Ty'1 Ty_T
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 Ty'1
+DP : |{ty}- pairTy Ty ~~&gt; Ty_T
+DP1 : desugar_ty Ty_T Ty'1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="265">
+ &lt; <b>DP: case DP.</b>
+
+Subgoal 7.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 Ty'1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 Ty'1
+DP1 : desugar_ty (arrowTy (arrowTy Ty (arrowTy Ty Ty)) Ty) Ty'1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="266">
+ &lt; <b>DP: case DP1.</b>
+
+Subgoal 7.1.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyA1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy TyA1 TyB1)
+DP : desugar_ty (arrowTy Ty (arrowTy Ty Ty)) TyA1
+DP1 : desugar_ty Ty TyB1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="267">
+ &lt; <b>DP: case DP.</b>
+
+Subgoal 7.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyB2 TyA2
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 TyB2) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty (arrowTy Ty Ty) TyB2
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="268">
+ &lt; <b>DP: case DP2.</b>
+
+Subgoal 7.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 (arrowTy TyA3 TyB3)) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="269">
+ &lt; <b>apply desugar_ty_unique to _ DTy DT2.</b>
+
+Subgoal 7.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty3
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 (arrowTy TyA3 TyB3)) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty3
+</pre>
+<pre class="code extensibella"id="270">
+ &lt; <b>apply desugar_ty_unique to _ DTy DT3.</b>
+
+Subgoal 7.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 Ty4 TyB1 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty4
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty4
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 (arrowTy TyA3 TyB3)) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty4 (abs "B" Ty4 (var "A")))) Ty4
+</pre>
+<pre class="code extensibella"id="271">
+ &lt; <b>apply desugar_ty_unique to _ DTy DP1.</b>
+
+Subgoal 7.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 TyB1 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty TyB1
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty TyB1
+DT3 : desugar_ty Ty TyB1
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 (arrowTy TyA3 TyB3)) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" TyB1 (abs "B" TyB1 (var "A")))) TyB1
+</pre>
+<pre class="code extensibella"id="272">
+ &lt; <b>apply desugar_ty_unique to _ DTy DP.</b>
+
+Subgoal 7.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty TyA2
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty TyA2
+DT3 : desugar_ty Ty TyA2
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 (arrowTy TyA3 TyB3)) TyA2)
+DP1 : desugar_ty Ty TyA2
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" TyA2 (abs "B" TyA2 (var "A")))) TyA2
+</pre>
+<pre class="code extensibella"id="273">
+ &lt; <b>apply desugar_ty_unique to _ DTy DP2.</b>
+
+Subgoal 7.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty TyA3
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty TyA3
+DT3 : desugar_ty Ty TyA3
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA3 (arrowTy TyA3 TyB3)) TyA3)
+DP1 : desugar_ty Ty TyA3
+DP : desugar_ty Ty TyA3
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" TyA3 (abs "B" TyA3 (var "A")))) TyA3
+</pre>
+<pre class="code extensibella"id="274">
+ &lt; <b>apply desugar_ty_unique to _ DTy DP3.</b>
+
+Subgoal 7.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 TyB3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty TyB3
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty TyB3
+DT3 : desugar_ty Ty TyB3
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyB3 (arrowTy TyB3 TyB3)) TyB3)
+DP1 : desugar_ty Ty TyB3
+DP : desugar_ty Ty TyB3
+DP2 : desugar_ty Ty TyB3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" TyB3 (abs "B" TyB3 (var "A")))) TyB3
+</pre>
+<pre class="code extensibella"id="275">
+ &lt; <b>search 6.</b>
+
+Subgoal 7.1.1.1.1.1.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyB2 TyA2 Ty_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 TyB2) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : |{ty}- arrowTy Ty Ty ~~&gt; Ty_T1
+DP3 : desugar_ty Ty_T1 TyB2
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="276">
+ &lt; <b>case DP2.</b>
+
+Subgoal 7.1.1.1.1.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyA1 Ty_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy TyA1 TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : |{ty}- arrowTy Ty (arrowTy Ty Ty) ~~&gt; Ty_T1
+DP2 : desugar_ty Ty_T1 TyA1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="277">
+ &lt; <b>case DP.</b>
+
+Subgoal 7.1.1.1.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 Ty'1 Ty_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 Ty'1
+DP : |{ty}- arrowTy (arrowTy Ty (arrowTy Ty Ty)) Ty ~~&gt; Ty_T1
+DP1 : desugar_ty Ty_T1 Ty'1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "A")))) Ty'
+</pre>
+<pre class="code extensibella"id="278">
+ &lt; <b>case DP.</b>
+
+Subgoal 7.1.1.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmA1 Ty3 Tm2 Ty4 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty1 Ty3
+DT3 : desugar_ty Ty1 Ty4
+DT4 : (("B", Ty1)::(("A", Ty1)::Ctx)) |{tm}- var "A" ~~&gt; T_T1
+DT5 : desugar_tm (("B", Ty1)::(("A", Ty1)::Ctx)) T_T1 Tm2
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 Tm2))) Ty'
+</pre>
+<pre class="code extensibella"id="279">
+ &lt; <b>case DT4.</b>
+
+Subgoal 7.1.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmA1 Tm1 Ty3 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty1 Ty3
+DT3 : (("A", Ty1)::Ctx) |{tm}- abs "B" Ty1 (var "A") ~~&gt; T_T1
+DT4 : desugar_tm (("A", Ty1)::Ctx) T_T1 Tm1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 Tm1)) Ty'
+</pre>
+<pre class="code extensibella"id="280">
+ &lt; <b>case DT3.</b>
+
+Subgoal 7.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmB1 TmA1 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : Ctx |{tm}- abs "A" Ty1 (abs "B" Ty1 (var "A")) ~~&gt; T_T1
+DT3 : desugar_tm Ctx T_T1 TmB1
+============================
+ typeOf Ctx' (app TmA1 TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="281">
+ &lt; <b>case DT2.</b>
+
+Subgoal 7.2:
+
+Variables: Ctx Ty T' Ty' Ctx' T1 Ty1 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (fst T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : Ctx |{tm}- app T1 (abs "A" Ty1 (abs "B" Ty1 (var "A"))) ~~&gt; T_T1
+DT2 : desugar_tm Ctx T_T1 T'
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="282">
+ &lt; <b>case DT1.</b>
+
+Subgoal 8:
+
+Variables: Ctx Ty T' Ty' Ctx' T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsT : is_tm (snd T1)
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DT : desugar_tm Ctx (snd T1) T'
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="283">
+ &lt; <b>case IsT.</b>
+
+Subgoal 8:
+
+Variables: Ctx Ty T' Ty' Ctx' T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DT : desugar_tm Ctx (snd T1) T'
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="284">
+ &lt; <b>DT: case DT.</b>
+
+Subgoal 8:
+
+Variables: Ctx Ty T' Ty' Ctx' T1 T_T
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : Ctx |{tm}- snd T1 ~~&gt; T_T
+DT1 : desugar_tm Ctx T_T T'
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="285">
+ &lt; <b>DT: case DT.</b>
+
+Subgoal 8:
+
+Variables: Ctx Ty T' Ty' Ctx' T1 Ty1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT1 : desugar_tm Ctx (app T1 (abs "A" Ty1 (abs "B" Ty1 (var "B")))) T'
+DT : typeOf Ctx T1 (pairTy Ty1)
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="286">
+ &lt; <b>DT: case DT1.</b>
+
+Subgoal 8.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmB1 TmA1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_tm Ctx (abs "A" Ty1 (abs "B" Ty1 (var "B"))) TmB1
+============================
+ typeOf Ctx' (app TmA1 TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="287">
+ &lt; <b>DT: case DT2.</b>
+
+Subgoal 8.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmA1 Tm1 Ty3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty1 Ty3
+DT3 : desugar_tm (("A", Ty1)::Ctx) (abs "B" Ty1 (var "B")) Tm1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 Tm1)) Ty'
+</pre>
+<pre class="code extensibella"id="288">
+ &lt; <b>DT: case DT3.</b>
+
+Subgoal 8.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmA1 Ty3 Tm2 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty1 Ty3
+DT3 : desugar_ty Ty1 Ty4
+DT4 : desugar_tm (("B", Ty1)::(("A", Ty1)::Ctx)) (var "B") Tm2
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 Tm2))) Ty'
+</pre>
+<pre class="code extensibella"id="289">
+ &lt; <b>DT: case DT4.</b>
+
+Subgoal 8.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmA1 Ty3 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty1 Ty3
+DT3 : desugar_ty Ty1 Ty4
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="290">
+ &lt; <b>apply type_unique to _ _ DT Ty1.</b>
+
+Subgoal 8.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="291">
+ &lt; <b>IsP: apply type_is to _ _ Ty1.</b>
+
+Subgoal 8.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+IsP : is_ty (pairTy Ty)
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="292">
+ &lt; <b>case IsP.</b>
+
+Subgoal 8.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="293">
+ &lt; <b>DP: apply desugar_ty_exists to _ with
+         Ty = pairTy Ty.</b>
+
+Subgoal 8.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 Ty'1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+DP : desugar_ty (pairTy Ty) Ty'1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="294">
+ &lt; <b>apply IH to _ _ Ty1 DT1 _ _.</b>
+
+Subgoal 8.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 Ty'1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+DP : desugar_ty (pairTy Ty) Ty'1
+H3 : typeOf Ctx' TmA1 Ty'1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="295">
+ &lt; <b>DP: case DP.</b>
+
+Subgoal 8.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 Ty'1 Ty_T
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 Ty'1
+DP : |{ty}- pairTy Ty ~~&gt; Ty_T
+DP1 : desugar_ty Ty_T Ty'1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="296">
+ &lt; <b>DP: case DP.</b>
+
+Subgoal 8.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 Ty'1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 Ty'1
+DP1 : desugar_ty (arrowTy (arrowTy Ty (arrowTy Ty Ty)) Ty) Ty'1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="297">
+ &lt; <b>DP: case DP1.</b>
+
+Subgoal 8.1.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyA1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy TyA1 TyB1)
+DP : desugar_ty (arrowTy Ty (arrowTy Ty Ty)) TyA1
+DP1 : desugar_ty Ty TyB1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="298">
+ &lt; <b>DP: case DP.</b>
+
+Subgoal 8.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyB2 TyA2
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 TyB2) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty (arrowTy Ty Ty) TyB2
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="299">
+ &lt; <b>DP: case DP2.</b>
+
+Subgoal 8.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 (arrowTy TyA3 TyB3)) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="300">
+ &lt; <b>apply desugar_ty_unique to _ DTy DT2.</b>
+
+Subgoal 8.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty3
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 (arrowTy TyA3 TyB3)) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty3
+</pre>
+<pre class="code extensibella"id="301">
+ &lt; <b>apply desugar_ty_unique to _ DTy DT3.</b>
+
+Subgoal 8.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 Ty4 TyB1 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty4
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty4
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 (arrowTy TyA3 TyB3)) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty4 (abs "B" Ty4 (var "B")))) Ty4
+</pre>
+<pre class="code extensibella"id="302">
+ &lt; <b>apply desugar_ty_unique to _ DTy DP1.</b>
+
+Subgoal 8.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 TyB1 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty TyB1
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty TyB1
+DT3 : desugar_ty Ty TyB1
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 (arrowTy TyA3 TyB3)) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" TyB1 (abs "B" TyB1 (var "B")))) TyB1
+</pre>
+<pre class="code extensibella"id="303">
+ &lt; <b>apply desugar_ty_unique to _ DTy DP.</b>
+
+Subgoal 8.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 TyA2 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty TyA2
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty TyA2
+DT3 : desugar_ty Ty TyA2
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 (arrowTy TyA3 TyB3)) TyA2)
+DP1 : desugar_ty Ty TyA2
+DP : desugar_ty Ty TyA2
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" TyA2 (abs "B" TyA2 (var "B")))) TyA2
+</pre>
+<pre class="code extensibella"id="304">
+ &lt; <b>apply desugar_ty_unique to _ DTy DP2.</b>
+
+Subgoal 8.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 TyB3 TyA3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty TyA3
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty TyA3
+DT3 : desugar_ty Ty TyA3
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA3 (arrowTy TyA3 TyB3)) TyA3)
+DP1 : desugar_ty Ty TyA3
+DP : desugar_ty Ty TyA3
+DP2 : desugar_ty Ty TyA3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" TyA3 (abs "B" TyA3 (var "B")))) TyA3
+</pre>
+<pre class="code extensibella"id="305">
+ &lt; <b>apply desugar_ty_unique to _ DTy DP3.</b>
+
+Subgoal 8.1.1.1.1.1.1.1:
+
+Variables: Ctx Ty Ctx' T1 TmA1 TyB3
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty TyB3
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty TyB3
+DT3 : desugar_ty Ty TyB3
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyB3 (arrowTy TyB3 TyB3)) TyB3)
+DP1 : desugar_ty Ty TyB3
+DP : desugar_ty Ty TyB3
+DP2 : desugar_ty Ty TyB3
+DP3 : desugar_ty Ty TyB3
+============================
+ typeOf Ctx' (app TmA1 (abs "A" TyB3 (abs "B" TyB3 (var "B")))) TyB3
+</pre>
+<pre class="code extensibella"id="306">
+ &lt; <b>search 6.</b>
+
+Subgoal 8.1.1.1.1.1.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyB2 TyA2 Ty_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy (arrowTy TyA2 TyB2) TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : desugar_ty Ty TyA2
+DP2 : |{ty}- arrowTy Ty Ty ~~&gt; Ty_T1
+DP3 : desugar_ty Ty_T1 TyB2
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="307">
+ &lt; <b>case DP2.</b>
+
+Subgoal 8.1.1.1.1.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 TyB1 TyA1 Ty_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 (arrowTy TyA1 TyB1)
+DP1 : desugar_ty Ty TyB1
+DP : |{ty}- arrowTy Ty (arrowTy Ty Ty) ~~&gt; Ty_T1
+DP2 : desugar_ty Ty_T1 TyA1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="308">
+ &lt; <b>case DP.</b>
+
+Subgoal 8.1.1.1.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 TmA1 Ty3 Ty4 Ty'1 Ty_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty Ty3
+DT3 : desugar_ty Ty Ty4
+H2 : is_ty Ty
+H3 : typeOf Ctx' TmA1 Ty'1
+DP : |{ty}- arrowTy (arrowTy Ty (arrowTy Ty Ty)) Ty ~~&gt; Ty_T1
+DP1 : desugar_ty Ty_T1 Ty'1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 (var "B")))) Ty'
+</pre>
+<pre class="code extensibella"id="309">
+ &lt; <b>case DP.</b>
+
+Subgoal 8.1.1.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmA1 Ty3 Tm2 Ty4 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty1 Ty3
+DT3 : desugar_ty Ty1 Ty4
+DT4 : (("B", Ty1)::(("A", Ty1)::Ctx)) |{tm}- var "B" ~~&gt; T_T1
+DT5 : desugar_tm (("B", Ty1)::(("A", Ty1)::Ctx)) T_T1 Tm2
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 (abs "B" Ty4 Tm2))) Ty'
+</pre>
+<pre class="code extensibella"id="310">
+ &lt; <b>case DT4.</b>
+
+Subgoal 8.1.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmA1 Tm1 Ty3 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : desugar_ty Ty1 Ty3
+DT3 : (("A", Ty1)::Ctx) |{tm}- abs "B" Ty1 (var "B") ~~&gt; T_T1
+DT4 : desugar_tm (("A", Ty1)::Ctx) T_T1 Tm1
+============================
+ typeOf Ctx' (app TmA1 (abs "A" Ty3 Tm1)) Ty'
+</pre>
+<pre class="code extensibella"id="311">
+ &lt; <b>case DT3.</b>
+
+Subgoal 8.1.2:
+
+Variables: Ctx Ty Ty' Ctx' T1 Ty1 TmB1 TmA1 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : desugar_tm Ctx T1 TmA1
+DT2 : Ctx |{tm}- abs "A" Ty1 (abs "B" Ty1 (var "B")) ~~&gt; T_T1
+DT3 : desugar_tm Ctx T_T1 TmB1
+============================
+ typeOf Ctx' (app TmA1 TmB1) Ty'
+</pre>
+<pre class="code extensibella"id="312">
+ &lt; <b>case DT2.</b>
+
+Subgoal 8.2:
+
+Variables: Ctx Ty T' Ty' Ctx' T1 Ty1 T_T1
+IH : forall Ctx T Ty T' Ty' Ctx',
+       is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
+       desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
+IsCtx : is_list (is_pair is_string is_ty) Ctx
+Ty : typeOf Ctx (snd T1) Ty @
+DTy : desugar_ty Ty Ty'
+DCtx : desugar_ctx Ctx Ctx'
+Ty1 : typeOf Ctx T1 (pairTy Ty) *
+H1 : is_tm T1
+DT : typeOf Ctx T1 (pairTy Ty1)
+DT1 : Ctx |{tm}- app T1 (abs "A" Ty1 (abs "B" Ty1 (var "B"))) ~~&gt; T_T1
+DT2 : desugar_tm Ctx T_T1 T'
+============================
+ typeOf Ctx' T' Ty'
+</pre>
+<pre class="code extensibella"id="313">
+ &lt; <b>case DT1.</b>
+
+Proof completed.
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<html>
+<head>
+<title>Extensible Languages</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script src="actions.js"></script>
+<link rel="icon" href="images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="index.html">
+<img class="header-logo" src="images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<div class="section">
+  <h1>Extensible Languages</h1>
+  <p>
+    The view of extensible languages on which Extensibella is based is one
+    in which the language's syntax and semantics are given by a set of
+    independently-developed modules that may build on each other.  The
+    most common way to organize the modules is to have one module that
+    is the host language and the other modules are extensions adding
+    to it, but this structure is not required.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Basic Extensible Languages</h2>
+  <p>
+    In a basic formulation of language extensibility, a module that
+    does not build on another module (a host language) can introduce
+    the following:
+    <ul>
+      <li> Syntactic categories
+      <li> Constructors building those syntactic categories
+      <li> Semantic relations
+      <li> Rules defining those semantic relations
+    </ul>
+  </p>
+
+  <p>
+    Extension modules can build on the definitions given by the
+    modules on which they build by introducing the following:
+    <ul>
+      <li> New constructors of imported syntactic categories
+      <li> New rules defining imported relations
+      <li> New syntactic categories
+      <li> Constructors building those new syntactic categories
+      <li> New semantic relations
+      <li> Rules defining those new semantic relations
+    </ul>
+  </p>
+
+  <p>
+    A composed language is built by combining a set of modules.  A
+    well-formed composition requires, for each module included, that
+    the modules on which it builds are also included.  For example, if
+    module <code>A</code> builds on modules <code>B</code>
+    and <code>C</code>, a language composition
+    including <code>A</code> must also include <code>B</code>
+    and <code>C</code>.  A composed language contains all the syntax
+    and semantics introduced by all modules included in it.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Composing New Syntax and New Semantics</h2>
+  <p>
+    Notice that we have independent extension on two fronts, in both
+    the syntax and semantics of our language.  How, when one extension
+    adds a new semantic relation, do we define it on the new syntax
+    constructors introduced by another extension?  This is part of
+    Phil Wadler's famous <em>expression problem</em>.  One option is
+    to say the relation is not derivable on the new constructors.
+    However, this would make the combination of new syntax and new
+    semantic relations unusable in practice.  New relations, such as a
+    new static safety check, would never hold if a program included
+    new syntax from a different extension, and thus we would need to
+    choose between the safety check and the other new syntax.
+  </p>
+
+  <p>
+    The solution Extensibella uses allows a new relation from one
+    extension to be defined on new syntax from another extension.
+    This solution relies on the notion of the <em>primary
+    component</em> of a relation.  The primary component is the
+    argument the relation is <em>about</em>.  For example, a typing
+    relation is <em>about</em> the expression being typed, with the
+    typing context and type being secondary, only telling us something
+    about the expression.
+  </p>
+
+  <p>
+    Each relation introduced by an extension where the primary
+    component is a syntactic category given by the base language is
+    given a special rule, called its <em>default rule</em>, to define
+    it on new syntax from other extensions.  This rule is written with
+    a variable in the place of the primary component.  For example, we
+    might have an <code>optimize</code> relation reducing constant
+    computations in an expression, with the translation rule stating
+    optimizing an unknown expression leaves it as it
+    is:  <code>optimize E E</code> (a safe, if uninspiring, choice).
+    When a composed language is built, combining several extensions,
+    the default rule is replicated for each new constructor from other
+    extensions, filling in the primary component with the new
+    constructor.  For example, if other extensions introduced
+    constructors <code>add3(expr, expr, expr)</code>
+    and <code>negate(expr)</code>, we would instantiate the default
+    rule for each of these (using Sterling syntax):
+    <pre class="code sterling">
+
+------------------------------------------
+optimize add3(E1, E2, E3) add3(E1, E2, E3)
+
+----------------------------
+optimize negate(E) negate(E) </pre>
+    This gives the <code>optimize</code> relation a definition on any
+    syntax, even that not known to it when it was introduced.
+  </p>
+
+  <p>
+    Oftentimes a simple default rule, as we saw
+    with <code>optimize</code>, is not sufficient for defining an
+    extension-introduced relation.  Generally what we want is to use a
+    notion of translation of an unknown construct to a known one.
+    Each syntactic category given has a translation relation, and each
+    constructor an extension introduces building an imported syntactic
+    category must have a rule giving its translation.  Then the
+    default rule for a relation can be written to find the translation
+    of the primary component and derive the relation on this
+    translation, oftentimes something like this (once again, in
+    Sterling syntax):
+    <pre class="code sterling">
+|{ty}- X ~~> XT
+rel A B XT C D
+--------------- [Rel-Trans]*
+rel A B X C D </pre>
+    This essentially copies the definition from the translation, and
+    allows more interesting relations to be defined in extensions.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Limitations on Extending Relations</h2>
+  <p>
+    Proving properties in the context of extensible languages relies
+    on understanding the semantics of existing constructs.  For
+    example, proving the <code>optimize</code> relation given above is
+    correct, that the optimized expression evaluates to the same value
+    as the original expression, requires knowing that constant
+    expressions such as <code>3 + 4</code> must reduce according to
+    the known rules.  If an extension could write a new rule for
+    evaluation allowing <code>3 + 4</code> to evaluate instead to a
+    value other than <code>7</code>, we could not prove
+    the <code>optimize</code> relation accurately captures the
+    language's semantics.
+  </p>
+
+  <p>
+    To ensure the semantics of the known language remain the same
+    under extension, new rules given in an extension defining a
+    relation it imports must have the primary component of the
+    conclusion be built at the top by a new constructor.  For example,
+    the extension adding the <code>add3</code> constructor could
+    define evaluation for it, but it could not write a rule defining
+    evaluation for the pre-existing addition.
+  </p>
+</div>
+</html>
