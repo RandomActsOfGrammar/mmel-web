@@ -1,0 +1,49 @@
+#!/bin/bash
+
+set -eu
+
+WEB_DIR="full_web"
+DO_BUILD=1
+
+
+#go through arguments
+while test $# -gt 0
+do
+    case "$1" in
+        #skip the rebuild, because it is slow
+        -s ) DO_BUILD=0
+             ;;
+        #make it into a different directory
+        -n ) shift
+             WEB_DIR="$1"
+             ;;
+        #something wrong
+        * ) echo "Unknown option $1"
+            ;;
+    esac
+    shift
+done
+
+
+#go and rebuild all the examples
+if test $DO_BUILD -gt 0; then
+   cd extensibella/examples
+   ./build
+   cd ../sterling/examples
+   ./build
+   cd ../../..
+fi
+
+#copy everything to the web copy
+cp -R extensibella $WEB_DIR
+
+#go to the web copy
+cd $WEB_DIR
+
+#delete build scripts and Emacs save files because we don't want them
+#on the web
+find . -name "*~" -delete
+find . -name "build" -delete
+
+
+echo "NOW GO GET THE EXTENSIBELLA AND STERLING TARS AND ADD THEM"
