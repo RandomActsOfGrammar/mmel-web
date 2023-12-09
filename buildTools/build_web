@@ -4,6 +4,8 @@ set -eu
 
 WEB_DIR="full_web"
 DO_BUILD=1
+EXTENSIBELLA_DIR=
+STERLING_DIR=
 
 
 #go through arguments
@@ -17,6 +19,13 @@ do
         -n ) shift
              WEB_DIR="$1"
              ;;
+        #find Extensibella and Sterling for adding their tarballs
+        -ex ) shift
+              EXTENSIBELLA_DIR="$1"
+              ;;
+        -st ) shift
+              STERLING_DIR="$1"
+              ;;
         #something wrong
         * ) echo "Unknown option $1"
             ;;
@@ -61,7 +70,7 @@ do
         $dir/*/*.sos \
         $dir/*/*.xthm
 done
-cd .. #back to root web directory
+cd .. #back to built web root directory
 
 
 #build the tarballs for Sterling examples
@@ -82,7 +91,67 @@ do
         #$dir/*/*.main \
         #$dir/*/*.conc
 done
-cd ../.. #back to root directory to make adding here easier
+cd ../.. #back to built web root directory
 
 
-echo "NOW GO GET THE EXTENSIBELLA AND STERLING TARBALLS AND ADD THEM"
+#get the Extensibella and Sterling tarballs
+found_Extensibella=0
+if [ -z "$EXTENSIBELLA_DIR" ]
+then
+    #try next to the repository
+    if [ -d "../../extensibella" ]
+    then
+        cd ../../extensibella
+        ./make-dist
+        cd -
+        cp ../../extensibella/extensibella.tar.gz ./
+        found_Extensibella=1
+    fi
+elif [ -d "$EXTENSIBELLA_DIR" ]
+then
+    if [ -f "$EXTENSIBELLA_DIR/make-dist" ]
+    then
+        cd "$EXTENSIBELLA_DIR"
+        ./make-dist
+        cd -
+        cp "$EXTENSIBELLA_DIR/extensibella.tar.gz" ./
+        found_Extensibella=1
+    fi
+fi
+
+found_Sterling=0
+if [ -z "$STERLING_DIR" ]
+then
+    #try next to the repository
+    if [ -d "../../sterling" ]
+    then
+        cd ../../sterling
+        ./make-dist
+        cd -
+        cp ../../sterling/sterling.tar.gz ./
+        found_Sterling=1
+    fi
+elif [ -d "$STERLING_DIR" ]
+then
+    if [ -f "$STERLING_DIR/make-dist" ]
+    then
+        cd "$STERLING_DIR"
+        ./make-dist
+        cd -
+        cp "$STERLING_DIR/sterling.tar.gz" ./
+        found_Sterling=1
+    fi
+fi
+
+if [ "$found_Extensibella" -eq 0 ]
+then
+    echo "----------------------------------------------------------------------"
+    echo "COULD NOT GET EXTENSIBELLA TARBALL; DO IT BY HAND"
+    echo "----------------------------------------------------------------------"
+fi
+if [ "$found_Sterling" -eq 0 ]
+then
+    echo "----------------------------------------------------------------------"
+    echo "COULD NOT GET STERLING TARBALL; DO IT BY HAND"
+    echo "----------------------------------------------------------------------"
+fi

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -eu
+
+#get the name of the built website directory
+if [ -z "$1" ]
+then
+    BUILT_WEB_DIR=full_web
+else
+    BUILT_WEB_DIR="$1"
+fi
+
+#move it to the online location
+cp -R $BUILT_WEB_DIR/* /web/research01/extensibella.cs.umn.edu/
+
+#give it the right permissions
+cd /web/research01/extensibella.cs.umn.edu
+chmod -R g+rw *
+chmod -R o+r *
