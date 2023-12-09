@@ -46,4 +46,43 @@ find . -name "*~" -delete
 find . -name "build" -delete
 
 
-echo "NOW GO GET THE EXTENSIBELLA AND STERLING TARS AND ADD THEM"
+#build the tarballs for Extensibella examples
+ln -s examples extensibella-examples
+tar -zcvf examples/extensibella-examples.tar.gz \
+    extensibella-examples/*/*/*.sos \
+    extensibella-examples/*/*/*.xthm
+rm extensibella-examples
+
+cd examples
+for dir in */
+do
+    dir=${dir%*/} # remove the trailing "/"
+    tar -zcvf $dir/$dir.tar.gz \
+        $dir/*/*.sos \
+        $dir/*/*.xthm
+done
+cd .. #back to root web directory
+
+
+#build the tarballs for Sterling examples
+cd sterling
+ln -s examples sterling-examples
+tar -zcvf examples/sterling-examples.tar.gz \
+    sterling-examples/*/*/*.sos #\
+    #sterling-examples/*/*/*.main \
+    #sterling-examples/*/*/*.conc
+rm sterling-examples
+
+cd examples
+for dir in */
+do
+    dir=${dir%*/} # remove the trailing "/"
+    tar -zcvf $dir/$dir.tar.gz \
+        $dir/*/*.sos #\
+        #$dir/*/*.main \
+        #$dir/*/*.conc
+done
+cd ../.. #back to root directory to make adding here easier
+
+
+echo "NOW GO GET THE EXTENSIBELLA AND STERLING TARBALLS AND ADD THEM"
