@@ -460,7 +460,30 @@ Extensible_Theorem
   well-typed before desugaring means it is well-typed after
   desugaring, and the desugared term has the desugared type.  We prove
   this as an extensible property below, in desugar_ty_rel.
+
+  Defining desugaring as proof-level relations here ensures terms are
+  fully translated and an extension doesn't define desugaring in a way
+  that doesn't actually desugar fully.
  */
+Define desugar_ty : ty -> ty -> prop by
+desugar_ty (arrowTy TyA TyB) (arrowTy TyA' TyB') :=
+  desugar_ty TyA TyA' /\ desugar_ty TyB TyB';
+desugar_ty intTy intTy;
+desugar_ty Ty Ty' :=
+  exists Ty_T, |{ty}- Ty ~~> Ty_T /\ desugar_ty Ty_T Ty'.
+
+Define desugar_tm : list (pair string ty) -> tm -> tm -> prop by
+desugar_tm Ctx (var X) (var X);
+desugar_tm Ctx (abs X Ty Tm) (abs X Ty' Tm') :=
+  desugar_ty Ty Ty' /\ desugar_tm ((X, Ty)::Ctx) Tm Tm';
+desugar_tm Ctx (app TmA TmB) (app TmA' TmB') :=
+  desugar_tm Ctx TmA TmA' /\ desugar_tm Ctx TmB TmB';
+desugar_tm Ctx (num I) (num I);
+desugar_tm Ctx (plus TmA TmB) (plus TmA' TmB') :=
+  desugar_tm Ctx TmA TmA' /\ desugar_tm Ctx TmB TmB';
+desugar_tm Ctx T T' :=
+  exists T_T, Ctx |{tm}- T ~~> T_T /\ desugar_tm Ctx T_T T'.
+
 Define desugar_ctx :
   list (pair string ty) -> list (pair string ty) -> prop by
 desugar_ctx [] [];

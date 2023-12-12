@@ -1803,7 +1803,7 @@ DT : typeOf Ctx T1 Ty2
 
 Subgoal 6.1:
 
-Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X Ty2 TmB1 TmA1
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X Ty2 TmB' TmA'
 IH : forall Ctx T Ty T' Ty' Ctx',
        is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
        desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
@@ -1817,17 +1817,17 @@ H1 : is_string X
 H2 : is_tm T1
 H3 : is_tm T2
 DT : typeOf Ctx T1 Ty2
-DT1 : desugar_tm Ctx (abs X Ty2 T2) TmA1
-DT2 : desugar_tm Ctx T1 TmB1
+DT1 : desugar_tm Ctx (abs X Ty2 T2) TmA'
+DT2 : desugar_tm Ctx T1 TmB'
 ============================
- typeOf Ctx' (app TmA1 TmB1) Ty'
+ typeOf Ctx' (app TmA' TmB') Ty'
 </pre>
 <pre class="code extensibella"id="119">
  &lt; <b>DT: case DT1.</b>
 
 Subgoal 6.1.1:
 
-Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X Ty2 TmB1 Tm1 Ty4
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X Ty2 TmB' Tm' Ty'1
 IH : forall Ctx T Ty T' Ty' Ctx',
        is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
        desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
@@ -1841,18 +1841,18 @@ H1 : is_string X
 H2 : is_tm T1
 H3 : is_tm T2
 DT : typeOf Ctx T1 Ty2
-DT2 : desugar_tm Ctx T1 TmB1
-DT1 : desugar_ty Ty2 Ty4
-DT3 : desugar_tm ((X, Ty2)::Ctx) T2 Tm1
+DT2 : desugar_tm Ctx T1 TmB'
+DT1 : desugar_ty Ty2 Ty'1
+DT3 : desugar_tm ((X, Ty2)::Ctx) T2 Tm'
 ============================
- typeOf Ctx' (app (abs X Ty4 Tm1) TmB1) Ty'
+ typeOf Ctx' (app (abs X Ty'1 Tm') TmB') Ty'
 </pre>
 <pre class="code extensibella"id="120">
  &lt; <b>apply type_unique to _ _ DT Ty1.</b>
 
 Subgoal 6.1.1:
 
-Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB1 Tm1 Ty4
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB' Tm' Ty'1
 IH : forall Ctx T Ty T' Ty' Ctx',
        is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
        desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
@@ -1866,18 +1866,18 @@ H1 : is_string X
 H2 : is_tm T1
 H3 : is_tm T2
 DT : typeOf Ctx T1 Ty1
-DT2 : desugar_tm Ctx T1 TmB1
-DT1 : desugar_ty Ty1 Ty4
-DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm1
+DT2 : desugar_tm Ctx T1 TmB'
+DT1 : desugar_ty Ty1 Ty'1
+DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm'
 ============================
- typeOf Ctx' (app (abs X Ty4 Tm1) TmB1) Ty'
+ typeOf Ctx' (app (abs X Ty'1 Tm') TmB') Ty'
 </pre>
 <pre class="code extensibella"id="121">
  &lt; <b>apply IH to _ _ Ty1 _ _ _.</b>
 
 Subgoal 6.1.1:
 
-Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB1 Tm1 Ty4
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB' Tm' Ty'1
 IH : forall Ctx T Ty T' Ty' Ctx',
        is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
        desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
@@ -1891,19 +1891,19 @@ H1 : is_string X
 H2 : is_tm T1
 H3 : is_tm T2
 DT : typeOf Ctx T1 Ty1
-DT2 : desugar_tm Ctx T1 TmB1
-DT1 : desugar_ty Ty1 Ty4
-DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm1
-H4 : typeOf Ctx' TmB1 Ty4
+DT2 : desugar_tm Ctx T1 TmB'
+DT1 : desugar_ty Ty1 Ty'1
+DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm'
+H4 : typeOf Ctx' TmB' Ty'1
 ============================
- typeOf Ctx' (app (abs X Ty4 Tm1) TmB1) Ty'
+ typeOf Ctx' (app (abs X Ty'1 Tm') TmB') Ty'
 </pre>
 <pre class="code extensibella"id="122">
  &lt; <b>apply type_is to _ _ Ty1.</b>
 
 Subgoal 6.1.1:
 
-Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB1 Tm1 Ty4
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB' Tm' Ty'1
 IH : forall Ctx T Ty T' Ty' Ctx',
        is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
        desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
@@ -1917,20 +1917,20 @@ H1 : is_string X
 H2 : is_tm T1
 H3 : is_tm T2
 DT : typeOf Ctx T1 Ty1
-DT2 : desugar_tm Ctx T1 TmB1
-DT1 : desugar_ty Ty1 Ty4
-DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm1
-H4 : typeOf Ctx' TmB1 Ty4
+DT2 : desugar_tm Ctx T1 TmB'
+DT1 : desugar_ty Ty1 Ty'1
+DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm'
+H4 : typeOf Ctx' TmB' Ty'1
 H5 : is_ty Ty1
 ============================
- typeOf Ctx' (app (abs X Ty4 Tm1) TmB1) Ty'
+ typeOf Ctx' (app (abs X Ty'1 Tm') TmB') Ty'
 </pre>
 <pre class="code extensibella"id="123">
  &lt; <b>apply IH to _ _ Ty2 _ _ _.</b>
 
 Subgoal 6.1.1:
 
-Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB1 Tm1 Ty4
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X TmB' Tm' Ty'1
 IH : forall Ctx T Ty T' Ty' Ctx',
        is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
        desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
@@ -1944,21 +1944,21 @@ H1 : is_string X
 H2 : is_tm T1
 H3 : is_tm T2
 DT : typeOf Ctx T1 Ty1
-DT2 : desugar_tm Ctx T1 TmB1
-DT1 : desugar_ty Ty1 Ty4
-DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm1
-H4 : typeOf Ctx' TmB1 Ty4
+DT2 : desugar_tm Ctx T1 TmB'
+DT1 : desugar_ty Ty1 Ty'1
+DT3 : desugar_tm ((X, Ty1)::Ctx) T2 Tm'
+H4 : typeOf Ctx' TmB' Ty'1
 H5 : is_ty Ty1
-H6 : typeOf ((X, Ty4)::Ctx') Tm1 Ty'
+H6 : typeOf ((X, Ty'1)::Ctx') Tm' Ty'
 ============================
- typeOf Ctx' (app (abs X Ty4 Tm1) TmB1) Ty'
+ typeOf Ctx' (app (abs X Ty'1 Tm') TmB') Ty'
 </pre>
 <pre class="code extensibella"id="124">
  &lt; <b>search.</b>
 
 Subgoal 6.1.2:
 
-Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X Ty2 TmB1 TmA1 T_T1
+Variables: Ctx Ty Ty' Ctx' Ty1 T2 T1 X Ty2 TmB' TmA' T_T1
 IH : forall Ctx T Ty T' Ty' Ctx',
        is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; typeOf Ctx T Ty * -&gt; desugar_tm Ctx T T' -&gt;
        desugar_ty Ty Ty' -&gt; desugar_ctx Ctx Ctx' -&gt; typeOf Ctx' T' Ty'
@@ -1972,11 +1972,11 @@ H1 : is_string X
 H2 : is_tm T1
 H3 : is_tm T2
 DT : typeOf Ctx T1 Ty2
-DT2 : desugar_tm Ctx T1 TmB1
+DT2 : desugar_tm Ctx T1 TmB'
 DT1 : Ctx |{tm}- abs X Ty2 T2 ~~&gt; T_T1
-DT3 : desugar_tm Ctx T_T1 TmA1
+DT3 : desugar_tm Ctx T_T1 TmA'
 ============================
- typeOf Ctx' (app TmA1 TmB1) Ty'
+ typeOf Ctx' (app TmA' TmB') Ty'
 </pre>
 <pre class="code extensibella"id="125">
  &lt; <b>case DT1.</b>
