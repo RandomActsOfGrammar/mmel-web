@@ -1,0 +1,753 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  unsat_proofs:clauses</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  unsat_proofs:clauses</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module unsat_proofs:clauses
+
+Builds on unsat_proofs:lrat
+
+clause ::= ...
+         | rangeClause(int, int)
+         | noteClause(string, clause)
+
+
+Low <= High
+1 + Low = PlusOne
+---------------------------------------------- [Trans-RangeClauseStep]
+|{clause}- rangeClause(Low, High) ~~>
+      or(pos(Low), rangeClause(PlusOne, High))
+
+
+Low > High
+------------------------------------------------- [Trans-RangeClauseEnd]
+|{clause}- rangeClause(Low, High) ~~> emptyClause
+
+
+---------------------------------------------- [Trans-NoteClause]
+|{clause}- noteClause(Note, Clause) ~~> Clause
+</pre>
+<h3>File:  sat.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesat.sos" onclick="toggleFile('sat.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="sat.sos">[Raw File]</a>
+<pre class="code sterling" id="sat.sos">
+Module unsat_proofs:clauses
+
+
+Low <= X
+X <= High
+mem pos(X) A
+----------------------------------- [SC-RangeClause]
+sat_clause A rangeClause(Low, High)
+
+
+sat_clause A Clause
+------------------------------------- [SC-NoteClause]
+sat_clause A noteClause(Note, Clause)
+
+
+
+
+
+range Low High R
+negs R N
+subset N A
+------------------------------------- [USC-RangeClause]
+unsat_clause A rangeClause(Low, High)
+
+
+unsat_clause A Clause
+--------------------------------------- [USC-NoteClause]
+unsat_clause A noteClause(Note, Clause)
+
+
+
+Fixed Judgment negs : [int] [lit]
+
+========== [Negs-Nil]
+negs [] []
+
+
+negs Rest LRest
+=========================== [Negs-Cons]
+negs I::Rest neg(I)::LRest
+
+
+
+Fixed Judgment posLits : [int] [lit]
+
+============= [PL-Nil]
+posLits [] []
+
+
+posLits Rest LRest
+============================= [PL-Cons]
+posLits I::Rest pos(I)::LRest
+</pre>
+<h3>File:  check.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglecheck.sos" onclick="toggleFile('check.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="check.sos">[Raw File]</a>
+<pre class="code sterling" id="check.sos">
+Module unsat_proofs:clauses
+
+
+range Low High R
+posLits R L
+----------------------------------- [GL-RangeClause]
+gatherLits rangeClause(Low, High) L
+
+
+gatherLits Clause L
+------------------------------------- [GL-NoteClause]
+gatherLits noteClause(Note, Clause) L
+
+
+
+
+range Low High Range
+select I RangeRest Range
+!mem pos(I) A
+!mem neg(I) A
+negs RangeRest N
+subset N A
+------------------------------------------- [UC-RangeClause]
+unit_clause A rangeClause(Low, High) pos(I)
+
+
+unit_clause A Clause L
+---------------------------------------- [UC-NoteClause]
+unit_clause A noteClause(Note, Clause) L
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="clauses.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="clauses-details.html#0">Module unsat_proofs:clauses.</a>
+
+
+<a class="command" href="clauses-details.html#1">Prove_Constraint unsat_proofs:lrat:trans_lit_unique.</a>
+<a class="command" href="clauses-details.html#2">Prove_Constraint unsat_proofs:lrat:trans_lit_is.</a>
+
+
+<a class="command" href="clauses-details.html#3">Prove_Constraint unsat_proofs:lrat:trans_clause_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(4);" id="toggleproof4">[Show Proof]</a>
+<div class="proof" id="proof4" style="display: none;">
+<span class="comment">%Trans-RangeClauseStep</span>
+ <a class="tactic" href="clauses-details.html#4">TransB: case TransB.</a>
+   <span class="comment">%Trans-RangeClauseStep</span>
+    <a class="tactic" href="clauses-details.html#5">apply plus_integer_unique to TransA2 TransB1.</a> <a class="tactic" href="clauses-details.html#6">search.</a>
+   <span class="comment">%Trans-RangeClauseEnd</span>
+    <a class="tactic" href="clauses-details.html#7">apply greater_lesseq_integer_false to TransB TransA1.</a>
+<span class="comment">%Trans-RangeClauseEnd</span>
+ <a class="tactic" href="clauses-details.html#8">TransB: case TransB.</a>
+   <span class="comment">%Trans-RangeClauseStep</span>
+    <a class="tactic" href="clauses-details.html#9">apply greater_lesseq_integer_false to TransA1 TransB.</a>
+   <span class="comment">%Trans-RangeClauseEnd</span>
+    <a class="tactic" href="clauses-details.html#10">search.</a>
+<span class="comment">%Trans-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#11">case TransB.</a> <a class="tactic" href="clauses-details.html#12">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#13">Prove_Constraint unsat_proofs:lrat:trans_clause_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(14);" id="toggleproof14">[Show Proof]</a>
+<div class="proof" id="proof14" style="display: none;">
+<span class="comment">%Trans-RangeClauseStep</span>
+ <a class="tactic" href="clauses-details.html#14">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#15">apply plus_integer_is_integer to _ _ Trans2.</a> <a class="tactic" href="clauses-details.html#16">search.</a>
+<span class="comment">%Trans-RangeClauseEnd</span>
+ <a class="tactic" href="clauses-details.html#17">search.</a>
+<span class="comment">%Trans-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#18">case IsC.</a> <a class="tactic" href="clauses-details.html#19">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#20">Prove_Constraint unsat_proofs:lrat:trans_formula_unique.</a>
+<a class="command" href="clauses-details.html#21">Prove_Constraint unsat_proofs:lrat:trans_formula_is.</a>
+
+<a class="command" href="clauses-details.html#22">Prove_Ext_Ind unsat_proofs:lrat:is_clause.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(23);" id="toggleproof23">[Show Proof]</a>
+<div class="proof" id="proof23" style="display: none;">
+<span class="comment">%is_clause (rangeClause I1 I)</span>
+ <a class="tactic" href="clauses-details.html#23">Helper: assert forall Low High R,
+           is_integer Low -> is_integer High -> range Low High R ->
+           <is_clause {T}> (rangeClause Low High).</a>
+   <a class="tactic" href="clauses-details.html#24">induction on 3.</a> <a class="tactic" href="clauses-details.html#25">intros IsLow IsHigh R.</a> <a class="tactic" href="clauses-details.html#26">R: case R.</a>
+     <span class="comment">%Range-End</span>
+      <a class="tactic" href="clauses-details.html#27">unfold.</a> <a class="tactic" href="clauses-details.html#28">exists emptyClause.</a> <a class="tactic" href="clauses-details.html#29">search.</a>
+     <span class="comment">%Range-Step</span>
+      <a class="tactic" href="clauses-details.html#30">unfold.</a> <a class="tactic" href="clauses-details.html#31">IsPlusOne: apply plus_integer_is_integer to _ _ R1.</a>
+      <a class="tactic" href="clauses-details.html#32">IsCT: apply IH2 to _ _ R2.</a>
+      <a class="tactic" href="clauses-details.html#33">Tr: assert |{clause}- rangeClause Low High ~~>
+                            or (pos Low) (rangeClause PlusOne High).</a>
+      <a class="tactic" href="clauses-details.html#34">search.</a>
+ <a class="tactic" href="clauses-details.html#35">R: apply range_exists to Rel1 Rel2.</a> <a class="tactic" href="clauses-details.html#36">apply Helper to _ _ R.</a> <a class="tactic" href="clauses-details.html#37">search.</a>
+<span class="comment">%is_clause (noteClause S Clause)</span>
+ <a class="tactic" href="clauses-details.html#38">assert |{clause}- noteClause S Clause ~~> Clause.</a> <a class="tactic" href="clauses-details.html#39">Acc: case Acc.</a>
+ <a class="tactic" href="clauses-details.html#40">apply ext_ind_is_int_is_clause to Rel3.</a>
+ <a class="tactic" href="clauses-details.html#41">L: apply lt_plus_one to Rel1 _.</a> <a class="tactic" href="clauses-details.html#42">apply ext_ind_pos_is_clause to Rel3.</a>
+ <a class="tactic" href="clauses-details.html#43">A: apply Acc to _ L.</a> <a class="tactic" href="clauses-details.html#44">apply IH to Rel3 A.</a> <a class="tactic" href="clauses-details.html#45">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#46">Prove unsat_proofs:lrat:is_lit_eq_or_not__pos.</a>
+<a class="command" href="clauses-details.html#47">Prove unsat_proofs:lrat:is_lit_eq_or_not__neg.</a>
+<a class="command" href="clauses-details.html#48">Prove unsat_proofs:lrat:is_lit_eq_or_not.</a>
+
+
+<a class="command" href="clauses-details.html#49">Prove unsat_proofs:lrat:is_clause_empty_or_not.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(50);" id="toggleproof50">[Show Proof]</a>
+<div class="proof" id="proof50" style="display: none;">
+<span class="comment">%rangeClause I1 I</span>
+ <a class="tactic" href="clauses-details.html#50">search.</a>
+<span class="comment">%noteClause S Clause</span>
+ <a class="tactic" href="clauses-details.html#51">search.</a></div>
+<a class="command" href="clauses-details.html#52">Prove unsat_proofs:lrat:is_clause_or_or_not.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(53);" id="toggleproof53">[Show Proof]</a>
+<div class="proof" id="proof53" style="display: none;">
+<span class="comment">%rangeClause I1 I</span>
+ <a class="tactic" href="clauses-details.html#53">search.</a>
+<span class="comment">%noteClause S Clause</span>
+ <a class="tactic" href="clauses-details.html#54">search.</a></div>
+<a class="command" href="clauses-details.html#55">Extensible_Theorem
+  is_clause_rangeClause_or_not : forall C,
+    IsC : is_clause C ->
+    (exists L H, C = rangeClause L H) \/
+    ((exists L H, C = rangeClause L H) -> false)
+  on IsC.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(56);" id="toggleproof56">[Show Proof]</a>
+<div class="proof" id="proof56" style="display: none;">
+<span class="comment">%rangeClause</span>
+ <a class="tactic" href="clauses-details.html#56">search.</a>
+<span class="comment">%noteClause</span>
+ <a class="tactic" href="clauses-details.html#57">search.</a>
+<span class="comment">%emptyClause</span>
+ <a class="tactic" href="clauses-details.html#58">search.</a>
+<span class="comment">%or</span>
+ <a class="tactic" href="clauses-details.html#59">search.</a>
+<span class="comment">%preservability</span>
+ <a class="tactic" href="clauses-details.html#60">search.</a></div>
+<a class="command" href="clauses-details.html#61">Extensible_Theorem
+  is_clause_noteClause_or_not : forall C,
+    IsC : is_clause C ->
+    (exists Note C', C = noteClause Note C') \/
+    ((exists Note C', C = noteClause Note C') -> false)
+  on IsC.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(62);" id="toggleproof62">[Show Proof]</a>
+<div class="proof" id="proof62" style="display: none;">
+<span class="comment">%rangeClause</span>
+ <a class="tactic" href="clauses-details.html#62">search.</a>
+<span class="comment">%noteClause</span>
+ <a class="tactic" href="clauses-details.html#63">search.</a>
+<span class="comment">%emptyClause</span>
+ <a class="tactic" href="clauses-details.html#64">search.</a>
+<span class="comment">%or</span>
+ <a class="tactic" href="clauses-details.html#65">search.</a>
+<span class="comment">%preservability</span>
+ <a class="tactic" href="clauses-details.html#66">search.</a></div>
+<a class="command" href="clauses-details.html#67">Prove unsat_proofs:lrat:is_clause_eq_or_not.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(68);" id="toggleproof68">[Show Proof]</a>
+<div class="proof" id="proof68" style="display: none;">
+<span class="comment">%is_clause (rangeClause I1 I)</span>
+ <a class="tactic" href="clauses-details.html#68">Or: apply is_clause_rangeClause_or_not to IsC2.</a> <a class="tactic" href="clauses-details.html#69">E: case Or.</a>
+   <span class="comment">%C2 = rangeClause L H</span>
+    <a class="tactic" href="clauses-details.html#70">Is: case IsC2.</a> <a class="tactic" href="clauses-details.html#71">Or: apply is_integer_eq_or_not to IsC3 Is.</a>
+    <a class="tactic" href="clauses-details.html#72">E: case Or.</a>
+      <span class="comment">%I1 = L</span>
+       <a class="tactic" href="clauses-details.html#73">Or: apply is_integer_eq_or_not to IsC4 Is1.</a> <a class="tactic" href="clauses-details.html#74">E: case Or.</a>
+         <span class="comment">%I = H</span>
+          <a class="tactic" href="clauses-details.html#75">search.</a>
+         <span class="comment">%I != H</span>
+          <a class="tactic" href="clauses-details.html#76">right.</a> <a class="tactic" href="clauses-details.html#77">intros Eq.</a> <a class="tactic" href="clauses-details.html#78">case Eq.</a> <a class="tactic" href="clauses-details.html#79">backchain E.</a>
+      <span class="comment">%I1 != L</span>
+       <a class="tactic" href="clauses-details.html#80">right.</a> <a class="tactic" href="clauses-details.html#81">intros Eq.</a> <a class="tactic" href="clauses-details.html#82">case Eq.</a> <a class="tactic" href="clauses-details.html#83">backchain E.</a>
+   <span class="comment">%C2 != rangeClause L H</span>
+    <a class="tactic" href="clauses-details.html#84">right.</a> <a class="tactic" href="clauses-details.html#85">intros Eq.</a> <a class="tactic" href="clauses-details.html#86">case Eq.</a> <a class="tactic" href="clauses-details.html#87">backchain E.</a>
+<span class="comment">%is_clause (noteClause S Clause)</span>
+ <a class="tactic" href="clauses-details.html#88">Or: apply is_clause_noteClause_or_not to IsC2.</a> <a class="tactic" href="clauses-details.html#89">E: case Or.</a>
+   <span class="comment">%C2 = noteClause Note C'</span>
+    <a class="tactic" href="clauses-details.html#90">Is: case IsC2.</a> <a class="tactic" href="clauses-details.html#91">Or: apply is_string_eq_or_not to IsC3 Is.</a>
+    <a class="tactic" href="clauses-details.html#92">E: case Or.</a>
+      <span class="comment">%S = Note</span>
+       <a class="tactic" href="clauses-details.html#93">Or: apply IH to IsC4 Is1.</a> <a class="tactic" href="clauses-details.html#94">E: case Or.</a>
+         <span class="comment">%Clause = C'</span>
+          <a class="tactic" href="clauses-details.html#95">search.</a>
+         <span class="comment">%Clause != C'</span>
+          <a class="tactic" href="clauses-details.html#96">right.</a> <a class="tactic" href="clauses-details.html#97">intros Eq.</a> <a class="tactic" href="clauses-details.html#98">case Eq.</a> <a class="tactic" href="clauses-details.html#99">backchain E.</a>
+      <span class="comment">%S != Note</span>
+       <a class="tactic" href="clauses-details.html#100">right.</a> <a class="tactic" href="clauses-details.html#101">intros Eq.</a> <a class="tactic" href="clauses-details.html#102">case Eq.</a> <a class="tactic" href="clauses-details.html#103">backchain E.</a>
+   <span class="comment">%C2 != noteClause Note C'</span>
+    <a class="tactic" href="clauses-details.html#104">right.</a> <a class="tactic" href="clauses-details.html#105">intros Eq.</a> <a class="tactic" href="clauses-details.html#106">case Eq.</a> <a class="tactic" href="clauses-details.html#107">backchain E.</a></div>
+
+
+<a class="command" href="clauses-details.html#108">Prove unsat_proofs:lrat:negate_lit_unique.</a>
+<a class="command" href="clauses-details.html#109">Prove unsat_proofs:lrat:negate_lit_reverse.</a>
+<a class="command" href="clauses-details.html#110">Prove unsat_proofs:lrat:negate_lit_not_same.</a>
+<a class="command" href="clauses-details.html#111">Prove unsat_proofs:lrat:negate_lit_is_lit.</a>
+<a class="command" href="clauses-details.html#112">Prove unsat_proofs:lrat:negate_lit_is_lit_back.</a>
+<a class="command" href="clauses-details.html#113">Prove unsat_proofs:lrat:negate_lit_exists.</a>
+
+
+<a class="command" href="clauses-details.html#114">Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(115);" id="toggleproof115">[Show Proof]</a>
+<div class="proof" id="proof115" style="display: none;">
+<span class="comment">%Trans-RangeClauseStep</span>
+ <a class="tactic" href="clauses-details.html#115">Sat: case Hyp3.</a> <a class="tactic" href="clauses-details.html#116">Or: apply lesseq_integer_less_or_eq to Sat.</a>
+ <a class="tactic" href="clauses-details.html#117">L: case Or.</a>
+   <span class="comment">%Low < X</span>
+    <a class="tactic" href="clauses-details.html#118">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#119">P: apply plus_integer_comm to _ _ Hyp5.</a>
+    <a class="tactic" href="clauses-details.html#120">IsPosX: apply mem_is_lit to _ Sat2.</a> <a class="tactic" href="clauses-details.html#121">case IsPosX.</a>
+    <a class="tactic" href="clauses-details.html#122">apply less_lesseq_plus_one to _ _ L P.</a> <a class="tactic" href="clauses-details.html#123">search.</a>
+   <span class="comment">%Low = X</span>
+    <a class="tactic" href="clauses-details.html#124">search.</a>
+<span class="comment">%Trans-RangeClauseEnd</span>
+ <a class="tactic" href="clauses-details.html#125">Sat: case Hyp3.</a> <a class="tactic" href="clauses-details.html#126">Or: apply lesseq_integer_less_or_eq to Sat.</a>
+ <a class="tactic" href="clauses-details.html#127">L: case Or.</a>
+   <span class="comment">%Low < X</span>
+    <a class="tactic" href="clauses-details.html#128">HL: apply greater_integer_flip_less to Hyp4.</a>
+    <a class="tactic" href="clauses-details.html#129">HX: apply less_integer_transitive to HL L.</a>
+    <a class="tactic" href="clauses-details.html#130">apply greater_lesseq_integer_false to _ Sat1.</a>
+   <span class="comment">%Low = X</span>
+    <a class="tactic" href="clauses-details.html#131">apply greater_lesseq_integer_false to Hyp4 Sat1.</a>
+<span class="comment">%Trans-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#132">case Hyp3.</a> <a class="tactic" href="clauses-details.html#133">search.</a></div>
+
+<a class="command" href="clauses-details.html#134">Prove_Constraint unsat_proofs:lrat:sat_clause_trans_to_ext.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(135);" id="toggleproof135">[Show Proof]</a>
+<div class="proof" id="proof135" style="display: none;">
+<span class="comment">%Trans-RangeClauseStep</span>
+ <a class="tactic" href="clauses-details.html#135">Sat: case Hyp3.</a>
+   <span class="comment">%SC-Here</span>
+    <a class="tactic" href="clauses-details.html#136">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#137">apply is_integer_lesseq to Is.</a> <a class="tactic" href="clauses-details.html#138">search.</a>
+   <span class="comment">%SC-Later</span>
+    <a class="tactic" href="clauses-details.html#139">Sat: case Sat.</a> <a class="tactic" href="clauses-details.html#140">IsPosX: apply mem_is_lit to _ Sat2.</a>
+    <a class="tactic" href="clauses-details.html#141">IsX: case IsPosX.</a> <a class="tactic" href="clauses-details.html#142">Or: apply lesseq_integer_less_or_eq to Sat.</a>
+    <a class="tactic" href="clauses-details.html#143">L: case Or.</a>
+      <span class="comment">%PlusOne < X</span>
+       <a class="tactic" href="clauses-details.html#144">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#145">P: apply plus_integer_comm to _ _ Hyp5.</a>
+       <a class="tactic" href="clauses-details.html#146">L: apply lt_plus_one to Hyp5 _.</a>
+       <a class="tactic" href="clauses-details.html#147">LE: apply less_integer_lesseq to L1.</a>
+       <a class="tactic" href="clauses-details.html#148">apply lesseq_integer_transitive to LE Sat.</a> <a class="tactic" href="clauses-details.html#149">search.</a>
+      <span class="comment">%PlusOne = X</span>
+       <a class="tactic" href="clauses-details.html#150">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#151">L: apply lt_plus_one to Hyp5 _.</a>
+       <a class="tactic" href="clauses-details.html#152">apply less_integer_lesseq to L.</a> <a class="tactic" href="clauses-details.html#153">search.</a>
+<span class="comment">%Trans-RangeClauseEnd</span>
+ <a class="tactic" href="clauses-details.html#154">case Hyp3.</a>
+<span class="comment">%Trans-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#155">search.</a></div>
+
+<a class="command" href="clauses-details.html#156">Theorem negs_total : forall L,
+  is_list is_integer L -> exists N, negs L N.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(157);" id="toggleproof157">[Show Proof]</a>
+<div class="proof" id="proof157" style="display: none;">
+<a class="tactic" href="clauses-details.html#157">induction on 1.</a> <a class="tactic" href="clauses-details.html#158">intros IsL.</a> <a class="tactic" href="clauses-details.html#159">IsL: case IsL.</a>
+  <span class="comment">%nil</span>
+   <a class="tactic" href="clauses-details.html#160">search.</a>
+  <span class="comment">%cons</span>
+   <a class="tactic" href="clauses-details.html#161">apply IH to IsL1.</a> <a class="tactic" href="clauses-details.html#162">search.</a></div>
+
+<a class="command" href="clauses-details.html#163">Theorem negs_mem : forall L N X,
+  mem X L -> negs L N -> mem (neg X) N.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(164);" id="toggleproof164">[Show Proof]</a>
+<div class="proof" id="proof164" style="display: none;">
+<a class="tactic" href="clauses-details.html#164">induction on 1.</a> <a class="tactic" href="clauses-details.html#165">intros Mem Negs.</a> <a class="tactic" href="clauses-details.html#166">Mem: case Mem.</a>
+  <span class="comment">%Mem-Here</span>
+   <a class="tactic" href="clauses-details.html#167">case Negs.</a> <a class="tactic" href="clauses-details.html#168">search.</a>
+  <span class="comment">%Mem-Later</span>
+   <a class="tactic" href="clauses-details.html#169">Negs: case Negs.</a> <a class="tactic" href="clauses-details.html#170">apply IH to Mem Negs.</a> <a class="tactic" href="clauses-details.html#171">search.</a></div>
+
+<a class="command" href="clauses-details.html#172">Theorem negs_subset : forall LA LB NA NB,
+  subset LA LB -> negs LA NA -> negs LB NB -> subset NA NB.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(173);" id="toggleproof173">[Show Proof]</a>
+<div class="proof" id="proof173" style="display: none;">
+<a class="tactic" href="clauses-details.html#173">induction on 1.</a> <a class="tactic" href="clauses-details.html#174">intros S NA NB.</a> <a class="tactic" href="clauses-details.html#175">S: case S.</a>
+  <span class="comment">%Sbst-Nil</span>
+   <a class="tactic" href="clauses-details.html#176">case NA.</a> <a class="tactic" href="clauses-details.html#177">search.</a>
+  <span class="comment">%Sbst-Cons</span>
+   <a class="tactic" href="clauses-details.html#178">NA: case NA.</a> <a class="tactic" href="clauses-details.html#179">apply IH to S1 NA NB.</a> <a class="tactic" href="clauses-details.html#180">apply negs_mem to S NB.</a> <a class="tactic" href="clauses-details.html#181">search.</a></div>
+
+<a class="command" href="clauses-details.html#182">Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_trans.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(183);" id="toggleproof183">[Show Proof]</a>
+<div class="proof" id="proof183" style="display: none;">
+<span class="comment">%Trans-RangeClauseStep</span>
+ <a class="tactic" href="clauses-details.html#183">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#184">IsPlusOne: apply plus_integer_is_integer to _ _ Hyp5.</a>
+ <a class="tactic" href="clauses-details.html#185">Unsat: case Hyp3.</a> <a class="tactic" href="clauses-details.html#186">L: apply lt_plus_one to Hyp5 _.</a>
+ <a class="tactic" href="clauses-details.html#187">R: apply range_smaller_exists to _ _ Unsat L.</a>
+ <a class="tactic" href="clauses-details.html#188">SRR': apply range_subset to _ _ Unsat R _.</a>
+ <a class="tactic" href="clauses-details.html#189">IsPlusOne: apply plus_integer_is_integer to _ _ Hyp5.</a>
+ <a class="tactic" href="clauses-details.html#190">IsR': apply range_is to _ R.</a> <a class="tactic" href="clauses-details.html#191">N: apply negs_total to IsR'.</a>
+ <a class="tactic" href="clauses-details.html#192">S': apply negs_subset to SRR' N Unsat1.</a>
+ <a class="tactic" href="clauses-details.html#193">Mem: assert mem Low R.</a>
+   <a class="tactic" href="clauses-details.html#194">case Unsat.</a>
+     <a class="tactic" href="clauses-details.html#195">apply greater_lesseq_integer_false to _ Hyp4.</a>
+     <a class="tactic" href="clauses-details.html#196">search.</a>
+ <a class="tactic" href="clauses-details.html#197">MemN: apply negs_mem to Mem Unsat1.</a> <a class="tactic" href="clauses-details.html#198">unfold.</a> <a class="tactic" href="clauses-details.html#199">exists neg Low.</a> <a class="tactic" href="clauses-details.html#200">split.</a>
+   <span class="comment">%negate_lit (pos Low) NL</span>
+     <a class="tactic" href="clauses-details.html#201">search.</a>
+   <span class="comment">%mem NL Unsat</span>
+    <a class="tactic" href="clauses-details.html#202">apply subset_mem to Unsat2 MemN.</a> <a class="tactic" href="clauses-details.html#203">search.</a>
+   <span class="comment">%unsat_clause Unsat (rangeClause PlusOne High)</span>
+    <a class="tactic" href="clauses-details.html#204">unfold.</a> <a class="tactic" href="clauses-details.html#205">exists R', N1.</a> <a class="tactic" href="clauses-details.html#206">split.</a>
+      <span class="comment">%range PlusOne High R'</span>
+       <a class="tactic" href="clauses-details.html#207">search.</a>
+      <span class="comment">%negs R' N1</span>
+       <a class="tactic" href="clauses-details.html#208">search.</a>
+      <span class="comment">%subset N1 Unsat</span>
+       <a class="tactic" href="clauses-details.html#209">apply subset_trans to S' Unsat2.</a> <a class="tactic" href="clauses-details.html#210">search.</a>
+<span class="comment">%Trans-RangeClauseEnd</span>
+ <a class="tactic" href="clauses-details.html#211">search.</a>
+<span class="comment">%Trans-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#212">case Hyp3.</a> <a class="tactic" href="clauses-details.html#213">search.</a></div>
+
+<a class="command" href="clauses-details.html#214">Prove_Constraint unsat_proofs:lrat:unsat_clause_trans_to_ext.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(215);" id="toggleproof215">[Show Proof]</a>
+<div class="proof" id="proof215" style="display: none;">
+<span class="comment">%Trans-RangeClauseStep</span>
+ <a class="tactic" href="clauses-details.html#215">Unsat: case Hyp3.</a> <a class="tactic" href="clauses-details.html#216">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#217">US: case Unsat2.</a>
+ <a class="tactic" href="clauses-details.html#218">R: assert range Low High (Low::R).</a>
+ <a class="tactic" href="clauses-details.html#219">N: assert negs (Low::R) (neg Low::N).</a> <a class="tactic" href="clauses-details.html#220">case Unsat.</a>
+ <a class="tactic" href="clauses-details.html#221">assert subset (neg Low::N) Unsat.</a> <a class="tactic" href="clauses-details.html#222">search.</a>
+<span class="comment">%Trans-RangeClauseEnd</span>
+ <a class="tactic" href="clauses-details.html#223">R: assert range Low High [].</a> <a class="tactic" href="clauses-details.html#224">assert negs [] [].</a> <a class="tactic" href="clauses-details.html#225">search.</a>
+<span class="comment">%Trans-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#226">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#227">Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_trans.</a>
+<a class="command" href="clauses-details.html#228">Prove_Constraint unsat_proofs:lrat:sat_formula_trans_to_ext.</a>
+
+
+<a class="command" href="clauses-details.html#229">Theorem negs_form : forall L N X,
+  negs L N -> mem X N -> exists I, X = neg I.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(230);" id="toggleproof230">[Show Proof]</a>
+<div class="proof" id="proof230" style="display: none;">
+<a class="tactic" href="clauses-details.html#230">induction on 2.</a> <a class="tactic" href="clauses-details.html#231">intros N M.</a> <a class="tactic" href="clauses-details.html#232">M: case M.</a>
+  <span class="comment">%Mem-Here</span>
+   <a class="tactic" href="clauses-details.html#233">case N.</a> <a class="tactic" href="clauses-details.html#234">search.</a>
+  <span class="comment">%Mem-Later</span>
+   <a class="tactic" href="clauses-details.html#235">N: case N.</a> <a class="tactic" href="clauses-details.html#236">apply IH to _ M.</a> <a class="tactic" href="clauses-details.html#237">search.</a></div>
+
+<a class="command" href="clauses-details.html#238">Prove unsat_proofs:lrat:unsat_sat_clause.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(239);" id="toggleproof239">[Show Proof]</a>
+<div class="proof" id="proof239" style="display: none;">
+<span class="comment">%USC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#239">SAT: case SAT.</a> <a class="tactic" href="clauses-details.html#240">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#241">IsR: apply range_is to _ UNSAT1.</a>
+ <a class="tactic" href="clauses-details.html#242">IsX: apply between_integers_is_integer to _ _ SAT SAT1.</a>
+ <a class="tactic" href="clauses-details.html#243">M: apply in_range to _ _ UNSAT1 SAT SAT1.</a>
+ <a class="tactic" href="clauses-details.html#244">M': apply negs_mem to M UNSAT2.</a> <a class="tactic" href="clauses-details.html#245">M3: apply subset_mem to UNSAT3 M'.</a>
+ <a class="tactic" href="clauses-details.html#246">GA: case GA.</a> <a class="tactic" href="clauses-details.html#247">apply GA to SAT2 _ M3.</a>
+<span class="comment">%USC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#248">SAT: case SAT.</a> <a class="tactic" href="clauses-details.html#249">case IsC.</a> <a class="tactic" href="clauses-details.html#250">apply IH to _ _ UNSAT1 SAT GA.</a></div>
+
+
+<a class="command" href="clauses-details.html#251">Prove unsat_proofs:lrat:sat_clause_orderless.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(252);" id="toggleproof252">[Show Proof]</a>
+<div class="proof" id="proof252" style="display: none;">
+<span class="comment">%SC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#252">apply MemA1A2 to SAT3.</a> <a class="tactic" href="clauses-details.html#253">search.</a>
+<span class="comment">%SC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#254">case IsC.</a> <a class="tactic" href="clauses-details.html#255">apply IH to _ _ _ SAT1 MemA1A2.</a> <a class="tactic" href="clauses-details.html#256">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#257">Prove unsat_proofs:lrat:sat_formula_orderless.</a>
+
+
+<a class="command" href="clauses-details.html#258">Theorem mems_subset : forall Sub Sup,
+  is_list is_lit Sub -> (forall X, mem X Sub -> mem X Sup) ->
+  subset Sub Sup.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(259);" id="toggleproof259">[Show Proof]</a>
+<div class="proof" id="proof259" style="display: none;">
+<a class="tactic" href="clauses-details.html#259">induction on 1.</a> <a class="tactic" href="clauses-details.html#260">intros Is Mems.</a> <a class="tactic" href="clauses-details.html#261">Is: case Is.</a>
+  <span class="comment">%nil</span>
+   <a class="tactic" href="clauses-details.html#262">search.</a>
+  <span class="comment">%cons</span>
+   <a class="tactic" href="clauses-details.html#263">Mems': assert forall X, mem X T -> mem X Sup.</a>
+     <a class="tactic" href="clauses-details.html#264">intros M.</a> <a class="tactic" href="clauses-details.html#265">apply Mems to _ with X = X.</a> <a class="tactic" href="clauses-details.html#266">search.</a>
+   <a class="tactic" href="clauses-details.html#267">M: apply Mems to _ with X = H.</a> <a class="tactic" href="clauses-details.html#268">apply IH to Is1 Mems'.</a> <a class="tactic" href="clauses-details.html#269">search.</a></div>
+
+<a class="command" href="clauses-details.html#270">Theorem mems_subset2 [A] : forall (Sub Sup1 Sup2 : list A),
+  subset Sub Sup1 -> (forall X, mem X Sup1 -> mem X Sup2) ->
+  subset Sub Sup2.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(271);" id="toggleproof271">[Show Proof]</a>
+<div class="proof" id="proof271" style="display: none;">
+<a class="tactic" href="clauses-details.html#271">induction on 1.</a> <a class="tactic" href="clauses-details.html#272">intros S Mems.</a> <a class="tactic" href="clauses-details.html#273">S: case S.</a>
+  <span class="comment">%Sbst-Nil</span>
+   <a class="tactic" href="clauses-details.html#274">search.</a>
+  <span class="comment">%Sbst-Cons</span>
+   <a class="tactic" href="clauses-details.html#275">apply Mems to S.</a> <a class="tactic" href="clauses-details.html#276">apply IH to S1 _.</a> <a class="tactic" href="clauses-details.html#277">search.</a></div>
+
+<a class="command" href="clauses-details.html#278">Prove unsat_proofs:lrat:unsat_clause_orderless.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(279);" id="toggleproof279">[Show Proof]</a>
+<div class="proof" id="proof279" style="display: none;">
+<span class="comment">%USC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#279">apply mems_subset2 to UNSAT3 MemA1A2.</a> <a class="tactic" href="clauses-details.html#280">search.</a>
+<span class="comment">%USC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#281">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#282">apply IH to _ _ _ UNSAT1 MemA1A2.</a> <a class="tactic" href="clauses-details.html#283">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#284">Prove unsat_proofs:lrat:unit_clause_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(285);" id="toggleproof285">[Show Proof]</a>
+<div class="proof" id="proof285" style="display: none;">
+<span class="comment">%USC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#285">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#286">IsRange: apply range_is to _ Unit1.</a>
+ <a class="tactic" href="clauses-details.html#287">Mem: apply select_mem to Unit2.</a> <a class="tactic" href="clauses-details.html#288">apply is_list_int_mem to _ Mem.</a>
+ <a class="tactic" href="clauses-details.html#289">search.</a>
+<span class="comment">%USC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#290">case IsC.</a> <a class="tactic" href="clauses-details.html#291">apply IH to _ _ Unit1.</a> <a class="tactic" href="clauses-details.html#292">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#293">Prove unsat_proofs:lrat:unit_clause_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(294);" id="toggleproof294">[Show Proof]</a>
+<div class="proof" id="proof294" style="display: none;">
+<span class="comment">%UC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#294">UnitB: case UnitB.</a> <a class="tactic" href="clauses-details.html#295">apply range_unique to UnitB UnitA1.</a> <a class="tactic" href="clauses-details.html#296">Is: case IsC.</a>
+ <a class="tactic" href="clauses-details.html#297">IsRange: apply range_is to _ UnitB.</a> <a class="tactic" href="clauses-details.html#298">MA: apply select_mem to UnitA2.</a>
+ <a class="tactic" href="clauses-details.html#299">MB: apply select_mem to UnitB1.</a> <a class="tactic" href="clauses-details.html#300">IsI: apply is_list_int_mem to _ MA.</a>
+ <a class="tactic" href="clauses-details.html#301">IsI1: apply is_list_int_mem to _ MB.</a>
+ <a class="tactic" href="clauses-details.html#302">Or: apply is_integer_eq_or_not to IsI1 IsI.</a> <a class="tactic" href="clauses-details.html#303">E: case Or.</a>
+   <span class="comment">%I1 = I</span>
+    <a class="tactic" href="clauses-details.html#304">search.</a>
+   <span class="comment">%I1 != I</span>
+    <a class="tactic" href="clauses-details.html#305">M: apply mem_before_select_after to UnitB1 _ E.</a>
+    <a class="tactic" href="clauses-details.html#306">MN: apply negs_mem to M UnitB4.</a> <a class="tactic" href="clauses-details.html#307">MB: apply subset_mem to UnitB5 MN.</a>
+    <a class="tactic" href="clauses-details.html#308">Prm': apply permutation_symmetric to Prm.</a>
+    <a class="tactic" href="clauses-details.html#309">MA: apply permutation_mem to Prm' MB1.</a> <a class="tactic" href="clauses-details.html#310">apply UnitA4 to _.</a>
+            <span class="comment">%`apply UnitA4 to MA1.` fails with a unification error</span>
+<span class="comment">%UC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#311">UnitB: case UnitB.</a> <a class="tactic" href="clauses-details.html#312">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#313">apply IH to _ _ _ UnitA1 _ _.</a>
+ <a class="tactic" href="clauses-details.html#314">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#315">Prove unsat_proofs:lrat:unit_clause_not_assigned.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(316);" id="toggleproof316">[Show Proof]</a>
+<div class="proof" id="proof316" style="display: none;">
+<span class="comment">%UC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#316">backchain UC3.</a>
+<span class="comment">%UC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#317">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#318">apply IH to _ _ UC1 _.</a></div>
+
+
+<a class="command" href="clauses-details.html#319">Prove unsat_proofs:lrat:unit_clause_not_assigned_negate.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(320);" id="toggleproof320">[Show Proof]</a>
+<div class="proof" id="proof320" style="display: none;">
+<span class="comment">%UC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#320">case Neg.</a> <a class="tactic" href="clauses-details.html#321">backchain UC4.</a>
+<span class="comment">%UC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#322">case IsC.</a> <a class="tactic" href="clauses-details.html#323">apply IH to _ _ UC1 _ _.</a></div>
+
+
+<a class="command" href="clauses-details.html#324">Prove unsat_proofs:lrat:unit_clause_expand.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(325);" id="toggleproof325">[Show Proof]</a>
+<div class="proof" id="proof325" style="display: none;">
+<span class="comment">%UC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#325">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#326">SAT: case SAT.</a> <a class="tactic" href="clauses-details.html#327">IsPX: apply mem_is_lit to _ SAT2.</a>
+ <a class="tactic" href="clauses-details.html#328">IsX: case IsPX.</a> <a class="tactic" href="clauses-details.html#329">MXR: apply in_range to _ _ UC1 SAT SAT1.</a>
+ <a class="tactic" href="clauses-details.html#330">M: apply select_mem to UC2.</a> <a class="tactic" href="clauses-details.html#331">apply range_is to _ UC1.</a>
+ <a class="tactic" href="clauses-details.html#332">IsI: apply is_list_int_mem to _ M.</a>
+ <a class="tactic" href="clauses-details.html#333">Or: apply is_integer_eq_or_not to IsI IsX.</a> <a class="tactic" href="clauses-details.html#334">E: case Or.</a>
+   <span class="comment">%I = X</span>
+    <a class="tactic" href="clauses-details.html#335">search.</a>
+   <span class="comment">%I != X</span>
+    <a class="tactic" href="clauses-details.html#336">MXRR: apply mem_before_select_after to UC2 MXR _.</a>
+    <a class="tactic" href="clauses-details.html#337">MXN: apply negs_mem to MXRR UC5.</a> <a class="tactic" href="clauses-details.html#338">MXA: apply subset_mem to UC6 MXN.</a>
+    <a class="tactic" href="clauses-details.html#339">MXE: apply Expand to MXA.</a> <a class="tactic" href="clauses-details.html#340">GA_E: case GA_E.</a>
+    <a class="tactic" href="clauses-details.html#341">apply GA_E to MXE _ SAT2.</a>
+<span class="comment">%UC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#342">SAT: case SAT.</a> <a class="tactic" href="clauses-details.html#343">case IsC.</a> <a class="tactic" href="clauses-details.html#344">apply IH to _ _ _ UC1 SAT _ _ _.</a> <a class="tactic" href="clauses-details.html#345">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#346">Prove unsat_proofs:lrat:unit_clause_add.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(347);" id="toggleproof347">[Show Proof]</a>
+<div class="proof" id="proof347" style="display: none;">
+<span class="comment">%UC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#347">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#348">M: apply select_mem to UC2.</a>
+ <a class="tactic" href="clauses-details.html#349">Low: apply range_low_lesseq to _ UC1 _.</a>
+ <a class="tactic" href="clauses-details.html#350">High: apply range_high_lesseq to _ UC1 _.</a> <a class="tactic" href="clauses-details.html#351">search.</a>
+<span class="comment">%UC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#352">case IsC.</a> <a class="tactic" href="clauses-details.html#353">apply IH to _ _ _ UC1 _.</a> <a class="tactic" href="clauses-details.html#354">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#355">Theorem posLits_total : forall L,
+  is_list is_integer L -> exists P, posLits L P.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(356);" id="toggleproof356">[Show Proof]</a>
+<div class="proof" id="proof356" style="display: none;">
+<a class="tactic" href="clauses-details.html#356">induction on 1.</a> <a class="tactic" href="clauses-details.html#357">intros Is.</a> <a class="tactic" href="clauses-details.html#358">Is: case Is.</a>
+  <span class="comment">%nil</span>
+   <a class="tactic" href="clauses-details.html#359">search.</a>
+  <span class="comment">%cons</span>
+   <a class="tactic" href="clauses-details.html#360">apply IH to Is1.</a> <a class="tactic" href="clauses-details.html#361">search.</a></div>
+
+<a class="command" href="clauses-details.html#362">Theorem posLits_unique : forall L P1 P2,
+  posLits L P1 -> posLits L P2 -> P1 = P2.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(363);" id="toggleproof363">[Show Proof]</a>
+<div class="proof" id="proof363" style="display: none;">
+<a class="tactic" href="clauses-details.html#363">induction on 1.</a> <a class="tactic" href="clauses-details.html#364">intros PL1 PL2.</a> <a class="tactic" href="clauses-details.html#365">PL1: case PL1.</a>
+  <span class="comment">%PL-Nil</span>
+   <a class="tactic" href="clauses-details.html#366">case PL2.</a> <a class="tactic" href="clauses-details.html#367">search.</a>
+  <span class="comment">%PL-Cons</span>
+   <a class="tactic" href="clauses-details.html#368">PL2: case PL2.</a> <a class="tactic" href="clauses-details.html#369">apply IH to PL1 PL2.</a> <a class="tactic" href="clauses-details.html#370">search.</a></div>
+
+<a class="command" href="clauses-details.html#371">Theorem posLits_is : forall L P,
+  is_list is_integer L -> posLits L P -> is_list is_lit P.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(372);" id="toggleproof372">[Show Proof]</a>
+<div class="proof" id="proof372" style="display: none;">
+<a class="tactic" href="clauses-details.html#372">induction on 2.</a> <a class="tactic" href="clauses-details.html#373">intros IsL PL.</a> <a class="tactic" href="clauses-details.html#374">PL: case PL.</a>
+  <span class="comment">%PL-Nil</span>
+   <a class="tactic" href="clauses-details.html#375">search.</a>
+  <span class="comment">%PL-Cons</span>
+   <a class="tactic" href="clauses-details.html#376">Is: case IsL.</a> <a class="tactic" href="clauses-details.html#377">apply IH to _ PL.</a> <a class="tactic" href="clauses-details.html#378">search.</a></div>
+
+<a class="command" href="clauses-details.html#379">Theorem posLits_mem : forall L P X,
+  mem X L -> posLits L P -> mem (pos X) P.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(380);" id="toggleproof380">[Show Proof]</a>
+<div class="proof" id="proof380" style="display: none;">
+<a class="tactic" href="clauses-details.html#380">induction on 1.</a> <a class="tactic" href="clauses-details.html#381">intros Mem PL.</a> <a class="tactic" href="clauses-details.html#382">Mem: case Mem.</a>
+  <span class="comment">%Mem-Here</span>
+   <a class="tactic" href="clauses-details.html#383">case PL.</a> <a class="tactic" href="clauses-details.html#384">search.</a>
+  <span class="comment">%Mem-Later</span>
+   <a class="tactic" href="clauses-details.html#385">case PL.</a> <a class="tactic" href="clauses-details.html#386">apply IH to Mem _.</a> <a class="tactic" href="clauses-details.html#387">search.</a></div>
+
+<a class="command" href="clauses-details.html#388">Theorem posLits_form : forall L P X,
+  posLits L P -> mem X P -> exists I, X = pos I.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(389);" id="toggleproof389">[Show Proof]</a>
+<div class="proof" id="proof389" style="display: none;">
+<a class="tactic" href="clauses-details.html#389">induction on 2.</a> <a class="tactic" href="clauses-details.html#390">intros PL Mem.</a> <a class="tactic" href="clauses-details.html#391">Mem: case Mem.</a>
+  <span class="comment">%Mem-Here</span>
+   <a class="tactic" href="clauses-details.html#392">case PL.</a> <a class="tactic" href="clauses-details.html#393">search.</a>
+  <span class="comment">%Mem-Later</span>
+   <a class="tactic" href="clauses-details.html#394">case PL.</a> <a class="tactic" href="clauses-details.html#395">apply IH to _ Mem.</a> <a class="tactic" href="clauses-details.html#396">search.</a></div>
+
+<a class="command" href="clauses-details.html#397">Theorem mem_after_posLits_before : forall L P I,
+  posLits L P -> mem (pos I) P -> mem I L.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(398);" id="toggleproof398">[Show Proof]</a>
+<div class="proof" id="proof398" style="display: none;">
+<a class="tactic" href="clauses-details.html#398">induction on 2.</a> <a class="tactic" href="clauses-details.html#399">intros PL Mem.</a> <a class="tactic" href="clauses-details.html#400">Mem: case Mem.</a>
+  <span class="comment">%Mem-Here</span>
+   <a class="tactic" href="clauses-details.html#401">case PL.</a> <a class="tactic" href="clauses-details.html#402">search.</a>
+  <span class="comment">%Mem-Later</span>
+   <a class="tactic" href="clauses-details.html#403">PL: case PL.</a> <a class="tactic" href="clauses-details.html#404">apply IH to _ Mem.</a> <a class="tactic" href="clauses-details.html#405">search.</a></div>
+
+<a class="command" href="clauses-details.html#406">Prove unsat_proofs:lrat:gatherLits_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(407);" id="toggleproof407">[Show Proof]</a>
+<div class="proof" id="proof407" style="display: none;">
+<span class="comment">%GL-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#407">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#408">apply range_is to _ GL1.</a> <a class="tactic" href="clauses-details.html#409">apply posLits_is to _ GL2.</a>
+ <a class="tactic" href="clauses-details.html#410">search.</a>
+<span class="comment">%GL-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#411">case IsC.</a> <a class="tactic" href="clauses-details.html#412">apply IH to _ GL1.</a> <a class="tactic" href="clauses-details.html#413">search.</a></div>
+
+<a class="command" href="clauses-details.html#414">Prove unsat_proofs:lrat:gatherLits_exists.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(415);" id="toggleproof415">[Show Proof]</a>
+<div class="proof" id="proof415" style="display: none;">
+<span class="comment">%nil</span>
+ <a class="tactic" href="clauses-details.html#415">R: apply range_exists to IsC1 IsC2.</a> <a class="tactic" href="clauses-details.html#416">IsR: apply range_is to _ R.</a>
+ <a class="tactic" href="clauses-details.html#417">apply posLits_total to IsR.</a> <a class="tactic" href="clauses-details.html#418">search.</a>
+<span class="comment">%cons</span>
+ <a class="tactic" href="clauses-details.html#419">apply IH to IsC2.</a> <a class="tactic" href="clauses-details.html#420">search.</a></div>
+
+<a class="command" href="clauses-details.html#421">Theorem permutation_reflexive_lits : forall L,
+  is_list is_lit L -> permutation L L.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(422);" id="toggleproof422">[Show Proof]</a>
+<div class="proof" id="proof422" style="display: none;">
+<a class="tactic" href="clauses-details.html#422">induction on 1.</a> <a class="tactic" href="clauses-details.html#423">intros Is.</a> <a class="tactic" href="clauses-details.html#424">Is: case Is.</a>
+  <span class="comment">%nil</span>
+   <a class="tactic" href="clauses-details.html#425">search.</a>
+  <span class="comment">%cons</span>
+   <a class="tactic" href="clauses-details.html#426">apply IH to Is1.</a> <a class="tactic" href="clauses-details.html#427">search.</a></div>
+
+<a class="command" href="clauses-details.html#428">Prove unsat_proofs:lrat:gatherLits_permutation.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(429);" id="toggleproof429">[Show Proof]</a>
+<div class="proof" id="proof429" style="display: none;">
+<span class="comment">%GL-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#429">GL': case GL2.</a> <a class="tactic" href="clauses-details.html#430">apply range_unique to GL' GL3.</a>
+ <a class="tactic" href="clauses-details.html#431">apply posLits_unique to GL4 GL'1.</a> <a class="tactic" href="clauses-details.html#432">case IsC.</a>
+ <a class="tactic" href="clauses-details.html#433">IsR: apply range_is to _ GL3.</a> <a class="tactic" href="clauses-details.html#434">apply posLits_is to _ GL4.</a>
+ <a class="tactic" href="clauses-details.html#435">backchain permutation_reflexive_lits.</a>
+<span class="comment">%GL-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#436">GL': case GL2.</a> <a class="tactic" href="clauses-details.html#437">case IsC.</a> <a class="tactic" href="clauses-details.html#438">apply IH to _ GL3 GL'.</a> <a class="tactic" href="clauses-details.html#439">search.</a></div>
+
+<a class="command" href="clauses-details.html#440">Prove_Constraint unsat_proofs:lrat:trans_gatherLits.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(441);" id="toggleproof441">[Show Proof]</a>
+<div class="proof" id="proof441" style="display: none;">
+<span class="comment">%Trans-RangeClauseStep</span>
+ <a class="tactic" href="clauses-details.html#441">GL: case Hyp2.</a> <a class="tactic" href="clauses-details.html#442">Is: case Hyp1.</a> <a class="tactic" href="clauses-details.html#443">L: apply lt_plus_one to Hyp4 _.</a>
+ <a class="tactic" href="clauses-details.html#444">IsPlusOne: apply plus_integer_is_integer to _ _ Hyp4.</a>
+ <a class="tactic" href="clauses-details.html#445">R: apply range_smaller_exists to _ _ GL L.</a>
+ <a class="tactic" href="clauses-details.html#446">IsR': apply range_is to _ R.</a> <a class="tactic" href="clauses-details.html#447">apply posLits_total to IsR'.</a> <a class="tactic" href="clauses-details.html#448">search.</a>
+<span class="comment">%Trans-RangeClauseEnd</span>
+ <a class="tactic" href="clauses-details.html#449">search.</a>
+<span class="comment">%Trans-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#450">case Hyp2.</a> <a class="tactic" href="clauses-details.html#451">search.</a></div>
+
+<a class="command" href="clauses-details.html#452">Prove_Constraint unsat_proofs:lrat:trans_gatherLits_permutation.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(453);" id="toggleproof453">[Show Proof]</a>
+<div class="proof" id="proof453" style="display: none;">
+<span class="comment">%Trans-RangeClauseStep</span>
+ <a class="tactic" href="clauses-details.html#453">GL: case Hyp2.</a> <a class="tactic" href="clauses-details.html#454">GL': case Hyp3.</a> <a class="tactic" href="clauses-details.html#455">GL': case GL'.</a> <a class="tactic" href="clauses-details.html#456">R: case GL.</a>
+   <span class="comment">%Range-End</span>
+    <a class="tactic" href="clauses-details.html#457">apply greater_lesseq_integer_false to R Hyp4.</a>
+   <span class="comment">%Range-Step</span>
+    <a class="tactic" href="clauses-details.html#458">apply plus_integer_unique to R1 Hyp5.</a>
+    <a class="tactic" href="clauses-details.html#459">apply range_unique to GL' R2.</a> <a class="tactic" href="clauses-details.html#460">PL: case GL1.</a>
+    <a class="tactic" href="clauses-details.html#461">apply posLits_unique to GL'1 PL.</a> <a class="tactic" href="clauses-details.html#462">Is: case Hyp1.</a>
+    <a class="tactic" href="clauses-details.html#463">apply plus_integer_is_integer to _ _ R1.</a>
+    <a class="tactic" href="clauses-details.html#464">apply range_is to _ GL'.</a> <a class="tactic" href="clauses-details.html#465">IsLRest1: apply posLits_is to _ PL.</a>
+    <a class="tactic" href="clauses-details.html#466">apply permutation_reflexive_lits to IsLRest1.</a> <a class="tactic" href="clauses-details.html#467">search.</a>
+<span class="comment">%Trans-RangeClauseEnd</span>
+ <a class="tactic" href="clauses-details.html#468">GL: case Hyp2.</a> <a class="tactic" href="clauses-details.html#469">case Hyp3.</a> <a class="tactic" href="clauses-details.html#470">R: case GL.</a>
+   <span class="comment">%Range-End</span>
+    <a class="tactic" href="clauses-details.html#471">case GL1.</a> <a class="tactic" href="clauses-details.html#472">search.</a>
+   <span class="comment">%Range-Step</span>
+    <a class="tactic" href="clauses-details.html#473">apply greater_lesseq_integer_false to Hyp4 R.</a>
+<span class="comment">%Trans-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#474">GL: case Hyp2.</a> <a class="tactic" href="clauses-details.html#475">Is: case Hyp1.</a>
+ <a class="tactic" href="clauses-details.html#476">apply gatherLits_permutation to _ GL Hyp3.</a> <a class="tactic" href="clauses-details.html#477">search.</a></div>
+
+<a class="command" href="clauses-details.html#478">Prove unsat_proofs:lrat:gatherLits_sat.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(479);" id="toggleproof479">[Show Proof]</a>
+<div class="proof" id="proof479" style="display: none;">
+<span class="comment">%SC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#479">GL: case GL.</a> <a class="tactic" href="clauses-details.html#480">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#481">IsPX: apply mem_is_lit to _ Sat3.</a>
+ <a class="tactic" href="clauses-details.html#482">IsX: case IsPX.</a> <a class="tactic" href="clauses-details.html#483">Mem: apply in_range to Is _ GL Sat1 Sat2.</a>
+ <a class="tactic" href="clauses-details.html#484">apply posLits_mem to Mem GL1.</a> <a class="tactic" href="clauses-details.html#485">search.</a>
+<span class="comment">%SC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#486">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#487">GL: case GL.</a> <a class="tactic" href="clauses-details.html#488">apply IH to _ _ GL Sat1.</a> <a class="tactic" href="clauses-details.html#489">search.</a></div>
+
+<a class="command" href="clauses-details.html#490">Prove unsat_proofs:lrat:gatherLits_mem_sat.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(491);" id="toggleproof491">[Show Proof]</a>
+<div class="proof" id="proof491" style="display: none;">
+<span class="comment">%GL-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#491">apply posLits_form to GL2 MemLits.</a>
+ <a class="tactic" href="clauses-details.html#492">MemIR: apply mem_after_posLits_before to GL2 MemLits.</a> <a class="tactic" href="clauses-details.html#493">Is: case IsC.</a>
+ <a class="tactic" href="clauses-details.html#494">apply range_low_lesseq to _ GL1 MemIR.</a>
+ <a class="tactic" href="clauses-details.html#495">apply range_high_lesseq to _ GL1 MemIR.</a> <a class="tactic" href="clauses-details.html#496">search.</a>
+<span class="comment">%GL-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#497">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#498">apply IH to _ _ GL1 MemLits MemSat.</a> <a class="tactic" href="clauses-details.html#499">search.</a></div>
+
+<a class="command" href="clauses-details.html#500">Prove unsat_proofs:lrat:gatherLits_unsat.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(501);" id="toggleproof501">[Show Proof]</a>
+<div class="proof" id="proof501" style="display: none;">
+<span class="comment">%USC-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#501">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#502">GL: case GL.</a> <a class="tactic" href="clauses-details.html#503">apply range_unique to GL Unsat1.</a>
+ <a class="tactic" href="clauses-details.html#504">apply posLits_form to GL1 MemLits.</a>
+ <a class="tactic" href="clauses-details.html#505">MR: apply mem_after_posLits_before to GL1 MemLits.</a>
+ <a class="tactic" href="clauses-details.html#506">MN: apply negs_mem to MR Unsat2.</a> <a class="tactic" href="clauses-details.html#507">MU: apply subset_mem to Unsat3 MN.</a>
+ <a class="tactic" href="clauses-details.html#508">GA: case GA.</a> <a class="tactic" href="clauses-details.html#509">apply GA to MU _ MemUnsat.</a>
+<span class="comment">%USC-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#510">case IsC.</a> <a class="tactic" href="clauses-details.html#511">case GL.</a> <a class="tactic" href="clauses-details.html#512">apply IH to GA _ _ _ Unsat1 _ _.</a></div>
+
+<a class="command" href="clauses-details.html#513">Theorem posLits_negateLitList_negs : forall L P N,
+  posLits L P -> negateLitList P N -> negs L N.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(514);" id="toggleproof514">[Show Proof]</a>
+<div class="proof" id="proof514" style="display: none;">
+<a class="tactic" href="clauses-details.html#514">induction on 1.</a> <a class="tactic" href="clauses-details.html#515">intros PL N.</a> <a class="tactic" href="clauses-details.html#516">PL: case PL.</a>
+  <span class="comment">%PL-Nil</span>
+   <a class="tactic" href="clauses-details.html#517">case N.</a> <a class="tactic" href="clauses-details.html#518">search.</a>
+  <span class="comment">%PL-Cons</span>
+   <a class="tactic" href="clauses-details.html#519">N: case N.</a> <a class="tactic" href="clauses-details.html#520">apply IH to PL N1.</a> <a class="tactic" href="clauses-details.html#521">case N.</a> <a class="tactic" href="clauses-details.html#522">search.</a></div>
+
+<a class="command" href="clauses-details.html#523">Theorem negs_is : forall L N,
+  is_list is_integer L -> negs L N -> is_list is_lit N.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(524);" id="toggleproof524">[Show Proof]</a>
+<div class="proof" id="proof524" style="display: none;">
+<a class="tactic" href="clauses-details.html#524">induction on 1.</a> <a class="tactic" href="clauses-details.html#525">intros Is N.</a> <a class="tactic" href="clauses-details.html#526">Is: case Is.</a>
+  <span class="comment">%nil</span>
+   <a class="tactic" href="clauses-details.html#527">case N.</a> <a class="tactic" href="clauses-details.html#528">search.</a>
+  <span class="comment">%cons</span>
+   <a class="tactic" href="clauses-details.html#529">N: case N.</a> <a class="tactic" href="clauses-details.html#530">apply IH to Is1 N.</a> <a class="tactic" href="clauses-details.html#531">search.</a></div>
+
+<a class="command" href="clauses-details.html#532">Prove unsat_proofs:lrat:negate_lits_unsat.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(533);" id="toggleproof533">[Show Proof]</a>
+<div class="proof" id="proof533" style="display: none;">
+<span class="comment">%GL-RangeClause</span>
+ <a class="tactic" href="clauses-details.html#533">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#534">Negs: apply posLits_negateLitList_negs to GL2 NLL.</a>
+ <a class="tactic" href="clauses-details.html#535">IsR: apply range_is to _ GL1.</a> <a class="tactic" href="clauses-details.html#536">IsNL: apply negs_is to IsR Negs.</a>
+ <a class="tactic" href="clauses-details.html#537">apply mems_subset to IsNL _ with Sup = NL.</a> <a class="tactic" href="clauses-details.html#538">search.</a>
+<span class="comment">%GL-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#539">case IsC.</a> <a class="tactic" href="clauses-details.html#540">apply IH to _ GL1 _.</a> <a class="tactic" href="clauses-details.html#541">search.</a></div>
+
+
+<a class="command" href="clauses-details.html#542">Prove_Constraint unsat_proofs:lrat:trans_proof_is.</a>
+<a class="command" href="clauses-details.html#543">Prove unsat_proofs:lrat:check_proof_correct.</a>
+<a class="command" href="clauses-details.html#544">Prove unsat_proofs:lrat:checkProof_orderless.</a>
+<a class="command" href="clauses-details.html#545">Prove_Ext_Ind unsat_proofs:lrat:checkProof.</a>
+<a class="command" href="clauses-details.html#546">Prove_Constraint unsat_proofs:lrat:trans_checkProof.</a>
+
+
+<a class="command" href="clauses-details.html#547">Prove unsat_proofs:lrat:formulaToKnown_all_greater.</a>
+<a class="command" href="clauses-details.html#548">Prove unsat_proofs:lrat:formulaToKnown_all_unique.</a>
+<a class="command" href="clauses-details.html#549">Prove unsat_proofs:lrat:formulaToKnown_sat_formula.</a>
+<a class="command" href="clauses-details.html#550">Prove unsat_proofs:lrat:formulaToKnown_is.</a>
+
+<a class="command" href="clauses-details.html#551"></a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

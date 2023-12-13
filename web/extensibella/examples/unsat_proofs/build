@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+cd lrat
+sterling --extensibella -I ../../ unsat_proofs:lrat
+../../../../../buildTools/main_to_html_extensibella.py 3 lrat "Extensibella Example:  unsat_proofs:lrat" lrat.xthm syntax.sos sat.sos check.sos
+extensibella --compile lrat.xthm
+cd ..
+
+cd clauses
+sterling --extensibella -I ../../ unsat_proofs:clauses
+../../../../../buildTools/main_to_html_extensibella.py 3 clauses "Extensibella Example:  unsat_proofs:clauses" clauses.xthm syntax.sos sat.sos check.sos
+cd ..
+
+cd drat
+sterling --extensibella -I ../../ unsat_proofs:drat
+../../../../../buildTools/main_to_html_extensibella.py 3 drat "Extensibella Example:  unsat_proofs:drat" drat.xthm syntax.sos check.sos toDrat.sos
+cd ..

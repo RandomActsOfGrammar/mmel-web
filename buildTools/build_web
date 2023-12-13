@@ -36,15 +36,15 @@ done
 
 #go and rebuild all the examples
 if test $DO_BUILD -gt 0; then
-   cd extensibella/examples
+   cd web/extensibella/examples
    ./build
-   cd ../sterling/examples
+   cd ../../sterling/examples
    ./build
-   cd ../../..
+   cd ../..
 fi
 
 #copy everything to the web copy
-cp -R extensibella $WEB_DIR
+cp -R web $WEB_DIR
 
 #go to the web copy
 cd $WEB_DIR
@@ -56,13 +56,14 @@ find . -name "build" -delete
 
 
 #build the tarballs for Extensibella examples
+cd extensibella
 ln -s examples extensibella-examples
 tar -zcvf examples/extensibella-examples.tar.gz \
     extensibella-examples/*/*/*.sos \
     extensibella-examples/*/*/*.xthm
 rm extensibella-examples
 
-cd examples
+cd extensibella/examples
 for dir in */
 do
     dir=${dir%*/} # remove the trailing "/"
@@ -70,7 +71,7 @@ do
         $dir/*/*.sos \
         $dir/*/*.xthm
 done
-cd .. #back to built web root directory
+cd ../.. #back to built web root directory
 
 
 #build the tarballs for Sterling examples

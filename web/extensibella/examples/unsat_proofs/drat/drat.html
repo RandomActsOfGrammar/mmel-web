@@ -1,0 +1,678 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  unsat_proofs:drat</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  unsat_proofs:drat</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module unsat_proofs:drat
+
+Builds on unsat_proofs:lrat
+
+
+dratProof ::= addDratEmpty
+            | addDratClause(clause, dratProof)
+            | deleteDrat(clause, dratProof)
+
+Translation dratProof :
+</pre>
+<h3>File:  check.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglecheck.sos" onclick="toggleFile('check.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="check.sos">[Raw File]</a>
+<pre class="code sterling" id="check.sos">
+Module unsat_proofs:drat
+
+Judgment checkDrat : [clause] dratProof*
+
+drup Known emptyClause
+---------------------------- [CD-Empty]
+checkDrat Known addDratEmpty
+
+
+drup Known C
+checkDrat C::Known Rest
+-------------------------------------- [CD-Add]
+checkDrat Known addDratClause(C, Rest)
+
+
+select C KRest Known
+checkDrat KRest Rest
+----------------------------------- [CD-Delete]
+checkDrat Known deleteDrat(C, Rest)
+
+
+              <span class="comment">/*known clauses, clause*/</span>
+Fixed Judgment drup : [clause] clause
+                   <span class="comment">/*known clauses, assignment*/</span>
+Fixed Judgment drup_help : [clause] [lit]
+
+gatherLits C L
+negateLitList L NL
+drup_help Known NL
+================== [DRUP]
+drup Known C
+
+
+
+mem C Known
+unsat_clause A C
+==================== [DRUPH-End]
+drup_help Known A
+
+
+mem C Known
+unit_clause A C L
+drup_help Known L::A
+==================== [DRUPH-Step]
+drup_help Known A
+</pre>
+<h3>File:  toDrat.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggletoDrat.sos" onclick="toggleFile('toDrat.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="toDrat.sos">[Raw File]</a>
+<pre class="code sterling" id="toDrat.sos">
+Module unsat_proofs:drat
+
+Judgment toDrat : [(int, clause)] proof* dratProof
+
+-------------------------------------------- [TD-EmptyLrat]
+toDrat Known emptyLrat(ID, Prf) addDratEmpty
+
+
+remove_all Known ID KRest
+toDrat (ID, C)::KRest Rest DRest
+-------------------------------------------- [TD-AddLrup]
+{toDrat Known addLrupProof(ID, C, Prf, Rest)
+              addDratClause(C, DRest)}
+
+
+select (ID, C) KRest Known
+toDrat KRest Rest DRest
+------------------------------------------- [TD-DeleteLrat]
+{toDrat Known deleteLratProof(ID, Rest)
+                      deleteDrat(C, DRest)}
+
+
+Known |{proof}- P ~~> PT
+toDrat Known PT D
+------------------------ [TD-Trans]*
+toDrat Known P D
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="drat.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="drat-details.html#0">Module unsat_proofs:drat.</a>
+
+
+<a class="command" href="drat-details.html#1">Prove_Constraint unsat_proofs:lrat:trans_lit_unique.</a>
+<a class="command" href="drat-details.html#2">Prove_Constraint unsat_proofs:lrat:trans_lit_is.</a>
+<a class="command" href="drat-details.html#3">Prove_Constraint unsat_proofs:lrat:trans_clause_unique.</a>
+<a class="command" href="drat-details.html#4">Prove_Constraint unsat_proofs:lrat:trans_clause_is.</a>
+<a class="command" href="drat-details.html#5">Prove_Constraint unsat_proofs:lrat:trans_formula_unique.</a>
+<a class="command" href="drat-details.html#6">Prove_Constraint unsat_proofs:lrat:trans_formula_is.</a>
+
+
+<a class="command" href="drat-details.html#7">Prove_Ext_Ind unsat_proofs:lrat:is_clause.</a>
+
+
+<a class="command" href="drat-details.html#8">Prove unsat_proofs:lrat:is_lit_eq_or_not__pos.</a>
+<a class="command" href="drat-details.html#9">Prove unsat_proofs:lrat:is_lit_eq_or_not__neg.</a>
+<a class="command" href="drat-details.html#10">Prove unsat_proofs:lrat:is_lit_eq_or_not.</a>
+
+<a class="command" href="drat-details.html#11">Prove unsat_proofs:lrat:is_clause_empty_or_not.</a>
+<a class="command" href="drat-details.html#12">Prove unsat_proofs:lrat:is_clause_or_or_not.</a>
+<a class="command" href="drat-details.html#13">Prove unsat_proofs:lrat:is_clause_eq_or_not.</a>
+
+
+<a class="command" href="drat-details.html#14">Prove unsat_proofs:lrat:negate_lit_unique.</a>
+<a class="command" href="drat-details.html#15">Prove unsat_proofs:lrat:negate_lit_reverse.</a>
+<a class="command" href="drat-details.html#16">Prove unsat_proofs:lrat:negate_lit_not_same.</a>
+<a class="command" href="drat-details.html#17">Prove unsat_proofs:lrat:negate_lit_is_lit.</a>
+<a class="command" href="drat-details.html#18">Prove unsat_proofs:lrat:negate_lit_is_lit_back.</a>
+<a class="command" href="drat-details.html#19">Prove unsat_proofs:lrat:negate_lit_exists.</a>
+
+
+<a class="command" href="drat-details.html#20">Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.</a>
+<a class="command" href="drat-details.html#21">Prove_Constraint unsat_proofs:lrat:sat_clause_trans_to_ext.</a>
+<a class="command" href="drat-details.html#22">Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_trans.</a>
+<a class="command" href="drat-details.html#23">Prove_Constraint unsat_proofs:lrat:unsat_clause_trans_to_ext.</a>
+<a class="command" href="drat-details.html#24">Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_trans.</a>
+<a class="command" href="drat-details.html#25">Prove_Constraint unsat_proofs:lrat:sat_formula_trans_to_ext.</a>
+
+
+<a class="command" href="drat-details.html#26">Prove unsat_proofs:lrat:unsat_sat_clause.</a>
+
+
+<a class="command" href="drat-details.html#27">Prove unsat_proofs:lrat:sat_clause_orderless.</a>
+<a class="command" href="drat-details.html#28">Prove unsat_proofs:lrat:sat_formula_orderless.</a>
+<a class="command" href="drat-details.html#29">Prove unsat_proofs:lrat:unsat_clause_orderless.</a>
+
+
+<a class="command" href="drat-details.html#30">Prove unsat_proofs:lrat:unit_clause_is.</a>
+<a class="command" href="drat-details.html#31">Prove unsat_proofs:lrat:unit_clause_unique.</a>
+<a class="command" href="drat-details.html#32">Prove unsat_proofs:lrat:unit_clause_not_assigned.</a>
+<a class="command" href="drat-details.html#33">Prove unsat_proofs:lrat:unit_clause_not_assigned_negate.</a>
+<a class="command" href="drat-details.html#34">Prove unsat_proofs:lrat:unit_clause_expand.</a>
+<a class="command" href="drat-details.html#35">Prove unsat_proofs:lrat:unit_clause_add.</a>
+
+
+<a class="command" href="drat-details.html#36">Prove unsat_proofs:lrat:gatherLits_is.</a>
+<a class="command" href="drat-details.html#37">Prove unsat_proofs:lrat:gatherLits_exists.</a>
+<a class="command" href="drat-details.html#38">Prove unsat_proofs:lrat:gatherLits_permutation.</a>
+
+<a class="command" href="drat-details.html#39">Prove_Constraint unsat_proofs:lrat:trans_gatherLits.</a>
+<a class="command" href="drat-details.html#40">Prove_Constraint unsat_proofs:lrat:trans_gatherLits_permutation.</a>
+
+<a class="command" href="drat-details.html#41">Prove unsat_proofs:lrat:gatherLits_sat.</a>
+<a class="command" href="drat-details.html#42">Prove unsat_proofs:lrat:gatherLits_mem_sat.</a>
+<a class="command" href="drat-details.html#43">Prove unsat_proofs:lrat:gatherLits_unsat.</a>
+<a class="command" href="drat-details.html#44">Prove unsat_proofs:lrat:negate_lits_unsat.</a>
+
+
+<a class="command" href="drat-details.html#45">Prove_Constraint unsat_proofs:lrat:trans_proof_is.</a>
+
+
+<a class="command" href="drat-details.html#46">Prove unsat_proofs:lrat:check_proof_correct.</a>
+<a class="command" href="drat-details.html#47">Prove unsat_proofs:lrat:checkProof_orderless.</a>
+
+
+<a class="command" href="drat-details.html#48">Prove_Ext_Ind unsat_proofs:lrat:checkProof.</a>
+
+
+<a class="command" href="drat-details.html#49">Prove_Constraint unsat_proofs:lrat:trans_checkProof.</a>
+
+
+<a class="command" href="drat-details.html#50">Prove unsat_proofs:lrat:formulaToKnown_all_greater.</a>
+<a class="command" href="drat-details.html#51">Prove unsat_proofs:lrat:formulaToKnown_all_unique.</a>
+<a class="command" href="drat-details.html#52">Prove unsat_proofs:lrat:formulaToKnown_sat_formula.</a>
+<a class="command" href="drat-details.html#53">Prove unsat_proofs:lrat:formulaToKnown_is.</a>
+
+
+<a class="command" href="drat-details.html#54">Theorem rupProof_help__drup_help : forall KnownL KnownD A Prf,
+  rupProof_help KnownL A Prf -> values KnownL KnownD ->
+  drup_help KnownD A.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(55);" id="toggleproof55">[Show Proof]</a>
+<div class="proof" id="proof55" style="display: none;">
+<a class="tactic" href="drat-details.html#55">induction on 1.</a> <a class="tactic" href="drat-details.html#56">intros RUP V.</a> <a class="tactic" href="drat-details.html#57">RUP: case RUP.</a>
+  <span class="comment">%RUPPH-End</span>
+   <a class="tactic" href="drat-details.html#58">MemL: apply lookup_mem to RUP.</a> <a class="tactic" href="drat-details.html#59">MemD: apply values_mem to MemL V.</a>
+   <a class="tactic" href="drat-details.html#60">search.</a>
+  <span class="comment">%RUPPH-Step</span>
+   <a class="tactic" href="drat-details.html#61">MemL: apply lookup_mem to RUP.</a> <a class="tactic" href="drat-details.html#62">MemD: apply values_mem to MemL V.</a>
+   <a class="tactic" href="drat-details.html#63">apply IH to RUP2 _.</a> <a class="tactic" href="drat-details.html#64">search.</a></div>
+
+
+<a class="command" href="drat-details.html#65">Theorem rupProof__drup : forall KnownL KnownD C Prf,
+  rupProof KnownL C Prf -> values KnownL KnownD -> drup KnownD C.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(66);" id="toggleproof66">[Show Proof]</a>
+<div class="proof" id="proof66" style="display: none;">
+<a class="tactic" href="drat-details.html#66">intros R Vals.</a> <a class="tactic" href="drat-details.html#67">R: case R.</a> <a class="tactic" href="drat-details.html#68">apply rupProof_help__drup_help to R2 Vals.</a>
+<a class="tactic" href="drat-details.html#69">search.</a></div>
+
+
+<a class="command" href="drat-details.html#70">Theorem remove_all_no_mem_same : forall K ID KRest,
+  remove_all K ID KRest -> ((exists C, mem (ID, C) K) -> false) ->
+  K = KRest.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(71);" id="toggleproof71">[Show Proof]</a>
+<div class="proof" id="proof71" style="display: none;">
+<a class="tactic" href="drat-details.html#71">induction on 1.</a> <a class="tactic" href="drat-details.html#72">intros RA NEq.</a> <a class="tactic" href="drat-details.html#73">RA: case RA.</a>
+  <span class="comment">%RA-Nil</span>
+   <a class="tactic" href="drat-details.html#74">search.</a>
+  <span class="comment">%RA-Remove</span>
+   <a class="tactic" href="drat-details.html#75">apply NEq to _.</a>
+  <span class="comment">%RA-Step</span>
+   <a class="tactic" href="drat-details.html#76">assert (exists C, mem (ID, C) IRest) -> false.</a>
+     <a class="tactic" href="drat-details.html#77">intros Ex.</a> <a class="tactic" href="drat-details.html#78">case Ex.</a> <a class="tactic" href="drat-details.html#79">backchain NEq.</a>
+   <a class="tactic" href="drat-details.html#80">apply IH to RA1 _.</a> <a class="tactic" href="drat-details.html#81">search.</a></div>
+
+
+<a class="command" href="drat-details.html#82">Theorem remove_all_good_clause_list_select : forall K ID KRA C KS,
+  good_clause_list K -> remove_all K ID KRA -> select (ID, C) KS K ->
+  KRA = KS.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(83);" id="toggleproof83">[Show Proof]</a>
+<div class="proof" id="proof83" style="display: none;">
+<a class="tactic" href="drat-details.html#83">induction on 2.</a> <a class="tactic" href="drat-details.html#84">intros GCL RA Slct.</a> <a class="tactic" href="drat-details.html#85">RA: case RA.</a>
+  <span class="comment">%RA-Nil</span>
+   <a class="tactic" href="drat-details.html#86">case Slct.</a>
+  <span class="comment">%RA-Remove</span>
+   <a class="tactic" href="drat-details.html#87">Slct: case Slct.</a>
+     <span class="comment">%Slct-First</span>
+      <a class="tactic" href="drat-details.html#88">assert (exists C', mem (ID, C') IRest) -> false.</a>
+        <a class="tactic" href="drat-details.html#89">intros Ex.</a> <a class="tactic" href="drat-details.html#90">M: case Ex.</a> <a class="tactic" href="drat-details.html#91">GCL: case GCL.</a> <a class="tactic" href="drat-details.html#92">backchain GCL.</a>
+      <a class="tactic" href="drat-details.html#93">apply remove_all_no_mem_same to RA _.</a> <a class="tactic" href="drat-details.html#94">search.</a>
+     <span class="comment">%Slct-Later</span>
+      <a class="tactic" href="drat-details.html#95">M: apply select_mem to Slct.</a> <a class="tactic" href="drat-details.html#96">GCL: case GCL.</a>
+      <a class="tactic" href="drat-details.html#97">apply GCL to _ M.</a>
+  <span class="comment">%RA-Step</span>
+   <a class="tactic" href="drat-details.html#98">Slct: case Slct.</a>
+     <span class="comment">%Slct-First</span>
+      <a class="tactic" href="drat-details.html#99">apply RA to _.</a>
+     <span class="comment">%Slct-Later</span>
+      <a class="tactic" href="drat-details.html#100">apply good_clause_list_drop to GCL.</a> <a class="tactic" href="drat-details.html#101">apply IH to _ RA1 Slct.</a>
+      <a class="tactic" href="drat-details.html#102">search.</a></div>
+
+
+<a class="command" href="drat-details.html#103">Theorem remove_all_subset : forall K ID KRest,
+  remove_all K ID KRest -> subset KRest K.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(104);" id="toggleproof104">[Show Proof]</a>
+<div class="proof" id="proof104" style="display: none;">
+<a class="tactic" href="drat-details.html#104">induction on 1.</a> <a class="tactic" href="drat-details.html#105">intros RA.</a> <a class="tactic" href="drat-details.html#106">RA: case RA.</a>
+  <span class="comment">%RA-Nil</span>
+   <a class="tactic" href="drat-details.html#107">search.</a>
+  <span class="comment">%RA-Remove</span>
+   <a class="tactic" href="drat-details.html#108">S: apply IH to RA.</a> <a class="tactic" href="drat-details.html#109">backchain subset_add_right.</a>
+  <span class="comment">%RA-Step</span>
+   <a class="tactic" href="drat-details.html#110">S: apply IH to RA1.</a> <a class="tactic" href="drat-details.html#111">apply subset_add_right to S with A = (A, C).</a>
+   <a class="tactic" href="drat-details.html#112">search.</a></div>
+
+
+<a class="command" href="drat-details.html#113">Theorem subset_values[A, B] : forall (A B : list (pair A B)) VA VB,
+  subset A B -> values A VA -> values B VB -> subset VA VB.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(114);" id="toggleproof114">[Show Proof]</a>
+<div class="proof" id="proof114" style="display: none;">
+<a class="tactic" href="drat-details.html#114">induction on 1.</a> <a class="tactic" href="drat-details.html#115">intros S VA VB.</a> <a class="tactic" href="drat-details.html#116">S: case S.</a>
+  <span class="comment">%Sbst-Nil</span>
+   <a class="tactic" href="drat-details.html#117">case VA.</a> <a class="tactic" href="drat-details.html#118">search.</a>
+  <span class="comment">%Sbst-Cons</span>
+   <a class="tactic" href="drat-details.html#119">VA: case VA.</a> <a class="tactic" href="drat-details.html#120">apply IH to S1 VA VB.</a> <a class="tactic" href="drat-details.html#121">apply values_mem to S VB.</a>
+   <a class="tactic" href="drat-details.html#122">search.</a></div>
+
+
+<a class="command" href="drat-details.html#123">Theorem values_exist : forall K,
+  is_list (is_pair is_integer is_clause) K -> exists V, values K V.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(124);" id="toggleproof124">[Show Proof]</a>
+<div class="proof" id="proof124" style="display: none;">
+<a class="tactic" href="drat-details.html#124">induction on 1.</a> <a class="tactic" href="drat-details.html#125">intros Is.</a> <a class="tactic" href="drat-details.html#126">Is: case Is.</a>
+  <span class="comment">%nil</span>
+   <a class="tactic" href="drat-details.html#127">search.</a>
+  <span class="comment">%cons</span>
+   <a class="tactic" href="drat-details.html#128">case Is.</a> <a class="tactic" href="drat-details.html#129">apply IH to Is1.</a> <a class="tactic" href="drat-details.html#130">search.</a></div>
+
+
+<a class="command" href="drat-details.html#131">Theorem remove_all_unique : forall K ID KA KB,
+  remove_all K ID KA -> remove_all K ID KB -> KA = KB.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(132);" id="toggleproof132">[Show Proof]</a>
+<div class="proof" id="proof132" style="display: none;">
+<a class="tactic" href="drat-details.html#132">induction on 1.</a> <a class="tactic" href="drat-details.html#133">intros RAA RAB.</a> <a class="tactic" href="drat-details.html#134">RAA: case RAA.</a>
+  <span class="comment">%RA-Nil</span>
+   <a class="tactic" href="drat-details.html#135">case RAB.</a> <a class="tactic" href="drat-details.html#136">search.</a>
+  <span class="comment">%RA-Remove</span>
+   <a class="tactic" href="drat-details.html#137">RAB: case RAB.</a>
+     <span class="comment">%RA-Remove</span>
+      <a class="tactic" href="drat-details.html#138">apply IH to RAA RAB.</a> <a class="tactic" href="drat-details.html#139">search.</a>
+     <span class="comment">%RA-Step</span>
+      <a class="tactic" href="drat-details.html#140">apply RAB to _.</a>
+  <span class="comment">%RA-Step</span>
+   <a class="tactic" href="drat-details.html#141">RAB: case RAB.</a>
+     <span class="comment">%RA-Remove</span>
+      <a class="tactic" href="drat-details.html#142">apply RAA to _.</a>
+     <span class="comment">%RA-Step</span>
+      <a class="tactic" href="drat-details.html#143">apply IH to RAA1 RAB1.</a> <a class="tactic" href="drat-details.html#144">search.</a></div>
+
+
+<a class="command" href="drat-details.html#145">Theorem drup_help_subset : forall KA C KB,
+  drup_help KA C -> subset KA KB -> drup_help KB C.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(146);" id="toggleproof146">[Show Proof]</a>
+<div class="proof" id="proof146" style="display: none;">
+<a class="tactic" href="drat-details.html#146">induction on 1.</a> <a class="tactic" href="drat-details.html#147">intros D S.</a> <a class="tactic" href="drat-details.html#148">D: case D.</a>
+  <span class="comment">%DRUPH-End</span>
+   <a class="tactic" href="drat-details.html#149">apply subset_mem to S D.</a> <a class="tactic" href="drat-details.html#150">search.</a>
+  <span class="comment">%DRUPH-Step</span>
+   <a class="tactic" href="drat-details.html#151">apply IH to D2 S.</a> <a class="tactic" href="drat-details.html#152">apply subset_mem to S D.</a> <a class="tactic" href="drat-details.html#153">search.</a></div>
+
+
+<a class="command" href="drat-details.html#154">Theorem drup_subset : forall KA C KB,
+  drup KA C -> subset KA KB -> drup KB C.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(155);" id="toggleproof155">[Show Proof]</a>
+<div class="proof" id="proof155" style="display: none;">
+<a class="tactic" href="drat-details.html#155">intros D S.</a> <a class="tactic" href="drat-details.html#156">D: case D.</a> <a class="tactic" href="drat-details.html#157">apply drup_help_subset to D2 S.</a> <a class="tactic" href="drat-details.html#158">search.</a></div>
+
+
+<a class="command" href="drat-details.html#159">Theorem good_clause_list_selects : forall K ID CA KA CB KB,
+  good_clause_list K -> select (ID, CA) KA K ->
+  select (ID, CB) KB K -> KA = KB.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(160);" id="toggleproof160">[Show Proof]</a>
+<div class="proof" id="proof160" style="display: none;">
+<a class="tactic" href="drat-details.html#160">induction on 2.</a> <a class="tactic" href="drat-details.html#161">intros GCL SA SB.</a> <a class="tactic" href="drat-details.html#162">SA: case SA.</a>
+  <span class="comment">%SA by Slct-First</span>
+   <a class="tactic" href="drat-details.html#163">SB: case SB.</a>
+     <span class="comment">%SB by Slct-First</span>
+      <a class="tactic" href="drat-details.html#164">search.</a>
+     <span class="comment">%SB by Slct-Later</span>
+      <a class="tactic" href="drat-details.html#165">GCL: case GCL.</a> <a class="tactic" href="drat-details.html#166">M: apply select_mem to SB.</a> <a class="tactic" href="drat-details.html#167">apply GCL to _ M.</a>
+  <span class="comment">%SA by Slct-Later</span>
+   <a class="tactic" href="drat-details.html#168">SB: case SB.</a>
+     <span class="comment">%SB by Slct-First</span>
+      <a class="tactic" href="drat-details.html#169">GCL: case GCL.</a> <a class="tactic" href="drat-details.html#170">M: apply select_mem to SA.</a> <a class="tactic" href="drat-details.html#171">apply GCL to _ M.</a>
+     <span class="comment">%SB by Slct-Later</span>
+      <a class="tactic" href="drat-details.html#172">apply good_clause_list_drop to GCL.</a> <a class="tactic" href="drat-details.html#173">apply IH to _ SA SB.</a> <a class="tactic" href="drat-details.html#174">search.</a></div>
+
+
+<a class="command" href="drat-details.html#175">Theorem values_is : forall K V,
+  is_list (is_pair is_integer is_clause) K -> values K V ->
+  is_list is_clause V.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(176);" id="toggleproof176">[Show Proof]</a>
+<div class="proof" id="proof176" style="display: none;">
+<a class="tactic" href="drat-details.html#176">induction on 2.</a> <a class="tactic" href="drat-details.html#177">intros IsK V.</a> <a class="tactic" href="drat-details.html#178">V: case V.</a>
+  <span class="comment">%Vals-Nil</span>
+   <a class="tactic" href="drat-details.html#179">search.</a>
+  <span class="comment">%Vals-Cons</span>
+   <a class="tactic" href="drat-details.html#180">Is: case IsK.</a> <a class="tactic" href="drat-details.html#181">apply IH to Is1 V.</a> <a class="tactic" href="drat-details.html#182">case Is.</a> <a class="tactic" href="drat-details.html#183">search.</a></div>
+
+
+<a class="command" href="drat-details.html#184">Theorem select_is_clause : forall Known KRest IDC,
+  is_list is_clause Known -> select IDC KRest Known ->
+  is_list is_clause KRest.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(185);" id="toggleproof185">[Show Proof]</a>
+<div class="proof" id="proof185" style="display: none;">
+<a class="tactic" href="drat-details.html#185">induction on 2.</a> <a class="tactic" href="drat-details.html#186">intros Is Slct.</a> <a class="tactic" href="drat-details.html#187">Slct: case Slct.</a>
+  <span class="comment">%Slct-First</span>
+   <a class="tactic" href="drat-details.html#188">case Is.</a> <a class="tactic" href="drat-details.html#189">search.</a>
+  <span class="comment">%Slct-Later</span>
+   <a class="tactic" href="drat-details.html#190">Is: case Is.</a> <a class="tactic" href="drat-details.html#191">apply IH to _ Slct.</a> <a class="tactic" href="drat-details.html#192">search.</a></div>
+
+
+<a class="command" href="drat-details.html#193">Theorem mem_is_clause : forall Known C,
+  is_list is_clause Known -> mem C Known -> is_clause C.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(194);" id="toggleproof194">[Show Proof]</a>
+<div class="proof" id="proof194" style="display: none;">
+<a class="tactic" href="drat-details.html#194">induction on 2.</a> <a class="tactic" href="drat-details.html#195">intros Is Mem.</a> <a class="tactic" href="drat-details.html#196">Mem: case Mem.</a>
+  <span class="comment">%Mem-Here</span>
+   <a class="tactic" href="drat-details.html#197">Is: case Is.</a> <a class="tactic" href="drat-details.html#198">search.</a>
+  <span class="comment">%Mem-Later</span>
+   <a class="tactic" href="drat-details.html#199">Is: case Is.</a> <a class="tactic" href="drat-details.html#200">apply IH to _ Mem.</a> <a class="tactic" href="drat-details.html#201">search.</a></div>
+
+
+<a class="command" href="drat-details.html#202">Theorem is_count_exists_clause : forall L C,
+  is_list is_clause L -> is_clause C -> exists N, count C L N.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(203);" id="toggleproof203">[Show Proof]</a>
+<div class="proof" id="proof203" style="display: none;">
+<a class="tactic" href="drat-details.html#203">induction on 1.</a> <a class="tactic" href="drat-details.html#204">intros IsL IsC.</a> <a class="tactic" href="drat-details.html#205">Is: case IsL.</a>
+  <span class="comment">%is_list []</span>
+   <a class="tactic" href="drat-details.html#206">search.</a>
+  <span class="comment">%is_list (H::T)</span>
+   <a class="tactic" href="drat-details.html#207">Or: apply is_clause_eq_or_not to IsC Is.</a> <a class="tactic" href="drat-details.html#208">C: apply IH to Is1 IsC.</a>
+   <a class="tactic" href="drat-details.html#209">Eq: case Or.</a>
+     <span class="comment">%C = H</span>
+      <a class="tactic" href="drat-details.html#210">IsN: apply count_is_integer to C.</a>
+      <a class="tactic" href="drat-details.html#211">apply plus_integer_total to _ IsN with N1 = 1.</a> <a class="tactic" href="drat-details.html#212">search.</a>
+     <span class="comment">%C != H</span>
+      <a class="tactic" href="drat-details.html#213">search.</a></div>
+
+
+<a class="command" href="drat-details.html#214">Theorem counts_drop_head[A] : forall (H : A) T X N N',
+  count X (H::T) N -> count X T N' -> N >= N'.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(215);" id="toggleproof215">[Show Proof]</a>
+<div class="proof" id="proof215" style="display: none;">
+<a class="tactic" href="drat-details.html#215">intros C CT.</a> <a class="tactic" href="drat-details.html#216">C: case C.</a>
+  <span class="comment">%Cnt-ConsEq</span>
+   <a class="tactic" href="drat-details.html#217">apply count_unique to C CT.</a> <a class="tactic" href="drat-details.html#218">apply count_is_integer to C.</a>
+   <a class="tactic" href="drat-details.html#219">L: apply lt_plus_one to C1 _.</a> <a class="tactic" href="drat-details.html#220">apply less_integer_lesseq to L.</a>
+   <a class="tactic" href="drat-details.html#221">search.</a>
+  <span class="comment">%Cnt-ConsNEq</span>
+   <a class="tactic" href="drat-details.html#222">apply count_unique to CT C1.</a> <a class="tactic" href="drat-details.html#223">apply count_is_integer to CT.</a>
+   <a class="tactic" href="drat-details.html#224">backchain is_integer_greatereq.</a></div>
+
+
+<a class="command" href="drat-details.html#225">Theorem counts_subset : forall A B,
+  is_list is_clause A -> is_list is_clause B ->
+  (forall C NA NB, count C A NA -> count C B NB -> NB >= NA) ->
+  subset A B.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(226);" id="toggleproof226">[Show Proof]</a>
+<div class="proof" id="proof226" style="display: none;">
+<a class="tactic" href="drat-details.html#226">induction on 1.</a> <a class="tactic" href="drat-details.html#227">intros IsA IsB Counts.</a> <a class="tactic" href="drat-details.html#228">IsA: case IsA.</a>
+  <span class="comment">%nil</span>
+   <a class="tactic" href="drat-details.html#229">search.</a>
+  <span class="comment">%cons</span>
+   <a class="tactic" href="drat-details.html#230">CA: apply is_count_exists_clause to IsA1 IsA.</a>
+   <a class="tactic" href="drat-details.html#231">IsN: apply count_is_integer to CA.</a>
+   <a class="tactic" href="drat-details.html#232">P: apply plus_integer_total to _ IsN with N1 = 1.</a>
+   <a class="tactic" href="drat-details.html#233">CB: apply is_count_exists_clause to IsB IsA.</a>
+   <a class="tactic" href="drat-details.html#234">CAA: assert count H (H::T) N3.</a> <a class="tactic" href="drat-details.html#235">GEq: apply Counts to CAA CB.</a>
+   <a class="tactic" href="drat-details.html#236">IsN: apply count_is_integer to CA.</a> <a class="tactic" href="drat-details.html#237">N0: apply count_geq_0 to CA.</a>
+   <a class="tactic" href="drat-details.html#238">NN3: apply lt_plus_one to P _.</a> <a class="tactic" href="drat-details.html#239">G: assert N3 > 0.</a>
+     <a class="tactic" href="drat-details.html#240">Or: apply greatereq_integer_greater_or_eq to N0.</a> <a class="tactic" href="drat-details.html#241">G: case Or.</a>
+       <span class="comment">%N > 0</span>
+        <a class="tactic" href="drat-details.html#242">G2: apply less_integer_flip_greater to NN3.</a>
+        <a class="tactic" href="drat-details.html#243">apply greater_integer_transitive to G2 G.</a> <a class="tactic" href="drat-details.html#244">search.</a>
+       <span class="comment">%N = 0</span>
+        <a class="tactic" href="drat-details.html#245">apply less_integer_flip_greater to NN3.</a> <a class="tactic" href="drat-details.html#246">search.</a>
+   <a class="tactic" href="drat-details.html#247">N10: assert N1 > 0.</a>
+     <a class="tactic" href="drat-details.html#248">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="drat-details.html#249">E: case Or.</a>
+       <span class="comment">%N1 > N3</span>
+        <a class="tactic" href="drat-details.html#250">apply greater_integer_transitive to E G.</a> <a class="tactic" href="drat-details.html#251">search.</a>
+       <span class="comment">%N1 = N3</span>
+        <a class="tactic" href="drat-details.html#252">search.</a>
+   <a class="tactic" href="drat-details.html#253">MHB: apply count_mem to CB N10.</a>
+   <a class="tactic" href="drat-details.html#254">assert forall C NA NB, count C T NA -> count C B NB -> NB >= NA.</a>
+     <a class="tactic" href="drat-details.html#255">intros CT CB'.</a> <a class="tactic" href="drat-details.html#256">GEqNA: apply count_geq_0 to CT.</a>
+     <a class="tactic" href="drat-details.html#257">Or: apply greatereq_integer_greater_or_eq to GEqNA.</a> <a class="tactic" href="drat-details.html#258">E: case Or.</a>
+       <span class="comment">%NA > 0</span>
+        <a class="tactic" href="drat-details.html#259">M: apply count_mem to CT E.</a> <a class="tactic" href="drat-details.html#260">IsC: apply mem_is_clause to _ M.</a>
+        <a class="tactic" href="drat-details.html#261">Or: apply is_clause_eq_or_not to IsC IsA.</a> <a class="tactic" href="drat-details.html#262">Eq: case Or.</a>
+          <span class="comment">%C = H</span>
+           <a class="tactic" href="drat-details.html#263">apply count_unique to CA CT.</a> <a class="tactic" href="drat-details.html#264">apply count_unique to CB CB'.</a>
+           <a class="tactic" href="drat-details.html#265">Or: apply greatereq_integer_greater_or_eq to GEq.</a>
+           <a class="tactic" href="drat-details.html#266">C: case Or.</a>
+             <span class="comment">%NB > N3</span>
+              <a class="tactic" href="drat-details.html#267">L: apply greater_integer_flip_less to C.</a>
+              <a class="tactic" href="drat-details.html#268">L': apply less_integer_transitive to NN3 L.</a>
+              <a class="tactic" href="drat-details.html#269">apply less_integer_lesseq to L'.</a> <a class="tactic" href="drat-details.html#270">search.</a>
+             <span class="comment">%NB = N3</span>
+              <a class="tactic" href="drat-details.html#271">apply less_integer_lesseq to NN3.</a> <a class="tactic" href="drat-details.html#272">search.</a>
+          <span class="comment">%C != H</span>
+           <a class="tactic" href="drat-details.html#273">backchain Counts.</a>
+       <span class="comment">%NA = 0</span>
+        <a class="tactic" href="drat-details.html#274">apply count_geq_0 to CB'.</a> <a class="tactic" href="drat-details.html#275">search.</a>
+   <a class="tactic" href="drat-details.html#276">apply IH to IsA1 IsB _.</a> <a class="tactic" href="drat-details.html#277">search.</a></div>
+
+
+<a class="command" href="drat-details.html#278">Theorem remove_all_reduce_counts : forall K ID KRest V VR X N N',
+  remove_all K ID KRest -> values K V -> values KRest VR ->
+  count X V N -> count X VR N' ->
+  N >= N'.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(279);" id="toggleproof279">[Show Proof]</a>
+<div class="proof" id="proof279" style="display: none;">
+<a class="tactic" href="drat-details.html#279">induction on 1.</a> <a class="tactic" href="drat-details.html#280">intros RA VK VKR CV CVR.</a> <a class="tactic" href="drat-details.html#281">RA: case RA.</a>
+  <span class="comment">%RA-Nil</span>
+   <a class="tactic" href="drat-details.html#282">case VK.</a> <a class="tactic" href="drat-details.html#283">case VKR.</a> <a class="tactic" href="drat-details.html#284">case CV.</a> <a class="tactic" href="drat-details.html#285">case CVR.</a> <a class="tactic" href="drat-details.html#286">search.</a>
+  <span class="comment">%RA-Remove</span>
+   <a class="tactic" href="drat-details.html#287">VK: case VK.</a> <a class="tactic" href="drat-details.html#288">CV: case CV.</a>
+     <span class="comment">%Cnt-ConsEq</span>
+      <a class="tactic" href="drat-details.html#289">GEq: apply IH to RA VK VKR CV CVR.</a> <a class="tactic" href="drat-details.html#290">apply count_is_integer to CV.</a>
+      <a class="tactic" href="drat-details.html#291">L: apply lt_plus_one to CV1 _.</a>
+      <a class="tactic" href="drat-details.html#292">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="drat-details.html#293">E: case Or.</a>
+        <span class="comment">%N1 > N'</span>
+         <a class="tactic" href="drat-details.html#294">L': apply greater_integer_flip_less to E.</a>
+         <a class="tactic" href="drat-details.html#295">L2: apply less_integer_transitive to L' L.</a>
+         <a class="tactic" href="drat-details.html#296">apply less_integer_lesseq to L2.</a> <a class="tactic" href="drat-details.html#297">search.</a>
+        <span class="comment">%N1 = N'</span>
+         <a class="tactic" href="drat-details.html#298">apply less_integer_lesseq to L.</a> <a class="tactic" href="drat-details.html#299">search.</a>
+     <span class="comment">%Cnt-ConsNEq</span>
+      <a class="tactic" href="drat-details.html#300">apply IH to RA VK VKR CV1 CVR.</a> <a class="tactic" href="drat-details.html#301">search.</a>
+  <span class="comment">%RA-Step</span>
+   <a class="tactic" href="drat-details.html#302">VK: case VK.</a> <a class="tactic" href="drat-details.html#303">VKR: case VKR.</a> <a class="tactic" href="drat-details.html#304">CV: case CV.</a>
+     <span class="comment">%CV by Cnt-ConsEq</span>
+      <a class="tactic" href="drat-details.html#305">CVR: case CVR.</a>
+        <span class="comment">%CVR by Cnt-ConsEq</span>
+         <a class="tactic" href="drat-details.html#306">GEq: apply IH to RA1 VK VKR CV CVR.</a>
+         <a class="tactic" href="drat-details.html#307">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="drat-details.html#308">E: case Or.</a>
+           <span class="comment">%N1 > N2</span>
+            <a class="tactic" href="drat-details.html#309">L: apply greater_integer_flip_less to E.</a>
+            <a class="tactic" href="drat-details.html#310">L': apply less_sums to CVR1 CV1 _ _.</a>
+            <a class="tactic" href="drat-details.html#311">apply less_integer_lesseq to L'.</a> <a class="tactic" href="drat-details.html#312">search.</a>
+           <span class="comment">%N1 = N2</span>
+            <a class="tactic" href="drat-details.html#313">apply plus_integer_unique to CV1 CVR1.</a>
+            <a class="tactic" href="drat-details.html#314">apply count_is_integer to CV.</a>
+            <a class="tactic" href="drat-details.html#315">apply plus_integer_is_integer to _ _ CV1.</a>
+            <a class="tactic" href="drat-details.html#316">backchain is_integer_greatereq.</a>
+        <span class="comment">%CVR by Cnt-ConsNEq</span>
+         <a class="tactic" href="drat-details.html#317">apply CVR to _.</a>
+     <span class="comment">%CV by Cnt-ConsNEq</span>
+      <a class="tactic" href="drat-details.html#318">CVR: case CVR.</a>
+        <span class="comment">%CVR by Cnt-ConsEq</span>
+         <a class="tactic" href="drat-details.html#319">apply CV to _.</a>
+        <span class="comment">%CVR by Cnt-ConsNEq</span>
+         <a class="tactic" href="drat-details.html#320">apply IH to RA1 VK VKR CV1 CVR1.</a> <a class="tactic" href="drat-details.html#321">search.</a></div>
+
+
+<a class="command" href="drat-details.html#322">Extensible_Theorem
+  toDrat_maintains_proof : forall P D KnownL KnownD V,
+    IsKnownL : is_list (is_pair is_integer is_clause) KnownL ->
+    IsKnownD : is_list is_clause KnownD ->
+    IsP : is_proof P ->
+    CP : checkProof KnownL P ->
+    GCL : good_clause_list KnownL ->
+    TD : toDrat KnownL P D ->
+    Vals : values KnownL V -> <span class="comment">%same clauses are</span>
+    Counts : (forall C NA NB,
+                count C V NA -> count C KnownD NB -> NB >= NA) ->
+    checkDrat KnownD D
+  on TD.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(323);" id="toggleproof323">[Show Proof]</a>
+<div class="proof" id="proof323" style="display: none;">
+<span class="comment">%TD-EmptyLrat</span>
+ <a class="tactic" href="drat-details.html#323">CP: case CP.</a> <a class="tactic" href="drat-details.html#324">IsV: apply values_is to _ Vals.</a>
+ <a class="tactic" href="drat-details.html#325">S: apply counts_subset to IsV IsKnownD Counts.</a>
+ <a class="tactic" href="drat-details.html#326">D: apply rupProof__drup to CP Vals.</a> <a class="tactic" href="drat-details.html#327">D': apply drup_subset to D S.</a>
+ <a class="tactic" href="drat-details.html#328">search.</a>
+<span class="comment">%TD-AddLrup</span>
+ <a class="tactic" href="drat-details.html#329">CP: case CP.</a> <a class="tactic" href="drat-details.html#330">Is: case IsP.</a> <a class="tactic" href="drat-details.html#331">IsV: apply values_is to _ Vals.</a>
+ <a class="tactic" href="drat-details.html#332">S: apply counts_subset to IsV IsKnownD Counts.</a>
+ <a class="tactic" href="drat-details.html#333">D: apply rupProof__drup to CP1 Vals.</a> <a class="tactic" href="drat-details.html#334">D': apply drup_subset to D S.</a>
+ <a class="tactic" href="drat-details.html#335">apply remove_all_unique to CP TD1.</a>
+ <a class="tactic" href="drat-details.html#336">GCL_KR: apply good_clause_list_remove_all_add to _ TD1 with C = C.</a>
+ <a class="tactic" href="drat-details.html#337">IsKR: apply remove_all_is to _ TD1.</a> <a class="tactic" href="drat-details.html#338">VKR: apply values_exist to IsKR.</a>
+ <a class="tactic" href="drat-details.html#339">VKR+: assert values ((ID, C)::KRest) (C::V1).</a>
+ <a class="tactic" href="drat-details.html#340">assert forall C1 NA NB,
+          count C1 (C::V1) NA -> count C1 (C::KnownD) NB -> NB >= NA.</a>
+   <a class="tactic" href="drat-details.html#341">intros CA CB.</a> <a class="tactic" href="drat-details.html#342">CA: case CA.</a>
+     <span class="comment">%CA by Cnt-ConsEq</span>
+      <a class="tactic" href="drat-details.html#343">CB: case CB.</a>
+        <span class="comment">%CB by Cnt-ConsEq</span>
+         <a class="tactic" href="drat-details.html#344">CV: apply is_count_exists_clause to IsV Is1.</a>
+         <a class="tactic" href="drat-details.html#345">GEq: apply Counts to CV CB.</a>
+         <a class="tactic" href="drat-details.html#346">GEq': apply remove_all_reduce_counts to TD1 Vals VKR CV CA.</a>
+         <a class="tactic" href="drat-details.html#347">GEq'': apply greatereq_integer_transitive to GEq GEq'.</a>
+         <a class="tactic" href="drat-details.html#348">Or: apply greatereq_integer_greater_or_eq to GEq''.</a>
+         <a class="tactic" href="drat-details.html#349">E: case Or.</a>
+           <span class="comment">%N1 > N</span>
+            <a class="tactic" href="drat-details.html#350">L: apply greater_integer_flip_less to E.</a>
+            <a class="tactic" href="drat-details.html#351">L': apply less_sums to CA1 CB1 _ _.</a>
+            <a class="tactic" href="drat-details.html#352">apply less_integer_lesseq to L'.</a> <a class="tactic" href="drat-details.html#353">search.</a>
+           <span class="comment">%N1 = N</span>
+            <a class="tactic" href="drat-details.html#354">apply plus_integer_unique to CA1 CB1.</a>
+            <a class="tactic" href="drat-details.html#355">apply count_is_integer to CA.</a>
+            <a class="tactic" href="drat-details.html#356">apply plus_integer_is_integer to _ _ CB1.</a>
+            <a class="tactic" href="drat-details.html#357">backchain is_integer_greatereq.</a>
+        <span class="comment">%CB by Cnt-ConsNEq</span>
+         <a class="tactic" href="drat-details.html#358">apply CB to _.</a>
+     <span class="comment">%CA by Cnt-ConsNeq</span>
+      <a class="tactic" href="drat-details.html#359">CB: case CB.</a>
+        <span class="comment">%CB by Cnt-ConsEq</span>
+         <a class="tactic" href="drat-details.html#360">apply CA to _.</a>
+        <span class="comment">%CB by Cnt-ConsNEq</span>
+         <a class="tactic" href="drat-details.html#361">GEq: apply count_geq_0 to CB1.</a>
+         <a class="tactic" href="drat-details.html#362">GEq': apply count_geq_0 to CA1.</a>
+         <a class="tactic" href="drat-details.html#363">Or: apply greatereq_integer_greater_or_eq to GEq.</a>
+         <a class="tactic" href="drat-details.html#364">Or': apply greatereq_integer_greater_or_eq to GEq'.</a>
+         <a class="tactic" href="drat-details.html#365">E: case Or'.</a>
+           <span class="comment">%NA > 0</span>
+            <a class="tactic" href="drat-details.html#366">M: apply count_mem to CA1 E.</a>
+            <a class="tactic" href="drat-details.html#367">IsV1: apply values_is to _ VKR.</a>
+            <a class="tactic" href="drat-details.html#368">IsC1: apply mem_is_clause to _ M.</a>
+            <a class="tactic" href="drat-details.html#369">CV: apply is_count_exists_clause to IsV IsC1.</a>
+            <a class="tactic" href="drat-details.html#370">GEq2: apply Counts to CV CB1.</a>
+            <a class="tactic" href="drat-details.html#371">GEq3: apply remove_all_reduce_counts to TD1 Vals VKR CV CA1.</a>
+            <a class="tactic" href="drat-details.html#372">apply greatereq_integer_transitive to GEq2 GEq3.</a> <a class="tactic" href="drat-details.html#373">search.</a>
+           <span class="comment">%NA = 0</span>
+            <a class="tactic" href="drat-details.html#374">E: case Or.</a>
+              <span class="comment">%NB > 0</span>
+               <a class="tactic" href="drat-details.html#375">search.</a>
+              <span class="comment">%NB = 0</span>
+               <a class="tactic" href="drat-details.html#376">search.</a>
+ <a class="tactic" href="drat-details.html#377">apply IH to _ _ Is3 CP2 GCL_KR TD2 VKR+ _ with KnownD = C::KnownD.</a>
+ <a class="tactic" href="drat-details.html#378">search.</a>
+<span class="comment">%TD-DeleteLrat</span>
+ <a class="tactic" href="drat-details.html#379">CP: case CP.</a> <a class="tactic" href="drat-details.html#380">Is: case IsP.</a> <a class="tactic" href="drat-details.html#381">IsKR: apply select_is to _ TD1.</a>
+ <a class="tactic" href="drat-details.html#382">apply good_clause_list_selects to _ CP TD1.</a>
+ <a class="tactic" href="drat-details.html#383">VS: apply values_select to _ TD1.</a> <a class="tactic" href="drat-details.html#384">M: apply select_mem to TD1.</a>
+ <a class="tactic" href="drat-details.html#385">Is: apply mem_is to _ M.</a> <a class="tactic" href="drat-details.html#386">IsV: apply values_is to _ Vals.</a>
+ <a class="tactic" href="drat-details.html#387">CV: apply is_count_exists_clause to IsV Is3.</a>
+ <a class="tactic" href="drat-details.html#388">CKD: apply is_count_exists_clause to IsKnownD Is3.</a>
+ <a class="tactic" href="drat-details.html#389">NPos: assert N > 0.</a>
+   <a class="tactic" href="drat-details.html#390">GEq: apply count_geq_0 to CV.</a>
+   <a class="tactic" href="drat-details.html#391">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="drat-details.html#392">L: case Or.</a>
+     <span class="comment">%N > 0</span>
+      <a class="tactic" href="drat-details.html#393">search.</a>
+     <span class="comment">%N = 0</span>
+      <a class="tactic" href="drat-details.html#394">MV: apply select_mem to VS.</a> <a class="tactic" href="drat-details.html#395">apply count_not_mem to CV MV.</a>
+ <a class="tactic" href="drat-details.html#396">N1N: apply Counts to CV CKD.</a> <a class="tactic" href="drat-details.html#397">N1Pos: assert N1 > 0.</a>
+   <a class="tactic" href="drat-details.html#398">Or: apply greatereq_integer_greater_or_eq to N1N.</a> <a class="tactic" href="drat-details.html#399">G: case Or.</a>
+     <span class="comment">%N1 > N</span>
+      <a class="tactic" href="drat-details.html#400">apply greater_integer_transitive to G NPos.</a> <a class="tactic" href="drat-details.html#401">search.</a>
+     <span class="comment">%N1 = N</span>
+      <a class="tactic" href="drat-details.html#402">search.</a>
+ <a class="tactic" href="drat-details.html#403">clear N1N.</a> <a class="tactic" href="drat-details.html#404">MKD: apply count_mem to CKD N1Pos.</a>
+ <a class="tactic" href="drat-details.html#405">SKD: apply mem_select to MKD.</a> <a class="tactic" href="drat-details.html#406">IsL': apply select_is_clause to _ SKD.</a>
+ <a class="tactic" href="drat-details.html#407">GCL_KR: apply good_clause_list_select to _ TD1.</a>
+ <a class="tactic" href="drat-details.html#408">assert forall C NA NB, count C VRest NA -> count C L' NB -> NB >= NA.</a>
+   <a class="tactic" href="drat-details.html#409">intros CA CB.</a> <a class="tactic" href="drat-details.html#410">GEq: apply count_geq_0 to CB.</a>
+   <a class="tactic" href="drat-details.html#411">GEq': apply count_geq_0 to CA.</a>
+   <a class="tactic" href="drat-details.html#412">Or: apply greatereq_integer_greater_or_eq to GEq.</a>
+   <a class="tactic" href="drat-details.html#413">Or': apply greatereq_integer_greater_or_eq to GEq'.</a> <a class="tactic" href="drat-details.html#414">E: case Or'.</a>
+     <span class="comment">%NA > 0</span>
+      <a class="tactic" href="drat-details.html#415">M': apply count_mem to CA E.</a> <a class="tactic" href="drat-details.html#416">IsVRest: apply values_is to _ VS1.</a>
+      <a class="tactic" href="drat-details.html#417">IsC3: apply mem_is_clause to _ M'.</a>
+      <a class="tactic" href="drat-details.html#418">CV: apply is_count_exists_clause to IsV IsC3.</a>
+      <a class="tactic" href="drat-details.html#419">IsC2: apply mem_is_clause to _ MKD.</a>
+      <a class="tactic" href="drat-details.html#420">Or'': apply is_clause_eq_or_not to IsC3 IsC2.</a> <a class="tactic" href="drat-details.html#421">CE: case Or''.</a>
+        <span class="comment">%C3 = C2</span>
+         <a class="tactic" href="drat-details.html#422">IsN2: apply count_is_integer to CV1.</a>
+         <a class="tactic" href="drat-details.html#423">Minus: apply minus_integer_total to IsN2 _ with N2 = 1.</a>
+         <a class="tactic" href="drat-details.html#424">P: apply minus_plus_same_integer to _ _ Minus.</a>
+         <a class="tactic" href="drat-details.html#425">IsN3: apply minus_integer_is_integer to _ _ Minus.</a>
+         <a class="tactic" href="drat-details.html#426">P': apply plus_integer_comm to _ _ P.</a>
+         <a class="tactic" href="drat-details.html#427">CVRest: apply select_count to CV1 VS _.</a>
+         <a class="tactic" href="drat-details.html#428">apply count_unique to CVRest CA.</a>
+         <a class="tactic" href="drat-details.html#429">IsN1: apply count_is_integer to CKD.</a>
+         <a class="tactic" href="drat-details.html#430">Minus': apply minus_integer_total to IsN1 _ with N2 = 1.</a>
+         <a class="tactic" href="drat-details.html#431">P1: apply minus_plus_same_integer to _ _ Minus'.</a>
+         <a class="tactic" href="drat-details.html#432">IsN4: apply minus_integer_is_integer to _ _ Minus'.</a>
+         <a class="tactic" href="drat-details.html#433">P2: apply plus_integer_comm to _ _ P1.</a>
+         <a class="tactic" href="drat-details.html#434">CDRest: apply select_count to CKD SKD Minus'.</a>
+         <a class="tactic" href="drat-details.html#435">apply count_unique to CDRest CB.</a>
+         <a class="tactic" href="drat-details.html#436">GEq1: apply Counts to CV CKD.</a> <a class="tactic" href="drat-details.html#437">apply count_unique to CV1 CV.</a>
+         <a class="tactic" href="drat-details.html#438">Or1: apply greatereq_integer_greater_or_eq to GEq1.</a>
+         <a class="tactic" href="drat-details.html#439">G: case Or1.</a>
+           <span class="comment">%N1 > N</span>
+            <a class="tactic" href="drat-details.html#440">L: apply greater_integer_flip_less to G.</a>
+            <a class="tactic" href="drat-details.html#441">OrRel: apply is_integer_related to IsN3 IsN4.</a>
+            <a class="tactic" href="drat-details.html#442">C: case OrRel.</a>
+              <span class="comment">%NA = NB</span>
+               <a class="tactic" href="drat-details.html#443">backchain is_integer_greatereq.</a>
+              <span class="comment">%NA < NB</span>
+               <a class="tactic" href="drat-details.html#444">G': apply less_integer_flip_greater to C.</a>
+               <a class="tactic" href="drat-details.html#445">backchain greater_integer_greatereq.</a>
+              <span class="comment">%NA > NB</span>
+               <a class="tactic" href="drat-details.html#446">apply greater_integer_flip_less to C.</a>
+               <a class="tactic" href="drat-details.html#447">L': apply less_sums to P2 P' _ _.</a> <a class="tactic" href="drat-details.html#448">G': assert N > N1.</a>
+               <a class="tactic" href="drat-details.html#449">apply greater_less_impossible to G' L.</a>
+           <span class="comment">%N1 = N</span>
+            <a class="tactic" href="drat-details.html#450">apply minus_integer_unique to Minus Minus'.</a>
+            <a class="tactic" href="drat-details.html#451">backchain is_integer_greatereq.</a>
+        <span class="comment">%C3 != C2</span>
+         <a class="tactic" href="drat-details.html#452">CV: apply count_select_neq to CA VS _.</a>
+         <a class="tactic" href="drat-details.html#453">CKD': apply count_select_neq to CB SKD _.</a>
+         <a class="tactic" href="drat-details.html#454">apply Counts to CV2 CKD'.</a> <a class="tactic" href="drat-details.html#455">search.</a>
+     <span class="comment">%NA = 0</span>
+      <a class="tactic" href="drat-details.html#456">E: case Or.</a>
+        <span class="comment">%NB > 0</span>
+         <a class="tactic" href="drat-details.html#457">search.</a>
+        <span class="comment">%NB = 0</span>
+         <a class="tactic" href="drat-details.html#458">search.</a>
+ <a class="tactic" href="drat-details.html#459">apply IH to _ IsL' Is1 CP1 _ TD2 VS1 _.</a> <a class="tactic" href="drat-details.html#460">search.</a>
+<span class="comment">%preservability</span>
+ <a class="tactic" href="drat-details.html#461">CP': apply trans_checkProof to TD1 CP _ _.</a>
+ <a class="tactic" href="drat-details.html#462">apply trans_proof_is to TD1 IsP _.</a> <a class="tactic" href="drat-details.html#463">apply IH to _ _ _ CP' _ TD2 _ _.</a>
+ <a class="tactic" href="drat-details.html#464">search.</a></div>
+<a class="command" href="drat-details.html#465"></a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

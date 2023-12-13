@@ -1,0 +1,5095 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  nonExtensible:lists - Details</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h2>Reasoning Details</h2>
+<div class="section">
+<pre class="code extensibella">
+ < <b>Module nonExtensible:lists.</b>
+</pre>
+<pre class="code extensibella"id="1">
+ &lt; <b>Theorem perm_mem  [Item] :
+     forall (L : list Item) (M : list Item) I, perm L M -&gt; mem I L -&gt; mem I M.</b>
+
+============================
+ forall L M I, perm L M -&gt; mem I L -&gt; mem I M
+</pre>
+<pre class="code extensibella"id="2">
+ &lt; <b>induction on 2.</b>
+
+IH : forall L M I, perm L M -&gt; mem I L * -&gt; mem I M
+============================
+ forall L M I, perm L M -&gt; mem I L @ -&gt; mem I M
+</pre>
+<pre class="code extensibella"id="3">
+ &lt; <b>intros P M.</b>
+
+Variables: L M I
+IH : forall L M I, perm L M -&gt; mem I L * -&gt; mem I M
+P : perm L M
+M : mem I L @
+============================
+ mem I M
+</pre>
+<pre class="code extensibella"id="4">
+ &lt; <b>M: case M.</b>
+
+Subgoal 1:
+
+Variables: M I Rest
+IH : forall L M I, perm L M -&gt; mem I L * -&gt; mem I M
+P : perm (I::Rest) M
+============================
+ mem I M
+</pre>
+<pre class="code extensibella"id="5">
+ &lt; <b>P: case P.</b>
+
+Subgoal 1:
+
+Variables: M I Rest L2
+IH : forall L M I, perm L M -&gt; mem I L * -&gt; mem I M
+P : select I L2 M
+P1 : perm Rest L2
+============================
+ mem I M
+</pre>
+<pre class="code extensibella"id="6">
+ &lt; <b>apply select_mem to P.</b>
+
+Subgoal 1:
+
+Variables: M I Rest L2
+IH : forall L M I, perm L M -&gt; mem I L * -&gt; mem I M
+P : select I L2 M
+P1 : perm Rest L2
+H1 : mem I M
+============================
+ mem I M
+</pre>
+<pre class="code extensibella"id="7">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: M I Rest I1
+IH : forall L M I, perm L M -&gt; mem I L * -&gt; mem I M
+P : perm (I1::Rest) M
+M : mem I Rest *
+============================
+ mem I M
+</pre>
+<pre class="code extensibella"id="8">
+ &lt; <b>P: case P.</b>
+
+Subgoal 2:
+
+Variables: M I Rest I1 L2
+IH : forall L M I, perm L M -&gt; mem I L * -&gt; mem I M
+M : mem I Rest *
+P : select I1 L2 M
+P1 : perm Rest L2
+============================
+ mem I M
+</pre>
+<pre class="code extensibella"id="9">
+ &lt; <b>M': apply IH to P1 M.</b>
+
+Subgoal 2:
+
+Variables: M I Rest I1 L2
+IH : forall L M I, perm L M -&gt; mem I L * -&gt; mem I M
+M : mem I Rest *
+P : select I1 L2 M
+P1 : perm Rest L2
+M' : mem I L2
+============================
+ mem I M
+</pre>
+<pre class="code extensibella"id="10">
+ &lt; <b>apply mem_after_select_before to _ M'.</b>
+
+Subgoal 2:
+
+Variables: M I Rest I1 L2
+IH : forall L M I, perm L M -&gt; mem I L * -&gt; mem I M
+M : mem I Rest *
+P : select I1 L2 M
+P1 : perm Rest L2
+M' : mem I L2
+H1 : mem I M
+============================
+ mem I M
+</pre>
+<pre class="code extensibella"id="11">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="12">
+ &lt; <b>Theorem prm_lemma  [Item] :
+     forall A B B' (X : Item), perm B' A -&gt; select X B' B -&gt; perm B (X::A).</b>
+
+============================
+ forall A B B' X, perm B' A -&gt; select X B' B -&gt; perm B (X::A)
+</pre>
+<pre class="code extensibella"id="13">
+ &lt; <b>induction on 2.</b>
+
+IH : forall A B B' X, perm B' A -&gt; select X B' B * -&gt; perm B (X::A)
+============================
+ forall A B B' X, perm B' A -&gt; select X B' B @ -&gt; perm B (X::A)
+</pre>
+<pre class="code extensibella"id="14">
+ &lt; <b>intros P S.</b>
+
+Variables: A B B' X
+IH : forall A B B' X, perm B' A -&gt; select X B' B * -&gt; perm B (X::A)
+P : perm B' A
+S : select X B' B @
+============================
+ perm B (X::A)
+</pre>
+<pre class="code extensibella"id="15">
+ &lt; <b>S: case S.</b>
+
+Subgoal 1:
+
+Variables: A B' X
+IH : forall A B B' X, perm B' A -&gt; select X B' B * -&gt; perm B (X::A)
+P : perm B' A
+============================
+ perm (X::B') (X::A)
+</pre>
+<pre class="code extensibella"id="16">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: A X L2 I L1
+IH : forall A B B' X, perm B' A -&gt; select X B' B * -&gt; perm B (X::A)
+P : perm (I::L1) A
+S : select X L1 L2 *
+============================
+ perm (I::L2) (X::A)
+</pre>
+<pre class="code extensibella"id="17">
+ &lt; <b>P: case P.</b>
+
+Subgoal 2:
+
+Variables: A X L2 I L1 L3
+IH : forall A B B' X, perm B' A -&gt; select X B' B * -&gt; perm B (X::A)
+S : select X L1 L2 *
+P : select I L3 A
+P1 : perm L1 L3
+============================
+ perm (I::L2) (X::A)
+</pre>
+<pre class="code extensibella"id="18">
+ &lt; <b>apply IH to P1 S.</b>
+
+Subgoal 2:
+
+Variables: A X L2 I L1 L3
+IH : forall A B B' X, perm B' A -&gt; select X B' B * -&gt; perm B (X::A)
+S : select X L1 L2 *
+P : select I L3 A
+P1 : perm L1 L3
+H1 : perm L2 (X::L3)
+============================
+ perm (I::L2) (X::A)
+</pre>
+<pre class="code extensibella"id="19">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="20">
+ &lt; <b>Theorem perm_symmetric  [Item] :
+     forall (M : list Item) (L : list Item), perm L M -&gt; perm M L.</b>
+
+============================
+ forall M L, perm L M -&gt; perm M L
+</pre>
+<pre class="code extensibella"id="21">
+ &lt; <b>induction on 1.</b>
+
+IH : forall M L, perm L M * -&gt; perm M L
+============================
+ forall M L, perm L M @ -&gt; perm M L
+</pre>
+<pre class="code extensibella"id="22">
+ &lt; <b>intros P.</b>
+
+Variables: M L
+IH : forall M L, perm L M * -&gt; perm M L
+P : perm L M @
+============================
+ perm M L
+</pre>
+<pre class="code extensibella"id="23">
+ &lt; <b>P: case P.</b>
+
+Subgoal 1:
+
+IH : forall M L, perm L M * -&gt; perm M L
+============================
+ perm [] []
+</pre>
+<pre class="code extensibella"id="24">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: M L2 Rest A
+IH : forall M L, perm L M * -&gt; perm M L
+P : select A L2 M
+P1 : perm Rest L2 *
+============================
+ perm M (A::Rest)
+</pre>
+<pre class="code extensibella"id="25">
+ &lt; <b>PSub: apply IH to P1.</b>
+
+Subgoal 2:
+
+Variables: M L2 Rest A
+IH : forall M L, perm L M * -&gt; perm M L
+P : select A L2 M
+P1 : perm Rest L2 *
+PSub : perm L2 Rest
+============================
+ perm M (A::Rest)
+</pre>
+<pre class="code extensibella"id="26">
+ &lt; <b>apply prm_lemma to PSub P.</b>
+
+Subgoal 2:
+
+Variables: M L2 Rest A
+IH : forall M L, perm L M * -&gt; perm M L
+P : select A L2 M
+P1 : perm Rest L2 *
+PSub : perm L2 Rest
+H1 : perm M (A::Rest)
+============================
+ perm M (A::Rest)
+</pre>
+<pre class="code extensibella"id="27">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="28">
+ &lt; <b>Theorem no_lookup_perm  [Key, Value] :
+     forall (L : list (pair Key Value)) (P : list (pair Key Value)) (Key : Key),
+       no_lookup L Key -&gt; perm L P -&gt; no_lookup P Key.</b>
+
+============================
+ forall L P Key, no_lookup L Key -&gt; perm L P -&gt; no_lookup P Key
+</pre>
+<pre class="code extensibella"id="29">
+ &lt; <b>induction on 1.</b>
+
+IH : forall L P Key, no_lookup L Key * -&gt; perm L P -&gt; no_lookup P Key
+============================
+ forall L P Key, no_lookup L Key @ -&gt; perm L P -&gt; no_lookup P Key
+</pre>
+<pre class="code extensibella"id="30">
+ &lt; <b>intros NLkp P.</b>
+
+Variables: L P Key
+IH : forall L P Key, no_lookup L Key * -&gt; perm L P -&gt; no_lookup P Key
+NLkp : no_lookup L Key @
+P : perm L P
+============================
+ no_lookup P Key
+</pre>
+<pre class="code extensibella"id="31">
+ &lt; <b>NLkp: case NLkp.</b>
+
+Subgoal 1:
+
+Variables: P Key
+IH : forall L P Key, no_lookup L Key * -&gt; perm L P -&gt; no_lookup P Key
+P : perm [] P
+============================
+ no_lookup P Key
+</pre>
+<pre class="code extensibella"id="32">
+ &lt; <b>case P.</b>
+
+Subgoal 1:
+
+Variables: Key
+IH : forall L P Key, no_lookup L Key * -&gt; perm L P -&gt; no_lookup P Key
+============================
+ no_lookup [] Key
+</pre>
+<pre class="code extensibella"id="33">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: P Key Rest V K
+IH : forall L P Key, no_lookup L Key * -&gt; perm L P -&gt; no_lookup P Key
+P : perm ((K, V)::Rest) P
+NLkp : K = Key -&gt; false
+NLkp1 : no_lookup Rest Key *
+============================
+ no_lookup P Key
+</pre>
+<pre class="code extensibella"id="34">
+ &lt; <b>P: case P.</b>
+
+Subgoal 2:
+
+Variables: P Key Rest V K L2
+IH : forall L P Key, no_lookup L Key * -&gt; perm L P -&gt; no_lookup P Key
+NLkp : K = Key -&gt; false
+NLkp1 : no_lookup Rest Key *
+P : select (K, V) L2 P
+P1 : perm Rest L2
+============================
+ no_lookup P Key
+</pre>
+<pre class="code extensibella"id="35">
+ &lt; <b>NLkp': apply IH to NLkp1 P1.</b>
+
+Subgoal 2:
+
+Variables: P Key Rest V K L2
+IH : forall L P Key, no_lookup L Key * -&gt; perm L P -&gt; no_lookup P Key
+NLkp : K = Key -&gt; false
+NLkp1 : no_lookup Rest Key *
+P : select (K, V) L2 P
+P1 : perm Rest L2
+NLkp' : no_lookup L2 Key
+============================
+ no_lookup P Key
+</pre>
+<pre class="code extensibella"id="36">
+ &lt; <b>apply no_lookup_after_select_before to NLkp' P NLkp.</b>
+
+Subgoal 2:
+
+Variables: P Key Rest V K L2
+IH : forall L P Key, no_lookup L Key * -&gt; perm L P -&gt; no_lookup P Key
+NLkp : K = Key -&gt; false
+NLkp1 : no_lookup Rest Key *
+P : select (K, V) L2 P
+P1 : perm Rest L2
+NLkp' : no_lookup L2 Key
+H1 : no_lookup P Key
+============================
+ no_lookup P Key
+</pre>
+<pre class="code extensibella"id="37">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="38">
+ &lt; <b>Theorem countItem_is_integer  [Item] :
+     forall (I : Item) L N, countItem I L N -&gt; is_integer N.</b>
+
+============================
+ forall I L N, countItem I L N -&gt; is_integer N
+</pre>
+<pre class="code extensibella"id="39">
+ &lt; <b>induction on 1.</b>
+
+IH : forall I L N, countItem I L N * -&gt; is_integer N
+============================
+ forall I L N, countItem I L N @ -&gt; is_integer N
+</pre>
+<pre class="code extensibella"id="40">
+ &lt; <b>intros C.</b>
+
+Variables: I L N
+IH : forall I L N, countItem I L N * -&gt; is_integer N
+C : countItem I L N @
+============================
+ is_integer N
+</pre>
+<pre class="code extensibella"id="41">
+ &lt; <b>C: case C.</b>
+
+Subgoal 1:
+
+Variables: I
+IH : forall I L N, countItem I L N * -&gt; is_integer N
+============================
+ is_integer 0
+</pre>
+<pre class="code extensibella"id="42">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: I N N1 Rest
+IH : forall I L N, countItem I L N * -&gt; is_integer N
+C : countItem I Rest N1 *
+C1 : 1 + N1 = N
+============================
+ is_integer N
+</pre>
+<pre class="code extensibella"id="43">
+ &lt; <b>apply IH to C.</b>
+
+Subgoal 2:
+
+Variables: I N N1 Rest
+IH : forall I L N, countItem I L N * -&gt; is_integer N
+C : countItem I Rest N1 *
+C1 : 1 + N1 = N
+H1 : is_integer N1
+============================
+ is_integer N
+</pre>
+<pre class="code extensibella"id="44">
+ &lt; <b>apply plus_integer_is_integer to _ _ C1.</b>
+
+Subgoal 2:
+
+Variables: I N N1 Rest
+IH : forall I L N, countItem I L N * -&gt; is_integer N
+C : countItem I Rest N1 *
+C1 : 1 + N1 = N
+H1 : is_integer N1
+H2 : is_integer N
+============================
+ is_integer N
+</pre>
+<pre class="code extensibella"id="45">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: I N Rest Y
+IH : forall I L N, countItem I L N * -&gt; is_integer N
+C : I = Y -&gt; false
+C1 : countItem I Rest N *
+============================
+ is_integer N
+</pre>
+<pre class="code extensibella"id="46">
+ &lt; <b>apply IH to C1.</b>
+
+Subgoal 3:
+
+Variables: I N Rest Y
+IH : forall I L N, countItem I L N * -&gt; is_integer N
+C : I = Y -&gt; false
+C1 : countItem I Rest N *
+H1 : is_integer N
+============================
+ is_integer N
+</pre>
+<pre class="code extensibella"id="47">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="48">
+ &lt; <b>Theorem countItem_geq_0  [Item] :
+     forall (I : Item) L N, countItem I L N -&gt; N &gt;= 0.</b>
+
+============================
+ forall I L N, countItem I L N -&gt; N &gt;= 0
+</pre>
+<pre class="code extensibella"id="49">
+ &lt; <b>induction on 1.</b>
+
+IH : forall I L N, countItem I L N * -&gt; N &gt;= 0
+============================
+ forall I L N, countItem I L N @ -&gt; N &gt;= 0
+</pre>
+<pre class="code extensibella"id="50">
+ &lt; <b>intros C.</b>
+
+Variables: I L N
+IH : forall I L N, countItem I L N * -&gt; N &gt;= 0
+C : countItem I L N @
+============================
+ N &gt;= 0
+</pre>
+<pre class="code extensibella"id="51">
+ &lt; <b>C: case C.</b>
+
+Subgoal 1:
+
+Variables: I
+IH : forall I L N, countItem I L N * -&gt; N &gt;= 0
+============================
+ 0 &gt;= 0
+</pre>
+<pre class="code extensibella"id="52">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: I N N1 Rest
+IH : forall I L N, countItem I L N * -&gt; N &gt;= 0
+C : countItem I Rest N1 *
+C1 : 1 + N1 = N
+============================
+ N &gt;= 0
+</pre>
+<pre class="code extensibella"id="53">
+ &lt; <b>GEq: apply IH to C.</b>
+
+Subgoal 2:
+
+Variables: I N N1 Rest
+IH : forall I L N, countItem I L N * -&gt; N &gt;= 0
+C : countItem I Rest N1 *
+C1 : 1 + N1 = N
+GEq : N1 &gt;= 0
+============================
+ N &gt;= 0
+</pre>
+<pre class="code extensibella"id="54">
+ &lt; <b>apply greatereq_integer__add_positive to _ GEq C1.</b>
+
+Subgoal 2:
+
+Variables: I N N1 Rest
+IH : forall I L N, countItem I L N * -&gt; N &gt;= 0
+C : countItem I Rest N1 *
+C1 : 1 + N1 = N
+GEq : N1 &gt;= 0
+H1 : N &gt;= 0
+============================
+ N &gt;= 0
+</pre>
+<pre class="code extensibella"id="55">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: I N Rest Y
+IH : forall I L N, countItem I L N * -&gt; N &gt;= 0
+C : I = Y -&gt; false
+C1 : countItem I Rest N *
+============================
+ N &gt;= 0
+</pre>
+<pre class="code extensibella"id="56">
+ &lt; <b>apply IH to C1.</b>
+
+Subgoal 3:
+
+Variables: I N Rest Y
+IH : forall I L N, countItem I L N * -&gt; N &gt;= 0
+C : I = Y -&gt; false
+C1 : countItem I Rest N *
+H1 : N &gt;= 0
+============================
+ N &gt;= 0
+</pre>
+<pre class="code extensibella"id="57">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="58">
+ &lt; <b>Theorem select_countItem  [Item] :
+     forall (I : Item) L Rest N N',
+       countItem I L N -&gt; select I Rest L -&gt; N - 1 = N' -&gt; countItem I Rest N'.</b>
+
+============================
+ forall I L Rest N N',
+   countItem I L N -&gt; select I Rest L -&gt; N - 1 = N' -&gt; countItem I Rest N'
+</pre>
+<pre class="code extensibella"id="59">
+ &lt; <b>induction on 2.</b>
+
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+============================
+ forall I L Rest N N',
+   countItem I L N -&gt; select I Rest L @ -&gt; N - 1 = N' -&gt; countItem I Rest N'
+</pre>
+<pre class="code extensibella"id="60">
+ &lt; <b>intros C S Minus.</b>
+
+Variables: I L Rest N N'
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+C : countItem I L N
+S : select I Rest L @
+Minus : N - 1 = N'
+============================
+ countItem I Rest N'
+</pre>
+<pre class="code extensibella"id="61">
+ &lt; <b>S: case S.</b>
+
+Subgoal 1:
+
+Variables: I Rest N N'
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+C : countItem I (I::Rest) N
+Minus : N - 1 = N'
+============================
+ countItem I Rest N'
+</pre>
+<pre class="code extensibella"id="62">
+ &lt; <b>IsN: apply countItem_is_integer to C.</b>
+
+Subgoal 1:
+
+Variables: I Rest N N'
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+C : countItem I (I::Rest) N
+Minus : N - 1 = N'
+IsN : is_integer N
+============================
+ countItem I Rest N'
+</pre>
+<pre class="code extensibella"id="63">
+ &lt; <b>C: case C.</b>
+
+Subgoal 1.1:
+
+Variables: I Rest N N' N1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+IsN : is_integer N
+C : countItem I Rest N1
+C1 : 1 + N1 = N
+============================
+ countItem I Rest N'
+</pre>
+<pre class="code extensibella"id="64">
+ &lt; <b>IsN1: apply countItem_is_integer to C.</b>
+
+Subgoal 1.1:
+
+Variables: I Rest N N' N1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+IsN : is_integer N
+C : countItem I Rest N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+============================
+ countItem I Rest N'
+</pre>
+<pre class="code extensibella"id="65">
+ &lt; <b>P: apply plus_integer_comm to _ _ C1.</b>
+
+Subgoal 1.1:
+
+Variables: I Rest N N' N1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+IsN : is_integer N
+C : countItem I Rest N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+============================
+ countItem I Rest N'
+</pre>
+<pre class="code extensibella"id="66">
+ &lt; <b>M2: apply plus_minus_same_integer to _ _ P.</b>
+
+Subgoal 1.1:
+
+Variables: I Rest N N' N1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+IsN : is_integer N
+C : countItem I Rest N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+M2 : N - 1 = N1
+============================
+ countItem I Rest N'
+</pre>
+<pre class="code extensibella"id="67">
+ &lt; <b>apply minus_integer_unique to Minus M2.</b>
+
+Subgoal 1.1:
+
+Variables: I Rest N N1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N1
+IsN : is_integer N
+C : countItem I Rest N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+M2 : N - 1 = N1
+============================
+ countItem I Rest N1
+</pre>
+<pre class="code extensibella"id="68">
+ &lt; <b>search.</b>
+
+Subgoal 1.2:
+
+Variables: I Rest N N'
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+IsN : is_integer N
+C : I = I -&gt; false
+C1 : countItem I Rest N
+============================
+ countItem I Rest N'
+</pre>
+<pre class="code extensibella"id="69">
+ &lt; <b>apply C to _.</b>
+
+Subgoal 2:
+
+Variables: I N N' L2 I1 L1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+C : countItem I (I1::L2) N
+Minus : N - 1 = N'
+S : select I L1 L2 *
+============================
+ countItem I (I1::L1) N'
+</pre>
+<pre class="code extensibella"id="70">
+ &lt; <b>IsN: apply countItem_is_integer to C.</b>
+
+Subgoal 2:
+
+Variables: I N N' L2 I1 L1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+C : countItem I (I1::L2) N
+Minus : N - 1 = N'
+S : select I L1 L2 *
+IsN : is_integer N
+============================
+ countItem I (I1::L1) N'
+</pre>
+<pre class="code extensibella"id="71">
+ &lt; <b>C: case C.</b>
+
+Subgoal 2.1:
+
+Variables: N N' L2 I1 L1 N1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+S : select I1 L1 L2 *
+IsN : is_integer N
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+============================
+ countItem I1 (I1::L1) N'
+</pre>
+<pre class="code extensibella"id="72">
+ &lt; <b>IsN1: apply countItem_is_integer to C.</b>
+
+Subgoal 2.1:
+
+Variables: N N' L2 I1 L1 N1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+S : select I1 L1 L2 *
+IsN : is_integer N
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+============================
+ countItem I1 (I1::L1) N'
+</pre>
+<pre class="code extensibella"id="73">
+ &lt; <b>P: apply plus_integer_comm to _ _ C1.</b>
+
+Subgoal 2.1:
+
+Variables: N N' L2 I1 L1 N1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+S : select I1 L1 L2 *
+IsN : is_integer N
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+============================
+ countItem I1 (I1::L1) N'
+</pre>
+<pre class="code extensibella"id="74">
+ &lt; <b>M2: apply plus_minus_same_integer to _ _ P.</b>
+
+Subgoal 2.1:
+
+Variables: N N' L2 I1 L1 N1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+S : select I1 L1 L2 *
+IsN : is_integer N
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+M2 : N - 1 = N1
+============================
+ countItem I1 (I1::L1) N'
+</pre>
+<pre class="code extensibella"id="75">
+ &lt; <b>apply minus_integer_unique to Minus M2.</b>
+
+Subgoal 2.1:
+
+Variables: N L2 I1 L1 N1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N1
+S : select I1 L1 L2 *
+IsN : is_integer N
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+M2 : N - 1 = N1
+============================
+ countItem I1 (I1::L1) N1
+</pre>
+<pre class="code extensibella"id="76">
+ &lt; <b>Sub: apply minus_integer_total to IsN1 _ with
+          N2 = 1.</b>
+
+Subgoal 2.1:
+
+Variables: N L2 I1 L1 N1 N3
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N1
+S : select I1 L1 L2 *
+IsN : is_integer N
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+M2 : N - 1 = N1
+Sub : N1 - 1 = N3
+============================
+ countItem I1 (I1::L1) N1
+</pre>
+<pre class="code extensibella"id="77">
+ &lt; <b>C': apply IH to C S Sub.</b>
+
+Subgoal 2.1:
+
+Variables: N L2 I1 L1 N1 N3
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N1
+S : select I1 L1 L2 *
+IsN : is_integer N
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+M2 : N - 1 = N1
+Sub : N1 - 1 = N3
+C' : countItem I1 L1 N3
+============================
+ countItem I1 (I1::L1) N1
+</pre>
+<pre class="code extensibella"id="78">
+ &lt; <b>P': apply minus_plus_same_integer to _ _ Sub.</b>
+
+Subgoal 2.1:
+
+Variables: N L2 I1 L1 N1 N3
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N1
+S : select I1 L1 L2 *
+IsN : is_integer N
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+M2 : N - 1 = N1
+Sub : N1 - 1 = N3
+C' : countItem I1 L1 N3
+P' : N3 + 1 = N1
+============================
+ countItem I1 (I1::L1) N1
+</pre>
+<pre class="code extensibella"id="79">
+ &lt; <b>apply countItem_is_integer to C'.</b>
+
+Subgoal 2.1:
+
+Variables: N L2 I1 L1 N1 N3
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N1
+S : select I1 L1 L2 *
+IsN : is_integer N
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+M2 : N - 1 = N1
+Sub : N1 - 1 = N3
+C' : countItem I1 L1 N3
+P' : N3 + 1 = N1
+H1 : is_integer N3
+============================
+ countItem I1 (I1::L1) N1
+</pre>
+<pre class="code extensibella"id="80">
+ &lt; <b>apply plus_integer_comm to _ _ P'.</b>
+
+Subgoal 2.1:
+
+Variables: N L2 I1 L1 N1 N3
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N1
+S : select I1 L1 L2 *
+IsN : is_integer N
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+IsN1 : is_integer N1
+P : N1 + 1 = N
+M2 : N - 1 = N1
+Sub : N1 - 1 = N3
+C' : countItem I1 L1 N3
+P' : N3 + 1 = N1
+H1 : is_integer N3
+H2 : 1 + N3 = N1
+============================
+ countItem I1 (I1::L1) N1
+</pre>
+<pre class="code extensibella"id="81">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: I N N' L2 I1 L1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+S : select I L1 L2 *
+IsN : is_integer N
+C : I = I1 -&gt; false
+C1 : countItem I L2 N
+============================
+ countItem I (I1::L1) N'
+</pre>
+<pre class="code extensibella"id="82">
+ &lt; <b>apply IH to C1 S _.</b>
+
+Subgoal 2.2:
+
+Variables: I N N' L2 I1 L1
+IH : forall I L Rest N N',
+       countItem I L N -&gt; select I Rest L * -&gt; N - 1 = N' -&gt; countItem I Rest N'
+Minus : N - 1 = N'
+S : select I L1 L2 *
+IsN : is_integer N
+C : I = I1 -&gt; false
+C1 : countItem I L2 N
+H1 : countItem I L1 N'
+============================
+ countItem I (I1::L1) N'
+</pre>
+<pre class="code extensibella"id="83">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="84">
+ &lt; <b>Theorem countItem_select  [Item] :
+     forall (I : Item) L Rest N' N,
+       countItem I Rest N' -&gt; select I Rest L -&gt; 1 + N' = N -&gt; countItem I L N.</b>
+
+============================
+ forall I L Rest N' N,
+   countItem I Rest N' -&gt; select I Rest L -&gt; 1 + N' = N -&gt; countItem I L N
+</pre>
+<pre class="code extensibella"id="85">
+ &lt; <b>induction on 2.</b>
+
+IH : forall I L Rest N' N,
+       countItem I Rest N' -&gt; select I Rest L * -&gt; 1 + N' = N -&gt; countItem I L N
+============================
+ forall I L Rest N' N,
+   countItem I Rest N' -&gt; select I Rest L @ -&gt; 1 + N' = N -&gt; countItem I L N
+</pre>
+<pre class="code extensibella"id="86">
+ &lt; <b>intros C S P.</b>
+
+Variables: I L Rest N' N
+IH : forall I L Rest N' N,
+       countItem I Rest N' -&gt; select I Rest L * -&gt; 1 + N' = N -&gt; countItem I L N
+C : countItem I Rest N'
+S : select I Rest L @
+P : 1 + N' = N
+============================
+ countItem I L N
+</pre>
+<pre class="code extensibella"id="87">
+ &lt; <b>S: case S.</b>
+
+Subgoal 1:
+
+Variables: I Rest N' N
+IH : forall I L Rest N' N,
+       countItem I Rest N' -&gt; select I Rest L * -&gt; 1 + N' = N -&gt; countItem I L N
+C : countItem I Rest N'
+P : 1 + N' = N
+============================
+ countItem I (I::Rest) N
+</pre>
+<pre class="code extensibella"id="88">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: I N' N L2 I1 L1
+IH : forall I L Rest N' N,
+       countItem I Rest N' -&gt; select I Rest L * -&gt; 1 + N' = N -&gt; countItem I L N
+C : countItem I (I1::L1) N'
+P : 1 + N' = N
+S : select I L1 L2 *
+============================
+ countItem I (I1::L2) N
+</pre>
+<pre class="code extensibella"id="89">
+ &lt; <b>C: case C.</b>
+
+Subgoal 2.1:
+
+Variables: N' N L2 I1 L1 N1
+IH : forall I L Rest N' N,
+       countItem I Rest N' -&gt; select I Rest L * -&gt; 1 + N' = N -&gt; countItem I L N
+P : 1 + N' = N
+S : select I1 L1 L2 *
+C : countItem I1 L1 N1
+C1 : 1 + N1 = N'
+============================
+ countItem I1 (I1::L2) N
+</pre>
+<pre class="code extensibella"id="90">
+ &lt; <b>apply IH to C S _.</b>
+
+Subgoal 2.1:
+
+Variables: N' N L2 I1 L1 N1
+IH : forall I L Rest N' N,
+       countItem I Rest N' -&gt; select I Rest L * -&gt; 1 + N' = N -&gt; countItem I L N
+P : 1 + N' = N
+S : select I1 L1 L2 *
+C : countItem I1 L1 N1
+C1 : 1 + N1 = N'
+H1 : countItem I1 L2 N'
+============================
+ countItem I1 (I1::L2) N
+</pre>
+<pre class="code extensibella"id="91">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: I N' N L2 I1 L1
+IH : forall I L Rest N' N,
+       countItem I Rest N' -&gt; select I Rest L * -&gt; 1 + N' = N -&gt; countItem I L N
+P : 1 + N' = N
+S : select I L1 L2 *
+C : I = I1 -&gt; false
+C1 : countItem I L1 N'
+============================
+ countItem I (I1::L2) N
+</pre>
+<pre class="code extensibella"id="92">
+ &lt; <b>apply IH to C1 S _.</b>
+
+Subgoal 2.2:
+
+Variables: I N' N L2 I1 L1
+IH : forall I L Rest N' N,
+       countItem I Rest N' -&gt; select I Rest L * -&gt; 1 + N' = N -&gt; countItem I L N
+P : 1 + N' = N
+S : select I L1 L2 *
+C : I = I1 -&gt; false
+C1 : countItem I L1 N'
+H1 : countItem I L2 N
+============================
+ countItem I (I1::L2) N
+</pre>
+<pre class="code extensibella"id="93">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="94">
+ &lt; <b>Theorem select_countItem_neq  [Item] :
+     forall (I : Item) (J : Item) L Rest N,
+       countItem I L N -&gt; select J Rest L -&gt; (I = J -&gt; false) -&gt; countItem I Rest N.</b>
+
+============================
+ forall I J L Rest N,
+   countItem I L N -&gt; select J Rest L -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+</pre>
+<pre class="code extensibella"id="95">
+ &lt; <b>induction on 2.</b>
+
+IH : forall I J L Rest N,
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+============================
+ forall I J L Rest N,
+   countItem I L N -&gt; select J Rest L @ -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+</pre>
+<pre class="code extensibella"id="96">
+ &lt; <b>intros C S NEq.</b>
+
+Variables: I J L Rest N
+IH : forall I J L Rest N,
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+C : countItem I L N
+S : select J Rest L @
+NEq : I = J -&gt; false
+============================
+ countItem I Rest N
+</pre>
+<pre class="code extensibella"id="97">
+ &lt; <b>S: case S.</b>
+
+Subgoal 1:
+
+Variables: I J Rest N
+IH : forall I J L Rest N,
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+C : countItem I (J::Rest) N
+NEq : I = J -&gt; false
+============================
+ countItem I Rest N
+</pre>
+<pre class="code extensibella"id="98">
+ &lt; <b>C: case C.</b>
+
+Subgoal 1.1:
+
+Variables: J Rest N N1
+IH : forall I J L Rest N,
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+NEq : J = J -&gt; false
+C : countItem J Rest N1
+C1 : 1 + N1 = N
+============================
+ countItem J Rest N
+</pre>
+<pre class="code extensibella"id="99">
+ &lt; <b>apply NEq to _.</b>
+
+Subgoal 1.2:
+
+Variables: I J Rest N
+IH : forall I J L Rest N,
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+NEq : I = J -&gt; false
+C : I = J -&gt; false
+C1 : countItem I Rest N
+============================
+ countItem I Rest N
+</pre>
+<pre class="code extensibella"id="100">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: I J N L2 I1 L1
+IH : forall I J L Rest N,
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+C : countItem I (I1::L2) N
+NEq : I = J -&gt; false
+S : select J L1 L2 *
+============================
+ countItem I (I1::L1) N
+</pre>
+<pre class="code extensibella"id="101">
+ &lt; <b>C: case C.</b>
+
+Subgoal 2.1:
+
+Variables: J N L2 I1 L1 N1
+IH : forall I J L Rest N,
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+NEq : I1 = J -&gt; false
+S : select J L1 L2 *
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+============================
+ countItem I1 (I1::L1) N
+</pre>
+<pre class="code extensibella"id="102">
+ &lt; <b>apply IH to C S _.</b>
+
+Subgoal 2.1:
+
+Variables: J N L2 I1 L1 N1
+IH : forall I J L Rest N,
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+NEq : I1 = J -&gt; false
+S : select J L1 L2 *
+C : countItem I1 L2 N1
+C1 : 1 + N1 = N
+H1 : countItem I1 L1 N1
+============================
+ countItem I1 (I1::L1) N
+</pre>
+<pre class="code extensibella"id="103">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: I J N L2 I1 L1
+IH : forall I J L Rest N,
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+NEq : I = J -&gt; false
+S : select J L1 L2 *
+C : I = I1 -&gt; false
+C1 : countItem I L2 N
+============================
+ countItem I (I1::L1) N
+</pre>
+<pre class="code extensibella"id="104">
+ &lt; <b>apply IH to C1 S _.</b>
+
+Subgoal 2.2:
+
+Variables: I J N L2 I1 L1
+IH : forall I J L Rest N,
+       countItem I L N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I Rest N
+NEq : I = J -&gt; false
+S : select J L1 L2 *
+C : I = I1 -&gt; false
+C1 : countItem I L2 N
+H1 : countItem I L1 N
+============================
+ countItem I (I1::L1) N
+</pre>
+<pre class="code extensibella"id="105">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="106">
+ &lt; <b>Theorem countItem_select_neq  [Item] :
+     forall (I : Item) (J : Item) L Rest N,
+       countItem I Rest N -&gt; select J Rest L -&gt; (I = J -&gt; false) -&gt; countItem I L N.</b>
+
+============================
+ forall I J L Rest N,
+   countItem I Rest N -&gt; select J Rest L -&gt; (I = J -&gt; false) -&gt; countItem I L N
+</pre>
+<pre class="code extensibella"id="107">
+ &lt; <b>induction on 2.</b>
+
+IH : forall I J L Rest N,
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+============================
+ forall I J L Rest N,
+   countItem I Rest N -&gt; select J Rest L @ -&gt; (I = J -&gt; false) -&gt; countItem I L N
+</pre>
+<pre class="code extensibella"id="108">
+ &lt; <b>intros C S NEq.</b>
+
+Variables: I J L Rest N
+IH : forall I J L Rest N,
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+C : countItem I Rest N
+S : select J Rest L @
+NEq : I = J -&gt; false
+============================
+ countItem I L N
+</pre>
+<pre class="code extensibella"id="109">
+ &lt; <b>S: case S.</b>
+
+Subgoal 1:
+
+Variables: I J Rest N
+IH : forall I J L Rest N,
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+C : countItem I Rest N
+NEq : I = J -&gt; false
+============================
+ countItem I (J::Rest) N
+</pre>
+<pre class="code extensibella"id="110">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: I J N L2 I1 L1
+IH : forall I J L Rest N,
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+C : countItem I (I1::L1) N
+NEq : I = J -&gt; false
+S : select J L1 L2 *
+============================
+ countItem I (I1::L2) N
+</pre>
+<pre class="code extensibella"id="111">
+ &lt; <b>C: case C.</b>
+
+Subgoal 2.1:
+
+Variables: J N L2 I1 L1 N1
+IH : forall I J L Rest N,
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+NEq : I1 = J -&gt; false
+S : select J L1 L2 *
+C : countItem I1 L1 N1
+C1 : 1 + N1 = N
+============================
+ countItem I1 (I1::L2) N
+</pre>
+<pre class="code extensibella"id="112">
+ &lt; <b>apply IH to C S _.</b>
+
+Subgoal 2.1:
+
+Variables: J N L2 I1 L1 N1
+IH : forall I J L Rest N,
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+NEq : I1 = J -&gt; false
+S : select J L1 L2 *
+C : countItem I1 L1 N1
+C1 : 1 + N1 = N
+H1 : countItem I1 L2 N1
+============================
+ countItem I1 (I1::L2) N
+</pre>
+<pre class="code extensibella"id="113">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: I J N L2 I1 L1
+IH : forall I J L Rest N,
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+NEq : I = J -&gt; false
+S : select J L1 L2 *
+C : I = I1 -&gt; false
+C1 : countItem I L1 N
+============================
+ countItem I (I1::L2) N
+</pre>
+<pre class="code extensibella"id="114">
+ &lt; <b>apply IH to C1 S _.</b>
+
+Subgoal 2.2:
+
+Variables: I J N L2 I1 L1
+IH : forall I J L Rest N,
+       countItem I Rest N -&gt; select J Rest L * -&gt; (I = J -&gt; false) -&gt; countItem I L N
+NEq : I = J -&gt; false
+S : select J L1 L2 *
+C : I = I1 -&gt; false
+C1 : countItem I L1 N
+H1 : countItem I L2 N
+============================
+ countItem I (I1::L2) N
+</pre>
+<pre class="code extensibella"id="115">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="116">
+ &lt; <b>Theorem countItem_unique  [Item] :
+     forall (I : Item) NA NB L, countItem I L NA -&gt; countItem I L NB -&gt; NA = NB.</b>
+
+============================
+ forall I NA NB L, countItem I L NA -&gt; countItem I L NB -&gt; NA = NB
+</pre>
+<pre class="code extensibella"id="117">
+ &lt; <b>induction on 1.</b>
+
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+============================
+ forall I NA NB L, countItem I L NA @ -&gt; countItem I L NB -&gt; NA = NB
+</pre>
+<pre class="code extensibella"id="118">
+ &lt; <b>intros CA CB.</b>
+
+Variables: I NA NB L
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CA : countItem I L NA @
+CB : countItem I L NB
+============================
+ NA = NB
+</pre>
+<pre class="code extensibella"id="119">
+ &lt; <b>CA: case CA.</b>
+
+Subgoal 1:
+
+Variables: I NB
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CB : countItem I [] NB
+============================
+ 0 = NB
+</pre>
+<pre class="code extensibella"id="120">
+ &lt; <b>case CB.</b>
+
+Subgoal 1:
+
+Variables: I
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+============================
+ 0 = 0
+</pre>
+<pre class="code extensibella"id="121">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: I NA NB N Rest
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CB : countItem I (I::Rest) NB
+CA : countItem I Rest N *
+CA1 : 1 + N = NA
+============================
+ NA = NB
+</pre>
+<pre class="code extensibella"id="122">
+ &lt; <b>CB: case CB.</b>
+
+Subgoal 2.1:
+
+Variables: I NA NB N Rest N1
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CA : countItem I Rest N *
+CA1 : 1 + N = NA
+CB : countItem I Rest N1
+CB1 : 1 + N1 = NB
+============================
+ NA = NB
+</pre>
+<pre class="code extensibella"id="123">
+ &lt; <b>apply IH to CA CB.</b>
+
+Subgoal 2.1:
+
+Variables: I NA NB Rest N1
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CA : countItem I Rest N1 *
+CA1 : 1 + N1 = NA
+CB : countItem I Rest N1
+CB1 : 1 + N1 = NB
+============================
+ NA = NB
+</pre>
+<pre class="code extensibella"id="124">
+ &lt; <b>apply plus_integer_unique to CA1 CB1.</b>
+
+Subgoal 2.1:
+
+Variables: I NB Rest N1
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CA : countItem I Rest N1 *
+CA1 : 1 + N1 = NB
+CB : countItem I Rest N1
+CB1 : 1 + N1 = NB
+============================
+ NB = NB
+</pre>
+<pre class="code extensibella"id="125">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: I NA NB N Rest
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CA : countItem I Rest N *
+CA1 : 1 + N = NA
+CB : I = I -&gt; false
+CB1 : countItem I Rest NB
+============================
+ NA = NB
+</pre>
+<pre class="code extensibella"id="126">
+ &lt; <b>apply CB to _.</b>
+
+Subgoal 3:
+
+Variables: I NA NB Rest Y
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CB : countItem I (Y::Rest) NB
+CA : I = Y -&gt; false
+CA1 : countItem I Rest NA *
+============================
+ NA = NB
+</pre>
+<pre class="code extensibella"id="127">
+ &lt; <b>CB: case CB.</b>
+
+Subgoal 3.1:
+
+Variables: NA NB Rest Y N
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CA : Y = Y -&gt; false
+CA1 : countItem Y Rest NA *
+CB : countItem Y Rest N
+CB1 : 1 + N = NB
+============================
+ NA = NB
+</pre>
+<pre class="code extensibella"id="128">
+ &lt; <b>apply CA to _.</b>
+
+Subgoal 3.2:
+
+Variables: I NA NB Rest Y
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CA : I = Y -&gt; false
+CA1 : countItem I Rest NA *
+CB : I = Y -&gt; false
+CB1 : countItem I Rest NB
+============================
+ NA = NB
+</pre>
+<pre class="code extensibella"id="129">
+ &lt; <b>apply IH to CA1 CB1.</b>
+
+Subgoal 3.2:
+
+Variables: I NB Rest Y
+IH : forall I NA NB L, countItem I L NA * -&gt; countItem I L NB -&gt; NA = NB
+CA : I = Y -&gt; false
+CA1 : countItem I Rest NB *
+CB : I = Y -&gt; false
+CB1 : countItem I Rest NB
+============================
+ NB = NB
+</pre>
+<pre class="code extensibella"id="130">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="131">
+ &lt; <b>Theorem countItem_mem  [Item] :
+     forall (I : Item) N L, countItem I L N -&gt; N &gt; 0 -&gt; mem I L.</b>
+
+============================
+ forall I N L, countItem I L N -&gt; N &gt; 0 -&gt; mem I L
+</pre>
+<pre class="code extensibella"id="132">
+ &lt; <b>induction on 1.</b>
+
+IH : forall I N L, countItem I L N * -&gt; N &gt; 0 -&gt; mem I L
+============================
+ forall I N L, countItem I L N @ -&gt; N &gt; 0 -&gt; mem I L
+</pre>
+<pre class="code extensibella"id="133">
+ &lt; <b>intros C G.</b>
+
+Variables: I N L
+IH : forall I N L, countItem I L N * -&gt; N &gt; 0 -&gt; mem I L
+C : countItem I L N @
+G : N &gt; 0
+============================
+ mem I L
+</pre>
+<pre class="code extensibella"id="134">
+ &lt; <b>C: case C.</b>
+
+Subgoal 1:
+
+Variables: I
+IH : forall I N L, countItem I L N * -&gt; N &gt; 0 -&gt; mem I L
+G : 0 &gt; 0
+============================
+ mem I []
+</pre>
+<pre class="code extensibella"id="135">
+ &lt; <b>L: apply greater_integer_flip_less to G.</b>
+
+Subgoal 1:
+
+Variables: I
+IH : forall I N L, countItem I L N * -&gt; N &gt; 0 -&gt; mem I L
+G : 0 &gt; 0
+L : 0 &lt; 0
+============================
+ mem I []
+</pre>
+<pre class="code extensibella"id="136">
+ &lt; <b>apply less_integer_not_eq to L.</b>
+
+Subgoal 2:
+
+Variables: I N N1 Rest
+IH : forall I N L, countItem I L N * -&gt; N &gt; 0 -&gt; mem I L
+G : N &gt; 0
+C : countItem I Rest N1 *
+C1 : 1 + N1 = N
+============================
+ mem I (I::Rest)
+</pre>
+<pre class="code extensibella"id="137">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: I N Rest Y
+IH : forall I N L, countItem I L N * -&gt; N &gt; 0 -&gt; mem I L
+G : N &gt; 0
+C : I = Y -&gt; false
+C1 : countItem I Rest N *
+============================
+ mem I (Y::Rest)
+</pre>
+<pre class="code extensibella"id="138">
+ &lt; <b>apply IH to C1 _.</b>
+
+Subgoal 3:
+
+Variables: I N Rest Y
+IH : forall I N L, countItem I L N * -&gt; N &gt; 0 -&gt; mem I L
+G : N &gt; 0
+C : I = Y -&gt; false
+C1 : countItem I Rest N *
+H1 : mem I Rest
+============================
+ mem I (Y::Rest)
+</pre>
+<pre class="code extensibella"id="139">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="140">
+ &lt; <b>Theorem countItem_not_mem  [Item] :
+     forall (I : Item) L, countItem I L 0 -&gt; mem I L -&gt; false.</b>
+
+============================
+ forall I L, countItem I L 0 -&gt; mem I L -&gt; false
+</pre>
+<pre class="code extensibella"id="141">
+ &lt; <b>induction on 1.</b>
+
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+============================
+ forall I L, countItem I L 0 @ -&gt; mem I L -&gt; false
+</pre>
+<pre class="code extensibella"id="142">
+ &lt; <b>intros C Mem.</b>
+
+Variables: I L
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+C : countItem I L 0 @
+Mem : mem I L
+============================
+ false
+</pre>
+<pre class="code extensibella"id="143">
+ &lt; <b>C: case C.</b>
+
+Subgoal 1:
+
+Variables: I
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I []
+============================
+ false
+</pre>
+<pre class="code extensibella"id="144">
+ &lt; <b>case Mem.</b>
+
+Subgoal 2:
+
+Variables: I N Rest
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I (I::Rest)
+C : countItem I Rest N *
+C1 : 1 + N = 0
+============================
+ false
+</pre>
+<pre class="code extensibella"id="145">
+ &lt; <b>G: apply countItem_geq_0 to C.</b>
+
+Subgoal 2:
+
+Variables: I N Rest
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I (I::Rest)
+C : countItem I Rest N *
+C1 : 1 + N = 0
+G : N &gt;= 0
+============================
+ false
+</pre>
+<pre class="code extensibella"id="146">
+ &lt; <b>IsN: apply countItem_is_integer to C.</b>
+
+Subgoal 2:
+
+Variables: I N Rest
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I (I::Rest)
+C : countItem I Rest N *
+C1 : 1 + N = 0
+G : N &gt;= 0
+IsN : is_integer N
+============================
+ false
+</pre>
+<pre class="code extensibella"id="147">
+ &lt; <b>P: apply plus_integer_comm to _ _ C1.</b>
+
+Subgoal 2:
+
+Variables: I N Rest
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I (I::Rest)
+C : countItem I Rest N *
+C1 : 1 + N = 0
+G : N &gt;= 0
+IsN : is_integer N
+P : N + 1 = 0
+============================
+ false
+</pre>
+<pre class="code extensibella"id="148">
+ &lt; <b>Or: apply greatereq_integer_greater_or_eq to G.</b>
+
+Subgoal 2:
+
+Variables: I N Rest
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I (I::Rest)
+C : countItem I Rest N *
+C1 : 1 + N = 0
+G : N &gt;= 0
+IsN : is_integer N
+P : N + 1 = 0
+Or : N &gt; 0 \/ N = 0
+============================
+ false
+</pre>
+<pre class="code extensibella"id="149">
+ &lt; <b>G': case Or.</b>
+
+Subgoal 2.1:
+
+Variables: I N Rest
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I (I::Rest)
+C : countItem I Rest N *
+C1 : 1 + N = 0
+G : N &gt;= 0
+IsN : is_integer N
+P : N + 1 = 0
+G' : N &gt; 0
+============================
+ false
+</pre>
+<pre class="code extensibella"id="150">
+ &lt; <b>G'': apply greater_plus_positive to _ _ C1 _.</b>
+
+Subgoal 2.1:
+
+Variables: I N Rest
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I (I::Rest)
+C : countItem I Rest N *
+C1 : 1 + N = 0
+G : N &gt;= 0
+IsN : is_integer N
+P : N + 1 = 0
+G' : N &gt; 0
+G'' : 0 &gt; 1
+============================
+ false
+</pre>
+<pre class="code extensibella"id="151">
+ &lt; <b>case G''.</b>
+
+Subgoal 2.1:
+
+Variables: I N Rest
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I (I::Rest)
+C : countItem I Rest N *
+C1 : 1 + N = 0
+G : N &gt;= 0
+IsN : is_integer N
+P : N + 1 = 0
+G' : N &gt; 0
+H1 : 1 &lt; 0
+============================
+ false
+</pre>
+<pre class="code extensibella"id="152">
+ &lt; <b>case H1.</b>
+
+Subgoal 2.2:
+
+Variables: I Rest
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I (I::Rest)
+C : countItem I Rest 0 *
+C1 : 1 + 0 = 0
+G : 0 &gt;= 0
+IsN : is_integer 0
+P : 0 + 1 = 0
+============================
+ false
+</pre>
+<pre class="code extensibella"id="153">
+ &lt; <b>case P.</b>
+
+Subgoal 3:
+
+Variables: I Rest Y
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+Mem : mem I (Y::Rest)
+C : I = Y -&gt; false
+C1 : countItem I Rest 0 *
+============================
+ false
+</pre>
+<pre class="code extensibella"id="154">
+ &lt; <b>Mem: case Mem.</b>
+
+Subgoal 3.1:
+
+Variables: Rest Y
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+C : Y = Y -&gt; false
+C1 : countItem Y Rest 0 *
+============================
+ false
+</pre>
+<pre class="code extensibella"id="155">
+ &lt; <b>backchain C.</b>
+
+Subgoal 3.2:
+
+Variables: I Rest Y
+IH : forall I L, countItem I L 0 * -&gt; mem I L -&gt; false
+C : I = Y -&gt; false
+C1 : countItem I Rest 0 *
+Mem : mem I Rest
+============================
+ false
+</pre>
+<pre class="code extensibella"id="156">
+ &lt; <b>apply IH to C1 Mem.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="157">
+ &lt; <b>Theorem countItem_greater_0  [Item] :
+     forall (I : Item) L N, countItem I (I::L) N -&gt; N &gt; 0.</b>
+
+============================
+ forall I L N, countItem I (I::L) N -&gt; N &gt; 0
+</pre>
+<pre class="code extensibella"id="158">
+ &lt; <b>induction on 1.</b>
+
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+============================
+ forall I L N, countItem I (I::L) N @ -&gt; N &gt; 0
+</pre>
+<pre class="code extensibella"id="159">
+ &lt; <b>intros C.</b>
+
+Variables: I L N
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I (I::L) N @
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="160">
+ &lt; <b>C: case C.</b>
+
+Subgoal 1:
+
+Variables: I L N N1
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L N1 *
+C1 : 1 + N1 = N
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="161">
+ &lt; <b>GEq: apply countItem_geq_0 to C.</b>
+
+Subgoal 1:
+
+Variables: I L N N1
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L N1 *
+C1 : 1 + N1 = N
+GEq : N1 &gt;= 0
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="162">
+ &lt; <b>Or: apply greatereq_integer_greater_or_eq to GEq.</b>
+
+Subgoal 1:
+
+Variables: I L N N1
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L N1 *
+C1 : 1 + N1 = N
+GEq : N1 &gt;= 0
+Or : N1 &gt; 0 \/ N1 = 0
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="163">
+ &lt; <b>G: case Or.</b>
+
+Subgoal 1.1:
+
+Variables: I L N N1
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L N1 *
+C1 : 1 + N1 = N
+GEq : N1 &gt;= 0
+G : N1 &gt; 0
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="164">
+ &lt; <b>IsN1: apply countItem_is_integer to C.</b>
+
+Subgoal 1.1:
+
+Variables: I L N N1
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L N1 *
+C1 : 1 + N1 = N
+GEq : N1 &gt;= 0
+G : N1 &gt; 0
+IsN1 : is_integer N1
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="165">
+ &lt; <b>P: apply plus_integer_comm to _ _ C1.</b>
+
+Subgoal 1.1:
+
+Variables: I L N N1
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L N1 *
+C1 : 1 + N1 = N
+GEq : N1 &gt;= 0
+G : N1 &gt; 0
+IsN1 : is_integer N1
+P : N1 + 1 = N
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="166">
+ &lt; <b>G': apply greater_plus_positive to _ _ P _.</b>
+
+Subgoal 1.1:
+
+Variables: I L N N1
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L N1 *
+C1 : 1 + N1 = N
+GEq : N1 &gt;= 0
+G : N1 &gt; 0
+IsN1 : is_integer N1
+P : N1 + 1 = N
+G' : N &gt; N1
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="167">
+ &lt; <b>apply greater_integer_transitive to G' G.</b>
+
+Subgoal 1.1:
+
+Variables: I L N N1
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L N1 *
+C1 : 1 + N1 = N
+GEq : N1 &gt;= 0
+G : N1 &gt; 0
+IsN1 : is_integer N1
+P : N1 + 1 = N
+G' : N &gt; N1
+H1 : N &gt; 0
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="168">
+ &lt; <b>search.</b>
+
+Subgoal 1.2:
+
+Variables: I L N
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L 0 *
+C1 : 1 + 0 = N
+GEq : 0 &gt;= 0
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="169">
+ &lt; <b>P: apply plus_integer_comm to _ _ C1.</b>
+
+Subgoal 1.2:
+
+Variables: I L N
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L 0 *
+C1 : 1 + 0 = N
+GEq : 0 &gt;= 0
+P : 0 + 1 = N
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="170">
+ &lt; <b>case P.</b>
+
+Subgoal 1.2:
+
+Variables: I L
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : countItem I L 0 *
+C1 : 1 + 0 = 1
+GEq : 0 &gt;= 0
+============================
+ 1 &gt; 0
+</pre>
+<pre class="code extensibella"id="171">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: I L N
+IH : forall I L N, countItem I (I::L) N * -&gt; N &gt; 0
+C : I = I -&gt; false
+C1 : countItem I L N *
+============================
+ N &gt; 0
+</pre>
+<pre class="code extensibella"id="172">
+ &lt; <b>apply C to _.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="173">
+ &lt; <b>Theorem perm_countItems  [Item] :
+     forall L P (I : Item) NL NP,
+       perm L P -&gt; countItem I L NL -&gt; countItem I P NP -&gt; NL = NP.</b>
+
+============================
+ forall L P I NL NP, perm L P -&gt; countItem I L NL -&gt; countItem I P NP -&gt; NL = NP
+</pre>
+<pre class="code extensibella"id="174">
+ &lt; <b>induction on 2.</b>
+
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+============================
+ forall L P I NL NP,
+   perm L P -&gt; countItem I L NL @ -&gt; countItem I P NP -&gt; NL = NP
+</pre>
+<pre class="code extensibella"id="175">
+ &lt; <b>intros P CL CP.</b>
+
+Variables: L P I NL NP
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+P : perm L P
+CL : countItem I L NL @
+CP : countItem I P NP
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="176">
+ &lt; <b>CL: case CL.</b>
+
+Subgoal 1:
+
+Variables: P I NP
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+P : perm [] P
+CP : countItem I P NP
+============================
+ 0 = NP
+</pre>
+<pre class="code extensibella"id="177">
+ &lt; <b>case P.</b>
+
+Subgoal 1:
+
+Variables: I NP
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I [] NP
+============================
+ 0 = NP
+</pre>
+<pre class="code extensibella"id="178">
+ &lt; <b>case CP.</b>
+
+Subgoal 1:
+
+Variables: I
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+============================
+ 0 = 0
+</pre>
+<pre class="code extensibella"id="179">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: P I NL NP N Rest
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+P : perm (I::Rest) P
+CP : countItem I P NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="180">
+ &lt; <b>P: case P.</b>
+
+Subgoal 2:
+
+Variables: P I NL NP N Rest L2
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I P NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I L2 P
+P1 : perm Rest L2
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="181">
+ &lt; <b>S: case P (keep).</b>
+
+Subgoal 2.1:
+
+Variables: I NL NP N Rest L2
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I (I::L2) NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I L2 (I::L2)
+P1 : perm Rest L2
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="182">
+ &lt; <b>CP: case CP.</b>
+
+Subgoal 2.1.1:
+
+Variables: I NL NP N Rest L2 N1
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I L2 (I::L2)
+P1 : perm Rest L2
+CP : countItem I L2 N1
+CP1 : 1 + N1 = NP
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="183">
+ &lt; <b>apply IH to P1 CL CP.</b>
+
+Subgoal 2.1.1:
+
+Variables: I NL NP Rest L2 N1
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CL : countItem I Rest N1 *
+CL1 : 1 + N1 = NL
+P : select I L2 (I::L2)
+P1 : perm Rest L2
+CP : countItem I L2 N1
+CP1 : 1 + N1 = NP
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="184">
+ &lt; <b>apply plus_integer_unique to CL1 CP1.</b>
+
+Subgoal 2.1.1:
+
+Variables: I NP Rest L2 N1
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CL : countItem I Rest N1 *
+CL1 : 1 + N1 = NP
+P : select I L2 (I::L2)
+P1 : perm Rest L2
+CP : countItem I L2 N1
+CP1 : 1 + N1 = NP
+============================
+ NP = NP
+</pre>
+<pre class="code extensibella"id="185">
+ &lt; <b>search.</b>
+
+Subgoal 2.1.2:
+
+Variables: I NL NP N Rest L2
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I L2 (I::L2)
+P1 : perm Rest L2
+CP : I = I -&gt; false
+CP1 : countItem I L2 NP
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="186">
+ &lt; <b>apply CP to _.</b>
+
+Subgoal 2.2:
+
+Variables: I NL NP N Rest L3 I1 L1
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I (I1::L3) NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I (I1::L1) (I1::L3)
+P1 : perm Rest (I1::L1)
+S : select I L1 L3
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="187">
+ &lt; <b>IsNP: apply countItem_is_integer to CP.</b>
+
+Subgoal 2.2:
+
+Variables: I NL NP N Rest L3 I1 L1
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I (I1::L3) NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I (I1::L1) (I1::L3)
+P1 : perm Rest (I1::L1)
+S : select I L1 L3
+IsNP : is_integer NP
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="188">
+ &lt; <b>Minus: apply minus_integer_total to IsNP _ with
+            N2 = 1.</b>
+
+Subgoal 2.2:
+
+Variables: I NL NP N Rest L3 I1 L1 N3
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I (I1::L3) NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I (I1::L1) (I1::L3)
+P1 : perm Rest (I1::L1)
+S : select I L1 L3
+IsNP : is_integer NP
+Minus : NP - 1 = N3
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="189">
+ &lt; <b>C': apply select_countItem to CP P Minus.</b>
+
+Subgoal 2.2:
+
+Variables: I NL NP N Rest L3 I1 L1 N3
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I (I1::L3) NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I (I1::L1) (I1::L3)
+P1 : perm Rest (I1::L1)
+S : select I L1 L3
+IsNP : is_integer NP
+Minus : NP - 1 = N3
+C' : countItem I (I1::L1) N3
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="190">
+ &lt; <b>P': apply minus_plus_same_integer to _ _ Minus.</b>
+
+Subgoal 2.2:
+
+Variables: I NL NP N Rest L3 I1 L1 N3
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I (I1::L3) NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I (I1::L1) (I1::L3)
+P1 : perm Rest (I1::L1)
+S : select I L1 L3
+IsNP : is_integer NP
+Minus : NP - 1 = N3
+C' : countItem I (I1::L1) N3
+P' : N3 + 1 = NP
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="191">
+ &lt; <b>IsN3: apply minus_integer_is_integer to _ _ Minus.</b>
+
+Subgoal 2.2:
+
+Variables: I NL NP N Rest L3 I1 L1 N3
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I (I1::L3) NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I (I1::L1) (I1::L3)
+P1 : perm Rest (I1::L1)
+S : select I L1 L3
+IsNP : is_integer NP
+Minus : NP - 1 = N3
+C' : countItem I (I1::L1) N3
+P' : N3 + 1 = NP
+IsN3 : is_integer N3
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="192">
+ &lt; <b>Plus: apply plus_integer_comm to _ _ P'.</b>
+
+Subgoal 2.2:
+
+Variables: I NL NP N Rest L3 I1 L1 N3
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I (I1::L3) NP
+CL : countItem I Rest N *
+CL1 : 1 + N = NL
+P : select I (I1::L1) (I1::L3)
+P1 : perm Rest (I1::L1)
+S : select I L1 L3
+IsNP : is_integer NP
+Minus : NP - 1 = N3
+C' : countItem I (I1::L1) N3
+P' : N3 + 1 = NP
+IsN3 : is_integer N3
+Plus : 1 + N3 = NP
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="193">
+ &lt; <b>apply IH to P1 CL _.</b>
+
+Subgoal 2.2:
+
+Variables: I NL NP Rest L3 I1 L1 N3
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I (I1::L3) NP
+CL : countItem I Rest N3 *
+CL1 : 1 + N3 = NL
+P : select I (I1::L1) (I1::L3)
+P1 : perm Rest (I1::L1)
+S : select I L1 L3
+IsNP : is_integer NP
+Minus : NP - 1 = N3
+C' : countItem I (I1::L1) N3
+P' : N3 + 1 = NP
+IsN3 : is_integer N3
+Plus : 1 + N3 = NP
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="194">
+ &lt; <b>apply plus_integer_unique to CL1 Plus.</b>
+
+Subgoal 2.2:
+
+Variables: I NP Rest L3 I1 L1 N3
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I (I1::L3) NP
+CL : countItem I Rest N3 *
+CL1 : 1 + N3 = NP
+P : select I (I1::L1) (I1::L3)
+P1 : perm Rest (I1::L1)
+S : select I L1 L3
+IsNP : is_integer NP
+Minus : NP - 1 = N3
+C' : countItem I (I1::L1) N3
+P' : N3 + 1 = NP
+IsN3 : is_integer N3
+Plus : 1 + N3 = NP
+============================
+ NP = NP
+</pre>
+<pre class="code extensibella"id="195">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: P I NL NP Rest Y
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+P : perm (Y::Rest) P
+CP : countItem I P NP
+CL : I = Y -&gt; false
+CL1 : countItem I Rest NL *
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="196">
+ &lt; <b>P: case P.</b>
+
+Subgoal 3:
+
+Variables: P I NL NP Rest Y L2
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I P NP
+CL : I = Y -&gt; false
+CL1 : countItem I Rest NL *
+P : select Y L2 P
+P1 : perm Rest L2
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="197">
+ &lt; <b>C: apply select_countItem_neq to CP P CL.</b>
+
+Subgoal 3:
+
+Variables: P I NL NP Rest Y L2
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I P NP
+CL : I = Y -&gt; false
+CL1 : countItem I Rest NL *
+P : select Y L2 P
+P1 : perm Rest L2
+C : countItem I L2 NP
+============================
+ NL = NP
+</pre>
+<pre class="code extensibella"id="198">
+ &lt; <b>apply IH to P1 CL1 C.</b>
+
+Subgoal 3:
+
+Variables: P I NP Rest Y L2
+IH : forall L P I NL NP,
+       perm L P -&gt; countItem I L NL * -&gt; countItem I P NP -&gt; NL = NP
+CP : countItem I P NP
+CL : I = Y -&gt; false
+CL1 : countItem I Rest NP *
+P : select Y L2 P
+P1 : perm Rest L2
+C : countItem I L2 NP
+============================
+ NP = NP
+</pre>
+<pre class="code extensibella"id="199">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="200">
+ &lt; <b>Theorem intRange_is :
+     forall Low High R,
+       is_integer Low -&gt; intRange Low High R -&gt; is_list is_integer R.</b>
+
+============================
+ forall Low High R,
+   is_integer Low -&gt; intRange Low High R -&gt; is_list is_integer R
+</pre>
+<pre class="code extensibella"id="201">
+ &lt; <b>induction on 2.</b>
+
+IH : forall Low High R,
+       is_integer Low -&gt; intRange Low High R * -&gt; is_list is_integer R
+============================
+ forall Low High R,
+   is_integer Low -&gt; intRange Low High R @ -&gt; is_list is_integer R
+</pre>
+<pre class="code extensibella"id="202">
+ &lt; <b>intros IsLow R.</b>
+
+Variables: Low High R
+IH : forall Low High R,
+       is_integer Low -&gt; intRange Low High R * -&gt; is_list is_integer R
+IsLow : is_integer Low
+R : intRange Low High R @
+============================
+ is_list is_integer R
+</pre>
+<pre class="code extensibella"id="203">
+ &lt; <b>R: case R.</b>
+
+Subgoal 1:
+
+Variables: Low High
+IH : forall Low High R,
+       is_integer Low -&gt; intRange Low High R * -&gt; is_list is_integer R
+IsLow : is_integer Low
+R : Low &gt; High
+============================
+ is_list is_integer []
+</pre>
+<pre class="code extensibella"id="204">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: Low High PlusOne Rest
+IH : forall Low High R,
+       is_integer Low -&gt; intRange Low High R * -&gt; is_list is_integer R
+IsLow : is_integer Low
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+============================
+ is_list is_integer (Low::Rest)
+</pre>
+<pre class="code extensibella"id="205">
+ &lt; <b>IsPlusOne: apply plus_integer_is_integer to _ _ R1.</b>
+
+Subgoal 2:
+
+Variables: Low High PlusOne Rest
+IH : forall Low High R,
+       is_integer Low -&gt; intRange Low High R * -&gt; is_list is_integer R
+IsLow : is_integer Low
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+IsPlusOne : is_integer PlusOne
+============================
+ is_list is_integer (Low::Rest)
+</pre>
+<pre class="code extensibella"id="206">
+ &lt; <b>apply IH to IsPlusOne R2.</b>
+
+Subgoal 2:
+
+Variables: Low High PlusOne Rest
+IH : forall Low High R,
+       is_integer Low -&gt; intRange Low High R * -&gt; is_list is_integer R
+IsLow : is_integer Low
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+IsPlusOne : is_integer PlusOne
+H1 : is_list is_integer Rest
+============================
+ is_list is_integer (Low::Rest)
+</pre>
+<pre class="code extensibella"id="207">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="208">
+ &lt; <b>Theorem intRange_low_lesseq :
+     forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R -&gt; Low &lt;= X.</b>
+
+============================
+ forall Low High R X,
+   is_integer Low -&gt; intRange Low High R -&gt; mem X R -&gt; Low &lt;= X
+</pre>
+<pre class="code extensibella"id="209">
+ &lt; <b>induction on 3.</b>
+
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+============================
+ forall Low High R X,
+   is_integer Low -&gt; intRange Low High R -&gt; mem X R @ -&gt; Low &lt;= X
+</pre>
+<pre class="code extensibella"id="210">
+ &lt; <b>intros IsLow Range Mem.</b>
+
+Variables: Low High R X
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer Low
+Range : intRange Low High R
+Mem : mem X R @
+============================
+ Low &lt;= X
+</pre>
+<pre class="code extensibella"id="211">
+ &lt; <b>apply intRange_is to IsLow Range.</b>
+
+Variables: Low High R X
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer Low
+Range : intRange Low High R
+Mem : mem X R @
+H1 : is_list is_integer R
+============================
+ Low &lt;= X
+</pre>
+<pre class="code extensibella"id="212">
+ &lt; <b>IsX: apply is_list_int_mem to _ Mem.</b>
+
+Variables: Low High R X
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer Low
+Range : intRange Low High R
+Mem : mem X R @
+H1 : is_list is_integer R
+IsX : is_integer X
+============================
+ Low &lt;= X
+</pre>
+<pre class="code extensibella"id="213">
+ &lt; <b>Mem: case Mem.</b>
+
+Subgoal 1:
+
+Variables: Low High X Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer Low
+Range : intRange Low High (X::Rest)
+H1 : is_list is_integer (X::Rest)
+IsX : is_integer X
+============================
+ Low &lt;= X
+</pre>
+<pre class="code extensibella"id="214">
+ &lt; <b>R: case Range.</b>
+
+Subgoal 1:
+
+Variables: High X Rest PlusOne
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer X
+H1 : is_list is_integer (X::Rest)
+IsX : is_integer X
+R : X &lt;= High
+R1 : 1 + X = PlusOne
+R2 : intRange PlusOne High Rest
+============================
+ X &lt;= X
+</pre>
+<pre class="code extensibella"id="215">
+ &lt; <b>apply is_integer_lesseq to IsX.</b>
+
+Subgoal 1:
+
+Variables: High X Rest PlusOne
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer X
+H1 : is_list is_integer (X::Rest)
+IsX : is_integer X
+R : X &lt;= High
+R1 : 1 + X = PlusOne
+R2 : intRange PlusOne High Rest
+H2 : X &lt;= X
+============================
+ X &lt;= X
+</pre>
+<pre class="code extensibella"id="216">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: Low High X Rest I
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer Low
+Range : intRange Low High (I::Rest)
+H1 : is_list is_integer (I::Rest)
+IsX : is_integer X
+Mem : mem X Rest *
+============================
+ Low &lt;= X
+</pre>
+<pre class="code extensibella"id="217">
+ &lt; <b>R: case Range.</b>
+
+Subgoal 2:
+
+Variables: High X Rest I PlusOne
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer I
+H1 : is_list is_integer (I::Rest)
+IsX : is_integer X
+Mem : mem X Rest *
+R : I &lt;= High
+R1 : 1 + I = PlusOne
+R2 : intRange PlusOne High Rest
+============================
+ I &lt;= X
+</pre>
+<pre class="code extensibella"id="218">
+ &lt; <b>apply plus_integer_is_integer to _ _ R1.</b>
+
+Subgoal 2:
+
+Variables: High X Rest I PlusOne
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer I
+H1 : is_list is_integer (I::Rest)
+IsX : is_integer X
+Mem : mem X Rest *
+R : I &lt;= High
+R1 : 1 + I = PlusOne
+R2 : intRange PlusOne High Rest
+H2 : is_integer PlusOne
+============================
+ I &lt;= X
+</pre>
+<pre class="code extensibella"id="219">
+ &lt; <b>LEq: apply IH to _ R2 Mem.</b>
+
+Subgoal 2:
+
+Variables: High X Rest I PlusOne
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer I
+H1 : is_list is_integer (I::Rest)
+IsX : is_integer X
+Mem : mem X Rest *
+R : I &lt;= High
+R1 : 1 + I = PlusOne
+R2 : intRange PlusOne High Rest
+H2 : is_integer PlusOne
+LEq : PlusOne &lt;= X
+============================
+ I &lt;= X
+</pre>
+<pre class="code extensibella"id="220">
+ &lt; <b>L: apply lt_plus_one to R1 _.</b>
+
+Subgoal 2:
+
+Variables: High X Rest I PlusOne
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer I
+H1 : is_list is_integer (I::Rest)
+IsX : is_integer X
+Mem : mem X Rest *
+R : I &lt;= High
+R1 : 1 + I = PlusOne
+R2 : intRange PlusOne High Rest
+H2 : is_integer PlusOne
+LEq : PlusOne &lt;= X
+L : I &lt; PlusOne
+============================
+ I &lt;= X
+</pre>
+<pre class="code extensibella"id="221">
+ &lt; <b>LEq': apply less_integer_lesseq to L.</b>
+
+Subgoal 2:
+
+Variables: High X Rest I PlusOne
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer I
+H1 : is_list is_integer (I::Rest)
+IsX : is_integer X
+Mem : mem X Rest *
+R : I &lt;= High
+R1 : 1 + I = PlusOne
+R2 : intRange PlusOne High Rest
+H2 : is_integer PlusOne
+LEq : PlusOne &lt;= X
+L : I &lt; PlusOne
+LEq' : I &lt;= PlusOne
+============================
+ I &lt;= X
+</pre>
+<pre class="code extensibella"id="222">
+ &lt; <b>apply lesseq_integer_transitive to LEq' LEq.</b>
+
+Subgoal 2:
+
+Variables: High X Rest I PlusOne
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R * -&gt; Low &lt;= X
+IsLow : is_integer I
+H1 : is_list is_integer (I::Rest)
+IsX : is_integer X
+Mem : mem X Rest *
+R : I &lt;= High
+R1 : 1 + I = PlusOne
+R2 : intRange PlusOne High Rest
+H2 : is_integer PlusOne
+LEq : PlusOne &lt;= X
+L : I &lt; PlusOne
+LEq' : I &lt;= PlusOne
+H3 : I &lt;= X
+============================
+ I &lt;= X
+</pre>
+<pre class="code extensibella"id="223">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="224">
+ &lt; <b>Theorem intRange_high_lesseq :
+     forall Low High R X,
+       is_integer Low -&gt; intRange Low High R -&gt; mem X R -&gt; X &lt;= High.</b>
+
+============================
+ forall Low High R X,
+   is_integer Low -&gt; intRange Low High R -&gt; mem X R -&gt; X &lt;= High
+</pre>
+<pre class="code extensibella"id="225">
+ &lt; <b>induction on 2.</b>
+
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R * -&gt; mem X R -&gt; X &lt;= High
+============================
+ forall Low High R X,
+   is_integer Low -&gt; intRange Low High R @ -&gt; mem X R -&gt; X &lt;= High
+</pre>
+<pre class="code extensibella"id="226">
+ &lt; <b>intros IsLow Range Mem.</b>
+
+Variables: Low High R X
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R * -&gt; mem X R -&gt; X &lt;= High
+IsLow : is_integer Low
+Range : intRange Low High R @
+Mem : mem X R
+============================
+ X &lt;= High
+</pre>
+<pre class="code extensibella"id="227">
+ &lt; <b>Range: case Range.</b>
+
+Subgoal 1:
+
+Variables: Low High X
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R * -&gt; mem X R -&gt; X &lt;= High
+IsLow : is_integer Low
+Mem : mem X []
+Range : Low &gt; High
+============================
+ X &lt;= High
+</pre>
+<pre class="code extensibella"id="228">
+ &lt; <b>case Mem.</b>
+
+Subgoal 2:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R * -&gt; mem X R -&gt; X &lt;= High
+IsLow : is_integer Low
+Mem : mem X (Low::Rest)
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest *
+============================
+ X &lt;= High
+</pre>
+<pre class="code extensibella"id="229">
+ &lt; <b>Mem: case Mem.</b>
+
+Subgoal 2.1:
+
+Variables: Low High PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R * -&gt; mem X R -&gt; X &lt;= High
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest *
+============================
+ Low &lt;= High
+</pre>
+<pre class="code extensibella"id="230">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R * -&gt; mem X R -&gt; X &lt;= High
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest *
+Mem : mem X Rest
+============================
+ X &lt;= High
+</pre>
+<pre class="code extensibella"id="231">
+ &lt; <b>apply plus_integer_is_integer to _ _ Range1.</b>
+
+Subgoal 2.2:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R * -&gt; mem X R -&gt; X &lt;= High
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest *
+Mem : mem X Rest
+H1 : is_integer PlusOne
+============================
+ X &lt;= High
+</pre>
+<pre class="code extensibella"id="232">
+ &lt; <b>apply IH to _ Range2 Mem.</b>
+
+Subgoal 2.2:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; intRange Low High R * -&gt; mem X R -&gt; X &lt;= High
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest *
+Mem : mem X Rest
+H1 : is_integer PlusOne
+H2 : X &lt;= High
+============================
+ X &lt;= High
+</pre>
+<pre class="code extensibella"id="233">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="234">
+ &lt; <b>Theorem in_intRange :
+     forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R.</b>
+
+============================
+ forall Low High R X,
+   is_integer Low -&gt; is_integer X -&gt; intRange Low High R -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+   mem X R
+</pre>
+<pre class="code extensibella"id="235">
+ &lt; <b>induction on 3.</b>
+
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+============================
+ forall Low High R X,
+   is_integer Low -&gt; is_integer X -&gt; intRange Low High R @ -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+   mem X R
+</pre>
+<pre class="code extensibella"id="236">
+ &lt; <b>intros IsLow IsX R LowX XHigh.</b>
+
+Variables: Low High R X
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer Low
+IsX : is_integer X
+R : intRange Low High R @
+LowX : Low &lt;= X
+XHigh : X &lt;= High
+============================
+ mem X R
+</pre>
+<pre class="code extensibella"id="237">
+ &lt; <b>R: case R.</b>
+
+Subgoal 1:
+
+Variables: Low High X
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer Low
+IsX : is_integer X
+LowX : Low &lt;= X
+XHigh : X &lt;= High
+R : Low &gt; High
+============================
+ mem X []
+</pre>
+<pre class="code extensibella"id="238">
+ &lt; <b>L: apply lesseq_integer_transitive to LowX XHigh.</b>
+
+Subgoal 1:
+
+Variables: Low High X
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer Low
+IsX : is_integer X
+LowX : Low &lt;= X
+XHigh : X &lt;= High
+R : Low &gt; High
+L : Low &lt;= High
+============================
+ mem X []
+</pre>
+<pre class="code extensibella"id="239">
+ &lt; <b>apply greater_lesseq_integer_false to R L.</b>
+
+Subgoal 2:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer Low
+IsX : is_integer X
+LowX : Low &lt;= X
+XHigh : X &lt;= High
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+============================
+ mem X (Low::Rest)
+</pre>
+<pre class="code extensibella"id="240">
+ &lt; <b>Or: apply lesseq_integer_less_or_eq to LowX.</b>
+
+Subgoal 2:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer Low
+IsX : is_integer X
+LowX : Low &lt;= X
+XHigh : X &lt;= High
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+Or : Low &lt; X \/ Low = X
+============================
+ mem X (Low::Rest)
+</pre>
+<pre class="code extensibella"id="241">
+ &lt; <b>L: case Or.</b>
+
+Subgoal 2.1:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer Low
+IsX : is_integer X
+LowX : Low &lt;= X
+XHigh : X &lt;= High
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+L : Low &lt; X
+============================
+ mem X (Low::Rest)
+</pre>
+<pre class="code extensibella"id="242">
+ &lt; <b>P: apply plus_integer_comm to _ _ R1.</b>
+
+Subgoal 2.1:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer Low
+IsX : is_integer X
+LowX : Low &lt;= X
+XHigh : X &lt;= High
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+L : Low &lt; X
+P : Low + 1 = PlusOne
+============================
+ mem X (Low::Rest)
+</pre>
+<pre class="code extensibella"id="243">
+ &lt; <b>IsPlusOne: apply plus_integer_is_integer to _ _ P.</b>
+
+Subgoal 2.1:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer Low
+IsX : is_integer X
+LowX : Low &lt;= X
+XHigh : X &lt;= High
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+L : Low &lt; X
+P : Low + 1 = PlusOne
+IsPlusOne : is_integer PlusOne
+============================
+ mem X (Low::Rest)
+</pre>
+<pre class="code extensibella"id="244">
+ &lt; <b>apply less_lesseq_plus_one to _ _ L P.</b>
+
+Subgoal 2.1:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer Low
+IsX : is_integer X
+LowX : Low &lt;= X
+XHigh : X &lt;= High
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+L : Low &lt; X
+P : Low + 1 = PlusOne
+IsPlusOne : is_integer PlusOne
+H1 : PlusOne &lt;= X
+============================
+ mem X (Low::Rest)
+</pre>
+<pre class="code extensibella"id="245">
+ &lt; <b>apply IH to _ _ R2 _ _.</b>
+
+Subgoal 2.1:
+
+Variables: Low High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer Low
+IsX : is_integer X
+LowX : Low &lt;= X
+XHigh : X &lt;= High
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+L : Low &lt; X
+P : Low + 1 = PlusOne
+IsPlusOne : is_integer PlusOne
+H1 : PlusOne &lt;= X
+H2 : mem X Rest
+============================
+ mem X (Low::Rest)
+</pre>
+<pre class="code extensibella"id="246">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: High X PlusOne Rest
+IH : forall Low High R X,
+       is_integer Low -&gt; is_integer X -&gt; intRange Low High R * -&gt; Low &lt;= X -&gt; X &lt;= High -&gt;
+       mem X R
+IsLow : is_integer X
+IsX : is_integer X
+LowX : X &lt;= X
+XHigh : X &lt;= High
+R : X &lt;= High
+R1 : 1 + X = PlusOne
+R2 : intRange PlusOne High Rest *
+============================
+ mem X (X::Rest)
+</pre>
+<pre class="code extensibella"id="247">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="248">
+ &lt; <b>Theorem intRange_unique :
+     forall Low High R1 R2,
+       intRange Low High R1 -&gt; intRange Low High R2 -&gt; R1 = R2.</b>
+
+============================
+ forall Low High R1 R2, intRange Low High R1 -&gt; intRange Low High R2 -&gt; R1 = R2
+</pre>
+<pre class="code extensibella"id="249">
+ &lt; <b>induction on 1.</b>
+
+IH : forall Low High R1 R2,
+       intRange Low High R1 * -&gt; intRange Low High R2 -&gt; R1 = R2
+============================
+ forall Low High R1 R2,
+   intRange Low High R1 @ -&gt; intRange Low High R2 -&gt; R1 = R2
+</pre>
+<pre class="code extensibella"id="250">
+ &lt; <b>intros RA RB.</b>
+
+Variables: Low High R1 R2
+IH : forall Low High R1 R2,
+       intRange Low High R1 * -&gt; intRange Low High R2 -&gt; R1 = R2
+RA : intRange Low High R1 @
+RB : intRange Low High R2
+============================
+ R1 = R2
+</pre>
+<pre class="code extensibella"id="251">
+ &lt; <b>RA: case RA.</b>
+
+Subgoal 1:
+
+Variables: Low High R2
+IH : forall Low High R1 R2,
+       intRange Low High R1 * -&gt; intRange Low High R2 -&gt; R1 = R2
+RB : intRange Low High R2
+RA : Low &gt; High
+============================
+ [] = R2
+</pre>
+<pre class="code extensibella"id="252">
+ &lt; <b>RB: case RB.</b>
+
+Subgoal 1.1:
+
+Variables: Low High
+IH : forall Low High R1 R2,
+       intRange Low High R1 * -&gt; intRange Low High R2 -&gt; R1 = R2
+RA : Low &gt; High
+RB : Low &gt; High
+============================
+ [] = []
+</pre>
+<pre class="code extensibella"id="253">
+ &lt; <b>search.</b>
+
+Subgoal 1.2:
+
+Variables: Low High PlusOne Rest
+IH : forall Low High R1 R2,
+       intRange Low High R1 * -&gt; intRange Low High R2 -&gt; R1 = R2
+RA : Low &gt; High
+RB : Low &lt;= High
+RB1 : 1 + Low = PlusOne
+RB2 : intRange PlusOne High Rest
+============================
+ [] = Low::Rest
+</pre>
+<pre class="code extensibella"id="254">
+ &lt; <b>apply greater_lesseq_integer_false to RA RB.</b>
+
+Subgoal 2:
+
+Variables: Low High R2 PlusOne Rest
+IH : forall Low High R1 R2,
+       intRange Low High R1 * -&gt; intRange Low High R2 -&gt; R1 = R2
+RB : intRange Low High R2
+RA : Low &lt;= High
+RA1 : 1 + Low = PlusOne
+RA2 : intRange PlusOne High Rest *
+============================
+ Low::Rest = R2
+</pre>
+<pre class="code extensibella"id="255">
+ &lt; <b>RB: case RB.</b>
+
+Subgoal 2.1:
+
+Variables: Low High PlusOne Rest
+IH : forall Low High R1 R2,
+       intRange Low High R1 * -&gt; intRange Low High R2 -&gt; R1 = R2
+RA : Low &lt;= High
+RA1 : 1 + Low = PlusOne
+RA2 : intRange PlusOne High Rest *
+RB : Low &gt; High
+============================
+ Low::Rest = []
+</pre>
+<pre class="code extensibella"id="256">
+ &lt; <b>apply greater_lesseq_integer_false to RB RA.</b>
+
+Subgoal 2.2:
+
+Variables: Low High PlusOne Rest PlusOne1 Rest1
+IH : forall Low High R1 R2,
+       intRange Low High R1 * -&gt; intRange Low High R2 -&gt; R1 = R2
+RA : Low &lt;= High
+RA1 : 1 + Low = PlusOne
+RA2 : intRange PlusOne High Rest *
+RB : Low &lt;= High
+RB1 : 1 + Low = PlusOne1
+RB2 : intRange PlusOne1 High Rest1
+============================
+ Low::Rest = Low::Rest1
+</pre>
+<pre class="code extensibella"id="257">
+ &lt; <b>apply plus_integer_unique to RA1 RB1.</b>
+
+Subgoal 2.2:
+
+Variables: Low High Rest PlusOne1 Rest1
+IH : forall Low High R1 R2,
+       intRange Low High R1 * -&gt; intRange Low High R2 -&gt; R1 = R2
+RA : Low &lt;= High
+RA1 : 1 + Low = PlusOne1
+RA2 : intRange PlusOne1 High Rest *
+RB : Low &lt;= High
+RB1 : 1 + Low = PlusOne1
+RB2 : intRange PlusOne1 High Rest1
+============================
+ Low::Rest = Low::Rest1
+</pre>
+<pre class="code extensibella"id="258">
+ &lt; <b>apply IH to RA2 RB2.</b>
+
+Subgoal 2.2:
+
+Variables: Low High PlusOne1 Rest1
+IH : forall Low High R1 R2,
+       intRange Low High R1 * -&gt; intRange Low High R2 -&gt; R1 = R2
+RA : Low &lt;= High
+RA1 : 1 + Low = PlusOne1
+RA2 : intRange PlusOne1 High Rest1 *
+RB : Low &lt;= High
+RB1 : 1 + Low = PlusOne1
+RB2 : intRange PlusOne1 High Rest1
+============================
+ Low::Rest1 = Low::Rest1
+</pre>
+<pre class="code extensibella"id="259">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="260">
+ &lt; <b>Theorem intRange_smaller_exists :
+     forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'.</b>
+
+============================
+ forall Low High R Low',
+   is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; Low &lt; Low' -&gt; exists R',
+     intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="261">
+ &lt; <b>induction on 3.</b>
+
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+============================
+ forall Low High R Low',
+   is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R @ -&gt; Low &lt; Low' -&gt; exists R',
+     intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="262">
+ &lt; <b>intros IsLow IsLow' R L.</b>
+
+Variables: Low High R Low'
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R @
+L : Low &lt; Low'
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="263">
+ &lt; <b>R: case R.</b>
+
+Subgoal 1:
+
+Variables: Low High Low'
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &gt; High
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="264">
+ &lt; <b>G: apply less_integer_flip_greater to L.</b>
+
+Subgoal 1:
+
+Variables: Low High Low'
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &gt; High
+G : Low' &gt; Low
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="265">
+ &lt; <b>apply greater_integer_transitive to G R.</b>
+
+Subgoal 1:
+
+Variables: Low High Low'
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &gt; High
+G : Low' &gt; Low
+H1 : Low' &gt; High
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="266">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: Low High Low' PlusOne Rest
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="267">
+ &lt; <b>IsPlusOne: apply plus_integer_is_integer to _ _ R1.</b>
+
+Subgoal 2:
+
+Variables: Low High Low' PlusOne Rest
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+IsPlusOne : is_integer PlusOne
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="268">
+ &lt; <b>P: apply plus_integer_comm to _ _ R1.</b>
+
+Subgoal 2:
+
+Variables: Low High Low' PlusOne Rest
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+IsPlusOne : is_integer PlusOne
+P : Low + 1 = PlusOne
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="269">
+ &lt; <b>LEq: apply less_lesseq_plus_one to _ _ L P.</b>
+
+Subgoal 2:
+
+Variables: Low High Low' PlusOne Rest
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+IsPlusOne : is_integer PlusOne
+P : Low + 1 = PlusOne
+LEq : PlusOne &lt;= Low'
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="270">
+ &lt; <b>Or: apply lesseq_integer_less_or_eq to LEq.</b>
+
+Subgoal 2:
+
+Variables: Low High Low' PlusOne Rest
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+IsPlusOne : is_integer PlusOne
+P : Low + 1 = PlusOne
+LEq : PlusOne &lt;= Low'
+Or : PlusOne &lt; Low' \/ PlusOne = Low'
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="271">
+ &lt; <b>L: case Or.</b>
+
+Subgoal 2.1:
+
+Variables: Low High Low' PlusOne Rest
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+IsPlusOne : is_integer PlusOne
+P : Low + 1 = PlusOne
+LEq : PlusOne &lt;= Low'
+L1 : PlusOne &lt; Low'
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="272">
+ &lt; <b>apply IH to _ _ R2 L1.</b>
+
+Subgoal 2.1:
+
+Variables: Low High Low' PlusOne Rest R'
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : intRange PlusOne High Rest *
+IsPlusOne : is_integer PlusOne
+P : Low + 1 = PlusOne
+LEq : PlusOne &lt;= Low'
+L1 : PlusOne &lt; Low'
+H1 : intRange Low' High R'
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="273">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: Low High Low' Rest
+IH : forall Low High R Low',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R * -&gt; Low &lt; Low' -&gt;
+       exists R', intRange Low' High R'
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+L : Low &lt; Low'
+R : Low &lt;= High
+R1 : 1 + Low = Low'
+R2 : intRange Low' High Rest *
+IsPlusOne : is_integer Low'
+P : Low + 1 = Low'
+LEq : Low' &lt;= Low'
+============================
+ exists R', intRange Low' High R'
+</pre>
+<pre class="code extensibella"id="274">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="275">
+ &lt; <b>Theorem intRange_subset :
+     forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' -&gt;
+       Low &lt; Low' -&gt; subset R' R.</b>
+
+============================
+ forall Low Low' High R R',
+   is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' -&gt;
+   Low &lt; Low' -&gt; subset R' R
+</pre>
+<pre class="code extensibella"id="276">
+ &lt; <b>induction on 4.</b>
+
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+============================
+ forall Low Low' High R R',
+   is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' @ -&gt;
+   Low &lt; Low' -&gt; subset R' R
+</pre>
+<pre class="code extensibella"id="277">
+ &lt; <b>intros IsLow IsLow' R R' L.</b>
+
+Variables: Low Low' High R R'
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R
+R' : intRange Low' High R' @
+L : Low &lt; Low'
+============================
+ subset R' R
+</pre>
+<pre class="code extensibella"id="278">
+ &lt; <b>R': case R'.</b>
+
+Subgoal 1:
+
+Variables: Low Low' High R
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R
+L : Low &lt; Low'
+R' : Low' &gt; High
+============================
+ subset [] R
+</pre>
+<pre class="code extensibella"id="279">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: Low Low' High R PlusOne Rest
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R
+L : Low &lt; Low'
+R' : Low' &lt;= High
+R'1 : 1 + Low' = PlusOne
+R'2 : intRange PlusOne High Rest *
+============================
+ subset (Low'::Rest) R
+</pre>
+<pre class="code extensibella"id="280">
+ &lt; <b>P: apply plus_integer_comm to _ _ R'1.</b>
+
+Subgoal 2:
+
+Variables: Low Low' High R PlusOne Rest
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R
+L : Low &lt; Low'
+R' : Low' &lt;= High
+R'1 : 1 + Low' = PlusOne
+R'2 : intRange PlusOne High Rest *
+P : Low' + 1 = PlusOne
+============================
+ subset (Low'::Rest) R
+</pre>
+<pre class="code extensibella"id="281">
+ &lt; <b>LEq: apply less_integer_lesseq to L.</b>
+
+Subgoal 2:
+
+Variables: Low Low' High R PlusOne Rest
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R
+L : Low &lt; Low'
+R' : Low' &lt;= High
+R'1 : 1 + Low' = PlusOne
+R'2 : intRange PlusOne High Rest *
+P : Low' + 1 = PlusOne
+LEq : Low &lt;= Low'
+============================
+ subset (Low'::Rest) R
+</pre>
+<pre class="code extensibella"id="282">
+ &lt; <b>M: apply in_intRange to _ _ R _ R'.</b>
+
+Subgoal 2:
+
+Variables: Low Low' High R PlusOne Rest
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R
+L : Low &lt; Low'
+R' : Low' &lt;= High
+R'1 : 1 + Low' = PlusOne
+R'2 : intRange PlusOne High Rest *
+P : Low' + 1 = PlusOne
+LEq : Low &lt;= Low'
+M : mem Low' R
+============================
+ subset (Low'::Rest) R
+</pre>
+<pre class="code extensibella"id="283">
+ &lt; <b>L': apply lt_plus_one to R'1 _.</b>
+
+Subgoal 2:
+
+Variables: Low Low' High R PlusOne Rest
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R
+L : Low &lt; Low'
+R' : Low' &lt;= High
+R'1 : 1 + Low' = PlusOne
+R'2 : intRange PlusOne High Rest *
+P : Low' + 1 = PlusOne
+LEq : Low &lt;= Low'
+M : mem Low' R
+L' : Low' &lt; PlusOne
+============================
+ subset (Low'::Rest) R
+</pre>
+<pre class="code extensibella"id="284">
+ &lt; <b>apply less_integer_transitive to L L'.</b>
+
+Subgoal 2:
+
+Variables: Low Low' High R PlusOne Rest
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R
+L : Low &lt; Low'
+R' : Low' &lt;= High
+R'1 : 1 + Low' = PlusOne
+R'2 : intRange PlusOne High Rest *
+P : Low' + 1 = PlusOne
+LEq : Low &lt;= Low'
+M : mem Low' R
+L' : Low' &lt; PlusOne
+H1 : Low &lt; PlusOne
+============================
+ subset (Low'::Rest) R
+</pre>
+<pre class="code extensibella"id="285">
+ &lt; <b>apply plus_integer_is_integer to _ _ R'1.</b>
+
+Subgoal 2:
+
+Variables: Low Low' High R PlusOne Rest
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R
+L : Low &lt; Low'
+R' : Low' &lt;= High
+R'1 : 1 + Low' = PlusOne
+R'2 : intRange PlusOne High Rest *
+P : Low' + 1 = PlusOne
+LEq : Low &lt;= Low'
+M : mem Low' R
+L' : Low' &lt; PlusOne
+H1 : Low &lt; PlusOne
+H2 : is_integer PlusOne
+============================
+ subset (Low'::Rest) R
+</pre>
+<pre class="code extensibella"id="286">
+ &lt; <b>apply IH to _ _ R R'2 _.</b>
+
+Subgoal 2:
+
+Variables: Low Low' High R PlusOne Rest
+IH : forall Low Low' High R R',
+       is_integer Low -&gt; is_integer Low' -&gt; intRange Low High R -&gt; intRange Low' High R' * -&gt;
+       Low &lt; Low' -&gt; subset R' R
+IsLow : is_integer Low
+IsLow' : is_integer Low'
+R : intRange Low High R
+L : Low &lt; Low'
+R' : Low' &lt;= High
+R'1 : 1 + Low' = PlusOne
+R'2 : intRange PlusOne High Rest *
+P : Low' + 1 = PlusOne
+LEq : Low &lt;= Low'
+M : mem Low' R
+L' : Low' &lt; PlusOne
+H1 : Low &lt; PlusOne
+H2 : is_integer PlusOne
+H3 : subset Rest R
+============================
+ subset (Low'::Rest) R
+</pre>
+<pre class="code extensibella"id="287">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="288">
+ &lt; <b>Theorem intRange_select_unique :
+     forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'.</b>
+
+============================
+ forall Low High R X Rest Rest',
+   is_integer Low -&gt; intRange Low High R -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+   Rest = Rest'
+</pre>
+<pre class="code extensibella"id="289">
+ &lt; <b>induction on 2.</b>
+
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+============================
+ forall Low High R X Rest Rest',
+   is_integer Low -&gt; intRange Low High R @ -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+   Rest = Rest'
+</pre>
+<pre class="code extensibella"id="290">
+ &lt; <b>intros IsLow Range Slct Slct'.</b>
+
+Variables: Low High R X Rest Rest'
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : intRange Low High R @
+Slct : select X Rest R
+Slct' : select X Rest' R
+============================
+ Rest = Rest'
+</pre>
+<pre class="code extensibella"id="291">
+ &lt; <b>Range: case Range.</b>
+
+Subgoal 1:
+
+Variables: Low High X Rest Rest'
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Slct : select X Rest []
+Slct' : select X Rest' []
+Range : Low &gt; High
+============================
+ Rest = Rest'
+</pre>
+<pre class="code extensibella"id="292">
+ &lt; <b>case Slct.</b>
+
+Subgoal 2:
+
+Variables: Low High X Rest Rest' PlusOne Rest1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Slct : select X Rest (Low::Rest1)
+Slct' : select X Rest' (Low::Rest1)
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+============================
+ Rest = Rest'
+</pre>
+<pre class="code extensibella"id="293">
+ &lt; <b>Slct: case Slct.</b>
+
+Subgoal 2.1:
+
+Variables: Low High Rest' PlusOne Rest1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Slct' : select Low Rest' (Low::Rest1)
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+============================
+ Rest1 = Rest'
+</pre>
+<pre class="code extensibella"id="294">
+ &lt; <b>Slct': case Slct'.</b>
+
+Subgoal 2.1.1:
+
+Variables: Low High PlusOne Rest1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+============================
+ Rest1 = Rest1
+</pre>
+<pre class="code extensibella"id="295">
+ &lt; <b>search.</b>
+
+Subgoal 2.1.2:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct' : select Low L1 Rest1
+============================
+ Rest1 = Low::L1
+</pre>
+<pre class="code extensibella"id="296">
+ &lt; <b>L: apply lt_plus_one to Range1 _.</b>
+
+Subgoal 2.1.2:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct' : select Low L1 Rest1
+L : Low &lt; PlusOne
+============================
+ Rest1 = Low::L1
+</pre>
+<pre class="code extensibella"id="297">
+ &lt; <b>M: apply select_mem to Slct'.</b>
+
+Subgoal 2.1.2:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct' : select Low L1 Rest1
+L : Low &lt; PlusOne
+M : mem Low Rest1
+============================
+ Rest1 = Low::L1
+</pre>
+<pre class="code extensibella"id="298">
+ &lt; <b>IsPlusOne: apply plus_integer_is_integer to _ _ Range1.</b>
+
+Subgoal 2.1.2:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct' : select Low L1 Rest1
+L : Low &lt; PlusOne
+M : mem Low Rest1
+IsPlusOne : is_integer PlusOne
+============================
+ Rest1 = Low::L1
+</pre>
+<pre class="code extensibella"id="299">
+ &lt; <b>LEq: apply intRange_low_lesseq to _ Range2 M.</b>
+
+Subgoal 2.1.2:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct' : select Low L1 Rest1
+L : Low &lt; PlusOne
+M : mem Low Rest1
+IsPlusOne : is_integer PlusOne
+LEq : PlusOne &lt;= Low
+============================
+ Rest1 = Low::L1
+</pre>
+<pre class="code extensibella"id="300">
+ &lt; <b>G: apply less_integer_flip_greater to L.</b>
+
+Subgoal 2.1.2:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct' : select Low L1 Rest1
+L : Low &lt; PlusOne
+M : mem Low Rest1
+IsPlusOne : is_integer PlusOne
+LEq : PlusOne &lt;= Low
+G : PlusOne &gt; Low
+============================
+ Rest1 = Low::L1
+</pre>
+<pre class="code extensibella"id="301">
+ &lt; <b>apply greater_lesseq_integer_false to G LEq.</b>
+
+Subgoal 2.2:
+
+Variables: Low High X Rest' PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Slct' : select X Rest' (Low::Rest1)
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct : select X L1 Rest1
+============================
+ Low::L1 = Rest'
+</pre>
+<pre class="code extensibella"id="302">
+ &lt; <b>Slct': case Slct'.</b>
+
+Subgoal 2.2.1:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct : select Low L1 Rest1
+============================
+ Low::L1 = Rest1
+</pre>
+<pre class="code extensibella"id="303">
+ &lt; <b>L: apply lt_plus_one to Range1 _.</b>
+
+Subgoal 2.2.1:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct : select Low L1 Rest1
+L : Low &lt; PlusOne
+============================
+ Low::L1 = Rest1
+</pre>
+<pre class="code extensibella"id="304">
+ &lt; <b>M: apply select_mem to Slct.</b>
+
+Subgoal 2.2.1:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct : select Low L1 Rest1
+L : Low &lt; PlusOne
+M : mem Low Rest1
+============================
+ Low::L1 = Rest1
+</pre>
+<pre class="code extensibella"id="305">
+ &lt; <b>IsPlusOne: apply plus_integer_is_integer to _ _ Range1.</b>
+
+Subgoal 2.2.1:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct : select Low L1 Rest1
+L : Low &lt; PlusOne
+M : mem Low Rest1
+IsPlusOne : is_integer PlusOne
+============================
+ Low::L1 = Rest1
+</pre>
+<pre class="code extensibella"id="306">
+ &lt; <b>LEq: apply intRange_low_lesseq to _ Range2 M.</b>
+
+Subgoal 2.2.1:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct : select Low L1 Rest1
+L : Low &lt; PlusOne
+M : mem Low Rest1
+IsPlusOne : is_integer PlusOne
+LEq : PlusOne &lt;= Low
+============================
+ Low::L1 = Rest1
+</pre>
+<pre class="code extensibella"id="307">
+ &lt; <b>G: apply less_integer_flip_greater to L.</b>
+
+Subgoal 2.2.1:
+
+Variables: Low High PlusOne Rest1 L1
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct : select Low L1 Rest1
+L : Low &lt; PlusOne
+M : mem Low Rest1
+IsPlusOne : is_integer PlusOne
+LEq : PlusOne &lt;= Low
+G : PlusOne &gt; Low
+============================
+ Low::L1 = Rest1
+</pre>
+<pre class="code extensibella"id="308">
+ &lt; <b>apply greater_lesseq_integer_false to G LEq.</b>
+
+Subgoal 2.2.2:
+
+Variables: Low High X PlusOne Rest1 L1 L2
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct : select X L1 Rest1
+Slct' : select X L2 Rest1
+============================
+ Low::L1 = Low::L2
+</pre>
+<pre class="code extensibella"id="309">
+ &lt; <b>apply plus_integer_is_integer to _ _ Range1.</b>
+
+Subgoal 2.2.2:
+
+Variables: Low High X PlusOne Rest1 L1 L2
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct : select X L1 Rest1
+Slct' : select X L2 Rest1
+H1 : is_integer PlusOne
+============================
+ Low::L1 = Low::L2
+</pre>
+<pre class="code extensibella"id="310">
+ &lt; <b>apply IH to _ Range2 Slct Slct'.</b>
+
+Subgoal 2.2.2:
+
+Variables: Low High X PlusOne Rest1 L2
+IH : forall Low High R X Rest Rest',
+       is_integer Low -&gt; intRange Low High R * -&gt; select X Rest R -&gt; select X Rest' R -&gt;
+       Rest = Rest'
+IsLow : is_integer Low
+Range : Low &lt;= High
+Range1 : 1 + Low = PlusOne
+Range2 : intRange PlusOne High Rest1 *
+Slct : select X L2 Rest1
+Slct' : select X L2 Rest1
+H1 : is_integer PlusOne
+============================
+ Low::L2 = Low::L2
+</pre>
+<pre class="code extensibella"id="311">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="312">
+ &lt; <b>Theorem intRange_exists :
+     forall Low High,
+       is_integer Low -&gt; is_integer High -&gt; exists R, intRange Low High R.</b>
+
+============================
+ forall Low High,
+   is_integer Low -&gt; is_integer High -&gt; exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="313">
+ &lt; <b>assert forall Low High Diff,
+     is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+       intRange Low High R.</b>
+
+Subgoal 1:
+
+============================
+ forall Low High Diff,
+   is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+     intRange Low High R
+</pre>
+<pre class="code extensibella"id="314">
+ &lt; <b>induction on 4.</b>
+
+Subgoal 1:
+
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+============================
+ forall Low High Diff,
+   is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff @ -&gt; exists R,
+     intRange Low High R
+</pre>
+<pre class="code extensibella"id="315">
+ &lt; <b>intros IsLow IsHigh Minus Acc.</b>
+
+Subgoal 1:
+
+Variables: Low High Diff
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Acc : acc Diff @
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="316">
+ &lt; <b>Or: apply integer_compare_total to IsLow IsHigh.</b>
+
+Subgoal 1:
+
+Variables: Low High Diff
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Acc : acc Diff @
+Or : Low &lt;= High \/ Low &gt; High
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="317">
+ &lt; <b>Comp: case Or.</b>
+
+Subgoal 1.1:
+
+Variables: Low High Diff
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Acc : acc Diff @
+Comp : Low &lt;= High
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="318">
+ &lt; <b>P: apply plus_integer_total to _ IsLow with
+        N1 = 1.</b>
+
+Subgoal 1.1:
+
+Variables: Low High Diff N3
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Acc : acc Diff @
+Comp : Low &lt;= High
+P : 1 + Low = N3
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="319">
+ &lt; <b>IsN3: apply plus_integer_is_integer to _ _ P.</b>
+
+Subgoal 1.1:
+
+Variables: Low High Diff N3
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Acc : acc Diff @
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="320">
+ &lt; <b>LowN3: apply lt_plus_one to P _.</b>
+
+Subgoal 1.1:
+
+Variables: Low High Diff N3
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Acc : acc Diff @
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="321">
+ &lt; <b>Minus': apply minus_integer_total to IsHigh IsN3.</b>
+
+Subgoal 1.1:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Acc : acc Diff @
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="322">
+ &lt; <b>L: apply minus_larger to _ Minus Minus' LowN3.</b>
+
+Subgoal 1.1:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Acc : acc Diff @
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="323">
+ &lt; <b>Acc: case Acc.</b>
+
+Subgoal 1.1:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="324">
+ &lt; <b>Or: apply integer_compare_total to IsN3 IsHigh.</b>
+
+Subgoal 1.1:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Or : N3 &lt;= High \/ N3 &gt; High
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="325">
+ &lt; <b>Comp: case Or.</b>
+
+Subgoal 1.1.1:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : N3 &lt;= High
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="326">
+ &lt; <b>Or: apply lesseq_integer_less_or_eq to Comp1.</b>
+
+Subgoal 1.1.1:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : N3 &lt;= High
+Or : N3 &lt; High \/ N3 = High
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="327">
+ &lt; <b>L': case Or.</b>
+
+Subgoal 1.1.1.1:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : N3 &lt;= High
+L' : N3 &lt; High
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="328">
+ &lt; <b>L0N1: apply minus_smaller_positive to Minus' L'.</b>
+
+Subgoal 1.1.1.1:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : N3 &lt;= High
+L' : N3 &lt; High
+L0N1 : 0 &lt; N1
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="329">
+ &lt; <b>LEq: apply less_integer_lesseq to L0N1.</b>
+
+Subgoal 1.1.1.1:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : N3 &lt;= High
+L' : N3 &lt; High
+L0N1 : 0 &lt; N1
+LEq : 0 &lt;= N1
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="330">
+ &lt; <b>A: apply Acc to LEq L.</b>
+
+Subgoal 1.1.1.1:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : N3 &lt;= High
+L' : N3 &lt; High
+L0N1 : 0 &lt; N1
+LEq : 0 &lt;= N1
+A : acc N1 *
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="331">
+ &lt; <b>apply IH to _ _ Minus' A.</b>
+
+Subgoal 1.1.1.1:
+
+Variables: Low High Diff N3 N1 R
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : N3 &lt;= High
+L' : N3 &lt; High
+L0N1 : 0 &lt; N1
+LEq : 0 &lt;= N1
+A : acc N1 *
+H1 : intRange N3 High R
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="332">
+ &lt; <b>search.</b>
+
+Subgoal 1.1.1.2:
+
+Variables: Low High Diff N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = High
+IsN3 : is_integer High
+LowN3 : Low &lt; High
+Minus' : High - High = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : High &lt;= High
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="333">
+ &lt; <b>M: apply minus_integer_same to IsHigh.</b>
+
+Subgoal 1.1.1.2:
+
+Variables: Low High Diff N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = High
+IsN3 : is_integer High
+LowN3 : Low &lt; High
+Minus' : High - High = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : High &lt;= High
+M : High - High = 0
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="334">
+ &lt; <b>apply minus_integer_unique to M Minus'.</b>
+
+Subgoal 1.1.1.2:
+
+Variables: Low High Diff
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = High
+IsN3 : is_integer High
+LowN3 : Low &lt; High
+Minus' : High - High = 0
+L : 0 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : High &lt;= High
+M : High - High = 0
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="335">
+ &lt; <b>A: apply Acc to _ L.</b>
+
+Subgoal 1.1.1.2:
+
+Variables: Low High Diff
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = High
+IsN3 : is_integer High
+LowN3 : Low &lt; High
+Minus' : High - High = 0
+L : 0 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : High &lt;= High
+M : High - High = 0
+A : acc 0 *
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="336">
+ &lt; <b>apply IH to _ _ Minus' A.</b>
+
+Subgoal 1.1.1.2:
+
+Variables: Low High Diff R
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = High
+IsN3 : is_integer High
+LowN3 : Low &lt; High
+Minus' : High - High = 0
+L : 0 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : High &lt;= High
+M : High - High = 0
+A : acc 0 *
+H1 : intRange High High R
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="337">
+ &lt; <b>search.</b>
+
+Subgoal 1.1.2:
+
+Variables: Low High Diff N3 N1
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Comp : Low &lt;= High
+P : 1 + Low = N3
+IsN3 : is_integer N3
+LowN3 : Low &lt; N3
+Minus' : High - N3 = N1
+L : N1 &lt; Diff
+Acc : forall M, 0 &lt;= M -&gt; M &lt; Diff -&gt; acc M *
+Comp1 : N3 &gt; High
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="338">
+ &lt; <b>search.</b>
+
+Subgoal 1.2:
+
+Variables: Low High Diff
+IH : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff * -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = Diff
+Acc : acc Diff @
+Comp : Low &gt; High
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="339">
+ &lt; <b>search.</b>
+
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+============================
+ forall Low High,
+   is_integer Low -&gt; is_integer High -&gt; exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="340">
+ &lt; <b>intros IsLow IsHigh.</b>
+
+Variables: Low High
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="341">
+ &lt; <b>Minus: apply minus_integer_total to IsHigh IsLow.</b>
+
+Variables: Low High N3
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = N3
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="342">
+ &lt; <b>IsN3: apply minus_integer_is_integer to _ _ Minus.</b>
+
+Variables: Low High N3
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = N3
+IsN3 : is_integer N3
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="343">
+ &lt; <b>Or: apply integer_compare_total to _ IsN3 with
+         A = 0.</b>
+
+Variables: Low High N3
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = N3
+IsN3 : is_integer N3
+Or : 0 &lt;= N3 \/ 0 &gt; N3
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="344">
+ &lt; <b>Comp: case Or.</b>
+
+Subgoal 2:
+
+Variables: Low High N3
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = N3
+IsN3 : is_integer N3
+Comp : 0 &lt;= N3
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="345">
+ &lt; <b>apply all_acc to IsN3 Comp.</b>
+
+Subgoal 2:
+
+Variables: Low High N3
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = N3
+IsN3 : is_integer N3
+Comp : 0 &lt;= N3
+H2 : acc N3
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="346">
+ &lt; <b>apply H1 to _ _ Minus _.</b>
+
+Subgoal 2:
+
+Variables: Low High N3 R
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = N3
+IsN3 : is_integer N3
+Comp : 0 &lt;= N3
+H2 : acc N3
+H3 : intRange Low High R
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="347">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: Low High N3
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = N3
+IsN3 : is_integer N3
+Comp : 0 &gt; N3
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="348">
+ &lt; <b>NegN3: apply greater_integer_flip_less to Comp.</b>
+
+Subgoal 3:
+
+Variables: Low High N3
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = N3
+IsN3 : is_integer N3
+Comp : 0 &gt; N3
+NegN3 : N3 &lt; 0
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="349">
+ &lt; <b>apply minus_integer_diff_neg to NegN3 Minus.</b>
+
+Subgoal 3:
+
+Variables: Low High N3
+H1 : forall Low High Diff,
+       is_integer Low -&gt; is_integer High -&gt; High - Low = Diff -&gt; acc Diff -&gt; exists R,
+         intRange Low High R
+IsLow : is_integer Low
+IsHigh : is_integer High
+Minus : High - Low = N3
+IsN3 : is_integer N3
+Comp : 0 &gt; N3
+NegN3 : N3 &lt; 0
+H2 : High &lt; Low
+============================
+ exists R, intRange Low High R
+</pre>
+<pre class="code extensibella"id="350">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

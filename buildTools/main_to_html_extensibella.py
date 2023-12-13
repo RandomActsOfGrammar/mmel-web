@@ -19,7 +19,7 @@ def writeInitialText(outF, depth, titleInfo):
     #script
     text += '<script src="' + depthText + '../actions.js"></script>\n'
     #favicon
-    text += '<link rel="icon" href="' + depthText + '../images/favicon.png" type="image/x-icon">\n'
+    text += '<link rel="icon" href="' + depthText + 'images/favicon.png" type="image/x-icon">\n'
     #end head
     text += "</head>\n"
     #start body
@@ -27,7 +27,7 @@ def writeInitialText(outF, depth, titleInfo):
     #logo
     text += '<div id="header-logo">\n'
     text += '<a href="' + depthText + '../index.html">\n'
-    text += '<img class="header-logo" src="' + depthText + '../images/Extensibella.png" '
+    text += '<img class="header-logo" src="' + depthText + 'images/Extensibella.png" '
     text += 'alt="Extensibella logo">\n'
     text += '</a>\n'
     text += '</div>\n'

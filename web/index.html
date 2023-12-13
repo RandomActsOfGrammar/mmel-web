@@ -1,0 +1,139 @@
+<html>
+<head>
+<title>Modular Metatheory for Extensible Languages</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script src="actions.js"></script>
+<!--<link rel="icon" href="images/favicon.png" type="image/x-icon">-->
+</head>
+<body class="landing">
+<h1>Modular Metatheory for Extensible Languages</h1>
+
+<div class="section">
+  <h2>What are Extensible Languages?</h2>
+  <p>
+    In general, extensible programming languages are languages where
+    portions of them are developed separately, then put together.  In
+    our view, extensible languages are specifically built by a host
+    language and independently-developed extensions.  The host
+    language provides core functionality, defining basic constructs
+    and semantic relations, such as typing and evaluation.  Extensions
+    add to this by introducing new constructs and new semantic
+    relations.  A language is built from these pieces by choosing a
+    set of extensions to add to the host language, creating a language
+    with all the constructs and semantics of the host language and all
+    included extensions.  See <a href="extensibleLanguages.html">this
+      document</a> for more information on our view of extensible
+    languages.
+  </p>
+
+  <p>
+    Previous work has addressed giving guarantees for compositions of
+    extensible languages.  One aspect is
+    <a href="https://conservancy.umn.edu/handle/11299/95605">parsing
+      extensible languages</a>, guaranteeing the descriptions of
+    concrete syntax for extensible languages given in the context of
+    independent modules will produce a non-ambiguous parser in any
+    composition if they passed a modular check.  Another aspect is
+    <a href="https://conservancy.umn.edu/handle/11299/188954">well-definedness
+      of semantic descriptions</a> for extensible languages written in
+    attribute grammars, guaranteeing the language semantics are
+    fully-defined and not missing equations without the person
+    building the composed language needing to write any glue code to
+    fill in missing equations.  In this work, we want to give
+    guarantees for the <i>correctness</i> of the semantics of composed
+    languages.
+  </p>
+</div>
+
+<div class="section">
+  <h2>What is Modular Metatheory?</h2>
+  <p>
+    Metatheory is the set of properties known to be true of a
+    programming language.  A common example is <i>type
+    preservation</i>, that expressions evaluate to values of the same
+    type (e.g. an expression of type <tt>int</tt> will evaluate to a
+    value of type <tt>int</tt>), guaranteeing type errors are not
+    encountered when a well-typed program runs.
+  </p>
+
+  <p>
+    Modular metatheory is proving properties of extensible languages
+    in such a way that the proofs can be written in the context of the
+    parts known by individual modules, the host language or an
+    extension with the host language, such that we know each property
+    will hold for any composed language knowing the modules.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Our Goals</h2>
+  <p>
+    Our overarching goal is to provide guarantees for the semantic
+    correctness of extensible languages, where the correctness is
+    determined by adherence to properties introduced by the modules in
+    the language.  Our goals:
+    <ul>
+      <li><span class="highlight">Properties introduced by the host
+          language can be given modular proofs guaranteeing they will
+          hold for any composed language.</span>  The modular proofs
+        here can be distributed, since the host language and each
+        extension will know these properties exist.
+      <li><span class="highlight">Properties introduced by extensions
+          can be given modular proofs <i>by the extension alone</i>
+          guaranteeing they will hold for any composed
+          language.</span>  The proof must be written by the extension
+        itself because other extensions do not know the property
+        exists to help prove it.
+    </ul>
+    The difficulty in this is that modular proofs are written in a
+    limited context, the host language or the host language with one
+    extension, but are intended to apply in larger contexts.
+  </p>
+</div>
+
+<div class="section">
+  <hr class="sectionSeparator">
+</div>
+
+<div class="section">
+  <a href="sterling/index.html">
+    <img class="landingLink"
+         src="sterling/images/Sterling.png"
+         alt="Sterling">
+  </a>
+  <p>
+    <a href="sterling/index.html">Sterling</a> is a system for writing
+    extensible languages
+    implementing <a href="extensibleLanguages.html">our view of
+      extensible languages</a>.  Language constructs are given as sets
+    of constructors, and language semantics are given using relations
+    defined by rules.  Sterling checks language descriptions for
+    well-formedness, including the limitations on extensions.
+  </p>
+</div>
+
+<div class="section">
+  <hr class="sectionSeparator">
+</div>
+
+<div class="section">
+  <a href="extensibella/index.html">
+    <img class="landingLink"
+         src="extensibella/images/Extensibella.png"
+         alt="Extensibella">
+  </a>
+  <p>
+    <a href="extensibella/index.html">Extensibella</a> is a system for
+    reasoning about extensible languages
+    implementing <a href="extensibleLanguages.html">our view of
+      extensible languages</a>.  Sterling outputs a specification
+    Extensibella can read.  The Extensibella system is an interactive
+    proof assistant, permitting the user to declare properties and
+    prove them.  It checks these proofs are written modularly so they
+    will apply in any composed language, and that each extension
+    fulfills its proof obligations for properties introduced by the
+    host language.
+  </p>
+</div>
+</body>
+</html>

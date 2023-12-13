@@ -1,0 +1,769 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  simple_imp:list</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  simple_imp:list</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  list.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglelist.sos" onclick="toggleFile('list.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="list.sos">[Raw File]</a>
+<pre class="code sterling" id="list.sos">
+Module simple_imp:list
+
+Builds on simple_imp:host
+
+<span class="comment">/*New Expressions and Translations*/</span>
+e ::= ...
+    | nil(ty) <span class="comment">/*we need the type to satisfy a host property*/</span>
+    | cons(e, e)
+    | null(e)
+    | head(e)
+    | tail(e)
+    | index(e, e) <span class="comment">/*lst[i]*/</span>
+    | length(e)
+
+
+--------------------------------------------- [Trans-Nil]
+|{e}- nil(Ty) ~~>
+      recBuild(addRecFieldExprs("null", true,
+               endRecFieldExprs))
+
+
+---------------------------------------------------------- [Trans-Cons]
+|{e}- cons(E1, E2) ~~>
+      recBuild(
+         addRecFieldExprs("null", false,
+         addRecFieldExprs("head", E1,
+         addRecFieldExprs("tail", E2, endRecFieldExprs))))
+
+
+------------------- [Trans-Null]
+|{e}- null(E) ~~> E
+
+
+------------------- [Trans-Head]
+|{e}- head(E) ~~> E
+
+
+------------------- [Trans-Tail]
+|{e}- tail(E) ~~> E
+
+
+<span class="comment">/*Actually computing the length or index from records would require
+  conditionals, so we'll take advantage of the lax translation
+  constraints and translate to something unrelated to the actual
+  value.*/</span>
+-------------------------------------------------- [Trans-Index]
+|{e}- index(Lst, Index) ~~> and(null(Lst),
+                                eq(num(0), Index))
+
+
+--------------------- [Trans-Length]
+|{e}- length(E) ~~> E
+
+
+
+<span class="comment">/*New Type and Translation*/</span>
+ty ::= ...
+     | listTy(ty)
+
+
+<span class="comment">/*Strictly speaking, an empty list doesn't have the head or tail
+  fields.  However, we don't have any translation constraints on types,
+  so we can do whatever we want, and this is close.*/</span>
+----------------------------------------------- [Trans-ListTy]
+|{ty}- listTy(T) ~~>
+       recTy([("head", T), ("tail", listTy(T)),
+              ("null", boolTy)])
+
+
+
+<span class="comment">/*New Value and Translation*/</span>
+value ::= ...
+        | nilVal
+        | consVal(value, value)
+
+
+------------------------------------------------ [Trans-NilVal]
+|{value}- nilVal ~~> recVal([("null", trueVal)])
+
+
+--------------------------------------------- [Trans-ConsVal]
+|{value}- consVal(Hd, Tl) ~~>
+          recVal([("head", Hd), ("tail", Tl),
+                  ("null", falseVal)])
+</pre>
+<h3>File:  list_vars.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglelist_vars.sos" onclick="toggleFile('list_vars.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="list_vars.sos">[Raw File]</a>
+<pre class="code sterling" id="list_vars.sos">
+Module simple_imp:list
+
+<span class="comment">/*Expression Vars*/</span>
+
+--------------- [V-Nil]
+vars nil(Ty) []
+
+
+vars E1 D1
+vars E2 D2
+D1 ++ D2 = D
+------------------- [V-Cons]
+vars cons(E1, E2) D
+
+
+vars E D
+-------------- [V-Null]
+vars null(E) D
+
+
+vars E D
+-------------- [V-Head]
+vars head(E) D
+
+
+vars E D
+-------------- [V-Tail]
+vars tail(E) D
+
+
+vars E1 D1
+vars E2 D2
+D1 ++ D2 = D
+-------------------- [V-Index]
+vars index(E1, E2) D
+
+
+vars E D
+---------------- [V-Length]
+vars length(E) D
+
+</pre>
+<h3>File:  list_typing.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglelist_typing.sos" onclick="toggleFile('list_typing.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="list_typing.sos">[Raw File]</a>
+<pre class="code sterling" id="list_typing.sos">
+Module simple_imp:list
+
+<span class="comment">/*Expression Typing*/</span>
+
+--------------------------- [T-Nil]
+typeOf G nil(Ty) listTy(Ty)
+
+
+typeOf G E1 Ty
+typeOf G E2 listTy(Ty)
+-------------------------------- [T-Cons]
+typeOf G cons(E1, E2) listTy(Ty)
+
+
+typeOf G E listTy(Ty)
+----------------------- [T-Null]
+typeOf G null(E) boolTy
+
+
+typeOf G E listTy(Ty)
+--------------------- [T-Head]
+typeOf G head(E) Ty
+
+
+typeOf G E listTy(Ty)
+--------------------------- [T-Tail]
+typeOf G tail(E) listTy(Ty)
+
+
+typeOf G List listTy(Ty)
+typeOf G Index intTy
+------------------------------ [T-Index]
+typeOf G index(List, Index) Ty
+
+
+typeOf G Lst listTy(Ty)
+-------------------------- [T-Length]
+typeOf G length(Lst) intTy
+
+
+
+
+<span class="comment">/*Value Typing*/</span>
+
+--------------------------- [TV-Nil]
+typeOfVal nilVal listTy(Ty)
+
+
+typeOfVal V1 Ty
+typeOfVal V2 listTy(Ty)
+------------------------------------ [TV-Cons]
+typeOfVal consVal(V1, V2) listTy(Ty)
+
+</pre>
+<h3>File:  list_eval.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglelist_eval.sos" onclick="toggleFile('list_eval.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="list_eval.sos">[Raw File]</a>
+<pre class="code sterling" id="list_eval.sos">
+Module simple_imp:list
+
+<span class="comment">/*Expression Evaluation*/</span>
+
+----------------------- [E-Nil]
+eval_e G nil(Ty) nilVal
+
+
+eval_e G E1 V1
+eval_e G E2 V2
+------------------------------------- [E-Cons]
+eval_e G cons(E1, E2) consVal(V1, V2)
+
+
+eval_e G E nilVal
+---------------------- [E-NullTrue]
+eval_e G null(E) trueVal
+
+
+eval_e G E consVal(V1, V2)
+-------------------------- [E-NullFalse]
+eval_e G null(E) falseVal
+
+
+eval_e G E consVal(V1, V2)
+-------------------------- [E-Head]
+eval_e G head(E) V1
+
+
+eval_e G E consVal(V1, V2)
+-------------------------- [E-Tail]
+eval_e G tail(E) V2
+
+
+<span class="comment">/*To address proof problems, explicitly make indexing H::T
+  We need this form in order for indexing to succeed anyway
+  Another option would be to make indexRel fixed*/</span>
+eval_e G E1 consVal(Hd, Tl)
+eval_e G E2 intVal(I)
+indexRel consVal(Hd, Tl) I V
+---------------------------- [E-Index]
+eval_e G index(E1, E2) V
+
+
+eval_e G E ListVal
+lengthRel ListVal Length
+--------------------------------- [E-Length]
+eval_e G length(E) intVal(Length)
+
+
+<span class="comment">/*Support for list expression evaluation*/</span>
+Judgment indexRel : value* int value
+
+----------------------------- [Index-0]
+indexRel consVal(Hd, Tl) 0 Hd
+
+
+Index - 1 = SubIndex
+indexRel Tl SubIndex V
+-------------------------------- [Index-Step]
+indexRel consVal(Hd, Tl) Index V
+
+
+|{value}- V ~~> VT
+indexRel VT I Result
+-------------------- [Index-Trans]*
+indexRel V I Result
+
+
+Judgment lengthRel : value* int
+
+--------------- [Len-Nil]
+lengthRel nilVal 0
+
+
+lengthRel Tl SubLen
+SubLen + 1 = Len
+----------------------------- [Len-Cons]
+lengthRel consVal(Hd, Tl) Len
+
+
+|{value}- V ~~> VT
+lengthRel VT Len
+------------------ [Len-Trans]*
+lengthRel V Len
+
+
+
+
+<span class="comment">/*Value Equality*/</span>
+
+-------------------- [VE-NilVal]
+val_eq nilVal nilVal
+
+
+val_eq V11 V21
+val_eq V12 V22
+------------------------------------------ [VE-ConsVal]
+val_eq consVal(V11, V12) consVal(V21, V22)
+
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="list_thms.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="list-details.html#0">Module simple_imp:list.</a>
+
+
+<a class="command" href="list-details.html#1">Prove_Constraint simple_imp:host:trans_e_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<span class="comment">%nil</span>
+ <a class="tactic" href="list-details.html#2">case Hyp1.</a> <a class="tactic" href="list-details.html#3">search.</a>
+<span class="comment">%cons</span>
+ <a class="tactic" href="list-details.html#4">case Hyp1.</a> <a class="tactic" href="list-details.html#5">search.</a>
+<span class="comment">%null</span>
+ <a class="tactic" href="list-details.html#6">case Hyp1.</a> <a class="tactic" href="list-details.html#7">search.</a>
+<span class="comment">%head</span>
+ <a class="tactic" href="list-details.html#8">case Hyp1.</a> <a class="tactic" href="list-details.html#9">search.</a>
+<span class="comment">%tail</span>
+ <a class="tactic" href="list-details.html#10">case Hyp1.</a> <a class="tactic" href="list-details.html#11">search.</a>
+<span class="comment">%index</span>
+ <a class="tactic" href="list-details.html#12">case Hyp1.</a> <a class="tactic" href="list-details.html#13">search.</a>
+<span class="comment">%length</span>
+ <a class="tactic" href="list-details.html#14">case Hyp1.</a> <a class="tactic" href="list-details.html#15">search.</a></div>
+<a class="command" href="list-details.html#16">Prove_Constraint simple_imp:host:trans_e_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(17);" id="toggleproof17">[Show Proof]</a>
+<div class="proof" id="proof17" style="display: none;">
+<span class="comment">%nil</span>
+ <a class="tactic" href="list-details.html#17">search 8.</a> <span class="comment">%too big to solve at default depth</span>
+<span class="comment">%cons</span>
+ <a class="tactic" href="list-details.html#18">case Hyp1.</a> <a class="tactic" href="list-details.html#19">search 10.</a> <span class="comment">%too big</span>
+<span class="comment">%null</span>
+ <a class="tactic" href="list-details.html#20">case Hyp1.</a> <a class="tactic" href="list-details.html#21">search 7.</a>
+<span class="comment">%head</span>
+ <a class="tactic" href="list-details.html#22">case Hyp1.</a> <a class="tactic" href="list-details.html#23">search 7.</a>
+<span class="comment">%tail</span>
+ <a class="tactic" href="list-details.html#24">case Hyp1.</a> <a class="tactic" href="list-details.html#25">search 7.</a>
+<span class="comment">%index</span>
+ <a class="tactic" href="list-details.html#26">case Hyp1.</a> <a class="tactic" href="list-details.html#27">search.</a>
+<span class="comment">%length</span>
+ <a class="tactic" href="list-details.html#28">case Hyp1.</a> <a class="tactic" href="list-details.html#29">search.</a></div>
+
+
+<a class="command" href="list-details.html#30">Prove_Constraint simple_imp:host:trans_rf_unique.</a>
+<a class="command" href="list-details.html#31">Prove_Constraint simple_imp:host:trans_rf_is.</a>
+<a class="command" href="list-details.html#32">Prove_Constraint simple_imp:host:trans_c_unique.</a>
+<a class="command" href="list-details.html#33">Prove_Constraint simple_imp:host:trans_c_is.</a>
+<a class="command" href="list-details.html#34">Prove_Constraint simple_imp:host:trans_recFields_unique.</a>
+<a class="command" href="list-details.html#35">Prove_Constraint simple_imp:host:trans_recFields_is.</a>
+
+
+<a class="command" href="list-details.html#36">Prove_Constraint simple_imp:host:trans_ty_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(37);" id="toggleproof37">[Show Proof]</a>
+<div class="proof" id="proof37" style="display: none;">
+<span class="comment">%listTy</span>
+ <a class="tactic" href="list-details.html#37">case Hyp1.</a> <a class="tactic" href="list-details.html#38">search.</a></div>
+<a class="command" href="list-details.html#39">Prove_Constraint simple_imp:host:trans_ty_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(40);" id="toggleproof40">[Show Proof]</a>
+<div class="proof" id="proof40" style="display: none;">
+<span class="comment">%listTy</span>
+ <a class="tactic" href="list-details.html#40">case Hyp1.</a> <a class="tactic" href="list-details.html#41">search 11.</a></div>
+
+
+<a class="command" href="list-details.html#42">Prove_Constraint simple_imp:host:trans_value_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(43);" id="toggleproof43">[Show Proof]</a>
+<div class="proof" id="proof43" style="display: none;">
+<span class="comment">%nilVal</span>
+ <a class="tactic" href="list-details.html#43">case Hyp1.</a> <a class="tactic" href="list-details.html#44">search.</a>
+<span class="comment">%consVal</span>
+ <a class="tactic" href="list-details.html#45">case Hyp1.</a> <a class="tactic" href="list-details.html#46">search.</a></div>
+<a class="command" href="list-details.html#47">Prove_Constraint simple_imp:host:trans_value_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(48);" id="toggleproof48">[Show Proof]</a>
+<div class="proof" id="proof48" style="display: none;">
+<span class="comment">%nilVal</span>
+ <a class="tactic" href="list-details.html#48">search 9.</a>
+<span class="comment">%consVal</span>
+ <a class="tactic" href="list-details.html#49">case Hyp1.</a> <a class="tactic" href="list-details.html#50">search 11.</a></div>
+
+<a class="command" href="list-details.html#51">Prove simple_imp:host:vars_join,
+      simple_imp:host:vars_rf_join.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(52);" id="toggleproof52">[Show Proof]</a>
+<div class="proof" id="proof52" style="display: none;">
+<span class="comment">%vars_join</span>
+ <span class="comment">%nil</span>
+  <a class="tactic" href="list-details.html#52">search.</a>
+ <span class="comment">%cons</span>
+  <a class="tactic" href="list-details.html#53">J2: apply IH to Vars2 with D = D.</a> <a class="tactic" href="list-details.html#54">J1: apply IH to Vars1 with D = D'.</a>
+  <a class="tactic" href="list-details.html#55">JApp: apply append_associative_back to J2 J1.</a>
+  <a class="tactic" href="list-details.html#56">apply append_unique to Vars3 JApp.</a> <a class="tactic" href="list-details.html#57">search.</a>
+ <span class="comment">%null</span>
+  <a class="tactic" href="list-details.html#58">apply IH to Vars1 with D = D.</a> <a class="tactic" href="list-details.html#59">search.</a>
+ <span class="comment">%head</span>
+  <a class="tactic" href="list-details.html#60">apply IH to Vars1 with D = D.</a> <a class="tactic" href="list-details.html#61">search.</a>
+ <span class="comment">%tail</span>
+  <a class="tactic" href="list-details.html#62">apply IH to Vars1 with D = D.</a> <a class="tactic" href="list-details.html#63">search.</a>
+ <span class="comment">%index</span>
+  <a class="tactic" href="list-details.html#64">J2: apply IH to Vars2 with D = D.</a> <a class="tactic" href="list-details.html#65">J1: apply IH to Vars1 with D = D'.</a>
+  <a class="tactic" href="list-details.html#66">JApp: apply append_associative_back to J2 J1.</a>
+  <a class="tactic" href="list-details.html#67">apply append_unique to Vars3 JApp.</a> <a class="tactic" href="list-details.html#68">search.</a>
+ <span class="comment">%length</span>
+  <a class="tactic" href="list-details.html#69">apply IH to Vars1 with D = D.</a> <a class="tactic" href="list-details.html#70">search.</a></div>
+
+
+<a class="command" href="list-details.html#71">Prove simple_imp:host:vars_unique,
+      simple_imp:host:vars_rf_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(72);" id="toggleproof72">[Show Proof]</a>
+<div class="proof" id="proof72" style="display: none;">
+<span class="comment">%vars_unique</span>
+ <span class="comment">%nil</span>
+  <a class="tactic" href="list-details.html#72">case Vars2.</a> <a class="tactic" href="list-details.html#73">search.</a>
+ <span class="comment">%cons</span>
+  <a class="tactic" href="list-details.html#74">Vars2: case Vars2.</a> <a class="tactic" href="list-details.html#75">apply IH to Vars3 Vars2.</a> <a class="tactic" href="list-details.html#76">apply IH to Vars4 Vars6.</a>
+  <a class="tactic" href="list-details.html#77">apply append_unique to Vars5 Vars7.</a> <a class="tactic" href="list-details.html#78">search.</a>
+ <span class="comment">%null</span>
+  <a class="tactic" href="list-details.html#79">Vars2: case Vars2.</a> <a class="tactic" href="list-details.html#80">apply IH to Vars3 Vars2.</a> <a class="tactic" href="list-details.html#81">search.</a>
+ <span class="comment">%head</span>
+  <a class="tactic" href="list-details.html#82">Vars2: case Vars2.</a> <a class="tactic" href="list-details.html#83">apply IH to Vars3 Vars2.</a> <a class="tactic" href="list-details.html#84">search.</a>
+ <span class="comment">%tail</span>
+  <a class="tactic" href="list-details.html#85">Vars2: case Vars2.</a> <a class="tactic" href="list-details.html#86">apply IH to Vars3 Vars2.</a> <a class="tactic" href="list-details.html#87">search.</a>
+ <span class="comment">%index</span>
+  <a class="tactic" href="list-details.html#88">Vars2: case Vars2.</a> <a class="tactic" href="list-details.html#89">apply IH to Vars3 Vars2.</a> <a class="tactic" href="list-details.html#90">apply IH to Vars4 Vars6.</a>
+  <a class="tactic" href="list-details.html#91">apply append_unique to Vars5 Vars7.</a> <a class="tactic" href="list-details.html#92">search.</a>
+ <span class="comment">%length</span>
+  <a class="tactic" href="list-details.html#93">Vars2: case Vars2.</a> <a class="tactic" href="list-details.html#94">apply IH to Vars3 Vars2.</a> <a class="tactic" href="list-details.html#95">search.</a></div>
+
+
+<a class="command" href="list-details.html#96">Prove_Constraint simple_imp:host:trans_e_vars_exist.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(97);" id="toggleproof97">[Show Proof]</a>
+<div class="proof" id="proof97" style="display: none;">
+<span class="comment">%nil</span>
+ <a class="tactic" href="list-details.html#97">search.</a>
+<span class="comment">%cons</span>
+ <a class="tactic" href="list-details.html#98">case Hyp1.</a> <a class="tactic" href="list-details.html#99">exists V.</a> <a class="tactic" href="list-details.html#100">unfold.</a> <a class="tactic" href="list-details.html#101">unfold.</a> <a class="tactic" href="list-details.html#102">exists V, [].</a> <a class="tactic" href="list-details.html#103">split.</a>
+   <span class="comment">%vars_rf {head: E1; tail: E2} V</span>
+    <a class="tactic" href="list-details.html#104">unfold.</a> <a class="tactic" href="list-details.html#105">exists D2, D1.</a> <a class="tactic" href="list-details.html#106">split.</a>
+      <span class="comment">%vars {tail: E2} D1</span>
+       <a class="tactic" href="list-details.html#107">unfold.</a> <a class="tactic" href="list-details.html#108">exists [], D2.</a> <a class="tactic" href="list-details.html#109">split.</a> <a class="tactic" href="list-details.html#110">search.</a> <a class="tactic" href="list-details.html#111">search.</a>
+       <a class="tactic" href="list-details.html#112">apply vars_join to H2 with D = [].</a>
+       <a class="tactic" href="list-details.html#113">apply append_nil_right to H4.</a> <a class="tactic" href="list-details.html#114">search.</a>
+      <span class="comment">%vars E1 D1</span>
+       <a class="tactic" href="list-details.html#115">search.</a>
+      <span class="comment">%D1 ++ D2 = V</span>
+       <a class="tactic" href="list-details.html#116">search.</a>
+   <span class="comment">%vars false []</span>
+    <a class="tactic" href="list-details.html#117">search.</a>
+   <span class="comment">%empty ++ V = V</span>
+    <a class="tactic" href="list-details.html#118">search.</a>
+<span class="comment">%null</span>
+ <a class="tactic" href="list-details.html#119">case Hyp1.</a> <a class="tactic" href="list-details.html#120">search.</a>
+<span class="comment">%head</span>
+ <a class="tactic" href="list-details.html#121">case Hyp1.</a> <a class="tactic" href="list-details.html#122">search.</a>
+<span class="comment">%tail</span>
+ <a class="tactic" href="list-details.html#123">case Hyp1.</a> <a class="tactic" href="list-details.html#124">search.</a>
+<span class="comment">%index</span>
+ <a class="tactic" href="list-details.html#125">Vars: case Hyp1.</a> <a class="tactic" href="list-details.html#126">search.</a>
+<span class="comment">%length</span>
+ <a class="tactic" href="list-details.html#127">case Hyp1.</a> <a class="tactic" href="list-details.html#128">search.</a></div>
+<a class="command" href="list-details.html#129">Prove_Constraint simple_imp:host:trans_e_vars.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(130);" id="toggleproof130">[Show Proof]</a>
+<div class="proof" id="proof130" style="display: none;">
+<span class="comment">%nil</span>
+ <a class="tactic" href="list-details.html#130">case Hyp2.</a> <a class="tactic" href="list-details.html#131">case H1.</a> <a class="tactic" href="list-details.html#132">case H2.</a> <a class="tactic" href="list-details.html#133">case H3.</a> <a class="tactic" href="list-details.html#134">case H4.</a> <a class="tactic" href="list-details.html#135">case Hyp1.</a> <a class="tactic" href="list-details.html#136">search.</a>
+<span class="comment">%cons</span>
+ <a class="tactic" href="list-details.html#137">VarsCons: case Hyp1.</a> <a class="tactic" href="list-details.html#138">case Hyp2.</a> <a class="tactic" href="list-details.html#139">case H1.</a> <a class="tactic" href="list-details.html#140">case H3.</a> <a class="tactic" href="list-details.html#141">case H2.</a> <a class="tactic" href="list-details.html#142">case H5.</a>
+ <a class="tactic" href="list-details.html#143">case H8.</a> <a class="tactic" href="list-details.html#144">apply vars_unique to VarsCons H6.</a>
+ <a class="tactic" href="list-details.html#145">apply vars_unique to VarsCons1 H9.</a>
+ <a class="tactic" href="list-details.html#146">apply append_nil_right to H10.</a> <a class="tactic" href="list-details.html#147">case H4.</a>
+ <a class="tactic" href="list-details.html#148">Or: apply mem_append to Hyp3 VarsCons2.</a> <a class="tactic" href="list-details.html#149">MemOr: case Or.</a>
+   <span class="comment">%mem X DE1</span>
+    <a class="tactic" href="list-details.html#150">apply mem_append_left to MemOr H7.</a> <a class="tactic" href="list-details.html#151">search.</a>
+   <span class="comment">%mem X DRest1</span>
+    <a class="tactic" href="list-details.html#152">apply mem_append_right to MemOr H7.</a> <a class="tactic" href="list-details.html#153">search.</a>
+<span class="comment">%null</span>
+ <a class="tactic" href="list-details.html#154">case Hyp1.</a> <a class="tactic" href="list-details.html#155">apply vars_unique to H1 Hyp2.</a> <a class="tactic" href="list-details.html#156">search.</a>
+<span class="comment">%head</span>
+ <a class="tactic" href="list-details.html#157">case Hyp1.</a> <a class="tactic" href="list-details.html#158">apply vars_unique to H1 Hyp2.</a> <a class="tactic" href="list-details.html#159">search.</a>
+<span class="comment">%tail</span>
+ <a class="tactic" href="list-details.html#160">case Hyp1.</a> <a class="tactic" href="list-details.html#161">apply vars_unique to H1 Hyp2.</a> <a class="tactic" href="list-details.html#162">search.</a>
+<span class="comment">%index</span>
+ <a class="tactic" href="list-details.html#163">VI: case Hyp1.</a> <a class="tactic" href="list-details.html#164">VT: case Hyp2.</a> <a class="tactic" href="list-details.html#165">VIdx2: case VT1.</a> <a class="tactic" href="list-details.html#166">case VIdx2.</a>
+ <a class="tactic" href="list-details.html#167">VLst2: case VT.</a> <a class="tactic" href="list-details.html#168">case VIdx3.</a> <a class="tactic" href="list-details.html#169">apply vars_unique to VI VLst2.</a>
+ <a class="tactic" href="list-details.html#170">apply vars_unique to VI1 VIdx1.</a> <a class="tactic" href="list-details.html#171">apply append_unique to VI2 VT2.</a>
+ <a class="tactic" href="list-details.html#172">search.</a>
+<span class="comment">%length</span>
+ <a class="tactic" href="list-details.html#173">case Hyp1.</a> <a class="tactic" href="list-details.html#174">apply vars_unique to Hyp2 H1.</a> <a class="tactic" href="list-details.html#175">search.</a></div>
+<a class="command" href="list-details.html#176">Prove_Constraint simple_imp:host:trans_rf_vars_exist.</a>
+<a class="command" href="list-details.html#177">Prove_Constraint simple_imp:host:trans_rf_vars.</a>
+
+
+<a class="command" href="list-details.html#178">Prove simple_imp:host:vars_is,
+      simple_imp:host:vars_rf_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(179);" id="toggleproof179">[Show Proof]</a>
+<div class="proof" id="proof179" style="display: none;">
+<span class="comment">%vars_is</span>
+  <span class="comment">%nil list</span>
+   <a class="tactic" href="list-details.html#179">search.</a>
+  <span class="comment">%cons list</span>
+   <a class="tactic" href="list-details.html#180">IsE1: case IsE.</a> <a class="tactic" href="list-details.html#181">IsD1: apply IH to IsE1 Vars1.</a>
+   <a class="tactic" href="list-details.html#182">IsD2: apply IH to IsE2 Vars2.</a>
+   <a class="tactic" href="list-details.html#183">apply append__is_list__is_string to IsD1 IsD2 Vars3.</a> <a class="tactic" href="list-details.html#184">search.</a>
+  <span class="comment">%null check</span>
+   <a class="tactic" href="list-details.html#185">IsE1: case IsE.</a> <a class="tactic" href="list-details.html#186">apply IH to IsE1 Vars1.</a> <a class="tactic" href="list-details.html#187">search.</a>
+  <span class="comment">%head of list</span>
+   <a class="tactic" href="list-details.html#188">IsE1: case IsE.</a> <a class="tactic" href="list-details.html#189">apply IH to IsE1 Vars1.</a> <a class="tactic" href="list-details.html#190">search.</a>
+  <span class="comment">%tail of list</span>
+   <a class="tactic" href="list-details.html#191">IsE1: case IsE.</a> <a class="tactic" href="list-details.html#192">apply IH to IsE1 Vars1.</a> <a class="tactic" href="list-details.html#193">search.</a>
+  <span class="comment">%index into list</span>
+   <a class="tactic" href="list-details.html#194">IsE1: case IsE.</a> <a class="tactic" href="list-details.html#195">IsD1: apply IH to IsE1 Vars1.</a>
+   <a class="tactic" href="list-details.html#196">IsD2: apply IH to IsE2 Vars2.</a>
+   <a class="tactic" href="list-details.html#197">apply append__is_list__is_string to IsD1 IsD2 Vars3.</a> <a class="tactic" href="list-details.html#198">search.</a>
+  <span class="comment">%length of list</span>
+   <a class="tactic" href="list-details.html#199">IsE1: case IsE.</a> <a class="tactic" href="list-details.html#200">apply IH to IsE1 Vars1.</a> <a class="tactic" href="list-details.html#201">search.</a></div>
+
+
+<a class="command" href="list-details.html#202">Prove simple_imp:host:vars_exist,
+      simple_imp:host:vars_rf_exist.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(203);" id="toggleproof203">[Show Proof]</a>
+<div class="proof" id="proof203" style="display: none;">
+<span class="comment">%vars_exist</span>
+  <span class="comment">%nil list</span>
+   <a class="tactic" href="list-details.html#203">search.</a>
+  <span class="comment">%cons list</span>
+   <a class="tactic" href="list-details.html#204">Vars1: apply IH to IsE1.</a> <a class="tactic" href="list-details.html#205">Vars2: apply IH to IsE2.</a>
+   <a class="tactic" href="list-details.html#206">IsV: apply vars_is to IsE1 Vars1.</a>
+   <a class="tactic" href="list-details.html#207">IsV1: apply vars_is to IsE2 Vars2.</a>
+   <a class="tactic" href="list-details.html#208">apply append__is_list__is_string__total to IsV IsV1.</a> <a class="tactic" href="list-details.html#209">search.</a>
+  <span class="comment">%null check</span>
+   <a class="tactic" href="list-details.html#210">apply IH to IsE1.</a> <a class="tactic" href="list-details.html#211">search.</a>
+  <span class="comment">%head of list</span>
+   <a class="tactic" href="list-details.html#212">apply IH to IsE1.</a> <a class="tactic" href="list-details.html#213">search.</a>
+  <span class="comment">%tail of list</span>
+   <a class="tactic" href="list-details.html#214">apply IH to IsE1.</a> <a class="tactic" href="list-details.html#215">search.</a>
+  <span class="comment">%index into list</span>
+   <a class="tactic" href="list-details.html#216">Vars1: apply IH to IsE1.</a> <a class="tactic" href="list-details.html#217">Vars2: apply IH to IsE2.</a>
+   <a class="tactic" href="list-details.html#218">IsV: apply vars_is to IsE1 Vars1.</a>
+   <a class="tactic" href="list-details.html#219">IsV1: apply vars_is to IsE2 Vars2.</a>
+   <a class="tactic" href="list-details.html#220">apply append__is_list__is_string__total to IsV IsV1.</a> <a class="tactic" href="list-details.html#221">search.</a>
+  <span class="comment">%length of list</span>
+   <a class="tactic" href="list-details.html#222">apply IH to IsE1.</a> <a class="tactic" href="list-details.html#223">search.</a></div>
+
+
+<a class="command" href="list-details.html#224">Prove simple_imp:host:typeOf_unique,
+      simple_imp:host:typeRecFields_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(225);" id="toggleproof225">[Show Proof]</a>
+<div class="proof" id="proof225" style="display: none;">
+<span class="comment">%typeOf_unique</span>
+  <span class="comment">%nil list</span>
+   <a class="tactic" href="list-details.html#225">Ty2: case Ty2.</a> <a class="tactic" href="list-details.html#226">search.</a> <span class="comment">%This is why we need nil(Ty) instead of just nil</span>
+  <span class="comment">%cons list</span>
+   <a class="tactic" href="list-details.html#227">Ty2: case Ty2.</a> <a class="tactic" href="list-details.html#228">apply IH to Ty3 Ty2.</a> <a class="tactic" href="list-details.html#229">apply IH to Ty4 Ty5.</a> <a class="tactic" href="list-details.html#230">search.</a>
+  <span class="comment">%null check</span>
+   <a class="tactic" href="list-details.html#231">Ty2: case Ty2.</a> <a class="tactic" href="list-details.html#232">search.</a>
+  <span class="comment">%head of list</span>
+   <a class="tactic" href="list-details.html#233">Ty2: case Ty2.</a> <a class="tactic" href="list-details.html#234">apply IH to Ty3 Ty2.</a> <a class="tactic" href="list-details.html#235">search.</a>
+  <span class="comment">%tail of list</span>
+   <a class="tactic" href="list-details.html#236">Ty2: case Ty2.</a> <a class="tactic" href="list-details.html#237">apply IH to Ty3 Ty2.</a> <a class="tactic" href="list-details.html#238">search.</a>
+  <span class="comment">%index into list</span>
+   <a class="tactic" href="list-details.html#239">Ty2: case Ty2.</a> <a class="tactic" href="list-details.html#240">apply IH to Ty3 Ty2.</a> <a class="tactic" href="list-details.html#241">search.</a>
+  <span class="comment">%length of list</span>
+   <a class="tactic" href="list-details.html#242">Ty2: case Ty2.</a> <a class="tactic" href="list-details.html#243">search.</a></div>
+
+
+<a class="command" href="list-details.html#244">Prove simple_imp:host:typeOK_unique.</a>
+
+
+<a class="command" href="list-details.html#245">Prove_Constraint simple_imp:host:trans_eval_e.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(246);" id="toggleproof246">[Show Proof]</a>
+<div class="proof" id="proof246" style="display: none;">
+<span class="comment">%nil</span>
+ <a class="tactic" href="list-details.html#246">search.</a>
+<span class="comment">%cons</span>
+ <a class="tactic" href="list-details.html#247">Ev: case Hyp1.</a> <a class="tactic" href="list-details.html#248">search.</a>
+<span class="comment">%null</span>
+ <a class="tactic" href="list-details.html#249">case Hyp1.</a>
+   <span class="comment">%E-NullTrue</span>
+    <a class="tactic" href="list-details.html#250">search.</a>
+   <span class="comment">%E-NullFalse</span>
+    <a class="tactic" href="list-details.html#251">search.</a>
+<span class="comment">%head</span>
+ <a class="tactic" href="list-details.html#252">case Hyp1.</a> <a class="tactic" href="list-details.html#253">search.</a>
+<span class="comment">%tail</span>
+ <a class="tactic" href="list-details.html#254">case Hyp1.</a> <a class="tactic" href="list-details.html#255">search.</a>
+<span class="comment">%index</span>
+ <span class="comment">/*This is why we need E-Index to specify consVal.  Without that, we
+   have no way of determining if (null Lst) will evaluate.  We might
+   try proving
+     forall E L I V G, indexRel L I V -> eval_e G E L ->
+                                 exists V', eval_e G (null E) V'
+   but this fails in the preservability case because the definition of
+   indexRel is copied from L's translation, but E still evaluates to
+   the original L, so we can't apply the IH.*/</span>
+ <a class="tactic" href="list-details.html#256">Ev: case Hyp1.</a> <a class="tactic" href="list-details.html#257">search.</a>
+<span class="comment">%length</span>
+ <a class="tactic" href="list-details.html#258">Ev: case Hyp1.</a> <a class="tactic" href="list-details.html#259">search.</a></div>
+
+
+<a class="command" href="list-details.html#260">Extensible_Theorem
+  index_is_integer : forall L I V,
+    Index : indexRel L I V ->
+    is_integer I
+  on Index.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(261);" id="toggleproof261">[Show Proof]</a>
+<div class="proof" id="proof261" style="display: none;">
+<span class="comment">%Index-0</span>
+ <a class="tactic" href="list-details.html#261">search.</a>
+<span class="comment">%Index-Step</span>
+ <a class="tactic" href="list-details.html#262">IsSubIndex: apply IH to Index2.</a>
+ <a class="tactic" href="list-details.html#263">Is: apply minus_integer_is_integer_result to IsSubIndex Index1.</a>
+ <a class="tactic" href="list-details.html#264">search.</a>
+<span class="comment">%Preservability</span>
+ <a class="tactic" href="list-details.html#265">backchain IH.</a></div>
+<a class="command" href="list-details.html#266">Extensible_Theorem
+  index_negative_false : forall L I V,
+    Index : indexRel L I V ->
+    Neg : I < 0 ->
+    false
+  on Index.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(267);" id="toggleproof267">[Show Proof]</a>
+<div class="proof" id="proof267" style="display: none;">
+<span class="comment">%Index-0</span>
+ <a class="tactic" href="list-details.html#267">case Neg.</a>
+<span class="comment">%Index-Step</span>
+ <a class="tactic" href="list-details.html#268">apply index_is_integer to Index.</a>
+ <a class="tactic" href="list-details.html#269">apply less_integer__subtract_positive to _ _ Neg _ Index1.</a>
+ <a class="tactic" href="list-details.html#270">apply minus_integer_is_integer to _ _ Index1.</a>
+ <a class="tactic" href="list-details.html#271">apply IH to Index2 _.</a>
+<span class="comment">%Preservability</span>
+ <a class="tactic" href="list-details.html#272">apply IH to Index2 Neg.</a></div>
+<a class="command" href="list-details.html#273">Extensible_Theorem
+  index_unique : forall L I V1 V2,
+    Index1 : indexRel L I V1 ->
+    Index2 : indexRel L I V2 ->
+    V1 = V2
+  on Index1.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(274);" id="toggleproof274">[Show Proof]</a>
+<div class="proof" id="proof274" style="display: none;">
+<span class="comment">%1 by Index-0</span>
+ <a class="tactic" href="list-details.html#274">Index2: case Index2.</a>
+   <span class="comment">%2 by Index-0</span>
+    <a class="tactic" href="list-details.html#275">search.</a>
+   <span class="comment">%2 by Index-Step</span>
+    <a class="tactic" href="list-details.html#276">case Index2.</a> <a class="tactic" href="list-details.html#277">case H1.</a> <a class="tactic" href="list-details.html#278">apply index_negative_false to Index3 _.</a>
+<span class="comment">%1 by Index-Step</span>
+ <a class="tactic" href="list-details.html#279">Index2: case Index2.</a>
+   <span class="comment">%2 by Index-0</span>
+    <a class="tactic" href="list-details.html#280">case Index3.</a> <a class="tactic" href="list-details.html#281">case H1.</a> <a class="tactic" href="list-details.html#282">apply index_negative_false to Index4 _.</a>
+   <span class="comment">%2 by Index-Step</span>
+    <a class="tactic" href="list-details.html#283">apply minus_integer_unique to Index3 Index2.</a>
+    <a class="tactic" href="list-details.html#284">apply IH to Index4 Index5.</a> <a class="tactic" href="list-details.html#285">search.</a>
+<span class="comment">%Preservability</span>
+ <a class="tactic" href="list-details.html#286">Index2: case Index2.</a> <a class="tactic" href="list-details.html#287">apply trans_value_unique to Index3 Index2.</a>
+ <a class="tactic" href="list-details.html#288">apply IH to Index4 Index5.</a> <a class="tactic" href="list-details.html#289">search.</a></div>
+
+<a class="command" href="list-details.html#290">Extensible_Theorem
+  length_is_integer : forall L V,
+    Len : lengthRel L V ->
+    is_integer V
+  on Len.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(291);" id="toggleproof291">[Show Proof]</a>
+<div class="proof" id="proof291" style="display: none;">
+<span class="comment">%Len-Nil</span>
+ <a class="tactic" href="list-details.html#291">search.</a>
+<span class="comment">%Len-Cons</span>
+ <a class="tactic" href="list-details.html#292">IsSubLen: apply IH to Len1.</a>
+ <a class="tactic" href="list-details.html#293">apply plus_integer_is_integer to _ _ Len2.</a> <a class="tactic" href="list-details.html#294">search.</a>
+<span class="comment">%Preservability</span>
+ <a class="tactic" href="list-details.html#295">apply IH to Len2.</a> <a class="tactic" href="list-details.html#296">search.</a></div>
+<a class="command" href="list-details.html#297">Extensible_Theorem
+  length_unique : forall L V1 V2,
+    Len1 : lengthRel L V1 ->
+    Len2 : lengthRel L V2 ->
+    V1 = V2
+  on Len1.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(298);" id="toggleproof298">[Show Proof]</a>
+<div class="proof" id="proof298" style="display: none;">
+<span class="comment">%1 by Len-Nil</span>
+ <a class="tactic" href="list-details.html#298">case Len2.</a> <a class="tactic" href="list-details.html#299">search.</a>
+<span class="comment">%1 by Len-Cons</span>
+ <a class="tactic" href="list-details.html#300">Len2: case Len2.</a> <a class="tactic" href="list-details.html#301">apply IH to Len3 Len2.</a>
+ <a class="tactic" href="list-details.html#302">apply plus_integer_unique to Len4 Len5.</a> <a class="tactic" href="list-details.html#303">search.</a>
+<span class="comment">%Preservability</span>
+ <a class="tactic" href="list-details.html#304">Len2: case Len2.</a> <a class="tactic" href="list-details.html#305">apply trans_value_unique to Len3 Len2.</a>
+ <a class="tactic" href="list-details.html#306">apply IH to Len4 Len5.</a> <a class="tactic" href="list-details.html#307">search.</a></div>
+
+
+<a class="command" href="list-details.html#308">Prove simple_imp:host:eval_e_unique,
+      simple_imp:host:eval_rf_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(309);" id="toggleproof309">[Show Proof]</a>
+<div class="proof" id="proof309" style="display: none;">
+<span class="comment">%eval_e_unique</span>
+  <span class="comment">%E-Nil</span>
+   <a class="tactic" href="list-details.html#309">case Ev2.</a> <a class="tactic" href="list-details.html#310">search.</a>
+  <span class="comment">%E-Cons</span>
+   <a class="tactic" href="list-details.html#311">Ev2: case Ev2.</a> <a class="tactic" href="list-details.html#312">apply IH to Ev3 Ev2.</a> <a class="tactic" href="list-details.html#313">apply IH to Ev4 Ev5.</a> <a class="tactic" href="list-details.html#314">search.</a>
+  <span class="comment">%E-NullTrue</span>
+   <a class="tactic" href="list-details.html#315">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-NullTrue</span>
+      <a class="tactic" href="list-details.html#316">search.</a>
+     <span class="comment">%2 by E-NullFalse</span>
+      <a class="tactic" href="list-details.html#317">apply IH to Ev3 Ev2.</a>
+  <span class="comment">%E-NullFalse</span>
+   <a class="tactic" href="list-details.html#318">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-NullTrue</span>
+      <a class="tactic" href="list-details.html#319">apply IH to Ev3 Ev2.</a>
+     <span class="comment">%2 by E-NullFalse</span>
+      <a class="tactic" href="list-details.html#320">search.</a>
+  <span class="comment">%E-Head</span>
+   <a class="tactic" href="list-details.html#321">Ev2: case Ev2.</a> <a class="tactic" href="list-details.html#322">apply IH to Ev3 Ev2.</a> <a class="tactic" href="list-details.html#323">search.</a>
+  <span class="comment">%E-Tail</span>
+   <a class="tactic" href="list-details.html#324">Ev2: case Ev2.</a> <a class="tactic" href="list-details.html#325">apply IH to Ev3 Ev2.</a> <a class="tactic" href="list-details.html#326">search.</a>
+  <span class="comment">%E-Index</span>
+   <a class="tactic" href="list-details.html#327">Ev2: case Ev2.</a> <a class="tactic" href="list-details.html#328">apply IH to Ev3 Ev2.</a> <a class="tactic" href="list-details.html#329">apply IH to Ev4 Ev6.</a>
+   <a class="tactic" href="list-details.html#330">apply index_unique to Ev5 Ev7.</a> <a class="tactic" href="list-details.html#331">search.</a>
+  <span class="comment">%E-Length</span>
+   <a class="tactic" href="list-details.html#332">Ev2: case Ev2.</a> <a class="tactic" href="list-details.html#333">apply IH to Ev3 Ev2.</a>
+   <a class="tactic" href="list-details.html#334">apply simple_imp:list:length_unique to Ev4 Ev5.</a> <a class="tactic" href="list-details.html#335">search.</a></div>
+
+
+<a class="command" href="list-details.html#336">Prove simple_imp:host:update_rec_fields_unique.</a>
+
+
+<a class="command" href="list-details.html#337">Prove_Constraint simple_imp:host:trans_c_eval.</a>
+
+
+<a class="command" href="list-details.html#338">Prove_Ext_Ind simple_imp:host:eval_c.</a>
+
+
+<a class="command" href="list-details.html#339">Prove simple_imp:host:eval_c_unique.</a>
+
+
+<a class="command" href="list-details.html#340">Prove_Constraint simple_imp:host:trans_c_eval_results.</a>
+<a class="command" href="list-details.html#341">Prove_Constraint simple_imp:host:trans_c_eval_results_back.</a>
+
+
+<a class="command" href="list-details.html#342">Prove simple_imp:host:vars_eval_same_result,
+      simple_imp:host:vars_equal_rf_same_result.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(343);" id="toggleproof343">[Show Proof]</a>
+<div class="proof" id="proof343" style="display: none;">
+<span class="comment">%vars_eval_same_result</span>
+  <span class="comment">%E-Nil</span>
+   <a class="tactic" href="list-details.html#343">case Ev2.</a> <a class="tactic" href="list-details.html#344">search.</a>
+  <span class="comment">%E-Cons</span>
+   <a class="tactic" href="list-details.html#345">Ev2: case Ev2.</a> <a class="tactic" href="list-details.html#346">Vars1: case Vars.</a>
+   <a class="tactic" href="list-details.html#347">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="list-details.html#348">backchain vars_equiv_left.</a>
+   <a class="tactic" href="list-details.html#349">apply IH to _ Vars2 Ev4 Ev5.</a> <a class="tactic" href="list-details.html#350">backchain vars_equiv_right.</a> <a class="tactic" href="list-details.html#351">search.</a>
+  <span class="comment">%E-NullTrue</span>
+   <a class="tactic" href="list-details.html#352">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-NullTrue</span>
+      <a class="tactic" href="list-details.html#353">search.</a>
+     <span class="comment">%2 by E-NullFalse</span>
+      <a class="tactic" href="list-details.html#354">Vars1: case Vars.</a> <a class="tactic" href="list-details.html#355">apply IH to _ Vars1 Ev3 Ev2.</a>
+  <span class="comment">%E-NullFalse</span>
+   <a class="tactic" href="list-details.html#356">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-NullTrue</span>
+      <a class="tactic" href="list-details.html#357">Vars1: case Vars.</a> <a class="tactic" href="list-details.html#358">apply IH to _ Vars1 Ev3 Ev2.</a>
+     <span class="comment">%2 by E-NullFalse</span>
+      <a class="tactic" href="list-details.html#359">search.</a>
+  <span class="comment">%E-Head</span>
+   <a class="tactic" href="list-details.html#360">Ev2: case Ev2.</a> <a class="tactic" href="list-details.html#361">Vars1: case Vars.</a> <a class="tactic" href="list-details.html#362">apply IH to _ Vars1 Ev3 Ev2.</a>
+   <a class="tactic" href="list-details.html#363">search.</a>
+  <span class="comment">%E-Tail</span>
+   <a class="tactic" href="list-details.html#364">Ev2: case Ev2.</a> <a class="tactic" href="list-details.html#365">Vars1: case Vars.</a> <a class="tactic" href="list-details.html#366">apply IH to _ Vars1 Ev3 Ev2.</a>
+   <a class="tactic" href="list-details.html#367">search.</a>
+  <span class="comment">%E-Index</span>
+   <a class="tactic" href="list-details.html#368">Ev2: case Ev2.</a> <a class="tactic" href="list-details.html#369">Vars1: case Vars.</a>
+   <a class="tactic" href="list-details.html#370">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="list-details.html#371">backchain vars_equiv_left.</a>
+   <a class="tactic" href="list-details.html#372">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="list-details.html#373">backchain vars_equiv_right.</a>
+   <a class="tactic" href="list-details.html#374">apply index_unique to Ev5 Ev7.</a> <a class="tactic" href="list-details.html#375">search.</a>
+  <span class="comment">%E-Length</span>
+   <a class="tactic" href="list-details.html#376">Ev2: case Ev2.</a> <a class="tactic" href="list-details.html#377">Vars1: case Vars.</a> <a class="tactic" href="list-details.html#378">apply IH to _ Vars1 Ev3 Ev2.</a>
+   <a class="tactic" href="list-details.html#379">apply simple_imp:list:length_unique to Ev4 Ev5.</a> <a class="tactic" href="list-details.html#380">search.</a></div>
+<a class="command" href="list-details.html#381"></a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>
