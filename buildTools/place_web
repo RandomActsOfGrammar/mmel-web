@@ -10,10 +10,14 @@ else
     BUILT_WEB_DIR="$1"
 fi
 
+#clear out the old stuff, in case structure changes
+rm -rf /web/research01/extensibella.cs.umn.edu/*
+
 #move it to the online location
 cp -R $BUILT_WEB_DIR/* /web/research01/extensibella.cs.umn.edu/
 
 #give it the right permissions
 cd /web/research01/extensibella.cs.umn.edu
-chmod -R g+rw *
-chmod -R o+r *
+#superuser.com/questions/91935/how-to-recursively-chmod-all-directories-except-files
+find ./* -type d -print0 | xargs -0 chmod 755
+find . -type f -print0 | xargs -0 chmod 644
