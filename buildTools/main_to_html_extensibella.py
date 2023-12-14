@@ -26,7 +26,7 @@ def writeInitialText(outF, depth, titleInfo):
     text += "<body class=\"extensibella\">\n"
     #logo
     text += '<div id="header-logo">\n'
-    text += '<a href="' + depthText + '../index.html">\n'
+    text += '<a href="' + depthText + 'index.html">\n'
     text += '<img class="header-logo" src="' + depthText + 'images/Extensibella.png" '
     text += 'alt="Extensibella logo">\n'
     text += '</a>\n'
