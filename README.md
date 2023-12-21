@@ -1,4 +1,4 @@
-The `extensibella` directory contains the actual web content.  The
+The `web` directory contains the actual web content.  The
 `buildTools` directory contains scripts for creating the full web
 content.
 
