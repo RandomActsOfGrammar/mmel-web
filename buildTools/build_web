@@ -7,6 +7,9 @@ DO_BUILD=1
 EXTENSIBELLA_DIR=
 STERLING_DIR=
 
+#save initial directory to get back in the end
+START_DIR=$(pwd)
+
 
 #go through arguments
 while test $# -gt 0
@@ -159,3 +162,9 @@ then
     echo "COULD NOT GET STERLING TARBALL; DO IT BY HAND"
     echo "----------------------------------------------------------------------"
 fi
+
+
+#check all the files included in the website are present
+cd $START_DIR
+echo -e "\n\n" #space it out
+./buildTools/check.py $WEB_DIR
