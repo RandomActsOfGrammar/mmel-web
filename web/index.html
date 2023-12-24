@@ -28,8 +28,8 @@
     programming language.  A common example is <i>type
     preservation</i>, that expressions evaluate to values of the same
     type (e.g. an expression of type <tt>int</tt> will evaluate to a
-    value of type <tt>int</tt>), guaranteeing type errors are not
-    encountered when a well-typed program runs.
+    value of type <tt>int</tt>), guaranteeing type errors do not
+    arise when a well-typed program runs.
   </p>
 
   <p>
@@ -41,28 +41,21 @@
 </div>
 
 <div class="section">
-  <h2>Our Goals</h2>
+  <h2>Our Approach</h2>
   <p>
-    Our overarching goal is to provide guarantees for the semantic
-    correctness of extensible languages, where the correctness is
-    determined by adherence to properties introduced by the modules in
-    the language.  Our goals:
+    Our approach is to modular metatheory is based on two ideas:
     <ul>
-      <li><span class="highlight">Properties introduced by the host
-          language can be given modular proofs guaranteeing they will
-          hold for any composed language.</span>  The modular proofs
-        here can be distributed, since the host language and each
-        extension will know these properties exist.
-      <li><span class="highlight">Properties introduced by extensions
-          can be given modular proofs <i>by the extension alone</i>
-          guaranteeing they will hold for any composed
-          language.</span>  The proof must be written by the extension
-        itself because other extensions do not know the property
-        exists to help prove it.
+      <li><span class="highlight">Decomposing proofs</span>:  Proofs
+        are broken down on the boundaries between language modules,
+        and the responsibility for writing them distributed.
+      <li><span class="highlight">Generic reasoning</span>:  When the
+        proof pieces cannot be distributed, we reason generically
+        about unknown extensions based on broad constraints imposed on
+        their behavior.
     </ul>
-    The difficulty in this is that modular proofs are written in a
-    limited context, the host language or the host language with one
-    extension, but are intended to apply in larger contexts.
+    We can establish the soundness of this approach by using the
+    modular proofs written with the above ideas to construct proofs
+    automatically for any composed language.
   </p>
 </div>
 
