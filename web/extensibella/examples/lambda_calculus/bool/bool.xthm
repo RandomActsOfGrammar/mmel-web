@@ -12,9 +12,9 @@ Prove_Constraint lambda_calculus:host:trans_is.
 
 Prove_Ext_Ind lambda_calculus:host:is_e.
 %true
- search 7.
+ unfold. exists abs "a" (abs "b" (var "a")). search 7.
 %false
- search 7.
+ unfold. exists abs "a" (abs "b" (var "b")). search 7.
 %if
  IsN3: apply ext_ind_is_int_is_e to Rel4.
  IsN2: apply ext_ind_is_int_is_e to Rel5.
@@ -57,7 +57,8 @@ Prove_Ext_Ind lambda_calculus:host:is_e.
       apply less_integer_transitive to L' L_N5_N. search.
      %N4 = N6
       apply lesseq_less_integer_transitive to LE_N6_N5 L_N5_N. search.
- A4: apply Acc to _ L_N4_N. apply IH to Rel6 A4. search.
+ A4: apply Acc to _ L_N4_N. apply IH to Rel6 A4. unfold.
+ exists app (app E2 E1) E3. search.
 
 
 Prove_Constraint lambda_calculus:host:trans_same.
@@ -200,10 +201,10 @@ Prove_Constraint lambda_calculus:host:trans_eval_same.
 
 Prove_Ext_Ind lambda_calculus:host:eval.
 %true
- search.
+ unfold. exists abs "a" (abs "b" (var "a")). search 7.
 %false
- search.
+ unfold. exists abs "a" (abs "b" (var "b")). search 7.
 %if
  apply ext_ind_is_int_eval to Rel2. L: apply lt_plus_one to Rel1 _.
  apply ext_ind_pos_eval to Rel2. Acc: case Acc. A: apply Acc to _ L.
- apply IH to Rel2 A. search.
+ apply IH to Rel2 A. exists app (app Cond T) F. search.

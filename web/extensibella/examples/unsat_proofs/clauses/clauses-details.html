@@ -251,6 +251,21 @@ Rel2 : is_integer I
  &lt;is_clause {T}&gt; (rangeClause I1 I)
 </pre>
 <pre class="code extensibella"id="23">
+ &lt; <b>Set search_depth 2.</b>
+
+Subgoal 1:
+
+Variables: I I1
+IH : forall N C, &lt;is_clause {ES}&gt; C N -&gt; acc N * -&gt; &lt;is_clause {T}&gt; C
+IH1 : forall N C, &lt;is_clause {ES}&gt; C N ** -&gt; acc N @ -&gt; &lt;is_clause {T}&gt; C
+Rel : &lt;is_clause {ES}&gt; (rangeClause I1 I) 1 @@
+Acc : acc 1 @
+Rel1 : is_integer I1
+Rel2 : is_integer I
+============================
+ &lt;is_clause {T}&gt; (rangeClause I1 I)
+</pre>
+<pre class="code extensibella"id="24">
  &lt; <b>Helper: assert forall Low High R,
      is_integer Low -&gt; is_integer High -&gt; range Low High R -&gt; &lt;is_clause {T}&gt; (rangeClause Low High).</b>
 
@@ -267,7 +282,23 @@ Rel2 : is_integer I
  forall Low High R,
    is_integer Low -&gt; is_integer High -&gt; range Low High R -&gt; &lt;is_clause {T}&gt; (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="24">
+<pre class="code extensibella"id="25">
+ &lt; <b>Set search_depth 5.</b>
+
+Subgoal 1.1:
+
+Variables: I I1
+IH : forall N C, &lt;is_clause {ES}&gt; C N -&gt; acc N * -&gt; &lt;is_clause {T}&gt; C
+IH1 : forall N C, &lt;is_clause {ES}&gt; C N ** -&gt; acc N @ -&gt; &lt;is_clause {T}&gt; C
+Rel : &lt;is_clause {ES}&gt; (rangeClause I1 I) 1 @@
+Acc : acc 1 @
+Rel1 : is_integer I1
+Rel2 : is_integer I
+============================
+ forall Low High R,
+   is_integer Low -&gt; is_integer High -&gt; range Low High R -&gt; &lt;is_clause {T}&gt; (rangeClause Low High)
+</pre>
+<pre class="code extensibella"id="26">
  &lt; <b>induction on 3.</b>
 
 Subgoal 1.1:
@@ -285,7 +316,7 @@ IH2 : forall Low High R,
  forall Low High R,
    is_integer Low -&gt; is_integer High -&gt; range Low High R @@@ -&gt; &lt;is_clause {T}&gt; (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="25">
+<pre class="code extensibella"id="27">
  &lt; <b>intros IsLow IsHigh R.</b>
 
 Subgoal 1.1:
@@ -305,7 +336,7 @@ R : range Low High R @@@
 ============================
  &lt;is_clause {T}&gt; (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="26">
+<pre class="code extensibella"id="28">
  &lt; <b>R: case R.</b>
 
 Subgoal 1.1.1:
@@ -325,7 +356,7 @@ R : Low &gt; High
 ============================
  &lt;is_clause {T}&gt; (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="27">
+<pre class="code extensibella"id="29">
  &lt; <b>unfold .</b>
 
 Subgoal 1.1.1:
@@ -344,10 +375,11 @@ IsHigh : is_integer High
 R : Low &gt; High
 ============================
  exists C',
-   |{clause}- rangeClause Low High ~~&gt; C' /\
-   (&lt;is_clause {T}&gt; C' /\ (is_integer Low /\ is_integer High))
+   &lt;is_clause {T}&gt; C' /\
+   (|{clause}- rangeClause Low High ~~&gt; C' /\
+   (is_integer Low /\ is_integer High))
 </pre>
-<pre class="code extensibella"id="28">
+<pre class="code extensibella"id="30">
  &lt; <b>exists emptyClause.</b>
 
 Subgoal 1.1.1:
@@ -365,10 +397,11 @@ IsLow : is_integer Low
 IsHigh : is_integer High
 R : Low &gt; High
 ============================
- |{clause}- rangeClause Low High ~~&gt; emptyClause /\
- (&lt;is_clause {T}&gt; emptyClause /\ (is_integer Low /\ is_integer High))
+ &lt;is_clause {T}&gt; emptyClause /\
+ (|{clause}- rangeClause Low High ~~&gt; emptyClause /\
+ (is_integer Low /\ is_integer High))
 </pre>
-<pre class="code extensibella"id="29">
+<pre class="code extensibella"id="31">
  &lt; <b>search.</b>
 
 Subgoal 1.1.2:
@@ -390,7 +423,7 @@ R2 : range PlusOne High Rest ***
 ============================
  &lt;is_clause {T}&gt; (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="30">
+<pre class="code extensibella"id="32">
  &lt; <b>unfold .</b>
 
 Subgoal 1.1.2:
@@ -411,10 +444,11 @@ R1 : 1 + Low = PlusOne
 R2 : range PlusOne High Rest ***
 ============================
  exists C',
-   |{clause}- rangeClause Low High ~~&gt; C' /\
-   (&lt;is_clause {T}&gt; C' /\ (is_integer Low /\ is_integer High))
+   &lt;is_clause {T}&gt; C' /\
+   (|{clause}- rangeClause Low High ~~&gt; C' /\
+   (is_integer Low /\ is_integer High))
 </pre>
-<pre class="code extensibella"id="31">
+<pre class="code extensibella"id="33">
  &lt; <b>IsPlusOne: apply plus_integer_is_integer to _ _ R1.</b>
 
 Subgoal 1.1.2:
@@ -436,10 +470,11 @@ R2 : range PlusOne High Rest ***
 IsPlusOne : is_integer PlusOne
 ============================
  exists C',
-   |{clause}- rangeClause Low High ~~&gt; C' /\
-   (&lt;is_clause {T}&gt; C' /\ (is_integer Low /\ is_integer High))
+   &lt;is_clause {T}&gt; C' /\
+   (|{clause}- rangeClause Low High ~~&gt; C' /\
+   (is_integer Low /\ is_integer High))
 </pre>
-<pre class="code extensibella"id="32">
+<pre class="code extensibella"id="34">
  &lt; <b>IsCT: apply IH2 to _ _ R2.</b>
 
 Subgoal 1.1.2:
@@ -462,10 +497,11 @@ IsPlusOne : is_integer PlusOne
 IsCT : &lt;is_clause {T}&gt; (rangeClause PlusOne High)
 ============================
  exists C',
-   |{clause}- rangeClause Low High ~~&gt; C' /\
-   (&lt;is_clause {T}&gt; C' /\ (is_integer Low /\ is_integer High))
+   &lt;is_clause {T}&gt; C' /\
+   (|{clause}- rangeClause Low High ~~&gt; C' /\
+   (is_integer Low /\ is_integer High))
 </pre>
-<pre class="code extensibella"id="33">
+<pre class="code extensibella"id="35">
  &lt; <b>Tr: assert |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High).</b>
 
 Subgoal 1.1.2:
@@ -489,10 +525,38 @@ IsCT : &lt;is_clause {T}&gt; (rangeClause PlusOne High)
 Tr : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
 ============================
  exists C',
-   |{clause}- rangeClause Low High ~~&gt; C' /\
-   (&lt;is_clause {T}&gt; C' /\ (is_integer Low /\ is_integer High))
+   &lt;is_clause {T}&gt; C' /\
+   (|{clause}- rangeClause Low High ~~&gt; C' /\
+   (is_integer Low /\ is_integer High))
 </pre>
-<pre class="code extensibella"id="34">
+<pre class="code extensibella"id="36">
+ &lt; <b>exists or (pos Low) (rangeClause PlusOne High).</b>
+
+Subgoal 1.1.2:
+
+Variables: I I1 Low High PlusOne Rest
+IH : forall N C, &lt;is_clause {ES}&gt; C N -&gt; acc N * -&gt; &lt;is_clause {T}&gt; C
+IH1 : forall N C, &lt;is_clause {ES}&gt; C N ** -&gt; acc N @ -&gt; &lt;is_clause {T}&gt; C
+Rel : &lt;is_clause {ES}&gt; (rangeClause I1 I) 1 @@
+Acc : acc 1 @
+Rel1 : is_integer I1
+Rel2 : is_integer I
+IH2 : forall Low High R,
+        is_integer Low -&gt; is_integer High -&gt; range Low High R *** -&gt; &lt;is_clause {T}&gt; (rangeClause Low High)
+IsLow : is_integer Low
+IsHigh : is_integer High
+R : Low &lt;= High
+R1 : 1 + Low = PlusOne
+R2 : range PlusOne High Rest ***
+IsPlusOne : is_integer PlusOne
+IsCT : &lt;is_clause {T}&gt; (rangeClause PlusOne High)
+Tr : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
+============================
+ &lt;is_clause {T}&gt; (or (pos Low) (rangeClause PlusOne High)) /\
+ (|{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High) /\
+ (is_integer Low /\ is_integer High))
+</pre>
+<pre class="code extensibella"id="37">
  &lt; <b>search.</b>
 
 Subgoal 1:
@@ -509,7 +573,7 @@ Helper : forall Low High R,
 ============================
  &lt;is_clause {T}&gt; (rangeClause I1 I)
 </pre>
-<pre class="code extensibella"id="35">
+<pre class="code extensibella"id="38">
  &lt; <b>R: apply range_exists to Rel1 Rel2.</b>
 
 Subgoal 1:
@@ -527,7 +591,7 @@ R : range I1 I R
 ============================
  &lt;is_clause {T}&gt; (rangeClause I1 I)
 </pre>
-<pre class="code extensibella"id="36">
+<pre class="code extensibella"id="39">
  &lt; <b>apply Helper to _ _ R.</b>
 
 Subgoal 1:
@@ -546,8 +610,8 @@ H1 : &lt;is_clause {T}&gt; (rangeClause I1 I)
 ============================
  &lt;is_clause {T}&gt; (rangeClause I1 I)
 </pre>
-<pre class="code extensibella"id="37">
- &lt; <b>search.</b>
+<pre class="code extensibella"id="40">
+ &lt; <b>search 2.</b>
 
 Subgoal 2:
 
@@ -562,7 +626,7 @@ Rel3 : &lt;is_clause {ES}&gt; Clause N2 **
 ============================
  &lt;is_clause {T}&gt; (noteClause S Clause)
 </pre>
-<pre class="code extensibella"id="38">
+<pre class="code extensibella"id="41">
  &lt; <b>assert |{clause}- noteClause S Clause ~~&gt; Clause.</b>
 
 Subgoal 2:
@@ -579,7 +643,7 @@ H1 : |{clause}- noteClause S Clause ~~&gt; Clause
 ============================
  &lt;is_clause {T}&gt; (noteClause S Clause)
 </pre>
-<pre class="code extensibella"id="39">
+<pre class="code extensibella"id="42">
  &lt; <b>Acc: case Acc.</b>
 
 Subgoal 2:
@@ -596,7 +660,7 @@ Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 ============================
  &lt;is_clause {T}&gt; (noteClause S Clause)
 </pre>
-<pre class="code extensibella"id="40">
+<pre class="code extensibella"id="43">
  &lt; <b>apply ext_ind_is_int_is_clause to Rel3.</b>
 
 Subgoal 2:
@@ -614,7 +678,7 @@ H2 : is_integer N2
 ============================
  &lt;is_clause {T}&gt; (noteClause S Clause)
 </pre>
-<pre class="code extensibella"id="41">
+<pre class="code extensibella"id="44">
  &lt; <b>L: apply lt_plus_one to Rel1 _.</b>
 
 Subgoal 2:
@@ -633,7 +697,7 @@ L : N2 &lt; N
 ============================
  &lt;is_clause {T}&gt; (noteClause S Clause)
 </pre>
-<pre class="code extensibella"id="42">
+<pre class="code extensibella"id="45">
  &lt; <b>apply ext_ind_pos_is_clause to Rel3.</b>
 
 Subgoal 2:
@@ -653,7 +717,7 @@ H3 : 0 &lt;= N2
 ============================
  &lt;is_clause {T}&gt; (noteClause S Clause)
 </pre>
-<pre class="code extensibella"id="43">
+<pre class="code extensibella"id="46">
  &lt; <b>A: apply Acc to _ L.</b>
 
 Subgoal 2:
@@ -674,7 +738,7 @@ A : acc N2 *
 ============================
  &lt;is_clause {T}&gt; (noteClause S Clause)
 </pre>
-<pre class="code extensibella"id="44">
+<pre class="code extensibella"id="47">
  &lt; <b>apply IH to Rel3 A.</b>
 
 Subgoal 2:
@@ -696,27 +760,27 @@ H4 : &lt;is_clause {T}&gt; Clause
 ============================
  &lt;is_clause {T}&gt; (noteClause S Clause)
 </pre>
-<pre class="code extensibella"id="45">
- &lt; <b>search.</b>
-
-Proof completed.
-</pre>
-<pre class="code extensibella"id="46">
- &lt; <b>Prove unsat_proofs:lrat:is_lit_eq_or_not__pos.</b>
-
-Proof completed.
-</pre>
-<pre class="code extensibella"id="47">
- &lt; <b>Prove unsat_proofs:lrat:is_lit_eq_or_not__neg.</b>
-
-Proof completed.
-</pre>
 <pre class="code extensibella"id="48">
- &lt; <b>Prove unsat_proofs:lrat:is_lit_eq_or_not.</b>
+ &lt; <b>search 2.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="49">
+ &lt; <b>Prove unsat_proofs:lrat:is_lit_eq_or_not__pos.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="50">
+ &lt; <b>Prove unsat_proofs:lrat:is_lit_eq_or_not__neg.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="51">
+ &lt; <b>Prove unsat_proofs:lrat:is_lit_eq_or_not.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="52">
  &lt; <b>Prove unsat_proofs:lrat:is_clause_empty_or_not.</b>
 
 Subgoal 1:
@@ -729,7 +793,7 @@ IsC2 : is_integer I
 ============================
  emptyClause = rangeClause I1 I \/ (emptyClause = rangeClause I1 I -&gt; false)
 </pre>
-<pre class="code extensibella"id="50">
+<pre class="code extensibella"id="53">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -743,12 +807,12 @@ IsC2 : is_clause Clause *
  emptyClause = noteClause S Clause \/
  (emptyClause = noteClause S Clause -&gt; false)
 </pre>
-<pre class="code extensibella"id="51">
+<pre class="code extensibella"id="54">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="52">
+<pre class="code extensibella"id="55">
  &lt; <b>Prove unsat_proofs:lrat:is_clause_or_or_not.</b>
 
 Subgoal 1:
@@ -764,7 +828,7 @@ IsC2 : is_integer I
  (exists L R, or L R = rangeClause I1 I) \/
  ((exists L R, or L R = rangeClause I1 I) -&gt; false)
 </pre>
-<pre class="code extensibella"id="53">
+<pre class="code extensibella"id="56">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -780,12 +844,12 @@ IsC2 : is_clause Clause *
  (exists L R, or L R = noteClause S Clause) \/
  ((exists L R, or L R = noteClause S Clause) -&gt; false)
 </pre>
-<pre class="code extensibella"id="54">
+<pre class="code extensibella"id="57">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="55">
+<pre class="code extensibella"id="58">
  &lt; <b>Extensible_Theorem
       is_clause_rangeClause_or_not : forall C,
          IsC : is_clause C -&gt;
@@ -806,7 +870,7 @@ IsC2 : is_integer I
  (exists L H, rangeClause I1 I = rangeClause L H) \/
  ((exists L H, rangeClause I1 I = rangeClause L H) -&gt; false)
 </pre>
-<pre class="code extensibella"id="56">
+<pre class="code extensibella"id="59">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -822,7 +886,7 @@ IsC2 : is_clause Clause *
  (exists L H, noteClause S Clause = rangeClause L H) \/
  ((exists L H, noteClause S Clause = rangeClause L H) -&gt; false)
 </pre>
-<pre class="code extensibella"id="57">
+<pre class="code extensibella"id="60">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -835,7 +899,7 @@ IsC : is_clause emptyClause @
  (exists L H, emptyClause = rangeClause L H) \/
  ((exists L H, emptyClause = rangeClause L H) -&gt; false)
 </pre>
-<pre class="code extensibella"id="58">
+<pre class="code extensibella"id="61">
  &lt; <b>search.</b>
 
 Subgoal 4:
@@ -851,7 +915,7 @@ IsC2 : is_clause Clause *
  (exists L H, or Lit Clause = rangeClause L H) \/
  ((exists L H, or Lit Clause = rangeClause L H) -&gt; false)
 </pre>
-<pre class="code extensibella"id="59">
+<pre class="code extensibella"id="62">
  &lt; <b>search.</b>
 
 Subgoal 5:
@@ -867,12 +931,12 @@ IsC2 : |{clause}- &lt;unknown clause&gt; ~~&gt; Trans
  (exists L H, &lt;unknown clause&gt; = rangeClause L H) \/
  ((exists L H, &lt;unknown clause&gt; = rangeClause L H) -&gt; false)
 </pre>
-<pre class="code extensibella"id="60">
+<pre class="code extensibella"id="63">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="61">
+<pre class="code extensibella"id="64">
  &lt; <b>Extensible_Theorem
       is_clause_noteClause_or_not : forall C,
          IsC : is_clause C -&gt;
@@ -893,7 +957,7 @@ IsC2 : is_integer I
  (exists Note C', rangeClause I1 I = noteClause Note C') \/
  ((exists Note C', rangeClause I1 I = noteClause Note C') -&gt; false)
 </pre>
-<pre class="code extensibella"id="62">
+<pre class="code extensibella"id="65">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -909,7 +973,7 @@ IsC2 : is_clause Clause *
  (exists Note C', noteClause S Clause = noteClause Note C') \/
  ((exists Note C', noteClause S Clause = noteClause Note C') -&gt; false)
 </pre>
-<pre class="code extensibella"id="63">
+<pre class="code extensibella"id="66">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -922,7 +986,7 @@ IsC : is_clause emptyClause @
  (exists Note C', emptyClause = noteClause Note C') \/
  ((exists Note C', emptyClause = noteClause Note C') -&gt; false)
 </pre>
-<pre class="code extensibella"id="64">
+<pre class="code extensibella"id="67">
  &lt; <b>search.</b>
 
 Subgoal 4:
@@ -938,7 +1002,7 @@ IsC2 : is_clause Clause *
  (exists Note C', or Lit Clause = noteClause Note C') \/
  ((exists Note C', or Lit Clause = noteClause Note C') -&gt; false)
 </pre>
-<pre class="code extensibella"id="65">
+<pre class="code extensibella"id="68">
  &lt; <b>search.</b>
 
 Subgoal 5:
@@ -954,12 +1018,12 @@ IsC2 : |{clause}- &lt;unknown clause&gt; ~~&gt; Trans
  (exists Note C', &lt;unknown clause&gt; = noteClause Note C') \/
  ((exists Note C', &lt;unknown clause&gt; = noteClause Note C') -&gt; false)
 </pre>
-<pre class="code extensibella"id="66">
+<pre class="code extensibella"id="69">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="67">
+<pre class="code extensibella"id="70">
  &lt; <b>Prove unsat_proofs:lrat:is_clause_eq_or_not.</b>
 
 Subgoal 1:
@@ -974,7 +1038,7 @@ IsC4 : is_integer I
 ============================
  rangeClause I1 I = C2 \/ (rangeClause I1 I = C2 -&gt; false)
 </pre>
-<pre class="code extensibella"id="68">
+<pre class="code extensibella"id="71">
  &lt; <b>Or: apply is_clause_rangeClause_or_not to IsC2.</b>
 
 Subgoal 1:
@@ -991,7 +1055,7 @@ Or : (exists L H, C2 = rangeClause L H) \/
 ============================
  rangeClause I1 I = C2 \/ (rangeClause I1 I = C2 -&gt; false)
 </pre>
-<pre class="code extensibella"id="69">
+<pre class="code extensibella"id="72">
  &lt; <b>E: case Or.</b>
 
 Subgoal 1.1:
@@ -1007,7 +1071,7 @@ IsC4 : is_integer I
  rangeClause I1 I = rangeClause L H \/
  (rangeClause I1 I = rangeClause L H -&gt; false)
 </pre>
-<pre class="code extensibella"id="70">
+<pre class="code extensibella"id="73">
  &lt; <b>Is: case IsC2.</b>
 
 Subgoal 1.1:
@@ -1024,7 +1088,7 @@ Is1 : is_integer H
  rangeClause I1 I = rangeClause L H \/
  (rangeClause I1 I = rangeClause L H -&gt; false)
 </pre>
-<pre class="code extensibella"id="71">
+<pre class="code extensibella"id="74">
  &lt; <b>Or: apply is_integer_eq_or_not to IsC3 Is.</b>
 
 Subgoal 1.1:
@@ -1042,7 +1106,7 @@ Or : I1 = L \/ (I1 = L -&gt; false)
  rangeClause I1 I = rangeClause L H \/
  (rangeClause I1 I = rangeClause L H -&gt; false)
 </pre>
-<pre class="code extensibella"id="72">
+<pre class="code extensibella"id="75">
  &lt; <b>E: case Or.</b>
 
 Subgoal 1.1.1:
@@ -1059,7 +1123,7 @@ Is1 : is_integer H
  rangeClause L I = rangeClause L H \/
  (rangeClause L I = rangeClause L H -&gt; false)
 </pre>
-<pre class="code extensibella"id="73">
+<pre class="code extensibella"id="76">
  &lt; <b>Or: apply is_integer_eq_or_not to IsC4 Is1.</b>
 
 Subgoal 1.1.1:
@@ -1077,7 +1141,7 @@ Or : I = H \/ (I = H -&gt; false)
  rangeClause L I = rangeClause L H \/
  (rangeClause L I = rangeClause L H -&gt; false)
 </pre>
-<pre class="code extensibella"id="74">
+<pre class="code extensibella"id="77">
  &lt; <b>E: case Or.</b>
 
 Subgoal 1.1.1.1:
@@ -1094,7 +1158,7 @@ Is1 : is_integer H
  rangeClause L H = rangeClause L H \/
  (rangeClause L H = rangeClause L H -&gt; false)
 </pre>
-<pre class="code extensibella"id="75">
+<pre class="code extensibella"id="78">
  &lt; <b>search.</b>
 
 Subgoal 1.1.1.2:
@@ -1112,7 +1176,7 @@ E : I = H -&gt; false
  rangeClause L I = rangeClause L H \/
  (rangeClause L I = rangeClause L H -&gt; false)
 </pre>
-<pre class="code extensibella"id="76">
+<pre class="code extensibella"id="79">
  &lt; <b>right.</b>
 
 Subgoal 1.1.1.2:
@@ -1129,7 +1193,7 @@ E : I = H -&gt; false
 ============================
  rangeClause L I = rangeClause L H -&gt; false
 </pre>
-<pre class="code extensibella"id="77">
+<pre class="code extensibella"id="80">
  &lt; <b>intros Eq.</b>
 
 Subgoal 1.1.1.2:
@@ -1147,7 +1211,7 @@ Eq : rangeClause L I = rangeClause L H
 ============================
  false
 </pre>
-<pre class="code extensibella"id="78">
+<pre class="code extensibella"id="81">
  &lt; <b>case Eq.</b>
 
 Subgoal 1.1.1.2:
@@ -1164,7 +1228,7 @@ E : H = H -&gt; false
 ============================
  false
 </pre>
-<pre class="code extensibella"id="79">
+<pre class="code extensibella"id="82">
  &lt; <b>backchain E.</b>
 
 Subgoal 1.1.2:
@@ -1182,7 +1246,7 @@ E : I1 = L -&gt; false
  rangeClause I1 I = rangeClause L H \/
  (rangeClause I1 I = rangeClause L H -&gt; false)
 </pre>
-<pre class="code extensibella"id="80">
+<pre class="code extensibella"id="83">
  &lt; <b>right.</b>
 
 Subgoal 1.1.2:
@@ -1199,7 +1263,7 @@ E : I1 = L -&gt; false
 ============================
  rangeClause I1 I = rangeClause L H -&gt; false
 </pre>
-<pre class="code extensibella"id="81">
+<pre class="code extensibella"id="84">
  &lt; <b>intros Eq.</b>
 
 Subgoal 1.1.2:
@@ -1217,7 +1281,7 @@ Eq : rangeClause I1 I = rangeClause L H
 ============================
  false
 </pre>
-<pre class="code extensibella"id="82">
+<pre class="code extensibella"id="85">
  &lt; <b>case Eq.</b>
 
 Subgoal 1.1.2:
@@ -1234,7 +1298,7 @@ E : L = L -&gt; false
 ============================
  false
 </pre>
-<pre class="code extensibella"id="83">
+<pre class="code extensibella"id="86">
  &lt; <b>backchain E.</b>
 
 Subgoal 1.2:
@@ -1250,7 +1314,7 @@ E : (exists L H, C2 = rangeClause L H) -&gt; false
 ============================
  rangeClause I1 I = C2 \/ (rangeClause I1 I = C2 -&gt; false)
 </pre>
-<pre class="code extensibella"id="84">
+<pre class="code extensibella"id="87">
  &lt; <b>right.</b>
 
 Subgoal 1.2:
@@ -1266,7 +1330,7 @@ E : (exists L H, C2 = rangeClause L H) -&gt; false
 ============================
  rangeClause I1 I = C2 -&gt; false
 </pre>
-<pre class="code extensibella"id="85">
+<pre class="code extensibella"id="88">
  &lt; <b>intros Eq.</b>
 
 Subgoal 1.2:
@@ -1283,7 +1347,7 @@ Eq : rangeClause I1 I = C2
 ============================
  false
 </pre>
-<pre class="code extensibella"id="86">
+<pre class="code extensibella"id="89">
  &lt; <b>case Eq.</b>
 
 Subgoal 1.2:
@@ -1299,7 +1363,7 @@ E : (exists L H, rangeClause I1 I = rangeClause L H) -&gt; false
 ============================
  false
 </pre>
-<pre class="code extensibella"id="87">
+<pre class="code extensibella"id="90">
  &lt; <b>backchain E.</b>
 
 Subgoal 2:
@@ -1314,7 +1378,7 @@ IsC4 : is_clause Clause *
 ============================
  noteClause S Clause = C2 \/ (noteClause S Clause = C2 -&gt; false)
 </pre>
-<pre class="code extensibella"id="88">
+<pre class="code extensibella"id="91">
  &lt; <b>Or: apply is_clause_noteClause_or_not to IsC2.</b>
 
 Subgoal 2:
@@ -1331,7 +1395,7 @@ Or : (exists Note C', C2 = noteClause Note C') \/
 ============================
  noteClause S Clause = C2 \/ (noteClause S Clause = C2 -&gt; false)
 </pre>
-<pre class="code extensibella"id="89">
+<pre class="code extensibella"id="92">
  &lt; <b>E: case Or.</b>
 
 Subgoal 2.1:
@@ -1347,7 +1411,7 @@ IsC4 : is_clause Clause *
  noteClause S Clause = noteClause Note C' \/
  (noteClause S Clause = noteClause Note C' -&gt; false)
 </pre>
-<pre class="code extensibella"id="90">
+<pre class="code extensibella"id="93">
  &lt; <b>Is: case IsC2.</b>
 
 Subgoal 2.1:
@@ -1364,7 +1428,7 @@ Is1 : is_clause C'
  noteClause S Clause = noteClause Note C' \/
  (noteClause S Clause = noteClause Note C' -&gt; false)
 </pre>
-<pre class="code extensibella"id="91">
+<pre class="code extensibella"id="94">
  &lt; <b>Or: apply is_string_eq_or_not to IsC3 Is.</b>
 
 Subgoal 2.1:
@@ -1382,7 +1446,7 @@ Or : S = Note \/ (S = Note -&gt; false)
  noteClause S Clause = noteClause Note C' \/
  (noteClause S Clause = noteClause Note C' -&gt; false)
 </pre>
-<pre class="code extensibella"id="92">
+<pre class="code extensibella"id="95">
  &lt; <b>E: case Or.</b>
 
 Subgoal 2.1.1:
@@ -1399,7 +1463,7 @@ Is1 : is_clause C'
  noteClause Note Clause = noteClause Note C' \/
  (noteClause Note Clause = noteClause Note C' -&gt; false)
 </pre>
-<pre class="code extensibella"id="93">
+<pre class="code extensibella"id="96">
  &lt; <b>Or: apply IH to IsC4 Is1.</b>
 
 Subgoal 2.1.1:
@@ -1417,7 +1481,7 @@ Or : Clause = C' \/ (Clause = C' -&gt; false)
  noteClause Note Clause = noteClause Note C' \/
  (noteClause Note Clause = noteClause Note C' -&gt; false)
 </pre>
-<pre class="code extensibella"id="94">
+<pre class="code extensibella"id="97">
  &lt; <b>E: case Or.</b>
 
 Subgoal 2.1.1.1:
@@ -1434,7 +1498,7 @@ Is1 : is_clause C'
  noteClause Note C' = noteClause Note C' \/
  (noteClause Note C' = noteClause Note C' -&gt; false)
 </pre>
-<pre class="code extensibella"id="95">
+<pre class="code extensibella"id="98">
  &lt; <b>search.</b>
 
 Subgoal 2.1.1.2:
@@ -1452,7 +1516,7 @@ E : Clause = C' -&gt; false
  noteClause Note Clause = noteClause Note C' \/
  (noteClause Note Clause = noteClause Note C' -&gt; false)
 </pre>
-<pre class="code extensibella"id="96">
+<pre class="code extensibella"id="99">
  &lt; <b>right.</b>
 
 Subgoal 2.1.1.2:
@@ -1469,7 +1533,7 @@ E : Clause = C' -&gt; false
 ============================
  noteClause Note Clause = noteClause Note C' -&gt; false
 </pre>
-<pre class="code extensibella"id="97">
+<pre class="code extensibella"id="100">
  &lt; <b>intros Eq.</b>
 
 Subgoal 2.1.1.2:
@@ -1487,7 +1551,7 @@ Eq : noteClause Note Clause = noteClause Note C'
 ============================
  false
 </pre>
-<pre class="code extensibella"id="98">
+<pre class="code extensibella"id="101">
  &lt; <b>case Eq.</b>
 
 Subgoal 2.1.1.2:
@@ -1504,7 +1568,7 @@ E : C' = C' -&gt; false
 ============================
  false
 </pre>
-<pre class="code extensibella"id="99">
+<pre class="code extensibella"id="102">
  &lt; <b>backchain E.</b>
 
 Subgoal 2.1.2:
@@ -1522,7 +1586,7 @@ E : S = Note -&gt; false
  noteClause S Clause = noteClause Note C' \/
  (noteClause S Clause = noteClause Note C' -&gt; false)
 </pre>
-<pre class="code extensibella"id="100">
+<pre class="code extensibella"id="103">
  &lt; <b>right.</b>
 
 Subgoal 2.1.2:
@@ -1539,7 +1603,7 @@ E : S = Note -&gt; false
 ============================
  noteClause S Clause = noteClause Note C' -&gt; false
 </pre>
-<pre class="code extensibella"id="101">
+<pre class="code extensibella"id="104">
  &lt; <b>intros Eq.</b>
 
 Subgoal 2.1.2:
@@ -1557,7 +1621,7 @@ Eq : noteClause S Clause = noteClause Note C'
 ============================
  false
 </pre>
-<pre class="code extensibella"id="102">
+<pre class="code extensibella"id="105">
  &lt; <b>case Eq.</b>
 
 Subgoal 2.1.2:
@@ -1574,7 +1638,7 @@ E : Note = Note -&gt; false
 ============================
  false
 </pre>
-<pre class="code extensibella"id="103">
+<pre class="code extensibella"id="106">
  &lt; <b>backchain E.</b>
 
 Subgoal 2.2:
@@ -1590,7 +1654,7 @@ E : (exists Note C', C2 = noteClause Note C') -&gt; false
 ============================
  noteClause S Clause = C2 \/ (noteClause S Clause = C2 -&gt; false)
 </pre>
-<pre class="code extensibella"id="104">
+<pre class="code extensibella"id="107">
  &lt; <b>right.</b>
 
 Subgoal 2.2:
@@ -1606,7 +1670,7 @@ E : (exists Note C', C2 = noteClause Note C') -&gt; false
 ============================
  noteClause S Clause = C2 -&gt; false
 </pre>
-<pre class="code extensibella"id="105">
+<pre class="code extensibella"id="108">
  &lt; <b>intros Eq.</b>
 
 Subgoal 2.2:
@@ -1623,7 +1687,7 @@ Eq : noteClause S Clause = C2
 ============================
  false
 </pre>
-<pre class="code extensibella"id="106">
+<pre class="code extensibella"id="109">
  &lt; <b>case Eq.</b>
 
 Subgoal 2.2:
@@ -1639,42 +1703,42 @@ E : (exists Note C', noteClause S Clause = noteClause Note C') -&gt; false
 ============================
  false
 </pre>
-<pre class="code extensibella"id="107">
+<pre class="code extensibella"id="110">
  &lt; <b>backchain E.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="108">
+<pre class="code extensibella"id="111">
  &lt; <b>Prove unsat_proofs:lrat:negate_lit_unique.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="109">
+<pre class="code extensibella"id="112">
  &lt; <b>Prove unsat_proofs:lrat:negate_lit_reverse.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="110">
+<pre class="code extensibella"id="113">
  &lt; <b>Prove unsat_proofs:lrat:negate_lit_not_same.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="111">
+<pre class="code extensibella"id="114">
  &lt; <b>Prove unsat_proofs:lrat:negate_lit_is_lit.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="112">
+<pre class="code extensibella"id="115">
  &lt; <b>Prove unsat_proofs:lrat:negate_lit_is_lit_back.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="113">
+<pre class="code extensibella"id="116">
  &lt; <b>Prove unsat_proofs:lrat:negate_lit_exists.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="114">
+<pre class="code extensibella"id="117">
  &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.</b>
 
 Subgoal 1:
@@ -1689,7 +1753,7 @@ Hyp5 : 1 + Low = PlusOne
 ============================
  sat_clause Sat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="115">
+<pre class="code extensibella"id="118">
  &lt; <b>Sat: case Hyp3.</b>
 
 Subgoal 1:
@@ -1706,7 +1770,7 @@ Sat2 : mem (pos X) Sat
 ============================
  sat_clause Sat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="116">
+<pre class="code extensibella"id="119">
  &lt; <b>Or: apply lesseq_integer_less_or_eq to Sat.</b>
 
 Subgoal 1:
@@ -1724,7 +1788,7 @@ Or : Low &lt; X \/ Low = X
 ============================
  sat_clause Sat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="117">
+<pre class="code extensibella"id="120">
  &lt; <b>L: case Or.</b>
 
 Subgoal 1.1:
@@ -1742,7 +1806,7 @@ L : Low &lt; X
 ============================
  sat_clause Sat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="118">
+<pre class="code extensibella"id="121">
  &lt; <b>Is: case Hyp2.</b>
 
 Subgoal 1.1:
@@ -1761,7 +1825,7 @@ Is1 : is_integer High
 ============================
  sat_clause Sat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="119">
+<pre class="code extensibella"id="122">
  &lt; <b>P: apply plus_integer_comm to _ _ Hyp5.</b>
 
 Subgoal 1.1:
@@ -1781,7 +1845,7 @@ P : Low + 1 = PlusOne
 ============================
  sat_clause Sat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="120">
+<pre class="code extensibella"id="123">
  &lt; <b>IsPosX: apply mem_is_lit to _ Sat2.</b>
 
 Subgoal 1.1:
@@ -1802,7 +1866,7 @@ IsPosX : is_lit (pos X)
 ============================
  sat_clause Sat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="121">
+<pre class="code extensibella"id="124">
  &lt; <b>case IsPosX.</b>
 
 Subgoal 1.1:
@@ -1823,7 +1887,7 @@ H1 : is_integer X
 ============================
  sat_clause Sat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="122">
+<pre class="code extensibella"id="125">
  &lt; <b>apply less_lesseq_plus_one to _ _ L P.</b>
 
 Subgoal 1.1:
@@ -1845,7 +1909,7 @@ H2 : PlusOne &lt;= X
 ============================
  sat_clause Sat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="123">
+<pre class="code extensibella"id="126">
  &lt; <b>search.</b>
 
 Subgoal 1.2:
@@ -1862,7 +1926,7 @@ Sat2 : mem (pos X) Sat
 ============================
  sat_clause Sat (or (pos X) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="124">
+<pre class="code extensibella"id="127">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1876,7 +1940,7 @@ Hyp4 : Low &gt; High
 ============================
  sat_clause Sat emptyClause
 </pre>
-<pre class="code extensibella"id="125">
+<pre class="code extensibella"id="128">
  &lt; <b>Sat: case Hyp3.</b>
 
 Subgoal 2:
@@ -1892,7 +1956,7 @@ Sat2 : mem (pos X) Sat
 ============================
  sat_clause Sat emptyClause
 </pre>
-<pre class="code extensibella"id="126">
+<pre class="code extensibella"id="129">
  &lt; <b>Or: apply lesseq_integer_less_or_eq to Sat.</b>
 
 Subgoal 2:
@@ -1909,7 +1973,7 @@ Or : Low &lt; X \/ Low = X
 ============================
  sat_clause Sat emptyClause
 </pre>
-<pre class="code extensibella"id="127">
+<pre class="code extensibella"id="130">
  &lt; <b>L: case Or.</b>
 
 Subgoal 2.1:
@@ -1926,7 +1990,7 @@ L : Low &lt; X
 ============================
  sat_clause Sat emptyClause
 </pre>
-<pre class="code extensibella"id="128">
+<pre class="code extensibella"id="131">
  &lt; <b>HL: apply greater_integer_flip_less to Hyp4.</b>
 
 Subgoal 2.1:
@@ -1944,7 +2008,7 @@ HL : High &lt; Low
 ============================
  sat_clause Sat emptyClause
 </pre>
-<pre class="code extensibella"id="129">
+<pre class="code extensibella"id="132">
  &lt; <b>HX: apply less_integer_transitive to HL L.</b>
 
 Subgoal 2.1:
@@ -1963,7 +2027,7 @@ HX : High &lt; X
 ============================
  sat_clause Sat emptyClause
 </pre>
-<pre class="code extensibella"id="130">
+<pre class="code extensibella"id="133">
  &lt; <b>apply greater_lesseq_integer_false to _ Sat1.</b>
 
 Subgoal 2.2:
@@ -1979,7 +2043,7 @@ Sat2 : mem (pos X) Sat
 ============================
  sat_clause Sat emptyClause
 </pre>
-<pre class="code extensibella"id="131">
+<pre class="code extensibella"id="134">
  &lt; <b>apply greater_lesseq_integer_false to Hyp4 Sat1.</b>
 
 Subgoal 3:
@@ -1992,7 +2056,7 @@ Hyp3 : sat_clause Sat (noteClause Note C')
 ============================
  sat_clause Sat C'
 </pre>
-<pre class="code extensibella"id="132">
+<pre class="code extensibella"id="135">
  &lt; <b>case Hyp3.</b>
 
 Subgoal 3:
@@ -2005,12 +2069,12 @@ H1 : sat_clause Sat C'
 ============================
  sat_clause Sat C'
 </pre>
-<pre class="code extensibella"id="133">
+<pre class="code extensibella"id="136">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="134">
+<pre class="code extensibella"id="137">
  &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_clause_trans_to_ext.</b>
 
 Subgoal 1:
@@ -2025,7 +2089,7 @@ Hyp5 : 1 + Low = PlusOne
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="135">
+<pre class="code extensibella"id="138">
  &lt; <b>Sat: case Hyp3.</b>
 
 Subgoal 1.1:
@@ -2040,7 +2104,7 @@ Sat : mem (pos Low) Sat
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="136">
+<pre class="code extensibella"id="139">
  &lt; <b>Is: case Hyp2.</b>
 
 Subgoal 1.1:
@@ -2056,7 +2120,7 @@ Is1 : is_integer High
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="137">
+<pre class="code extensibella"id="140">
  &lt; <b>apply is_integer_lesseq to Is.</b>
 
 Subgoal 1.1:
@@ -2073,7 +2137,7 @@ H1 : Low &lt;= Low
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="138">
+<pre class="code extensibella"id="141">
  &lt; <b>search.</b>
 
 Subgoal 1.2:
@@ -2088,7 +2152,7 @@ Sat : sat_clause Sat (rangeClause PlusOne High)
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="139">
+<pre class="code extensibella"id="142">
  &lt; <b>Sat: case Sat.</b>
 
 Subgoal 1.2:
@@ -2105,7 +2169,7 @@ Sat2 : mem (pos X) Sat
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="140">
+<pre class="code extensibella"id="143">
  &lt; <b>IsPosX: apply mem_is_lit to _ Sat2.</b>
 
 Subgoal 1.2:
@@ -2123,7 +2187,7 @@ IsPosX : is_lit (pos X)
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="141">
+<pre class="code extensibella"id="144">
  &lt; <b>IsX: case IsPosX.</b>
 
 Subgoal 1.2:
@@ -2141,7 +2205,7 @@ IsX : is_integer X
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="142">
+<pre class="code extensibella"id="145">
  &lt; <b>Or: apply lesseq_integer_less_or_eq to Sat.</b>
 
 Subgoal 1.2:
@@ -2160,7 +2224,7 @@ Or : PlusOne &lt; X \/ PlusOne = X
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="143">
+<pre class="code extensibella"id="146">
  &lt; <b>L: case Or.</b>
 
 Subgoal 1.2.1:
@@ -2179,7 +2243,7 @@ L : PlusOne &lt; X
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="144">
+<pre class="code extensibella"id="147">
  &lt; <b>Is: case Hyp2.</b>
 
 Subgoal 1.2.1:
@@ -2199,7 +2263,7 @@ Is1 : is_integer High
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="145">
+<pre class="code extensibella"id="148">
  &lt; <b>P: apply plus_integer_comm to _ _ Hyp5.</b>
 
 Subgoal 1.2.1:
@@ -2220,7 +2284,7 @@ P : Low + 1 = PlusOne
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="146">
+<pre class="code extensibella"id="149">
  &lt; <b>L: apply lt_plus_one to Hyp5 _.</b>
 
 Subgoal 1.2.1:
@@ -2242,7 +2306,7 @@ L1 : Low &lt; PlusOne
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="147">
+<pre class="code extensibella"id="150">
  &lt; <b>LE: apply less_integer_lesseq to L1.</b>
 
 Subgoal 1.2.1:
@@ -2265,7 +2329,7 @@ LE : Low &lt;= PlusOne
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="148">
+<pre class="code extensibella"id="151">
  &lt; <b>apply lesseq_integer_transitive to LE Sat.</b>
 
 Subgoal 1.2.1:
@@ -2289,7 +2353,7 @@ H1 : Low &lt;= X
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="149">
+<pre class="code extensibella"id="152">
  &lt; <b>search.</b>
 
 Subgoal 1.2.2:
@@ -2307,7 +2371,7 @@ IsX : is_integer X
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="150">
+<pre class="code extensibella"id="153">
  &lt; <b>Is: case Hyp2.</b>
 
 Subgoal 1.2.2:
@@ -2326,7 +2390,7 @@ Is1 : is_integer High
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="151">
+<pre class="code extensibella"id="154">
  &lt; <b>L: apply lt_plus_one to Hyp5 _.</b>
 
 Subgoal 1.2.2:
@@ -2346,7 +2410,7 @@ L : Low &lt; X
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="152">
+<pre class="code extensibella"id="155">
  &lt; <b>apply less_integer_lesseq to L.</b>
 
 Subgoal 1.2.2:
@@ -2367,7 +2431,7 @@ H1 : Low &lt;= X
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="153">
+<pre class="code extensibella"id="156">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -2381,7 +2445,7 @@ Hyp4 : Low &gt; High
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="154">
+<pre class="code extensibella"id="157">
  &lt; <b>case Hyp3.</b>
 
 Subgoal 3:
@@ -2394,26 +2458,26 @@ Hyp3 : sat_clause Sat C'
 ============================
  sat_clause Sat (noteClause Note C')
 </pre>
-<pre class="code extensibella"id="155">
+<pre class="code extensibella"id="158">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="156">
+<pre class="code extensibella"id="159">
  &lt; <b>Theorem negs_total :
      forall L, is_list is_integer L -&gt; exists N, negs L N.</b>
 
 ============================
  forall L, is_list is_integer L -&gt; exists N, negs L N
 </pre>
-<pre class="code extensibella"id="157">
+<pre class="code extensibella"id="160">
  &lt; <b>induction on 1.</b>
 
 IH : forall L, is_list is_integer L * -&gt; exists N, negs L N
 ============================
  forall L, is_list is_integer L @ -&gt; exists N, negs L N
 </pre>
-<pre class="code extensibella"id="158">
+<pre class="code extensibella"id="161">
  &lt; <b>intros IsL.</b>
 
 Variables: L
@@ -2422,7 +2486,7 @@ IsL : is_list is_integer L @
 ============================
  exists N, negs L N
 </pre>
-<pre class="code extensibella"id="159">
+<pre class="code extensibella"id="162">
  &lt; <b>IsL: case IsL.</b>
 
 Subgoal 1:
@@ -2431,7 +2495,7 @@ IH : forall L, is_list is_integer L * -&gt; exists N, negs L N
 ============================
  exists N, negs [] N
 </pre>
-<pre class="code extensibella"id="160">
+<pre class="code extensibella"id="163">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -2443,7 +2507,7 @@ IsL1 : is_list is_integer T *
 ============================
  exists N, negs (H::T) N
 </pre>
-<pre class="code extensibella"id="161">
+<pre class="code extensibella"id="164">
  &lt; <b>apply IH to IsL1.</b>
 
 Subgoal 2:
@@ -2456,26 +2520,26 @@ H1 : negs T N
 ============================
  exists N, negs (H::T) N
 </pre>
-<pre class="code extensibella"id="162">
+<pre class="code extensibella"id="165">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="163">
+<pre class="code extensibella"id="166">
  &lt; <b>Theorem negs_mem :
      forall L N X, mem X L -&gt; negs L N -&gt; mem (neg X) N.</b>
 
 ============================
  forall L N X, mem X L -&gt; negs L N -&gt; mem (neg X) N
 </pre>
-<pre class="code extensibella"id="164">
+<pre class="code extensibella"id="167">
  &lt; <b>induction on 1.</b>
 
 IH : forall L N X, mem X L * -&gt; negs L N -&gt; mem (neg X) N
 ============================
  forall L N X, mem X L @ -&gt; negs L N -&gt; mem (neg X) N
 </pre>
-<pre class="code extensibella"id="165">
+<pre class="code extensibella"id="168">
  &lt; <b>intros Mem Negs.</b>
 
 Variables: L N X
@@ -2485,7 +2549,7 @@ Negs : negs L N
 ============================
  mem (neg X) N
 </pre>
-<pre class="code extensibella"id="166">
+<pre class="code extensibella"id="169">
  &lt; <b>Mem: case Mem.</b>
 
 Subgoal 1:
@@ -2496,7 +2560,7 @@ Negs : negs (X::Rest) N
 ============================
  mem (neg X) N
 </pre>
-<pre class="code extensibella"id="167">
+<pre class="code extensibella"id="170">
  &lt; <b>case Negs.</b>
 
 Subgoal 1:
@@ -2507,7 +2571,7 @@ H1 : negs Rest LRest
 ============================
  mem (neg X) ((neg X)::LRest)
 </pre>
-<pre class="code extensibella"id="168">
+<pre class="code extensibella"id="171">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -2519,7 +2583,7 @@ Mem : mem X Rest *
 ============================
  mem (neg X) N
 </pre>
-<pre class="code extensibella"id="169">
+<pre class="code extensibella"id="172">
  &lt; <b>Negs: case Negs.</b>
 
 Subgoal 2:
@@ -2531,7 +2595,7 @@ Negs : negs Rest LRest
 ============================
  mem (neg X) ((neg I)::LRest)
 </pre>
-<pre class="code extensibella"id="170">
+<pre class="code extensibella"id="173">
  &lt; <b>apply IH to Mem Negs.</b>
 
 Subgoal 2:
@@ -2544,12 +2608,12 @@ H1 : mem (neg X) LRest
 ============================
  mem (neg X) ((neg I)::LRest)
 </pre>
-<pre class="code extensibella"id="171">
+<pre class="code extensibella"id="174">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="172">
+<pre class="code extensibella"id="175">
  &lt; <b>Theorem negs_subset :
      forall LA LB NA NB,
        subset LA LB -&gt; negs LA NA -&gt; negs LB NB -&gt; subset NA NB.</b>
@@ -2557,7 +2621,7 @@ Proof completed.
 ============================
  forall LA LB NA NB, subset LA LB -&gt; negs LA NA -&gt; negs LB NB -&gt; subset NA NB
 </pre>
-<pre class="code extensibella"id="173">
+<pre class="code extensibella"id="176">
  &lt; <b>induction on 1.</b>
 
 IH : forall LA LB NA NB,
@@ -2565,7 +2629,7 @@ IH : forall LA LB NA NB,
 ============================
  forall LA LB NA NB, subset LA LB @ -&gt; negs LA NA -&gt; negs LB NB -&gt; subset NA NB
 </pre>
-<pre class="code extensibella"id="174">
+<pre class="code extensibella"id="177">
  &lt; <b>intros S NA NB.</b>
 
 Variables: LA LB NA NB
@@ -2577,7 +2641,7 @@ NB : negs LB NB
 ============================
  subset NA NB
 </pre>
-<pre class="code extensibella"id="175">
+<pre class="code extensibella"id="178">
  &lt; <b>S: case S.</b>
 
 Subgoal 1:
@@ -2590,7 +2654,7 @@ NB : negs LB NB
 ============================
  subset NA NB
 </pre>
-<pre class="code extensibella"id="176">
+<pre class="code extensibella"id="179">
  &lt; <b>case NA.</b>
 
 Subgoal 1:
@@ -2602,7 +2666,7 @@ NB : negs LB NB
 ============================
  subset [] NB
 </pre>
-<pre class="code extensibella"id="177">
+<pre class="code extensibella"id="180">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -2617,7 +2681,7 @@ S1 : subset Rest LB *
 ============================
  subset NA NB
 </pre>
-<pre class="code extensibella"id="178">
+<pre class="code extensibella"id="181">
  &lt; <b>NA: case NA.</b>
 
 Subgoal 2:
@@ -2632,7 +2696,7 @@ NA : negs Rest LRest
 ============================
  subset ((neg X)::LRest) NB
 </pre>
-<pre class="code extensibella"id="179">
+<pre class="code extensibella"id="182">
  &lt; <b>apply IH to S1 NA NB.</b>
 
 Subgoal 2:
@@ -2648,7 +2712,7 @@ H1 : subset LRest NB
 ============================
  subset ((neg X)::LRest) NB
 </pre>
-<pre class="code extensibella"id="180">
+<pre class="code extensibella"id="183">
  &lt; <b>apply negs_mem to S NB.</b>
 
 Subgoal 2:
@@ -2665,12 +2729,12 @@ H2 : mem (neg X) NB
 ============================
  subset ((neg X)::LRest) NB
 </pre>
-<pre class="code extensibella"id="181">
+<pre class="code extensibella"id="184">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="182">
+<pre class="code extensibella"id="185">
  &lt; <b>Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_trans.</b>
 
 Subgoal 1:
@@ -2685,7 +2749,7 @@ Hyp5 : 1 + Low = PlusOne
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="183">
+<pre class="code extensibella"id="186">
  &lt; <b>Is: case Hyp2.</b>
 
 Subgoal 1:
@@ -2701,7 +2765,7 @@ Is1 : is_integer High
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="184">
+<pre class="code extensibella"id="187">
  &lt; <b>IsPlusOne: apply plus_integer_is_integer to _ _ Hyp5.</b>
 
 Subgoal 1:
@@ -2718,7 +2782,7 @@ IsPlusOne : is_integer PlusOne
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="185">
+<pre class="code extensibella"id="188">
  &lt; <b>Unsat: case Hyp3.</b>
 
 Subgoal 1:
@@ -2737,7 +2801,7 @@ Unsat2 : subset N Unsat
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="186">
+<pre class="code extensibella"id="189">
  &lt; <b>L: apply lt_plus_one to Hyp5 _.</b>
 
 Subgoal 1:
@@ -2757,7 +2821,7 @@ L : Low &lt; PlusOne
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="187">
+<pre class="code extensibella"id="190">
  &lt; <b>R: apply range_smaller_exists to _ _ Unsat L.</b>
 
 Subgoal 1:
@@ -2778,7 +2842,7 @@ R : range PlusOne High R'
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="188">
+<pre class="code extensibella"id="191">
  &lt; <b>SRR': apply range_subset to _ _ Unsat R _.</b>
 
 Subgoal 1:
@@ -2800,7 +2864,7 @@ SRR' : subset R' R
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="189">
+<pre class="code extensibella"id="192">
  &lt; <b>IsPlusOne: apply plus_integer_is_integer to _ _ Hyp5.</b>
 
 Subgoal 1:
@@ -2823,7 +2887,7 @@ IsPlusOne1 : is_integer PlusOne
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="190">
+<pre class="code extensibella"id="193">
  &lt; <b>IsR': apply range_is to _ R.</b>
 
 Subgoal 1:
@@ -2847,7 +2911,7 @@ IsR' : is_list is_integer R'
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="191">
+<pre class="code extensibella"id="194">
  &lt; <b>N: apply negs_total to IsR'.</b>
 
 Subgoal 1:
@@ -2872,7 +2936,7 @@ N : negs R' N1
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="192">
+<pre class="code extensibella"id="195">
  &lt; <b>S': apply negs_subset to SRR' N Unsat1.</b>
 
 Subgoal 1:
@@ -2898,7 +2962,7 @@ S' : subset N1 N
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="193">
+<pre class="code extensibella"id="196">
  &lt; <b>Mem: assert mem Low R.</b>
 
 Subgoal 1.1:
@@ -2924,7 +2988,7 @@ S' : subset N1 N
 ============================
  mem Low R
 </pre>
-<pre class="code extensibella"id="194">
+<pre class="code extensibella"id="197">
  &lt; <b>case Unsat.</b>
 
 Subgoal 1.1.1:
@@ -2950,7 +3014,7 @@ H1 : Low &gt; High
 ============================
  mem Low []
 </pre>
-<pre class="code extensibella"id="195">
+<pre class="code extensibella"id="198">
  &lt; <b>apply greater_lesseq_integer_false to _ Hyp4.</b>
 
 Subgoal 1.1.2:
@@ -2978,7 +3042,7 @@ H3 : range PlusOne1 High Rest
 ============================
  mem Low (Low::Rest)
 </pre>
-<pre class="code extensibella"id="196">
+<pre class="code extensibella"id="199">
  &lt; <b>search.</b>
 
 Subgoal 1:
@@ -3005,7 +3069,7 @@ Mem : mem Low R
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="197">
+<pre class="code extensibella"id="200">
  &lt; <b>MemN: apply negs_mem to Mem Unsat1.</b>
 
 Subgoal 1:
@@ -3033,7 +3097,7 @@ MemN : mem (neg Low) N
 ============================
  unsat_clause Unsat (or (pos Low) (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="198">
+<pre class="code extensibella"id="201">
  &lt; <b>unfold .</b>
 
 Subgoal 1:
@@ -3063,7 +3127,7 @@ MemN : mem (neg Low) N
    negate_lit (pos Low) NL /\
    (mem NL Unsat /\ unsat_clause Unsat (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="199">
+<pre class="code extensibella"id="202">
  &lt; <b>exists neg Low.</b>
 
 Subgoal 1:
@@ -3092,7 +3156,7 @@ MemN : mem (neg Low) N
  negate_lit (pos Low) (neg Low) /\
  (mem (neg Low) Unsat /\ unsat_clause Unsat (rangeClause PlusOne High))
 </pre>
-<pre class="code extensibella"id="200">
+<pre class="code extensibella"id="203">
  &lt; <b>split.</b>
 
 Subgoal 1.2:
@@ -3120,7 +3184,7 @@ MemN : mem (neg Low) N
 ============================
  negate_lit (pos Low) (neg Low)
 </pre>
-<pre class="code extensibella"id="201">
+<pre class="code extensibella"id="204">
  &lt; <b>search.</b>
 
 Subgoal 1.3:
@@ -3148,7 +3212,7 @@ MemN : mem (neg Low) N
 ============================
  mem (neg Low) Unsat
 </pre>
-<pre class="code extensibella"id="202">
+<pre class="code extensibella"id="205">
  &lt; <b>apply subset_mem to Unsat2 MemN.</b>
 
 Subgoal 1.3:
@@ -3177,7 +3241,7 @@ H1 : mem (neg Low) Unsat
 ============================
  mem (neg Low) Unsat
 </pre>
-<pre class="code extensibella"id="203">
+<pre class="code extensibella"id="206">
  &lt; <b>search.</b>
 
 Subgoal 1.4:
@@ -3205,7 +3269,7 @@ MemN : mem (neg Low) N
 ============================
  unsat_clause Unsat (rangeClause PlusOne High)
 </pre>
-<pre class="code extensibella"id="204">
+<pre class="code extensibella"id="207">
  &lt; <b>unfold .</b>
 
 Subgoal 1.4:
@@ -3233,7 +3297,7 @@ MemN : mem (neg Low) N
 ============================
  exists R N, range PlusOne High R /\ (negs R N /\ subset N Unsat)
 </pre>
-<pre class="code extensibella"id="205">
+<pre class="code extensibella"id="208">
  &lt; <b>exists R',
    N1.</b>
 
@@ -3262,7 +3326,7 @@ MemN : mem (neg Low) N
 ============================
  range PlusOne High R' /\ (negs R' N1 /\ subset N1 Unsat)
 </pre>
-<pre class="code extensibella"id="206">
+<pre class="code extensibella"id="209">
  &lt; <b>split.</b>
 
 Subgoal 1.4.1:
@@ -3290,7 +3354,7 @@ MemN : mem (neg Low) N
 ============================
  range PlusOne High R'
 </pre>
-<pre class="code extensibella"id="207">
+<pre class="code extensibella"id="210">
  &lt; <b>search.</b>
 
 Subgoal 1.4.2:
@@ -3318,7 +3382,7 @@ MemN : mem (neg Low) N
 ============================
  negs R' N1
 </pre>
-<pre class="code extensibella"id="208">
+<pre class="code extensibella"id="211">
  &lt; <b>search.</b>
 
 Subgoal 1.4.3:
@@ -3346,7 +3410,7 @@ MemN : mem (neg Low) N
 ============================
  subset N1 Unsat
 </pre>
-<pre class="code extensibella"id="209">
+<pre class="code extensibella"id="212">
  &lt; <b>apply subset_trans to S' Unsat2.</b>
 
 Subgoal 1.4.3:
@@ -3375,7 +3439,7 @@ H1 : subset N1 Unsat
 ============================
  subset N1 Unsat
 </pre>
-<pre class="code extensibella"id="210">
+<pre class="code extensibella"id="213">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -3389,7 +3453,7 @@ Hyp4 : Low &gt; High
 ============================
  unsat_clause Unsat emptyClause
 </pre>
-<pre class="code extensibella"id="211">
+<pre class="code extensibella"id="214">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -3402,7 +3466,7 @@ Hyp3 : unsat_clause Unsat (noteClause Note C')
 ============================
  unsat_clause Unsat C'
 </pre>
-<pre class="code extensibella"id="212">
+<pre class="code extensibella"id="215">
  &lt; <b>case Hyp3.</b>
 
 Subgoal 3:
@@ -3415,12 +3479,12 @@ H1 : unsat_clause Unsat C'
 ============================
  unsat_clause Unsat C'
 </pre>
-<pre class="code extensibella"id="213">
+<pre class="code extensibella"id="216">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="214">
+<pre class="code extensibella"id="217">
  &lt; <b>Prove_Constraint unsat_proofs:lrat:unsat_clause_trans_to_ext.</b>
 
 Subgoal 1:
@@ -3435,7 +3499,7 @@ Hyp5 : 1 + Low = PlusOne
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="215">
+<pre class="code extensibella"id="218">
  &lt; <b>Unsat: case Hyp3.</b>
 
 Subgoal 1:
@@ -3452,7 +3516,7 @@ Unsat2 : unsat_clause Unsat (rangeClause PlusOne High)
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="216">
+<pre class="code extensibella"id="219">
  &lt; <b>Is: case Hyp2.</b>
 
 Subgoal 1:
@@ -3470,7 +3534,7 @@ Is1 : is_integer High
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="217">
+<pre class="code extensibella"id="220">
  &lt; <b>US: case Unsat2.</b>
 
 Subgoal 1:
@@ -3490,7 +3554,7 @@ US2 : subset N Unsat
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="218">
+<pre class="code extensibella"id="221">
  &lt; <b>R: assert range Low High (Low::R).</b>
 
 Subgoal 1:
@@ -3511,7 +3575,7 @@ R : range Low High (Low::R)
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="219">
+<pre class="code extensibella"id="222">
  &lt; <b>N: assert negs (Low::R) ((neg Low)::N).</b>
 
 Subgoal 1:
@@ -3533,7 +3597,7 @@ N : negs (Low::R) ((neg Low)::N)
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="220">
+<pre class="code extensibella"id="223">
  &lt; <b>case Unsat.</b>
 
 Subgoal 1:
@@ -3554,7 +3618,7 @@ N : negs (Low::R) ((neg Low)::N)
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="221">
+<pre class="code extensibella"id="224">
  &lt; <b>assert subset ((neg Low)::N) Unsat.</b>
 
 Subgoal 1:
@@ -3576,7 +3640,7 @@ H1 : subset ((neg Low)::N) Unsat
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="222">
+<pre class="code extensibella"id="225">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -3590,7 +3654,7 @@ Hyp4 : Low &gt; High
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="223">
+<pre class="code extensibella"id="226">
  &lt; <b>R: assert range Low High [].</b>
 
 Subgoal 2:
@@ -3605,7 +3669,7 @@ R : range Low High []
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="224">
+<pre class="code extensibella"id="227">
  &lt; <b>assert negs [] [].</b>
 
 Subgoal 2:
@@ -3621,7 +3685,7 @@ H1 : negs [] []
 ============================
  unsat_clause Unsat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="225">
+<pre class="code extensibella"id="228">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -3634,36 +3698,36 @@ Hyp3 : unsat_clause Unsat C'
 ============================
  unsat_clause Unsat (noteClause Note C')
 </pre>
-<pre class="code extensibella"id="226">
+<pre class="code extensibella"id="229">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="227">
+<pre class="code extensibella"id="230">
  &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_trans.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="228">
+<pre class="code extensibella"id="231">
  &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_formula_trans_to_ext.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="229">
+<pre class="code extensibella"id="232">
  &lt; <b>Theorem negs_form :
      forall L N X, negs L N -&gt; mem X N -&gt; exists I, X = neg I.</b>
 
 ============================
  forall L N X, negs L N -&gt; mem X N -&gt; exists I, X = neg I
 </pre>
-<pre class="code extensibella"id="230">
+<pre class="code extensibella"id="233">
  &lt; <b>induction on 2.</b>
 
 IH : forall L N X, negs L N -&gt; mem X N * -&gt; exists I, X = neg I
 ============================
  forall L N X, negs L N -&gt; mem X N @ -&gt; exists I, X = neg I
 </pre>
-<pre class="code extensibella"id="231">
+<pre class="code extensibella"id="234">
  &lt; <b>intros N M.</b>
 
 Variables: L N X
@@ -3673,7 +3737,7 @@ M : mem X N @
 ============================
  exists I, X = neg I
 </pre>
-<pre class="code extensibella"id="232">
+<pre class="code extensibella"id="235">
  &lt; <b>M: case M.</b>
 
 Subgoal 1:
@@ -3684,7 +3748,7 @@ N : negs L (X::Rest)
 ============================
  exists I, X = neg I
 </pre>
-<pre class="code extensibella"id="233">
+<pre class="code extensibella"id="236">
  &lt; <b>case N.</b>
 
 Subgoal 1:
@@ -3695,7 +3759,7 @@ H1 : negs Rest1 Rest
 ============================
  exists I1, neg I = neg I1
 </pre>
-<pre class="code extensibella"id="234">
+<pre class="code extensibella"id="237">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -3707,7 +3771,7 @@ M : mem X Rest *
 ============================
  exists I, X = neg I
 </pre>
-<pre class="code extensibella"id="235">
+<pre class="code extensibella"id="238">
  &lt; <b>N: case N.</b>
 
 Subgoal 2:
@@ -3719,7 +3783,7 @@ N : negs Rest1 Rest
 ============================
  exists I, X = neg I
 </pre>
-<pre class="code extensibella"id="236">
+<pre class="code extensibella"id="239">
  &lt; <b>apply IH to _ M.</b>
 
 Subgoal 2:
@@ -3731,12 +3795,12 @@ N : negs Rest1 Rest
 ============================
  exists I, neg I2 = neg I
 </pre>
-<pre class="code extensibella"id="237">
+<pre class="code extensibella"id="240">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="238">
+<pre class="code extensibella"id="241">
  &lt; <b>Prove unsat_proofs:lrat:unsat_sat_clause.</b>
 
 Subgoal 1:
@@ -3756,7 +3820,7 @@ UNSAT3 : subset N A
 ============================
  false
 </pre>
-<pre class="code extensibella"id="239">
+<pre class="code extensibella"id="242">
  &lt; <b>SAT: case SAT.</b>
 
 Subgoal 1:
@@ -3778,7 +3842,7 @@ SAT2 : mem (pos X) A
 ============================
  false
 </pre>
-<pre class="code extensibella"id="240">
+<pre class="code extensibella"id="243">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 1:
@@ -3801,7 +3865,7 @@ Is1 : is_integer High
 ============================
  false
 </pre>
-<pre class="code extensibella"id="241">
+<pre class="code extensibella"id="244">
  &lt; <b>IsR: apply range_is to _ UNSAT1.</b>
 
 Subgoal 1:
@@ -3825,7 +3889,7 @@ IsR : is_list is_integer R
 ============================
  false
 </pre>
-<pre class="code extensibella"id="242">
+<pre class="code extensibella"id="245">
  &lt; <b>IsX: apply between_integers_is_integer to _ _ SAT SAT1.</b>
 
 Subgoal 1:
@@ -3850,7 +3914,7 @@ IsX : is_integer X
 ============================
  false
 </pre>
-<pre class="code extensibella"id="243">
+<pre class="code extensibella"id="246">
  &lt; <b>M: apply in_range to _ _ UNSAT1 SAT SAT1.</b>
 
 Subgoal 1:
@@ -3876,7 +3940,7 @@ M : mem X R
 ============================
  false
 </pre>
-<pre class="code extensibella"id="244">
+<pre class="code extensibella"id="247">
  &lt; <b>M': apply negs_mem to M UNSAT2.</b>
 
 Subgoal 1:
@@ -3903,7 +3967,7 @@ M' : mem (neg X) N
 ============================
  false
 </pre>
-<pre class="code extensibella"id="245">
+<pre class="code extensibella"id="248">
  &lt; <b>M3: apply subset_mem to UNSAT3 M'.</b>
 
 Subgoal 1:
@@ -3931,7 +3995,7 @@ M3 : mem (neg X) A
 ============================
  false
 </pre>
-<pre class="code extensibella"id="246">
+<pre class="code extensibella"id="249">
  &lt; <b>GA: case GA.</b>
 
 Subgoal 1:
@@ -3959,7 +4023,7 @@ GA : forall L NL, mem L A -&gt; negate_lit L NL -&gt; mem NL A -&gt; false
 ============================
  false
 </pre>
-<pre class="code extensibella"id="247">
+<pre class="code extensibella"id="250">
  &lt; <b>apply GA to SAT2 _ M3.</b>
 
 Subgoal 2:
@@ -3977,7 +4041,7 @@ UNSAT1 : unsat_clause A Clause *
 ============================
  false
 </pre>
-<pre class="code extensibella"id="248">
+<pre class="code extensibella"id="251">
  &lt; <b>SAT: case SAT.</b>
 
 Subgoal 2:
@@ -3995,7 +4059,7 @@ SAT : sat_clause A Clause
 ============================
  false
 </pre>
-<pre class="code extensibella"id="249">
+<pre class="code extensibella"id="252">
  &lt; <b>case IsC.</b>
 
 Subgoal 2:
@@ -4014,12 +4078,12 @@ H2 : is_clause Clause
 ============================
  false
 </pre>
-<pre class="code extensibella"id="250">
+<pre class="code extensibella"id="253">
  &lt; <b>apply IH to _ _ UNSAT1 SAT GA.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="251">
+<pre class="code extensibella"id="254">
  &lt; <b>Prove unsat_proofs:lrat:sat_clause_orderless.</b>
 
 Subgoal 1:
@@ -4039,7 +4103,7 @@ SAT3 : mem (pos X) A1
 ============================
  sat_clause A2 (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="252">
+<pre class="code extensibella"id="255">
  &lt; <b>apply MemA1A2 to SAT3.</b>
 
 Subgoal 1:
@@ -4060,7 +4124,7 @@ H1 : mem (pos X) A2
 ============================
  sat_clause A2 (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="253">
+<pre class="code extensibella"id="256">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -4078,7 +4142,7 @@ SAT1 : sat_clause A1 Clause *
 ============================
  sat_clause A2 (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="254">
+<pre class="code extensibella"id="257">
  &lt; <b>case IsC.</b>
 
 Subgoal 2:
@@ -4097,7 +4161,7 @@ H2 : is_clause Clause
 ============================
  sat_clause A2 (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="255">
+<pre class="code extensibella"id="258">
  &lt; <b>apply IH to _ _ _ SAT1 MemA1A2.</b>
 
 Subgoal 2:
@@ -4117,17 +4181,17 @@ H3 : sat_clause A2 Clause
 ============================
  sat_clause A2 (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="256">
+<pre class="code extensibella"id="259">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="257">
+<pre class="code extensibella"id="260">
  &lt; <b>Prove unsat_proofs:lrat:sat_formula_orderless.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="258">
+<pre class="code extensibella"id="261">
  &lt; <b>Theorem mems_subset :
      forall Sub Sup,
        is_list is_lit Sub -&gt; (forall X, mem X Sub -&gt; mem X Sup) -&gt; subset Sub Sup.</b>
@@ -4136,7 +4200,7 @@ Proof completed.
  forall Sub Sup,
    is_list is_lit Sub -&gt; (forall X, mem X Sub -&gt; mem X Sup) -&gt; subset Sub Sup
 </pre>
-<pre class="code extensibella"id="259">
+<pre class="code extensibella"id="262">
  &lt; <b>induction on 1.</b>
 
 IH : forall Sub Sup,
@@ -4145,7 +4209,7 @@ IH : forall Sub Sup,
  forall Sub Sup,
    is_list is_lit Sub @ -&gt; (forall X, mem X Sub -&gt; mem X Sup) -&gt; subset Sub Sup
 </pre>
-<pre class="code extensibella"id="260">
+<pre class="code extensibella"id="263">
  &lt; <b>intros Is Mems.</b>
 
 Variables: Sub Sup
@@ -4156,7 +4220,7 @@ Mems : forall X, mem X Sub -&gt; mem X Sup
 ============================
  subset Sub Sup
 </pre>
-<pre class="code extensibella"id="261">
+<pre class="code extensibella"id="264">
  &lt; <b>Is: case Is.</b>
 
 Subgoal 1:
@@ -4168,7 +4232,7 @@ Mems : forall X, mem X [] -&gt; mem X Sup
 ============================
  subset [] Sup
 </pre>
-<pre class="code extensibella"id="262">
+<pre class="code extensibella"id="265">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -4182,7 +4246,7 @@ Is1 : is_list is_lit T *
 ============================
  subset (H::T) Sup
 </pre>
-<pre class="code extensibella"id="263">
+<pre class="code extensibella"id="266">
  &lt; <b>Mems': assert forall X,
      mem X T -&gt; mem X Sup.</b>
 
@@ -4197,7 +4261,7 @@ Is1 : is_list is_lit T *
 ============================
  forall X, mem X T -&gt; mem X Sup
 </pre>
-<pre class="code extensibella"id="264">
+<pre class="code extensibella"id="267">
  &lt; <b>intros M.</b>
 
 Subgoal 2.1:
@@ -4212,7 +4276,7 @@ M : mem X T
 ============================
  mem X Sup
 </pre>
-<pre class="code extensibella"id="265">
+<pre class="code extensibella"id="268">
  &lt; <b>apply Mems to _ with
      X = X.</b>
 
@@ -4229,7 +4293,7 @@ H1 : mem X Sup
 ============================
  mem X Sup
 </pre>
-<pre class="code extensibella"id="266">
+<pre class="code extensibella"id="269">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -4244,7 +4308,7 @@ Mems' : forall X, mem X T -&gt; mem X Sup
 ============================
  subset (H::T) Sup
 </pre>
-<pre class="code extensibella"id="267">
+<pre class="code extensibella"id="270">
  &lt; <b>M: apply Mems to _ with
         X = H.</b>
 
@@ -4261,7 +4325,7 @@ M : mem H Sup
 ============================
  subset (H::T) Sup
 </pre>
-<pre class="code extensibella"id="268">
+<pre class="code extensibella"id="271">
  &lt; <b>apply IH to Is1 Mems'.</b>
 
 Subgoal 2:
@@ -4278,12 +4342,12 @@ H1 : subset T Sup
 ============================
  subset (H::T) Sup
 </pre>
-<pre class="code extensibella"id="269">
+<pre class="code extensibella"id="272">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="270">
+<pre class="code extensibella"id="273">
  &lt; <b>Theorem mems_subset2  [A] :
      forall (Sup1 : list A) (Sup2 : list A) (Sub : list A),
        subset Sub Sup1 -&gt; (forall X, mem X Sup1 -&gt; mem X Sup2) -&gt; subset Sub Sup2.</b>
@@ -4292,7 +4356,7 @@ Proof completed.
  forall Sup1 Sup2 Sub,
    subset Sub Sup1 -&gt; (forall X, mem X Sup1 -&gt; mem X Sup2) -&gt; subset Sub Sup2
 </pre>
-<pre class="code extensibella"id="271">
+<pre class="code extensibella"id="274">
  &lt; <b>induction on 1.</b>
 
 IH : forall Sup1 Sup2 Sub,
@@ -4301,7 +4365,7 @@ IH : forall Sup1 Sup2 Sub,
  forall Sup1 Sup2 Sub,
    subset Sub Sup1 @ -&gt; (forall X, mem X Sup1 -&gt; mem X Sup2) -&gt; subset Sub Sup2
 </pre>
-<pre class="code extensibella"id="272">
+<pre class="code extensibella"id="275">
  &lt; <b>intros S Mems.</b>
 
 Variables: Sup1 Sup2 Sub
@@ -4312,7 +4376,7 @@ Mems : forall X, mem X Sup1 -&gt; mem X Sup2
 ============================
  subset Sub Sup2
 </pre>
-<pre class="code extensibella"id="273">
+<pre class="code extensibella"id="276">
  &lt; <b>S: case S.</b>
 
 Subgoal 1:
@@ -4324,7 +4388,7 @@ Mems : forall X, mem X Sup1 -&gt; mem X Sup2
 ============================
  subset [] Sup2
 </pre>
-<pre class="code extensibella"id="274">
+<pre class="code extensibella"id="277">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -4338,7 +4402,7 @@ S1 : subset Rest Sup1 *
 ============================
  subset (X::Rest) Sup2
 </pre>
-<pre class="code extensibella"id="275">
+<pre class="code extensibella"id="278">
  &lt; <b>apply Mems to S.</b>
 
 Subgoal 2:
@@ -4353,7 +4417,7 @@ H1 : mem X Sup2
 ============================
  subset (X::Rest) Sup2
 </pre>
-<pre class="code extensibella"id="276">
+<pre class="code extensibella"id="279">
  &lt; <b>apply IH to S1 _.</b>
 
 Subgoal 2:
@@ -4369,12 +4433,12 @@ H2 : subset Rest Sup2
 ============================
  subset (X::Rest) Sup2
 </pre>
-<pre class="code extensibella"id="277">
+<pre class="code extensibella"id="280">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="278">
+<pre class="code extensibella"id="281">
  &lt; <b>Prove unsat_proofs:lrat:unsat_clause_orderless.</b>
 
 Subgoal 1:
@@ -4394,7 +4458,7 @@ UNSAT3 : subset N A1
 ============================
  unsat_clause A2 (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="279">
+<pre class="code extensibella"id="282">
  &lt; <b>apply mems_subset2 to UNSAT3 MemA1A2.</b>
 
 Subgoal 1:
@@ -4415,7 +4479,7 @@ H1 : subset N A2
 ============================
  unsat_clause A2 (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="280">
+<pre class="code extensibella"id="283">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -4433,7 +4497,7 @@ UNSAT1 : unsat_clause A1 Clause *
 ============================
  unsat_clause A2 (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="281">
+<pre class="code extensibella"id="284">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 2:
@@ -4452,7 +4516,7 @@ Is1 : is_clause Clause
 ============================
  unsat_clause A2 (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="282">
+<pre class="code extensibella"id="285">
  &lt; <b>apply IH to _ _ _ UNSAT1 MemA1A2.</b>
 
 Subgoal 2:
@@ -4472,12 +4536,12 @@ H1 : unsat_clause A2 Clause
 ============================
  unsat_clause A2 (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="283">
+<pre class="code extensibella"id="286">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="284">
+<pre class="code extensibella"id="287">
  &lt; <b>Prove unsat_proofs:lrat:unit_clause_is.</b>
 
 Subgoal 1:
@@ -4497,7 +4561,7 @@ Unit6 : subset N A
 ============================
  is_lit (pos I)
 </pre>
-<pre class="code extensibella"id="285">
+<pre class="code extensibella"id="288">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 1:
@@ -4518,7 +4582,7 @@ Is1 : is_integer High
 ============================
  is_lit (pos I)
 </pre>
-<pre class="code extensibella"id="286">
+<pre class="code extensibella"id="289">
  &lt; <b>IsRange: apply range_is to _ Unit1.</b>
 
 Subgoal 1:
@@ -4540,7 +4604,7 @@ IsRange : is_list is_integer Range
 ============================
  is_lit (pos I)
 </pre>
-<pre class="code extensibella"id="287">
+<pre class="code extensibella"id="290">
  &lt; <b>Mem: apply select_mem to Unit2.</b>
 
 Subgoal 1:
@@ -4563,7 +4627,7 @@ Mem : mem I Range
 ============================
  is_lit (pos I)
 </pre>
-<pre class="code extensibella"id="288">
+<pre class="code extensibella"id="291">
  &lt; <b>apply is_list_int_mem to _ Mem.</b>
 
 Subgoal 1:
@@ -4587,7 +4651,7 @@ H1 : is_integer I
 ============================
  is_lit (pos I)
 </pre>
-<pre class="code extensibella"id="289">
+<pre class="code extensibella"id="292">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -4602,7 +4666,7 @@ Unit1 : unit_clause A Clause L *
 ============================
  is_lit L
 </pre>
-<pre class="code extensibella"id="290">
+<pre class="code extensibella"id="293">
  &lt; <b>case IsC.</b>
 
 Subgoal 2:
@@ -4618,7 +4682,7 @@ H2 : is_clause Clause
 ============================
  is_lit L
 </pre>
-<pre class="code extensibella"id="291">
+<pre class="code extensibella"id="294">
  &lt; <b>apply IH to _ _ Unit1.</b>
 
 Subgoal 2:
@@ -4635,12 +4699,12 @@ H3 : is_lit L
 ============================
  is_lit L
 </pre>
-<pre class="code extensibella"id="292">
+<pre class="code extensibella"id="295">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="293">
+<pre class="code extensibella"id="296">
  &lt; <b>Prove unsat_proofs:lrat:unit_clause_unique.</b>
 
 Subgoal 1:
@@ -4664,7 +4728,7 @@ UnitA6 : subset N A
 ============================
  pos I = LB
 </pre>
-<pre class="code extensibella"id="294">
+<pre class="code extensibella"id="297">
  &lt; <b>UnitB: case UnitB.</b>
 
 Subgoal 1:
@@ -4693,7 +4757,7 @@ UnitB5 : subset N1 B
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="295">
+<pre class="code extensibella"id="298">
  &lt; <b>apply range_unique to UnitB UnitA1.</b>
 
 Subgoal 1:
@@ -4722,7 +4786,7 @@ UnitB5 : subset N1 B
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="296">
+<pre class="code extensibella"id="299">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 1:
@@ -4752,7 +4816,7 @@ Is1 : is_integer High
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="297">
+<pre class="code extensibella"id="300">
  &lt; <b>IsRange: apply range_is to _ UnitB.</b>
 
 Subgoal 1:
@@ -4783,7 +4847,7 @@ IsRange : is_list is_integer Range
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="298">
+<pre class="code extensibella"id="301">
  &lt; <b>MA: apply select_mem to UnitA2.</b>
 
 Subgoal 1:
@@ -4815,7 +4879,7 @@ MA : mem I Range
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="299">
+<pre class="code extensibella"id="302">
  &lt; <b>MB: apply select_mem to UnitB1.</b>
 
 Subgoal 1:
@@ -4848,7 +4912,7 @@ MB : mem I1 Range
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="300">
+<pre class="code extensibella"id="303">
  &lt; <b>IsI: apply is_list_int_mem to _ MA.</b>
 
 Subgoal 1:
@@ -4882,7 +4946,7 @@ IsI : is_integer I
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="301">
+<pre class="code extensibella"id="304">
  &lt; <b>IsI1: apply is_list_int_mem to _ MB.</b>
 
 Subgoal 1:
@@ -4917,7 +4981,7 @@ IsI1 : is_integer I1
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="302">
+<pre class="code extensibella"id="305">
  &lt; <b>Or: apply is_integer_eq_or_not to IsI1 IsI.</b>
 
 Subgoal 1:
@@ -4953,7 +5017,7 @@ Or : I1 = I \/ (I1 = I -&gt; false)
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="303">
+<pre class="code extensibella"id="306">
  &lt; <b>E: case Or.</b>
 
 Subgoal 1.1:
@@ -4988,7 +5052,7 @@ IsI1 : is_integer I
 ============================
  pos I = pos I
 </pre>
-<pre class="code extensibella"id="304">
+<pre class="code extensibella"id="307">
  &lt; <b>search.</b>
 
 Subgoal 1.2:
@@ -5024,7 +5088,7 @@ E : I1 = I -&gt; false
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="305">
+<pre class="code extensibella"id="308">
  &lt; <b>M: apply mem_before_select_after to UnitB1 _ E.</b>
 
 Subgoal 1.2:
@@ -5061,7 +5125,7 @@ M : mem I RangeRest1
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="306">
+<pre class="code extensibella"id="309">
  &lt; <b>MN: apply negs_mem to M UnitB4.</b>
 
 Subgoal 1.2:
@@ -5099,7 +5163,7 @@ MN : mem (neg I) N1
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="307">
+<pre class="code extensibella"id="310">
  &lt; <b>MB: apply subset_mem to UnitB5 MN.</b>
 
 Subgoal 1.2:
@@ -5138,7 +5202,7 @@ MB1 : mem (neg I) B
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="308">
+<pre class="code extensibella"id="311">
  &lt; <b>Prm': apply permutation_symmetric to Prm.</b>
 
 Subgoal 1.2:
@@ -5178,7 +5242,7 @@ Prm' : permutation B A
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="309">
+<pre class="code extensibella"id="312">
  &lt; <b>MA: apply permutation_mem to Prm' MB1.</b>
 
 Subgoal 1.2:
@@ -5219,7 +5283,7 @@ MA1 : mem (neg I) A
 ============================
  pos I = pos I1
 </pre>
-<pre class="code extensibella"id="310">
+<pre class="code extensibella"id="313">
  &lt; <b>apply UnitA4 to _.</b>
 
 Subgoal 2:
@@ -5238,7 +5302,7 @@ UnitA1 : unit_clause A Clause LA *
 ============================
  LA = LB
 </pre>
-<pre class="code extensibella"id="311">
+<pre class="code extensibella"id="314">
  &lt; <b>UnitB: case UnitB.</b>
 
 Subgoal 2:
@@ -5257,7 +5321,7 @@ UnitB : unit_clause B Clause LB
 ============================
  LA = LB
 </pre>
-<pre class="code extensibella"id="312">
+<pre class="code extensibella"id="315">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 2:
@@ -5277,7 +5341,7 @@ Is1 : is_clause Clause
 ============================
  LA = LB
 </pre>
-<pre class="code extensibella"id="313">
+<pre class="code extensibella"id="316">
  &lt; <b>apply IH to _ _ _ UnitA1 _ _.</b>
 
 Subgoal 2:
@@ -5297,12 +5361,12 @@ Is1 : is_clause Clause
 ============================
  LB = LB
 </pre>
-<pre class="code extensibella"id="314">
+<pre class="code extensibella"id="317">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="315">
+<pre class="code extensibella"id="318">
  &lt; <b>Prove unsat_proofs:lrat:unit_clause_not_assigned.</b>
 
 Subgoal 1:
@@ -5323,7 +5387,7 @@ UC6 : subset N A
 ============================
  false
 </pre>
-<pre class="code extensibella"id="316">
+<pre class="code extensibella"id="319">
  &lt; <b>backchain UC3.</b>
 
 Subgoal 2:
@@ -5339,7 +5403,7 @@ UC1 : unit_clause A Clause L *
 ============================
  false
 </pre>
-<pre class="code extensibella"id="317">
+<pre class="code extensibella"id="320">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 2:
@@ -5356,12 +5420,12 @@ Is1 : is_clause Clause
 ============================
  false
 </pre>
-<pre class="code extensibella"id="318">
+<pre class="code extensibella"id="321">
  &lt; <b>apply IH to _ _ UC1 _.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="319">
+<pre class="code extensibella"id="322">
  &lt; <b>Prove unsat_proofs:lrat:unit_clause_not_assigned_negate.</b>
 
 Subgoal 1:
@@ -5384,7 +5448,7 @@ UC6 : subset N A
 ============================
  false
 </pre>
-<pre class="code extensibella"id="320">
+<pre class="code extensibella"id="323">
  &lt; <b>case Neg.</b>
 
 Subgoal 1:
@@ -5406,7 +5470,7 @@ UC6 : subset N A
 ============================
  false
 </pre>
-<pre class="code extensibella"id="321">
+<pre class="code extensibella"id="324">
  &lt; <b>backchain UC4.</b>
 
 Subgoal 2:
@@ -5424,7 +5488,7 @@ UC1 : unit_clause A Clause L *
 ============================
  false
 </pre>
-<pre class="code extensibella"id="322">
+<pre class="code extensibella"id="325">
  &lt; <b>case IsC.</b>
 
 Subgoal 2:
@@ -5443,12 +5507,12 @@ H2 : is_clause Clause
 ============================
  false
 </pre>
-<pre class="code extensibella"id="323">
+<pre class="code extensibella"id="326">
  &lt; <b>apply IH to _ _ UC1 _ _.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="324">
+<pre class="code extensibella"id="327">
  &lt; <b>Prove unsat_proofs:lrat:unit_clause_expand.</b>
 
 Subgoal 1:
@@ -5475,7 +5539,7 @@ UC6 : subset N A
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="325">
+<pre class="code extensibella"id="328">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 1:
@@ -5503,7 +5567,7 @@ Is1 : is_integer High
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="326">
+<pre class="code extensibella"id="329">
  &lt; <b>SAT: case SAT.</b>
 
 Subgoal 1:
@@ -5533,7 +5597,7 @@ SAT2 : mem (pos X) E
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="327">
+<pre class="code extensibella"id="330">
  &lt; <b>IsPX: apply mem_is_lit to _ SAT2.</b>
 
 Subgoal 1:
@@ -5564,7 +5628,7 @@ IsPX : is_lit (pos X)
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="328">
+<pre class="code extensibella"id="331">
  &lt; <b>IsX: case IsPX.</b>
 
 Subgoal 1:
@@ -5595,7 +5659,7 @@ IsX : is_integer X
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="329">
+<pre class="code extensibella"id="332">
  &lt; <b>MXR: apply in_range to _ _ UC1 SAT SAT1.</b>
 
 Subgoal 1:
@@ -5627,7 +5691,7 @@ MXR : mem X Range
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="330">
+<pre class="code extensibella"id="333">
  &lt; <b>M: apply select_mem to UC2.</b>
 
 Subgoal 1:
@@ -5660,7 +5724,7 @@ M : mem I Range
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="331">
+<pre class="code extensibella"id="334">
  &lt; <b>apply range_is to _ UC1.</b>
 
 Subgoal 1:
@@ -5694,7 +5758,7 @@ H1 : is_list is_integer Range
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="332">
+<pre class="code extensibella"id="335">
  &lt; <b>IsI: apply is_list_int_mem to _ M.</b>
 
 Subgoal 1:
@@ -5729,7 +5793,7 @@ IsI : is_integer I
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="333">
+<pre class="code extensibella"id="336">
  &lt; <b>Or: apply is_integer_eq_or_not to IsI IsX.</b>
 
 Subgoal 1:
@@ -5765,7 +5829,7 @@ Or : I = X \/ (I = X -&gt; false)
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="334">
+<pre class="code extensibella"id="337">
  &lt; <b>E: case Or.</b>
 
 Subgoal 1.1:
@@ -5800,7 +5864,7 @@ IsI : is_integer X
 ============================
  mem (pos X) E
 </pre>
-<pre class="code extensibella"id="335">
+<pre class="code extensibella"id="338">
  &lt; <b>search.</b>
 
 Subgoal 1.2:
@@ -5836,7 +5900,7 @@ E : I = X -&gt; false
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="336">
+<pre class="code extensibella"id="339">
  &lt; <b>MXRR: apply mem_before_select_after to UC2 MXR _.</b>
 
 Subgoal 1.2:
@@ -5873,7 +5937,7 @@ MXRR : mem X RangeRest
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="337">
+<pre class="code extensibella"id="340">
  &lt; <b>MXN: apply negs_mem to MXRR UC5.</b>
 
 Subgoal 1.2:
@@ -5911,7 +5975,7 @@ MXN : mem (neg X) N
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="338">
+<pre class="code extensibella"id="341">
  &lt; <b>MXA: apply subset_mem to UC6 MXN.</b>
 
 Subgoal 1.2:
@@ -5950,7 +6014,7 @@ MXA : mem (neg X) A
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="339">
+<pre class="code extensibella"id="342">
  &lt; <b>MXE: apply Expand to MXA.</b>
 
 Subgoal 1.2:
@@ -5990,7 +6054,7 @@ MXE : mem (neg X) E
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="340">
+<pre class="code extensibella"id="343">
  &lt; <b>GA_E: case GA_E.</b>
 
 Subgoal 1.2:
@@ -6030,7 +6094,7 @@ GA_E : forall L NL, mem L E -&gt; negate_lit L NL -&gt; mem NL E -&gt; false
 ============================
  mem (pos I) E
 </pre>
-<pre class="code extensibella"id="341">
+<pre class="code extensibella"id="344">
  &lt; <b>apply GA_E to MXE _ SAT2.</b>
 
 Subgoal 2:
@@ -6052,7 +6116,7 @@ UC1 : unit_clause A Clause L *
 ============================
  mem L E
 </pre>
-<pre class="code extensibella"id="342">
+<pre class="code extensibella"id="345">
  &lt; <b>SAT: case SAT.</b>
 
 Subgoal 2:
@@ -6074,7 +6138,7 @@ SAT : sat_clause E Clause
 ============================
  mem L E
 </pre>
-<pre class="code extensibella"id="343">
+<pre class="code extensibella"id="346">
  &lt; <b>case IsC.</b>
 
 Subgoal 2:
@@ -6097,7 +6161,7 @@ H2 : is_clause Clause
 ============================
  mem L E
 </pre>
-<pre class="code extensibella"id="344">
+<pre class="code extensibella"id="347">
  &lt; <b>apply IH to _ _ _ UC1 SAT _ _ _.</b>
 
 Subgoal 2:
@@ -6121,12 +6185,12 @@ H3 : mem L E
 ============================
  mem L E
 </pre>
-<pre class="code extensibella"id="345">
+<pre class="code extensibella"id="348">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="346">
+<pre class="code extensibella"id="349">
  &lt; <b>Prove unsat_proofs:lrat:unit_clause_add.</b>
 
 Subgoal 1:
@@ -6149,7 +6213,7 @@ UC6 : subset N A
 ============================
  sat_clause S (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="347">
+<pre class="code extensibella"id="350">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 1:
@@ -6173,7 +6237,7 @@ Is1 : is_integer High
 ============================
  sat_clause S (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="348">
+<pre class="code extensibella"id="351">
  &lt; <b>M: apply select_mem to UC2.</b>
 
 Subgoal 1:
@@ -6198,7 +6262,7 @@ M : mem I Range
 ============================
  sat_clause S (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="349">
+<pre class="code extensibella"id="352">
  &lt; <b>Low: apply range_low_lesseq to _ UC1 _.</b>
 
 Subgoal 1:
@@ -6224,7 +6288,7 @@ Low : Low &lt;= I
 ============================
  sat_clause S (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="350">
+<pre class="code extensibella"id="353">
  &lt; <b>High: apply range_high_lesseq to _ UC1 _.</b>
 
 Subgoal 1:
@@ -6251,7 +6315,7 @@ High : I &lt;= High
 ============================
  sat_clause S (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="351">
+<pre class="code extensibella"id="354">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -6269,7 +6333,7 @@ UC1 : unit_clause A Clause L *
 ============================
  sat_clause S (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="352">
+<pre class="code extensibella"id="355">
  &lt; <b>case IsC.</b>
 
 Subgoal 2:
@@ -6288,7 +6352,7 @@ H2 : is_clause Clause
 ============================
  sat_clause S (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="353">
+<pre class="code extensibella"id="356">
  &lt; <b>apply IH to _ _ _ UC1 _.</b>
 
 Subgoal 2:
@@ -6308,26 +6372,26 @@ H3 : sat_clause S Clause
 ============================
  sat_clause S (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="354">
+<pre class="code extensibella"id="357">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="355">
+<pre class="code extensibella"id="358">
  &lt; <b>Theorem posLits_total :
      forall L, is_list is_integer L -&gt; exists P, posLits L P.</b>
 
 ============================
  forall L, is_list is_integer L -&gt; exists P, posLits L P
 </pre>
-<pre class="code extensibella"id="356">
+<pre class="code extensibella"id="359">
  &lt; <b>induction on 1.</b>
 
 IH : forall L, is_list is_integer L * -&gt; exists P, posLits L P
 ============================
  forall L, is_list is_integer L @ -&gt; exists P, posLits L P
 </pre>
-<pre class="code extensibella"id="357">
+<pre class="code extensibella"id="360">
  &lt; <b>intros Is.</b>
 
 Variables: L
@@ -6336,7 +6400,7 @@ Is : is_list is_integer L @
 ============================
  exists P, posLits L P
 </pre>
-<pre class="code extensibella"id="358">
+<pre class="code extensibella"id="361">
  &lt; <b>Is: case Is.</b>
 
 Subgoal 1:
@@ -6345,7 +6409,7 @@ IH : forall L, is_list is_integer L * -&gt; exists P, posLits L P
 ============================
  exists P, posLits [] P
 </pre>
-<pre class="code extensibella"id="359">
+<pre class="code extensibella"id="362">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -6357,7 +6421,7 @@ Is1 : is_list is_integer T *
 ============================
  exists P, posLits (H::T) P
 </pre>
-<pre class="code extensibella"id="360">
+<pre class="code extensibella"id="363">
  &lt; <b>apply IH to Is1.</b>
 
 Subgoal 2:
@@ -6370,26 +6434,26 @@ H1 : posLits T P
 ============================
  exists P, posLits (H::T) P
 </pre>
-<pre class="code extensibella"id="361">
+<pre class="code extensibella"id="364">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="362">
+<pre class="code extensibella"id="365">
  &lt; <b>Theorem posLits_unique :
      forall L P1 P2, posLits L P1 -&gt; posLits L P2 -&gt; P1 = P2.</b>
 
 ============================
  forall L P1 P2, posLits L P1 -&gt; posLits L P2 -&gt; P1 = P2
 </pre>
-<pre class="code extensibella"id="363">
+<pre class="code extensibella"id="366">
  &lt; <b>induction on 1.</b>
 
 IH : forall L P1 P2, posLits L P1 * -&gt; posLits L P2 -&gt; P1 = P2
 ============================
  forall L P1 P2, posLits L P1 @ -&gt; posLits L P2 -&gt; P1 = P2
 </pre>
-<pre class="code extensibella"id="364">
+<pre class="code extensibella"id="367">
  &lt; <b>intros PL1 PL2.</b>
 
 Variables: L P1 P2
@@ -6399,7 +6463,7 @@ PL2 : posLits L P2
 ============================
  P1 = P2
 </pre>
-<pre class="code extensibella"id="365">
+<pre class="code extensibella"id="368">
  &lt; <b>PL1: case PL1.</b>
 
 Subgoal 1:
@@ -6410,7 +6474,7 @@ PL2 : posLits [] P2
 ============================
  [] = P2
 </pre>
-<pre class="code extensibella"id="366">
+<pre class="code extensibella"id="369">
  &lt; <b>case PL2.</b>
 
 Subgoal 1:
@@ -6419,7 +6483,7 @@ IH : forall L P1 P2, posLits L P1 * -&gt; posLits L P2 -&gt; P1 = P2
 ============================
  [] = []
 </pre>
-<pre class="code extensibella"id="367">
+<pre class="code extensibella"id="370">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -6431,7 +6495,7 @@ PL1 : posLits Rest LRest *
 ============================
  (pos I)::LRest = P2
 </pre>
-<pre class="code extensibella"id="368">
+<pre class="code extensibella"id="371">
  &lt; <b>PL2: case PL2.</b>
 
 Subgoal 2:
@@ -6443,7 +6507,7 @@ PL2 : posLits Rest LRest1
 ============================
  (pos I)::LRest = (pos I)::LRest1
 </pre>
-<pre class="code extensibella"id="369">
+<pre class="code extensibella"id="372">
  &lt; <b>apply IH to PL1 PL2.</b>
 
 Subgoal 2:
@@ -6455,26 +6519,26 @@ PL2 : posLits Rest LRest1
 ============================
  (pos I)::LRest1 = (pos I)::LRest1
 </pre>
-<pre class="code extensibella"id="370">
+<pre class="code extensibella"id="373">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="371">
+<pre class="code extensibella"id="374">
  &lt; <b>Theorem posLits_is :
      forall L P, is_list is_integer L -&gt; posLits L P -&gt; is_list is_lit P.</b>
 
 ============================
  forall L P, is_list is_integer L -&gt; posLits L P -&gt; is_list is_lit P
 </pre>
-<pre class="code extensibella"id="372">
+<pre class="code extensibella"id="375">
  &lt; <b>induction on 2.</b>
 
 IH : forall L P, is_list is_integer L -&gt; posLits L P * -&gt; is_list is_lit P
 ============================
  forall L P, is_list is_integer L -&gt; posLits L P @ -&gt; is_list is_lit P
 </pre>
-<pre class="code extensibella"id="373">
+<pre class="code extensibella"id="376">
  &lt; <b>intros IsL PL.</b>
 
 Variables: L P
@@ -6484,7 +6548,7 @@ PL : posLits L P @
 ============================
  is_list is_lit P
 </pre>
-<pre class="code extensibella"id="374">
+<pre class="code extensibella"id="377">
  &lt; <b>PL: case PL.</b>
 
 Subgoal 1:
@@ -6494,7 +6558,7 @@ IsL : is_list is_integer []
 ============================
  is_list is_lit []
 </pre>
-<pre class="code extensibella"id="375">
+<pre class="code extensibella"id="378">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -6506,7 +6570,7 @@ PL : posLits Rest LRest *
 ============================
  is_list is_lit ((pos I)::LRest)
 </pre>
-<pre class="code extensibella"id="376">
+<pre class="code extensibella"id="379">
  &lt; <b>Is: case IsL.</b>
 
 Subgoal 2:
@@ -6519,7 +6583,7 @@ Is1 : is_list is_integer Rest
 ============================
  is_list is_lit ((pos I)::LRest)
 </pre>
-<pre class="code extensibella"id="377">
+<pre class="code extensibella"id="380">
  &lt; <b>apply IH to _ PL.</b>
 
 Subgoal 2:
@@ -6533,26 +6597,26 @@ H1 : is_list is_lit LRest
 ============================
  is_list is_lit ((pos I)::LRest)
 </pre>
-<pre class="code extensibella"id="378">
+<pre class="code extensibella"id="381">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="379">
+<pre class="code extensibella"id="382">
  &lt; <b>Theorem posLits_mem :
      forall L P X, mem X L -&gt; posLits L P -&gt; mem (pos X) P.</b>
 
 ============================
  forall L P X, mem X L -&gt; posLits L P -&gt; mem (pos X) P
 </pre>
-<pre class="code extensibella"id="380">
+<pre class="code extensibella"id="383">
  &lt; <b>induction on 1.</b>
 
 IH : forall L P X, mem X L * -&gt; posLits L P -&gt; mem (pos X) P
 ============================
  forall L P X, mem X L @ -&gt; posLits L P -&gt; mem (pos X) P
 </pre>
-<pre class="code extensibella"id="381">
+<pre class="code extensibella"id="384">
  &lt; <b>intros Mem PL.</b>
 
 Variables: L P X
@@ -6562,7 +6626,7 @@ PL : posLits L P
 ============================
  mem (pos X) P
 </pre>
-<pre class="code extensibella"id="382">
+<pre class="code extensibella"id="385">
  &lt; <b>Mem: case Mem.</b>
 
 Subgoal 1:
@@ -6573,7 +6637,7 @@ PL : posLits (X::Rest) P
 ============================
  mem (pos X) P
 </pre>
-<pre class="code extensibella"id="383">
+<pre class="code extensibella"id="386">
  &lt; <b>case PL.</b>
 
 Subgoal 1:
@@ -6584,7 +6648,7 @@ H1 : posLits Rest LRest
 ============================
  mem (pos X) ((pos X)::LRest)
 </pre>
-<pre class="code extensibella"id="384">
+<pre class="code extensibella"id="387">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -6596,7 +6660,7 @@ Mem : mem X Rest *
 ============================
  mem (pos X) P
 </pre>
-<pre class="code extensibella"id="385">
+<pre class="code extensibella"id="388">
  &lt; <b>case PL.</b>
 
 Subgoal 2:
@@ -6608,7 +6672,7 @@ H1 : posLits Rest LRest
 ============================
  mem (pos X) ((pos I)::LRest)
 </pre>
-<pre class="code extensibella"id="386">
+<pre class="code extensibella"id="389">
  &lt; <b>apply IH to Mem _.</b>
 
 Subgoal 2:
@@ -6621,26 +6685,26 @@ H2 : mem (pos X) LRest
 ============================
  mem (pos X) ((pos I)::LRest)
 </pre>
-<pre class="code extensibella"id="387">
+<pre class="code extensibella"id="390">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="388">
+<pre class="code extensibella"id="391">
  &lt; <b>Theorem posLits_form :
      forall L P X, posLits L P -&gt; mem X P -&gt; exists I, X = pos I.</b>
 
 ============================
  forall L P X, posLits L P -&gt; mem X P -&gt; exists I, X = pos I
 </pre>
-<pre class="code extensibella"id="389">
+<pre class="code extensibella"id="392">
  &lt; <b>induction on 2.</b>
 
 IH : forall L P X, posLits L P -&gt; mem X P * -&gt; exists I, X = pos I
 ============================
  forall L P X, posLits L P -&gt; mem X P @ -&gt; exists I, X = pos I
 </pre>
-<pre class="code extensibella"id="390">
+<pre class="code extensibella"id="393">
  &lt; <b>intros PL Mem.</b>
 
 Variables: L P X
@@ -6650,7 +6714,7 @@ Mem : mem X P @
 ============================
  exists I, X = pos I
 </pre>
-<pre class="code extensibella"id="391">
+<pre class="code extensibella"id="394">
  &lt; <b>Mem: case Mem.</b>
 
 Subgoal 1:
@@ -6661,7 +6725,7 @@ PL : posLits L (X::Rest)
 ============================
  exists I, X = pos I
 </pre>
-<pre class="code extensibella"id="392">
+<pre class="code extensibella"id="395">
  &lt; <b>case PL.</b>
 
 Subgoal 1:
@@ -6672,7 +6736,7 @@ H1 : posLits Rest1 Rest
 ============================
  exists I1, pos I = pos I1
 </pre>
-<pre class="code extensibella"id="393">
+<pre class="code extensibella"id="396">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -6684,7 +6748,7 @@ Mem : mem X Rest *
 ============================
  exists I, X = pos I
 </pre>
-<pre class="code extensibella"id="394">
+<pre class="code extensibella"id="397">
  &lt; <b>case PL.</b>
 
 Subgoal 2:
@@ -6696,7 +6760,7 @@ H1 : posLits Rest1 Rest
 ============================
  exists I, X = pos I
 </pre>
-<pre class="code extensibella"id="395">
+<pre class="code extensibella"id="398">
  &lt; <b>apply IH to _ Mem.</b>
 
 Subgoal 2:
@@ -6708,26 +6772,26 @@ H1 : posLits Rest1 Rest
 ============================
  exists I, pos I2 = pos I
 </pre>
-<pre class="code extensibella"id="396">
+<pre class="code extensibella"id="399">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="397">
+<pre class="code extensibella"id="400">
  &lt; <b>Theorem mem_after_posLits_before :
      forall L P I, posLits L P -&gt; mem (pos I) P -&gt; mem I L.</b>
 
 ============================
  forall L P I, posLits L P -&gt; mem (pos I) P -&gt; mem I L
 </pre>
-<pre class="code extensibella"id="398">
+<pre class="code extensibella"id="401">
  &lt; <b>induction on 2.</b>
 
 IH : forall L P I, posLits L P -&gt; mem (pos I) P * -&gt; mem I L
 ============================
  forall L P I, posLits L P -&gt; mem (pos I) P @ -&gt; mem I L
 </pre>
-<pre class="code extensibella"id="399">
+<pre class="code extensibella"id="402">
  &lt; <b>intros PL Mem.</b>
 
 Variables: L P I
@@ -6737,7 +6801,7 @@ Mem : mem (pos I) P @
 ============================
  mem I L
 </pre>
-<pre class="code extensibella"id="400">
+<pre class="code extensibella"id="403">
  &lt; <b>Mem: case Mem.</b>
 
 Subgoal 1:
@@ -6748,7 +6812,7 @@ PL : posLits L ((pos I)::Rest)
 ============================
  mem I L
 </pre>
-<pre class="code extensibella"id="401">
+<pre class="code extensibella"id="404">
  &lt; <b>case PL.</b>
 
 Subgoal 1:
@@ -6759,7 +6823,7 @@ H1 : posLits Rest1 Rest
 ============================
  mem I (I::Rest1)
 </pre>
-<pre class="code extensibella"id="402">
+<pre class="code extensibella"id="405">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -6771,7 +6835,7 @@ Mem : mem (pos I) Rest *
 ============================
  mem I L
 </pre>
-<pre class="code extensibella"id="403">
+<pre class="code extensibella"id="406">
  &lt; <b>PL: case PL.</b>
 
 Subgoal 2:
@@ -6783,7 +6847,7 @@ PL : posLits Rest1 Rest
 ============================
  mem I (I2::Rest1)
 </pre>
-<pre class="code extensibella"id="404">
+<pre class="code extensibella"id="407">
  &lt; <b>apply IH to _ Mem.</b>
 
 Subgoal 2:
@@ -6796,12 +6860,12 @@ H1 : mem I Rest1
 ============================
  mem I (I2::Rest1)
 </pre>
-<pre class="code extensibella"id="405">
+<pre class="code extensibella"id="408">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="406">
+<pre class="code extensibella"id="409">
  &lt; <b>Prove unsat_proofs:lrat:gatherLits_is.</b>
 
 Subgoal 1:
@@ -6815,7 +6879,7 @@ GL2 : posLits R L
 ============================
  is_list is_lit L
 </pre>
-<pre class="code extensibella"id="407">
+<pre class="code extensibella"id="410">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 1:
@@ -6830,7 +6894,7 @@ Is1 : is_integer High
 ============================
  is_list is_lit L
 </pre>
-<pre class="code extensibella"id="408">
+<pre class="code extensibella"id="411">
  &lt; <b>apply range_is to _ GL1.</b>
 
 Subgoal 1:
@@ -6846,7 +6910,7 @@ H1 : is_list is_integer R
 ============================
  is_list is_lit L
 </pre>
-<pre class="code extensibella"id="409">
+<pre class="code extensibella"id="412">
  &lt; <b>apply posLits_is to _ GL2.</b>
 
 Subgoal 1:
@@ -6863,7 +6927,7 @@ H2 : is_list is_lit L
 ============================
  is_list is_lit L
 </pre>
-<pre class="code extensibella"id="410">
+<pre class="code extensibella"id="413">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -6876,7 +6940,7 @@ GL1 : gatherLits Clause L *
 ============================
  is_list is_lit L
 </pre>
-<pre class="code extensibella"id="411">
+<pre class="code extensibella"id="414">
  &lt; <b>case IsC.</b>
 
 Subgoal 2:
@@ -6890,7 +6954,7 @@ H2 : is_clause Clause
 ============================
  is_list is_lit L
 </pre>
-<pre class="code extensibella"id="412">
+<pre class="code extensibella"id="415">
  &lt; <b>apply IH to _ GL1.</b>
 
 Subgoal 2:
@@ -6905,12 +6969,12 @@ H3 : is_list is_lit L
 ============================
  is_list is_lit L
 </pre>
-<pre class="code extensibella"id="413">
+<pre class="code extensibella"id="416">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="414">
+<pre class="code extensibella"id="417">
  &lt; <b>Prove unsat_proofs:lrat:gatherLits_exists.</b>
 
 Subgoal 1:
@@ -6923,7 +6987,7 @@ IsC2 : is_integer I
 ============================
  exists L, gatherLits (rangeClause I1 I) L
 </pre>
-<pre class="code extensibella"id="415">
+<pre class="code extensibella"id="418">
  &lt; <b>R: apply range_exists to IsC1 IsC2.</b>
 
 Subgoal 1:
@@ -6937,7 +7001,7 @@ R : range I1 I R
 ============================
  exists L, gatherLits (rangeClause I1 I) L
 </pre>
-<pre class="code extensibella"id="416">
+<pre class="code extensibella"id="419">
  &lt; <b>IsR: apply range_is to _ R.</b>
 
 Subgoal 1:
@@ -6952,7 +7016,7 @@ IsR : is_list is_integer R
 ============================
  exists L, gatherLits (rangeClause I1 I) L
 </pre>
-<pre class="code extensibella"id="417">
+<pre class="code extensibella"id="420">
  &lt; <b>apply posLits_total to IsR.</b>
 
 Subgoal 1:
@@ -6968,7 +7032,7 @@ H1 : posLits R P
 ============================
  exists L, gatherLits (rangeClause I1 I) L
 </pre>
-<pre class="code extensibella"id="418">
+<pre class="code extensibella"id="421">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -6981,7 +7045,7 @@ IsC2 : is_clause Clause *
 ============================
  exists L, gatherLits (noteClause S Clause) L
 </pre>
-<pre class="code extensibella"id="419">
+<pre class="code extensibella"id="422">
  &lt; <b>apply IH to IsC2.</b>
 
 Subgoal 2:
@@ -6995,26 +7059,26 @@ H1 : gatherLits Clause L
 ============================
  exists L, gatherLits (noteClause S Clause) L
 </pre>
-<pre class="code extensibella"id="420">
+<pre class="code extensibella"id="423">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="421">
+<pre class="code extensibella"id="424">
  &lt; <b>Theorem permutation_reflexive_lits :
      forall L, is_list is_lit L -&gt; permutation L L.</b>
 
 ============================
  forall L, is_list is_lit L -&gt; permutation L L
 </pre>
-<pre class="code extensibella"id="422">
+<pre class="code extensibella"id="425">
  &lt; <b>induction on 1.</b>
 
 IH : forall L, is_list is_lit L * -&gt; permutation L L
 ============================
  forall L, is_list is_lit L @ -&gt; permutation L L
 </pre>
-<pre class="code extensibella"id="423">
+<pre class="code extensibella"id="426">
  &lt; <b>intros Is.</b>
 
 Variables: L
@@ -7023,7 +7087,7 @@ Is : is_list is_lit L @
 ============================
  permutation L L
 </pre>
-<pre class="code extensibella"id="424">
+<pre class="code extensibella"id="427">
  &lt; <b>Is: case Is.</b>
 
 Subgoal 1:
@@ -7032,7 +7096,7 @@ IH : forall L, is_list is_lit L * -&gt; permutation L L
 ============================
  permutation [] []
 </pre>
-<pre class="code extensibella"id="425">
+<pre class="code extensibella"id="428">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -7044,7 +7108,7 @@ Is1 : is_list is_lit T *
 ============================
  permutation (H::T) (H::T)
 </pre>
-<pre class="code extensibella"id="426">
+<pre class="code extensibella"id="429">
  &lt; <b>apply IH to Is1.</b>
 
 Subgoal 2:
@@ -7057,12 +7121,12 @@ H1 : permutation T T
 ============================
  permutation (H::T) (H::T)
 </pre>
-<pre class="code extensibella"id="427">
+<pre class="code extensibella"id="430">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="428">
+<pre class="code extensibella"id="431">
  &lt; <b>Prove unsat_proofs:lrat:gatherLits_permutation.</b>
 
 Subgoal 1:
@@ -7078,7 +7142,7 @@ GL4 : posLits R L1
 ============================
  permutation L1 L2
 </pre>
-<pre class="code extensibella"id="429">
+<pre class="code extensibella"id="432">
  &lt; <b>GL': case GL2.</b>
 
 Subgoal 1:
@@ -7095,7 +7159,7 @@ GL'1 : posLits R1 L2
 ============================
  permutation L1 L2
 </pre>
-<pre class="code extensibella"id="430">
+<pre class="code extensibella"id="433">
  &lt; <b>apply range_unique to GL' GL3.</b>
 
 Subgoal 1:
@@ -7112,7 +7176,7 @@ GL'1 : posLits R L2
 ============================
  permutation L1 L2
 </pre>
-<pre class="code extensibella"id="431">
+<pre class="code extensibella"id="434">
  &lt; <b>apply posLits_unique to GL4 GL'1.</b>
 
 Subgoal 1:
@@ -7129,7 +7193,7 @@ GL'1 : posLits R L2
 ============================
  permutation L2 L2
 </pre>
-<pre class="code extensibella"id="432">
+<pre class="code extensibella"id="435">
  &lt; <b>case IsC.</b>
 
 Subgoal 1:
@@ -7147,7 +7211,7 @@ H2 : is_integer High
 ============================
  permutation L2 L2
 </pre>
-<pre class="code extensibella"id="433">
+<pre class="code extensibella"id="436">
  &lt; <b>IsR: apply range_is to _ GL3.</b>
 
 Subgoal 1:
@@ -7166,7 +7230,7 @@ IsR : is_list is_integer R
 ============================
  permutation L2 L2
 </pre>
-<pre class="code extensibella"id="434">
+<pre class="code extensibella"id="437">
  &lt; <b>apply posLits_is to _ GL4.</b>
 
 Subgoal 1:
@@ -7186,7 +7250,7 @@ H3 : is_list is_lit L2
 ============================
  permutation L2 L2
 </pre>
-<pre class="code extensibella"id="435">
+<pre class="code extensibella"id="438">
  &lt; <b>backchain permutation_reflexive_lits.</b>
 
 Subgoal 2:
@@ -7201,7 +7265,7 @@ GL3 : gatherLits Clause L1 *
 ============================
  permutation L1 L2
 </pre>
-<pre class="code extensibella"id="436">
+<pre class="code extensibella"id="439">
  &lt; <b>GL': case GL2.</b>
 
 Subgoal 2:
@@ -7216,7 +7280,7 @@ GL' : gatherLits Clause L2
 ============================
  permutation L1 L2
 </pre>
-<pre class="code extensibella"id="437">
+<pre class="code extensibella"id="440">
  &lt; <b>case IsC.</b>
 
 Subgoal 2:
@@ -7232,7 +7296,7 @@ H2 : is_clause Clause
 ============================
  permutation L1 L2
 </pre>
-<pre class="code extensibella"id="438">
+<pre class="code extensibella"id="441">
  &lt; <b>apply IH to _ GL3 GL'.</b>
 
 Subgoal 2:
@@ -7249,12 +7313,12 @@ H3 : permutation L1 L2
 ============================
  permutation L1 L2
 </pre>
-<pre class="code extensibella"id="439">
+<pre class="code extensibella"id="442">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="440">
+<pre class="code extensibella"id="443">
  &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_gatherLits.</b>
 
 Subgoal 1:
@@ -7268,7 +7332,7 @@ Hyp4 : 1 + Low = PlusOne
 ============================
  exists L', gatherLits (or (pos Low) (rangeClause PlusOne High)) L'
 </pre>
-<pre class="code extensibella"id="441">
+<pre class="code extensibella"id="444">
  &lt; <b>GL: case Hyp2.</b>
 
 Subgoal 1:
@@ -7283,7 +7347,7 @@ GL1 : posLits R L
 ============================
  exists L', gatherLits (or (pos Low) (rangeClause PlusOne High)) L'
 </pre>
-<pre class="code extensibella"id="442">
+<pre class="code extensibella"id="445">
  &lt; <b>Is: case Hyp1.</b>
 
 Subgoal 1:
@@ -7299,7 +7363,7 @@ Is1 : is_integer High
 ============================
  exists L', gatherLits (or (pos Low) (rangeClause PlusOne High)) L'
 </pre>
-<pre class="code extensibella"id="443">
+<pre class="code extensibella"id="446">
  &lt; <b>L: apply lt_plus_one to Hyp4 _.</b>
 
 Subgoal 1:
@@ -7316,7 +7380,7 @@ L : Low &lt; PlusOne
 ============================
  exists L', gatherLits (or (pos Low) (rangeClause PlusOne High)) L'
 </pre>
-<pre class="code extensibella"id="444">
+<pre class="code extensibella"id="447">
  &lt; <b>IsPlusOne: apply plus_integer_is_integer to _ _ Hyp4.</b>
 
 Subgoal 1:
@@ -7334,7 +7398,7 @@ IsPlusOne : is_integer PlusOne
 ============================
  exists L', gatherLits (or (pos Low) (rangeClause PlusOne High)) L'
 </pre>
-<pre class="code extensibella"id="445">
+<pre class="code extensibella"id="448">
  &lt; <b>R: apply range_smaller_exists to _ _ GL L.</b>
 
 Subgoal 1:
@@ -7353,7 +7417,7 @@ R : range PlusOne High R'
 ============================
  exists L', gatherLits (or (pos Low) (rangeClause PlusOne High)) L'
 </pre>
-<pre class="code extensibella"id="446">
+<pre class="code extensibella"id="449">
  &lt; <b>IsR': apply range_is to _ R.</b>
 
 Subgoal 1:
@@ -7373,7 +7437,7 @@ IsR' : is_list is_integer R'
 ============================
  exists L', gatherLits (or (pos Low) (rangeClause PlusOne High)) L'
 </pre>
-<pre class="code extensibella"id="447">
+<pre class="code extensibella"id="450">
  &lt; <b>apply posLits_total to IsR'.</b>
 
 Subgoal 1:
@@ -7394,7 +7458,7 @@ H1 : posLits R' P
 ============================
  exists L', gatherLits (or (pos Low) (rangeClause PlusOne High)) L'
 </pre>
-<pre class="code extensibella"id="448">
+<pre class="code extensibella"id="451">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -7407,7 +7471,7 @@ Hyp3 : Low &gt; High
 ============================
  exists L', gatherLits emptyClause L'
 </pre>
-<pre class="code extensibella"id="449">
+<pre class="code extensibella"id="452">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -7419,7 +7483,7 @@ Hyp2 : gatherLits (noteClause Note C') L
 ============================
  exists L', gatherLits C' L'
 </pre>
-<pre class="code extensibella"id="450">
+<pre class="code extensibella"id="453">
  &lt; <b>case Hyp2.</b>
 
 Subgoal 3:
@@ -7431,12 +7495,12 @@ H1 : gatherLits C' L
 ============================
  exists L', gatherLits C' L'
 </pre>
-<pre class="code extensibella"id="451">
+<pre class="code extensibella"id="454">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="452">
+<pre class="code extensibella"id="455">
  &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_gatherLits_permutation.</b>
 
 Subgoal 1:
@@ -7451,7 +7515,7 @@ Hyp5 : 1 + Low = PlusOne
 ============================
  permutation L L'
 </pre>
-<pre class="code extensibella"id="453">
+<pre class="code extensibella"id="456">
  &lt; <b>GL: case Hyp2.</b>
 
 Subgoal 1:
@@ -7467,7 +7531,7 @@ GL1 : posLits R L
 ============================
  permutation L L'
 </pre>
-<pre class="code extensibella"id="454">
+<pre class="code extensibella"id="457">
  &lt; <b>GL': case Hyp3.</b>
 
 Subgoal 1:
@@ -7483,7 +7547,7 @@ GL' : gatherLits (rangeClause PlusOne High) LRest
 ============================
  permutation L ((pos Low)::LRest)
 </pre>
-<pre class="code extensibella"id="455">
+<pre class="code extensibella"id="458">
  &lt; <b>GL': case GL'.</b>
 
 Subgoal 1:
@@ -7500,7 +7564,7 @@ GL'1 : posLits R1 LRest
 ============================
  permutation L ((pos Low)::LRest)
 </pre>
-<pre class="code extensibella"id="456">
+<pre class="code extensibella"id="459">
  &lt; <b>R: case GL.</b>
 
 Subgoal 1.1:
@@ -7517,7 +7581,7 @@ R : Low &gt; High
 ============================
  permutation L ((pos Low)::LRest)
 </pre>
-<pre class="code extensibella"id="457">
+<pre class="code extensibella"id="460">
  &lt; <b>apply greater_lesseq_integer_false to R Hyp4.</b>
 
 Subgoal 1.2:
@@ -7536,7 +7600,7 @@ R2 : range PlusOne1 High Rest
 ============================
  permutation L ((pos Low)::LRest)
 </pre>
-<pre class="code extensibella"id="458">
+<pre class="code extensibella"id="461">
  &lt; <b>apply plus_integer_unique to R1 Hyp5.</b>
 
 Subgoal 1.2:
@@ -7555,7 +7619,7 @@ R2 : range PlusOne High Rest
 ============================
  permutation L ((pos Low)::LRest)
 </pre>
-<pre class="code extensibella"id="459">
+<pre class="code extensibella"id="462">
  &lt; <b>apply range_unique to GL' R2.</b>
 
 Subgoal 1.2:
@@ -7574,7 +7638,7 @@ R2 : range PlusOne High Rest
 ============================
  permutation L ((pos Low)::LRest)
 </pre>
-<pre class="code extensibella"id="460">
+<pre class="code extensibella"id="463">
  &lt; <b>PL: case GL1.</b>
 
 Subgoal 1.2:
@@ -7593,7 +7657,7 @@ PL : posLits Rest LRest1
 ============================
  permutation ((pos Low)::LRest1) ((pos Low)::LRest)
 </pre>
-<pre class="code extensibella"id="461">
+<pre class="code extensibella"id="464">
  &lt; <b>apply posLits_unique to GL'1 PL.</b>
 
 Subgoal 1.2:
@@ -7612,7 +7676,7 @@ PL : posLits Rest LRest1
 ============================
  permutation ((pos Low)::LRest1) ((pos Low)::LRest1)
 </pre>
-<pre class="code extensibella"id="462">
+<pre class="code extensibella"id="465">
  &lt; <b>Is: case Hyp1.</b>
 
 Subgoal 1.2:
@@ -7632,7 +7696,7 @@ Is1 : is_integer High
 ============================
  permutation ((pos Low)::LRest1) ((pos Low)::LRest1)
 </pre>
-<pre class="code extensibella"id="463">
+<pre class="code extensibella"id="466">
  &lt; <b>apply plus_integer_is_integer to _ _ R1.</b>
 
 Subgoal 1.2:
@@ -7653,7 +7717,7 @@ H1 : is_integer PlusOne
 ============================
  permutation ((pos Low)::LRest1) ((pos Low)::LRest1)
 </pre>
-<pre class="code extensibella"id="464">
+<pre class="code extensibella"id="467">
  &lt; <b>apply range_is to _ GL'.</b>
 
 Subgoal 1.2:
@@ -7675,7 +7739,7 @@ H2 : is_list is_integer Rest
 ============================
  permutation ((pos Low)::LRest1) ((pos Low)::LRest1)
 </pre>
-<pre class="code extensibella"id="465">
+<pre class="code extensibella"id="468">
  &lt; <b>IsLRest1: apply posLits_is to _ PL.</b>
 
 Subgoal 1.2:
@@ -7698,7 +7762,7 @@ IsLRest1 : is_list is_lit LRest1
 ============================
  permutation ((pos Low)::LRest1) ((pos Low)::LRest1)
 </pre>
-<pre class="code extensibella"id="466">
+<pre class="code extensibella"id="469">
  &lt; <b>apply permutation_reflexive_lits to IsLRest1.</b>
 
 Subgoal 1.2:
@@ -7722,7 +7786,7 @@ H3 : permutation LRest1 LRest1
 ============================
  permutation ((pos Low)::LRest1) ((pos Low)::LRest1)
 </pre>
-<pre class="code extensibella"id="467">
+<pre class="code extensibella"id="470">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -7736,7 +7800,7 @@ Hyp4 : Low &gt; High
 ============================
  permutation L L'
 </pre>
-<pre class="code extensibella"id="468">
+<pre class="code extensibella"id="471">
  &lt; <b>GL: case Hyp2.</b>
 
 Subgoal 2:
@@ -7751,7 +7815,7 @@ GL1 : posLits R L
 ============================
  permutation L L'
 </pre>
-<pre class="code extensibella"id="469">
+<pre class="code extensibella"id="472">
  &lt; <b>case Hyp3.</b>
 
 Subgoal 2:
@@ -7765,7 +7829,7 @@ GL1 : posLits R L
 ============================
  permutation L []
 </pre>
-<pre class="code extensibella"id="470">
+<pre class="code extensibella"id="473">
  &lt; <b>R: case GL.</b>
 
 Subgoal 2.1:
@@ -7779,7 +7843,7 @@ R : Low &gt; High
 ============================
  permutation L []
 </pre>
-<pre class="code extensibella"id="471">
+<pre class="code extensibella"id="474">
  &lt; <b>case GL1.</b>
 
 Subgoal 2.1:
@@ -7792,7 +7856,7 @@ R : Low &gt; High
 ============================
  permutation [] []
 </pre>
-<pre class="code extensibella"id="472">
+<pre class="code extensibella"id="475">
  &lt; <b>search.</b>
 
 Subgoal 2.2:
@@ -7808,7 +7872,7 @@ R2 : range PlusOne High Rest
 ============================
  permutation L []
 </pre>
-<pre class="code extensibella"id="473">
+<pre class="code extensibella"id="476">
  &lt; <b>apply greater_lesseq_integer_false to Hyp4 R.</b>
 
 Subgoal 3:
@@ -7821,7 +7885,7 @@ Hyp3 : gatherLits C' L'
 ============================
  permutation L L'
 </pre>
-<pre class="code extensibella"id="474">
+<pre class="code extensibella"id="477">
  &lt; <b>GL: case Hyp2.</b>
 
 Subgoal 3:
@@ -7834,7 +7898,7 @@ GL : gatherLits C' L
 ============================
  permutation L L'
 </pre>
-<pre class="code extensibella"id="475">
+<pre class="code extensibella"id="478">
  &lt; <b>Is: case Hyp1.</b>
 
 Subgoal 3:
@@ -7848,7 +7912,7 @@ Is1 : is_clause C'
 ============================
  permutation L L'
 </pre>
-<pre class="code extensibella"id="476">
+<pre class="code extensibella"id="479">
  &lt; <b>apply gatherLits_permutation to _ GL Hyp3.</b>
 
 Subgoal 3:
@@ -7863,12 +7927,12 @@ H1 : permutation L L'
 ============================
  permutation L L'
 </pre>
-<pre class="code extensibella"id="477">
+<pre class="code extensibella"id="480">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="478">
+<pre class="code extensibella"id="481">
  &lt; <b>Prove unsat_proofs:lrat:gatherLits_sat.</b>
 
 Subgoal 1:
@@ -7887,7 +7951,7 @@ Sat3 : mem (pos X) Sat
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="479">
+<pre class="code extensibella"id="482">
  &lt; <b>GL: case GL.</b>
 
 Subgoal 1:
@@ -7907,7 +7971,7 @@ GL1 : posLits R Lits
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="480">
+<pre class="code extensibella"id="483">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 1:
@@ -7928,7 +7992,7 @@ Is1 : is_integer High
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="481">
+<pre class="code extensibella"id="484">
  &lt; <b>IsPX: apply mem_is_lit to _ Sat3.</b>
 
 Subgoal 1:
@@ -7950,7 +8014,7 @@ IsPX : is_lit (pos X)
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="482">
+<pre class="code extensibella"id="485">
  &lt; <b>IsX: case IsPX.</b>
 
 Subgoal 1:
@@ -7972,7 +8036,7 @@ IsX : is_integer X
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="483">
+<pre class="code extensibella"id="486">
  &lt; <b>Mem: apply in_range to Is _ GL Sat1 Sat2.</b>
 
 Subgoal 1:
@@ -7995,7 +8059,7 @@ Mem : mem X R
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="484">
+<pre class="code extensibella"id="487">
  &lt; <b>apply posLits_mem to Mem GL1.</b>
 
 Subgoal 1:
@@ -8019,7 +8083,7 @@ H1 : mem (pos X) Lits
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="485">
+<pre class="code extensibella"id="488">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -8036,7 +8100,7 @@ Sat1 : sat_clause Sat Clause *
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="486">
+<pre class="code extensibella"id="489">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 2:
@@ -8054,7 +8118,7 @@ Is1 : is_clause Clause
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="487">
+<pre class="code extensibella"id="490">
  &lt; <b>GL: case GL.</b>
 
 Subgoal 2:
@@ -8072,7 +8136,7 @@ GL : gatherLits Clause Lits
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="488">
+<pre class="code extensibella"id="491">
  &lt; <b>apply IH to _ _ GL Sat1.</b>
 
 Subgoal 2:
@@ -8092,12 +8156,12 @@ H2 : mem L Sat
 ============================
  exists L, mem L Lits /\ mem L Sat
 </pre>
-<pre class="code extensibella"id="489">
+<pre class="code extensibella"id="492">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="490">
+<pre class="code extensibella"id="493">
  &lt; <b>Prove unsat_proofs:lrat:gatherLits_mem_sat.</b>
 
 Subgoal 1:
@@ -8116,7 +8180,7 @@ GL2 : posLits R Lits
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="491">
+<pre class="code extensibella"id="494">
  &lt; <b>apply posLits_form to GL2 MemLits.</b>
 
 Subgoal 1:
@@ -8135,7 +8199,7 @@ GL2 : posLits R Lits
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="492">
+<pre class="code extensibella"id="495">
  &lt; <b>MemIR: apply mem_after_posLits_before to GL2 MemLits.</b>
 
 Subgoal 1:
@@ -8155,7 +8219,7 @@ MemIR : mem I R
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="493">
+<pre class="code extensibella"id="496">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 1:
@@ -8176,7 +8240,7 @@ Is1 : is_integer High
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="494">
+<pre class="code extensibella"id="497">
  &lt; <b>apply range_low_lesseq to _ GL1 MemIR.</b>
 
 Subgoal 1:
@@ -8198,7 +8262,7 @@ H1 : Low &lt;= I
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="495">
+<pre class="code extensibella"id="498">
  &lt; <b>apply range_high_lesseq to _ GL1 MemIR.</b>
 
 Subgoal 1:
@@ -8221,7 +8285,7 @@ H2 : I &lt;= High
 ============================
  sat_clause Sat (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="496">
+<pre class="code extensibella"id="499">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -8239,7 +8303,7 @@ GL1 : gatherLits Clause Lits *
 ============================
  sat_clause Sat (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="497">
+<pre class="code extensibella"id="500">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 2:
@@ -8258,7 +8322,7 @@ Is1 : is_clause Clause
 ============================
  sat_clause Sat (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="498">
+<pre class="code extensibella"id="501">
  &lt; <b>apply IH to _ _ GL1 MemLits MemSat.</b>
 
 Subgoal 2:
@@ -8278,12 +8342,12 @@ H1 : sat_clause Sat Clause
 ============================
  sat_clause Sat (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="499">
+<pre class="code extensibella"id="502">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="500">
+<pre class="code extensibella"id="503">
  &lt; <b>Prove unsat_proofs:lrat:gatherLits_unsat.</b>
 
 Subgoal 1:
@@ -8305,7 +8369,7 @@ Unsat3 : subset N Unsat
 ============================
  false
 </pre>
-<pre class="code extensibella"id="501">
+<pre class="code extensibella"id="504">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 1:
@@ -8328,7 +8392,7 @@ Is1 : is_integer High
 ============================
  false
 </pre>
-<pre class="code extensibella"id="502">
+<pre class="code extensibella"id="505">
  &lt; <b>GL: case GL.</b>
 
 Subgoal 1:
@@ -8352,7 +8416,7 @@ GL1 : posLits R1 Lits
 ============================
  false
 </pre>
-<pre class="code extensibella"id="503">
+<pre class="code extensibella"id="506">
  &lt; <b>apply range_unique to GL Unsat1.</b>
 
 Subgoal 1:
@@ -8376,7 +8440,7 @@ GL1 : posLits R Lits
 ============================
  false
 </pre>
-<pre class="code extensibella"id="504">
+<pre class="code extensibella"id="507">
  &lt; <b>apply posLits_form to GL1 MemLits.</b>
 
 Subgoal 1:
@@ -8400,7 +8464,7 @@ GL1 : posLits R Lits
 ============================
  false
 </pre>
-<pre class="code extensibella"id="505">
+<pre class="code extensibella"id="508">
  &lt; <b>MR: apply mem_after_posLits_before to GL1 MemLits.</b>
 
 Subgoal 1:
@@ -8425,7 +8489,7 @@ MR : mem I R
 ============================
  false
 </pre>
-<pre class="code extensibella"id="506">
+<pre class="code extensibella"id="509">
  &lt; <b>MN: apply negs_mem to MR Unsat2.</b>
 
 Subgoal 1:
@@ -8451,7 +8515,7 @@ MN : mem (neg I) N
 ============================
  false
 </pre>
-<pre class="code extensibella"id="507">
+<pre class="code extensibella"id="510">
  &lt; <b>MU: apply subset_mem to Unsat3 MN.</b>
 
 Subgoal 1:
@@ -8478,7 +8542,7 @@ MU : mem (neg I) Unsat
 ============================
  false
 </pre>
-<pre class="code extensibella"id="508">
+<pre class="code extensibella"id="511">
  &lt; <b>GA: case GA.</b>
 
 Subgoal 1:
@@ -8505,7 +8569,7 @@ GA : forall L NL, mem L Unsat -&gt; negate_lit L NL -&gt; mem NL Unsat -&gt; fal
 ============================
  false
 </pre>
-<pre class="code extensibella"id="509">
+<pre class="code extensibella"id="512">
  &lt; <b>apply GA to MU _ MemUnsat.</b>
 
 Subgoal 2:
@@ -8525,7 +8589,7 @@ Unsat1 : unsat_clause Unsat Clause *
 ============================
  false
 </pre>
-<pre class="code extensibella"id="510">
+<pre class="code extensibella"id="513">
  &lt; <b>case IsC.</b>
 
 Subgoal 2:
@@ -8546,7 +8610,7 @@ H2 : is_clause Clause
 ============================
  false
 </pre>
-<pre class="code extensibella"id="511">
+<pre class="code extensibella"id="514">
  &lt; <b>case GL.</b>
 
 Subgoal 2:
@@ -8567,26 +8631,26 @@ H3 : gatherLits Clause Lits
 ============================
  false
 </pre>
-<pre class="code extensibella"id="512">
+<pre class="code extensibella"id="515">
  &lt; <b>apply IH to GA _ _ _ Unsat1 _ _.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="513">
+<pre class="code extensibella"id="516">
  &lt; <b>Theorem posLits_negateLitList_negs :
      forall L P N, posLits L P -&gt; negateLitList P N -&gt; negs L N.</b>
 
 ============================
  forall L P N, posLits L P -&gt; negateLitList P N -&gt; negs L N
 </pre>
-<pre class="code extensibella"id="514">
+<pre class="code extensibella"id="517">
  &lt; <b>induction on 1.</b>
 
 IH : forall L P N, posLits L P * -&gt; negateLitList P N -&gt; negs L N
 ============================
  forall L P N, posLits L P @ -&gt; negateLitList P N -&gt; negs L N
 </pre>
-<pre class="code extensibella"id="515">
+<pre class="code extensibella"id="518">
  &lt; <b>intros PL N.</b>
 
 Variables: L P N
@@ -8596,7 +8660,7 @@ N : negateLitList P N
 ============================
  negs L N
 </pre>
-<pre class="code extensibella"id="516">
+<pre class="code extensibella"id="519">
  &lt; <b>PL: case PL.</b>
 
 Subgoal 1:
@@ -8607,7 +8671,7 @@ N : negateLitList [] N
 ============================
  negs [] N
 </pre>
-<pre class="code extensibella"id="517">
+<pre class="code extensibella"id="520">
  &lt; <b>case N.</b>
 
 Subgoal 1:
@@ -8616,7 +8680,7 @@ IH : forall L P N, posLits L P * -&gt; negateLitList P N -&gt; negs L N
 ============================
  negs [] []
 </pre>
-<pre class="code extensibella"id="518">
+<pre class="code extensibella"id="521">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -8628,7 +8692,7 @@ PL : posLits Rest LRest *
 ============================
  negs (I::Rest) N
 </pre>
-<pre class="code extensibella"id="519">
+<pre class="code extensibella"id="522">
  &lt; <b>N: case N.</b>
 
 Subgoal 2:
@@ -8641,7 +8705,7 @@ N1 : negateLitList LRest NRest
 ============================
  negs (I::Rest) (N1::NRest)
 </pre>
-<pre class="code extensibella"id="520">
+<pre class="code extensibella"id="523">
  &lt; <b>apply IH to PL N1.</b>
 
 Subgoal 2:
@@ -8655,7 +8719,7 @@ H1 : negs Rest NRest
 ============================
  negs (I::Rest) (N1::NRest)
 </pre>
-<pre class="code extensibella"id="521">
+<pre class="code extensibella"id="524">
  &lt; <b>case N.</b>
 
 Subgoal 2:
@@ -8668,26 +8732,26 @@ H1 : negs Rest NRest
 ============================
  negs (I::Rest) ((neg I)::NRest)
 </pre>
-<pre class="code extensibella"id="522">
+<pre class="code extensibella"id="525">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="523">
+<pre class="code extensibella"id="526">
  &lt; <b>Theorem negs_is :
      forall L N, is_list is_integer L -&gt; negs L N -&gt; is_list is_lit N.</b>
 
 ============================
  forall L N, is_list is_integer L -&gt; negs L N -&gt; is_list is_lit N
 </pre>
-<pre class="code extensibella"id="524">
+<pre class="code extensibella"id="527">
  &lt; <b>induction on 1.</b>
 
 IH : forall L N, is_list is_integer L * -&gt; negs L N -&gt; is_list is_lit N
 ============================
  forall L N, is_list is_integer L @ -&gt; negs L N -&gt; is_list is_lit N
 </pre>
-<pre class="code extensibella"id="525">
+<pre class="code extensibella"id="528">
  &lt; <b>intros Is N.</b>
 
 Variables: L N
@@ -8697,7 +8761,7 @@ N : negs L N
 ============================
  is_list is_lit N
 </pre>
-<pre class="code extensibella"id="526">
+<pre class="code extensibella"id="529">
  &lt; <b>Is: case Is.</b>
 
 Subgoal 1:
@@ -8708,7 +8772,7 @@ N : negs [] N
 ============================
  is_list is_lit N
 </pre>
-<pre class="code extensibella"id="527">
+<pre class="code extensibella"id="530">
  &lt; <b>case N.</b>
 
 Subgoal 1:
@@ -8717,7 +8781,7 @@ IH : forall L N, is_list is_integer L * -&gt; negs L N -&gt; is_list is_lit N
 ============================
  is_list is_lit []
 </pre>
-<pre class="code extensibella"id="528">
+<pre class="code extensibella"id="531">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -8730,7 +8794,7 @@ Is1 : is_list is_integer T *
 ============================
  is_list is_lit N
 </pre>
-<pre class="code extensibella"id="529">
+<pre class="code extensibella"id="532">
  &lt; <b>N: case N.</b>
 
 Subgoal 2:
@@ -8743,7 +8807,7 @@ N : negs T LRest
 ============================
  is_list is_lit ((neg H)::LRest)
 </pre>
-<pre class="code extensibella"id="530">
+<pre class="code extensibella"id="533">
  &lt; <b>apply IH to Is1 N.</b>
 
 Subgoal 2:
@@ -8757,12 +8821,12 @@ H1 : is_list is_lit LRest
 ============================
  is_list is_lit ((neg H)::LRest)
 </pre>
-<pre class="code extensibella"id="531">
+<pre class="code extensibella"id="534">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="532">
+<pre class="code extensibella"id="535">
  &lt; <b>Prove unsat_proofs:lrat:negate_lits_unsat.</b>
 
 Subgoal 1:
@@ -8778,7 +8842,7 @@ GL2 : posLits R L
 ============================
  unsat_clause NL (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="533">
+<pre class="code extensibella"id="536">
  &lt; <b>Is: case IsC.</b>
 
 Subgoal 1:
@@ -8795,7 +8859,7 @@ Is1 : is_integer High
 ============================
  unsat_clause NL (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="534">
+<pre class="code extensibella"id="537">
  &lt; <b>Negs: apply posLits_negateLitList_negs to GL2 NLL.</b>
 
 Subgoal 1:
@@ -8813,7 +8877,7 @@ Negs : negs R NL
 ============================
  unsat_clause NL (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="535">
+<pre class="code extensibella"id="538">
  &lt; <b>IsR: apply range_is to _ GL1.</b>
 
 Subgoal 1:
@@ -8832,7 +8896,7 @@ IsR : is_list is_integer R
 ============================
  unsat_clause NL (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="536">
+<pre class="code extensibella"id="539">
  &lt; <b>IsNL: apply negs_is to IsR Negs.</b>
 
 Subgoal 1:
@@ -8852,7 +8916,7 @@ IsNL : is_list is_lit NL
 ============================
  unsat_clause NL (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="537">
+<pre class="code extensibella"id="540">
  &lt; <b>apply mems_subset to IsNL _ with
      Sup = NL.</b>
 
@@ -8874,7 +8938,7 @@ H1 : subset NL NL
 ============================
  unsat_clause NL (rangeClause Low High)
 </pre>
-<pre class="code extensibella"id="538">
+<pre class="code extensibella"id="541">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -8889,7 +8953,7 @@ GL1 : gatherLits Clause L *
 ============================
  unsat_clause NL (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="539">
+<pre class="code extensibella"id="542">
  &lt; <b>case IsC.</b>
 
 Subgoal 2:
@@ -8905,7 +8969,7 @@ H2 : is_clause Clause
 ============================
  unsat_clause NL (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="540">
+<pre class="code extensibella"id="543">
  &lt; <b>apply IH to _ GL1 _.</b>
 
 Subgoal 2:
@@ -8922,52 +8986,52 @@ H3 : unsat_clause NL Clause
 ============================
  unsat_clause NL (noteClause Note Clause)
 </pre>
-<pre class="code extensibella"id="541">
+<pre class="code extensibella"id="544">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="542">
+<pre class="code extensibella"id="545">
  &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_proof_is.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="543">
+<pre class="code extensibella"id="546">
  &lt; <b>Prove unsat_proofs:lrat:check_proof_correct.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="544">
+<pre class="code extensibella"id="547">
  &lt; <b>Prove unsat_proofs:lrat:checkProof_orderless.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="545">
+<pre class="code extensibella"id="548">
  &lt; <b>Prove_Ext_Ind unsat_proofs:lrat:checkProof.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="546">
+<pre class="code extensibella"id="549">
  &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_checkProof.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="547">
+<pre class="code extensibella"id="550">
  &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_all_greater.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="548">
+<pre class="code extensibella"id="551">
  &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_all_unique.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="549">
+<pre class="code extensibella"id="552">
  &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_sat_formula.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="550">
+<pre class="code extensibella"id="553">
  &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_is.</b>
 
 Proof completed.

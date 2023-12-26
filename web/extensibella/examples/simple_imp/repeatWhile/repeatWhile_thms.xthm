@@ -127,14 +127,14 @@ Prove_Ext_Ind simple_imp:host:eval_c.
  LN'N: apply less_integer_transitive to SW1 LN3N.
  L0N': apply ext_ind_pos_eval_c to SW. AccN': apply Acc to _ LN'N.
  EvalTSeq: apply IH to SW AccN'. EvalTParts: case EvalTSeq.
- search.
+ unfold. exists seq Body (while Cond Body), G2. search.
 %E-RepeatWhileFalse
  Acc: case Acc. L0N2: apply ext_ind_pos_eval_c to Rel2.
  IsN2: apply ext_ind_is_int_eval_c to Rel2.
  LN2N: apply lt_plus_one to Rel1 _. AccN2: apply Acc to _ LN2N.
  EvalTBody: apply IH to Rel2 AccN2.
  Trans: assert |{c}- repeatWhile Body Cond ~~>
-                     seq Body (while Cond Body). search.
+                     seq Body (while Cond Body). search 3.
 
 
 Prove simple_imp:host:eval_c_unique.

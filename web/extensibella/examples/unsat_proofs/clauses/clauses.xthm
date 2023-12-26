@@ -36,9 +36,11 @@ Prove_Constraint unsat_proofs:lrat:trans_formula_is.
 
 Prove_Ext_Ind unsat_proofs:lrat:is_clause.
 %is_clause (rangeClause I1 I)
+ Set search_depth 2. %make the next part not hang
  Helper: assert forall Low High R,
            is_integer Low -> is_integer High -> range Low High R ->
            <is_clause {T}> (rangeClause Low High).
+   Set search_depth 5. %back to normal
    induction on 3. intros IsLow IsHigh R. R: case R.
      %Range-End
       unfold. exists emptyClause. search.
@@ -47,13 +49,13 @@ Prove_Ext_Ind unsat_proofs:lrat:is_clause.
       IsCT: apply IH2 to _ _ R2.
       Tr: assert |{clause}- rangeClause Low High ~~>
                             or (pos Low) (rangeClause PlusOne High).
-      search.
- R: apply range_exists to Rel1 Rel2. apply Helper to _ _ R. search.
+      exists or (pos Low) (rangeClause PlusOne High). search.
+ R: apply range_exists to Rel1 Rel2. apply Helper to _ _ R. search 2.
 %is_clause (noteClause S Clause)
  assert |{clause}- noteClause S Clause ~~> Clause. Acc: case Acc.
  apply ext_ind_is_int_is_clause to Rel3.
  L: apply lt_plus_one to Rel1 _. apply ext_ind_pos_is_clause to Rel3.
- A: apply Acc to _ L. apply IH to Rel3 A. search.
+ A: apply Acc to _ L. apply IH to Rel3 A. search 2.
 
 
 Prove unsat_proofs:lrat:is_lit_eq_or_not__pos.

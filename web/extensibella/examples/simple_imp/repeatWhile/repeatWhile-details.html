@@ -1865,6 +1865,98 @@ EvalTParts1 : &lt;eval_c {T}&gt; G3 (while Cond Body) G1
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
 </pre>
 <pre class="code extensibella"id="100">
+ &lt; <b>unfold .</b>
+
+Subgoal 10:
+
+Variables: N G G1 N2 N3 N4 G2 Cond Body N' G3
+IH : forall N G C G1, &lt;eval_c {ES}&gt; G C G1 N -&gt; acc N * -&gt; &lt;eval_c {T}&gt; G C G1
+IH1 : forall N G C G1,
+        &lt;eval_c {ES}&gt; G C G1 N ** -&gt; acc N @ -&gt; &lt;eval_c {T}&gt; G C G1
+Rel : &lt;eval_c {ES}&gt; G (repeatWhile Body Cond) G1 N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
+Rel4 : eval_e G2 Cond trueVal
+Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
+RW_to_SW : forall C B EG EG' N,
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+PosN2 : 0 &lt;= N2
+PosN3 : 0 &lt;= N3
+LN4N : N4 &lt; N
+LN2N : N2 &lt; N
+LN3N : N3 &lt; N
+AccN2 : acc N2 *
+AccN3 : acc N3 *
+EvalTBody : &lt;eval_c {T}&gt; G Body G2
+EvalTRep : &lt;eval_c {T}&gt; G2 (repeatWhile Body Cond) G1
+Trans : |{c}- repeatWhile Body Cond ~~&gt; seq Body (while Cond Body)
+SW : &lt;eval_c {ES}&gt; G2 (seq Body (while Cond Body)) G1 N'
+SW1 : N' &lt; N3
+LN'N : N' &lt; N
+L0N' : 0 &lt;= N'
+AccN' : acc N' *
+EvalTParts : &lt;eval_c {T}&gt; G2 Body G3
+EvalTParts1 : &lt;eval_c {T}&gt; G3 (while Cond Body) G1
+============================
+ exists T G2,
+   &lt;eval_c {T}&gt; G T G1 /\
+   (|{c}- repeatWhile Body Cond ~~&gt; T /\
+   (&lt;eval_c {T}&gt; G Body G2 /\
+   (eval_e G2 Cond trueVal /\ &lt;eval_c {T}&gt; G2 (repeatWhile Body Cond) G1)))
+</pre>
+<pre class="code extensibella"id="101">
+ &lt; <b>exists seq Body (while Cond Body),
+   G2.</b>
+
+Subgoal 10:
+
+Variables: N G G1 N2 N3 N4 G2 Cond Body N' G3
+IH : forall N G C G1, &lt;eval_c {ES}&gt; G C G1 N -&gt; acc N * -&gt; &lt;eval_c {T}&gt; G C G1
+IH1 : forall N G C G1,
+        &lt;eval_c {ES}&gt; G C G1 N ** -&gt; acc N @ -&gt; &lt;eval_c {T}&gt; G C G1
+Rel : &lt;eval_c {ES}&gt; G (repeatWhile Body Cond) G1 N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;eval_c {ES}&gt; G Body G2 N2 **
+Rel4 : eval_e G2 Cond trueVal
+Rel5 : &lt;eval_c {ES}&gt; G2 (repeatWhile Body Cond) G1 N3 **
+RW_to_SW : forall C B EG EG' N,
+             &lt;eval_c {ES}&gt; EG (repeatWhile B C) EG' N -&gt; exists N',
+               &lt;eval_c {ES}&gt; EG (seq B (while C B)) EG' N' /\ N' &lt; N
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+PosN2 : 0 &lt;= N2
+PosN3 : 0 &lt;= N3
+LN4N : N4 &lt; N
+LN2N : N2 &lt; N
+LN3N : N3 &lt; N
+AccN2 : acc N2 *
+AccN3 : acc N3 *
+EvalTBody : &lt;eval_c {T}&gt; G Body G2
+EvalTRep : &lt;eval_c {T}&gt; G2 (repeatWhile Body Cond) G1
+Trans : |{c}- repeatWhile Body Cond ~~&gt; seq Body (while Cond Body)
+SW : &lt;eval_c {ES}&gt; G2 (seq Body (while Cond Body)) G1 N'
+SW1 : N' &lt; N3
+LN'N : N' &lt; N
+L0N' : 0 &lt;= N'
+AccN' : acc N' *
+EvalTParts : &lt;eval_c {T}&gt; G2 Body G3
+EvalTParts1 : &lt;eval_c {T}&gt; G3 (while Cond Body) G1
+============================
+ &lt;eval_c {T}&gt; G (seq Body (while Cond Body)) G1 /\
+ (|{c}- repeatWhile Body Cond ~~&gt; seq Body (while Cond Body) /\
+ (&lt;eval_c {T}&gt; G Body G2 /\
+ (eval_e G2 Cond trueVal /\ &lt;eval_c {T}&gt; G2 (repeatWhile Body Cond) G1)))
+</pre>
+<pre class="code extensibella"id="102">
  &lt; <b>search.</b>
 
 Subgoal 11:
@@ -1881,7 +1973,7 @@ Rel3 : eval_e G1 Cond falseVal
 ============================
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
 </pre>
-<pre class="code extensibella"id="101">
+<pre class="code extensibella"id="103">
  &lt; <b>Acc: case Acc.</b>
 
 Subgoal 11:
@@ -1898,7 +1990,7 @@ Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 ============================
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
 </pre>
-<pre class="code extensibella"id="102">
+<pre class="code extensibella"id="104">
  &lt; <b>L0N2: apply ext_ind_pos_eval_c to Rel2.</b>
 
 Subgoal 11:
@@ -1916,7 +2008,7 @@ L0N2 : 0 &lt;= N2
 ============================
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
 </pre>
-<pre class="code extensibella"id="103">
+<pre class="code extensibella"id="105">
  &lt; <b>IsN2: apply ext_ind_is_int_eval_c to Rel2.</b>
 
 Subgoal 11:
@@ -1935,7 +2027,7 @@ IsN2 : is_integer N2
 ============================
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
 </pre>
-<pre class="code extensibella"id="104">
+<pre class="code extensibella"id="106">
  &lt; <b>LN2N: apply lt_plus_one to Rel1 _.</b>
 
 Subgoal 11:
@@ -1955,7 +2047,7 @@ LN2N : N2 &lt; N
 ============================
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
 </pre>
-<pre class="code extensibella"id="105">
+<pre class="code extensibella"id="107">
  &lt; <b>AccN2: apply Acc to _ LN2N.</b>
 
 Subgoal 11:
@@ -1976,7 +2068,7 @@ AccN2 : acc N2 *
 ============================
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
 </pre>
-<pre class="code extensibella"id="106">
+<pre class="code extensibella"id="108">
  &lt; <b>EvalTBody: apply IH to Rel2 AccN2.</b>
 
 Subgoal 11:
@@ -1998,7 +2090,7 @@ EvalTBody : &lt;eval_c {T}&gt; G Body G1
 ============================
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
 </pre>
-<pre class="code extensibella"id="107">
+<pre class="code extensibella"id="109">
  &lt; <b>Trans: assert |{c}- repeatWhile Body Cond ~~&gt; seq Body (while Cond Body).</b>
 
 Subgoal 11:
@@ -2021,12 +2113,12 @@ Trans : |{c}- repeatWhile Body Cond ~~&gt; seq Body (while Cond Body)
 ============================
  &lt;eval_c {T}&gt; G (repeatWhile Body Cond) G1
 </pre>
-<pre class="code extensibella"id="108">
- &lt; <b>search.</b>
+<pre class="code extensibella"id="110">
+ &lt; <b>search 3.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="109">
+<pre class="code extensibella"id="111">
  &lt; <b>Prove simple_imp:host:eval_c_unique.</b>
 
 Subgoal 10:
@@ -2041,7 +2133,7 @@ Ev5 : eval_c G3 (repeatWhile Body Cond) G1 *
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="110">
+<pre class="code extensibella"id="112">
  &lt; <b>Ev2: case Ev2.</b>
 
 Subgoal 10.1:
@@ -2058,7 +2150,7 @@ Ev7 : eval_c G4 (repeatWhile Body Cond) G2
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="111">
+<pre class="code extensibella"id="113">
  &lt; <b>apply IH to Ev3 Ev2.</b>
 
 Subgoal 10.1:
@@ -2075,7 +2167,7 @@ Ev7 : eval_c G4 (repeatWhile Body Cond) G2
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="112">
+<pre class="code extensibella"id="114">
  &lt; <b>apply IH to Ev5 Ev7.</b>
 
 Subgoal 10.1:
@@ -2092,7 +2184,7 @@ Ev7 : eval_c G4 (repeatWhile Body Cond) G2
 ============================
  G2 = G2
 </pre>
-<pre class="code extensibella"id="113">
+<pre class="code extensibella"id="115">
  &lt; <b>search.</b>
 
 Subgoal 10.2:
@@ -2108,7 +2200,7 @@ Ev6 : eval_e G2 Cond falseVal
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="114">
+<pre class="code extensibella"id="116">
  &lt; <b>apply IH to Ev3 Ev2.</b>
 
 Subgoal 10.2:
@@ -2124,7 +2216,7 @@ Ev6 : eval_e G2 Cond falseVal
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="115">
+<pre class="code extensibella"id="117">
  &lt; <b>apply eval_e_unique to Ev4 Ev6.</b>
 
 Subgoal 11:
@@ -2138,7 +2230,7 @@ Ev4 : eval_e G1 Cond falseVal
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="116">
+<pre class="code extensibella"id="118">
  &lt; <b>Ev2: case Ev2.</b>
 
 Subgoal 11.1:
@@ -2154,7 +2246,7 @@ Ev6 : eval_c G3 (repeatWhile Body Cond) G2
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="117">
+<pre class="code extensibella"id="119">
  &lt; <b>apply IH to Ev3 Ev2.</b>
 
 Subgoal 11.1:
@@ -2170,7 +2262,7 @@ Ev6 : eval_c G3 (repeatWhile Body Cond) G2
 ============================
  G3 = G2
 </pre>
-<pre class="code extensibella"id="118">
+<pre class="code extensibella"id="120">
  &lt; <b>apply eval_e_unique to Ev4 Ev5.</b>
 
 Subgoal 11.2:
@@ -2185,7 +2277,7 @@ Ev5 : eval_e G2 Cond falseVal
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="119">
+<pre class="code extensibella"id="121">
  &lt; <b>apply IH to Ev3 Ev2.</b>
 
 Subgoal 11.2:
@@ -2200,12 +2292,12 @@ Ev5 : eval_e G2 Cond falseVal
 ============================
  G2 = G2
 </pre>
-<pre class="code extensibella"id="120">
+<pre class="code extensibella"id="122">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="121">
+<pre class="code extensibella"id="123">
  &lt; <b>Theorem repeatWhile_transSame :
      forall G Body Cond G1 G2,
        eval_c G (repeatWhile Body Cond) G1 -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
@@ -2216,7 +2308,7 @@ Proof completed.
    eval_c G (repeatWhile Body Cond) G1 -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
    G1 = G2
 </pre>
-<pre class="code extensibella"id="122">
+<pre class="code extensibella"id="124">
  &lt; <b>induction on 1.</b>
 
 IH : forall G Body Cond G1 G2,
@@ -2227,7 +2319,7 @@ IH : forall G Body Cond G1 G2,
    eval_c G (repeatWhile Body Cond) G1 @ -&gt; eval_c G (seq Body (while Cond Body)) G2 -&gt;
    G1 = G2
 </pre>
-<pre class="code extensibella"id="123">
+<pre class="code extensibella"id="125">
  &lt; <b>intros EvRW EvSW.</b>
 
 Variables: G Body Cond G1 G2
@@ -2239,7 +2331,7 @@ EvSW : eval_c G (seq Body (while Cond Body)) G2
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="124">
+<pre class="code extensibella"id="126">
  &lt; <b>EvRW: case EvRW (keep).</b>
 
 Subgoal 1:
@@ -2256,7 +2348,7 @@ EvRW3 : eval_c G3 (repeatWhile Body Cond) G1 *
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="125">
+<pre class="code extensibella"id="127">
  &lt; <b>EvSW: case EvSW.</b>
 
 Subgoal 1:
@@ -2274,7 +2366,7 @@ EvSW1 : eval_c G4 (while Cond Body) G2
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="126">
+<pre class="code extensibella"id="128">
  &lt; <b>apply eval_c_unique to EvRW1 EvSW.</b>
 
 Subgoal 1:
@@ -2292,7 +2384,7 @@ EvSW1 : eval_c G4 (while Cond Body) G2
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="127">
+<pre class="code extensibella"id="129">
  &lt; <b>EvW': case EvSW1.</b>
 
 Subgoal 1.1:
@@ -2310,7 +2402,7 @@ EvW' : eval_e G2 Cond falseVal
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="128">
+<pre class="code extensibella"id="130">
  &lt; <b>apply eval_e_unique to EvRW2 EvW'.</b>
 
 Subgoal 1.2:
@@ -2330,7 +2422,7 @@ EvW'2 : eval_c G5 (while Cond Body) G2
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="129">
+<pre class="code extensibella"id="131">
  &lt; <b>EvSeq: assert eval_c G4 (seq Body (while Cond Body)) G2.</b>
 
 Subgoal 1.2:
@@ -2351,7 +2443,7 @@ EvSeq : eval_c G4 (seq Body (while Cond Body)) G2
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="130">
+<pre class="code extensibella"id="132">
  &lt; <b>apply IH to EvRW3 EvSeq.</b>
 
 Subgoal 1.2:
@@ -2372,7 +2464,7 @@ EvSeq : eval_c G4 (seq Body (while Cond Body)) G2
 ============================
  G2 = G2
 </pre>
-<pre class="code extensibella"id="131">
+<pre class="code extensibella"id="133">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -2388,7 +2480,7 @@ EvRW2 : eval_e G1 Cond falseVal
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="132">
+<pre class="code extensibella"id="134">
  &lt; <b>EvSW: case EvSW.</b>
 
 Subgoal 2:
@@ -2405,7 +2497,7 @@ EvSW1 : eval_c G3 (while Cond Body) G2
 ============================
  G1 = G2
 </pre>
-<pre class="code extensibella"id="133">
+<pre class="code extensibella"id="135">
  &lt; <b>apply eval_c_unique to EvRW1 EvSW.</b>
 
 Subgoal 2:
@@ -2422,7 +2514,7 @@ EvSW1 : eval_c G3 (while Cond Body) G2
 ============================
  G3 = G2
 </pre>
-<pre class="code extensibella"id="134">
+<pre class="code extensibella"id="136">
  &lt; <b>EvW: case EvSW1.</b>
 
 Subgoal 2.1:
@@ -2439,7 +2531,7 @@ EvW : eval_e G2 Cond falseVal
 ============================
  G2 = G2
 </pre>
-<pre class="code extensibella"id="135">
+<pre class="code extensibella"id="137">
  &lt; <b>search.</b>
 
 Subgoal 2.2:
@@ -2458,12 +2550,12 @@ EvW2 : eval_c G4 (while Cond Body) G2
 ============================
  G3 = G2
 </pre>
-<pre class="code extensibella"id="136">
+<pre class="code extensibella"id="138">
  &lt; <b>apply eval_e_unique to EvRW2 EvW.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="137">
+<pre class="code extensibella"id="139">
  &lt; <b>Prove_Constraint simple_imp:host:trans_c_eval_results.</b>
 
 Variables: G G1 G2 X V Body Cond
@@ -2474,7 +2566,7 @@ Hyp3 : lookup G1 X V
 ============================
  lookup G2 X V
 </pre>
-<pre class="code extensibella"id="138">
+<pre class="code extensibella"id="140">
  &lt; <b>apply repeatWhile_transSame to Hyp1 Hyp2.</b>
 
 Variables: G G2 X V Body Cond
@@ -2485,12 +2577,12 @@ Hyp3 : lookup G2 X V
 ============================
  lookup G2 X V
 </pre>
-<pre class="code extensibella"id="139">
+<pre class="code extensibella"id="141">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="140">
+<pre class="code extensibella"id="142">
  &lt; <b>Prove_Constraint simple_imp:host:trans_c_eval_results_back.</b>
 
 Variables: G G1 G2 X V Body Cond
@@ -2501,7 +2593,7 @@ Hyp3 : lookup G2 X V
 ============================
  lookup G1 X V
 </pre>
-<pre class="code extensibella"id="141">
+<pre class="code extensibella"id="143">
  &lt; <b>apply repeatWhile_transSame to Hyp1 Hyp2.</b>
 
 Variables: G G2 X V Body Cond
@@ -2512,12 +2604,12 @@ Hyp3 : lookup G2 X V
 ============================
  lookup G2 X V
 </pre>
-<pre class="code extensibella"id="142">
+<pre class="code extensibella"id="144">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="143">
+<pre class="code extensibella"id="145">
  &lt; <b>Prove simple_imp:host:vars_eval_same_result,
          simple_imp:host:vars_equal_rf_same_result.</b>
 
