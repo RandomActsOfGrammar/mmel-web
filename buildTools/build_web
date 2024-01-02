@@ -101,27 +101,35 @@ done
 cd ../.. #back to built web root directory
 
 
-#get the Extensibella and Sterling tarballs
+#get the Extensibella and Sterling tarballs and standard libraries
 found_Extensibella=0
 if [ -z "$EXTENSIBELLA_DIR" ]
 then
     #try next to the repository
     if [ -d "../../extensibella" ]
     then
+        #tarball
         cd ../../extensibella
         ./make-dist
         cd -
         cp ../../extensibella/extensibella.tar.gz extensibella/
+        #standard library
+        ../buildTools/extensibella_stdlib.py ../../extensibella/stdLib/ extensibella/stdLib.html
+        #done
         found_Extensibella=1
     fi
 elif [ -d "$EXTENSIBELLA_DIR" ]
 then
     if [ -f "$EXTENSIBELLA_DIR/make-dist" ]
     then
+        #tarball
         cd "$EXTENSIBELLA_DIR"
         ./make-dist
         cd -
         cp "$EXTENSIBELLA_DIR/extensibella.tar.gz" extensibella/
+        #standard library
+        ../buildTools/extensibella_stdlib.py "$EXTENSIBELLA_DIR/stdLib/" extensibella/stdLib.html
+        #done
         found_Extensibella=1
     fi
 fi
@@ -153,7 +161,7 @@ fi
 if [ "$found_Extensibella" -eq 0 ]
 then
     echo "----------------------------------------------------------------------"
-    echo "COULD NOT GET EXTENSIBELLA TARBALL; DO IT BY HAND"
+    echo "COULD NOT GET EXTENSIBELLA TARBALL OR STANDARD LIBRARY; DO IT BY HAND"
     echo "----------------------------------------------------------------------"
 fi
 if [ "$found_Sterling" -eq 0 ]
