@@ -1,0 +1,54 @@
+Module library:list
+
+--------- [V-nil]
+value nil
+
+
+value E1
+value E2
+------------------ [V-cons]
+value cons(E1, E2)
+
+
+
+
+
+---------------- [E-nil]
+eval_e G nil nil
+
+
+eval_e G E1 V1
+eval_e G E2 V2
+---------------------------------- [E-cons]
+eval_e G cons(E1, E2) cons(V1, V2)
+
+
+eval_e G E nil
+---------------------- [E-null-true]
+eval_e G null(E) trueE
+
+
+eval_e G E cons(V1, V2)
+----------------------- [E-null-false]
+eval_e G null(E) falseE
+
+
+eval_e G E cons(V1, V2)
+----------------------- [E-head]
+eval_e G head(E) V1
+
+
+eval_e G E cons(V1, V2)
+----------------------- [E-tail]
+eval_e G tail(E) V2
+
+
+
+
+
+eval_e G E cons(V1, V2)
+Hd != Tl /*Need this to prove ext_ind*/
+select (Hd, VHd) GHd G
+select (Tl, VTl) GTl GHd
+----------------------------------------------------- [X-splitlist]
+eval_s G splitlist(Hd, Tl, E) (Hd, V1)::(Tl, V2)::GTl

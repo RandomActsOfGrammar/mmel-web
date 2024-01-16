@@ -33,17 +33,20 @@
   </p>
 
   <p>
-    Modular metatheory is proving properties by reasoning
-    independently in the context of each module, where properties may
-    be introduced by the host language or an extension, such that we
-    know each property will hold for any composed language.
+    Modular metatheory permits the host language and extensions to it
+    to introduce metatheoretic properties independently of one
+    another and prove them modularly such that each property is
+    guaranteed to hold for any composed language containing the module
+    introducing the property.  The proofs as well as the properties
+    are carried out by modules independently, with each module writing
+    its proofs without knowledge of other extensions in the library.
   </p>
 </div>
 
 <div class="section">
   <h2>Our Approach</h2>
   <p>
-    Our approach is to modular metatheory is based on two ideas:
+    Our approach to modular metatheory is based on two ideas:
     <ul>
       <li><span class="highlight">Decomposing proofs</span>:  Proofs
         are broken down on the boundaries between language modules,
@@ -53,15 +56,26 @@
         about unknown extensions based on broad constraints imposed on
         their behavior.
     </ul>
-    We can establish the soundness of this approach by using the
-    modular proofs written with the above ideas to construct proofs
+    We can demonstrate the soundness of this approach by using the
+    modular proofs written using the above ideas to construct proofs
     automatically for any composed language.
   </p>
 
   <p>
-    This approach is detailed
-    in <a href="https://arxiv.org/abs/2312.14374">"A Modular Approach
-      to Metatheoretic Reasoning for Extensible Languages"</a>.
+    This approach is detailed in our
+    paper, <a href="https://arxiv.org/abs/2312.14374">"A Modular
+    Approach to Metatheoretic Reasoning for Extensible Languages"</a>.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Our Tools</h2>
+  <p>
+    We have two tools, listed below.  Consult
+    the <a href="walkthrough.html">tool walkthrough</a> for an example
+    of how they work together for specifying and proving properties of
+    extensible languages, and each of their individual web pages for
+    more in-depth information on each.
   </p>
 </div>
 
@@ -98,15 +112,17 @@
   </a>
   <p>
     <a href="extensibella/index.html">Extensibella</a> is a system for
-    reasoning about extensible languages
-    implementing <a href="extensibleLanguages.html">our view of
-      extensible languages</a>.  Sterling outputs a specification
-    Extensibella can read.  The Extensibella system is an interactive
-    proof assistant, permitting the user to declare properties and
-    prove them.  It checks these proofs are written modularly so they
-    will apply in any composed language, and that each extension
-    fulfills its proof obligations for properties introduced by the
-    host language.
+    modular metatheory.  It permits reasoning about extensible
+    languages implementing <a href="extensibleLanguages.html">our view
+      of extensible languages</a>.  Sterling outputs a specification
+    Extensibella can read, and Extensibella provides an interactive
+    proof assistant for declaring properties and writing modular
+    proofs for them, ensuring the proofs written are truly modular and
+    that extensions fulfill their proof obligations.  Extensibella
+    also provides a proof composer, taking modular proof files from
+    modules in a composed language and building a full proof for all
+    properties introduced individually by each module in the
+    composition.
   </p>
 </div>
 </body>

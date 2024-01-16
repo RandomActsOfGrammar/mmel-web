@@ -1,0 +1,551 @@
+Module library:list.
+
+
+Prove_Constraint library:host:trans_e_unique.
+%P-null
+ case Hyp1. search.
+%P-head
+ case Hyp1. search.
+%P-tail
+ case Hyp1. search.
+%P-nil
+ case Hyp1. search.
+%P-cons
+ case Hyp1. search.
+Prove_Constraint library:host:trans_e_is.
+%P-null
+ case Hyp1. search.
+%P-head
+ case Hyp1. search.
+%P-tail
+ case Hyp1. search.
+%P-nil
+ case Hyp1. search.
+%P-cons
+ case Hyp1. search.
+
+
+Prove_Constraint library:host:trans_s_unique.
+%P-splitlist
+ case Hyp1. search.
+Prove_Constraint library:host:trans_s_is.
+%P-splitlist
+ case Hyp1. search.
+
+
+Prove_Constraint library:host:trans_ty_unique.
+%P-list
+ case Hyp1. search.
+Prove_Constraint library:host:trans_ty_is.
+%P-list
+ case Hyp1. search.
+
+
+Prove_Ext_Ind library:host:is_e.
+%nil
+ search.
+%cons
+ Trans: assert |{e}- cons E1 E2 ~~> eq E1 E2. Acc: case Acc.
+ ESTrans: assert <is_e {ES}> (eq E1 E2) N4.
+ IsN2: apply ext_ind_is_int_is_e to Rel3.
+ IsN3: apply ext_ind_is_int_is_e to Rel4.
+ IsN4: apply plus_integer_is_integer to _ _ Rel2.
+ L: apply lt_plus_one to Rel1 IsN4.
+ N2Pos: apply ext_ind_pos_is_e to Rel3.
+ N3Pos: apply ext_ind_pos_is_e to Rel4.
+ N4Pos: apply lesseq_integer__add_positive to N2Pos N3Pos Rel2.
+ A: apply Acc to _ L. TTrans: apply IH to ESTrans A.
+ LN2: assert N2 < N.
+   Or: apply lt_left to Rel2 N2Pos N3Pos. E: case Or.
+     apply less_integer_transitive to E L. search.
+     search.
+ LN3: assert N3 < N.
+   Or: apply lt_right to Rel2 IsN3 N2Pos N3Pos. E: case Or.
+     apply less_integer_transitive to E L. search.
+     search.
+ AN2: apply Acc to N2Pos LN2. AN3: apply Acc to N3Pos LN3.
+ apply IH to Rel3 AN2. apply IH to Rel4 AN3. search.
+%null
+ Trans: assert |{e}- null E1 ~~> E1.
+ IsN2: apply ext_ind_is_int_is_e to Rel2.
+ L: apply lt_plus_one to Rel1 IsN2. Acc: case Acc.
+ N2Pos: apply ext_ind_pos_is_e to Rel2. AN2: apply Acc to N2Pos L.
+ apply IH to Rel2 AN2. search.
+%head
+ Trans: assert |{e}- head E1 ~~> E1.
+ IsN2: apply ext_ind_is_int_is_e to Rel2.
+ L: apply lt_plus_one to Rel1 IsN2. Acc: case Acc.
+ N2Pos: apply ext_ind_pos_is_e to Rel2. AN2: apply Acc to N2Pos L.
+ apply IH to Rel2 AN2. search.
+%tail
+ Trans: assert |{e}- tail E1 ~~> E1.
+ IsN2: apply ext_ind_is_int_is_e to Rel2.
+ L: apply lt_plus_one to Rel1 IsN2. Acc: case Acc.
+ N2Pos: apply ext_ind_pos_is_e to Rel2. AN2: apply Acc to N2Pos L.
+ apply IH to Rel2 AN2. search.
+
+
+Prove library:host:is_e_var_or_not.
+search. search. search. search. search.
+Prove library:host:is_e_intlit_or_not.
+search. search. search. search. search.
+Prove library:host:is_e_trueE_or_not.
+search. search. search. search. search.
+Prove library:host:is_e_falseE_or_not.
+search. search. search. search. search.
+Prove library:host:is_e_add_or_not.
+search. search. search. search. search.
+Prove library:host:is_e_eqC_or_not.
+search. search. search. search. search.
+Prove library:host:is_e_gt_or_not.
+search. search. search. search. search.
+Prove library:host:is_e_not_or_not.
+search. search. search. search. search.
+Extensible_Theorem
+  is_e_nil_or_not : forall E,
+    IsE: is_e E ->
+    E = library:list:nil \/ (E = library:list:nil -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_cons_or_not : forall E,
+    IsE: is_e E ->
+    (exists E1 E2, E = cons E1 E2) \/
+    ((exists E1 E2, E = cons E1 E2) -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_null_or_not : forall E,
+    IsE: is_e E ->
+    (exists E', E = null E') \/
+    ((exists E', E = null E') -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_head_or_not : forall E,
+    IsE: is_e E ->
+    (exists E', E = head E') \/
+    ((exists E', E = head E') -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_tail_or_not : forall E,
+    IsE: is_e E ->
+    (exists E', E = tail E') \/
+    ((exists E', E = tail E') -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+search. search. search. search. search. search.
+Prove library:host:is_e_eq_or_not.
+%nil
+ Or: apply is_e_nil_or_not to IsE2. E: case Or.
+   %nil
+    search.
+   %not nil
+    right. intros Eq. case Eq. backchain E.
+%cons
+ Or: apply is_e_cons_or_not to IsE2. E: case Or.
+   %cons
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      %E3 = E4
+       Or: apply IH to IsE4 Is1. E: case Or.
+         %E = E5
+          search.
+         %E != E5
+          right. intros Eq. case Eq. backchain E.
+      %E3 != E4
+       right. intros Eq. case Eq. backchain E.
+   %not cons
+    right. intros Eq. backchain E. case Eq. search.
+%null
+ Or: apply is_e_null_or_not to IsE2. E: case Or.
+   %null
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      %E = E'
+       search.
+      %E != E'
+       right. intros Eq. case Eq. backchain E.
+   %not null
+    right. intros Eq. backchain E. case Eq. search.
+%head
+ Or: apply is_e_head_or_not to IsE2. E: case Or.
+   %head
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      %E = E'
+       search.
+      %E != E'
+       right. intros Eq. case Eq. backchain E.
+   %not head
+    right. intros Eq. backchain E. case Eq. search.
+%tail
+ Or: apply is_e_tail_or_not to IsE2. E: case Or.
+   %tail
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      %E = E'
+       search.
+      %E != E'
+       right. intros Eq. case Eq. backchain E.
+   %not tail
+    right. intros Eq. backchain E. case Eq. search.
+
+
+Prove library:host:vars_unique.
+%VR-nil
+ case Vars2. search.
+%VR-cons
+ V: case Vars2. apply IH to Vars3 V. apply IH to Vars4 V1.
+ apply append_unique to Vars5 V2. search.
+%VR-null
+ V: case Vars2. apply IH to Vars3 V. search.
+%VR-head
+ V: case Vars2. apply IH to Vars3 V. search.
+%VR-tail
+ V: case Vars2. apply IH to Vars3 V. search.
+
+
+Prove_Constraint library:host:trans_e_vars_exist.
+%P-null
+ case Hyp1. search.
+%P-head
+ case Hyp1. search.
+%P-tail
+ case Hyp1. search.
+%P-nil
+ search.
+%P-cons
+ case Hyp1. search.
+Prove_Constraint library:host:trans_e_vars.
+%P-null
+ V: case Hyp1. apply vars_unique to V Hyp2. search.
+%P-head
+ V: case Hyp1. apply vars_unique to V Hyp2. search.
+%P-tail
+ V: case Hyp1. apply vars_unique to V Hyp2. search.
+%P-nil
+ case Hyp1. case Hyp2. search.
+%P-cons
+ V: case Hyp1. V': case Hyp2. apply vars_unique to V V'.
+ apply vars_unique to V1 V'1. apply append_unique to V2 V'2. search.
+
+
+Prove library:host:vars_is.
+%VR-nil
+ search.
+%VR-cons
+ Is: case IsE. apply IH to Is Vars1. apply IH to Is1 Vars2.
+ apply append__is_list__is_string to _ _ Vars3. search.
+%VR-null
+ Is: case IsE. apply IH to Is Vars1. search.
+%VR-head
+ Is: case IsE. apply IH to Is Vars1. search.
+%VR-tail
+ Is: case IsE. apply IH to Is Vars1. search.
+
+
+Prove library:host:vars_exist.
+%nil
+ search.
+%cons
+ V1: apply IH to IsE1. V2: apply IH to IsE2.
+ Is1: apply vars_is to IsE1 V1. Is2: apply vars_is to IsE2 V2.
+ apply append__is_list__is_string__total to Is1 Is2. search.
+%null
+ apply IH to IsE1. search.
+%head
+ apply IH to IsE1. search.
+%tail
+ apply IH to IsE1. search.
+
+
+Prove library:host:value_empty_typable.
+%V-nil
+ case Ty. search.
+%V-cons
+ Ty: case Ty. apply IH to Value1 Ty. apply IH to Value2 Ty1. search.
+
+
+Prove library:host:eval_e_is.
+%E-nil
+ search.
+%E-cons
+ case IsE. apply IH to _ _ Ev1. apply IH to _ _ Ev2. search.
+%E-null-true
+ search.
+%E-null-False
+ search.
+%E-head
+ case IsE. IsV: apply IH to _ _ Ev1. case IsV. search.
+%E-tail
+ case IsE. IsV: apply IH to _ _ Ev1. case IsV. search.
+
+
+Prove library:host:type_preservation_e.
+%E-nil
+ case Ty. search.
+%E-cons
+ Ty: case Ty. apply IH to Ty Ev1 Rel. apply IH to Ty1 Ev2 Rel. search.
+%E-null-true
+ case Ty. search.
+%E-null-false
+ case Ty. search.
+%E-head
+ Ty: case Ty. TV: apply IH to Ty Ev1 Rel. case TV. search.
+%E-tail
+ Ty: case Ty. TV: apply IH to Ty Ev1 Rel. case TV. search.
+
+
+Prove library:host:var_types_maintained.
+%TS-splitlist
+ search.
+
+
+Prove library:host:type_preservation_s.
+%X-splitlist
+ Ty: case Ty. TyCons: apply type_preservation_e to Ty Ev1 Rel.
+ TyV: case TyCons. LV: case LkpV.
+   %Lkp-Here
+    apply lookup_unique to LkpTy Ty1. search.
+   %Lkp-Later
+    LV: case LV1.
+      %Lkp-Here
+       apply lookup_unique to Ty2 LkpTy. search.
+      %Lkp-Later
+       assert X = Tl -> false. intros E. case E. backchain LV1.
+       assert X = Hd -> false. intros E. case E. backchain LV.
+       L: apply lookup_after_select_before to LV2 Ev4 _.
+       L': apply lookup_after_select_before to L Ev3 _.
+       apply Rel to _ L'. search.
+
+
+Prove_Constraint library:host:trans_eval_e.
+%P-null
+ case Hyp1. search. search.
+%P-head
+ case Hyp1. search.
+%P-tail
+ case Hyp1. search.
+%P-nil
+ search.
+%P-cons
+ case Hyp1. case Hyp3. Is1: apply eval_e_is to _ _ H1.
+ Is2: apply eval_e_is to _ _ H2. Or: apply is_e_eq_or_not to Is1 Is2.
+ E: case Or.
+   %V1 = V2
+    search.
+   %V1 != V2
+    search.
+
+
+Prove library:host:eval_e_unique.
+%E-nil
+ case Ev2. search.
+%E-cons
+ Ev2: case Ev2. apply IH to Ev3 Ev2. apply IH to Ev4 Ev5. search.
+%E-null-true
+ Ev2: case Ev2.
+   %E-null-true
+    search.
+   %E-null-false
+    apply IH to Ev3 Ev2.
+%E-null-false
+ Ev2: case Ev2.
+   %E-null-true
+    apply IH to Ev3 Ev2.
+   %E-null-false
+    search.
+%E-head
+ Ev2: case Ev2. apply IH to Ev3 Ev2. search.
+%E-tail
+ Ev2: case Ev2. apply IH to Ev3 Ev2. search.
+
+
+Prove_Constraint library:host:trans_s_eval.
+%Trans-splitlist
+ Ev: case Hyp1. exists (Hd, V1)::(Tl, V2)::GTl. unfold.
+ exists (Tl, V2)::(Hd, cons V1 V2)::GTl. split.
+   %eval first two assigns
+    unfold. exists (Hd, cons V1 V2)::GHd. split.
+      %eval first Hd assign
+       search.
+      %eval Tl assign
+       search.
+   %eval latter assign to Hd
+    assert Tl = Hd -> false. intros E. case E. backchain Ev1. search.
+Prove_Ext_Ind library:host:eval_s.
+%P-splitlist
+ assert |{s}- splitlist Hd Tl E ~~>
+             (seq (seq (assign Hd E)
+                       (assign Tl (tail (var Hd))))
+                       (assign Hd (head (var Hd)))). unfold.
+ exists (seq (seq (assign Hd E)
+                  (assign Tl (tail (var Hd))))
+                  (assign Hd (head (var Hd)))), VHd, GHd, VTl. split.
+   %eval trans
+    unfold. exists (Tl, V2)::(Hd, cons V1 V2)::GTl. split.
+      %eval first two assigns
+       unfold. exists (Hd, cons V1 V2)::GHd. split.
+         %eval first Hd assign
+          search.
+         %eval Tl assign
+          search.
+      %eval latter assign to Hd
+       assert Tl = Hd -> false. intros E. case E. backchain Rel2.
+       search.
+   %trans
+    search.
+   %eval E
+    search.
+   %Hd != Tl
+    search.
+   %select Hd
+    search.
+   %select Tl
+    search.
+
+
+Prove_Constraint library:host:trans_s_eval_results.
+%X-splitlist
+ EvTr: case Hyp2. EvTr: case EvTr. EvTr: case EvTr. EvTr: case EvTr2.
+ EvTr: case EvTr2. EvTr: case EvTr2. case EvTr2.
+   %Lkp-Here
+    EvTr: case EvTr1. EvTr: case EvTr1. EvTr: case EvTr1. L: case EvTr1.
+      %Lkp-Here:  Hd = Tl
+       apply Hyp4 to _.
+      %Lkp-Later:  lookup NewG1 Hd (cons V4 V5)
+       STl: case EvTr4.
+         %Tl = Hd
+          apply L to _.
+         %select (Tl, VOld1) L1 NewG
+          SHd: case EvTr2.
+            %Hd = Tl
+             apply L to _.
+            %select (Hd, VOld2) L2 (Hd, cons V3 V2)::L1
+             EvSL: case Hyp1. case L1.
+               %Lkp-Here
+                apply eval_e_unique to EvTr EvSL. LX: case Hyp3.
+                  %Lkp-Here:  X = Hd
+                   search.
+                  %Lkp-Later:  lookup (Tl, V7)::GTl X V
+                   LX: case LX1.
+                     %Lkp-Here:  X = Tl
+                      search.
+                     %Lkp-Later:  lookup X V GTl
+                      assert X = Tl -> false.
+                        intros E. case E. backchain LX1.
+                      L2: apply lookup_after_select_before to LX2 EvSL3 _.
+                      assert X = Hd -> false.
+                        intros E. case E. backchain LX.
+                      L3: apply lookup_after_select_before to L2 EvSL2 _.
+                      L4: apply select_lookup to L3 EvTr3 _.
+                      L5: apply select_lookup to L4 STl _.
+                      L5': assert lookup ((Hd, cons V6 V7)::L1) X V.
+                      apply select_lookup to L5' SHd _. search.
+               %Lkp-Later
+                apply H1 to _.
+   %Lkp-Later
+    apply H1 to _.
+
+
+Prove_Constraint library:host:trans_s_eval_results_back.
+%X-splitlist
+ EvSL: case Hyp1. EvTr: case Hyp2. EvTr: case EvTr. EvTr: case EvTr1.
+ EvTr: case EvTr. apply eval_e_unique to EvTr EvSL. EvTr: case EvTr2.
+ EvTr: case EvTr1. EvTr: case EvTr2. EvTr: case EvTr1.
+ EvTr: case EvTr2. LHd: case EvTr2.
+   %Lkp-Here
+    EvTr: case EvTr3.
+      %Slct-Here:  Hd = Tl
+       apply EvSL1 to _.
+      %Slct-Later
+       LX: case Hyp3.
+         %Lkp-Here:  X = Hd
+          STl: case EvTr5.
+            %Slct-Here:  Tl = X
+             apply EvSL1 to _.
+            %Slct-Later
+             L: case EvTr1.
+               %Lkp-Here:  X = Tl
+                apply EvSL1 to _.
+               %Lkp-Later
+                L': case L1.
+                  %Lkp-Here
+                   search.
+                  %Lkp-Later:  X != X
+                   apply L' to _.
+         %Lkp-Later:  lookup (Tl, V5)::L1 X V
+          LX: case LX1.
+            %Lkp-Here:  X = Tl
+             search.
+            %Lkp-Later:  lookup L1 X V
+             assert X = Hd -> false. intros E. case E. backchain LX.
+             assert X = Tl -> false. intros E. case E. backchain LX1.
+             L1: apply lookup_after_select_before to LX2 EvTr2 _.
+             L2: apply lookup_after_select_before to L1 EvTr5 _.
+             L': case L2.
+               %Lkp-Here:  X = Hd
+                apply LX to _.
+               %Lkp-Later
+                L3: apply lookup_after_select_before to L'1 EvTr4 _.
+                L4: apply select_lookup to L3 EvSL2 _.
+                apply select_lookup to L4 EvSL3 _. search.
+   %Lkp-Later
+    apply LHd to _.
+
+
+Prove library:host:eval_e_value.
+%E-nil
+ search.
+%E-cons
+ apply IH to Ev1 AllVal. apply IH to Ev2 AllVal. search.
+%E-null-true
+ search.
+%E-null-false
+ search.
+%E-head
+ V: apply IH to Ev1 AllVal. case V. search.
+%E-tail
+ V: apply IH to Ev1 AllVal. case V. search.
+
+
+Prove library:host:eval_s_value.
+%X-splitlist
+ VCons: apply eval_e_value to Ev1 AllVal. V: case VCons (keep).
+ M: case Mem.
+   %Mem-Here:  (Hd, V1)
+    search.
+   %Mem-Later
+    M: case M.
+      %Mem-Here:  (Tl, V2)
+       search.
+      %Mem-Later
+       MGHd: apply mem_after_select_before to _ M.
+       apply mem_after_select_before to _ MGHd. backchain AllVal.
+
+
+Prove library:host:vars_eval_same_result.
+%E-nil
+ case Ev2. search.
+%E-cons
+ Ev2: case Ev2. Vars: case Vars.
+ apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+ apply IH to _ Vars1 Ev4 Ev5. backchain vars_equiv_right. search.
+%E-null-true
+ Ev2: case Ev2.
+   %E-null-true
+    search.
+   %E-null-false
+    Vars: case Vars. apply IH to _ Vars Ev3 Ev2.
+%E-null-false
+ Ev2: case Ev2.
+   %E-null-true
+    Vars: case Vars. apply IH to _ Vars Ev3 Ev2.
+   %E-null-false
+    search.
+%E-head
+ Ev2: case Ev2. Vars: case Vars. apply IH to _ _ Ev3 Ev2. search.
+%E-tail
+ Ev2: case Ev2. Vars: case Vars. apply IH to _ _ Ev3 Ev2. search.

@@ -1,0 +1,86 @@
+Module library:host
+
+/*We use the standard library's lookup and no_lookup relations rather
+  than writing our own here.*/
+
+/*Gamma |- e* : ty*/
+Judgment ty_e : [(string, ty)] e* ty
+/*Gamma |- s* -| Gamma*/
+Judgment ty_s : [(string, ty)] s* [(string, ty)]
+
+lookup G N Ty
+---------------- [T-var]
+ty_e G var(N) Ty
+
+
+---------------------- [T-intlit]
+ty_e G intlit(I) intTy
+
+
+----------------- [T-true]
+ty_e G trueE bool
+
+
+------------------ [T-false]
+ty_e G falseE bool
+
+
+ty_e G E1 intTy
+ty_e G E2 intTy
+------------------------ [T-add]
+ty_e G add(E1, E2) intTy
+
+
+ty_e G E1 intTy
+ty_e G E2 intTy
+---------------------- [T-eq]
+ty_e G eq(E1, E2) bool
+
+
+ty_e G E1 intTy
+ty_e G E2 intTy
+---------------------- [T-gt]
+ty_e G gt(E1, E2) bool
+
+
+ty_e G E bool
+------------------ [T-not]
+ty_e G not(E) bool
+
+
+
+
+
+-------------- [TS-skip]
+ty_s G skipS G
+
+
+ty_s G S1 G1
+ty_s G1 S2 G2
+--------------------- [TS-seq]
+ty_s G seq(S1, S2) G2
+
+
+ty_e G E Ty
+no_lookup G N
+-------------------------------- [TS-decl]
+ty_s G decl(N, Ty, E) (N, Ty)::G
+
+
+ty_e G E Ty
+lookup G N Ty
+--------------------- [TS-assign]
+ty_s G assign(N, E) G
+
+
+ty_e G E bool
+ty_s G S1 G1
+ty_s G S2 G2
+------------------------ [TS-ifte]
+ty_s G ifte(E, S1, S2) G
+
+
+ty_e G E bool
+ty_s G S G1
+-------------------- [TS-while]
+ty_s G while(E, S) G

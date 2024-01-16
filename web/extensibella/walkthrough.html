@@ -153,6 +153,14 @@ typeOf Ctx app(T1, T2) Ty2
 </pre>
 
   <p>
+    We can compile this module for Extensibella using Sterling by
+    running the following command from the directory containing the
+    contents of the tarball:
+  </p>
+  <pre class="code">
+sterling --extensibella walkthrough:host</pre>
+
+  <p>
     Once this module has been compiled for Extensibella using
     Sterling, we can load it in Extensibella to reason about it:
   </p>
@@ -396,7 +404,7 @@ Proof completed. </pre>
     extension-introduced construct is the same as that of its
     translation.
   <pre class="code extensibella">
-<b>Translation_Constraint trans_type_same : forall G T Ty T_T,
+ < <b>Translation_Constraint trans_type_same : forall G T Ty T_T,
   G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.</b></pre>
     Because the host language cannot contain translating constructs,
     there are no cases to prove when a translation constraint is
@@ -409,7 +417,7 @@ Proof completed. </pre>
     (<i>Ext</i>ension <i>Ind</i>uction) for the <code>typeOf</code>
     relation:
     <pre class="code extensibella">
-<b>Ext_Ind typeOf G T Ty with G |{tm}- T ~~> T'.</b></pre>
+ < <b>Ext_Ind typeOf G T Ty with G |{tm}- T ~~> T'.</b></pre>
     When an extension introduces a property, it must be proven for the
     known cases as well as a generic case.  When the key relation for
     an extension-introduced property is introduced by the host
@@ -498,6 +506,12 @@ typeOf Ctx let(X, T1, T2) Ty2
 </pre>
 
   <p>
+    We can compile this module in the same manner as the host module:
+  </p>
+  <pre class="code">
+sterling --extensibella walkthrough:let</pre>
+
+  <p>
     Once this module has been compiled for Extensibella using
     Sterling, we can load it in Extensibella to reason about it:
   </p>
@@ -510,6 +524,15 @@ typeOf Ctx let(X, T1, T2) Ty2
     Extensibella knows about this builds-on relation, so this
     reasoning module has obligations to prove the declarations given
     by the host language.
+  </p>
+
+  <p>
+    If you are following along on the Extensibella command line, you
+    will need to copy the lines before
+    the <code class="extensibella">Prove</code> declaration for type
+    preservation into the command line, one at a time, before
+    following the rest of this section to satisfy the earlier expected
+    obligations.
   </p>
 
 
@@ -564,14 +587,1024 @@ Ev2 : subst X T1 T2 T'
 
 
   <h3>Proving Translation Constraint</h3>
+  <p>
+    Each extension also must show the translation constraints hold for
+    the translation rules it introduces.  After proving type
+    preservation, we are ready to prove the translation constraint,
+    and declare so with
+    a <code class="extensibella">Prove_Constraint</code> declaration:
+  </p>
+  <pre class="code extensibella">
+ < <b>Prove_Constraint walkthrough:host:trans_type_same.</b>
+
+Variables: G Ty T1 T2 Ty1 X
+Hyp : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+Hyp1 : typeOf G (let X T1 T2) Ty
+Hyp2 : typeOf G T1 Ty1
+============================
+ typeOf G (app (abs X Ty1 T2) T1) Ty</pre>
+
+  <p>
+    This gives us the case for the translation being derived using
+    the <code>Trans-Let</code> rule.  To show the translation has the
+    same type, we need to show the
+    translation <code class="extensibella">app (abs X Ty1 T2)
+      T1</code> has the same type as the original
+    term <code class="extensibella">let X T1 T2</code>.  We can
+    analyze the typing derivation for the original term, since its
+    primary component is built by the <code>let</code> constructor:
+  </p>
+  <pre class="code extensibella">
+ < <b>case Hyp1.</b>
+
+Variables: G Ty T1 T2 Ty1 X Ty2
+Hyp : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+Hyp2 : typeOf G T1 Ty1
+H1 : typeOf G T1 Ty2
+H2 : typeOf ((X, Ty2)::G) T2 Ty
+============================
+ typeOf G (app (abs X Ty1 T2) T1) Ty</pre>
+
+  <p>
+    We need to know <code>T2</code> has type <code>Ty</code>
+    if <code>X</code> is assigned type <code>Ty1</code> in its
+    context.  To do this, we can use the type uniqueness property
+    introduced by the host language:
+  </p>
+  <pre class="code extensibella">
+ < <b>apply typeOf_unique to Hyp2 H1.</b>
+
+Variables: G Ty T1 T2 X Ty2
+Hyp : G |{tm}- let X T1 T2 ~~> app (abs X Ty2 T2) T1
+Hyp2 : typeOf G T1 Ty2
+H1 : typeOf G T1 Ty2
+H2 : typeOf ((X, Ty2)::G) T2 Ty
+============================
+ typeOf G (app (abs X Ty2 T2) T1) Ty</pre>
+
+  <p>
+    This showed <code>Ty1</code> and <code>Ty2</code> must be the
+    same, and then we have the premises to use the <code>T-App</code>
+    and <code>T-Abs</code> rules to prove the conclusion:
+  </p>
+  <pre class="code extensibella">
+ < <b>search.</b>
+Proof completed.</pre>
 
 
   <h3>Proving Ext_Ind</h3>
+  <p>
+    Each extension has an obligation to show the rules they introduce
+    are compatible with the rule defined by
+    the <code class="extensibella">Ext_Ind</code> declaration.  This
+    compatibility for a relation <code class="extensibella">rel</code>
+    is defined by a relation <code class="extensibella">&lt;rel
+    {T}&gt;</code>, call the translation version
+    of <code class="extensibella">rel</code>.  In our case, this is
+    <code class="extensibella">&lt;typeOf {T}&gt;</code>.  Each rule
+    for this relation corresponds to one for the underlying relation,
+    with those introduced by extensions having the generic rule, with
+    a translation and the relation holding for the translation,
+    incorporated.  We also have the extension size version of a
+    relation, written <code class="extensibella">&lt;typeOf
+    {ES}&gt;</code>, which incorporates a count of the number of
+    extension-introduced rules in a derivation.  Both of these
+    relation versions can be read about in
+    our <a href="https://arxiv.org/abs/2312.14374">paper</a>.
+  </p>
+
+  <p>
+    What <code>Ext_Ind</code> requires proving is that we have a
+    derivation of the translation version of a relation whenever we
+    have a derivation of the extension size version of the relation;
+    in the case of <code>typeOf</code>, this is
+    <pre class="code extensibella">
+forall G T Ty n, &lt;typeOf {ES}&gt; G T Ty n -> &lt;typeOf {T}&gt; G T Ty</pre>
+    We will prove this by induction on the extension
+    size <code>n</code> and the derivation
+    of <code class="extensibella">&lt;typeOf {ES}&gt; G T Ty n</code>.
+  </p>
+
+  <p>
+    We start by declaring we are ready to fulfill the proof obligation
+    for the <code>Ext_Ind</code> for the <code>typeOf</code> relation:
+  </p>
+  <pre class="code extensibella">
+ < <b>Prove_Ext_Ind walkthrough:host:typeOf.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Acc : acc N @
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+============================
+ &lt;typeOf {T}&gt; G (let X T1 T2) Ty</pre>
+
+  <p>
+    Strong induction on <code>n</code> is achieved by use of
+    the <code class="extensibella">acc</code> relation defined in the
+    Extensibella standard library, which states
+    that <code class="extensibella">acc</code> holds for a number if
+    it holds for any other positive number less than it:
+  </p>
+  <pre class="code extensibella">
+ < <b>Acc: case Acc.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+============================
+ &lt;typeOf {T}&gt; G (let X T1 T2) Ty</pre>
+
+  <p>
+    This gives us a way to build a derivation
+    of <code class="extensibella">acc</code> suitable for use with the
+    inductive hypothesis. We can use
+    the <code class="extensibella">unfold</code> tactic to see the
+    definition of <code class="extensibella">&lt;typeOf {T}&gt; G (let
+      X T1 T2) Ty</code>, and thus what we need to prove:
+  </p>
+  <pre class="code extensibella">
+ < <b>unfold.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+============================
+ exists T' Ty1,
+   &lt;typeOf {T}&gt; G T' Ty /\
+   (G |{tm}- let X T1 T2 ~~> T' /\
+   (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))</pre>
+
+  <p>
+    We see the first two conjuncts in the conclusion are those for the
+    generic rule, and the others are the premises of
+    the <code>T-Let</code> typing rule, but now using the translation
+    version of the relation.  Then we need to show the
+    original <code>let</code> translates, that its translation has the
+    same type, and that each of the premises can be turned into their
+    translation version.
+  </p>
+
+  <p>
+    We start with showing the translation exists.  This requires a
+    typing derivation for <code>T1</code>, which we can get by
+    applying the <code class="extensibella">drop_ext_ind_typeOf</code>
+    property introduced by <code class="extensibella">Ext_Ind</code>:
+  </p>
+  <pre class="code extensibella">
+ < <b>apply drop_ext_ind_typeOf to Rel3.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+============================
+ exists T' Ty1,
+   &lt;typeOf {T}&gt; G T' Ty /\
+   (G |{tm}- let X T1 T2 ~~> T' /\
+   (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))
+
+ < <b>assert G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+============================
+ exists T' Ty1,
+   &lt;typeOf {T}&gt; G T' Ty /\
+   (G |{tm}- let X T1 T2 ~~> T' /\
+   (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))</pre>
+
+  <p>
+    The other portions of the conclusion are related, as typing the
+    translation ultimately requires the same premises as
+    the <code>T-Let</code> rule.  These will require using the
+    inductive hypothesis, which will in turn require derivations of
+    <code class="extensibella">acc</code> for <code>N2</code>
+    and <code>N3</code>.  We start by building derivations
+    of <code>is_integer</code> for the relevant numbers.  We can use
+    the <code class="extensibella">ext_ind_is_int_typeOf</code>
+    property, also introduced by
+    the <code class="extensibella">Ext_Ind</code> declaration.
+  </p>
+  <pre class="code extensibella">
+ < <b>IsN2: apply ext_ind_is_int_typeOf to Rel3.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+============================
+ exists T' Ty1,
+   &lt;typeOf {T}&gt; G T' Ty /\
+   (G |{tm}- let X T1 T2 ~~> T' /\
+   (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))
+
+ < <b>IsN3: apply ext_ind_is_int_typeOf to Rel4.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+============================
+ exists T' Ty1,
+   &lt;typeOf {T}&gt; G T' Ty /\
+   (G |{tm}- let X T1 T2 ~~> T' /\
+   (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))
+
+ < <b>IsN4: apply plus_integer_is_integer to _ _ Rel2.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+============================
+ exists T' Ty1,
+   &lt;typeOf {T}&gt; G T' Ty /\
+   (G |{tm}- let X T1 T2 ~~> T' /\
+   (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))</pre>
+
+  <p>
+    We can now use an Extensibella standard library property to
+    show <code>N4 < N</code>:
+  </p>
+  <pre class="code extensibella">
+ < <b>L: apply lt_plus_one to Rel1 _.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+============================
+ exists T' Ty1,
+   &lt;typeOf {T}&gt; G T' Ty /\
+   (G |{tm}- let X T1 T2 ~~> T' /\
+   (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))</pre>
+
+  <p>
+    To show both <code>N2</code> and <code>N3</code> are at least
+    zero, a requirement for <code class="extensibella">acc</code>, we
+    can use another property declared
+    by <code class="extensibella">Ext_Ind</code>:
+  </p>
+  <pre class="code extensibella">
+ < <b>PosN2: apply ext_ind_pos_typeOf to Rel3.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N2
+============================
+ exists T' Ty1,
+   &lt;typeOf {T}&gt; G T' Ty /\
+   (G |{tm}- let X T1 T2 ~~> T' /\
+   (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))
+
+ < <b>PosN3: apply ext_ind_pos_typeOf to Rel4.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N2
+PosN3 : 0 <= N3
+============================
+ exists T' Ty1,
+   &lt;typeOf {T}&gt; G T' Ty /\
+   (G |{tm}- let X T1 T2 ~~> T' /\
+   (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))</pre>
+
+  <p>
+    We can now build derivations
+    of <code class="extensibella">&lt;typeOf {T}&gt;</code> for
+    both <code>T1</code> and <code>T2</code>.  We can use a theorem
+    from the Extensibella standard library to show <code>N2</code> is
+    either less than <code>N4</code> or equal to it, then split it
+    into the two cases:
+  </p>
+  <pre class="code extensibella">
+ < <b>assert &lt;typeOf {T}&gt; G T1 Ty1.</b>
+Subgoal 4.1:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N2
+PosN3 : 0 <= N3
+============================
+ &lt;typeOf {T}&gt; G T1 Ty1
+
+ < <b>Or: apply lt_left to Rel2 _ _.</b>
+Subgoal 4.1:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N2
+PosN3 : 0 <= N3
+Or : N2 < N4 \/ N2 = N4
+============================
+ &lt;typeOf {T}&gt; G T1 Ty1
+
+ < <b>L': case Or.</b>
+Subgoal 4.1.1:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N2
+PosN3 : 0 <= N3
+L' : N2 < N4
+============================
+ &lt;typeOf {T}&gt; G T1 Ty1</pre>
+
+  <p>
+    If <code>N2</code> is less than <code>N4</code>, we know by
+    transitivity that it is also less than <code>N</code>.  Then we
+    have the premises required for using the <code>Acc</code>
+    hypothesis to get a derivation of
+    the <code class="extensibella">acc</code> relation
+    for <code>N3</code>, and we can apply the inductive hypothesis,
+    finishing the case.
+  </p>
+  <pre class="code extensibella">
+ < <b>L'': apply less_integer_transitive to L' L.</b>
+Subgoal 4.1.1:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N2
+PosN3 : 0 <= N3
+L' : N2 < N4
+L'' : N2 < N
+============================
+ &lt;typeOf {T}&gt; G T1 Ty1
+
+ < <b>A: apply Acc to _ L''.</b>
+Subgoal 4.1.1:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N2
+PosN3 : 0 <= N3
+L' : N2 < N4
+L'' : N2 < N
+A : acc N2 *
+============================
+ &lt;typeOf {T}&gt; G T1 Ty1
+
+ < <b>apply IH to Rel3 A.</b>
+Subgoal 4.1.1:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N2
+PosN3 : 0 <= N3
+L' : N2 < N4
+L'' : N2 < N
+A : acc N2 *
+H3 : &lt;typeOf {T}&gt; G T1 Ty1
+============================
+ &lt;typeOf {T}&gt; G T1 Ty1
+
+ < <b>search.</b>
+Subgoal 4.1.2:
+
+Variables: N G Ty N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N4 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N4 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N4
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N4
+PosN3 : 0 <= N3
+============================
+ &lt;typeOf {T}&gt; G T1 Ty1</pre>
+
+  <p>
+    The other case, where <code>N2</code> is equal to <code>N4</code>,
+    is similar:
+  </p>
+  <pre class="code extensibella">
+ < <b>A: apply Acc to _ L.</b>
+Subgoal 4.1.2:
+
+Variables: N G Ty N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N4 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N4 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N4
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N4
+PosN3 : 0 <= N3
+A : acc N4 *
+============================
+ &lt;typeOf {T}&gt; G T1 Ty1
+
+ < <b>apply IH to Rel3 A.</b>
+Subgoal 4.1.2:
+
+Variables: N G Ty N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N4 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N4 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N4
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N4
+PosN3 : 0 <= N3
+A : acc N4 *
+H3 : &lt;typeOf {T}&gt; G T1 Ty1
+============================
+ &lt;typeOf {T}&gt; G T1 Ty1
+
+ < <b>search.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N2
+PosN3 : 0 <= N3
+H3 : &lt;typeOf {T}&gt; G T1 Ty1
+============================
+ exists T' Ty1,
+   &lt;typeOf {T}&gt; G T' Ty /\
+   (G |{tm}- let X T1 T2 ~~> T' /\
+   (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))</pre>
+
+  <p>
+    We can apply similar reasoning to get a derivation
+    of <code class="extensibella">&lt;typeOf {T}&gt;</code>
+    for <code>T2</code>:
+  </p>
+<pre class="code extensibella">
+<b>assert &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty.
+Or: apply lt_right to Rel2 _ _ _.
+L': case Or.
+L'': apply less_integer_transitive to L' L.
+A: apply Acc to _ L''. apply IH to Rel4 A.
+search.
+A: apply Acc to _ L. apply IH to Rel4 A.
+search.</b>
+</pre>
+
+  <p>
+    At this point, we have all we need to prove our conclusion, so we
+    give witnesses for the conclusion's existentially-quantified
+    variables and finish the proof.
+  </p>
+  <pre class="code extensibella">
+ < <b>exists app (abs X Ty1 T2) T1, Ty1.</b>
+Subgoal 4:
+
+Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
+IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {T}&gt; G T Ty
+IH1 : forall N G T Ty,
+        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {T}&gt; G T Ty
+Rel : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Rel1 : 1 + N4 = N
+Rel2 : N2 + N3 = N4
+Rel3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
+Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+H1 : typeOf G T1 Ty1
+H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+IsN3 : is_integer N3
+IsN4 : is_integer N4
+L : N4 < N
+PosN2 : 0 <= N2
+PosN3 : 0 <= N3
+H3 : &lt;typeOf {T}&gt; G T1 Ty1
+H4 : &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty
+============================
+ &lt;typeOf {T}&gt; G (app (abs X Ty1 T2) T1) Ty /\
+ (G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1 /\
+ (&lt;typeOf {T}&gt; G T1 Ty1 /\ &lt;typeOf {T}&gt; ((X, Ty1)::G) T2 Ty))
+
+ < <b>search.</b>
+Proof completed.</pre>
 </div>
 
 
 <div class="section">
   <h2>Big Step Extension</h2>
+  <p>
+    Our other extension does not introduce any new syntax, only
+    defining a new relation for big-step evaluation.
+  </p>
+  <a class="fold-link" href="javascript:void" id="togglebigStep.sos"
+     onclick="toggleFile('bigStep.sos')">[Reduce File]</a>
+<pre class="code sterling" id="bigStep.sos">
+Module walkthrough:big_step
+
+Builds on walkthrough:host
+
+
+Judgment big_step : tm* tm
+
+value T
+------------ [Big-End]
+big_step T T
+
+
+eval T T1
+big_step T1 T2
+-------------- [Big-Step]
+big_step T T2
+
+
+[] |{tm}- T ~~> T_T
+big_step T_T T1
+------------------- [Big-Trans]*
+big_step T T1</pre>
+
+  <p>
+    The big-step evaluation defined here is a bit odd, but we make it
+    so to make our example property easier to understand, making the
+    focus on the aspects of proving an extension-introduced property
+    rather than the specific property.  The oddness here is that we
+    may step through multiple small-step evaluation steps
+    (<code>eval</code> steps) or we may translate away any extension
+    syntax and step through the evaluation of its translation.
+  </p>
+
+  <p>
+    We can compile this for Extensibella as before:
+  </p>
+  <pre class="code">
+sterling --extensibella walkthrough:big_step</pre>
+
+  <p>
+    We can also start load it into Extensibella as with the previous
+    two modules:
+  </p>
+  <pre class="code extensibella">
+ < <b>Module walkthrough:big_step.</b></pre>
+
+  <h3>Proving Obligations</h3>
+  <p>
+    Because this extension does not introduce any new rules for
+    existing relations, it does not need to prove anything for
+    properties the host language introduced.  However, it still needs
+    to declare it is fulfilling each obligation:
+  </p>
+  <pre class="code extensibella">
+ < <b>Prove walkthrough:host:typeOf_unique.</b>
+Proof completed.
+
+ < <b>Prove walkthrough:host:ty_lookup.</b>
+Proof completed.
+
+ < <b>Prove walkthrough:host:subst_type_preservation.</b>
+Proof completed.
+
+ < <b>Prove walkthrough:host:type_preservation.</b>
+Proof completed.
+
+ < <b>Prove_Constraint walkthrough:host:trans_type_same.</b>
+Proof completed.
+
+ < <b>Prove_Ext_Ind walkthrough:host:typeOf.</b>
+Proof completed.</pre>
+
+   <p>
+     The purpose of this is twofold.  First, it ensures any needed
+     obligations are proven.  In general, extensions may have some
+     empty and some non-empty obligations, and this ensures none of
+     the non-empty ones are missed.  Second, it makes clear where in
+     the order the extension writer intends for any new properties to
+     be placed.  Extensions must maintain the order of properties
+     imported from the host language, but may add their own properties
+     within this order.  By requiring the location of each property
+     from the host language to be marked, we know where each
+     extension-introduced property is intended to be added, and which
+     host properties it may use as lemmas.
+   </p>
+
+
+  <h3>Proving an Extension-Introduced Property</h3>
+  <p>
+    Our extension introduces a new property, after all the properties
+    introduced by the host language, that its big-step evaluation
+    preserves types.  The key relation of this property will be the
+    big-step evaluation relation:
+  </p>
+  <pre class="code extensibella">
+ > <b>Extensible_Theorem
+     big_step_type_preservation : forall T Ty T',
+       Ty : typeOf [] T Ty ->
+       Big : big_step T T' ->
+       typeOf [] T' Ty
+     on Big.</b>
+Subgoal 1:
+
+Variables: Ty T'
+IH : forall T Ty T', typeOf [] T Ty -> big_step T T' * -> typeOf [] T' Ty
+Ty : typeOf [] T' Ty
+Big : big_step T' T' @
+Big1 : value T'
+============================
+ typeOf [] T' Ty</pre>
+
+  <p>
+    This property has three cases.  The first one, into which we drop
+    immediately, is that for when the big-step evaluation was derived
+    using the <code>Big-End</code> rule.  As there is no evaluation
+    here, the proof is immediate:
+  </p>
+  <pre class="code extensibella">
+ < <b>search.</b>
+Subgoal 2:
+
+Variables: T Ty T' T3
+IH : forall T Ty T', typeOf [] T Ty -> big_step T T' * -> typeOf [] T' Ty
+Ty : typeOf [] T Ty
+Big : big_step T T' @
+Big1 : eval T T3
+Big2 : big_step T3 T' *
+============================
+ typeOf [] T' Ty</pre>
+
+  <p>
+    The next case is that for when the big-step evaluation was derived
+    using the <code>Big-Step</code> rule.  Here we can apply the type
+    preservation property of the host language to find <code>T3</code>
+    has the same type, then the inductive hypothesis to
+    find <code>T'</code> has the same type:
+  </p>
+  <pre class="code extensibella">
+< <b>apply type_preservation to Ty Big1.</b>
+Subgoal 2:
+
+Variables: T Ty T' T3
+IH : forall T Ty T', typeOf [] T Ty -> big_step T T' * -> typeOf [] T' Ty
+Ty : typeOf [] T Ty
+Big : big_step T T' @
+Big1 : eval T T3
+Big2 : big_step T3 T' *
+H1 : typeOf [] T3 Ty
+============================
+ typeOf [] T' Ty
+
+< <b>apply IH to _ Big2.</b>
+Subgoal 2:
+
+Variables: T Ty T' T3
+IH : forall T Ty T', typeOf [] T Ty -> big_step T T' * -> typeOf [] T' Ty
+Ty : typeOf [] T Ty
+Big : big_step T T' @
+Big1 : eval T T3
+Big2 : big_step T3 T' *
+H1 : typeOf [] T3 Ty
+H2 : typeOf [] T' Ty
+============================
+ typeOf [] T' Ty
+
+< <b>search.</b>
+Subgoal 3:
+
+Variables: Ty T' T_T
+IH : forall T Ty T', typeOf [] T Ty -> big_step T T' * -> typeOf [] T' Ty
+Ty : typeOf [] &lt;unknown tm&gt; Ty
+Big : big_step &lt;unknown tm&gt; T' @
+Big1 : [] |{tm}- &lt;unknown tm&gt; ~~> T_T
+Big2 : big_step T_T T' *
+============================
+ typeOf [] T' Ty</pre>
+
+  <p>
+    The final case, which we see as the next goal after
+    the <code class="extensibella">search</code> tactic completing the
+    case for <code>Big-Step</code> is the generic case.  Because our
+    key relation is introduced by this extension, the generic case
+    uses the default rule introduced by the
+    module, <code>Big-Trans</code>, which is instantiated for each
+    construct introduced by another extension in a composition.  For
+    the generic proof, it is instantiated for a special
+    term <code class="extensibella">&lt;unknown tm&gt;</code>
+    representing this class of terms <i>unknown</i> in the context of
+    the current module.
+  </p>
+
+  <p>
+    Because this generic term is a stand-in for terms introduced by
+    other modules that will introduce their own semantics, we do not
+    know how existing relations, such as <code>typeOf</code>, are
+    defined for it and case analysis is disallowed.  If we try, we get
+    an error message:
+  </p>
+  <pre class="code extensibella">
+ < <b>case Ty.</b>
+Error:  Cannot do case analysis on host extensible relation with unknown primary component
+Subgoal 3:
+
+Variables: Ty T' T_T
+IH : forall T Ty T', typeOf [] T Ty -> big_step T T' * -> typeOf [] T' Ty
+Ty : typeOf [] &lt;unknown tm&gt; Ty
+Big : big_step &lt;unknown tm&gt; T' @
+Big1 : [] |{tm}- &lt;unknown tm&gt; ~~> T_T
+Big2 : big_step T_T T' *
+============================
+ typeOf [] T' Ty</pre>
+
+  <p>
+    Because case analysis is limited here, we instead rely on
+    translation constraints and other existing properties to show what
+    we want about the semantics
+    of <code class="extensibella">&lt;unknown tm&gt;</code>.  We can
+    start our proof of this case by using the translation constraint
+    from the host language to show the translation <code>T_T</code>
+    has the same type:
+  </p>
+  <pre class="code extensibella">
+ < <b>apply trans_type_same to Big1 Ty.</b>
+Subgoal 3:
+
+Variables: Ty T' T_T
+IH : forall T Ty T', typeOf [] T Ty -> big_step T T' * -> typeOf [] T' Ty
+Ty : typeOf [] &lt;unknown tm&gt; Ty
+Big : big_step &lt;unknown tm&gt; T' @
+Big1 : [] |{tm}- &lt;unknown tm&gt; ~~> T_T
+Big2 : big_step T_T T' *
+H1 : typeOf [] T_T Ty
+============================
+ typeOf [] T' Ty</pre>
+
+  <p>
+    This gives us the typing derivation we need for applying the
+    inductive hypothesis, which we can do to complete the proof:
+  </p>
+  <pre class="code extensibella">
+ < <b>apply IH to _ Big2.</b>
+Subgoal 3:
+
+Variables: Ty T' T_T
+IH : forall T Ty T', typeOf [] T Ty -> big_step T T' * -> typeOf [] T' Ty
+Ty : typeOf [] &lt;unknown tm&gt; Ty
+Big : big_step &lt;unknown tm&gt; T' @
+Big1 : [] |{tm}- &lt;unknown tm&gt; ~~> T_T
+Big2 : big_step T_T T' *
+H1 : typeOf [] T_T Ty
+H2 : typeOf [] T' Ty
+============================
+ typeOf [] T' Ty
+
+ < <b>search.</b>
+Proof completed.
+</pre>
+
+  <p>
+    If an extension-introduced property is proven using a relation
+    from the host language as its key relation, instead of an
+    extension-introduced relation as we used here, the ideas behind
+    the proof will be similar.  However, instead of the default rule
+    given by the module instantiated for the generic
+    term <code class="extensibella">&lt;unknown tm&gt;</code> as the
+    rule giving rise to the case, it will have the rule given by
+    the <code class="extensibella">Ext_Ind</code> declaration for the
+    relation instantiated for the generic constructor as the rule
+    giving rise to the case.
+  </p>
+
 </div>
 
 

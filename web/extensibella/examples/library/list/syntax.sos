@@ -1,0 +1,48 @@
+Module library:list
+
+Builds on library:host
+
+e ::= ...
+    | nil
+    | cons(e, e)
+    | null(e)
+    | head(e)
+    | tail(e)
+
+ty ::= ...
+     | list(ty)
+
+s ::= ...
+    | splitlist(string, string, e)
+
+
+------------------- [P-null]
+|{e}- null(E) ~~> E
+
+
+------------------- [P-head]
+|{e}- head(E) ~~> E
+
+
+------------------- [P-tail]
+|{e}- tail(E) ~~> E
+
+
+------------------- [P-nil]
+|{e}- nil ~~> trueE
+
+
+--------------------------------- [P-cons]
+|{e}- cons(E1, E2) ~~> eq(E1, E2)
+
+
+Hd != Tl
+----------------------------------------- [P-splitlist]
+|{s}- splitlist(Hd, Tl, E) ~~>
+      seq(seq(assign(Hd, E),
+              assign(Tl, tail(var(Hd)))),
+              assign(Hd, head(var(Hd))))
+
+
+---------------------- [P-list]
+|{ty}- list(Ty) ~~> Ty

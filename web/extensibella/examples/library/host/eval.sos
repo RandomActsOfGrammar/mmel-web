@@ -1,0 +1,131 @@
+Module library:host
+
+Judgment value: e*
+
+--------------- [V-Int]
+value intlit(I)
+
+
+----------- [V-True]
+value trueE
+
+
+------------ [V-False]
+value falseE
+
+/*We use the standard library's lookup and select relations rather
+  than writing our own here.*/
+
+/*gamma |- e* \Downarrow e*/
+Judgment eval_e : [(string, e)] e* e
+/*gamma |- s* -| gamma*/
+Judgment eval_s : [(string, e)] s* [(string, e)]
+
+lookup G N V
+----------------- [E-var]
+eval_e G var(N) V
+
+
+---------------------------- [E-intlit]
+eval_e G intlit(I) intlit(I)
+
+
+-------------------- [E-true]
+eval_e G trueE trueE
+
+
+---------------------- [E-false]
+eval_e G falseE falseE
+
+
+eval_e G E1 intlit(I1)
+eval_e G E2 intlit(I2)
+I1 + I2 = I
+------------------------------ [E-add]
+eval_e G add(E1, E2) intlit(I)
+
+
+eval_e G E1 V1
+eval_e G E2 V2
+V1 = V2
+------------------------- [E-eq-True]
+eval_e G eq(E1, E2) trueE
+
+
+eval_e G E1 V1
+eval_e G E2 V2
+V1 != V2
+-------------------------- [E-eq-False]
+eval_e G eq(E1, E2) falseE
+
+
+eval_e G E1 intlit(I1)
+eval_e G E2 intlit(I2)
+I1 > I2
+------------------------- [E-gt-True]
+eval_e G gt(E1, E2) trueE
+
+
+eval_e G E1 intlit(I1)
+eval_e G E2 intlit(I2)
+I1 <= I2
+-------------------------- [E-gt-False]
+eval_e G gt(E1, E2) falseE
+
+
+eval_e G E falseE
+--------------------- [E-not-True]
+eval_e G not(E) trueE
+
+
+eval_e G E trueE
+---------------------- [E-not-False]
+eval_e G not(E) falseE
+
+
+
+
+
+---------------- [X-skip]
+eval_s G skipS G
+
+
+eval_e G E V
+--------------------------------- [X-decl]
+eval_s G decl(N, Ty, E) (N, V)::G
+
+
+eval_e G E V
+select (N, VOld) NewG G
+---------------------------------- [X-assign]
+eval_s G assign(N, E) (N, V)::NewG
+
+
+eval_s G S1 G1
+eval_s G1 S2 G2
+----------------------- [X-seq]
+eval_s G seq(S1, S2) G2
+
+
+eval_e G E trueE
+eval_s G S1 G1
+--------------------------- [X-ifte-True]
+eval_s G ifte(E, S1, S2) G1
+
+
+eval_e G E falseE
+eval_s G S2 G1
+--------------------------- [X-ifte-False]
+eval_s G ifte(E, S1, S2) G1
+
+
+eval_e G E trueE
+eval_s G S G1
+eval_s G1 while(E, S) G2
+------------------------ [X-while-True]
+eval_s G while(E, S) G2
+
+
+eval_e G E falseE
+---------------------- [X-while-False]
+eval_s G while(E, S) G

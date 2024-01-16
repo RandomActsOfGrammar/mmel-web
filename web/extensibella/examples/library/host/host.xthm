@@ -1,0 +1,692 @@
+Module library:host.
+
+Translation_Constraint trans_e_unique : forall E E1 E2,
+  |{e}- E ~~> E1 -> |{e}- E ~~> E2 -> E1 = E2.
+Translation_Constraint trans_e_is : forall E E',
+  |{e}- E ~~> E' -> is_e E -> is_e E'.
+
+Translation_Constraint trans_s_unique : forall S S1 S2,
+  |{s}- S ~~> S1 -> |{s}- S ~~> S2 -> S1 = S2.
+Translation_Constraint trans_s_is : forall S S',
+  |{s}- S ~~> S' -> is_s S -> is_s S'.
+
+Translation_Constraint trans_ty_unique : forall Ty Ty1 Ty2,
+  |{ty}- Ty ~~> Ty1 -> |{ty}- Ty ~~> Ty2 -> Ty1 = Ty2.
+Translation_Constraint trans_ty_is : forall Ty Ty',
+  |{ty}- Ty ~~> Ty' -> is_ty Ty -> is_ty Ty'.
+
+
+Ext_Ind is_e E with |{e}- E ~~> T.
+
+
+Extensible_Theorem
+  is_e_var_or_not : forall E,
+    IsE: is_e E ->
+    (exists N, E = var N) \/ ((exists N, E = var N) -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_intlit_or_not : forall E,
+    IsE: is_e E ->
+    (exists I, E = intlit I) \/ ((exists I, E = intlit I) -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_trueE_or_not : forall E,
+    IsE: is_e E ->
+    E = trueE \/ (E = trueE -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_falseE_or_not : forall E,
+    IsE: is_e E ->
+    E = falseE \/ (E = falseE -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_add_or_not : forall E,
+    IsE: is_e E ->
+    (exists E1 E2, E = add E1 E2) \/
+    ((exists E1 E2, E = add E1 E2) -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_eqC_or_not : forall E,
+    IsE: is_e E ->
+    (exists E1 E2, E = eq E1 E2) \/
+    ((exists E1 E2, E = eq E1 E2) -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_gt_or_not : forall E,
+    IsE: is_e E ->
+    (exists E1 E2, E = gt E1 E2) \/
+    ((exists E1 E2, E = gt E1 E2) -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_not_or_not : forall E,
+    IsE: is_e E ->
+    (exists E', E = not E') \/
+    ((exists E', E = not E') -> false)
+  on IsE.
+search. search. search. search. search. search. search. search.
+Extensible_Theorem
+  is_e_eq_or_not : forall E1 E2,
+    IsE1: is_e E1 ->
+    IsE2: is_e E2 ->
+    E1 = E2 \/ (E1 = E2 -> false)
+  on IsE1.
+%var
+ Or: apply is_e_var_or_not to IsE2. E: case Or.
+   %var
+    Is: case IsE2. Or: apply is_string_eq_or_not to IsE3 Is.
+    E: case Or.
+      %S = N
+       search.
+      %S != N
+       right. intros Eq. case Eq. backchain E.
+   %not var
+    right. intros Eq. backchain E. case Eq. search.
+%intlit
+ Or: apply is_e_intlit_or_not to IsE2. E: case Or.
+   %var
+    Is: case IsE2. Or: apply is_integer_eq_or_not to IsE3 Is.
+    E: case Or.
+      %S = N
+       search.
+      %S != N
+       right. intros Eq. case Eq. backchain E.
+   %not var
+    right. intros Eq. backchain E. case Eq. search.
+%trueE
+ Or: apply is_e_trueE_or_not to IsE2. E: case Or.
+   %E2 = trueE
+    search.
+   %E2 != trueE
+    right. intros Eq. case Eq. backchain E.
+%falseE
+ Or: apply is_e_falseE_or_not to IsE2. E: case Or.
+   %E2 = falseE
+    search.
+   %E2 != falseE
+    right. intros Eq. case Eq. backchain E.
+%add
+ Or: apply is_e_add_or_not to IsE2. E: case Or.
+   %add
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      %E3 = E4
+       Or: apply IH to IsE4 Is1. E: case Or.
+         %E = E5
+          search.
+         %E != E5
+          right. intros Eq. case Eq. backchain E.
+      %E3 != E4
+       right. intros Eq. case Eq. backchain E.
+   %not add
+    right. intros Eq. backchain E. case Eq. search.
+%eq
+ Or: apply is_e_eqC_or_not to IsE2. E: case Or.
+   %add
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      %E3 = E4
+       Or: apply IH to IsE4 Is1. E: case Or.
+         %E = E5
+          search.
+         %E != E5
+          right. intros Eq. case Eq. backchain E.
+      %E3 != E4
+       right. intros Eq. case Eq. backchain E.
+   %not add
+    right. intros Eq. backchain E. case Eq. search.
+%gt
+ Or: apply is_e_gt_or_not to IsE2. E: case Or.
+   %add
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      %E3 = E4
+       Or: apply IH to IsE4 Is1. E: case Or.
+         %E = E5
+          search.
+         %E != E5
+          right. intros Eq. case Eq. backchain E.
+      %E3 != E4
+       right. intros Eq. case Eq. backchain E.
+   %not add
+    right. intros Eq. backchain E. case Eq. search.
+%not
+ Or: apply is_e_not_or_not to IsE2. E: case Or.
+   %not
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      %E = E'
+       search.
+      %E != E'
+       right. intros Eq. case Eq. backchain E.
+   %not not
+    right. intros Eq. backchain E. case Eq. search.
+
+
+Extensible_Theorem
+  vars_unique : forall E V1 V2,
+    Vars1 : vars E V1 ->
+    Vars2 : vars E V2 ->
+    V1 = V2
+  on Vars1.
+%VR-var
+ case Vars2. search.
+%VR-intlit
+ case Vars2. search.
+%VR-true
+ case Vars2. search.
+%VR-false
+ case Vars2. search.
+%VR-add
+ V: case Vars2. apply IH to Vars3 V. apply IH to Vars4 V1.
+ apply append_unique to Vars5 V2. search.
+%VR-eq
+ V: case Vars2. apply IH to Vars3 V. apply IH to Vars4 V1.
+ apply append_unique to Vars5 V2. search.
+%VR-gt
+ V: case Vars2. apply IH to Vars3 V. apply IH to Vars4 V1.
+ apply append_unique to Vars5 V2. search.
+%VR-not
+ V: case Vars2. apply IH to Vars3 V. search.
+
+
+Translation_Constraint trans_e_vars_exist : forall E E' V,
+  |{e}- E ~~> E' -> vars E V -> exists V', vars E' V'.
+
+%Rationale for TC:
+%Evaluation depends on the variables in an expression.  In fact, by
+%the property vars_eval_same_result below, evaluation is determined
+%*entirely* by the variables in an expression.  Therefore making the
+%variables in an expression be a subset of those in its translation
+%gives other extensions a handle on understanding the behavior of an
+%unknown expression in particular contexts.
+Translation_Constraint trans_e_vars : forall E E' V V' X,
+  |{e}- E ~~> E' -> vars E V -> vars E' V' ->
+  mem X V -> mem X V'.
+
+
+Theorem append__is_list__is_string : forall L1 L2 L,
+  is_list is_string L1 -> is_list is_string L2 -> L1 ++ L2 = L ->
+  is_list is_string L.
+induction on 1. intros IsL1 IsL2 App. IsL1': case IsL1.
+  %1:  is_list []
+   case App. search.
+  %2:  is_list (H::T)
+   App: case App. apply IH to IsL1'1 _ _. search.
+
+Extensible_Theorem
+  vars_is : forall E V,
+    IsE : is_e E ->
+    Vars : vars E V ->
+    is_list is_string V
+  on Vars.
+%VR-var
+ case IsE. search.
+%VR-intlit
+ search.
+%VR-true
+ search.
+%VR-false
+ search.
+%VR-add
+ Is: case IsE. IsA: apply IH to _ Vars1. IsB: apply IH to _ Vars2.
+ apply append__is_list__is_string to _ _ Vars3. search.
+%VR-eq
+ Is: case IsE. IsA: apply IH to _ Vars1. IsB: apply IH to _ Vars2.
+ apply append__is_list__is_string to _ _ Vars3. search.
+%VR-gt
+ Is: case IsE. IsA: apply IH to _ Vars1. IsB: apply IH to _ Vars2.
+ apply append__is_list__is_string to _ _ Vars3. search.
+%VR-not
+ case IsE. apply IH to _ Vars1. search.
+
+
+Theorem append__is_list__is_string__total : forall L1 L2,
+  is_list is_string L1 -> is_list is_string L2 ->
+  exists L, L1 ++ L2 = L.
+induction on 1. intros IsL1 IsL2. IsL1': case IsL1.
+  %1: L1 = []
+   search.
+  %2: L1 = H::T
+   apply IH to IsL1'1 _. search.
+
+Extensible_Theorem
+  vars_exist : forall E,
+    IsE : is_e E ->
+    exists V, vars E V
+  on IsE.
+%var
+ search.
+%intlit
+ search.
+%trueE
+ search.
+%falseE
+ search.
+%add
+ V1: apply IH to IsE1. V2: apply IH to IsE2.
+ Is1: apply vars_is to _ V1. Is2: apply vars_is to _ V2.
+ apply append__is_list__is_string__total to Is1 Is2. search.
+%eq
+ V1: apply IH to IsE1. V2: apply IH to IsE2.
+ Is1: apply vars_is to _ V1. Is2: apply vars_is to _ V2.
+ apply append__is_list__is_string__total to Is1 Is2. search.
+%gt
+ V1: apply IH to IsE1. V2: apply IH to IsE2.
+ Is1: apply vars_is to _ V1. Is2: apply vars_is to _ V2.
+ apply append__is_list__is_string__total to Is1 Is2. search.
+%not
+ apply IH to IsE1. search.
+
+
+Extensible_Theorem
+  value_empty_typable : forall V G Ty,
+    Value: value V ->
+    Ty: ty_e G V Ty ->
+    ty_e [] V Ty
+  on Value.
+%V-Int
+ case Ty. search.
+%V-True
+ case Ty. search.
+%V-False
+ case Ty. search.
+
+
+Theorem lookup_is : forall G X V,
+  is_list (is_pair is_string is_e) G -> lookup G X V -> is_e V.
+induction on 2. intros Is L. L: case L.
+  %Lkp-Here
+   Is: case Is. case Is. search.
+  %Lkp-Later
+   case Is. apply IH to _ L1. search.
+
+
+Extensible_Theorem
+  eval_e_is : forall G E V,
+    IsE : is_e E ->
+    IsCtx : is_list (is_pair is_string is_e) G ->
+    Ev : eval_e G E V ->
+    is_e V
+  on Ev.
+%E-var
+ apply lookup_is to _ Ev1. search.
+%E-intlit
+ search.
+%E-true
+ search.
+%E-false
+ search.
+%E-add
+ case IsE. Is1: apply IH to _ _ Ev1. Is2: apply IH to _ _ Ev2.
+ case Is1. case Is2. apply plus_integer_is_integer to _ _ Ev3. search.
+%E-eq-True
+ search.
+%E-eq-False
+ search.
+%E-gt-True
+ search.
+%E-gt-False
+ search.
+%E-not-True
+ search.
+%E-not-False
+ search.
+
+
+Extensible_Theorem
+  type_preservation_e : forall TG EG E Ty V,
+    Ty: ty_e TG E Ty ->
+    Ev: eval_e EG E V ->
+    Rel: (forall X Ty V,
+             lookup TG X Ty -> lookup EG X V -> ty_e [] V Ty) ->
+    ty_e [] V Ty
+  on Ev.
+%E-var
+ Ty: case Ty. apply Rel to Ty Ev1. search.
+%E-intlit
+ case Ty. search.
+%E-true
+ case Ty. search.
+%E-false
+ case Ty. search.
+%E-add
+ case Ty. search.
+%E-eq-True
+ case Ty. search.
+%E-eq-False
+ case Ty. search.
+%E-gt-True
+ case Ty. search.
+%E-gt-False
+ case Ty. search.
+%E-not-True
+ case Ty. search.
+%E-not-False
+ case Ty. search.
+
+
+%lemma for type_preservation_s
+Extensible_Theorem
+  var_types_maintained : forall G S G' X Ty,
+    Ty: ty_s G S G' ->
+    Lkp: lookup G X Ty ->
+    lookup G' X Ty
+  on Ty.
+%TS-skip
+ search.
+%TS-seq
+ Lkp': apply IH to Ty1 Lkp. apply IH to Ty2 Lkp'. search.
+%TS-decl
+ NEq: assert N = X -> false.
+   intros E. case E. apply no_lookup to Ty2 Lkp.
+ search.
+%TS-assign
+ search.
+%TS-ifte
+ search.
+%TS-while
+ search.
+
+
+Extensible_Theorem
+  type_preservation_s : forall TG EG S TG' EG' X Ty V,
+    Ty: ty_s TG S TG' ->
+    Ev: eval_s EG S EG' ->
+    Rel: (forall X Ty V,
+             lookup TG X Ty -> lookup EG X V -> ty_e [] V Ty) ->
+    LkpTy: lookup TG' X Ty ->
+    LkpV: lookup EG' X V ->
+    ty_e [] V Ty
+  on Ev.
+%X-skip
+ case Ty. backchain Rel.
+%X-decl
+ Ty: case Ty. TE: apply type_preservation_e to Ty Ev1 Rel.
+ LT: case LkpTy.
+   %Lkp-Here
+    LV: case LkpV.
+      %Lkp-Here
+       search.
+      %Lkp-Later
+       apply LV to _.
+   %Lkp-Later
+    LV: case LkpV.
+      %Lkp-Here
+       apply LT to _.
+      %Lkp-Later
+       backchain Rel.
+%X-assign
+ Ty: case Ty. TE: apply type_preservation_e to Ty Ev1 Rel.
+ LV: case LkpV.
+   %Lkp-Here
+    apply lookup_unique to Ty1 LkpTy. search.
+   %Lkp-Later
+    assert X = N -> false. intros E. case E. backchain LV.
+    apply lookup_after_select_before to LV1 Ev2 _.
+    apply Rel to LkpTy _. search.
+%X-seq
+ Ty: case Ty.
+ Rel': assert forall X1 Ty1 V1,
+                lookup G2 X1 Ty1 -> lookup G1 X1 V1 -> ty_e [] V1 Ty1.
+   intros LT LV. apply IH to Ty Ev1 Rel LT LV. search.
+ apply IH to Ty1 Ev2 Rel' LkpTy LkpV. search.
+%X-ifte-True
+ Ty: case Ty. L: apply var_types_maintained to Ty1 LkpTy.
+ apply IH to Ty1 Ev2 Rel L LkpV. search.
+%X-ifte-False
+ Ty: case Ty. L: apply var_types_maintained to Ty2 LkpTy.
+ apply IH to Ty2 Ev2 Rel L LkpV. search.
+%X-while-True
+ Ty: case Ty (keep).
+ Rel': assert forall X1 Ty1 V1,
+               lookup TG' X1 Ty1 -> lookup G1 X1 V1 -> ty_e [] V1 Ty1.
+   intros LT LV. L: apply var_types_maintained to Ty2 LT.
+   apply IH to Ty2 Ev2 Rel L LV. search.
+ apply IH to Ty Ev3 Rel' LkpTy LkpV. search.
+%X-while-False
+ Ty: case Ty. backchain Rel.
+
+
+Translation_Constraint trans_eval_e : forall G E E' V,
+  |{e}- E ~~> E' -> eval_e G E V ->
+  is_list (is_pair is_string is_e) G -> is_e E ->
+  exists V', eval_e G E' V'.
+
+
+Extensible_Theorem
+  eval_e_unique : forall G E V1 V2,
+    Ev1: eval_e G E V1 ->
+    Ev2: eval_e G E V2 ->
+    V1 = V2
+  on Ev1.
+%E-var
+ Ev2: case Ev2. apply lookup_unique to Ev3 Ev2. search.
+%E-intlit
+ case Ev2. search.
+%E-true
+ case Ev2. search.
+%E-false
+ case Ev2. search.
+%E-add
+ Ev2: case Ev2. apply IH to Ev3 Ev2. apply IH to Ev4 Ev6.
+ apply plus_integer_unique to Ev5 Ev7. search.
+%E-eq-True
+ Ev2: case Ev2.
+   %E-eq-True
+    search.
+   %E-eq-False
+    apply IH to Ev3 Ev2. apply IH to Ev4 Ev5. apply Ev6 to _.
+%E-eq-False
+ Ev2: case Ev2.
+   %E-eq-True
+    apply IH to Ev3 Ev2. apply IH to Ev4 Ev6. apply Ev5 to _.
+   %E-eq-False
+    search.
+%E-gt-True
+ Ev2: case Ev2.
+   %E-gt-True
+    search.
+   %E-gt-False
+    apply IH to Ev3 Ev2. apply IH to Ev4 Ev6.
+    apply greater_lesseq_integer_false to Ev5 Ev7.
+%E-gt-False
+ Ev2: case Ev2.
+   %E-gt-True
+    apply IH to Ev3 Ev2. apply IH to Ev4 Ev6.
+    apply greater_lesseq_integer_false to Ev7 Ev5.
+   %E-gt-False
+    search.
+%E-not-True
+ Ev2: case Ev2.
+   %E-not-True
+    search.
+   %E-not-False
+    apply IH to Ev3 Ev2.
+%E-not-False
+ Ev2: case Ev2.
+   %E-not-True
+    apply IH to Ev3 Ev2.
+   %E-not-False
+    search.
+
+
+Translation_Constraint trans_s_eval : forall S S' G G2,
+  |{s}- S ~~> S' -> eval_s G S G2 -> exists G', eval_s G S' G'.
+
+
+Ext_Ind eval_s G S G1 with |{s}- S ~~> T.
+
+
+Translation_Constraint trans_s_eval_results :
+  forall S S' G G1 G2 X V,
+    |{s}- S ~~> S' -> eval_s G S G1 -> eval_s G S' G2 ->
+    lookup G1 X V -> lookup G2 X V.
+Translation_Constraint trans_s_eval_results_back :
+  forall S S' G G1 G2 X V,
+    |{s}- S ~~> S' -> eval_s G S G1 -> eval_s G S' G2 ->
+    lookup G2 X V -> lookup G1 X V.
+
+
+Extensible_Theorem
+  eval_e_value : forall G E V,
+    Ev: eval_e G E V ->
+    AllVal: (forall X XV, mem (X, XV) G -> value XV) ->
+    value V
+  on Ev.
+%E-var
+ M: apply lookup_mem to Ev1. apply AllVal to M. search.
+%E-intlit
+ search.
+%E-true
+ search.
+%E-false
+ search.
+%E-add
+ search.
+%E-eq-True
+ search.
+%E-eq-False
+ search.
+%E-gt-True
+ search.
+%E-gt-False
+ search.
+%E-not-True
+ search.
+%E-not-False
+ search.
+
+
+Extensible_Theorem
+  eval_s_value : forall G S G' Y YV,
+    Ev: eval_s G S G' ->
+    AllVal: (forall X XV, mem (X, XV) G -> value XV) ->
+    Mem: mem (Y, YV) G' ->
+    value YV
+  on Ev.
+%X-skip
+ backchain AllVal.
+%X-decl
+ V: apply eval_e_value to Ev1 AllVal. M: case Mem.
+   %Mem-Here
+    search.
+   %Mem-Later
+    backchain AllVal.
+%X-assign
+ V: apply eval_e_value to Ev1 AllVal. M: case Mem.
+   %Mem-Here
+    search.
+   %Mem-Later
+    M': apply mem_after_select_before to Ev2 M. backchain AllVal.
+%X-seq
+ AllVal': assert forall X XV, mem (X, XV) G3 -> value XV.
+   intros M. apply IH to Ev1 AllVal M. search.
+ apply IH to Ev2 AllVal' Mem. search.
+%X-ifte-True
+ apply IH to Ev2 AllVal Mem. search.
+%X-ifte-False
+ apply IH to Ev2 AllVal Mem. search.
+%X-while-True
+ AllVal': assert forall X XV, mem (X, XV) G3 -> value XV.
+   intros M. apply IH to Ev2 AllVal M. search.
+ apply IH to Ev3 AllVal' Mem. search.
+%X-while-False
+ backchain AllVal.
+
+
+%helpers for vars_eval_same_result
+Theorem vars_equiv_left :
+  forall (G1 : list (pair string e)) G2 D D1 D2,
+    (forall X U1 U2, mem X D -> lookup G1 X U1 ->
+                     lookup G2 X U2 -> U1 = U2) ->
+    D1 ++ D2 = D ->
+    (forall X U1 U2, mem X D1 -> lookup G1 X U1 ->
+                     lookup G2 X U2 -> U1 = U2).
+intros Equiv J Mem Lkp1 Lkp2. backchain Equiv with X = X.
+backchain mem_append_left.
+Theorem vars_equiv_right :
+  forall (G1 : list (pair string e)) G2 D D1 D2,
+    (forall X U1 U2, mem X D -> lookup G1 X U1 ->
+                     lookup G2 X U2 -> U1 = U2) ->
+    D1 ++ D2 = D ->
+    (forall X U1 U2, mem X D2 -> lookup G1 X U1 ->
+                     lookup G2 X U2 -> U1 = U2).
+intros Equiv J Mem Lkp1 Lkp2. backchain Equiv with X = X.
+backchain mem_append_right.
+
+
+Extensible_Theorem
+  vars_eval_same_result : forall G1 G2 E D V1 V2,
+    Equiv : (forall X U1 U2,
+                mem X D ->
+                lookup G1 X U1 ->
+                lookup G2 X U2 -> U1 = U2) ->
+    Vars : vars E D ->
+    Ev1 : eval_e G1 E V1 ->
+    Ev2 : eval_e G2 E V2 ->
+    V1 = V2
+  on Ev1.
+%E-var
+ Ev2: case Ev2. case Vars. apply Equiv to _ Ev3 Ev2. search.
+%E-intlit
+ case Ev2. search.
+%E-true
+ case Ev2. search.
+%E-false
+ case Ev2. search.
+%E-add
+ Ev2: case Ev2. Vars: case Vars.
+ apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+ apply IH to _ Vars1 Ev4 Ev6. backchain vars_equiv_right.
+ apply plus_integer_unique to Ev5 Ev7. search.
+%E-eq-True
+ Ev2: case Ev2.
+   %E-eq-True
+    search.
+   %E-eq-False
+    Vars: case Vars.
+    apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+    apply IH to _ Vars1 Ev4 Ev5. backchain vars_equiv_right.
+    apply Ev6 to _.
+%E-eq-False
+ Ev2: case Ev2.
+   %E-eq-True
+    Vars: case Vars.
+    apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+    apply IH to _ Vars1 Ev4 Ev6. backchain vars_equiv_right.
+    apply Ev5 to _.
+   %E-eq-False
+    search.
+%E-gt-True
+ Ev2: case Ev2.
+   %E-gt-True
+    search.
+   %E-gt-False
+    Vars: case Vars.
+    apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+    apply IH to _ Vars1 Ev4 Ev6. backchain vars_equiv_right.
+    apply greater_lesseq_integer_false to Ev5 Ev7.
+%E-gt-False
+ Ev2: case Ev2.
+   %E-gt-True
+    Vars: case Vars.
+    apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+    apply IH to _ Vars1 Ev4 Ev6. backchain vars_equiv_right.
+    apply greater_lesseq_integer_false to Ev7 Ev5.
+   %E-gt-False
+    search.
+%E-not-True
+ Ev2: case Ev2.
+   %E-not-True
+    search.
+   %E-not-False
+    Vars: case Vars. apply IH to _ _ Ev3 Ev2.
+%E-not-False
+ Ev2: case Ev2.
+   %E-not-True
+    Vars: case Vars. apply IH to _ _ Ev3 Ev2.
+   %E-not-False
+    search.

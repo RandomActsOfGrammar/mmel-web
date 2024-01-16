@@ -1,0 +1,137 @@
+Module library:security
+
+/*We use the standard library's lookup relation rather than writing
+  our own here.*/
+
+Fixed Judgment join : sl sl sl
+/*Sigma |- level e* sl*/
+Judgment level : [(string, sl)] e* sl
+/*Sigma sl |- secure s* Sigma*/
+Judgment secure : [(string, sl)] sl s* [(string, sl)]
+
+========================= [J-public]
+join public public public
+
+
+====================== [J-private-l]
+join private L private
+
+
+====================== [J-private-r]
+join L private private
+
+
+
+
+
+------------------------- [L-int]
+level SG intlit(I) public
+
+
+--------------------- [L-true]
+level SG trueE public
+
+
+---------------------- [L-false]
+level SG falseE public
+
+
+lookup SG N L
+----------------- [L-var]
+level SG var(N) L
+
+
+level SG E1 L1
+level SG E2 L2
+join L1 L2 L
+---------------------- [L-add]
+level SG add(E1, E2) L
+
+
+level SG E1 L1
+level SG E2 L2
+join L1 L2 L
+--------------------- [L-eq]
+level SG eq(E1, E2) L
+
+
+level SG E1 L1
+level SG E2 L2
+join L1 L2 L
+--------------------- [L-gt]
+level SG gt(E1, E2) L
+
+
+level SG E L
+----------------- [L-not]
+level SG not(E) L
+
+
+|{e}- E ~~> E1
+level SG E1 Sl
+-------------- [LF-level]*
+level SG E Sl
+
+
+
+
+
+--------------------- [S-skip]
+secure SG Sl skipS SG
+
+
+secure SG Sl S1 SG1
+secure SG1 Sl S2 SG2
+---------------------------- [S-seq]
+secure SG Sl seq(S1, S2) SG2
+
+
+level SG E public
+no_lookup SG N
+----------------------------------------------- [S-decl]
+secure SG public decl(N, Ty, E) (N, public)::SG
+
+
+level SG E L
+lookup SG N private
+---------------------------- [S-assign-private]
+secure SG Sl assign(N, E) SG
+
+
+level SG E public
+lookup SG N public
+-------------------------------- [S-assign-public]
+secure SG public assign(N, E) SG
+
+
+level SG E L
+join L Sl Sl1
+secure SG Sl1 S1 SG1
+secure SG Sl1 S2 SG2
+------------------------------- [S-ifte]
+secure SG Sl ifte(E, S1, S2) SG
+
+
+level SG E L
+join L Sl Sl1
+secure SG Sl1 S SG1
+--------------------------- [S-while]
+secure SG Sl while(E, S) SG
+
+
+level SG E L
+no_lookup SG N
+-------------------------------------------------------- [S-secdecl-private]
+secure SG Sl secdecl(N, Ty, private, E) (N, private)::SG
+
+
+level SG E public
+no_lookup SG N
+---------------------------------------------------------- [S-secdecl-public]
+secure SG public secdecl(N, Ty, public, E) (N, public)::SG
+
+
+|{s}- S ~~> S1
+secure SG Sl S1 SG1
+------------------- [LF-secure]*
+secure SG Sl S SG1
