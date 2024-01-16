@@ -1,6 +1,20 @@
 Module walkthrough:host.
 
 Extensible_Theorem
+  typeOf_unique : forall Ctx T TyA TyB,
+    TyA : typeOf Ctx T TyA ->
+    TyB : typeOf Ctx T TyB ->
+    TyA = TyB
+  on TyA.
+%T-Var
+ TyB: case TyB. apply lookup_unique to TyA1 TyB. search.
+%T-Abs
+ TyB: case TyB. apply IH to TyA1 TyB. search.
+%T-App
+ TyB: case TyB. apply IH to TyA1 TyB. apply IH to TyA2 TyB1. search.
+
+
+Extensible_Theorem
   ty_lookup : forall Ctx1 Ctx2 T Ty,
     Ty : typeOf Ctx1 T Ty ->
     L : (forall X XTy, lookup Ctx1 X XTy -> lookup Ctx2 X XTy) ->
@@ -86,3 +100,10 @@ Extensible_Theorem
 %E-App-Subst
  Ty: case Ty. Ty: case Ty.
  apply subst_type_preservation to Ty Ev2 Ty1. search.
+
+
+Translation_Constraint trans_type_same : forall G T Ty T_T,
+  G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.
+
+
+Ext_Ind typeOf G T Ty with G |{tm}- T ~~> T'.

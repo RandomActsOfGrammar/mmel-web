@@ -24,12 +24,27 @@
     This walkthrough of reasoning about an extensible language will
     use a language with two modules.  The <a href="#host">host
     language</a> is the simply-typed lambda calculus with numbers.  We
-    have one extension to the host language, adding <a href="#let">let
-    bindings</a>.  The language is based on the language
+    have two extensions to the host language, one adding <a href="#let">let
+    bindings</a> and one adding a definition of big-step evaluation
+    using the host language's small-step evaluation.  The language is
+    based on the language
     in <a href="https://dl.acm.org/doi/abs/10.1145/2837614.2837644">"Sound
     type-dependent syntactic language extension"</a>.  We will give
     <a href="../sterling/index.html">Sterling</a> specifications of
-    the language about which we are reasoning.
+    the language about which we are reasoning.  We will look at
+    proving properties introduced by the host language and extensions,
+    as well as translation constraints
+    and <code class="extensibella">Ext_Ind</code> elements permitting
+    extensions to use relations introduced by the host language as
+    their induction measure.
+  </p>
+
+  <p>
+    Readers are encouraged to download
+    the <a href="walkthrough_skeleton.tar.gz">walkthrough skeleton
+      tarball</a> and follow along.  Following along will require
+    having <a href="../sterling/index.html">Sterling</a> installed to
+    compile the specifications.
   </p>
 
   <p>
@@ -143,7 +158,9 @@ typeOf Ctx app(T1, T2) Ty2
   </p>
   <pre class="code extensibella">
  < <b>Module walkthrough:host.</b> </pre>
-  <p>
+
+   <h3>Property Introduced by Host Language</h3>
+   <p>
     We will show how we prove type preservation here.  Our proof of
     type preservation will rely on a property about substitution, that
     it maintains types:
@@ -153,11 +170,22 @@ subst_type_preservation : forall T Ctx X XTy Ty R S,
    typeOf ((X, XTy)::Ctx) T Ty -> subst X R T S -> typeOf [] R XTy -> typeOf Ctx S Ty </pre>
   <p>
     We omit the proof of this fact here, moving directly to type
-    preservation.  We will prove type preservation by considering the
-    rules for evaluating a term.  As new rules defining evaluation may
-    be added by extensions, type preservation must be an extensible
-    theorem.  This will require each extension to prove the property
-    for the new rules it introduces.
+    preservation.  If you are following along in the skeleton file
+    using <a href="referenceGuide.html#emacs">Proof General</a>, this
+    will already be in the file and you can proceed directly to the
+    type preservation theorem.  If you are following along in the
+    terminal, you can declare this using
+    the <code class="extensibella">Theorem</code> command and use the
+    <code class="extensibella">skip</code> command to admit it without
+    a proof for the time being.
+  </p>
+
+  <p>
+    We will prove type preservation by considering the rules for
+    evaluating a term.  As new rules defining evaluation may be added
+    by extensions, type preservation must be an extensible theorem.
+    This will require each extension to prove the property for the new
+    rules it introduces.
   </p>
   <p>
     We state our type preservation property as if a term is typable
@@ -166,8 +194,8 @@ subst_type_preservation : forall T Ctx X XTy Ty R S,
     each assumption a name we will use to refer to it in the proof.
     The clause <code class="extensibella">on Ev</code> declares we
     will prove the property by induction on the derivation of
-    evaluation, and by considering the last rule by which the
-    evaluation might have been derived:
+    evaluation, the property's <i>key relation</i>, and by considering
+    the last rule by which the evaluation might have been derived:
   </p>
   <pre class="code extensibella">
  < <b>Extensible_Theorem</b>
@@ -352,18 +380,71 @@ H1 : typeOf [] T' Ty
   <pre class="code extensibella">
  < <b>search.</b>
 Proof completed. </pre>
+
+
+  <h3>Other Declarations</h3>
+  <p>
+    In addition to the main properties our host language introduces,
+    it also gives a couple of other declarations.
+  </p>
+
+  <p>
+    First, it declares a <i>translation constraint</i>.  Translation
+    constraints are properties specifying how the semantics of
+    extension-introduced constructs should relate to those of their
+    translations.  Our host language declares that the type of an
+    extension-introduced construct is the same as that of its
+    translation.
+  <pre class="code extensibella">
+<b>Translation_Constraint trans_type_same : forall G T Ty T_T,
+  G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.</b></pre>
+    Because the host language cannot contain translating constructs,
+    there are no cases to prove when a translation constraint is
+    declared.
+  </p>
+
+  <p>
+    The other declaration is that
+    of <code class="extensibella">Ext_Ind</code>
+    (<i>Ext</i>ension <i>Ind</i>uction) for the <code>typeOf</code>
+    relation:
+    <pre class="code extensibella">
+<b>Ext_Ind typeOf G T Ty with G |{tm}- T ~~> T'.</b></pre>
+    When an extension introduces a property, it must be proven for the
+    known cases as well as a generic case.  When the key relation for
+    an extension-introduced property is introduced by the host
+    language, we use the <code class="extensibella">Ext_Ind</code> for
+    the relation to determine what we know in the generic case.
+    Specifically, our <code class="extensibella">Ext_Ind</code>
+    declaration says the generic case is defined by a rule like
+    <pre class="code">
+G |{tm}- T ~~> T'
+typeOf G T' Ty
+--------------------
+typeOf G T Ty</pre>
+    Extensions prove using this rule for the generic case is valid as
+    part of their proof obligations, as we shall see below.
+  </p>
+
+
+  <h3>Moving Forward</h3>
   <p>
     In order to continue to prove properties for the extensions, the
     development for the host language must be saved in a file and
-    compiled.
+    compiled:
+  <pre class="code">
+extensibella --compile host.xthm</pre>
+    Note the skeleton file that can
+    be <a href="walkthrough_skeleton.tar">downloaded</a> can be
+    immediately compiled without changes.
   </p>
 
 </div>
 
 <div class="section" id="let">
-  <h3>Let Extension</h3>
+  <h2>Let Extension</h2>
   <p>
-    Our first extension adds new form for terms,
+    Our first extension adds a new form for terms,
     a <code>let</code>-binding, and defines the relations introduced
     by the host language for the new form.
   </p>
@@ -427,9 +508,15 @@ typeOf Ctx let(X, T1, T2) Ty2
     module, including the definition of
     the <code>walkthrough:host</code> module on which it builds.
     Extensibella knows about this builds-on relation, so this
-    reasoning module is required to prove the host language's
-    properties for the new cases it introduces.  When it is ready to
-    prove the type preservation property, it declares so with
+    reasoning module has obligations to prove the declarations given
+    by the host language.
+  </p>
+
+
+  <h3>Property Introduced by Host Language</h3>
+  <p>
+    When the extension is ready to prove the type preservation
+    property, it declares so with
     a <code class="extensibella">Prove</code> declaration:
   </p>
   <pre class="code extensibella">
@@ -474,7 +561,19 @@ Ev2 : subst X T1 T2 T'
   </p>
   <pre class="code extensibella">
 <b>Ty: case Ty. apply subst_type_preservation to Ty1 Ev2 Ty. search.</b> </pre>
+
+
+  <h3>Proving Translation Constraint</h3>
+
+
+  <h3>Proving Ext_Ind</h3>
 </div>
+
+
+<div class="section">
+  <h2>Big Step Extension</h2>
+</div>
+
 
 </body>
 </html>

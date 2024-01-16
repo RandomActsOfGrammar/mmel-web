@@ -110,96 +110,117 @@ typeOf Ctx app(T1, T2) Ty2
 <a class="command" href="host-details.html#0">Module walkthrough:host.</a>
 
 <a class="command" href="host-details.html#1">Extensible_Theorem
+  typeOf_unique : forall Ctx T TyA TyB,
+    TyA : typeOf Ctx T TyA ->
+    TyB : typeOf Ctx T TyB ->
+    TyA = TyB
+  on TyA.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<span class="comment">%T-Var</span>
+ <a class="tactic" href="host-details.html#2">TyB: case TyB.</a> <a class="tactic" href="host-details.html#3">apply lookup_unique to TyA1 TyB.</a> <a class="tactic" href="host-details.html#4">search.</a>
+<span class="comment">%T-Abs</span>
+ <a class="tactic" href="host-details.html#5">TyB: case TyB.</a> <a class="tactic" href="host-details.html#6">apply IH to TyA1 TyB.</a> <a class="tactic" href="host-details.html#7">search.</a>
+<span class="comment">%T-App</span>
+ <a class="tactic" href="host-details.html#8">TyB: case TyB.</a> <a class="tactic" href="host-details.html#9">apply IH to TyA1 TyB.</a> <a class="tactic" href="host-details.html#10">apply IH to TyA2 TyB1.</a> <a class="tactic" href="host-details.html#11">search.</a></div>
+
+
+<a class="command" href="host-details.html#12">Extensible_Theorem
   ty_lookup : forall Ctx1 Ctx2 T Ty,
     Ty : typeOf Ctx1 T Ty ->
     L : (forall X XTy, lookup Ctx1 X XTy -> lookup Ctx2 X XTy) ->
     typeOf Ctx2 T Ty
-  on Ty.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
-<div class="proof" id="proof2" style="display: none;">
+  on Ty.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(13);" id="toggleproof13">[Show Proof]</a>
+<div class="proof" id="proof13" style="display: none;">
 <span class="comment">%T-Var</span>
- <a class="tactic" href="host-details.html#2">apply L to Ty1.</a> <a class="tactic" href="host-details.html#3">search.</a>
+ <a class="tactic" href="host-details.html#13">apply L to Ty1.</a> <a class="tactic" href="host-details.html#14">search.</a>
 <span class="comment">%T-Abs</span>
- <a class="tactic" href="host-details.html#4">apply IH to Ty1 _ with Ctx2 = (X, Ty1)::Ctx2.</a>
-   <a class="tactic" href="host-details.html#5">intros LkpX.</a> <a class="tactic" href="host-details.html#6">LkpX: case LkpX.</a>
+ <a class="tactic" href="host-details.html#15">apply IH to Ty1 _ with Ctx2 = (X, Ty1)::Ctx2.</a>
+   <a class="tactic" href="host-details.html#16">intros LkpX.</a> <a class="tactic" href="host-details.html#17">LkpX: case LkpX.</a>
      <span class="comment">%Lkp-Here</span>
-      <a class="tactic" href="host-details.html#7">search.</a>
+      <a class="tactic" href="host-details.html#18">search.</a>
      <span class="comment">%Lkp-Later</span>
-      <a class="tactic" href="host-details.html#8">apply L to LkpX1.</a> <a class="tactic" href="host-details.html#9">search.</a>
- <a class="tactic" href="host-details.html#10">search.</a>
+      <a class="tactic" href="host-details.html#19">apply L to LkpX1.</a> <a class="tactic" href="host-details.html#20">search.</a>
+ <a class="tactic" href="host-details.html#21">search.</a>
 <span class="comment">%T-App</span>
- <a class="tactic" href="host-details.html#11">apply IH to Ty1 L.</a> <a class="tactic" href="host-details.html#12">apply IH to Ty2 L.</a> <a class="tactic" href="host-details.html#13">search.</a></div>
+ <a class="tactic" href="host-details.html#22">apply IH to Ty1 L.</a> <a class="tactic" href="host-details.html#23">apply IH to Ty2 L.</a> <a class="tactic" href="host-details.html#24">search.</a></div>
 
 
-<a class="command" href="host-details.html#14">Theorem empty_ty_any : forall T Ty Ctx,
-  typeOf [] T Ty -> typeOf Ctx T Ty.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(15);" id="toggleproof15">[Show Proof]</a>
-<div class="proof" id="proof15" style="display: none;">
-<a class="tactic" href="host-details.html#15">intros T.</a> <a class="tactic" href="host-details.html#16">backchain ty_lookup.</a> <a class="tactic" href="host-details.html#17">intros L.</a> <a class="tactic" href="host-details.html#18">case L.</a></div>
+<a class="command" href="host-details.html#25">Theorem empty_ty_any : forall T Ty Ctx,
+  typeOf [] T Ty -> typeOf Ctx T Ty.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(26);" id="toggleproof26">[Show Proof]</a>
+<div class="proof" id="proof26" style="display: none;">
+<a class="tactic" href="host-details.html#26">intros T.</a> <a class="tactic" href="host-details.html#27">backchain ty_lookup.</a> <a class="tactic" href="host-details.html#28">intros L.</a> <a class="tactic" href="host-details.html#29">case L.</a></div>
 
 
-<a class="command" href="host-details.html#19">Extensible_Theorem
+<a class="command" href="host-details.html#30">Extensible_Theorem
   subst_type_preservation : forall T Ctx X XTy Ty R S,
     TTy : typeOf ((X, XTy)::Ctx) T Ty ->
     S : subst X R T S ->
     RTy : typeOf [] R XTy ->
     typeOf Ctx S Ty
-  on S.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(20);" id="toggleproof20">[Show Proof]</a>
-<div class="proof" id="proof20" style="display: none;">
+  on S.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(31);" id="toggleproof31">[Show Proof]</a>
+<div class="proof" id="proof31" style="display: none;">
 <span class="comment">%S-Var-NEq</span>
- <a class="tactic" href="host-details.html#20">Ty: case TTy.</a> <a class="tactic" href="host-details.html#21">Lkp: case Ty.</a>
+ <a class="tactic" href="host-details.html#31">Ty: case TTy.</a> <a class="tactic" href="host-details.html#32">Lkp: case Ty.</a>
    <span class="comment">%Lkp-Here</span>
-    <a class="tactic" href="host-details.html#22">apply S1 to _.</a>
+    <a class="tactic" href="host-details.html#33">apply S1 to _.</a>
    <span class="comment">%Lkp-Later</span>
-    <a class="tactic" href="host-details.html#23">search.</a>
+    <a class="tactic" href="host-details.html#34">search.</a>
 <span class="comment">%S-Var-Eq</span>
- <a class="tactic" href="host-details.html#24">Ty: case TTy.</a> <a class="tactic" href="host-details.html#25">L: case Ty.</a>
+ <a class="tactic" href="host-details.html#35">Ty: case TTy.</a> <a class="tactic" href="host-details.html#36">L: case Ty.</a>
    <span class="comment">%Lkp-Here</span>
-    <a class="tactic" href="host-details.html#26">backchain empty_ty_any.</a>
+    <a class="tactic" href="host-details.html#37">backchain empty_ty_any.</a>
    <span class="comment">%Lkp-Later</span>
-    <a class="tactic" href="host-details.html#27">apply L to _.</a>
+    <a class="tactic" href="host-details.html#38">apply L to _.</a>
 <span class="comment">%S-Abs-NEq</span>
- <a class="tactic" href="host-details.html#28">Ty: case TTy.</a>
- <a class="tactic" href="host-details.html#29">Ty': apply ty_lookup to Ty _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.</a>
-   <a class="tactic" href="host-details.html#30">intros L.</a> <a class="tactic" href="host-details.html#31">L: case L.</a>
+ <a class="tactic" href="host-details.html#39">Ty: case TTy.</a>
+ <a class="tactic" href="host-details.html#40">Ty': apply ty_lookup to Ty _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.</a>
+   <a class="tactic" href="host-details.html#41">intros L.</a> <a class="tactic" href="host-details.html#42">L: case L.</a>
      <span class="comment">%Lkp-Here</span>
-      <a class="tactic" href="host-details.html#32">search.</a>
+      <a class="tactic" href="host-details.html#43">search.</a>
      <span class="comment">%Lkp-Later</span>
-      <a class="tactic" href="host-details.html#33">L: case L1.</a>
+      <a class="tactic" href="host-details.html#44">L: case L1.</a>
         <span class="comment">%Lkp-Here</span>
-         <a class="tactic" href="host-details.html#34">search.</a>
-        <span class="comment">%Lkp-Later</span>
-         <a class="tactic" href="host-details.html#35">search.</a>
- <a class="tactic" href="host-details.html#36">apply IH to Ty' S2 _.</a> <a class="tactic" href="host-details.html#37">search.</a>
-<span class="comment">%S-Abs-Eq</span>
- <a class="tactic" href="host-details.html#38">Ty: case TTy.</a> <a class="tactic" href="host-details.html#39">apply ty_lookup to Ty _ with Ctx2 = (X, Ty1)::Ctx.</a>
-   <a class="tactic" href="host-details.html#40">intros L.</a> <a class="tactic" href="host-details.html#41">L: case L.</a>
-     <span class="comment">%Lkp-Here</span>
-      <a class="tactic" href="host-details.html#42">search.</a>
-     <span class="comment">%Lkp-Later</span>
-      <a class="tactic" href="host-details.html#43">L: case L1.</a>
-        <span class="comment">%Lkp-Here</span>
-         <a class="tactic" href="host-details.html#44">apply L to _.</a>
-        <span class="comment">%Lkp-Later</span>
          <a class="tactic" href="host-details.html#45">search.</a>
- <a class="tactic" href="host-details.html#46">search.</a>
+        <span class="comment">%Lkp-Later</span>
+         <a class="tactic" href="host-details.html#46">search.</a>
+ <a class="tactic" href="host-details.html#47">apply IH to Ty' S2 _.</a> <a class="tactic" href="host-details.html#48">search.</a>
+<span class="comment">%S-Abs-Eq</span>
+ <a class="tactic" href="host-details.html#49">Ty: case TTy.</a> <a class="tactic" href="host-details.html#50">apply ty_lookup to Ty _ with Ctx2 = (X, Ty1)::Ctx.</a>
+   <a class="tactic" href="host-details.html#51">intros L.</a> <a class="tactic" href="host-details.html#52">L: case L.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="host-details.html#53">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="host-details.html#54">L: case L1.</a>
+        <span class="comment">%Lkp-Here</span>
+         <a class="tactic" href="host-details.html#55">apply L to _.</a>
+        <span class="comment">%Lkp-Later</span>
+         <a class="tactic" href="host-details.html#56">search.</a>
+ <a class="tactic" href="host-details.html#57">search.</a>
 <span class="comment">%S-App</span>
- <a class="tactic" href="host-details.html#47">Ty: case TTy.</a> <a class="tactic" href="host-details.html#48">apply IH to Ty S1 _.</a> <a class="tactic" href="host-details.html#49">apply IH to Ty1 S2 _.</a> <a class="tactic" href="host-details.html#50">search.</a></div>
+ <a class="tactic" href="host-details.html#58">Ty: case TTy.</a> <a class="tactic" href="host-details.html#59">apply IH to Ty S1 _.</a> <a class="tactic" href="host-details.html#60">apply IH to Ty1 S2 _.</a> <a class="tactic" href="host-details.html#61">search.</a></div>
 
 
-<a class="command" href="host-details.html#51">Extensible_Theorem
+<a class="command" href="host-details.html#62">Extensible_Theorem
   type_preservation : forall T Ty T',
     Ty : typeOf [] T Ty ->
     Ev : eval T T' ->
     typeOf [] T' Ty
-  on Ev.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(52);" id="toggleproof52">[Show Proof]</a>
-<div class="proof" id="proof52" style="display: none;">
+  on Ev.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(63);" id="toggleproof63">[Show Proof]</a>
+<div class="proof" id="proof63" style="display: none;">
 <span class="comment">%E-App-Step1</span>
- <a class="tactic" href="host-details.html#52">Ty: case Ty.</a> <a class="tactic" href="host-details.html#53">apply IH to Ty Ev1.</a> <a class="tactic" href="host-details.html#54">search.</a>
+ <a class="tactic" href="host-details.html#63">Ty: case Ty.</a> <a class="tactic" href="host-details.html#64">apply IH to Ty Ev1.</a> <a class="tactic" href="host-details.html#65">search.</a>
 <span class="comment">%E-App-Step2</span>
- <a class="tactic" href="host-details.html#55">Ty: case Ty.</a> <a class="tactic" href="host-details.html#56">apply IH to Ty1 Ev2.</a> <a class="tactic" href="host-details.html#57">search.</a>
+ <a class="tactic" href="host-details.html#66">Ty: case Ty.</a> <a class="tactic" href="host-details.html#67">apply IH to Ty1 Ev2.</a> <a class="tactic" href="host-details.html#68">search.</a>
 <span class="comment">%E-App-Subst</span>
- <a class="tactic" href="host-details.html#58">Ty: case Ty.</a> <a class="tactic" href="host-details.html#59">Ty: case Ty.</a>
- <a class="tactic" href="host-details.html#60">apply subst_type_preservation to Ty Ev2 Ty1.</a> <a class="tactic" href="host-details.html#61">search.</a></div>
-<a class="command" href="host-details.html#62"></a>
+ <a class="tactic" href="host-details.html#69">Ty: case Ty.</a> <a class="tactic" href="host-details.html#70">Ty: case Ty.</a>
+ <a class="tactic" href="host-details.html#71">apply subst_type_preservation to Ty Ev2 Ty1.</a> <a class="tactic" href="host-details.html#72">search.</a></div>
+
+
+<a class="command" href="host-details.html#73">Translation_Constraint trans_type_same : forall G T Ty T_T,
+  G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.</a>
+
+
+<a class="command" href="host-details.html#74">Ext_Ind typeOf G T Ty with G |{tm}- T ~~> T'.</a>
 </pre>
 </div>
 <div class="section">

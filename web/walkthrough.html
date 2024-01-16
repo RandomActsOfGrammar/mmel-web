@@ -1,0 +1,2362 @@
+<html>
+<head>
+<title>Tool Walkthrough</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script src="actions.js"></script>
+<link rel="icon" href="images/favicon.png" type="image/x-icon">
+</head>
+<body class="mmel">
+<div id="header-logo">
+<a href="index.html">
+<img class="header-logo" src="images/MMEL.png"
+     alt="Modular Metatheory for Extensible Languages logo">
+</a>
+</div>
+<div class="section">
+  <a href="index.html">
+    <h1>Tool Walkthrough</h1>
+  </a>
+  <p>
+    This walkthrough covers the use of Sterling and Extensibella for
+    modular language specification and modular metatheory.  We will
+    cover the processes of writing language specifications, reasoning
+    about them, and composing the modular proofs to form a full proof.
+    Our focus here is on the use of the tools together; see
+    the <a href="sterling/tutorial.html">Sterling tutorial</a> for a
+    tutorial on developing Sterling specifications and
+    the <a href="extensibella/walkthrough.html">Extensibella
+    walkthrough</a> for a walkthrough of reasoning steps for proving
+    properties.
+  </p>
+
+  <p>
+    Our language here is the example language from our
+    paper <a href="https://arxiv.org/abs/2312.14374">"A Modular
+      Approach to Metatheoretic Reasoning for Extensible
+      Languages"</a>.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Preparing the Sterling Standard Library for Reasoning</h2>
+  <p>
+    Sterling contains a standard library with useful relations defined
+    for use in writing language specifications, which is included in
+    Sterling modules automatically.  It has an accompanying
+    Extensibella module with properties about these relations.  To
+    prepare for reasoning about modules, go to the Sterling standard
+    library directory (<code>sterling/stdLib</code>) and run
+    <pre class="code">
+./build_extensibella</pre>
+    This only needs to be done once to reason about all languages.  It
+    should be done again each time Sterling is updated in case the
+    standard library has expanded.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Host Language</h2>
+  <p>
+    We start by writing the host language of our language library.
+  </p>
+
+  <h3>Sterling Language Specification</h3>
+  <p>
+    We start by writing a specification of our host language in
+    Sterling.  This will be
+    the <code class="sterling">library:host</code> module.  It defines
+    syntax categories and constructors for statements, expressions,
+    and types:
+  </p>
+  <span class="highlight">syntax.sos</span>
+  <a class="fold-link" href="javascript:void" id="togglehost/syntax.sos"
+     onclick="toggleFile('host/syntax.sos')">[Expand File]</a>
+  <pre class="code sterling" id="host/syntax.sos" style="height: 105px;">
+Module library:host
+
+s ::= skipS <span class="comment">/*just "skip" is a bad idea for Extensibella*/</span>
+    | decl(string, ty, e)
+    | assign(string, e)
+    | seq(s, s)
+    | ifte(e, s, s)
+    | while(e, s)
+
+e ::= var(string)
+    | intlit(int)
+    | trueE | falseE <span class="comment">/*just "true" and "false" are bad for Extensibella*/</span>
+    | add(e, e)
+    | eq(e, e)
+    | gt(e, e)
+    | not(e)
+
+ty ::= intTy <span class="comment">/*just "int" is built-in*/</span>
+     | bool
+
+Translation s :
+Translation e :
+Translation ty :</pre>
+
+  <p>
+    We also define the language semantics by declaring relations
+    (<code class="sterling">Judgment</code>s in Sterling) and defining
+    them via rules.  For our host language we will defining typing
+    judgments for statements and expressions, as well as a relation
+    defining the set of variables in an expression.  For statement
+    typing and evaluation, the relations relate the context before the
+    statement, the statement itself, and the context after the
+    statement.
+  </p>
+  <span class="highlight">vars.sos</span>
+  <a class="fold-link" href="javascript:void" id="togglehost/vars.sos"
+     onclick="toggleFile('host/vars.sos')">[Expand File]</a>
+  <pre class="code sterling" id="host/vars.sos" style="max-height: 105px;">
+Module library:host
+
+<span class="comment">/*We don't have a built-in set type, so we use a list instead*/</span>
+Judgment vars: e* [string]
+
+--------------- [VR-var]
+vars var(N) [N]
+
+
+----------------- [VR-intlit]
+vars intlit(I) []
+
+
+------------- [VR-true]
+vars trueE []
+
+
+-------------- [VR-false]
+vars falseE []
+
+
+vars E1 Vr1
+vars E2 Vr2
+Vr1 ++ Vr2 = V
+------------------ [VR-add]
+vars add(E1, E2) V
+
+
+vars E1 Vr1
+vars E2 Vr2
+Vr1 ++ Vr2 = V
+----------------- [VR-eq]
+vars eq(E1, E2) V
+
+
+vars E1 Vr1
+vars E2 Vr2
+Vr1 ++ Vr2 = V
+----------------- [VR-gt]
+vars gt(E1, E2) V
+
+
+vars E Vr
+-------------- [VR-not]
+vars not(E) Vr</pre>
+
+  <span class="highlight">typing.sos</span>
+  <a class="fold-link" href="javascript:void" id="togglehost/typing.sos"
+     onclick="toggleFile('host/typing.sos')">[Expand File]</a>
+  <pre class="code sterling" id="host/typing.sos" style="max-height: 105px;">
+Module library:host
+
+<span class="comment">/*We use the standard library's lookup and no_lookup relations rather
+  than writing our own here.*/</span>
+
+<span class="comment">/*Gamma |- e* : ty*/</span>
+Judgment ty_e : [(string, ty)] e* ty
+<span class="comment">/*Gamma |- s* -| Gamma*/</span>
+Judgment ty_s : [(string, ty)] s* [(string, ty)]
+
+lookup G N Ty
+---------------- [T-var]
+ty_e G var(N) Ty
+
+
+---------------------- [T-intlit]
+ty_e G intlit(I) intTy
+
+
+----------------- [T-true]
+ty_e G trueE bool
+
+
+------------------ [T-false]
+ty_e G falseE bool
+
+
+ty_e G E1 intTy
+ty_e G E2 intTy
+------------------------ [T-add]
+ty_e G add(E1, E2) intTy
+
+
+ty_e G E1 intTy
+ty_e G E2 intTy
+---------------------- [T-eq]
+ty_e G eq(E1, E2) bool
+
+
+ty_e G E1 intTy
+ty_e G E2 intTy
+---------------------- [T-gt]
+ty_e G gt(E1, E2) bool
+
+
+ty_e G E bool
+------------------ [T-not]
+ty_e G not(E) bool
+
+
+
+
+
+-------------- [TS-skip]
+ty_s G skipS G
+
+
+ty_s G S1 G1
+ty_s G1 S2 G2
+--------------------- [TS-seq]
+ty_s G seq(S1, S2) G2
+
+
+ty_e G E Ty
+no_lookup G N
+-------------------------------- [TS-decl]
+ty_s G decl(N, Ty, E) (N, Ty)::G
+
+
+ty_e G E Ty
+lookup G N Ty
+--------------------- [TS-assign]
+ty_s G assign(N, E) G
+
+
+ty_e G E bool
+ty_s G S1 G1
+ty_s G S2 G2
+------------------------ [TS-ifte]
+ty_s G ifte(E, S1, S2) G
+
+
+ty_e G E bool
+ty_s G S G1
+-------------------- [TS-while]
+ty_s G while(E, S) G</pre>
+
+  <span class="highlight">eval.sos</span>
+  <a class="fold-link" href="javascript:void" id="togglehost/eval.sos"
+     onclick="toggleFile('host/eval.sos')">[Expand File]</a>
+  <pre class="code sterling" id="host/eval.sos" style="max-height: 105px;">
+Module library:host
+
+Judgment value: e*
+
+--------------- [V-Int]
+value intlit(I)
+
+
+----------- [V-True]
+value trueE
+
+
+------------ [V-False]
+value falseE
+
+<span class="comment">/*We use the standard library's lookup and select relations rather
+  than writing our own here.*/</span>
+
+<span class="comment">/*gamma |- e* \Downarrow e*/</span>
+Judgment eval_e : [(string, e)] e* e
+<span class="comment">/*gamma |- s* -| gamma*/</span>
+Judgment eval_s : [(string, e)] s* [(string, e)]
+
+lookup G N V
+----------------- [E-var]
+eval_e G var(N) V
+
+
+---------------------------- [E-intlit]
+eval_e G intlit(I) intlit(I)
+
+
+-------------------- [E-true]
+eval_e G trueE trueE
+
+
+---------------------- [E-false]
+eval_e G falseE falseE
+
+
+eval_e G E1 intlit(I1)
+eval_e G E2 intlit(I2)
+I1 + I2 = I
+------------------------------ [E-add]
+eval_e G add(E1, E2) intlit(I)
+
+
+eval_e G E1 V1
+eval_e G E2 V2
+V1 = V2
+------------------------- [E-eq-True]
+eval_e G eq(E1, E2) trueE
+
+
+eval_e G E1 V1
+eval_e G E2 V2
+V1 != V2
+-------------------------- [E-eq-False]
+eval_e G eq(E1, E2) falseE
+
+
+eval_e G E1 intlit(I1)
+eval_e G E2 intlit(I2)
+I1 > I2
+------------------------- [E-gt-True]
+eval_e G gt(E1, E2) trueE
+
+
+eval_e G E1 intlit(I1)
+eval_e G E2 intlit(I2)
+I1 <= I2
+-------------------------- [E-gt-False]
+eval_e G gt(E1, E2) falseE
+
+
+eval_e G E falseE
+--------------------- [E-not-True]
+eval_e G not(E) trueE
+
+
+eval_e G E trueE
+---------------------- [E-not-False]
+eval_e G not(E) falseE
+
+
+
+
+
+---------------- [X-skip]
+eval_s G skipS G
+
+
+eval_e G E V
+--------------------------------- [X-decl]
+eval_s G decl(N, Ty, E) (N, V)::G
+
+
+eval_e G E V
+select (N, VOld) NewG G
+---------------------------------- [X-assign]
+eval_s G assign(N, E) (N, V)::NewG
+
+
+eval_s G S1 G1
+eval_s G1 S2 G2
+----------------------- [X-seq]
+eval_s G seq(S1, S2) G2
+
+
+eval_e G E trueE
+eval_s G S1 G1
+--------------------------- [X-ifte-True]
+eval_s G ifte(E, S1, S2) G1
+
+
+eval_e G E falseE
+eval_s G S2 G1
+--------------------------- [X-ifte-False]
+eval_s G ifte(E, S1, S2) G1
+
+
+eval_e G E trueE
+eval_s G S G1
+eval_s G1 while(E, S) G2
+------------------------ [X-while-True]
+eval_s G while(E, S) G2
+
+
+eval_e G E falseE
+---------------------- [X-while-False]
+eval_s G while(E, S) G</pre>
+
+  <p>
+    Once we have the specification written, we can check it for errors
+    and compile it for Extensibella.  The specification files must be
+    in a <code>library/host</code> directory.  To run Sterling from
+    the directory containing the <code>library</code> directory, run
+    <pre class="code">
+sterling --extensibella library:host</pre>
+    This will compile a modular specification for Extensibella
+    reasoning.
+  </p>
+
+
+  <h3>Extensibella Reasoning</h3>
+  <p>
+    We can now introduce and prove properties about our host language.
+    We will create a file named <code>host.xthm</code> and declare our
+    properties in it, in the order we want to prove them.  The order
+    determines which properties may be used as lemmas for proving
+    other properties occurring later in the order.  We prove the
+    properties as we declare them.
+  </p>
+
+  <p>
+    The best way to write Extensibella proofs
+    is <a href="extensibella/referenceGuide.html#emacs">using Proof
+      General</a>, in which the proof file is built in Emacs and the
+    commands in it are run directly in Emacs.  The other choice is to
+    run Extensibella in the terminal and type in commands directly.
+    To do this, run Extensibella without arguments:
+    <pre class="code">
+extensibella</pre>
+    Note this does not save the interaction; the commands must be
+    copied to a file separately to save them.
+  </p>
+
+  <span class="highlight">host.xthm</span>
+  <a class="fold-link" href="javascript:void" id="togglehost.xthm"
+     onclick="toggleFile('host.xthm')">[Expand File]</a>
+  <pre class="code extensibella" id="host.xthm" style="max-height: 105px;">
+Module library:host.
+
+Translation_Constraint trans_e_unique : forall E E1 E2,
+  |{e}- E ~~> E1 -> |{e}- E ~~> E2 -> E1 = E2.
+Translation_Constraint trans_e_is : forall E E',
+  |{e}- E ~~> E' -> is_e E -> is_e E'.
+
+Translation_Constraint trans_s_unique : forall S S1 S2,
+  |{s}- S ~~> S1 -> |{s}- S ~~> S2 -> S1 = S2.
+Translation_Constraint trans_s_is : forall S S',
+  |{s}- S ~~> S' -> is_s S -> is_s S'.
+
+Translation_Constraint trans_ty_unique : forall Ty Ty1 Ty2,
+  |{ty}- Ty ~~> Ty1 -> |{ty}- Ty ~~> Ty2 -> Ty1 = Ty2.
+Translation_Constraint trans_ty_is : forall Ty Ty',
+  |{ty}- Ty ~~> Ty' -> is_ty Ty -> is_ty Ty'.
+
+
+Ext_Ind is_e E with |{e}- E ~~> T.
+
+
+Extensible_Theorem
+  is_e_var_or_not : forall E,
+    IsE: is_e E ->
+    (exists N, E = var N) \/ ((exists N, E = var N) -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(1);" id="toggleproof1">[Show Proof]</a>
+<div class="proof" id="proof1" style="display: none;">
+search. search. search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_intlit_or_not : forall E,
+    IsE: is_e E ->
+    (exists I, E = intlit I) \/ ((exists I, E = intlit I) -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+search. search. search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_trueE_or_not : forall E,
+    IsE: is_e E ->
+    E = trueE \/ (E = trueE -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(3);" id="toggleproof3">[Show Proof]</a>
+<div class="proof" id="proof3" style="display: none;">
+search. search. search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_falseE_or_not : forall E,
+    IsE: is_e E ->
+    E = falseE \/ (E = falseE -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(4);" id="toggleproof4">[Show Proof]</a>
+<div class="proof" id="proof4" style="display: none;">
+search. search. search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_add_or_not : forall E,
+    IsE: is_e E ->
+    (exists E1 E2, E = add E1 E2) \/
+    ((exists E1 E2, E = add E1 E2) -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(5);" id="toggleproof5">[Show Proof]</a>
+<div class="proof" id="proof5" style="display: none;">
+search. search. search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_eqC_or_not : forall E,
+    IsE: is_e E ->
+    (exists E1 E2, E = eq E1 E2) \/
+    ((exists E1 E2, E = eq E1 E2) -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(6);" id="toggleproof6">[Show Proof]</a>
+<div class="proof" id="proof6" style="display: none;">
+search. search. search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_gt_or_not : forall E,
+    IsE: is_e E ->
+    (exists E1 E2, E = gt E1 E2) \/
+    ((exists E1 E2, E = gt E1 E2) -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(7);" id="toggleproof7">[Show Proof]</a>
+<div class="proof" id="proof7" style="display: none;">
+search. search. search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_not_or_not : forall E,
+    IsE: is_e E ->
+    (exists E', E = not E') \/
+    ((exists E', E = not E') -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(8);" id="toggleproof8">[Show Proof]</a>
+<div class="proof" id="proof8" style="display: none;">
+search. search. search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_eq_or_not : forall E1 E2,
+    IsE1: is_e E1 ->
+    IsE2: is_e E2 ->
+    E1 = E2 \/ (E1 = E2 -> false)
+  on IsE1.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(9);" id="toggleproof9">[Show Proof]</a>
+<div class="proof" id="proof9" style="display: none;">
+<span class="comment">%var</span>
+ Or: apply is_e_var_or_not to IsE2. E: case Or.
+   <span class="comment">%var</span>
+    Is: case IsE2. Or: apply is_string_eq_or_not to IsE3 Is.
+    E: case Or.
+      <span class="comment">%S = N</span>
+       search.
+      <span class="comment">%S != N</span>
+       right. intros Eq. case Eq. backchain E.
+   <span class="comment">%not var</span>
+    right. intros Eq. backchain E. case Eq. search.
+<span class="comment">%intlit</span>
+ Or: apply is_e_intlit_or_not to IsE2. E: case Or.
+   <span class="comment">%var</span>
+    Is: case IsE2. Or: apply is_integer_eq_or_not to IsE3 Is.
+    E: case Or.
+      <span class="comment">%S = N</span>
+       search.
+      <span class="comment">%S != N</span>
+       right. intros Eq. case Eq. backchain E.
+   <span class="comment">%not var</span>
+    right. intros Eq. backchain E. case Eq. search.
+<span class="comment">%trueE</span>
+ Or: apply is_e_trueE_or_not to IsE2. E: case Or.
+   <span class="comment">%E2 = trueE</span>
+    search.
+   <span class="comment">%E2 != trueE</span>
+    right. intros Eq. case Eq. backchain E.
+<span class="comment">%falseE</span>
+ Or: apply is_e_falseE_or_not to IsE2. E: case Or.
+   <span class="comment">%E2 = falseE</span>
+    search.
+   <span class="comment">%E2 != falseE</span>
+    right. intros Eq. case Eq. backchain E.
+<span class="comment">%add</span>
+ Or: apply is_e_add_or_not to IsE2. E: case Or.
+   <span class="comment">%add</span>
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      <span class="comment">%E3 = E4</span>
+       Or: apply IH to IsE4 Is1. E: case Or.
+         <span class="comment">%E = E5</span>
+          search.
+         <span class="comment">%E != E5</span>
+          right. intros Eq. case Eq. backchain E.
+      <span class="comment">%E3 != E4</span>
+       right. intros Eq. case Eq. backchain E.
+   <span class="comment">%not add</span>
+    right. intros Eq. backchain E. case Eq. search.
+<span class="comment">%eq</span>
+ Or: apply is_e_eqC_or_not to IsE2. E: case Or.
+   <span class="comment">%add</span>
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      <span class="comment">%E3 = E4</span>
+       Or: apply IH to IsE4 Is1. E: case Or.
+         <span class="comment">%E = E5</span>
+          search.
+         <span class="comment">%E != E5</span>
+          right. intros Eq. case Eq. backchain E.
+      <span class="comment">%E3 != E4</span>
+       right. intros Eq. case Eq. backchain E.
+   <span class="comment">%not add</span>
+    right. intros Eq. backchain E. case Eq. search.
+<span class="comment">%gt</span>
+ Or: apply is_e_gt_or_not to IsE2. E: case Or.
+   <span class="comment">%add</span>
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      <span class="comment">%E3 = E4</span>
+       Or: apply IH to IsE4 Is1. E: case Or.
+         <span class="comment">%E = E5</span>
+          search.
+         <span class="comment">%E != E5</span>
+          right. intros Eq. case Eq. backchain E.
+      <span class="comment">%E3 != E4</span>
+       right. intros Eq. case Eq. backchain E.
+   <span class="comment">%not add</span>
+    right. intros Eq. backchain E. case Eq. search.
+<span class="comment">%not</span>
+ Or: apply is_e_not_or_not to IsE2. E: case Or.
+   <span class="comment">%not</span>
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      <span class="comment">%E = E'</span>
+       search.
+      <span class="comment">%E != E'</span>
+       right. intros Eq. case Eq. backchain E.
+   <span class="comment">%not not</span>
+    right. intros Eq. backchain E. case Eq. search.</div>
+
+
+Extensible_Theorem
+  vars_unique : forall E V1 V2,
+    Vars1 : vars E V1 ->
+    Vars2 : vars E V2 ->
+    V1 = V2
+  on Vars1.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(10);" id="toggleproof10">[Show Proof]</a>
+<div class="proof" id="proof10" style="display: none;">
+<span class="comment">%VR-var</span>
+ case Vars2. search.
+<span class="comment">%VR-intlit</span>
+ case Vars2. search.
+<span class="comment">%VR-true</span>
+ case Vars2. search.
+<span class="comment">%VR-false</span>
+ case Vars2. search.
+<span class="comment">%VR-add</span>
+ V: case Vars2. apply IH to Vars3 V. apply IH to Vars4 V1.
+ apply append_unique to Vars5 V2. search.
+<span class="comment">%VR-eq</span>
+ V: case Vars2. apply IH to Vars3 V. apply IH to Vars4 V1.
+ apply append_unique to Vars5 V2. search.
+<span class="comment">%VR-gt</span>j
+ V: case Vars2. apply IH to Vars3 V. apply IH to Vars4 V1.
+ apply append_unique to Vars5 V2. search.
+<span class="comment">%VR-not</span>
+ V: case Vars2. apply IH to Vars3 V. search.</div>
+
+
+Translation_Constraint trans_e_vars_exist : forall E E' V,
+  |{e}- E ~~> E' -> vars E V -> exists V', vars E' V'.
+
+<span class="comment">%Rationale for TC:</span>
+<span class="comment">%Evaluation depends on the variables in an expression.  In fact, by</span>
+<span class="comment">%the property vars_eval_same_result below, evaluation is determined</span>
+<span class="comment">%*entirely* by the variables in an expression.  Therefore making the</span>
+<span class="comment">%variables in an expression be a subset of those in its translation</span>
+<span class="comment">%gives other extensions a handle on understanding the behavior of an</span>
+<span class="comment">%unknown expression in particular contexts.</span>
+Translation_Constraint trans_e_vars : forall E E' V V' X,
+  |{e}- E ~~> E' -> vars E V -> vars E' V' ->
+  mem X V -> mem X V'.
+
+
+Theorem append__is_list__is_string : forall L1 L2 L,
+  is_list is_string L1 -> is_list is_string L2 -> L1 ++ L2 = L ->
+  is_list is_string L.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(11);" id="toggleproof11">[Show Proof]</a>
+<div class="proof" id="proof11" style="display: none;">
+induction on 1. intros IsL1 IsL2 App. IsL1': case IsL1.
+  <span class="comment">%1:  is_list []</span>
+   case App. search.
+  <span class="comment">%2:  is_list (H::T)</span>
+   App: case App. apply IH to IsL1'1 _ _. search.</div>
+
+Extensible_Theorem
+  vars_is : forall E V,
+    IsE : is_e E ->
+    Vars : vars E V ->
+    is_list is_string V
+  on Vars.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(12);" id="toggleproof12">[Show Proof]</a>
+<div class="proof" id="proof12" style="display: none;">
+<span class="comment">%VR-var</span>
+ case IsE. search.
+<span class="comment">%VR-intlit</span>
+ search.
+<span class="comment">%VR-true</span>
+ search.
+<span class="comment">%VR-false</span>
+ search.
+<span class="comment">%VR-add</span>
+ Is: case IsE. IsA: apply IH to _ Vars1. IsB: apply IH to _ Vars2.
+ apply append__is_list__is_string to _ _ Vars3. search.
+<span class="comment">%VR-eq</span>
+ Is: case IsE. IsA: apply IH to _ Vars1. IsB: apply IH to _ Vars2.
+ apply append__is_list__is_string to _ _ Vars3. search.
+<span class="comment">%VR-gt</span>
+ Is: case IsE. IsA: apply IH to _ Vars1. IsB: apply IH to _ Vars2.
+ apply append__is_list__is_string to _ _ Vars3. search.
+<span class="comment">%VR-not</span>
+ case IsE. apply IH to _ Vars1. search.</div>
+
+
+Theorem append__is_list__is_string__total : forall L1 L2,
+  is_list is_string L1 -> is_list is_string L2 ->
+  exists L, L1 ++ L2 = L.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(13);" id="toggleproof13">[Show Proof]</a>
+<div class="proof" id="proof13" style="display: none;">
+induction on 1. intros IsL1 IsL2. IsL1': case IsL1.
+  <span class="comment">%1: L1 = []</span>
+   search.
+  <span class="comment">%2: L1 = H::T</span>
+   apply IH to IsL1'1 _. search.</div>
+
+Extensible_Theorem
+  vars_exist : forall E,
+    IsE : is_e E ->
+    exists V, vars E V
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(14);" id="toggleproof14">[Show Proof]</a>
+<div class="proof" id="proof14" style="display: none;">
+<span class="comment">%var</span>
+ search.
+<span class="comment">%intlit</span>
+ search.
+<span class="comment">%trueE</span>
+ search.
+<span class="comment">%falseE</span>
+ search.
+<span class="comment">%add</span>
+ V1: apply IH to IsE1. V2: apply IH to IsE2.
+ Is1: apply vars_is to _ V1. Is2: apply vars_is to _ V2.
+ apply append__is_list__is_string__total to Is1 Is2. search.
+<span class="comment">%eq</span>
+ V1: apply IH to IsE1. V2: apply IH to IsE2.
+ Is1: apply vars_is to _ V1. Is2: apply vars_is to _ V2.
+ apply append__is_list__is_string__total to Is1 Is2. search.
+<span class="comment">%gt</span>
+ V1: apply IH to IsE1. V2: apply IH to IsE2.
+ Is1: apply vars_is to _ V1. Is2: apply vars_is to _ V2.
+ apply append__is_list__is_string__total to Is1 Is2. search.
+<span class="comment">%not</span>
+ apply IH to IsE1. search.</div>
+
+
+Extensible_Theorem
+  value_empty_typable : forall V G Ty,
+    Value: value V ->
+    Ty: ty_e G V Ty ->
+    ty_e [] V Ty
+  on Value.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(15);" id="toggleproof15">[Show Proof]</a>
+<div class="proof" id="proof15" style="display: none;">
+<span class="comment">%V-Int</span>
+ case Ty. search.
+<span class="comment">%V-True</span>
+ case Ty. search.
+<span class="comment">%V-False</span>
+ case Ty. search.</div>
+
+
+Extensible_Theorem
+  type_preservation_e : forall TG EG E Ty V,
+    Ty: ty_e TG E Ty ->
+    Ev: eval_e EG E V ->
+    Rel: (forall X Ty V,
+             lookup TG X Ty -> lookup EG X V -> ty_e [] V Ty) ->
+    ty_e [] V Ty
+  on Ev.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(16);" id="toggleproof16">[Show Proof]</a>
+<div class="proof" id="proof16" style="display: none;">
+<span class="comment">%E-var</span>
+ Ty: case Ty. apply Rel to Ty Ev1. search.
+<span class="comment">%E-intlit</span>
+ case Ty. search.
+<span class="comment">%E-true</span>
+ case Ty. search.
+<span class="comment">%E-false</span>
+ case Ty. search.
+<span class="comment">%E-add</span>
+ case Ty. search.
+<span class="comment">%E-eq-True</span>
+ case Ty. search.
+<span class="comment">%E-eq-False</span>
+ case Ty. search.
+<span class="comment">%E-gt-True</span>
+ case Ty. search.
+<span class="comment">%E-gt-False</span>
+ case Ty. search.
+<span class="comment">%E-not-True</span>
+ case Ty. search.
+<span class="comment">%E-not-False</span>
+ case Ty. search.</div>
+
+
+<span class="comment">%lemma for type_preservation_s</span>
+Extensible_Theorem
+  var_types_maintained : forall G S G' X Ty,
+    Ty: ty_s G S G' ->
+    Lkp: lookup G X Ty ->
+    lookup G' X Ty
+  on Ty.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(17);" id="toggleproof17">[Show Proof]</a>
+<div class="proof" id="proof17" style="display: none;">
+<span class="comment">%TS-skip</span>
+ search.
+<span class="comment">%TS-seq</span>
+ Lkp': apply IH to Ty1 Lkp. apply IH to Ty2 Lkp'. search.
+<span class="comment">%TS-decl</span>
+ NEq: assert N = X -> false.
+   intros E. case E. apply no_lookup to Ty2 Lkp.
+ search.
+<span class="comment">%TS-assign</span>
+ search.
+<span class="comment">%TS-ifte</span>
+ search.
+<span class="comment">%TS-while</span>
+ search.</div>
+
+
+Extensible_Theorem
+  type_preservation_s : forall TG EG S TG' EG' X Ty V,
+    Ty: ty_s TG S TG' ->
+    Ev: eval_s EG S EG' ->
+    Rel: (forall X Ty V,
+             lookup TG X Ty -> lookup EG X V -> ty_e [] V Ty) ->
+    LkpTy: lookup TG' X Ty ->
+    LkpV: lookup EG' X V ->
+    ty_e [] V Ty
+  on Ev.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(18);" id="toggleproof18">[Show Proof]</a>
+<div class="proof" id="proof18" style="display: none;">
+<span class="comment">%X-skip</span>
+ case Ty. backchain Rel.
+<span class="comment">%X-decl</span>
+ Ty: case Ty. TE: apply type_preservation_e to Ty Ev1 Rel.
+ LT: case LkpTy.
+   <span class="comment">%Lkp-Here</span>
+    LV: case LkpV.
+      <span class="comment">%Lkp-Here</span>
+       search.
+      <span class="comment">%Lkp-Later</span>
+       apply LV to _.
+   <span class="comment">%Lkp-Later</span>
+    LV: case LkpV.
+      <span class="comment">%Lkp-Here</span>
+       apply LT to _.
+      <span class="comment">%Lkp-Later</span>
+       backchain Rel.
+<span class="comment">%X-assign</span>
+ Ty: case Ty. TE: apply type_preservation_e to Ty Ev1 Rel.
+ LV: case LkpV.
+   <span class="comment">%Lkp-Here</span>
+    apply lookup_unique to Ty1 LkpTy. search.
+   <span class="comment">%Lkp-Later</span>
+    assert X = N -> false. intros E. case E. backchain LV.
+    apply lookup_after_select_before to LV1 Ev2 _.
+    apply Rel to LkpTy _. search.
+<span class="comment">%X-seq</span>
+ Ty: case Ty.
+ Rel': assert forall X1 Ty1 V1,
+                lookup G2 X1 Ty1 -> lookup G1 X1 V1 -> ty_e [] V1 Ty1.
+   intros LT LV. apply IH to Ty Ev1 Rel LT LV. search.
+ apply IH to Ty1 Ev2 Rel' LkpTy LkpV. search.
+<span class="comment">%X-ifte-True</span>
+ Ty: case Ty. L: apply var_types_maintained to Ty1 LkpTy.
+ apply IH to Ty1 Ev2 Rel L LkpV. search.
+<span class="comment">%X-ifte-False</span>
+ Ty: case Ty. L: apply var_types_maintained to Ty2 LkpTy.
+ apply IH to Ty2 Ev2 Rel L LkpV. search.
+<span class="comment">%X-while-True</span>
+ Ty: case Ty (keep).
+ Rel': assert forall X1 Ty1 V1,
+               lookup TG' X1 Ty1 -> lookup G1 X1 V1 -> ty_e [] V1 Ty1.
+   intros LT LV. L: apply var_types_maintained to Ty2 LT.
+   apply IH to Ty2 Ev2 Rel L LV. search.
+ apply IH to Ty Ev3 Rel' LkpTy LkpV. search.
+<span class="comment">%X-while-False</span>
+ Ty: case Ty. backchain Rel.</div>
+
+
+Translation_Constraint trans_eval_e : forall G E E' V,
+  |{e}- E ~~> E' -> eval_e G E V ->
+  exists V', eval_e G E' V'.
+
+
+Extensible_Theorem
+  eval_e_unique : forall G E V1 V2,
+    Ev1: eval_e G E V1 ->
+    Ev2: eval_e G E V2 ->
+    V1 = V2
+  on Ev1.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(19);" id="toggleproof19">[Show Proof]</a>
+<div class="proof" id="proof19" style="display: none;">
+<span class="comment">%E-var</span>
+ Ev2: case Ev2. apply lookup_unique to Ev3 Ev2. search.
+<span class="comment">%E-intlit</span>
+ case Ev2. search.
+<span class="comment">%E-true</span>
+ case Ev2. search.
+<span class="comment">%E-false</span>
+ case Ev2. search.
+<span class="comment">%E-add</span>
+ Ev2: case Ev2. apply IH to Ev3 Ev2. apply IH to Ev4 Ev6.
+ apply plus_integer_unique to Ev5 Ev7. search.
+<span class="comment">%E-eq-True</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-eq-True</span>
+    search.
+   <span class="comment">%E-eq-False</span>
+    apply IH to Ev3 Ev2. apply IH to Ev4 Ev5. apply Ev6 to _.
+<span class="comment">%E-eq-False</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-eq-True</span>
+    apply IH to Ev3 Ev2. apply IH to Ev4 Ev6. apply Ev5 to _.
+   <span class="comment">%E-eq-False</span>
+    search.
+<span class="comment">%E-gt-True</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-gt-True</span>
+    search.
+   <span class="comment">%E-gt-False</span>
+    apply IH to Ev3 Ev2. apply IH to Ev4 Ev6.
+    apply greater_lesseq_integer_false to Ev5 Ev7.
+<span class="comment">%E-gt-False</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-gt-True</span>
+    apply IH to Ev3 Ev2. apply IH to Ev4 Ev6.
+    apply greater_lesseq_integer_false to Ev7 Ev5.
+   <span class="comment">%E-gt-False</span>
+    search.
+<span class="comment">%E-not-True</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-not-True</span>
+    search.
+   <span class="comment">%E-not-False</span>
+    apply IH to Ev3 Ev2.
+<span class="comment">%E-not-False</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-not-True</span>
+    apply IH to Ev3 Ev2.
+   <span class="comment">%E-not-False</span>j
+    search.</div>
+
+
+Translation_Constraint trans_s_eval : forall S S' G G2,
+  |{s}- S ~~> S' -> eval_s G S G2 -> exists G', eval_s G S' G'.
+
+
+Ext_Ind eval_s G S G1 with |{s}- S ~~> T.
+
+
+Translation_Constraint trans_s_eval_results :
+  forall S S' G G1 G2 X V,
+    |{s}- S ~~> S' -> eval_s G S G1 -> eval_s G S' G2 ->
+    lookup G1 X V -> lookup G2 X V.
+Translation_Constraint trans_s_eval_results_back :
+  forall S S' G G1 G2 X V,
+    |{s}- S ~~> S' -> eval_s G S G1 -> eval_s G S' G2 ->
+    lookup G2 X V -> lookup G1 X V.
+
+
+Extensible_Theorem
+  eval_e_value : forall G E V,
+    Ev: eval_e G E V ->
+    AllVal: (forall X XV, mem (X, XV) G -> value XV) ->
+    value V
+  on Ev.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(20);" id="toggleproof20">[Show Proof]</a>
+<div class="proof" id="proof20" style="display: none;">
+<span class="comment">%E-var</span>
+ M: apply lookup_mem to Ev1. apply AllVal to M. search.
+<span class="comment">%E-intlit</span>
+ search.
+<span class="comment">%E-true</span>
+ search.
+<span class="comment">%E-false</span>
+ search.
+<span class="comment">%E-add</span>
+ search.
+<span class="comment">%E-eq-True</span>
+ search.
+<span class="comment">%E-eq-False</span>
+ search.
+<span class="comment">%E-gt-True</span>
+ search.
+<span class="comment">%E-gt-False</span>
+ search.
+<span class="comment">%E-not-True</span>
+ search.
+<span class="comment">%E-not-False</span>
+ search.</div>
+
+
+Extensible_Theorem
+  eval_s_value : forall G S G' Y YV,
+    Ev: eval_s G S G' ->
+    AllVal: (forall X XV, mem (X, XV) G -> value XV) ->
+    Mem: mem (Y, YV) G' ->
+    value YV
+  on Ev.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(21);" id="toggleproof21">[Show Proof]</a>
+<div class="proof" id="proof21" style="display: none;">
+<span class="comment">%X-skip</span>
+ backchain AllVal.
+<span class="comment">%X-decl</span>
+ V: apply eval_e_value to Ev1 AllVal. M: case Mem.
+   <span class="comment">%Mem-Here</span>
+    search.
+   <span class="comment">%Mem-Later</span>
+    backchain AllVal.
+<span class="comment">%X-assign</span>
+ V: apply eval_e_value to Ev1 AllVal. M: case Mem.
+   <span class="comment">%Mem-Here</span>
+    search.
+   <span class="comment">%Mem-Later</span>
+    M': apply mem_after_select_before to Ev2 M. backchain AllVal.
+<span class="comment">%X-seq</span>
+ AllVal': assert forall X XV, mem (X, XV) G3 -> value XV.
+   intros M. apply IH to Ev1 AllVal M. search.
+ apply IH to Ev2 AllVal' Mem. search.
+<span class="comment">%X-ifte-True</span>
+ apply IH to Ev2 AllVal Mem. search.
+<span class="comment">%X-ifte-False</span>
+ apply IH to Ev2 AllVal Mem. search.
+<span class="comment">%X-while-True</span>
+ AllVal': assert forall X XV, mem (X, XV) G3 -> value XV.
+   intros M. apply IH to Ev2 AllVal M. search.
+ apply IH to Ev3 AllVal' Mem. search.
+<span class="comment">%X-while-False</span>
+ backchain AllVal.</div>
+
+
+<span class="comment">%helpers for vars_eval_same_result</span>
+Theorem vars_equiv_left :
+  forall (G1 : list (pair string e)) G2 D D1 D2,
+    (forall X U1 U2, mem X D -> lookup G1 X U1 ->
+                     lookup G2 X U2 -> U1 = U2) ->
+    D1 ++ D2 = D ->
+    (forall X U1 U2, mem X D1 -> lookup G1 X U1 ->
+                     lookup G2 X U2 -> U1 = U2).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(22);" id="toggleproof22">[Show Proof]</a>
+<div class="proof" id="proof22" style="display: none;">
+intros Equiv J Mem Lkp1 Lkp2. backchain Equiv with X = X.
+backchain mem_append_left.
+Theorem vars_equiv_right :
+  forall (G1 : list (pair string e)) G2 D D1 D2,
+    (forall X U1 U2, mem X D -> lookup G1 X U1 ->
+                     lookup G2 X U2 -> U1 = U2) ->
+    D1 ++ D2 = D ->
+    (forall X U1 U2, mem X D2 -> lookup G1 X U1 ->
+                     lookup G2 X U2 -> U1 = U2).
+intros Equiv J Mem Lkp1 Lkp2. backchain Equiv with X = X.
+backchain mem_append_right.</div>
+
+
+Extensible_Theorem
+  vars_eval_same_result : forall G1 G2 E D V1 V2,
+    Equiv : (forall X U1 U2,
+                mem X D ->
+                lookup G1 X U1 ->
+                lookup G2 X U2 -> U1 = U2) ->
+    Vars : vars E D ->
+    Ev1 : eval_e G1 E V1 ->
+    Ev2 : eval_e G2 E V2 ->
+    V1 = V2
+  on Ev1.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(23);" id="toggleproof23">[Show Proof]</a>
+<div class="proof" id="proof23" style="display: none;">
+<span class="comment">%E-var</span>
+ Ev2: case Ev2. case Vars. apply Equiv to _ Ev3 Ev2. search.
+<span class="comment">%E-intlit</span>
+ case Ev2. search.
+<span class="comment">%E-true</span>
+ case Ev2. search.
+<span class="comment">%E-false</span>
+ case Ev2. search.
+<span class="comment">%E-add</span>
+ Ev2: case Ev2. Vars: case Vars.
+ apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+ apply IH to _ Vars1 Ev4 Ev6. backchain vars_equiv_right.
+ apply plus_integer_unique to Ev5 Ev7. search.
+<span class="comment">%E-eq-True</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-eq-True</span>
+    search.
+   <span class="comment">%E-eq-False</span>
+    Vars: case Vars.
+    apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+    apply IH to _ Vars1 Ev4 Ev5. backchain vars_equiv_right.
+    apply Ev6 to _.
+<span class="comment">%E-eq-False</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-eq-True</span>
+    Vars: case Vars.
+    apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+    apply IH to _ Vars1 Ev4 Ev6. backchain vars_equiv_right.
+    apply Ev5 to _.
+   <span class="comment">%E-eq-False</span>
+    search.
+<span class="comment">%E-gt-True</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-gt-True</span>
+    search.
+   <span class="comment">%E-gt-False</span>
+    Vars: case Vars.
+    apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+    apply IH to _ Vars1 Ev4 Ev6. backchain vars_equiv_right.
+    apply greater_lesseq_integer_false to Ev5 Ev7.
+<span class="comment">%E-gt-False</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-gt-True</span>
+    Vars: case Vars.
+    apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+    apply IH to _ Vars1 Ev4 Ev6. backchain vars_equiv_right.
+    apply greater_lesseq_integer_false to Ev7 Ev5.
+   <span class="comment">%E-gt-False</span>
+    search.
+<span class="comment">%E-not-True</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-not-True</span>
+    search.
+   <span class="comment">%E-not-False</span>
+    Vars: case Vars. apply IH to _ _ Ev3 Ev2.
+<span class="comment">%E-not-False</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-not-True</span>
+    Vars: case Vars. apply IH to _ _ Ev3 Ev2.
+   <span class="comment">%E-not-False</span.
+    search.</pre></div>
+</pre>
+
+  <p>
+    Once this file is written, it can be checked with
+    <pre class="code">
+extensibella --check host.xthm</pre>
+    This ensures all the proofs in the file are valid.
+  </p>
+
+  <p>
+    To reason about modules building on this one, we need to compile
+    it:
+    <pre class="code">
+extensibella --compile host.xthm</pre>
+    This takes the information about the theorems declared, their
+    order, and any proof-level definitions in the file and stores them
+    in the Extensibella <code>generated</code> directory.  This allows
+    the extensions to find this necessary information without needing
+    to know the location of the Extensibella file for the host module.
+  </p>
+</div>
+
+<div class="section">
+  <h2>List Extension</h2>
+  <p>
+    We add an extension introducing syntax for lists.
+  </p>
+
+  <h3>Sterling Language Specification</h3>
+  <p>
+    Our Sterling language specification builds on the host language
+    module, adding new constructors for its statement, expression, and
+    type categories.  Each new constructor is also given a
+    translation to the host syntax.  Note the translation constraints
+    we wrote in the host language require only that the translation
+    has the same variables and evaluates if the translating syntax
+    evaluates, so we have freedom to write translations that may
+    otherwise look unusual, such as <code>null(E)</code> translating
+    to <code>E</code>.
+  </p>
+  <span class="highlight">syntax.sos</span>
+  <a class="fold-link" href="javascript:void" id="togglelist/syntax.sos"
+     onclick="toggleFile('list/syntax.sos')">[Expand File]</a>
+  <pre class="code sterling" id="list/syntax.sos" style="max-height: 105px;">
+Module library:list
+
+Builds on library:host
+
+e ::= ...
+    | nil
+    | cons(e, e)
+    | null(e)
+    | head(e)
+    | tail(e)
+
+ty ::= ...
+     | list(ty)
+
+s ::= ...
+    | splitlist(string, string, e)
+
+
+------------------- [P-null]
+|{e}- null(E) ~~> E
+
+
+------------------- [P-head]
+|{e}- head(E) ~~> E
+
+
+------------------- [P-tail]
+|{e}- tail(E) ~~> E
+
+
+------------------- [P-nil]
+|{e}- nil ~~> trueE
+
+
+--------------------------------- [P-cons]
+|{e}- cons(E1, E2) ~~> eq(E1, E2)
+
+
+Hd != Tl
+----------------------------------------- [P-splitlist]
+|{s}- splitlist(Hd, Tl, E) ~~>
+      seq(seq(assign(Hd, E),
+              assign(Tl, tail(var(Hd)))),
+              assign(Hd, head(var(Hd))))
+
+
+---------------------- [P-list]
+|{ty}- list(Ty) ~~> Ty</pre>
+
+  <p>
+    We also extend the definitions of the relations introduced by the
+    host language, introducing new rules pertaining to the new syntax
+    introduced by the extension.
+  </p>
+  <span class="highlight">vars.sos</span>
+  <a class="fold-link" href="javascript:void" id="togglelist/vars.sos"
+     onclick="toggleFile('list/vars.sos')">[Expand File]</a>
+  <pre class="code sterling" id="list/vars.sos" style="height: 105px;">
+Module library:list
+
+----------- [VR-nil]
+vars nil []
+
+
+vars E1 Vr1
+vars E2 Vr2
+Vr1 ++ Vr2 = V
+------------------- [VR-cons]
+vars cons(E1, E2) V
+
+
+vars E V
+-------------- [VR-null]
+vars null(E) V
+
+
+vars E V
+-------------- [VR-head]
+vars head(E) V
+
+
+vars E V
+-------------- [VR-tail]
+vars tail(E) V</pre>
+
+  <span class="highlight">typing.sos</span>
+  <a class="fold-link" href="javascript:void" id="togglelist/typing.sos"
+     onclick="toggleFile('list/typing.sos')">[Expand File]</a>
+  <pre class="code sterling" id="list/typing.sos" style="height: 105px;">
+Module library:list
+
+------------------- [T-nil]
+ty_e G nil list(Ty)
+
+
+ty_e G E1 Ty
+ty_e G E2 list(Ty)
+---------------------------- [T-cons]
+ty_e G cons(E1, E2) list(Ty)
+
+
+ty_e G E list(Ty)
+------------------- [T-null]
+ty_e G null(E) bool
+
+
+ty_e G E list(Ty)
+----------------- [T-head]
+ty_e G head(E) Ty
+
+
+ty_e G E list(Ty)
+----------------------- [T-tail]
+ty_e G tail(E) list(Ty)
+
+
+
+
+
+ty_e G E list(Ty)
+lookup G Hd Ty
+lookup G Tl list(Ty)
+----------------------------- [TS-splitlist]
+ty_s G splitlist(Hd, Tl, E) G</pre>
+
+  <span class="highlight">eval.sos</span>
+  <a class="fold-link" href="javascript:void" id="togglelist/eval.sos"
+     onclick="toggleFile('list/eval.sos')">[Expand File]</a>
+  <pre class="code sterling" id="list/eval.sos" style="height: 105px;">
+Module library:list
+
+--------- [V-nil]
+value nil
+
+
+value E1
+value E2
+------------------ [V-cons]
+value cons(E1, E2)
+
+
+
+
+
+---------------- [E-nil]
+eval_e G nil nil
+
+
+eval_e G E1 V1
+eval_e G E2 V2
+---------------------------------- [E-cons]
+eval_e G cons(E1, E2) cons(V1, V2)
+
+
+eval_e G E nil
+---------------------- [E-null-true]
+eval_e G null(E) trueE
+
+
+eval_e G E cons(V1, V2)
+----------------------- [E-null-false]
+eval_e G null(E) falseE
+
+
+eval_e G E cons(V1, V2)
+----------------------- [E-head]
+eval_e G head(E) V1
+
+
+eval_e G E cons(V1, V2)
+----------------------- [E-tail]
+eval_e G tail(E) V2
+
+
+
+
+
+eval_e G E cons(V1, V2)
+Hd != Tl <span class="comment">/*Need this to prove ext_ind*/</span>
+select (Hd, VHd) GHd G
+select (Tl, VTl) GTl GHd
+----------------------------------------------------- [X-splitlist]
+eval_s G splitlist(Hd, Tl, E) (Hd, V1)::(Tl, V2)::GTl</pre>
+
+  <p>
+    Again we check the specification and compile it for Extensibella
+    by running
+    <pre class="code">
+sterling --extensibella library:list</pre>
+    As before, the Sterling code for this module must be in a
+    directory <code>library/list</code>, and this command run from the
+    directory containing the <code>library</code> directory.
+  </p>
+
+
+  <h3>Extensibella Reasoning</h3>
+  <p>
+    The <code>list</code> extension is expected to contribute to the
+    proofs of the properties it imports from the host language,
+    proving the cases arising from the new rules it introduces.  To
+    create a skeleton of the Extensibella file for the module in a
+    file named <code>list.xthm</code>, run
+    <pre class="code">
+extensibella --generate library:list list.xthm</pre>
+    The skeleton contains a list of the imported properties to prove.
+  </p>
+  <span class="highlight">Empty list.xthm</span>
+  <a class="fold-link" href="javascript:void" id="toggleskeleton.xthm"
+     onclick="toggleFile('skeleton.xthm')">[Expand File]</a>
+  <pre class="code extensibella" id="skeleton.xthm" style="max-height: 105px;">
+Module library:list.
+
+
+Prove_Constraint library:host:trans_e_unique.
+
+
+Prove_Constraint library:host:trans_e_is.
+
+
+Prove_Constraint library:host:trans_s_unique.
+
+
+Prove_Constraint library:host:trans_s_is.
+
+
+Prove_Constraint library:host:trans_ty_unique.
+
+
+Prove_Constraint library:host:trans_ty_is.
+
+
+Prove_Ext_Ind library:host:is_e.
+
+
+Prove library:host:is_e_var_or_not.
+
+
+Prove library:host:is_e_intlit_or_not.
+
+
+Prove library:host:is_e_trueE_or_not.
+
+
+Prove library:host:is_e_falseE_or_not.
+
+
+Prove library:host:is_e_add_or_not.
+
+
+Prove library:host:is_e_eqC_or_not.
+
+
+Prove library:host:is_e_gt_or_not.
+
+
+Prove library:host:is_e_not_or_not.
+
+
+Prove library:host:is_e_eq_or_not.
+
+
+Prove library:host:vars_unique.
+
+
+Prove_Constraint library:host:trans_e_vars_exist.
+
+
+Prove_Constraint library:host:trans_e_vars.
+
+
+Prove library:host:vars_is.
+
+
+Prove library:host:vars_exist.
+
+
+Prove library:host:value_empty_typable.
+
+
+Prove library:host:type_preservation_e.
+
+
+Prove library:host:var_types_maintained.
+
+
+Prove library:host:type_preservation_s.
+
+
+Prove_Constraint library:host:trans_eval_e.
+
+
+Prove library:host:eval_e_unique.
+
+
+Prove_Constraint library:host:trans_s_eval.
+
+
+Prove_Ext_Ind library:host:eval_s.
+
+
+Prove_Constraint library:host:trans_s_eval_results.
+
+
+Prove_Constraint library:host:trans_s_eval_results_back.
+
+
+Prove library:host:eval_e_value.
+
+
+Prove library:host:eval_s_value.
+
+
+Prove library:host:vars_eval_same_result.</pre>
+
+  <p>
+    Extensibella expects only the new cases for these proofs.  The new
+    proof cases can be proven interactively as before.
+  </p>
+
+  <span class="highlight">list.xthm</span>
+  <a class="fold-link" href="javascript:void" id="togglelist.xthm"
+     onclick="toggleFile('list.xthm')">[Expand File]</a>
+  <pre class="code extensibella" id="list.xthm" style="max-height: 105px;">
+Module library:list.
+
+
+Prove_Constraint library:host:trans_e_unique.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(30);" id="toggleproof30">[Show Proof]</a>
+<div class="proof" id="proof30" style="display: none;">
+<span class="comment">%P-null</span>
+ case Hyp1. search.
+<span class="comment">%P-head</span>
+ case Hyp1. search.
+<span class="comment">%P-tail</span>
+ case Hyp1. search.
+<span class="comment">%P-nil</span>
+ case Hyp1. search.
+<span class="comment">%P-cons</span>
+ case Hyp1. search.</div>
+Prove_Constraint library:host:trans_e_is.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(31);" id="toggleproof31">[Show Proof]</a>
+<div class="proof" id="proof31" style="display: none;">
+<span class="comment">%P-null</span>
+ case Hyp1. search.
+<span class="comment">%P-head</span>
+ case Hyp1. search.
+<span class="comment">%P-tail</span>
+ case Hyp1. search.
+<span class="comment">%P-nil</span>
+ case Hyp1. search.
+<span class="comment">%P-cons</span>
+ case Hyp1. search.</div>
+
+
+Prove_Constraint library:host:trans_s_unique.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(32);" id="toggleproof32">[Show Proof]</a>
+<div class="proof" id="proof32" style="display: none;">
+<span class="comment">%P-splitlist</span>
+ case Hyp1. search.</div>
+Prove_Constraint library:host:trans_s_is.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(33);" id="toggleproof33">[Show Proof]</a>
+<div class="proof" id="proof33" style="display: none;">
+<span class="comment">%P-splitlit</span>
+ case Hyp1. search.</div>
+
+
+Prove_Constraint library:host:trans_ty_unique.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(34);" id="toggleproof34">[Show Proof]</a>
+<div class="proof" id="proof34" style="display: none;">
+<span class="comment">%P-list</span>
+ case Hyp1. search.</div>
+Prove_Constraint library:host:trans_ty_is.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(35);" id="toggleproof35">[Show Proof]</a>
+<div class="proof" id="proof35" style="display: none;">
+<span class="comment">%P-list</span>
+ case Hyp1. search.</div>
+
+
+Prove_Ext_Ind library:host:is_e.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(36);" id="toggleproof36">[Show Proof]</a>
+<div class="proof" id="proof36" style="display: none;">
+<span class="comment">%nil</span>
+ search.
+<span class="comment">%cons</span>
+ Trans: assert |{e}- cons E1 E2 ~~> eq E1 E2. Acc: case Acc.
+ ESTrans: assert <is_e {ES}> (eq E1 E2) N4.
+ IsN2: apply ext_ind_is_int_is_e to Rel3.
+ IsN3: apply ext_ind_is_int_is_e to Rel4.
+ IsN4: apply plus_integer_is_integer to _ _ Rel2.
+ L: apply lt_plus_one to Rel1 IsN4.
+ N2Pos: apply ext_ind_pos_is_e to Rel3.
+ N3Pos: apply ext_ind_pos_is_e to Rel4.
+ N4Pos: apply lesseq_integer__add_positive to N2Pos N3Pos Rel2.
+ A: apply Acc to _ L. TTrans: apply IH to ESTrans A.
+ LN2: assert N2 < N.
+   Or: apply lt_left to Rel2 N2Pos N3Pos. E: case Or.
+     apply less_integer_transitive to E L. search.
+     search.
+ LN3: assert N3 < N.
+   Or: apply lt_right to Rel2 IsN3 N2Pos N3Pos. E: case Or.
+     apply less_integer_transitive to E L. search.
+     search.
+ AN2: apply Acc to N2Pos LN2. AN3: apply Acc to N3Pos LN3.
+ apply IH to Rel3 AN2. apply IH to Rel4 AN3. search.
+<span class="comment">%null</span>
+ Trans: assert |{e}- null E1 ~~> E1.
+ IsN2: apply ext_ind_is_int_is_e to Rel2.
+ L: apply lt_plus_one to Rel1 IsN2. Acc: case Acc.
+ N2Pos: apply ext_ind_pos_is_e to Rel2. AN2: apply Acc to N2Pos L.
+ apply IH to Rel2 AN2. search.
+<span class="comment">%head</span>
+ Trans: assert |{e}- head E1 ~~> E1.
+ IsN2: apply ext_ind_is_int_is_e to Rel2.
+ L: apply lt_plus_one to Rel1 IsN2. Acc: case Acc.
+ N2Pos: apply ext_ind_pos_is_e to Rel2. AN2: apply Acc to N2Pos L.
+ apply IH to Rel2 AN2. search.
+<span class="comment">%tail</span>
+ Trans: assert |{e}- tail E1 ~~> E1.
+ IsN2: apply ext_ind_is_int_is_e to Rel2.
+ L: apply lt_plus_one to Rel1 IsN2. Acc: case Acc.
+ N2Pos: apply ext_ind_pos_is_e to Rel2. AN2: apply Acc to N2Pos L.
+ apply IH to Rel2 AN2. search.</div>
+
+
+Prove library:host:is_e_var_or_not.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(37);" id="toggleproof37">[Show Proof]</a>
+<div class="proof" id="proof37" style="display: none;">
+search. search. search. search. search.</div>
+Prove library:host:is_e_intlit_or_not.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(38);" id="toggleproof38">[Show Proof]</a>
+<div class="proof" id="proof38" style="display: none;">
+search. search. search. search. search.</div>
+Prove library:host:is_e_trueE_or_not.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(39);" id="toggleproof39">[Show Proof]</a>
+<div class="proof" id="proof39" style="display: none;">
+search. search. search. search. search.</div>
+Prove library:host:is_e_falseE_or_not.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(40);" id="toggleproof40">[Show Proof]</a>
+<div class="proof" id="proof40" style="display: none;">
+search. search. search. search. search.</div>
+Prove library:host:is_e_add_or_not.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(41);" id="toggleproof41">[Show Proof]</a>
+<div class="proof" id="proof41" style="display: none;">
+search. search. search. search. search.</div>
+Prove library:host:is_e_eqC_or_not.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(42);" id="toggleproof42">[Show Proof]</a>
+<div class="proof" id="proof42" style="display: none;">
+search. search. search. search. search.</div>
+Prove library:host:is_e_gt_or_not.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(43);" id="toggleproof43">[Show Proof]</a>
+<div class="proof" id="proof43" style="display: none;">
+search. search. search. search. search.</div>
+Prove library:host:is_e_not_or_not.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(44);" id="toggleproof44">[Show Proof]</a>
+<div class="proof" id="proof44" style="display: none;">
+search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_nil_or_not : forall E,
+    IsE: is_e E ->
+    E = library:list:nil \/ (E = library:list:nil -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(45);" id="toggleproof45">[Show Proof]</a>
+<div class="proof" id="proof45" style="display: none;">
+search. search. search. search. search. search. search. search.
+search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_cons_or_not : forall E,
+    IsE: is_e E ->
+    (exists E1 E2, E = cons E1 E2) \/
+    ((exists E1 E2, E = cons E1 E2) -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(46);" id="toggleproof46">[Show Proof]</a>
+<div class="proof" id="proof46" style="display: none;">
+search. search. search. search. search. search. search. search.
+search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_null_or_not : forall E,
+    IsE: is_e E ->
+    (exists E', E = null E') \/
+    ((exists E', E = null E') -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(47);" id="toggleproof47">[Show Proof]</a>
+<div class="proof" id="proof47" style="display: none;">
+search. search. search. search. search. search. search. search.
+search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_head_or_not : forall E,
+    IsE: is_e E ->
+    (exists E', E = head E') \/
+    ((exists E', E = head E') -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(48);" id="toggleproof48">[Show Proof]</a>
+<div class="proof" id="proof48" style="display: none;">
+search. search. search. search. search. search. search. search.
+search. search. search. search. search. search.</div>
+Extensible_Theorem
+  is_e_tail_or_not : forall E,
+    IsE: is_e E ->
+    (exists E', E = tail E') \/
+    ((exists E', E = tail E') -> false)
+  on IsE.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(49);" id="toggleproof49">[Show Proof]</a>
+<div class="proof" id="proof49" style="display: none;">
+search. search. search. search. search. search. search. search.
+search. search. search. search. search. search.</div>
+Prove library:host:is_e_eq_or_not.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(50);" id="toggleproof50">[Show Proof]</a>
+<div class="proof" id="proof50" style="display: none;">
+<span class="comment">%nil</span>
+ Or: apply is_e_nil_or_not to IsE2. E: case Or.
+   <span class="comment">%nil</span>
+    search.
+   <span class="comment">%not nil</span>
+    right. intros Eq. case Eq. backchain E.
+<span class="comment">%cons</span>
+ Or: apply is_e_cons_or_not to IsE2. E: case Or.
+   <span class="comment">%cons</span>
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      <span class="comment">%E3 = E4</span>
+       Or: apply IH to IsE4 Is1. E: case Or.
+         <span class="comment">%E = E5</span>
+          search.
+         <span class="comment">%E != E5</span>
+          right. intros Eq. case Eq. backchain E.
+      <span class="comment">%E3 != E4</span>
+       right. intros Eq. case Eq. backchain E.
+   <span class="comment">%not cons</span>
+    right. intros Eq. backchain E. case Eq. search.
+<span class="comment">%null</span>
+ Or: apply is_e_null_or_not to IsE2. E: case Or.
+   <span class="comment">%null</span>
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      <span class="comment">%E = E'</span>
+       search.
+      <span class="comment">%E != E'</span>
+       right. intros Eq. case Eq. backchain E.
+   <span class="comment">%not null</span.
+    right. intros Eq. backchain E. case Eq. search.
+<span class="comment">%head</span.
+ Or: apply is_e_head_or_not to IsE2. E: case Or.
+   <span class="comment">%head</span>
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      <span class="comment">%E = E'</span>
+       search.
+      <span class="comment">%E != E'</span>
+       right. intros Eq. case Eq. backchain E.
+   <span class="comment">%not head</span>
+    right. intros Eq. backchain E. case Eq. search.
+<span class="comment">%tail</span>
+ Or: apply is_e_tail_or_not to IsE2. E: case Or.
+   <span class="comment">%tail</span>
+    Is: case IsE2. Or: apply IH to IsE3 Is. E: case Or.
+      <span class="comment">%E = E'</span>
+       search.
+      <span class="comment">%E != E'</span>
+       right. intros Eq. case Eq. backchain E.
+   <span class="comment">%not tail</span>
+    right. intros Eq. backchain E. case Eq. search.</div>
+
+
+Prove library:host:vars_unique.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(51);" id="toggleproof51">[Show Proof]</a>
+<div class="proof" id="proof51" style="display: none;">
+<span class="comment">%VR-nil</span>
+ case Vars2. search.
+<span class="comment">%VR-cons</span>
+ V: case Vars2. apply IH to Vars3 V. apply IH to Vars4 V1.
+ apply append_unique to Vars5 V2. search.
+<span class="comment">%VR-null</span>
+ V: case Vars2. apply IH to Vars3 V. search.
+<span class="comment">%VR-head</span>
+ V: case Vars2. apply IH to Vars3 V. search.
+<span class="comment">%VR-tail</span>
+ V: case Vars2. apply IH to Vars3 V. search.</div>
+
+
+Prove_Constraint library:host:trans_e_vars_exist.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(52);" id="toggleproof52">[Show Proof]</a>
+<div class="proof" id="proof52" style="display: none;">
+<span class="comment">%P-null</span>
+ case Hyp1. search.
+<span class="comment">%P-head</span>
+ case Hyp1. search.
+<span class="comment">%P-tail</span>
+ case Hyp1. search.
+<span class="comment">%P-nil</span>
+ search.
+<span class="comment">%P-cons</span>
+ case Hyp1. search.
+Prove_Constraint library:host:trans_e_vars.
+<span class="comment">%P-null</span>
+ V: case Hyp1. apply vars_unique to V Hyp2. search.
+<span class="comment">%P-head</span>
+ V: case Hyp1. apply vars_unique to V Hyp2. search.
+<span class="comment">%P-tail</span>
+ V: case Hyp1. apply vars_unique to V Hyp2. search.
+<span class="comment">%P-nil</span>
+ case Hyp1. case Hyp2. search.
+<span class="comment">%P-cons</span>
+ V: case Hyp1. V': case Hyp2. apply vars_unique to V V'.
+ apply vars_unique to V1 V'1. apply append_unique to V2 V'2. search.</div>
+
+
+Prove library:host:vars_is.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(53);" id="toggleproof53">[Show Proof]</a>
+<div class="proof" id="proof53" style="display: none;">
+<span class="comment">%VR-nil</span>
+ search.
+<span class="comment">%VR-cons</span>
+ Is: case IsE. apply IH to Is Vars1. apply IH to Is1 Vars2.
+ apply append__is_list__is_string to _ _ Vars3. search.
+<span class="comment">%VR-null</span>
+ Is: case IsE. apply IH to Is Vars1. search.
+<span class="comment">%VR-head</span>
+ Is: case IsE. apply IH to Is Vars1. search.
+<span class="comment">%VR-tail</span>
+ Is: case IsE. apply IH to Is Vars1. search.</div>
+
+
+Prove library:host:vars_exist.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(54);" id="toggleproof54">[Show Proof]</a>
+<div class="proof" id="proof54" style="display: none;">
+<span class="comment">%nil</span>
+ search.
+<span class="comment">%cons</span>
+ V1: apply IH to IsE1. V2: apply IH to IsE2.
+ Is1: apply vars_is to IsE1 V1. Is2: apply vars_is to IsE2 V2.
+ apply append__is_list__is_string__total to Is1 Is2. search.
+<span class="comment">%null</span>
+ apply IH to IsE1. search.
+<span class="comment">%head</span>
+ apply IH to IsE1. search.
+<span class="comment">%tail</span>
+ apply IH to IsE1. search.</div>
+
+
+Prove library:host:value_empty_typable.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(55);" id="toggleproof55">[Show Proof]</a>
+<div class="proof" id="proof55" style="display: none;">
+<span class="comment">%V-nil</span>
+ case Ty. search.
+<span class="comment">%V-cons</span>
+ Ty: case Ty. apply IH to Value1 Ty. apply IH to Value2 Ty1. search.</div>
+
+
+Prove library:host:type_preservation_e.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(56);" id="toggleproof56">[Show Proof]</a>
+<div class="proof" id="proof56" style="display: none;">
+<span class="comment">%E-nil</span>
+ case Ty. search.
+<span class="comment">%E-cons</span>
+ Ty: case Ty. apply IH to Ty Ev1 Rel. apply IH to Ty1 Ev2 Rel. search.
+<span class="comment">%E-null-true</span>
+ case Ty. search.
+<span class="comment">%E-null-false</span>
+ case Ty. search.
+<span class="comment">%E-head</span>
+ Ty: case Ty. TV: apply IH to Ty Ev1 Rel. case TV. search.
+<span class="comment">%E-tail</span>
+ Ty: case Ty. TV: apply IH to Ty Ev1 Rel. case TV. search.</div>
+
+
+Prove library:host:var_types_maintained.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(57);" id="toggleproof57">[Show Proof]</a>
+<div class="proof" id="proof57" style="display: none;">
+<span class="comment">%TS-splitlist</span>
+ search.</div>
+
+
+Prove library:host:type_preservation_s.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(58);" id="toggleproof58">[Show Proof]</a>
+<div class="proof" id="proof58" style="display: none;">
+<span class="comment">%X-splitlist</span>
+ Ty: case Ty. TyCons: apply type_preservation_e to Ty Ev1 Rel.
+ TyV: case TyCons. LV: case LkpV.
+   <span class="comment">%Lkp-Here</span>
+    apply lookup_unique to LkpTy Ty1. search.
+   <span class="comment">%Lkp-Later</span>
+    LV: case LV1.
+      <span class="comment">%Lkp-Here</span>
+       apply lookup_unique to Ty2 LkpTy. search.
+      <span class="comment">%Lkp-Later</span>
+       assert X = Tl -> false. intros E. case E. backchain LV1.
+       assert X = Hd -> false. intros E. case E. backchain LV.
+       L: apply lookup_after_select_before to LV2 Ev4 _.
+       L': apply lookup_after_select_before to L Ev3 _.
+       apply Rel to _ L'. search.</div>
+
+
+Prove_Constraint library:host:trans_eval_e.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(59);" id="toggleproof59">[Show Proof]</a>
+<div class="proof" id="proof59" style="display: none;">
+<span class="comment">%P-null</span>
+ case Hyp1. search. search.
+<span class="comment">%P-head</span>
+ case Hyp1. search.
+<span class="comment">%P-tail</span>
+ case Hyp1. search.
+<span class="comment">%P-nil</span>
+ search.
+<span class="comment">%P-cons</span>
+ case Hyp1. apply is_e_eq_or_not. skip.</div>
+
+
+Prove library:host:eval_e_unique.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(60);" id="toggleproof60">[Show Proof]</a>
+<div class="proof" id="proof60" style="display: none;">
+<span class="comment">%E-nil</span>
+ case Ev2. search.
+<span class="comment">%E-cons</span>
+ Ev2: case Ev2. apply IH to Ev3 Ev2. apply IH to Ev4 Ev5. search.
+<span class="comment">%E-null-true</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-null-true</span>
+    search.
+   <span class="comment">%E-null-false</span>
+    apply IH to Ev3 Ev2.
+<span class="comment">%E-null-false</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-null-true</span>
+    apply IH to Ev3 Ev2.
+   <span class="comment">%E-null-false</span>
+    search.
+<span class="comment">%E-head</span>
+ Ev2: case Ev2. apply IH to Ev3 Ev2. search.
+<span class="comment">%E-tail</span>
+ Ev2: case Ev2. apply IH to Ev3 Ev2. search.</div>
+
+
+Prove_Constraint library:host:trans_s_eval.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(61);" id="toggleproof61">[Show Proof]</a>
+<div class="proof" id="proof61" style="display: none;">
+<span class="comment">%Trans-splitlist</span>
+ Ev: case Hyp1. exists (Hd, V1)::(Tl, V2)::GTl. unfold.
+ exists (Tl, V2)::(Hd, cons V1 V2)::GTl. split.
+   <span class="comment">%eval first two assigns</span>
+    unfold. exists (Hd, cons V1 V2)::GHd. split.
+      <span class="comment">%eval first Hd assign</span>
+       search.
+      <span class="comment">%eval Tl assign</span>
+       search.
+   <span class="comment">%eval latter assign to Hd</span>
+    assert Tl = Hd -> false. intros E. case E. backchain Ev1. search.</div>
+Prove_Ext_Ind library:host:eval_s.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(62);" id="toggleproof62">[Show Proof]</a>
+<div class="proof" id="proof62" style="display: none;">
+<span class="comment">%P-splitlist</span>
+ assert |{s}- splitlist Hd Tl E ~~>
+             (seq (seq (assign Hd E)
+                       (assign Tl (tail (var Hd))))
+                       (assign Hd (head (var Hd)))). unfold.
+ exists (seq (seq (assign Hd E)
+                  (assign Tl (tail (var Hd))))
+                  (assign Hd (head (var Hd)))), VHd, GHd, VTl. split.
+   <span class="comment">%trans</span>
+    search.
+   <span class="comment">%eval trans</span>
+    unfold. exists (Tl, V2)::(Hd, cons V1 V2)::GTl. split.
+      <span class="comment">%eval first two assigns</span>
+       unfold. exists (Hd, cons V1 V2)::GHd. split.
+         <span class="comment">%eval first Hd assign</span>
+          search.
+         <span class="comment">%eval Tl assign</span>
+          search.
+      <span class="comment">%eval latter assign to Hd</span>
+       assert Tl = Hd -> false. intros E. case E. backchain Rel2.
+       search.
+   <span class="comment">%eval E</span>
+    search.
+   <span class="comment">%Hd != Tl</span>
+    search.
+   <span class="comment">%select Hd</span>
+    search.
+   <span class="comment">%select Tl</span>
+    search.</div>
+
+
+Prove_Constraint library:host:trans_s_eval_results.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(63);" id="toggleproof63">[Show Proof]</a>
+<div class="proof" id="proof63" style="display: none;">
+<span class="comment">%X-splitlist</span>
+ EvTr: case Hyp2. EvTr: case EvTr. EvTr: case EvTr. EvTr: case EvTr2.
+ EvTr: case EvTr2. EvTr: case EvTr2. case EvTr2.
+   <span class="comment">%Lkp-Here</span>
+    EvTr: case EvTr1. EvTr: case EvTr1. EvTr: case EvTr1. L: case EvTr1.
+      <span class="comment">%Lkp-Here:  Hd = Tl</span>
+       apply Hyp4 to _.
+      <span class="comment">%Lkp-Later:  lookup NewG1 Hd (cons V4 V5)</span>
+       STl: case EvTr4.
+         <span class="comment">%Tl = Hd</span>
+          apply L to _.
+         <span class="comment">%select (Tl, VOld1) L1 NewG</span>
+          SHd: case EvTr2.
+            <span class="comment">%Hd = Tl</span>
+             apply L to _.
+            <span class="comment">%select (Hd, VOld2) L2 (Hd, cons V3 V2)::L1</span>
+             EvSL: case Hyp1. case L1.
+               <span class="comment">%Lkp-Here</span>
+                apply eval_e_unique to EvTr EvSL. LX: case Hyp3.
+                  <span class="comment">%Lkp-Here:  X = Hd</span>
+                   search.
+                  <span class="comment">%Lkp-Later:  lookup (Tl, V7)::GTl X V</span>
+                   LX: case LX1.
+                     <span class="comment">%Lkp-Here:  X = Tl</span>
+                      search.
+                     <span class="comment">%Lkp-Later:  lookup X V GTl</span>
+                      assert X = Tl -> false.
+                        intros E. case E. backchain LX1.
+                      L2: apply lookup_after_select_before to LX2 EvSL3 _.
+                      assert X = Hd -> false.
+                        intros E. case E. backchain LX.
+                      L3: apply lookup_after_select_before to L2 EvSL2 _.
+                      L4: apply select_lookup to L3 EvTr3 _.
+                      L5: apply select_lookup to L4 STl _.
+                      L5': assert lookup ((Hd, cons V6 V7)::L1) X V.
+                      apply select_lookup to L5' SHd _. search.
+               <span class="comment">%Lkp-Later</span>
+                apply H1 to _.
+   <span class="comment">%Lkp-Later</span>
+    apply H1 to _.</div>
+
+
+Prove_Constraint library:host:trans_s_eval_results_back.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(64);" id="toggleproof64">[Show Proof]</a>
+<div class="proof" id="proof64" style="display: none;">
+<span class="comment">%X-splitlist</span>
+ EvSL: case Hyp1. EvTr: case Hyp2. EvTr: case EvTr. EvTr: case EvTr1.
+ EvTr: case EvTr. apply eval_e_unique to EvTr EvSL. EvTr: case EvTr2.
+ EvTr: case EvTr1. EvTr: case EvTr2. EvTr: case EvTr1.
+ EvTr: case EvTr2. LHd: case EvTr2.
+   <span class="comment">%Lkp-Here</span>
+    EvTr: case EvTr3.
+      <span class="comment">%Slct-Here:  Hd = Tl</span>
+       apply EvSL1 to _.
+      <span class="comment">%Slct-Later</span>
+       LX: case Hyp3.
+         <span class="comment">%Lkp-Here:  X = Hd</span>
+          STl: case EvTr5.
+            <span class="comment">%Slct-Here:  Tl = X</span>
+             apply EvSL1 to _.
+            <span class="comment">%Slct-Later</span>
+             L: case EvTr1.
+               <span class="comment">%Lkp-Here:  X = Tl</span>
+                apply EvSL1 to _.
+               <span class="comment">%Lkp-Later</span>
+                L': case L1.
+                  <span class="comment">%Lkp-Here</span>
+                   search.
+                  <span class="comment">%Lkp-Later:  X != X</span>
+                   apply L' to _.
+         <span class="comment">%Lkp-Later:  lookup (Tl, V5)::L1 X V</span>
+          LX: case LX1.
+            <span class="comment">%Lkp-Here:  X = Tl</span>
+             search.
+            <span class="comment">%Lkp-Later:  lookup L1 X V</span>
+             assert X = Hd -> false. intros E. case E. backchain LX.
+             assert X = Tl -> false. intros E. case E. backchain LX1.
+             L1: apply lookup_after_select_before to LX2 EvTr2 _.
+             L2: apply lookup_after_select_before to L1 EvTr5 _.
+             L': case L2.
+               <span class="comment">%Lkp-Here:  X = Hd</span>
+                apply LX to _.
+               <span class="comment">%Lkp-Later</span.
+                L3: apply lookup_after_select_before to L'1 EvTr4 _.
+                L4: apply select_lookup to L3 EvSL2 _.
+                apply select_lookup to L4 EvSL3 _. search.
+   <span class="comment">%Lkp-Later</span>
+    apply LHd to _.</div>
+
+
+Prove library:host:eval_e_value.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(65);" id="toggleproof65">[Show Proof]</a>
+<div class="proof" id="proof65" style="display: none;">
+<span class="comment">%E-nil</span>
+ search.
+<span class="comment">%E-cons</span>
+ apply IH to Ev1 AllVal. apply IH to Ev2 AllVal. search.
+<span class="comment">%E-null-true</span>
+ search.
+<span class="comment">%E-null-false</span>
+ search.
+<span class="comment">%E-head</span>
+ V: apply IH to Ev1 AllVal. case V. search.
+<span class="comment">%E-tail</span>
+ V: apply IH to Ev1 AllVal. case V. search.</div>
+
+
+Prove library:host:eval_s_value.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(66);" id="toggleproof66">[Show Proof]</a>
+<div class="proof" id="proof66" style="display: none;">
+<span class="comment">%X-splitlist</span>
+ VCons: apply eval_e_value to Ev1 AllVal. V: case VCons (keep).
+ M: case Mem.
+   <span class="comment">%Mem-Here:  (Hd, V1)</span>
+    search.
+   <span class="comment">%Mem-Later</span>
+    M: case M.
+      <span class="comment">%Mem-Here:  (Tl, V2)</span>
+       search.
+      <span class="comment">%Mem-Later</span>
+       MGHd: apply mem_after_select_before to _ M.
+       apply mem_after_select_before to _ MGHd. backchain AllVal.</div>
+
+
+Prove library:host:vars_eval_same_result.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(67);" id="toggleproof67">[Show Proof]</a>
+<div class="proof" id="proof67" style="display: none;">
+<span class="comment">%E-nil</span>
+ case Ev2. search.
+<span class="comment">%E-cons</span>
+ Ev2: case Ev2. Vars: case Vars.
+ apply IH to _ Vars Ev3 Ev2. backchain vars_equiv_left.
+ apply IH to _ Vars1 Ev4 Ev5. backchain vars_equiv_right. search.
+<span class="comment">%E-null-true</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-null-true</span>
+    search.
+   <span class="comment">%E-null-false</span>
+    Vars: case Vars. apply IH to _ Vars Ev3 Ev2.
+<span class="comment">%E-null-false</span>
+ Ev2: case Ev2.
+   <span class="comment">%E-null-true</span>
+    Vars: case Vars. apply IH to _ Vars Ev3 Ev2.
+   <span class="comment">%E-null-false</span>
+    search.
+<span class="comment">%E-head</span>
+ Ev2: case Ev2. Vars: case Vars. apply IH to _ _ Ev3 Ev2. search.
+<span class="comment">%E-tail</span.
+ Ev2: case Ev2. Vars: case Vars. apply IH to _ _ Ev3 Ev2. search.</div></pre>
+
+  <p>
+    We can again check the completed file and compile it:
+    <pre class="code">
+extensibella --check --compile list.xthm</pre>
+    We compile this because we will need it for composing the proofs
+    even though we aren't adding any extensions on top of it.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Security Extension</h2>
+  <p>
+    We also add an extension checking information flow to prevent
+    private information from leaking to public variables.
+  </p>
+
+  <h3>Sterling Language Specification</h3>
+  <p>
+    Our specification for this extension introduces one new construct,
+    a way to declare variables with a specific security level.  In
+    addition to defining the relations from the host language for this
+    construct, we declare and define new relations checking
+    information flow relative to security levels.
+  </p>
+
+  <span class="highlight">syntax.sos</span>
+  <a class="fold-link" href="javascript:void" id="togglesecurity/syntax.sos"
+     onclick="toggleFile('security/syntax.sos')">[Expand File]</a>
+  <pre class="code sterling" id="security/syntax.sos" style="max-height: 105px;">
+Module library:security
+
+Builds on library:host
+
+s ::= ...
+    | secdecl(string, ty, sl, e)
+
+sl ::= public
+     | private
+
+Translation sl :
+
+
+---------------------------------------------- [P-secdecl]
+|{s}- secdecl(N, Ty, Sl, E) ~~> decl(N, Ty, E)</pre>
+
+  <span class="highlight">typing.sos</span>
+  <pre class="code sterling" id="security/typing.sos" style="max-height: 105px;">
+Module library:security
+
+ty_e G E Ty
+no_lookup G N
+--------------------------------------- [TS-secdecl]
+ty_s G secdecl(N, Ty, Sl, E) (N, Ty)::G</pre>
+
+  <span class="highlight">eval.sos</span>
+  <pre class="code sterling" id="security/eval.sos" style="max-height: 105px;">
+Module library:security
+
+eval_e G E V
+---------------------------------------- [X-secdecl]
+eval_s G secdecl(N, Ty, Sl, E) (N, V)::G</pre>
+
+  <span class="highlight">security.sos</span>
+  <a class="fold-link" href="javascript:void" id="togglesecurity/security.sos"
+     onclick="toggleFile('security/security.sos')">[Expand File]</a>
+  <pre class="code sterling" id="security/security.sos" style="max-height: 105px;">
+Module library:security
+
+<span class="comment">/*We use the standard library's lookup relation rather than writing
+  our own here.*/</span>
+
+Fixed Judgment join : sl sl sl
+<span class="comment">/*Sigma |- level e* sl*/</span>
+Judgment level : [(string, sl)] e* sl
+<span class="comment">/*Sigma sl |- secure s* Sigma*/</span>
+Judgment secure : [(string, sl)] sl s* [(string, sl)]
+
+========================= [J-public]
+join public public public
+
+
+====================== [J-private-l]
+join private L private
+
+
+====================== [J-private-r]
+join L private private
+
+
+
+
+
+------------------------- [L-int]
+level SG intlit(I) public
+
+
+--------------------- [L-true]
+level SG trueE public
+
+
+---------------------- [L-false]
+level SG falseE public
+
+
+lookup SG N L
+----------------- [L-var]
+level SG var(N) L
+
+
+level SG E1 L1
+level SG E2 L2
+join L1 L2 L
+---------------------- [L-add]
+level SG add(E1, E2) L
+
+
+level SG E1 L1
+level SG E2 L2
+join L1 L2 L
+--------------------- [L-eq]
+level SG eq(E1, E2) L
+
+
+level SG E1 L1
+level SG E2 L2
+join L1 L2 L
+--------------------- [L-gt]
+level SG gt(E1, E2) L
+
+
+level SG E L
+----------------- [L-not]
+level SG not(E) L
+
+
+|{e}- E ~~> E1
+level SG E1 Sl
+-------------- [LF-level]*
+level SG E Sl
+
+
+
+
+
+--------------------- [S-skip]
+secure SG Sl skipS SG
+
+
+secure SG Sl S1 SG1
+secure SG1 Sl S2 SG2
+---------------------------- [S-seq]
+secure SG Sl seq(S1, S2) SG2
+
+
+level SG E public
+no_lookup SG N
+----------------------------------------------- [S-decl]
+secure SG public decl(N, Ty, E) (N, public)::SG
+
+
+level SG E L
+lookup SG N private
+---------------------------- [S-assign-private]
+secure SG Sl assign(N, E) SG
+
+
+level SG E public
+lookup SG N public
+-------------------------------- [S-assign-public]
+secure SG public assign(N, E) SG
+
+
+level SG E L
+join L Sl Sl1
+secure SG Sl1 S1 SG1
+secure SG Sl1 S2 SG2
+------------------------------- [S-ifte]
+secure SG Sl ifte(E, S1, S2) SG
+
+
+level SG E L
+join L Sl Sl1
+secure SG Sl1 S SG1
+--------------------------- [S-while]
+secure SG Sl while(E, S) SG
+
+
+level SG E L
+no_lookup SG N
+-------------------------------------------------------- [S-secdecl-private]
+secure SG Sl secdecl(N, Ty, private, E) (N, private)::SG
+
+
+level SG E public
+no_lookup SG N
+---------------------------------------------------------- [S-secdecl-public]
+secure SG public secdecl(N, Ty, public, E) (N, public)::SG
+
+
+|{s}- S ~~> S1
+secure SG Sl S1 SG1
+------------------- [LF-secure]*
+secure SG Sl S SG1</pre>
+
+  <p>
+    As before, we check this module and compile it for Extensibella:
+    <pre class="code">
+sterling --extensibella library:security</pre>
+  </p>
+
+
+  <h3>Extensibella Reasoning</h3>
+  <p>
+    The security extension also must prove the properties introduced
+    by the host language, so we generate a proof skeleton for it as
+    well:
+    <pre class="code">
+extensibella --generate library:security security.xthm</pre>
+    The generated file has the same contents as the one generated for
+    the list extension other than the module declaration at the
+    beginning.
+  </p>
+
+  <p>
+    The security extension adds proofs for the new cases in existing
+    properties imported from the host language.  Additionally, it
+    introduces new properties showing the correctness of the security
+    analyses it introduces.  In particular,
+    the <code>stmt_secure</code> property, the final property
+    introduced by the security extension, ensures information cannot
+    leak from private variables to public variables when the security
+    analysis succeeds.
+  </p>
+  <span class="highlight">security.xthm</span>
+  <a class="fold-link" href="javascript:void" id="togglesecurity.xthm"
+     onclick="toggleFile('security.xthm')">[Expand File]</a>
+  <pre class="code extensibella" id="security.xthm" style="max-height: 105px;">
+  </pre>
+
+  <p>
+    We compile this so we can build the composition:
+    <pre class="code">
+extensibella --check --compile security.xthm</pre>
+  </p>
+</div>
+
+<div class="section">
+  <h2>Proof Composition</h2>
+  <p>
+    In addition to checking proofs are modularly valid, Extensibella
+    can also compose them to form a valid Abella proof of all the
+    properties in the full language.  To build a composed proof for
+    the host language with both extensions, we need to create a module
+    bringing them all together.  We will call
+    this <code>library:composed</code>.  This module will not
+    introduce anything new to the language, only pulling in the
+    previous pieces.
+  </p>
+  <span class="highlight">composed.sos</span>
+  <pre class="code sterling" id="composed.sos">
+Module library:composed
+
+Builds on library:host
+Builds on library:list
+Builds on library:security</pre>
+
+  <p>
+    We will need to compile this twice, once for a regular
+    Extensibella proof, the same way we have compiled the others, and
+    once for the Extensibella composition, as these have slightly
+    different requirements.
+    <pre class="code">
+sterling --extensibella library:composed
+sterling --extensibellaFull library:composed</pre>
+  </p>
+
+  <p>
+    We also need to create an Extensibella file for the composed
+    module.  This is necessary for Extensibella to know what
+    properties the modules in the composition add, if any.  Since we
+    don't want to add any properties, this will simply be the file
+    Extensibella generates, which includes the properties introduced
+    by the host language and both extensions.  We also need to compile
+    this file for the composition.
+  </p>
+    <pre class="code">
+extensibella --generate library:composed composed.xthm
+extensibella --check --compile composed.xthm</pre>
+    <span class="highlight">composed.xthm</span>
+    <a class="fold-link" href="javascript:void" id="togglecomposed.xthm"
+       onclick="toggleFile('composed.xthm')">[Expand File]</a>
+    <pre class="code extensibella" id="composed.xthm" style="max-height: 105px;">
+</pre>
+
+  <p>
+    We now have all the pieces necessary to have Extensibella build
+    the composition.  To do so, we give the name of the file to be
+    output, along with the module for which we are building the
+    composition, as well as all the proof files for the modules
+    included in the composition:
+    <pre class="code">
+extensibella --compose out.thm library:composed host.xthm list.xthm security.xthm composed.xthm path/to/sterling/stdLib/stdLib.xthm</pre>
+    Note we need to include the Extensibella proof file for the
+    Sterling standard library as well, since the standard library is
+    included in all Sterling modules, so its properties are also
+    included in the Extensibella modules using them and their proofs
+    are needed for the composition.
+  </p>
+
+  <p>
+    The produced Abella file, <code>out.thm</code> in our example,
+    contains the Abella specification of the language and Abella
+    proofs of each property from any module in the composition.
+  </p>
+  <span class="highlight">out.thm</span>
+  <a class="fold-link" href="javascript:void" id="toggleout.thm"
+     onclick="toggleFile('out.thm')">[Expand File]</a>
+  <pre class="code abella" id="out.thm" style="max-height: 105px;">
+</pre>
+
+  <p>
+    We can verify the correctness of the modular proofs by checking
+    the composed file:
+  </p>
+  <pre class="code">
+abella out.thm</pre>
+</div>
+</body>
+</html>

@@ -49,7 +49,7 @@ function toggleFile(fname){
     var toggler = document.getElementById("toggle" + fname);
     var file = document.getElementById(fname);
     if (toggler.innerHTML == "[Reduce File]"){
-        file.style = "height: 105px;";
+        file.style = "max-height: 105px;";
         toggler.innerHTML = "[Expand File]";
     }
     else{

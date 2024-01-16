@@ -316,7 +316,7 @@
           induction</blockquote></td>
     </tr>
     <tr>
-      <td><blockquote>This also introduces two lemmas the user does
+      <td><blockquote>This also introduces three lemmas the user does
           not need to prove but can use.  For a
           relation <code>rel</code>, we have
           <ul>
@@ -325,6 +325,9 @@
               it
             <li> <code>ext_ind_pos_rel</code>, that the extension size
               is greater than or equal to zero
+            <li> <code>drop_ext_ind_rel</code>, that the extension
+              size version of the relation is equivalent to the
+              relation itself
           </ul>
       </blockquote></td>
     </tr>
@@ -690,6 +693,79 @@ IH : forall A B C, rel A B * -> rel B C -> rel A C
   </p>
 </div>
 
+<div class="section">
+  <h2>Running Extensibella</h2>
+  <p>
+    Extensibella can be run interactively to build proofs.  The best
+    way to do this is using <a href="#emacs">Proof General</a>, where
+    one writes commands into a file in Emacs and runs them as they are
+    written.  Alternatively, proofs may be written directly into
+    Extensibella by running it as
+    <pre class="code">
+extensibella</pre>
+    <b>Note this will not save the proofs written.</b>  Writing proofs
+    directly into the Extensibella command line also requires saving
+    the commands elsewhere.  When running interactively, Extensibella
+    waits for a command, processes it, and displays the proof state
+    after the command has run.
+  </p>
+
+  <p>
+    To check an Extensibella file <code>thms.xthm</code> that has
+    already been written, run
+    <pre class="code">
+extensibella --check thms.xthm</pre>
+    This will check all the proofs are correct, and that all proof
+    obligations have been fulfilled.
+  </p>
+
+  <p>
+    Because the Extensibella file for a module may be anywhere, a file
+    must be compiled before proofs can be written for modules building
+    on it.  This takes the relevant information modules building on it
+    must know and places it in Extensibella's <code>generated</code>
+    directory.  To compile a file <code>thms.xthm</code>, run
+    <pre class="code">
+extensibella --compile thms.xthm</pre>
+    The best practice is to combine this with the <code>--check</code>
+    flag, as the proofs being compiled are not checked by default, to
+    ensure the properties being compiled are true.
+    Note <code>--compile</code> by itself can be quite a bit faster
+    than combining it with <code>--check</code>, however, which is why
+    the combination is not the default.
+  </p>
+
+  <p>
+    In addition to its use in writing modular proofs, Extensibella
+    also provides a facility for combining them into a single Abella
+    proof.  The existence of modular proofs acceptable to Extensibella
+    is sufficient evidence a single Abella proof of the properties for
+    the language exists, but this allows skeptics, or the curious, to
+    check the proof for themselves.  To compose a set of modular
+    proofs for the language of a module <code>mo:du:le</code> into an
+    Abella proof <code>out.thm</code>, run
+    <pre class="code">
+extensibella --compose out.thm mo:du:le file_1.xthm file_2.xthm ... file_n.xthm</pre>
+    where the listed files are the proof files for all modules
+    included in the composition.  A few notes:
+    <ul>
+      <li> Each module file included in the composition must be able
+        to be checked, so the specification of each module must be
+        compiled for Extensibella and the proofs of all properties in
+        the modules completed.
+      <li> The module defining the language being composed,
+        module <code>mo:du:le</code> in our example command, must be
+        compiled for an Extensibella full language; this has slightly
+        different requirements than the modular compiled format, so
+        both will be needed.
+      <li> If you are
+        using <a href="../sterling/index.html">Sterling</a> for your
+        language specifications, the list of proof files must include
+        the one for the Sterling standard library as well.
+    </ul>
+  </p>
+</div>
+
 <div class="section" id="emacs">
   <h2>Emacs Support</h2>
   <p>
@@ -710,7 +786,7 @@ IH : forall A B C, rel A B * -> rel B C -> rel A C
     the <code>generic/proof-site.el</code> file in the Proof General
     directory, in the <code>proof-assistant-table-default</code>:
     <pre class="code">
-(extensibella "Extensibella" "xthm") </pre>
+(extensibella "Extensibella" "xthm")</pre>
     This makes Proof General and Emacs know to open
     Extensibella <code>.xthm</code> files using this mode
     automatically.

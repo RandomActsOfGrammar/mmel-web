@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  walkthrough:big_step</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  walkthrough:big_step</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  module.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglemodule.sos" onclick="toggleFile('module.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="module.sos">[Raw File]</a>
+<pre class="code sterling" id="module.sos">
+Module walkthrough:big_step
+
+Builds on walkthrough:host
+
+
+Judgment big_step : tm* tm
+
+value T
+------------ [Big-End]
+big_step T T
+
+
+eval T T1
+big_step T1 T2
+-------------- [Big-Step]
+big_step T T2
+
+
+[] |{tm}- T ~~> T_T
+big_step T_T T1
+------------------- [Big-Trans]*
+big_step T T1
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="big_step.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="big_step-details.html#0">Module walkthrough:big_step.</a>
+
+
+<a class="command" href="big_step-details.html#1">Prove walkthrough:host:typeOf_unique.</a>
+
+
+<a class="command" href="big_step-details.html#2">Prove walkthrough:host:ty_lookup.</a>
+
+
+<a class="command" href="big_step-details.html#3">Prove walkthrough:host:subst_type_preservation.</a>
+
+
+<a class="command" href="big_step-details.html#4">Prove walkthrough:host:type_preservation.</a>
+
+
+<a class="command" href="big_step-details.html#5">Prove_Constraint walkthrough:host:trans_type_same.</a>
+
+
+<a class="command" href="big_step-details.html#6">Prove_Ext_Ind walkthrough:host:typeOf.</a>
+
+
+<a class="command" href="big_step-details.html#7">Extensible_Theorem
+  big_step_type_preservation : forall T Ty T',
+    Ty : typeOf [] T Ty ->
+    Big : big_step T T' ->
+    typeOf [] T' Ty
+  on Big.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(8);" id="toggleproof8">[Show Proof]</a>
+<div class="proof" id="proof8" style="display: none;">
+<span class="comment">%Big-End</span>
+ <a class="tactic" href="big_step-details.html#8">search.</a>
+<span class="comment">%Big-Step</span>
+ <a class="tactic" href="big_step-details.html#9">apply type_preservation to Ty Big1.</a> <a class="tactic" href="big_step-details.html#10">apply IH to _ Big2.</a> <a class="tactic" href="big_step-details.html#11">search.</a>
+<span class="comment">%Big-Trans</span>
+ <a class="tactic" href="big_step-details.html#12">apply trans_type_same to Big1 Ty.</a> <a class="tactic" href="big_step-details.html#13">apply IH to _ Big2.</a> <a class="tactic" href="big_step-details.html#14">search.</a></div>
+<a class="command" href="big_step-details.html#15"></a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

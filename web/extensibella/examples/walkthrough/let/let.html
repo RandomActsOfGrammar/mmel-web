@@ -68,55 +68,103 @@ typeOf Ctx let(X, T1, T2) Ty2
 <p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
 <a class="command" href="let-details.html#0">Module walkthrough:let.</a>
 
-<a class="command" href="let-details.html#1">Prove walkthrough:host:ty_lookup.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<a class="command" href="let-details.html#1">Prove walkthrough:host:typeOf_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
 <div class="proof" id="proof2" style="display: none;">
 <span class="comment">%T-Let</span>
- <a class="tactic" href="let-details.html#2">apply IH to Ty1 L.</a> <a class="tactic" href="let-details.html#3">apply IH to Ty2 _ with Ctx2 = (X, Ty1)::Ctx2.</a>
-   <a class="tactic" href="let-details.html#4">intros Lkp.</a> <a class="tactic" href="let-details.html#5">Lkp: case Lkp.</a>
+ <a class="tactic" href="let-details.html#2">TyB: case TyB.</a> <a class="tactic" href="let-details.html#3">apply IH to TyA1 TyB.</a> <a class="tactic" href="let-details.html#4">apply IH to TyA2 TyB1.</a> <a class="tactic" href="let-details.html#5">search.</a></div>
+
+
+<a class="command" href="let-details.html#6">Prove walkthrough:host:ty_lookup.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(7);" id="toggleproof7">[Show Proof]</a>
+<div class="proof" id="proof7" style="display: none;">
+<span class="comment">%T-Let</span>
+ <a class="tactic" href="let-details.html#7">apply IH to Ty1 L.</a> <a class="tactic" href="let-details.html#8">apply IH to Ty2 _ with Ctx2 = (X, Ty1)::Ctx2.</a>
+   <a class="tactic" href="let-details.html#9">intros Lkp.</a> <a class="tactic" href="let-details.html#10">Lkp: case Lkp.</a>
      <span class="comment">%Lkp-Here</span>
-      <a class="tactic" href="let-details.html#6">search.</a>
+      <a class="tactic" href="let-details.html#11">search.</a>
      <span class="comment">%Lkp-Later</span>
-      <a class="tactic" href="let-details.html#7">apply L to Lkp1.</a> <a class="tactic" href="let-details.html#8">search.</a>
- <a class="tactic" href="let-details.html#9">search.</a></div>
+      <a class="tactic" href="let-details.html#12">apply L to Lkp1.</a> <a class="tactic" href="let-details.html#13">search.</a>
+ <a class="tactic" href="let-details.html#14">search.</a></div>
 
 
-<a class="command" href="let-details.html#10">Prove walkthrough:host:subst_type_preservation.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(11);" id="toggleproof11">[Show Proof]</a>
-<div class="proof" id="proof11" style="display: none;">
+<a class="command" href="let-details.html#15">Prove walkthrough:host:subst_type_preservation.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(16);" id="toggleproof16">[Show Proof]</a>
+<div class="proof" id="proof16" style="display: none;">
 <span class="comment">%S-Let-NEq</span>
- <a class="tactic" href="let-details.html#11">Ty: case TTy.</a> <a class="tactic" href="let-details.html#12">apply IH to Ty S2 RTy.</a>
- <a class="tactic" href="let-details.html#13">Ty': apply ty_lookup to Ty1 _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.</a>
-   <a class="tactic" href="let-details.html#14">intros L.</a> <a class="tactic" href="let-details.html#15">L: case L.</a>
+ <a class="tactic" href="let-details.html#16">Ty: case TTy.</a> <a class="tactic" href="let-details.html#17">apply IH to Ty S2 RTy.</a>
+ <a class="tactic" href="let-details.html#18">Ty': apply ty_lookup to Ty1 _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.</a>
+   <a class="tactic" href="let-details.html#19">intros L.</a> <a class="tactic" href="let-details.html#20">L: case L.</a>
      <span class="comment">%Lkp-Here</span>
-      <a class="tactic" href="let-details.html#16">search.</a>
+      <a class="tactic" href="let-details.html#21">search.</a>
      <span class="comment">%Lkp-Later</span>
-      <a class="tactic" href="let-details.html#17">L: case L1.</a>
+      <a class="tactic" href="let-details.html#22">L: case L1.</a>
         <span class="comment">%Lkp-Here</span>
-         <a class="tactic" href="let-details.html#18">search.</a>
+         <a class="tactic" href="let-details.html#23">search.</a>
         <span class="comment">%Lkp-Later</span>
-         <a class="tactic" href="let-details.html#19">search.</a>
- <a class="tactic" href="let-details.html#20">apply IH to Ty' S3 RTy.</a> <a class="tactic" href="let-details.html#21">search.</a>
+         <a class="tactic" href="let-details.html#24">search.</a>
+ <a class="tactic" href="let-details.html#25">apply IH to Ty' S3 RTy.</a> <a class="tactic" href="let-details.html#26">search.</a>
 <span class="comment">%S-Let-Eq</span>
- <a class="tactic" href="let-details.html#22">Ty: case TTy.</a> <a class="tactic" href="let-details.html#23">apply IH to Ty S1 RTy.</a>
- <a class="tactic" href="let-details.html#24">apply ty_lookup to Ty1 _ with Ctx2 = (X, Ty1)::Ctx.</a>
-   <a class="tactic" href="let-details.html#25">intros L.</a> <a class="tactic" href="let-details.html#26">L: case L.</a>
+ <a class="tactic" href="let-details.html#27">Ty: case TTy.</a> <a class="tactic" href="let-details.html#28">apply IH to Ty S1 RTy.</a>
+ <a class="tactic" href="let-details.html#29">apply ty_lookup to Ty1 _ with Ctx2 = (X, Ty1)::Ctx.</a>
+   <a class="tactic" href="let-details.html#30">intros L.</a> <a class="tactic" href="let-details.html#31">L: case L.</a>
      <span class="comment">%Lkp-Here</span>
-      <a class="tactic" href="let-details.html#27">search.</a>
+      <a class="tactic" href="let-details.html#32">search.</a>
      <span class="comment">%Lkp-Later</span>
-      <a class="tactic" href="let-details.html#28">L: case L1.</a>
+      <a class="tactic" href="let-details.html#33">L: case L1.</a>
         <span class="comment">%Lkp-Here</span>
-         <a class="tactic" href="let-details.html#29">apply L to _.</a>
+         <a class="tactic" href="let-details.html#34">apply L to _.</a>
         <span class="comment">%Lkp-Later</span>
-         <a class="tactic" href="let-details.html#30">search.</a>
- <a class="tactic" href="let-details.html#31">search.</a></div>
+         <a class="tactic" href="let-details.html#35">search.</a>
+ <a class="tactic" href="let-details.html#36">search.</a></div>
 
 
-<a class="command" href="let-details.html#32">Prove walkthrough:host:type_preservation.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(33);" id="toggleproof33">[Show Proof]</a>
-<div class="proof" id="proof33" style="display: none;">
+<a class="command" href="let-details.html#37">Prove walkthrough:host:type_preservation.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(38);" id="toggleproof38">[Show Proof]</a>
+<div class="proof" id="proof38" style="display: none;">
 <span class="comment">%E-Let-Step</span>
- <a class="tactic" href="let-details.html#33">Ty: case Ty.</a> <a class="tactic" href="let-details.html#34">apply IH to Ty Ev1.</a> <a class="tactic" href="let-details.html#35">search.</a>
+ <a class="tactic" href="let-details.html#38">Ty: case Ty.</a> <a class="tactic" href="let-details.html#39">apply IH to Ty Ev1.</a> <a class="tactic" href="let-details.html#40">search.</a>
 <span class="comment">%E-Let-Subst</span>
- <a class="tactic" href="let-details.html#36">Ty: case Ty.</a> <a class="tactic" href="let-details.html#37">apply subst_type_preservation to Ty1 Ev2 Ty.</a> <a class="tactic" href="let-details.html#38">search.</a></div>
-<a class="command" href="let-details.html#39"></a>
+ <a class="tactic" href="let-details.html#41">Ty: case Ty.</a> <a class="tactic" href="let-details.html#42">apply subst_type_preservation to Ty1 Ev2 Ty.</a> <a class="tactic" href="let-details.html#43">search.</a></div>
+
+
+<a class="command" href="let-details.html#44">Prove_Constraint walkthrough:host:trans_type_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(45);" id="toggleproof45">[Show Proof]</a>
+<div class="proof" id="proof45" style="display: none;">
+<span class="comment">%Trans-Let</span>
+ <a class="tactic" href="let-details.html#45">case Hyp1.</a> <a class="tactic" href="let-details.html#46">apply typeOf_unique to Hyp2 H1.</a> <a class="tactic" href="let-details.html#47">search.</a></div>
+
+
+<a class="command" href="let-details.html#48">Prove_Ext_Ind walkthrough:host:typeOf.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(49);" id="toggleproof49">[Show Proof]</a>
+<div class="proof" id="proof49" style="display: none;">
+<span class="comment">%T-Let</span>
+ <a class="tactic" href="let-details.html#49">apply drop_ext_ind_typeOf to Rel3.</a>
+ <a class="tactic" href="let-details.html#50">assert G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1.</a>
+ <a class="tactic" href="let-details.html#51">IsN2: apply ext_ind_is_int_typeOf to Rel3.</a>
+ <a class="tactic" href="let-details.html#52">IsN3: apply ext_ind_is_int_typeOf to Rel4.</a>
+ <a class="tactic" href="let-details.html#53">IsN4: apply plus_integer_is_integer to _ _ Rel2.</a>
+ <a class="tactic" href="let-details.html#54">L: apply lt_plus_one to Rel1 _.</a>
+ <a class="tactic" href="let-details.html#55">PosN2: apply ext_ind_pos_typeOf to Rel3.</a>
+ <a class="tactic" href="let-details.html#56">PosN3: apply ext_ind_pos_typeOf to Rel4.</a> <a class="tactic" href="let-details.html#57">Acc: case Acc.</a>
+ <a class="tactic" href="let-details.html#58">assert <typeOf {T}> G T1 Ty1.</a>
+   <a class="tactic" href="let-details.html#59">Or: apply lt_left to Rel2 _ _.</a> <a class="tactic" href="let-details.html#60">L': case Or.</a>
+     <span class="comment">%N2 < N4</span>
+      <a class="tactic" href="let-details.html#61">L'': apply less_integer_transitive to L' L.</a>
+      <a class="tactic" href="let-details.html#62">A: apply Acc to _ L''.</a> <a class="tactic" href="let-details.html#63">apply IH to Rel3 A.</a> <a class="tactic" href="let-details.html#64">search.</a>
+     <span class="comment">%N2 = N4</span>
+      <a class="tactic" href="let-details.html#65">A: apply Acc to _ L.</a> <a class="tactic" href="let-details.html#66">apply IH to Rel3 A.</a> <a class="tactic" href="let-details.html#67">search.</a>
+ <a class="tactic" href="let-details.html#68">assert <typeOf {T}> ((X, Ty1)::G) T2 Ty.</a>
+   <a class="tactic" href="let-details.html#69">Or: apply lt_right to Rel2 _ _ _.</a> <a class="tactic" href="let-details.html#70">L': case Or.</a>
+     <span class="comment">%N3 < N4</span>
+      <a class="tactic" href="let-details.html#71">L'': apply less_integer_transitive to L' L.</a>
+      <a class="tactic" href="let-details.html#72">A: apply Acc to _ L''.</a> <a class="tactic" href="let-details.html#73">apply IH to Rel4 A.</a> <a class="tactic" href="let-details.html#74">search.</a>
+     <span class="comment">%N3 = N4</span>
+      <a class="tactic" href="let-details.html#75">A: apply Acc to _ L.</a> <a class="tactic" href="let-details.html#76">apply IH to Rel4 A.</a> <a class="tactic" href="let-details.html#77">search.</a>
+ <a class="tactic" href="let-details.html#78">unfold.</a> <a class="tactic" href="let-details.html#79">exists app (abs X Ty1 T2) T1, Ty1.</a> <a class="tactic" href="let-details.html#80">split.</a>
+   <span class="comment">%typeOf trans</span>
+    <a class="tactic" href="let-details.html#81">search.</a>
+   <span class="comment">%trans</span>
+    <a class="tactic" href="let-details.html#82">search.</a>
+   <span class="comment">%typeOf_T T1</span>
+    <a class="tactic" href="let-details.html#83">search.</a>
+   <span class="comment">%typeOf_T T2</span>
+    <a class="tactic" href="let-details.html#84">search.</a></div>
+<a class="command" href="let-details.html#85"></a>
 </pre>
 </div>
 <div class="section">

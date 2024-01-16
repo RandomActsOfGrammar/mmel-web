@@ -1,0 +1,33 @@
+Module walkthrough:big_step.
+
+
+Prove walkthrough:host:typeOf_unique.
+
+
+Prove walkthrough:host:ty_lookup.
+
+
+Prove walkthrough:host:subst_type_preservation.
+
+
+Prove walkthrough:host:type_preservation.
+
+
+Prove_Constraint walkthrough:host:trans_type_same.
+
+
+Prove_Ext_Ind walkthrough:host:typeOf.
+
+
+Extensible_Theorem
+  big_step_type_preservation : forall T Ty T',
+    Ty : typeOf [] T Ty ->
+    Big : big_step T T' ->
+    typeOf [] T' Ty
+  on Big.
+%Big-End
+ search.
+%Big-Step
+ apply type_preservation to Ty Big1. apply IH to _ Big2. search.
+%Big-Trans
+ apply trans_type_same to Big1 Ty. apply IH to _ Big2. search.
