@@ -14,21 +14,53 @@
 <div class="section">
   <h1>Walkthrough</h1>
   <p>
-    Extensibella is an interactive proof assistant that reasons about
-    extensible languages built by separate modules.  Much of the
-    reasoning will look familiar to those familiar
-    with <a href="https://abella-prover.org">Abella</a>.
+    This walkthrough introduces the structure of modular metatheory
+    and the use of Extensibella for proving properties in modular
+    metatheory.  Extensibella is an interactive proof assistant that
+    reasons about extensible languages built by separate modules.
+    Much of the reasoning will look familiar to those familiar with
+    <a href="https://abella-prover.org">Abella</a>.
   </p>
 
   <p>
-    This walkthrough of reasoning about an extensible language builds
-    on the <a href="../walkthrough.html">modular metatheory
-      walkthrough</a>.  That walkthrough goes over the high-level
-    structure of modular metatheory, focusing mainly on declaring
-    properties.  This walkthrough builds on that one, using the same
-    language modules and same set of properties, but now focusing on
-    individual proofs instead of the high-level structure.  Readers
-    are encouraged to review that walkthrough before proceeding here.
+    The language about which we will reason is built by three modules:
+    <ul>
+      <li>The <a href="#host">host language</a> is the simply-typed
+        lambda calculus.  It introduces syntax for basic lambda
+        calculus terms and types, as well as relations defining typing
+        and small-step evaluation.
+      <li>The <a href="#let">let extension</a> adds syntax
+        for <code>let</code> bindings, along with defining typing and
+        evaluation for them.
+      <li>The <a href="#bigStep">big step extension</a> adds a
+        relation defining big-step evaluation.
+    </ul>
+    We will define these modules
+    using <a href="../sterling">Sterling</a>, our tool for writing
+    extensible languages.  Our host language and the let extension are
+    based on the example language
+    in <a href="https://dl.acm.org/doi/abs/10.1145/2837614.2837644">"Sound
+    type-dependent syntactic language extension"</a>, a previous paper
+    about proving some aspects of metatheory for more limited
+    extensible languages.  Their work has a significantly different
+    character than ours, but we borrow some of their example language
+    here.
+  </p>
+
+  <p>
+    Our host language's main property is <i>type preservation</i>,
+    that a well-typed term that takes an evaluation step produces a
+    term with the same type.  To prove this, the host language will
+    introduce several other properties it will use as lemmas.  Each
+    extension will then contribute to proving these properties.  The
+    big step extension will add its own property, that type
+    preservation is also true for its big-step evaluation.
+  </p>
+
+  <p>
+    We will close with a discussion of <a href="#composition">proof
+      composition</a>, how the modular proofs can be used to build
+    full proofs for a composed language.
   </p>
 
   <p>
@@ -36,27 +68,64 @@
     the <a href="walkthrough_skeleton.tar.gz">walkthrough skeleton
       tarball</a> and follow along.  Following along will require
     having <a href="../sterling/index.html">Sterling</a> installed to
-    compile the specifications, as well as Extensibella to run the
-    proof steps.  The recommended way to run Extensibella is using
-    <a href="referenceGuide.html#emacs">Proof General</a>, but it may
-    also be run in the terminal.
+    compile the specifications, as well as Extensibella to execute the
+    proof steps.  We recommend using
+    <a href="referenceGuide.html#emacs">Proof General</a> to follow
+    along; if not using Proof General, the bold commands below can be
+    entered into Extensibella on the terminal.
   </p>
 
   <p>
-    The full development of the proof can be found as part of
+    The proof can also be found as part of
     the <a href="examples/walkthrough/description.html">examples</a>.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Preparing the Sterling Standard Library for Reasoning</h2>
+  <p>
+    Sterling contains a standard library with useful relations defined
+    for use in writing language specifications, which is included in
+    Sterling modules automatically.  It has an accompanying
+    Extensibella module with properties about these relations.  To
+    prepare for reasoning about our own modules, we need to compile
+    the Sterling standard library for Extensibella.
+  </p>
+
+  <p>
+    To do this, go to the Sterling standard
+    library directory (<code>sterling/stdLib</code>) and run
+    <pre class="code">
+$ <b>./build_extensibella</b></pre>
+    This only needs to be done once to reason about all languages.  It
+    should be done again each time Sterling is updated in case the
+    standard library has expanded.
   </p>
 </div>
 
 <div class="section" id="host">
   <h2>Host Language</h2>
   <p>
-    Our host language is
+    We start by writing a specification of our host language in
+    Sterling.  This will be
     the <code class="sterling">walkthrough:host</code> module.  It
     defines syntax categories and constructors for terms
     (<code class="sterling">tm</code>) and types
-    (<code class="sterling">ty</code>), as well as relations for
-    small-step evaluation and typing and rules defining them.
+    (<code class="sterling">ty</code>).  As discussed in
+    the <a href="sterling/walkthrough.html">Sterling walkthrough</a>,
+    each type must also declare its translation type.
+  </p>
+
+  <p>
+    The host language also declares its relations.  It has small-step
+    evaluation (<code class="sterling">eval</code>), substitution for
+    a variable (<code class="sterling">subst</code>), a term being a
+    value (<code class="sterling">value</code>), and typing
+    (<code class="sterling">typeOf</code>).  Each of these has its
+    primary component, explained as part of
+    <a href="extensibleLanguages.html">our view of extensible
+      languages</a>, marked with <code class="sterling">*</code>.
+    These relations are then defined by inference rules.
   </p>
   <a class="fold-link" href="javascript:void" id="togglehost.sos"
      onclick="toggleFile('host.sos')">[Reduce File]</a>
@@ -148,58 +217,245 @@ typeOf Ctx app(T1, T2) Ty2
 </pre>
 
   <p>
-    We can compile this module for Extensibella using Sterling by
+    In order to reason about this module using Extensibella, we must
+    have Sterling compile it for Extensibella.  We can do this by
     running the following command from the directory containing the
     contents of the tarball:
-  </p>
-  <pre class="code">
-sterling --extensibella walkthrough:host</pre>
-
-  <p>
-    Once this module has been compiled for Extensibella using
-    Sterling, we can load it in Extensibella to reason about it:
-  </p>
-  <pre class="code extensibella">
- < <b>Module walkthrough:host.</b> </pre>
-
-   <h3>Property Introduced by Host Language</h3>
-   <p>
-    We will show how we prove type preservation here.  Our proof of
-    type preservation will rely on a property about substitution, that
-    it maintains types:
-  </p>
-  <pre class="code extensibella">
-subst_type_preservation : forall T Ctx X XTy Ty R S,
-   typeOf ((X, XTy)::Ctx) T Ty -> subst X R T S -> typeOf [] R XTy -> typeOf Ctx S Ty </pre>
-  <p>
-    We omit the proof of this fact here, moving directly to type
-    preservation.  If you are following along in the skeleton file
-    using <a href="referenceGuide.html#emacs">Proof General</a>, this
-    will already be in the file and you can proceed directly to the
-    type preservation theorem.  If you are following along in the
-    terminal, you can declare this using
-    the <code class="extensibella">Theorem</code> command and use the
-    <code class="extensibella">skip</code> command to admit it without
-    a proof for the time being:
-    <pre class="code extensibella">
-< <b>Theorem subst_type_preservation : forall T Ctx X XTy Ty R S,
-   typeOf ((X, XTy)::Ctx) T Ty -> subst X R T S -> typeOf [] R XTy -> typeOf Ctx S Ty.</b>
-...
-< <b>skip.</b>
-Proof completed.</pre>
-    If you are using Proof General, this is already present in the
-    file as an extensible theorem, along with the necessary
-    <code class="extensibella">skip</code>s, and you can simply
-    process past them.
+    <pre class="code">
+$ <b>sterling --extensibella walkthrough:host</b></pre>
+    This has Sterling translate the inference-rule-based definition
+    into one in Extensibella's specification format and places it
+    where Extensibella can find it.
   </p>
 
+  <h3>Properties for the Host Language</h3>
   <p>
-    We will prove type preservation by considering the rules for
-    evaluating a term.  As new rules defining evaluation may be added
-    by extensions, type preservation must be an extensible theorem.
-    This will require each extension to prove the property for the new
-    rules it introduces.
+    The host language's properties can be found in the
+    <code>host/host.xthm</code> file, with the full file, including
+    proofs, reproduced here:
   </p>
+  <span class="highlight">host.xthm</span>
+  <a class="fold-link" href="javascript:void" id="togglehost.xthm"
+     onclick="toggleFile('host.xthm')">[Reduce File]</a>
+  <pre class="code extensibella" id="host.xthm">
+Module walkthrough:host.
+
+Extensible_Theorem
+  typeOf_unique : forall Ctx T TyA TyB,
+    TyA : typeOf Ctx T TyA ->
+    TyB : typeOf Ctx T TyB ->
+    TyA = TyB
+  on TyA.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(1);" id="toggleproof1">[Show Proof]</a>
+<div class="proof" id="proof1" style="display: none;">
+<span class="comment">%T-Var</span>
+ TyB: case TyB. apply lookup_unique to TyA1 TyB. search.
+<span class="comment">%T-Abs</span>
+ TyB: case TyB. apply IH to TyA1 TyB. search.
+<span class="comment">%T-App</span>
+ TyB: case TyB. apply IH to TyA1 TyB. apply IH to TyA2 TyB1. search.</div>
+
+
+Extensible_Theorem
+  ty_lookup : forall Ctx1 Ctx2 T Ty,
+    Ty : typeOf Ctx1 T Ty ->
+    L : (forall X XTy, lookup Ctx1 X XTy -> lookup Ctx2 X XTy) ->
+    typeOf Ctx2 T Ty
+  on Ty.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<span class="comment">%T-Var</span>
+ apply L to Ty1. search.
+<span class="comment">%T-Abs</span>
+ apply IH to Ty1 _ with Ctx2 = (X, Ty1)::Ctx2.
+   intros LkpX. LkpX: case LkpX.
+     <span class="comment">%Lkp-Here</span>
+      search.
+     <span class="comment">%Lkp-Later</span>
+      apply L to LkpX1. search.
+ search.
+<span class="comment">%T-App</span>
+ apply IH to Ty1 L. apply IH to Ty2 L. search.</div>
+
+
+Theorem empty_ty_any : forall T Ty Ctx,
+  typeOf [] T Ty -> typeOf Ctx T Ty.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(3);" id="toggleproof3">[Show Proof]</a>
+<div class="proof" id="proof3" style="display: none;">
+intros T. backchain ty_lookup. intros L. case L.</div>
+
+
+Extensible_Theorem
+  subst_type_preservation : forall T Ctx X XTy Ty R S,
+    TTy : typeOf ((X, XTy)::Ctx) T Ty ->
+    S : subst X R T S ->
+    RTy : typeOf [] R XTy ->
+    typeOf Ctx S Ty
+  on S.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(4);" id="toggleproof4">[Show Proof]</a>
+<div class="proof" id="proof4" style="display: none;">
+<span class="comment">%S-Var-NEq</span>
+ Ty: case TTy. Lkp: case Ty.
+   <span class="comment">%Lkp-Here</span>
+    apply S1 to _.
+   <span class="comment">%Lkp-Later</span>
+    search.
+<span class="comment">%S-Var-Eq</span>
+ Ty: case TTy. L: case Ty.
+   <span class="comment">%Lkp-Here</span>
+    backchain empty_ty_any.
+   <span class="comment">%Lkp-Later</span>
+    apply L to _.
+<span class="comment">%S-Abs-NEq</span>
+ Ty: case TTy.
+ Ty': apply ty_lookup to Ty _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.
+   intros L. L: case L.
+     <span class="comment">%Lkp-Here</span>
+      search.
+     <span class="comment">%Lkp-Later</span>
+      L: case L1.
+        <span class="comment">%Lkp-Here</span>
+         search.
+        <span class="comment">%Lkp-Later</span>
+         search.
+ apply IH to Ty' S2 _. search.
+<span class="comment">%S-Abs-Eq</span>
+ Ty: case TTy. apply ty_lookup to Ty _ with Ctx2 = (X, Ty1)::Ctx.
+   intros L. L: case L.
+     <span class="comment">%Lkp-Here</span>
+      search.
+     <span class="comment">%Lkp-Later</span>
+      L: case L1.
+        <span class="comment">%Lkp-Here</span>
+         apply L to _.
+        <span class="comment">%Lkp-Later</span>
+         search.
+ search.
+<span class="comment">%S-App</span>
+ Ty: case TTy. apply IH to Ty S1 _. apply IH to Ty1 S2 _. search.</div>
+
+
+Extensible_Theorem
+  type_preservation : forall T Ty T',
+    Ty : typeOf [] T Ty ->
+    Ev : eval T T' ->
+    typeOf [] T' Ty
+  on Ev.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(5);" id="toggleproof5">[Show Proof]</a>
+<div class="proof" id="proof5" style="display: none;">
+<span class="comment">%E-App-Step1</span>
+ Ty: case Ty. apply IH to Ty Ev1. search.
+<span class="comment">%E-App-Step2</span>
+ Ty: case Ty. apply IH to Ty1 Ev2. search.
+<span class="comment">%E-App-Subst</span>
+ Ty: case Ty. Ty: case Ty.
+ apply subst_type_preservation to Ty Ev2 Ty1. search.</div>
+
+
+Translation_Constraint trans_type_same : forall G T Ty T_T,
+  G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.
+
+
+Ext_Ind typeOf G T Ty with G |{tm}- T ~~> T'.</pre>
+
+  <p>
+    We will look at each top-level declaration here in turn.
+  </p>
+
+  <p>
+    The first element is the module declaration.  This lets
+    Extensibella know about which language module we will be reasoning
+    so it can locate and load the specification Sterling wrote.
+  </p>
+
+  <p>
+    The remainder of the top-level declarations in the file are
+    properties to prove.
+  </p>
+
+  <h4>Extensible Theorems</h4>
+  <p>
+    The first couple of declarations are extensible theorems, declared
+    with <code class="extensibella">Extensible_Theorem</code>.
+    Extensible theorems have their proofs organized around the
+    definition of a <em>key relation</em>, identified by
+    the <code class="extensibella">on</code> part of the declaration.
+    For example, for
+    the <code class="extensibella">typeOf_unique</code> property, the
+    first one in the file, its key relation is the <code>typeOf</code>
+    relation, and we are specifically focused on the first derivation
+    of it, <code class="extensibella">typeOf Ctx T TyA</code>.  The
+    proof of the extensible theorem proceeds using induction and case
+    analysis on the key relation.  For
+    the <code class="extensibella">typeOf_unique</code> property, this
+    means we have top-level proof cases for
+    when <code class="extensibella">typeOf Ctx T TyA</code> is derived
+    by
+    the <code class="sterling">T-Var</code>, <code class="sterling">T-Abs</code>,
+    and <code class="sterling">T-App</code> rules.  Showing the
+    proof in the file above will show these cases and their proofs.
+  </p>
+
+  <p>
+    The key point to note for extensible theorems is that the set of
+    rules defining the key relation may grow by other extensions
+    adding new rules, as our let extension will do.  This is whence
+    the <em>extensible</em> in extensible theorems arises.  Extensions
+    to the host language, like the let extension, will know the
+    property exists and what its key relation is, so they can
+    contribute to the proof, adding the proofs for the new cases they
+    introduce.
+  </p>
+
+  <p>
+    We will leave the proofs
+    of <code class="extensibella">typeOf_unique</code>
+    and <code class="extensibella">ty_lookup</code> as exercises.  For
+    now, they can be skipped.
+    The <a href="walkthrough_skeleton.tar.gz">proof skeleton files</a>
+    have the appropriate number of <code>skip</code> commands for
+    each.  These can either be processed in Proof General without
+    changes, or the commands can be copied to Extensibella on the
+    commandline.  Note, in the latter case, that each command must be
+    entered on its own line; multiple commands on one line will not be
+    accepted.
+  </p>
+
+  <h4>Non-Extensible Theorems</h4>
+  <p>
+    Our file contains one non-extensible
+    theorem, declared with <code class="extensibella">Theorem</code>,
+    <code class="extensibella">empty_ty_any</code>, stating that a
+    term typable with an empty context is typable with any context.
+    This particular non-extensible theorem is a corollary of the
+    extensible <code class="extensibella">ty_lookup</code> theorem.
+  </p>
+
+  <p>
+    Non-extensible theorems do not have proofs organized around the
+    definitions of extensible relations, so extensions cannot add new
+    proof cases to them.  Their full proofs can thus be given in a
+    single module, as we do here.
+  </p>
+
+  <p>
+    We also leave the proof of
+    <code class="extensibella">empty_ty_any</code> as an exercise.  It
+    can be skipped as the extensible theorems were.
+  </p>
+
+  <h4>Type Preservation</h4>
+  <p>
+    Type preservation, the main property our host language wants, is
+    an extensible theorem with evaluation as its key relation.  In the
+    context of the host language, this gives us proof cases for the
+    <code class="sterling">E-App-Step1</code>,
+    <code class="sterling">E-App-Step2</code>, and
+    <code class="sterling">E-App-Subst</code> rules.  As with the
+    <code class="extensibella">typeOf_unique</code> property at which
+    we looked earlier, type preservation may have new proof cases
+    added by extensions and for which they will need to give their own
+    proofs.  We will go through the proof of it here.  Note we are
+    also leaving
+    <code class="extensibella">subst_type_preservation</code> as an
+    exercise, so it can be skipped as the others were.
+  </p>
+
   <p>
     We state our type preservation property as if a term is typable
     with an empty typing context and it takes an evaluation step to
@@ -394,28 +650,135 @@ H1 : typeOf [] T' Ty
  < <b>search.</b>
 Proof completed. </pre>
 
+  <h4>Importance of Declaration Order</h4>
+  <p>
+    Note in the final case in the host language proof for type
+    preservation we use the previous property,
+    <code class="extensibella">subst_type_preservation</code>, as a
+    lemma.  This is the purpose of all the earlier properties; they
+    all acted as lemmas to prove later ones.  Our modular metatheory
+    framework ensures modular proofs guarantee not only individual
+    properties are true for composed languages, but also that modular
+    proofs for a set of properties, with some possibly using others as
+    lemmas, guarantees the full set will hold for any composed
+    language.
+  </p>
+
+  <p>
+    The validity of full sets of properties is guaranteed by
+    maintaining the order in which the properties are proven by the
+    host language.  The host language declares its properties in
+    order, with the proofs of later properties able to use earlier
+    properties as lemmas.  Extensions then add their proofs in this
+    order, ensuring all the modular proofs can be composed into full
+    proofs for any composed language.
+  </p>
+
+  <h4>Translation Constraints</h4>
+  <p>
+    The penultimate declaration in the file is for a translation
+    constraint, which is a special kind of extensible property.
+    Translation constraints specify how the semantics of
+    extension-introduced constructs must relate to their translations,
+    their translations being defined by special rules in Sterling.
+    For example, the translation constraint our host language
+    introduces requires a term and its translation have the same type.
+  </p>
+
+  <p>
+    The key relation for a translation constraint is its first
+    premise, which must be a translation of some term.  Note that we
+    have no proof for the translation constraint in the host language.
+    Because its key relation is a translation and the host language
+    does not introduce translating syntax, there are no proof cases
+    for the host language to prove.
+  </p>
+
+  <p>
+    Note that this translation constraint does not contribute to the
+    proof of type preservation, which was the host language's main
+    goal.  Translation constraints can be viewed as a service to
+    extension writers, as they don't generally help the host language
+    prove its own properties, but they make it easier for extensions
+    to prove their new properties.
+  </p>
+
+  <h4>Extension Induction</h4>
+  <p>
+    The final declaration is
+    for <code class="extensibella">Ext_Ind</code> for
+    the <code>typeOf</code> relation.  This name stands
+    for <em>ext</em>ension <em>ind</em>uction.  When an extension
+    wants to prove a property using a relation introduced by the host
+    language as its key relation, there is a possibility other
+    extensions that will be included in a composed language will
+    introduce new rules defining that relation.  The extension will
+    need to prove a <em>generic</em> case to handle these.  The
+    generic case is given by
+    the <code class="extensibella">Ext_Ind</code> declaration for the
+    relation.  Having a declaration of this is required for an
+    extension to use a host relation as its key relation, that is, to
+    use it for <em>induction</em>, hence the name.
+  </p>
+
+  <p>
+    The generic case the extension proves for its property is when the
+    key relation is derived using this rule, built from the pieces of
+    the <code class="extensibella">Ext_Ind</code> declaration:
+  </p>
+    <pre class="code">
+G |{tm}- T ~~> T'
+typeOf G T' Ty
+--------------------
+typeOf G T Ty</pre>
+
+  <p>
+    This declaration also creates an obligation that must be proven by
+    each extension, that this rule is a valid way of looking at the
+    rules it introduces.  What this proof requires is discussed more
+    in the context of the <a href="#let">let extension</a> below.
+  </p>
+
 
   <h3>Moving to Extensions</h3>
   <p>
-    In order to continue to prove properties for the extensions, the
-    development for the host language must be saved in a file and
-    compiled so the extensions will know the properties from the host
-    language:
-  <pre class="code">
-extensibella --compile host.xthm</pre>
-    Note the skeleton file that can
-    be <a href="walkthrough_skeleton.tar">downloaded</a> can be
-    immediately compiled without changes.
+    Because extensions are obligated to prove the host language's
+    properties and maintain their order, we need to compile the host
+    language's proof file before we can start proving properties for
+    our extensions:
+    <pre class="code">
+$ <b>extensibella --compile host.xthm</b></pre>
+    The compilation process has Extensibella read pull out the
+    theorems in the proof file and store and their order in a place it
+    knows.  When Extensibella goes to reason about an extension, it
+    then reads this information so it knows the proof obligations the
+    extension has for the properties from the host language, and the
+    order in which they should occur.  It can then check the extension
+    fulfills all its obligations, and that it maintains the correct
+    order.
   </p>
 
-</div>
+  <p>
+    In general, when compiling a proof file, it is a good idea to
+    combine the compilation and proof checking flags:
+    <pre class="code">
+$ <b>extensibella --check --compile host.xthm</b></pre>
+    With only the compilation flag, Extensibella assumes each
+    property's proof is present and valid; when we add the proof
+    checking flag, it verifies this before compiling it.  This
+    prevents mistakes from sneaking into the compiled form and
+    affecting extensions.
+  </p>
+  </div>
 
 <div class="section" id="let">
   <h2>Let Extension</h2>
   <p>
     Our first extension adds a new form for terms,
     a <code>let</code>-binding, and defines the relations introduced
-    by the host language for the new form.
+    by the host language for the new form.  It also defines its
+    translation in the <code class="sterling">Trans-Let</code> rule,
+    translating to an application of an abstraction.
   </p>
 
   <a class="fold-link" href="javascript:void" id="togglelet.sos"
@@ -467,37 +830,147 @@ typeOf Ctx let(X, T1, T2) Ty2
 </pre>
 
   <p>
-    We can compile this module in the same manner as the host module:
+    We can compile this module in the same manner as the host module
+    so we can use it with Extensibella:
   </p>
   <pre class="code">
-sterling --extensibella walkthrough:let</pre>
+$ <b>sterling --extensibella walkthrough:let</b></pre>
+
+  <h3>Proving Host Properties for the Let Extension</h3>
+  <p>
+    The Extensibella proofs for the let extension's properties can be
+    found in the <code>let/let.xthm</code> file, reproduced here:
+  </p>
+  <span class="highlight">let.xthm</span>
+  <a class="fold-link" href="javascript:void" id="togglelet.xthm"
+     onclick="toggleFile('let.xthm')">[Reduce File]</a>
+  <pre class="code extensibella" id="let.xthm">
+Module walkthrough:let.
+
+Prove walkthrough:host:typeOf_unique.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(6);" id="toggleproof6">[Show Proof]</a>
+<div class="proof" id="proof6" style="display: none;">
+<span class="comment">%T-Let</span>
+ TyB: case TyB. apply IH to TyA1 TyB. apply IH to TyA2 TyB1. search.</div>
+
+
+Prove walkthrough:host:ty_lookup.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(7);" id="toggleproof7">[Show Proof]</a>
+<div class="proof" id="proof7" style="display: none;">
+<span class="comment">%T-Let</span>
+ apply IH to Ty1 L. apply IH to Ty2 _ with Ctx2 = (X, Ty1)::Ctx2.
+   intros Lkp. Lkp: case Lkp.
+     <span class="comment">%Lkp-Here</span>
+      search.
+     <span class="comment">%Lkp-Later</span>
+      apply L to Lkp1. search.
+ search.</div>
+
+
+Prove walkthrough:host:subst_type_preservation.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(8);" id="toggleproof8">[Show Proof]</a>
+<div class="proof" id="proof8" style="display: none;">
+<span class="comment">%S-Let-NEq</span>
+ Ty: case TTy. apply IH to Ty S2 RTy.
+ Ty': apply ty_lookup to Ty1 _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.
+   intros L. L: case L.
+     <span class="comment">%Lkp-Here</span>
+      search.
+     <span class="comment">%Lkp-Later</span>
+      L: case L1.
+        <span class="comment">%Lkp-Here</span>
+         search.
+        <span class="comment">%Lkp-Later</span>
+         search.
+ apply IH to Ty' S3 RTy. search.
+<span class="comment">%S-Let-Eq</span>
+ Ty: case TTy. apply IH to Ty S1 RTy.
+ apply ty_lookup to Ty1 _ with Ctx2 = (X, Ty1)::Ctx.
+   intros L. L: case L.
+     <span class="comment">%Lkp-Here</span>
+      search.
+     <span class="comment">%Lkp-Later</span>
+      L: case L1.
+        <span class="comment">%Lkp-Here</span>
+         apply L to _.
+        <span class="comment">%Lkp-Later</span>
+         search.
+ search.</div>
+
+
+Prove walkthrough:host:type_preservation.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(9);" id="toggleproof9">[Show Proof]</a>
+<div class="proof" id="proof9" style="display: none;">
+<span class="comment">%E-Let-Step</span>
+ Ty: case Ty. apply IH to Ty Ev1. search.
+<span class="comment">%E-Let-Subst</span>
+ Ty: case Ty. apply subst_type_preservation to Ty1 Ev2 Ty. search.</div>
+
+
+Prove_Constraint walkthrough:host:trans_type_same.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(10);" id="toggleproof10">[Show Proof]</a>
+<div class="proof" id="proof10" style="display: none;">
+<span class="comment">%Trans-Let</span>
+ case Hyp1. apply typeOf_unique to Hyp2 H1. search.</div>
+
+
+Prove_Ext_Ind walkthrough:host:typeOf.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(11);" id="toggleproof11">[Show Proof]</a>
+<div class="proof" id="proof11" style="display: none;">
+<span class="comment">%T-Let</span>
+ Acc: case Acc. unfold. apply drop_ext_ind_typeOf to Rel3.
+ assert G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1.
+ IsN2: apply ext_ind_is_int_typeOf to Rel3.
+ IsN3: apply ext_ind_is_int_typeOf to Rel4.
+ IsN4: apply plus_integer_is_integer to _ _ Rel2.
+ L: apply lt_plus_one to Rel1 _.
+ PosN2: apply ext_ind_pos_typeOf to Rel3.
+ PosN3: apply ext_ind_pos_typeOf to Rel4.
+ assert <typeOf {T}> G T1 Ty1.
+   Or: apply lt_left to Rel2 _ _. L': case Or.
+     <span class="comment">%N2 < N4</span>
+      L'': apply less_integer_transitive to L' L.
+      A: apply Acc to _ L''. apply IH to Rel3 A. search.
+     <span class="comment">%N2 = N4</span>
+      A: apply Acc to _ L. apply IH to Rel3 A. search.
+ assert <typeOf {T}> ((X, Ty1)::G) T2 Ty.
+   Or: apply lt_right to Rel2 _ _ _. L': case Or.
+     <span class="comment">%N3 < N4</span>
+      L'': apply less_integer_transitive to L' L.
+      A: apply Acc to _ L''. apply IH to Rel4 A. search.
+     <span class="comment">%N3 = N4</span>
+      A: apply Acc to _ L. apply IH to Rel4 A. search.
+ exists app (abs X Ty1 T2) T1, Ty1. search.</div></pre>
 
   <p>
-    Once this module has been compiled for Extensibella using
-    Sterling, we can load it in Extensibella to reason about it:
+    The proofs the let extension writes are all for new cases of
+    extensible host properties of the various kinds.  Thus the
+    top-level declarations are all
+    the <code class="extensibella">Prove</code> versions of the host
+    language's property declarations.  When Extensibella reads the
+    module declaration, it finds the <code>walkthrough:let</code>
+    module builds on the <code>walkthrough:host</code> module.  It
+    then reads the compiled set of properties from the host language,
+    along with their order, so it knows what the let extension needs
+    to prove here, and in what order it must be proven.  Extensibella
+    checks this order is maintained by the let extension.
   </p>
-  <pre class="code extensibella">
- < <b>Module walkthrough:let.</b> </pre>
+
   <p>
-    This loads in the definition of the <code>walkthrough:let</code>
-    module, including the definition of
-    the <code>walkthrough:host</code> module on which it builds.
-    Extensibella knows about this builds-on relation, so this
-    reasoning module has obligations to prove the declarations given
-    by the host language.
+    Note we do not have a command for the
+    <code class="extensibella">empty_ty_any</code> theorem from the
+    host language here.  Because it is non-extensible, the let
+    extension does not need to add to its proof.  If a proof needed it
+    as a lemma, it could still be used, but only <em>after</em> the
+    <code class="extensibella">ty_lookup</code> extensible theorem.
+    This is because the <code class="extensibella">empty_ty_any</code>
+    theorem is part of the order from the host language and the
+    validity of the proofs for a composed language is dependent on
+    maintaining this order.
   </p>
 
   <p>
-    If you are following along on the Extensibella command line, you
-    will need to copy the lines from <code>let.xthm</code> before
-    the <code class="extensibella">Prove</code> declaration for type
-    preservation into the command line, one at a time, before
-    following the rest of this section to satisfy the earlier expected
-    obligations.
+    We will look at the proofs given by the let extension for type
+    preservation, the translation constraint, and
+    <code class="extensibella">Ext_Ind</code> for typing.  The earlier
+    properties can be skipped past as we saw in the host language.
   </p>
 
-
-  <h3>Property Introduced by Host Language</h3>
+  <h4>Proving Type Preservation</h4>
   <p>
     When the extension is ready to prove the type preservation
     property, it declares so with
@@ -525,7 +998,8 @@ Ev1 : eval T1 T11 *
   <pre class="code extensibella">
 <b>Ty: case Ty. apply IH to Ty Ev1. search.</b> </pre>
   <p>
-    This brings us to the case for the <code>E-Let-Subst</code>:
+    This brings us to the case for the
+    <code class="sterling">E-Let-Subst</code> rule:
   </p>
   <pre class="code extensibella">
 Subgoal 8:
@@ -546,14 +1020,11 @@ Ev2 : subst X T1 T2 T'
   <pre class="code extensibella">
 <b>Ty: case Ty. apply subst_type_preservation to Ty1 Ev2 Ty. search.</b> </pre>
 
-
-  <h3>Proving Translation Constraint</h3>
+  <h4>Proving Translation Constraint</h4>
   <p>
-    Each extension also must show the translation constraints hold for
-    the translation rules it introduces.  After proving type
-    preservation, we are ready to prove the translation constraint,
-    and declare so with
-    a <code class="extensibella">Prove_Constraint</code> declaration:
+    After proving type preservation, we are ready to prove the
+    translation constraint, and declare so with a
+    <code class="extensibella">Prove_Constraint</code> declaration:
   </p>
   <pre class="code extensibella">
  < <b>Prove_Constraint walkthrough:host:trans_type_same.</b>
@@ -567,13 +1038,13 @@ Hyp2 : typeOf G T1 Ty1
 
   <p>
     This gives us the case for the translation being derived using
-    the <code>Trans-Let</code> rule.  To show the translation has the
-    same type, we need to show the
-    translation <code class="extensibella">app (abs X Ty1 T2)
-      T1</code> has the same type as the original
-    term <code class="extensibella">let X T1 T2</code>.  We can
-    analyze the typing derivation for the original term, since its
-    primary component is built by the <code>let</code> constructor:
+    the <code>Trans-Let</code> rule.  To show the translation this, we
+    need to show the translation
+    <code class="extensibella">app (abs X Ty1 T2) T1</code>
+    has the same type as the original term
+    <code class="extensibella">let X T1 T2</code>.  We can analyze the
+    typing derivation for the original term, since its primary
+    component is built by the <code>let</code> constructor:
   </p>
   <pre class="code extensibella">
  < <b>case Hyp1.</b>
@@ -613,7 +1084,7 @@ H2 : typeOf ((X, Ty2)::G) T2 Ty
 Proof completed.</pre>
 
 
-  <h3>Proving Ext_Ind</h3>
+  <h4>Proving Ext_Ind</h4>
   <p>
     Each extension has an obligation to show the rules they introduce
     are compatible with the rule defined by
@@ -651,6 +1122,12 @@ forall G T Ty n, &lt;typeOf {ES}&gt; G T Ty n -> &lt;typeOf {T}&gt; G T Ty</pre>
     We will prove this by induction on the extension
     size <code>n</code> and the derivation
     of <code class="extensibella">&lt;typeOf {ES}&gt; G T Ty n</code>.
+    The induction on <code>n</code> also requires a second premise,
+    <code class="extensibella">acc n</code>.  The
+    <code class="extensibella">acc</code> predicate essentially
+    encodes strong induction on natural numbers by holding for a
+    number only if it holds for all non-negative integers less than
+    it.
   </p>
 
   <p>
@@ -675,11 +1152,8 @@ Rel4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
  &lt;typeOf {T}&gt; G (let X T1 T2) Ty</pre>
 
   <p>
-    Strong induction on <code>n</code> is achieved by use of
-    the <code class="extensibella">acc</code> relation defined in the
-    Extensibella standard library, which states
-    that <code class="extensibella">acc</code> holds for a number if
-    it holds for any other positive number less than it:
+    We then analyze <code class="extensibella">acc n</code> to unfold
+    its definition:
   </p>
   <pre class="code extensibella">
  < <b>Acc: case Acc.</b>
@@ -794,7 +1268,9 @@ H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
     of <code>is_integer</code> for the relevant numbers.  We can use
     the <code class="extensibella">ext_ind_is_int_typeOf</code>
     property, also introduced by
-    the <code class="extensibella">Ext_Ind</code> declaration.
+    the <code class="extensibella">Ext_Ind</code> declaration but
+    which the user does not need to prove, as it can be proven
+    automatically.
   </p>
   <pre class="code extensibella">
  < <b>IsN2: apply ext_ind_is_int_typeOf to Rel3.</b>
@@ -899,8 +1375,8 @@ L : N4 < N
   <p>
     To show both <code>N2</code> and <code>N3</code> are at least
     zero, a requirement for <code class="extensibella">acc</code>, we
-    can use another property declared
-    by <code class="extensibella">Ext_Ind</code>:
+    can use another property declared and automatically proven by
+    <code class="extensibella">Ext_Ind</code>:
   </p>
   <pre class="code extensibella">
  < <b>PosN2: apply ext_ind_pos_typeOf to Rel3.</b>
@@ -1293,7 +1769,7 @@ Proof completed.</pre>
 </div>
 
 
-<div class="section">
+<div class="section" id="bigStep">
   <h2>Big Step Extension</h2>
   <p>
     Our other extension does not introduce any new syntax, only
@@ -1339,48 +1815,85 @@ big_step T T1</pre>
     We can compile this for Extensibella as before:
   </p>
   <pre class="code">
-sterling --extensibella walkthrough:big_step</pre>
+$ <b>sterling --extensibella walkthrough:big_step</b></pre>
 
+  <h3>Proving Properties for the Big Step Extension</h3>
   <p>
-    We can also load it into Extensibella as with the previous
-    two modules:
+    The Extensibella proofs for the big step extension can be
+    found in the <code>big_step/big_step.xthm</code> file, reproduced
+    here:
   </p>
-  <pre class="code extensibella">
- < <b>Module walkthrough:big_step.</b></pre>
+  <span class="highlight">big_step.xthm</span>
+  <a class="fold-link" href="javascript:void" id="togglebig_step.xthm"
+     onclick="toggleFile('big_step.xthm')">[Reduce File]</a>
+  <pre class="code extensibella" id="big_step.xthm">
+Module walkthrough:big_step.
 
-  <h3>Proving Obligations</h3>
+
+Prove walkthrough:host:typeOf_unique.
+
+
+Prove walkthrough:host:ty_lookup.
+
+
+Prove walkthrough:host:subst_type_preservation.
+
+
+Prove walkthrough:host:type_preservation.
+
+
+Prove_Constraint walkthrough:host:trans_type_same.
+
+
+Prove_Ext_Ind walkthrough:host:typeOf.
+
+
+Extensible_Theorem
+  big_step_type_preservation : forall T Ty T',
+    Ty : typeOf [] T Ty ->
+    Big : big_step T T' ->
+    typeOf [] T' Ty
+  on Big.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(12);" id="toggleproof12">[Show Proof]</a>
+<div class="proof" id="proof12" style="display: none;">
+<span class="comment">%Big-End</span>
+ search.
+<span class="comment">%Big-Step</span>
+ apply type_preservation to Ty Big1. apply IH to _ Big2. search.
+<span class="comment">%Big-Trans</span>
+ apply trans_type_same to Big1 Ty. apply IH to _ Big2. search.</div></pre>
+
   <p>
-    Because this extension does not introduce any new rules for
-    existing relations, it does not need to prove anything for
-    properties the host language introduced.  However, it still needs
-    to declare it is fulfilling each obligation:
+    As we saw with the let extension, Extensibella knows
+    the <code>walkthrough:big_step</code> module builds on the host
+    language and thus expects the
+    <code class="extensibella">Prove</code> version of each extensible theorem
+    from the host language.  Unlike in the let extension, the big step
+    extension does not introduce any new syntax or new rules for the
+    key relations of these theorems, and thus has nothing new to
+    prove for them.  However, Extensibella still requires the
+    <code class="extensibella">Prove</code> declarations for two
+    reasons.  First, it does not check whether there <em>are</em> new
+    rules until the <code class="extensibella">Prove</code>
+    declaration.  Second, declaring the imported theorems makes it
+    clear where <em>new</em> theorems, such as
+    <code class="extensibella">big_step_type_preservation</code>,
+    belong in the order and what existing theorems they may use as
+    lemmas and, in more complex examples, what host properties may use
+    <em>them</em> as lemmas in the new proofs.  We see this use of
+    existing properties as lemmas in proving a new theorem in the
+    proof of <code class="extensibella">big_step_type_preservation</code>, as we use
+    both the <code class="extensibella">type_preservation</code>
+    theorem and <code class="extensibella">trans_type_same</code>
+    translation constraint from the host language as lemmas.
   </p>
-  <pre class="code extensibella">
- < <b>Prove walkthrough:host:typeOf_unique.</b>
-Proof completed.
 
- < <b>Prove walkthrough:host:ty_lookup.</b>
-Proof completed.
-
- < <b>Prove walkthrough:host:subst_type_preservation.</b>
-Proof completed.
-
- < <b>Prove walkthrough:host:type_preservation.</b>
-Proof completed.
-
- < <b>Prove_Constraint walkthrough:host:trans_type_same.</b>
-Proof completed.
-
- < <b>Prove_Ext_Ind walkthrough:host:typeOf.</b>
-Proof completed.</pre>
-
-
-  <h3>Proving an Extension-Introduced Property</h3>
   <p>
-    Our extension introduces a new property, after all the properties
-    introduced by the host language, that its big-step evaluation
-    preserves types.  The key relation of this property will be the
-    big-step evaluation relation:
+    The new
+    <code class="extensibella">big_step_type_preservation</code>
+    theorem in this extension is also declared using the
+    <code class="extensibella">Extensible_Theorem</code> keyword, just
+    like the host language's theorems, with its key relation
+    being the new <code>big_step</code> relation it introduces.
   </p>
   <pre class="code extensibella">
  > <b>Extensible_Theorem
@@ -1400,10 +1913,22 @@ Big1 : value T'
  typeOf [] T' Ty</pre>
 
   <p>
-    This property has three cases.  The first one, into which we drop
-    immediately, is that for when the big-step evaluation was derived
-    using the <code>Big-End</code> rule.  As there is no evaluation
-    here, the proof is immediate:
+    Unlike the properties from the host language, the extension point
+    here is that other extensions may introduce new constructs not
+    known here, but for which the <code>big_step</code> relation will
+    hold.  We see this with the let extension; the big step extension
+    does not know the <code>let</code> construct exists, but
+    <code>big_step</code> relation will still hold for it in a
+    composed language including both extensions.
+  </p>
+
+  <p>
+    This property has three cases, two for the known rules, with the
+    third being a generic case that can be used for any constructs
+    from other extensions, such as <code>let</code>.  The first one,
+    into which we drop immediately, is that for when the big-step
+    evaluation was derived using the <code>Big-End</code> rule.  As
+    there is no evaluation here, the proof is immediate:
   </p>
   <pre class="code extensibella">
  < <b>search.</b>
@@ -1468,7 +1993,7 @@ Big2 : big_step T_T T' *
   <p>
     The final case, which we see as the next goal after
     the <code class="extensibella">search</code> tactic completing the
-    case for <code>Big-Step</code> is the generic case.  Because our
+    case for <code>Big-Step</code>, is the generic case.  Because our
     key relation is introduced by this extension, the generic case
     uses the default rule introduced by the
     module, <code>Big-Trans</code>, which is instantiated for each
@@ -1561,16 +2086,1426 @@ Proof completed.
 </div>
 
 
-<div class="section">
-  <h2>Moving Forward</h2>
+<div class="section" id="composition">
+  <h2>Proof Composition</h2>
   <p>
-    This concludes our walkthrough of proving properties in
-    Extensibella.  We have
-    more <a href="examples/examples.html">examples</a> showing what is
-    possible in our framework.
+    Once each extension has completed its proofs, we know any composed
+    language will have all properties introduced by all modules
+    included in the composition.  We can check this for a composition
+    by using Extensibella to build a composed Abella proof for all the
+    properties.
+  </p>
+
+  <p>
+    To build a composition, we need a Sterling module that composes
+    all the pieces.  Make a directory named <code>composed</code> as a
+    sibling of the <code>host</code>, <code>let</code>,
+    and <code>big_step</code> directories, and put the following in a
+    file named <code>composed.sos</code> in it:
+  </p>
+  <span class="highlight">composed.sos</span>
+  <pre class="code sterling" id="composed.sos">
+Module walkthrough:composed
+
+Builds on walkthrough:host
+Builds on walkthrough:let
+Builds on walkthrough:big_step</pre>
+
+  <p>
+    We will need to compile this twice, once for a regular
+    Extensibella proof, the same way we have compiled the others, and
+    once for the Extensibella composition, as these have slightly
+    different requirements.
+    <pre class="code">
+$ <b>sterling --extensibella walkthrough:composed</b>
+$ <b>sterling --extensibellaFull walkthrough:composed</b></pre>
+  </p>
+
+  <p>
+    We also need to create an Extensibella file for the composed
+    module.  This is necessary for Extensibella to know what
+    properties the modules in the composition add, if any.  Since we
+    don't want to add any properties, we can have Extensibella
+    generate the file for us.  To do this, we need to compile the
+    files for the let and big step extensions so Extensibella knows
+    what properties they add and the order in which they add them:
+  </p>
+  <pre class="code">
+$ <b>extensibella --compile walkthrough/let/let.xthm</b>
+$ <b>extensibella --compile walkthrough/big_step/big_step.xthm</b>
+$ <b>extensibella --generate walkthrough:composed walkthrough/composed/composed.xthm</b></pre>
+    <span class="highlight">composed.xthm</span>
+    <a class="fold-link" href="javascript:void" id="togglecomposed.xthm"
+       onclick="toggleFile('composed.xthm')">[Reduce File]</a>
+    <pre class="code extensibella" id="composed.xthm">
+Module walkthrough:composed.
+
+
+Prove walkthrough:host:typeOf_unique.
+
+
+Prove walkthrough:host:ty_lookup.
+
+
+Prove walkthrough:host:subst_type_preservation.
+
+
+Prove walkthrough:host:type_preservation.
+
+
+Prove_Constraint walkthrough:host:trans_type_same.
+
+
+Prove_Ext_Ind walkthrough:host:typeOf.
+
+
+Prove walkthrough:big_step:big_step_type_preservation.</pre>
+
+  <p>
+    When we generate the Extensibella file for the
+    <code>walkthrough:composed</code> module, Extensibella takes the
+    property orders from each module on which it builds and combines
+    them to form an order containing all the theorems from all the
+    modules.  This composed order maintains the order from each module
+    individually, so each use of a theorem as a lemma will still be
+    valid in the composition.
+  </p>
+
+  <p>
+    We now have all the pieces necessary to have Extensibella build
+    the composition.  To do so, we give the name of the file to be
+    output, along with the module for which we are building the
+    composition, and all the proof files for the modules included in
+    the composition:
+    <pre class="code">
+$ <b>extensibella --compose walkthrough/out.thm walkthrough:composed walkthrough/host/host.xthm walkthrough/let/let.xthm walkthrough/big_step/big_step.xthm walkthrough/composed/composed.xthm path/to/sterling/stdLib/stdLib.xthm</b></pre>
+    Note we need to include the Extensibella proof file for the
+    Sterling standard library as well, since the standard library is
+    included in all Sterling modules.  Extensibella does not treat the
+    Sterling module specially, so its properties, which are all
+    non-extensible, are also included in the Extensibella modules
+    using them and their proofs are needed for the composition.
+  </p>
+
+  <p>
+    The produced Abella file, <code>out.thm</code> in our example,
+    contains the Abella specification of the language and Abella
+    proofs of each property from any module in the composition.  We
+    show here a version of it edited for white space to fit better in
+    the page.
+  </p>
+  <span class="highlight">out.thm</span>
+  <a class="fold-link" href="javascript:void" id="toggleout.thm"
+     onclick="toggleFile('out.thm')">[Expand File]</a>
+  <pre class="code abella" id="out.thm" style="max-height: 105px;">
+<span class="comment">/********************************************************************
+ Extensibella Standard Library
+ ********************************************************************/</span>
+Kind $lib__bool   type.
+Kind $lib__nat    type.
+Kind $lib__pair   type -> type -> type.
+Import "/path/to/extensibella/stdLib/bools".
+Import "/path/to/extensibella/stdLib/integers".
+Import "/path/to/extensibella/stdLib/integer_addition".
+Import "/path/to/extensibella/stdLib/integer_multiplication".
+Import "/path/to/extensibella/stdLib/integer_division".
+Import "/path/to/extensibella/stdLib/integer_comparison".
+Import "/path/to/extensibella/stdLib/lists".
+Import "/path/to/extensibella/stdLib/strings".
+Import "/path/to/extensibella/stdLib/pairs".
+Import "/path/to/extensibella/stdLib/extSize_induction".
+
+
+<span class="comment">/********************************************************************
+ Language Definition
+ ********************************************************************/</span>
+Kind $ty__walkthrough-$-host-$-tm   type.
+Kind $ty__walkthrough-$-host-$-ty   type.
+
+
+Type walkthrough-$-let-$-let   (list $char) -> ($ty__walkthrough-$-host-$-tm) ->
+         ($ty__walkthrough-$-host-$-tm) -> $ty__walkthrough-$-host-$-tm.
+Type walkthrough-$-host-$-var   (list $char) -> $ty__walkthrough-$-host-$-tm.
+Type walkthrough-$-host-$-abs   (list $char) -> ($ty__walkthrough-$-host-$-ty) ->
+         ($ty__walkthrough-$-host-$-tm) -> $ty__walkthrough-$-host-$-tm.
+Type walkthrough-$-host-$-app   ($ty__walkthrough-$-host-$-tm) ->
+         ($ty__walkthrough-$-host-$-tm) -> $ty__walkthrough-$-host-$-tm.
+Type walkthrough-$-host-$-arrowTy   ($ty__walkthrough-$-host-$-ty) ->
+         ($ty__walkthrough-$-host-$-ty) -> $ty__walkthrough-$-host-$-ty.
+Type walkthrough-$-host-$-intTy   $ty__walkthrough-$-host-$-ty.
+
+
+Define $fix__sterling-$-stdLib-$-range : ($lib__integer) -> ($lib__integer) ->
+                                         (list ($lib__integer)) -> prop by
+$fix__sterling-$-stdLib-$-range (Low) (High) (nil) := $greater_integer (Low) (High);
+$fix__sterling-$-stdLib-$-range (Low) (High) ((Low)::(Rest)) :=
+    exists PlusOne, ($lesseq_integer (Low) (High)) /\
+                    (($plus_integer ($posInt ($succ ($zero))) (Low) (PlusOne)) /\
+                    ($fix__sterling-$-stdLib-$-range (PlusOne) (High) (Rest))).
+Define $fix__sterling-$-stdLib-$-take : ($lib__integer) -> (list (Var_A)) ->
+                                        (list (Var_A)) -> prop by
+$fix__sterling-$-stdLib-$-take ($posInt ($zero)) (L) (nil);
+$fix__sterling-$-stdLib-$-take (N) ((X)::(L)) ((X)::(F)) :=
+    exists N1, ($plus_integer ($posInt ($succ ($zero))) (N1) (N)) /\
+               ($fix__sterling-$-stdLib-$-take (N1) (L) (F)).
+Define $fix__sterling-$-stdLib-$-drop : ($lib__integer) -> (list (Var_A)) ->
+                                        (list (Var_A)) -> prop by
+$fix__sterling-$-stdLib-$-drop ($posInt ($zero)) (L) (L);
+$fix__sterling-$-stdLib-$-drop (N) ((X)::(L)) (R) :=
+    exists N1, ($plus_integer ($posInt ($succ ($zero))) (N1) (N)) /\
+    ($fix__sterling-$-stdLib-$-drop (N1) (L) (R)).
+Define $fix__sterling-$-stdLib-$-zip : (list (Var_A)) -> (list (Var_B)) ->
+                                       (list ($lib__pair (Var_A) (Var_B))) -> prop by
+$fix__sterling-$-stdLib-$-zip (nil) (nil) (nil);
+$fix__sterling-$-stdLib-$-zip ((A)::(ARest)) ((B)::(BRest)) (($pair_c (A) (B))::(Rest)) :=
+    $fix__sterling-$-stdLib-$-zip (ARest) (BRest) (Rest).
+Define $fix__sterling-$-stdLib-$-values : (list ($lib__pair (Var_A) (Var_B))) ->
+                                          (list (Var_B)) -> prop by
+$fix__sterling-$-stdLib-$-values (nil) (nil);
+$fix__sterling-$-stdLib-$-values (($pair_c (A) (B))::(Rest)) ((B)::(VRest)) :=
+    $fix__sterling-$-stdLib-$-values (Rest) (VRest).
+Define $fix__sterling-$-stdLib-$-domain : (list ($lib__pair (Var_A) (Var_B))) ->
+                                          (list (Var_A)) -> prop by
+$fix__sterling-$-stdLib-$-domain (nil) (nil);
+$fix__sterling-$-stdLib-$-domain (($pair_c (A) (B))::(Rest)) ((A)::(DRest)) :=
+    $fix__sterling-$-stdLib-$-domain (Rest) (DRest).
+Define $fix__sterling-$-stdLib-$-count : (Var_A) -> (list (Var_A)) -> ($lib__integer) -> prop by
+$fix__sterling-$-stdLib-$-count (X) (nil) ($posInt ($zero));
+$fix__sterling-$-stdLib-$-count (X) ((X)::(Rest)) (N1) :=
+    exists N, ($fix__sterling-$-stdLib-$-count (X) (Rest) (N)) /\
+              ($plus_integer ($posInt ($succ ($zero))) (N) (N1));
+$fix__sterling-$-stdLib-$-count (X) ((Y)::(Rest)) (N) :=
+    (((X) = (Y)) -> (false)) /\ ($fix__sterling-$-stdLib-$-count (X) (Rest) (N)).
+Define $fix__sterling-$-stdLib-$-select : (Var_Item) -> (list (Var_Item)) ->
+                                          (list (Var_Item)) -> prop by
+$fix__sterling-$-stdLib-$-select (Item) (Rest) ((Item)::(Rest));
+$fix__sterling-$-stdLib-$-select (Item) ((I)::(L1)) ((I)::(L2)) :=
+    $fix__sterling-$-stdLib-$-select (Item) (L1) (L2).
+Define $fix__sterling-$-stdLib-$-permutation : (list (Var_A)) -> (list (Var_A)) -> prop by
+$fix__sterling-$-stdLib-$-permutation (nil) (nil);
+$fix__sterling-$-stdLib-$-permutation ((A)::(Rest)) (L) :=
+    exists L2, ($fix__sterling-$-stdLib-$-select (A) (L2) (L)) /\
+               ($fix__sterling-$-stdLib-$-permutation (Rest) (L2)).
+Define $fix__sterling-$-stdLib-$-mem : (Var_Item) -> (list (Var_Item)) -> prop by
+$fix__sterling-$-stdLib-$-mem (Item) ((Item)::(Rest));
+$fix__sterling-$-stdLib-$-mem (Item) ((I)::(Rest)) :=
+    $fix__sterling-$-stdLib-$-mem (Item) (Rest).
+Define $fix__sterling-$-stdLib-$-subset : (list (Var_A)) -> (list (Var_A)) -> prop by
+$fix__sterling-$-stdLib-$-subset (nil) (L);
+$fix__sterling-$-stdLib-$-subset ((X)::(Rest)) (Supset) :=
+    ($fix__sterling-$-stdLib-$-mem (X) (Supset)) /\
+    ($fix__sterling-$-stdLib-$-subset (Rest) (Supset)).
+Define $fix__sterling-$-stdLib-$-not_mem : (Var_Item) -> (list (Var_Item)) -> prop by
+$fix__sterling-$-stdLib-$-not_mem (Item) (nil);
+$fix__sterling-$-stdLib-$-not_mem (Item) ((I)::(Rest)) :=
+    (((I) = (Item)) -> (false)) /\ ($fix__sterling-$-stdLib-$-not_mem (Item) (Rest)).
+Define $fix__sterling-$-stdLib-$-no_lookup : (list ($lib__pair (Var_Key) (Var_Item))) ->
+                                             (Var_Key) -> prop by
+$fix__sterling-$-stdLib-$-no_lookup (nil) (Key);
+$fix__sterling-$-stdLib-$-no_lookup (($pair_c (K) (V))::(Rest)) (Key) :=
+    (((K) = (Key)) -> (false)) /\ ($fix__sterling-$-stdLib-$-no_lookup (Rest) (Key)).
+Define $fix__sterling-$-stdLib-$-lookup : (list ($lib__pair (Var_Key) (Var_Item))) ->
+                                          (Var_Key) -> (Var_Item) -> prop by
+$fix__sterling-$-stdLib-$-lookup (($pair_c (Key) (Value))::(Rest)) (Key) (Value);
+$fix__sterling-$-stdLib-$-lookup (($pair_c (K) (V))::(Rest)) (Key) (Value) :=
+    (((K) = (Key)) -> (false)) /\ ($fix__sterling-$-stdLib-$-lookup (Rest) (Key) (Value)).
+Define $ext__0__walkthrough-$-host-$-is_ty : ($ty__walkthrough-$-host-$-ty) -> prop by
+$ext__0__walkthrough-$-host-$-is_ty (walkthrough-$-host-$-arrowTy (Ty1) (Ty)) :=
+    ($ext__0__walkthrough-$-host-$-is_ty (Ty1)) /\
+    ($ext__0__walkthrough-$-host-$-is_ty (Ty));
+$ext__0__walkthrough-$-host-$-is_ty (walkthrough-$-host-$-intTy).
+Define $ext__0__walkthrough-$-host-$-is_tm : ($ty__walkthrough-$-host-$-tm) -> prop by
+$ext__0__walkthrough-$-host-$-is_tm (walkthrough-$-host-$-var (S)) := is_string (S);
+$ext__0__walkthrough-$-host-$-is_tm (walkthrough-$-host-$-abs (S) (Ty) (Tm)) :=
+    (is_string (S)) /\ (($ext__0__walkthrough-$-host-$-is_ty (Ty)) /\
+    ($ext__0__walkthrough-$-host-$-is_tm (Tm)));
+$ext__0__walkthrough-$-host-$-is_tm (walkthrough-$-host-$-app (Tm1) (Tm)) :=
+    ($ext__0__walkthrough-$-host-$-is_tm (Tm1)) /\ ($ext__0__walkthrough-$-host-$-is_tm (Tm));
+$ext__0__walkthrough-$-host-$-is_tm (walkthrough-$-let-$-let (S) (Tm1) (Tm)) :=
+    (is_string (S)) /\ (($ext__0__walkthrough-$-host-$-is_tm (Tm1)) /\
+    ($ext__0__walkthrough-$-host-$-is_tm (Tm))).
+Define $ext__1__walkthrough-$-host-$-typeOf :
+              (list ($lib__pair (list $char) ($ty__walkthrough-$-host-$-ty))) ->
+              ($ty__walkthrough-$-host-$-tm) -> ($ty__walkthrough-$-host-$-ty) -> prop by
+$ext__1__walkthrough-$-host-$-typeOf (Ctx) (walkthrough-$-host-$-var (X)) (Ty) :=
+    $fix__sterling-$-stdLib-$-lookup (Ctx) (X) (Ty);
+$ext__1__walkthrough-$-host-$-typeOf (Ctx) (walkthrough-$-host-$-abs (X) (Ty1) (Body))
+             (walkthrough-$-host-$-arrowTy (Ty1) (Ty2)) :=
+    $ext__1__walkthrough-$-host-$-typeOf (($pair_c (X) (Ty1))::(Ctx)) (Body) (Ty2);
+$ext__1__walkthrough-$-host-$-typeOf (Ctx) (walkthrough-$-host-$-app (T1) (T2)) (Ty2) :=
+    exists Ty1, ($ext__1__walkthrough-$-host-$-typeOf (Ctx) (T1)
+                       (walkthrough-$-host-$-arrowTy (Ty1) (Ty2))) /\
+                ($ext__1__walkthrough-$-host-$-typeOf (Ctx) (T2) (Ty1));
+$ext__1__walkthrough-$-host-$-typeOf (Ctx) (walkthrough-$-let-$-let (X) (T1) (T2)) (Ty2) :=
+    exists Ty1, ($ext__1__walkthrough-$-host-$-typeOf (Ctx) (T1) (Ty1)) /\
+                ($ext__1__walkthrough-$-host-$-typeOf (($pair_c (X) (Ty1))::(Ctx)) (T2) (Ty2)).
+Define $ext__0__walkthrough-$-host-$-value : ($ty__walkthrough-$-host-$-tm) -> prop by
+$ext__0__walkthrough-$-host-$-value (walkthrough-$-host-$-abs (X) (Ty) (T)).
+Define $ext__2__walkthrough-$-host-$-subst : (list $char) -> ($ty__walkthrough-$-host-$-tm) ->
+              ($ty__walkthrough-$-host-$-tm) -> ($ty__walkthrough-$-host-$-tm) -> prop by
+$ext__2__walkthrough-$-host-$-subst (X) (R) (walkthrough-$-host-$-var (Y))
+                                    (walkthrough-$-host-$-var (Y)) := ((X) = (Y)) -> (false);
+$ext__2__walkthrough-$-host-$-subst (X) (R) (walkthrough-$-host-$-var (X)) (R);
+$ext__2__walkthrough-$-host-$-subst (X) (R) (walkthrough-$-host-$-abs (Y) (Ty) (B))
+                                    (walkthrough-$-host-$-abs (Y) (Ty) (S)) :=
+    (((X) = (Y)) -> (false)) /\ ($ext__2__walkthrough-$-host-$-subst (X) (R) (B) (S));
+$ext__2__walkthrough-$-host-$-subst (X) (R) (walkthrough-$-host-$-abs (X) (Ty) (B))
+                                    (walkthrough-$-host-$-abs (X) (Ty) (B));
+$ext__2__walkthrough-$-host-$-subst (X) (R) (walkthrough-$-host-$-app (T1) (T2))
+                                    (walkthrough-$-host-$-app (S1) (S2)) :=
+    ($ext__2__walkthrough-$-host-$-subst (X) (R) (T1) (S1)) /\
+    ($ext__2__walkthrough-$-host-$-subst (X) (R) (T2) (S2));
+$ext__2__walkthrough-$-host-$-subst (X) (R) (walkthrough-$-let-$-let (Y) (T1) (T2))
+                                    (walkthrough-$-let-$-let (Y) (S1) (S2)) :=
+    (((X) = (Y)) -> (false)) /\ (($ext__2__walkthrough-$-host-$-subst (X) (R) (T1) (S1)) /\
+    ($ext__2__walkthrough-$-host-$-subst (X) (R) (T2) (S2)));
+$ext__2__walkthrough-$-host-$-subst (X) (R) (walkthrough-$-let-$-let (X) (T1) (T2))
+                                    (walkthrough-$-let-$-let (X) (S1) (T2)) :=
+    $ext__2__walkthrough-$-host-$-subst (X) (R) (T1) (S1).
+Define $ext__0__walkthrough-$-host-$-eval : ($ty__walkthrough-$-host-$-tm) ->
+                                            ($ty__walkthrough-$-host-$-tm) -> prop by
+$ext__0__walkthrough-$-host-$-eval (walkthrough-$-host-$-app (T1) (T2))
+                                   (walkthrough-$-host-$-app (T11) (T2)) :=
+    $ext__0__walkthrough-$-host-$-eval (T1) (T11);
+$ext__0__walkthrough-$-host-$-eval (walkthrough-$-host-$-app (T1) (T2))
+                                   (walkthrough-$-host-$-app (T1) (T21)) :=
+    ($ext__0__walkthrough-$-host-$-value (T1)) /\ ($ext__0__walkthrough-$-host-$-eval (T2) (T21));
+$ext__0__walkthrough-$-host-$-eval (walkthrough-$-host-$-app
+                                       (walkthrough-$-host-$-abs (X) (Ty) (Body)) (T2)) (V) :=
+    ($ext__0__walkthrough-$-host-$-value (T2)) /\
+    ($ext__2__walkthrough-$-host-$-subst (X) (T2) (Body) (V));
+$ext__0__walkthrough-$-host-$-eval (walkthrough-$-let-$-let (X) (T1) (T2))
+                                   (walkthrough-$-let-$-let (X) (T11) (T2)) :=
+    $ext__0__walkthrough-$-host-$-eval (T1) (T11);
+$ext__0__walkthrough-$-host-$-eval (walkthrough-$-let-$-let (X) (T1) (T2)) (V) :=
+    ($ext__0__walkthrough-$-host-$-value (T1)) /\
+    ($ext__2__walkthrough-$-host-$-subst (X) (T1) (T2) (V)).
+Define $trans__walkthrough-$-host-$-ty : ($ty__walkthrough-$-host-$-ty) ->
+                                         ($ty__walkthrough-$-host-$-ty) -> prop by
+$trans__walkthrough-$-host-$-ty (X253) (X254) := false.
+Define $trans__walkthrough-$-host-$-tm :
+               (list ($lib__pair (list $char) ($ty__walkthrough-$-host-$-ty))) ->
+               ($ty__walkthrough-$-host-$-tm) -> ($ty__walkthrough-$-host-$-tm) -> prop by
+$trans__walkthrough-$-host-$-tm (Ctx) (walkthrough-$-let-$-let (X) (T1) (T2))
+           (walkthrough-$-host-$-app (walkthrough-$-host-$-abs (X) (Ty) (T2)) (T1)) :=
+    $ext__1__walkthrough-$-host-$-typeOf (Ctx) (T1) (Ty).
+Define $ext__0__walkthrough-$-big_step-$-big_step : ($ty__walkthrough-$-host-$-tm) ->
+                                                    ($ty__walkthrough-$-host-$-tm) -> prop by
+$ext__0__walkthrough-$-big_step-$-big_step (T) (T) := $ext__0__walkthrough-$-host-$-value (T);
+$ext__0__walkthrough-$-big_step-$-big_step (T) (T2) :=
+    exists T1, ($ext__0__walkthrough-$-host-$-eval (T) (T1)) /\
+               ($ext__0__walkthrough-$-big_step-$-big_step (T1) (T2));
+$ext__0__walkthrough-$-big_step-$-big_step (walkthrough-$-let-$-let (S) (Tm1) (Tm)) (T1) :=
+    exists T_T, ($trans__walkthrough-$-host-$-tm (nil) (walkthrough-$-let-$-let (S) (Tm1) (Tm)) (T_T)) /\
+                ($ext__0__walkthrough-$-big_step-$-big_step (T_T) (T1)).
+
+
+
+<span class="comment">/********************************************************************
+ Proof-Level Definitions
+ ********************************************************************/</span>
+Define $extSize__walkthrough-$-host-$-typeOf :
+                 (list ($lib__pair (list $char) $ty__walkthrough-$-host-$-ty)) ->
+                 $ty__walkthrough-$-host-$-tm -> $ty__walkthrough-$-host-$-ty ->
+                 $lib__integer -> prop by
+$extSize__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-var) (X)) (Ty) (($posInt) ($zero)) :=
+    $fix__sterling-$-stdLib-$-lookup (Ctx) (X) (Ty);
+$extSize__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-abs) (X) (Ty1) (Body))
+                                      ((walkthrough-$-host-$-arrowTy) (Ty1) (Ty2)) (N)  :=
+    exists N1, (N1 = N) /\
+               ($extSize__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (Body) (Ty2) (N1) );
+$extSize__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-app) (T1) (T2)) (Ty2) (N)  :=
+    exists N2 N1 Ty1, ($plus_integer (N2) (N1) (N) ) /\
+                      (($extSize__walkthrough-$-host-$-typeOf (Ctx) (T1)
+                                ((walkthrough-$-host-$-arrowTy) (Ty1) (Ty2)) (N2) ) /\
+                      ($extSize__walkthrough-$-host-$-typeOf (Ctx) (T2) (Ty1) (N1) ));
+$extSize__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-let-$-let) (X) (T1) (T2)) (Ty2) (N)  :=
+    exists N2 N1 N3 Ty1, ($plus_integer (($posInt) (($succ) ($zero))) (N3) (N) ) /\
+           (($plus_integer (N2) (N1) (N3) ) /\
+           (($extSize__walkthrough-$-host-$-typeOf (Ctx) (T1) (Ty1) (N2) ) /\
+           ($extSize__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (T2) (Ty2) (N1) ))).
+
+Define $transRel__walkthrough-$-host-$-typeOf :
+                  (list ($lib__pair (list $char) $ty__walkthrough-$-host-$-ty)) ->
+                  $ty__walkthrough-$-host-$-tm -> $ty__walkthrough-$-host-$-ty -> prop by
+$transRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-var) (X)) (Ty)  :=
+    $fix__sterling-$-stdLib-$-lookup (Ctx) (X) (Ty);
+$transRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-abs) (X) (Ty1) (Body))
+                                       ((walkthrough-$-host-$-arrowTy) (Ty1) (Ty2))  :=
+    $transRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (Body) (Ty2);
+$transRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-app) (T1) (T2)) (Ty2)  :=
+    exists Ty1, ($transRel__walkthrough-$-host-$-typeOf (Ctx) (T1)
+                            ((walkthrough-$-host-$-arrowTy) (Ty1) (Ty2))) /\
+                ($transRel__walkthrough-$-host-$-typeOf (Ctx) (T2) (Ty1));
+$transRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-let-$-let) (X) (T1) (T2)) (Ty2)  :=
+    exists T' Ty1, ($transRel__walkthrough-$-host-$-typeOf (Ctx) (T') (Ty2) ) /\
+           (($trans__walkthrough-$-host-$-tm (Ctx) ((walkthrough-$-let-$-let) (X) (T1) (T2)) (T') ) /\
+           (($transRel__walkthrough-$-host-$-typeOf (Ctx) (T1) (Ty1)) /\
+           ($transRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (T2) (Ty2)))).
+
+
+
+<span class="comment">/********************************************************************
+ Properties and Proofs
+ ********************************************************************/</span>
+Theorem sterling-$-stdLib-$-lookup_unique[Key, Value] :
+  forall L (Key : Key) (Value2 : Value) (Value1 : Value),
+    ($fix__sterling-$-stdLib-$-lookup (L) (Key) (Value1)) ->
+    ($fix__sterling-$-stdLib-$-lookup (L) (Key) (Value2)) -> Value1 = Value2.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(13);" id="toggleproof13">[Show Proof]</a>
+<div class="proof" id="proof13" style="display: none;">
+induction on 1.  intros Lkp1' Lkp2'.  Lkp1: case Lkp1'.  Lkp2: case Lkp2'.  search.
+apply Lkp2 to _.  Lkp2: case Lkp2'.  apply Lkp1 to _.  backchain IH.  </div>
+
+Theorem sterling-$-stdLib-$-no_lookup[Key, Value] :
+  forall L (Key : Key) (Value : Value),
+    ($fix__sterling-$-stdLib-$-no_lookup (L) (Key)) ->
+    ($fix__sterling-$-stdLib-$-lookup (L) (Key) (Value)) -> false.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(14);" id="toggleproof14">[Show Proof]</a>
+<div class="proof" id="proof14" style="display: none;">
+induction on 1.  intros NLkp' Lkp'.  NLkp: case NLkp'.  Lkp: case Lkp'.  Lkp: case Lkp'.
+backchain NLkp.  backchain IH.  </div>
+
+Theorem sterling-$-stdLib-$-lookup_eq_or_not[Key, Value] :
+  forall L (A : Key) (B : Key) (VB : Value) (VA : Value),
+    ($fix__sterling-$-stdLib-$-lookup (L) (A) (VA)) ->
+    ($fix__sterling-$-stdLib-$-lookup (L) (B) (VB)) -> (A = B) \/ ((A = B) -> false).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(15);" id="toggleproof15">[Show Proof]</a>
+<div class="proof" id="proof15" style="display: none;">
+induction on 1.  intros LkpA LkpB.  LkpA: case LkpA.  LkpB: case LkpB.  search.  search.
+LkpB: case LkpB.  right.  intros Eq.  case Eq.  backchain LkpA.  apply IH to LkpA1 LkpB1.  search.  </div>
+
+Theorem sterling-$-stdLib-$-lookup_mem[Key, Value] :
+  forall L (Key : Key) (Value : Value),
+    ($fix__sterling-$-stdLib-$-lookup (L) (Key) (Value)) ->
+    $fix__sterling-$-stdLib-$-mem (($pair_c) (Key) (Value)) (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(16);" id="toggleproof16">[Show Proof]</a>
+<div class="proof" id="proof16" style="display: none;">
+induction on 1.  intros Lkp'.  Lkp: case Lkp'.  search.  apply IH to Lkp1.  search.  </div>
+
+Theorem sterling-$-stdLib-$-no_lookup_mem[Key, Value] :
+  forall L (Key : Key) (Value : Value),
+    ($fix__sterling-$-stdLib-$-no_lookup (L) (Key)) ->
+    ($fix__sterling-$-stdLib-$-mem (($pair_c) (Key) (Value)) (L)) -> false.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(17);" id="toggleproof17">[Show Proof]</a>
+<div class="proof" id="proof17" style="display: none;">
+induction on 1.  intros Lkp Mem.  Lkp: case Lkp.  case Mem.  Mem: case Mem.
+apply Lkp to _.  apply IH to Lkp1 Mem.  </div>
+
+Theorem sterling-$-stdLib-$-no_lookup_mem_pair[Key, Value] :
+  forall L (P : $lib__pair Key Value) K,
+    ($fix__sterling-$-stdLib-$-no_lookup (L) (K)) -> ($fix__sterling-$-stdLib-$-mem (P) (L)) ->
+    exists X Y, P = ($pair_c) (X) (Y).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(18);" id="toggleproof18">[Show Proof]</a>
+<div class="proof" id="proof18" style="display: none;">
+induction on 2.  intros NLkp Mem.  Mem: case Mem.  case NLkp.  search.  NLkp: case NLkp.
+apply IH to _ Mem.  search.  </div>
+
+Theorem sterling-$-stdLib-$-lookup_select[Key, Value] :
+  forall L (Key : Key) (Value : Value),
+    ($fix__sterling-$-stdLib-$-lookup (L) (Key) (Value)) ->
+    exists L', $fix__sterling-$-stdLib-$-select (($pair_c) (Key) (Value)) (L') (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(19);" id="toggleproof19">[Show Proof]</a>
+<div class="proof" id="proof19" style="display: none;">
+induction on 1.  intros Lkp'.  Lkp: case Lkp'.  search.  apply IH to Lkp1.  search.  </div>
+
+Theorem sterling-$-stdLib-$-no_lookup_select[Key, Value] :
+  forall L (Key : Key) (Value : Value) R,
+    ($fix__sterling-$-stdLib-$-no_lookup (L) (Key)) ->
+    ($fix__sterling-$-stdLib-$-select (($pair_c) (Key) (Value)) (R) (L)) -> false.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(20);" id="toggleproof20">[Show Proof]</a>
+<div class="proof" id="proof20" style="display: none;">
+induction on 1.  intros NLkp Slct.  NLkp: case NLkp.  case Slct.  Slct: case Slct.
+apply NLkp to _.  apply IH to NLkp1 Slct.  </div>
+
+Theorem sterling-$-stdLib-$-select_lookup[Key, Value] :
+  forall L (Key : Key) (K : Key) (Value : Value) (V : Value) R,
+    ($fix__sterling-$-stdLib-$-lookup (L) (K) (V)) ->
+    ($fix__sterling-$-stdLib-$-select (($pair_c) (Key) (Value)) (R) (L)) ->
+    ((K = Key) -> false) -> $fix__sterling-$-stdLib-$-lookup (R) (K) (V).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(21);" id="toggleproof21">[Show Proof]</a>
+<div class="proof" id="proof21" style="display: none;">
+induction on 1.  intros Lkp Slct NEq.  Lkp: case Lkp.  Slct: case Slct.
+apply NEq to _.  search.  Slct: case Slct.  search.  apply IH to Lkp1 Slct _.  search.  </div>
+
+Theorem sterling-$-stdLib-$-no_lookup_after_select_before[Key, Value] :
+  forall (Key : Key) (K : Key) (V : Value) Rest L,
+    ($fix__sterling-$-stdLib-$-no_lookup (Rest) (Key)) ->
+    ($fix__sterling-$-stdLib-$-select (($pair_c) (K) (V)) (Rest) (L)) ->
+    ((K = Key) -> false) -> $fix__sterling-$-stdLib-$-no_lookup (L) (Key).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(22);" id="toggleproof22">[Show Proof]</a>
+<div class="proof" id="proof22" style="display: none;">
+induction on 1.  intros NLkp Slct NEq.  NLkp: case NLkp.  case Slct.  search.
+Slct: case Slct.  search.  apply IH to NLkp1 Slct _.  search.</div>  
+
+Theorem sterling-$-stdLib-$-no_lookup_before_select_after[Key, Value] :
+  forall (Key : Key) (P : $lib__pair Key Value) Rest L,
+    ($fix__sterling-$-stdLib-$-no_lookup (L) (Key)) ->
+    ($fix__sterling-$-stdLib-$-select (P) (Rest) (L)) ->
+    $fix__sterling-$-stdLib-$-no_lookup (Rest) (Key).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(23);" id="toggleproof23">[Show Proof]</a>
+<div class="proof" id="proof23" style="display: none;">
+induction on 2.  intros NLkp Slct.  Slct: case Slct.  case NLkp.  search.
+NLkp: case NLkp.  apply IH to NLkp1 Slct.  search.  </div>
+
+Theorem sterling-$-stdLib-$-lookup_after_select_before[Key, Value] :
+  forall (K : Key) (Key : Key) (V : Value) (Value : Value) L R,
+    ($fix__sterling-$-stdLib-$-lookup (R) (K) (V)) ->
+    ($fix__sterling-$-stdLib-$-select (($pair_c) (Key) (Value)) (R) (L)) ->
+    ((K = Key) -> false) -> $fix__sterling-$-stdLib-$-lookup (L) (K) (V).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(24);" id="toggleproof24">[Show Proof]</a>
+<div class="proof" id="proof24" style="display: none;">
+induction on 2.  intros Lkp Slct NEq.  Slct: case Slct.  unfold .
+intros E.  case E.  backchain NEq.  search.  L: case Lkp.  search.  apply IH to L1 Slct NEq.  search.  </div>
+
+Theorem sterling-$-stdLib-$-mem_select[Item] :
+  forall L (X : Item),
+    ($fix__sterling-$-stdLib-$-mem (X) (L)) ->
+    exists L', $fix__sterling-$-stdLib-$-select (X) (L') (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(25);" id="toggleproof25">[Show Proof]</a>
+<div class="proof" id="proof25" style="display: none;">
+induction on 1.  intros Mem'.  Mem: case Mem'.  search.  apply IH to Mem.  search.  </div>
+
+Theorem sterling-$-stdLib-$-select_mem[Item] :
+  forall L (X : Item) L',
+    ($fix__sterling-$-stdLib-$-select (X) (L') (L)) -> $fix__sterling-$-stdLib-$-mem (X) (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(26);" id="toggleproof26">[Show Proof]</a>
+<div class="proof" id="proof26" style="display: none;">
+induction on 1.  intros Slct'.  Slct: case Slct'.  search.  apply IH to Slct.  search.  </div>
+
+Theorem sterling-$-stdLib-$-mem_after_select_before[Item] :
+   forall L L' (Y : Item) (X : Item),
+    ($fix__sterling-$-stdLib-$-select (X) (L') (L)) ->
+    ($fix__sterling-$-stdLib-$-mem (Y) (L')) -> $fix__sterling-$-stdLib-$-mem (Y) (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(27);" id="toggleproof27">[Show Proof]</a>
+<div class="proof" id="proof27" style="display: none;">
+induction on 1.  intros Slct Mem.  Slct: case Slct.  search.  Mem: case Mem.  search.
+apply IH to Slct Mem.  search.  </div>
+
+Theorem sterling-$-stdLib-$-mem_before_select_after[Item] :
+  forall L L' (Y : Item) (X : Item),
+    ($fix__sterling-$-stdLib-$-select (X) (L') (L)) -> ($fix__sterling-$-stdLib-$-mem (Y) (L)) ->
+    ((X = Y) -> false) -> $fix__sterling-$-stdLib-$-mem (Y) (L').<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(28);" id="toggleproof28">[Show Proof]</a>
+<div class="proof" id="proof28" style="display: none;">
+induction on 1.  intros Slct Mem Eq.  Slct: case Slct.  M: case Mem.  apply Eq to _.  search.
+M: case Mem.  search.  apply IH to Slct M Eq.  search.  </div>
+
+Theorem sterling-$-stdLib-$-select_comm[Item] :
+  forall L Rest Rest' (Y : Item) (X : Item),
+    ($fix__sterling-$-stdLib-$-select (X) (Rest) (L)) ->
+    ($fix__sterling-$-stdLib-$-select (Y) (Rest') (Rest)) ->
+    exists R, ($fix__sterling-$-stdLib-$-select (Y) (R) (L)) /\
+              ($fix__sterling-$-stdLib-$-select (X) (Rest') (R)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(29);" id="toggleproof29">[Show Proof]</a>
+<div class="proof" id="proof29" style="display: none;">
+induction on 1.  intros SX SY.  SX: case SX.  search.  SY: case SY.  search.
+apply IH to SX SY.  search.  </div>
+
+Theorem sterling-$-stdLib-$-mem_append_left[A] :
+  forall L1 L2 L (A : A),
+    ($fix__sterling-$-stdLib-$-mem (A) (L1)) -> ($append (L1) (L2) (L)) ->
+    $fix__sterling-$-stdLib-$-mem (A) (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(30);" id="toggleproof30">[Show Proof]</a>
+<div class="proof" id="proof30" style="display: none;">
+induction on 1.  intros Mem' App.  case Mem'.  case App.  search.
+App: case App.  apply IH to H1 App.  search.  </div>
+
+Theorem sterling-$-stdLib-$-mem_append_right[A] :
+  forall L1 L2 L (A : A),
+    ($fix__sterling-$-stdLib-$-mem (A) (L2)) -> ($append (L1) (L2) (L)) ->
+    $fix__sterling-$-stdLib-$-mem (A) (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(31);" id="toggleproof31">[Show Proof]</a>
+<div class="proof" id="proof31" style="display: none;">
+induction on 2.  intros Mem App.  App: case App.  search.  apply IH to Mem App.  search.  </div>
+
+Theorem sterling-$-stdLib-$-mem_append[A] :
+  forall L1 L2 L (A : A),
+    ($fix__sterling-$-stdLib-$-mem (A) (L)) -> ($append (L1) (L2) (L)) ->
+    ($fix__sterling-$-stdLib-$-mem (A) (L1)) \/ ($fix__sterling-$-stdLib-$-mem (A) (L2)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(32);" id="toggleproof32">[Show Proof]</a>
+<div class="proof" id="proof32" style="display: none;">
+induction on 1.  intros Mem' App'.  Mem: case Mem'.  App: case App'.  search.  search.
+App: case App'.  search.  Or: apply IH to Mem App.  case Or.  search.  search.  </div>
+
+Theorem sterling-$-stdLib-$-not_mem[A] :
+  forall (A : A) L,
+    ($fix__sterling-$-stdLib-$-not_mem (A) (L)) -> ($fix__sterling-$-stdLib-$-mem (A) (L)) -> false.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(33);" id="toggleproof33">[Show Proof]</a>
+<div class="proof" id="proof33" style="display: none;">
+induction on 1.  intros N M.  N: case N.  case M.  M: case M.  apply N to _.  apply IH to N1 M.  </div>
+
+Theorem sterling-$-stdLib-$-not_mem_select[A] :
+  forall L (A : A) L',
+    ($fix__sterling-$-stdLib-$-not_mem (A) (L)) ->
+    ($fix__sterling-$-stdLib-$-select (A) (L') (L)) -> false.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(34);" id="toggleproof34">[Show Proof]</a>
+<div class="proof" id="proof34" style="display: none;">
+intros N S.  M: apply sterling-$-stdLib-$-select_mem to S.  apply sterling-$-stdLib-$-not_mem to N M.  </div>
+
+Theorem sterling-$-stdLib-$-not_mem_after_select_before[A] :
+  forall L L' (Y : A) (X : A),
+    ($fix__sterling-$-stdLib-$-select (X) (L') (L)) ->
+    ($fix__sterling-$-stdLib-$-not_mem (Y) (L')) -> ((X = Y) -> false) ->
+    $fix__sterling-$-stdLib-$-not_mem (Y) (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(35);" id="toggleproof35">[Show Proof]</a>
+<div class="proof" id="proof35" style="display: none;">
+induction on 1.  intros S N NEq.  S: case S.  search.  case N.  apply IH to S _ _.  search.  </div>
+
+Theorem sterling-$-stdLib-$-not_mem_before_select_after[A] :
+  forall L L' (Y : A) (X : A),
+    ($fix__sterling-$-stdLib-$-select (X) (L') (L)) ->
+    ($fix__sterling-$-stdLib-$-not_mem (Y) (L)) -> $fix__sterling-$-stdLib-$-not_mem (Y) (L').<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(36);" id="toggleproof36">[Show Proof]</a>
+<div class="proof" id="proof36" style="display: none;">
+induction on 1.  intros S N.  S: case S.  case N.  search.  case N.  apply IH to S _.  search.  </div>
+
+Theorem sterling-$-stdLib-$-not_mem_append[A] :
+  forall L1 L2 L (A : A),
+    ($fix__sterling-$-stdLib-$-not_mem (A) (L1)) ->
+    ($fix__sterling-$-stdLib-$-not_mem (A) (L2)) -> ($append (L1) (L2) (L)) ->
+    $fix__sterling-$-stdLib-$-not_mem (A) (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(37);" id="toggleproof37">[Show Proof]</a>
+<div class="proof" id="proof37" style="display: none;">
+induction on 1.  intros NA NB App.  NA: case NA.  case App.  search.
+case App.  apply IH to NA1 _ _.  search. </div> 
+
+Theorem sterling-$-stdLib-$-not_mem_append_back[A] :
+  forall L1 L2 L (A : A),
+    ($fix__sterling-$-stdLib-$-not_mem (A) (L)) -> ($append (L1) (L2) (L)) ->
+    ($fix__sterling-$-stdLib-$-not_mem (A) (L1)) /\ ($fix__sterling-$-stdLib-$-not_mem (A) (L2)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(38);" id="toggleproof38">[Show Proof]</a>
+<div class="proof" id="proof38" style="display: none;">
+induction on 2.  intros N App.  App: case App.  search.  case N.  apply IH to _ App.  search.  </div>
+
+Theorem sterling-$-stdLib-$-permutation_mem[Item] :
+  forall (L : list Item) (M : list Item) I,
+    ($fix__sterling-$-stdLib-$-permutation (L) (M)) ->
+    ($fix__sterling-$-stdLib-$-mem (I) (L)) -> $fix__sterling-$-stdLib-$-mem (I) (M).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(39);" id="toggleproof39">[Show Proof]</a>
+<div class="proof" id="proof39" style="display: none;">
+induction on 2.  intros P M.  M: case M.  P: case P.  apply sterling-$-stdLib-$-select_mem to P.  search.
+P: case P.  M': apply IH to P1 M.  apply sterling-$-stdLib-$-mem_after_select_before to _ M'.  search.  </div>
+
+Theorem sterling-$-stdLib-$-perm_lemma[Item] :
+  forall A B B' (X : Item),
+    ($fix__sterling-$-stdLib-$-permutation (B') (A)) ->
+    ($fix__sterling-$-stdLib-$-select (X) (B') (B)) ->
+    $fix__sterling-$-stdLib-$-permutation (B) ((X)::(A)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(40);" id="toggleproof40">[Show Proof]</a>
+<div class="proof" id="proof40" style="display: none;">
+induction on 2.  intros P S.  S: case S.  search.  P: case P.  apply IH to P1 S.  search.  </div>
+
+Theorem sterling-$-stdLib-$-permutation_symmetric[Item] :
+  forall (M : list Item) (L : list Item),
+    ($fix__sterling-$-stdLib-$-permutation (L) (M)) ->
+    $fix__sterling-$-stdLib-$-permutation (M) (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(41);" id="toggleproof41">[Show Proof]</a>
+<div class="proof" id="proof41" style="display: none;">
+induction on 1.  intros P.  P: case P.  search.  PSub: apply IH to P1.
+apply sterling-$-stdLib-$-perm_lemma to PSub P.  search.  </div>
+
+Theorem sterling-$-stdLib-$-no_lookup_permutation[Key, Value] :
+  forall (L : list ($lib__pair Key Value)) (P : list ($lib__pair Key Value)) (Key : Key),
+    ($fix__sterling-$-stdLib-$-no_lookup (L) (Key)) ->
+    ($fix__sterling-$-stdLib-$-permutation (L) (P)) ->
+    $fix__sterling-$-stdLib-$-no_lookup (P) (Key).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(42);" id="toggleproof42">[Show Proof]</a>
+<div class="proof" id="proof42" style="display: none;">
+induction on 1.  intros NLkp P.  NLkp: case NLkp.  case P.  search.
+P: case P.  NLkp': apply IH to NLkp1 P1.
+apply sterling-$-stdLib-$-no_lookup_after_select_before to NLkp' P NLkp.  search.  </div>
+
+Theorem sterling-$-stdLib-$-count_is_integer[Item] :
+  forall (I : Item) L N, ($fix__sterling-$-stdLib-$-count (I) (L) (N)) -> is_integer (N).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(43);" id="toggleproof43">[Show Proof]</a>
+<div class="proof" id="proof43" style="display: none;">
+induction on 1.  intros C.  C: case C.  search.  apply IH to C.
+apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ C1.  search.  apply IH to C1.  search.  </div>
+
+Theorem sterling-$-stdLib-$-count_geq_0[Item] :
+  forall (I : Item) L N,
+    ($fix__sterling-$-stdLib-$-count (I) (L) (N)) -> $greatereq_integer (N) (($posInt) ($zero)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(44);" id="toggleproof44">[Show Proof]</a>
+<div class="proof" id="proof44" style="display: none;">
+induction on 1.  intros C.  C: case C.  search.  GEq: apply IH to C.
+apply extensibella-$-stdLib-$-greatereq_integer__add_positive to _ GEq C1.  search.  apply IH to C1.  search.  </div>
+
+Theorem sterling-$-stdLib-$-select_count[Item] :
+  forall (I : Item) L Rest N N',
+    ($fix__sterling-$-stdLib-$-count (I) (L) (N)) ->
+    ($fix__sterling-$-stdLib-$-select (I) (Rest) (L)) ->
+    ($minus_integer (N) (($posInt) (($succ) ($zero))) (N')) ->
+    $fix__sterling-$-stdLib-$-count (I) (Rest) (N').<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(45);" id="toggleproof45">[Show Proof]</a>
+<div class="proof" id="proof45" style="display: none;">
+induction on 2.  intros C S Minus.  S: case S.  IsN: apply sterling-$-stdLib-$-count_is_integer to C.
+C: case C.  IsN1: apply sterling-$-stdLib-$-count_is_integer to C.
+P: apply extensibella-$-stdLib-$-plus_integer_comm to _ _ C1.
+M2: apply extensibella-$-stdLib-$-plus_minus_same_integer to _ _ P.
+apply extensibella-$-stdLib-$-minus_integer_unique to Minus M2.  search.
+apply C to _.  IsN: apply sterling-$-stdLib-$-count_is_integer to C.  C: case C.
+IsN1: apply sterling-$-stdLib-$-count_is_integer to C.
+P: apply extensibella-$-stdLib-$-plus_integer_comm to _ _ C1.
+M2: apply extensibella-$-stdLib-$-plus_minus_same_integer to _ _ P.
+apply extensibella-$-stdLib-$-minus_integer_unique to Minus M2.
+Sub: apply extensibella-$-stdLib-$-minus_integer_total to IsN1 _ with N2 = ($posInt) (($succ) ($zero)).
+C': apply IH to C S Sub.  P': apply extensibella-$-stdLib-$-minus_plus_same_integer to _ _ Sub.
+apply sterling-$-stdLib-$-count_is_integer to C'.
+apply extensibella-$-stdLib-$-plus_integer_comm to _ _ P'.  search.  apply IH to C1 S _.  search.  </div>
+
+Theorem sterling-$-stdLib-$-count_select[Item] :
+  forall (I : Item) L Rest N' N,
+    ($fix__sterling-$-stdLib-$-count (I) (Rest) (N')) ->
+    ($fix__sterling-$-stdLib-$-select (I) (Rest) (L)) ->
+    ($plus_integer (($posInt) (($succ) ($zero))) (N') (N)) ->
+    $fix__sterling-$-stdLib-$-count (I) (L) (N).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(46);" id="toggleproof46">[Show Proof]</a>
+<div class="proof" id="proof46" style="display: none;">
+induction on 2.  intros C S P.  S: case S.  search.  C: case C.  apply IH to C S _.  search.
+apply IH to C1 S _.  search.  </div>
+
+Theorem sterling-$-stdLib-$-select_count_neq[Item] :
+  forall (I : Item) (J : Item) L Rest N,
+    ($fix__sterling-$-stdLib-$-count (I) (L) (N)) ->
+    ($fix__sterling-$-stdLib-$-select (J) (Rest) (L)) -> ((I = J) -> false) ->
+    $fix__sterling-$-stdLib-$-count (I) (Rest) (N).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(47);" id="toggleproof47">[Show Proof]</a>
+<div class="proof" id="proof47" style="display: none;">
+induction on 2.  intros C S NEq.  S: case S.  C: case C.  apply NEq to _.  search.
+C: case C.  apply IH to C S _.  search.  apply IH to C1 S _.  search.  </div>
+
+Theorem sterling-$-stdLib-$-count_select_neq[Item] :
+  forall (I : Item) (J : Item) L Rest N,
+    ($fix__sterling-$-stdLib-$-count (I) (Rest) (N)) ->
+    ($fix__sterling-$-stdLib-$-select (J) (Rest) (L)) -> ((I = J) -> false) ->
+    $fix__sterling-$-stdLib-$-count (I) (L) (N).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(48);" id="toggleproof48">[Show Proof]</a>
+<div class="proof" id="proof48" style="display: none;">
+induction on 2.  intros C S NEq.  S: case S.  search.  C: case C.  apply IH to C S _.  search.
+apply IH to C1 S _.  search.  </div>
+
+Theorem sterling-$-stdLib-$-count_unique[Item] :
+  forall (I : Item) NA NB L,
+    ($fix__sterling-$-stdLib-$-count (I) (L) (NA)) ->
+    ($fix__sterling-$-stdLib-$-count (I) (L) (NB)) -> NA = NB.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(49);" id="toggleproof49">[Show Proof]</a>
+<div class="proof" id="proof49" style="display: none;">
+induction on 1.  intros CA CB.  CA: case CA.  case CB.  search.
+CB: case CB.  apply IH to CA CB.  apply extensibella-$-stdLib-$-plus_integer_unique to CA1 CB1.  search.
+apply CB to _.  CB: case CB.  apply CA to _.  apply IH to CA1 CB1.  search.  </div>
+
+Theorem sterling-$-stdLib-$-count_mem[Item] :
+  forall (I : Item) N L,
+    ($fix__sterling-$-stdLib-$-count (I) (L) (N)) ->
+    ($greater_integer (N) (($posInt) ($zero))) ->
+    $fix__sterling-$-stdLib-$-mem (I) (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(50);" id="toggleproof50">[Show Proof]</a>
+<div class="proof" id="proof50" style="display: none;">
+induction on 1.  intros C G.  C: case C.  L: apply extensibella-$-stdLib-$-greater_integer_flip_less to G.
+apply extensibella-$-stdLib-$-less_integer_not_eq to L.  search.  apply IH to C1 _.  search.  </div>
+
+Theorem sterling-$-stdLib-$-count_not_mem[Item] :
+  forall (I : Item) L,
+    ($fix__sterling-$-stdLib-$-count (I) (L) (($posInt) ($zero))) ->
+    ($fix__sterling-$-stdLib-$-mem (I) (L)) -> false.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(51);" id="toggleproof51">[Show Proof]</a>
+<div class="proof" id="proof51" style="display: none;">
+induction on 1.  intros C Mem.  C: case C.  case Mem.  G: apply sterling-$-stdLib-$-count_geq_0 to C.
+IsN: apply sterling-$-stdLib-$-count_is_integer to C.
+P: apply extensibella-$-stdLib-$-plus_integer_comm to _ _ C1.
+Or: apply extensibella-$-stdLib-$-greatereq_integer_greater_or_eq to G.  G': case Or.
+G'': apply extensibella-$-stdLib-$-greater_plus_positive to _ _ C1 _.  case G''.  case H1.  case P.
+Mem: case Mem.  backchain C.  apply IH to C1 Mem.  </div>
+
+Theorem sterling-$-stdLib-$-count_greater_0[Item] :
+  forall (I : Item) L N,
+    ($fix__sterling-$-stdLib-$-count (I) ((I)::(L)) (N)) ->
+    $greater_integer (N) (($posInt) ($zero)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(52);" id="toggleproof52">[Show Proof]</a>
+<div class="proof" id="proof52" style="display: none;">
+induction on 1.  intros C.  C: case C.  GEq: apply sterling-$-stdLib-$-count_geq_0 to C.
+Or: apply extensibella-$-stdLib-$-greatereq_integer_greater_or_eq to GEq.  G: case Or.
+IsN1: apply sterling-$-stdLib-$-count_is_integer to C.
+P: apply extensibella-$-stdLib-$-plus_integer_comm to _ _ C1.
+G': apply extensibella-$-stdLib-$-greater_plus_positive to _ _ P _.
+apply extensibella-$-stdLib-$-greater_integer_transitive to G' G.  search.
+P: apply extensibella-$-stdLib-$-plus_integer_comm to _ _ C1.  case P.  search.  apply C to _.  </div>
+
+Theorem sterling-$-stdLib-$-subset_mem[A] :
+  forall (Sub : list A) (Sup : list A) A,
+    ($fix__sterling-$-stdLib-$-subset (Sub) (Sup)) ->
+    ($fix__sterling-$-stdLib-$-mem (A) (Sub)) -> $fix__sterling-$-stdLib-$-mem (A) (Sup).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(53);" id="toggleproof53">[Show Proof]</a>
+<div class="proof" id="proof53" style="display: none;">
+induction on 1.  intros Sub Mem.  Sub: case Sub.  case Mem.  Mem: case Mem.  search.
+apply IH to Sub1 Mem.  search.  </div>
+
+Theorem sterling-$-stdLib-$-subset_trans[A] :
+  forall (B : list A) (C : list A) (A : list A),
+    ($fix__sterling-$-stdLib-$-subset (A) (B)) ->
+    ($fix__sterling-$-stdLib-$-subset (B) (C)) -> $fix__sterling-$-stdLib-$-subset (A) (C).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(54);" id="toggleproof54">[Show Proof]</a>
+<div class="proof" id="proof54" style="display: none;">
+induction on 1.  intros SAB SBC.  SAB: case SAB.  search.
+apply sterling-$-stdLib-$-subset_mem to SBC SAB.  apply IH to SAB1 SBC.  search.  </div>
+
+Theorem sterling-$-stdLib-$-subset_add_right[A] :
+  forall Sub Sup (A : A),
+    ($fix__sterling-$-stdLib-$-subset (Sub) (Sup)) ->
+    $fix__sterling-$-stdLib-$-subset (Sub) ((A)::(Sup)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(55);" id="toggleproof55">[Show Proof]</a>
+<div class="proof" id="proof55" style="display: none;">
+induction on 1.  intros S.  S: case S.  search.  apply IH to S1 with A = A.  search.  </div>
+
+Theorem sterling-$-stdLib-$-permutation_counts[Item] :
+  forall L P (I : Item) NL NP,
+    ($fix__sterling-$-stdLib-$-permutation (L) (P)) ->
+    ($fix__sterling-$-stdLib-$-count (I) (L) (NL)) ->
+    ($fix__sterling-$-stdLib-$-count (I) (P) (NP)) -> NL = NP.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(56);" id="toggleproof56">[Show Proof]</a>
+<div class="proof" id="proof56" style="display: none;">
+induction on 2.  intros P CL CP.  CL: case CL.  case P.  case CP.  search.  P: case P.  S: case P (keep).
+CP: case CP.  apply IH to P1 CL CP.  apply extensibella-$-stdLib-$-plus_integer_unique to CL1 CP1.  search.
+apply CP to _.  IsNP: apply sterling-$-stdLib-$-count_is_integer to CP.
+Minus: apply extensibella-$-stdLib-$-minus_integer_total to IsNP _ with N2 = ($posInt) (($succ) ($zero)).
+C': apply sterling-$-stdLib-$-select_count to CP P Minus.
+P': apply extensibella-$-stdLib-$-minus_plus_same_integer to _ _ Minus.
+IsN3: apply extensibella-$-stdLib-$-minus_integer_is_integer to _ _ Minus.
+Plus: apply extensibella-$-stdLib-$-plus_integer_comm to _ _ P'.  apply IH to P1 CL _.
+apply extensibella-$-stdLib-$-plus_integer_unique to CL1 Plus.  search.  P: case P.
+C: apply sterling-$-stdLib-$-select_count_neq to CP P CL.  apply IH to P1 CL1 C.  search.  </div>
+
+Theorem sterling-$-stdLib-$-domain_mem[A, B] :
+  forall L (A : A) (B : B) D,
+    ($fix__sterling-$-stdLib-$-mem (($pair_c) (A) (B)) (L)) ->
+    ($fix__sterling-$-stdLib-$-domain (L) (D)) -> $fix__sterling-$-stdLib-$-mem (A) (D).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(57);" id="toggleproof57">[Show Proof]</a>
+<div class="proof" id="proof57" style="display: none;">
+induction on 1.  intros Mem Dmn.  Mem: case Mem.  case Dmn.  search.
+Dmn: case Dmn.  apply IH to Mem Dmn.  search.  </div>
+
+Theorem sterling-$-stdLib-$-mem_domain[A, B] :
+  forall (L : list ($lib__pair A B)) A D,
+    ($fix__sterling-$-stdLib-$-domain (L) (D)) ->
+    ($fix__sterling-$-stdLib-$-mem (A) (D)) ->
+    exists B, $fix__sterling-$-stdLib-$-mem (($pair_c) (A) (B)) (L).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(58);" id="toggleproof58">[Show Proof]</a>
+<div class="proof" id="proof58" style="display: none;">
+induction on 2.  intros D M.  M: case M.  case D.  search.  D: case D.  apply IH to D M.  search.  </div>
+
+Theorem sterling-$-stdLib-$-domain_select[A, B] :
+  forall (L : list ($lib__pair A B)) LRest A B D,
+    ($fix__sterling-$-stdLib-$-domain (L) (D)) ->
+    ($fix__sterling-$-stdLib-$-select (($pair_c) (A) (B)) (LRest) (L)) ->
+    exists DRest, ($fix__sterling-$-stdLib-$-select (A) (DRest) (D)) /\
+                  ($fix__sterling-$-stdLib-$-domain (LRest) (DRest)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(59);" id="toggleproof59">[Show Proof]</a>
+<div class="proof" id="proof59" style="display: none;">
+induction on 2.  intros Dmn Slct.  Slct: case Slct.  case Dmn.  search.
+Dmn: case Dmn.  apply IH to Dmn Slct.  search.  </div>
+
+Theorem sterling-$-stdLib-$-domain_unique[A, B] :
+  forall (L : list ($lib__pair A B)) DA DB,
+    ($fix__sterling-$-stdLib-$-domain (L) (DA)) ->
+    ($fix__sterling-$-stdLib-$-domain (L) (DB)) -> DA = DB.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(60);" id="toggleproof60">[Show Proof]</a>
+<div class="proof" id="proof60" style="display: none;">
+induction on 1.  intros DmnA DmnB.  DmnA: case DmnA.  case DmnB.  search.
+DmnB: case DmnB.  apply IH to DmnA DmnB.  search.  </div>
+
+Theorem sterling-$-stdLib-$-values_mem[A, B] :
+  forall L (A : A) (B : B) V,
+    ($fix__sterling-$-stdLib-$-mem (($pair_c) (A) (B)) (L)) ->
+    ($fix__sterling-$-stdLib-$-values (L) (V)) -> $fix__sterling-$-stdLib-$-mem (B) (V).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(61);" id="toggleproof61">[Show Proof]</a>
+<div class="proof" id="proof61" style="display: none;">
+induction on 1.  intros Mem Vals.  Mem: case Mem.  case Vals.  search.
+Vals: case Vals.  apply IH to Mem Vals.  search.  </div>
+
+Theorem sterling-$-stdLib-$-values_select[A, B] :
+  forall (L : list ($lib__pair A B)) LRest A B V,
+    ($fix__sterling-$-stdLib-$-values (L) (V)) ->
+    ($fix__sterling-$-stdLib-$-select (($pair_c) (A) (B)) (LRest) (L)) ->
+    exists VRest, ($fix__sterling-$-stdLib-$-select (B) (VRest) (V)) /\
+                  ($fix__sterling-$-stdLib-$-values (LRest) (VRest)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(62);" id="toggleproof62">[Show Proof]</a>
+<div class="proof" id="proof62" style="display: none;">
+induction on 2.  intros Vals Slct.  Slct: case Slct.  case Vals.  search.
+Vals: case Vals.  apply IH to Vals Slct.  search.  </div>
+
+Theorem sterling-$-stdLib-$-values_unique[A, B] :
+  forall (L : list ($lib__pair A B)) VA VB,
+    ($fix__sterling-$-stdLib-$-values (L) (VA)) ->
+    ($fix__sterling-$-stdLib-$-values (L) (VB)) -> VA = VB.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(63);" id="toggleproof63">[Show Proof]</a>
+<div class="proof" id="proof63" style="display: none;">
+induction on 1.  intros VA VB.  VA: case VA.  case VB.  search.  VB: case VB.  apply IH to VA VB.  search.  </div>
+
+Theorem sterling-$-stdLib-$-zip_unique[A, B] :
+   forall (L1 : list A) (L2 : list B) LA LB,
+      ($fix__sterling-$-stdLib-$-zip (L1) (L2) (LA)) ->
+      ($fix__sterling-$-stdLib-$-zip (L1) (L2) (LB)) -> LA = LB.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(64);" id="toggleproof64">[Show Proof]</a>
+<div class="proof" id="proof64" style="display: none;">
+induction on 1.  intros ZA ZB.  ZA: case ZA.  case ZB.  search.  ZB: case ZB.  apply IH to ZA ZB.  search.  </div>
+
+Theorem sterling-$-stdLib-$-zip_mem_after[A, B] :
+  forall LA LB (A : A) (B : B) Z,
+    ($fix__sterling-$-stdLib-$-zip (LA) (LB) (Z)) ->
+    ($fix__sterling-$-stdLib-$-mem (($pair_c) (A) (B)) (Z)) ->
+    ($fix__sterling-$-stdLib-$-mem (A) (LA)) /\ ($fix__sterling-$-stdLib-$-mem (B) (LB)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(65);" id="toggleproof65">[Show Proof]</a>
+<div class="proof" id="proof65" style="display: none;">
+induction on 1.  intros Zip Mem.  Zip: case Zip.  case Mem.  Mem: case Mem.  search.
+apply IH to Zip Mem.  search.  </div>
+
+Theorem sterling-$-stdLib-$-zip_mem_before1[A, B] :
+  forall LA (LB : list B) (A : A) Z,
+    ($fix__sterling-$-stdLib-$-zip (LA) (LB) (Z)) ->
+    ($fix__sterling-$-stdLib-$-mem (A) (LA)) ->
+    exists B, $fix__sterling-$-stdLib-$-mem (($pair_c) (A) (B)) (Z).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(66);" id="toggleproof66">[Show Proof]</a>
+<div class="proof" id="proof66" style="display: none;">
+induction on 1.  intros Zip Mem.  Zip: case Zip.  case Mem.  Mem: case Mem.  search.
+apply IH to Zip Mem.  search.  </div>
+
+Theorem sterling-$-stdLib-$-zip_mem_before2[A, B] :
+  forall (LA : list A) LB (B : B) Z,
+    ($fix__sterling-$-stdLib-$-zip (LA) (LB) (Z)) ->
+    ($fix__sterling-$-stdLib-$-mem (B) (LB)) ->
+    exists A, $fix__sterling-$-stdLib-$-mem (($pair_c) (A) (B)) (Z).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(67);" id="toggleproof67">[Show Proof]</a>
+<div class="proof" id="proof67" style="display: none;">
+induction on 1.  intros Zip Mem.  Zip: case Zip.  case Mem.  Mem: case Mem.  search.
+apply IH to Zip Mem.  search.  </div>
+
+Theorem sterling-$-stdLib-$-drop_is_integer[A] :
+  forall N (R : list A) (L : list A),
+    ($fix__sterling-$-stdLib-$-drop (N) (L) (R)) -> is_integer (N).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(68);" id="toggleproof68">[Show Proof]</a>
+<div class="proof" id="proof68" style="display: none;">
+induction on 1.  intros D.  D: case D.  search.  apply IH to D1.
+apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ D.  search.  </div>
+
+Theorem sterling-$-stdLib-$-drop_geq_0[A] :
+  forall N (R : list A) (L : list A),
+    ($fix__sterling-$-stdLib-$-drop (N) (L) (R)) -> $greatereq_integer (N) (($posInt) ($zero)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(69);" id="toggleproof69">[Show Proof]</a>
+<div class="proof" id="proof69" style="display: none;">
+induction on 1.  intros D.  D: case D.  search.  GEq: apply IH to D1.  LEq: case GEq.
+G: apply extensibella-$-stdLib-$-greater_integer__add_positive to _ _ D.
+L: apply extensibella-$-stdLib-$-greater_integer_flip_less to G.
+apply extensibella-$-stdLib-$-less_integer_lesseq to L.  search.  </div>
+
+Theorem sterling-$-stdLib-$-drop_unique[A] :
+  forall N (RA : list A) (RB : list A) (L : list A),
+    ($fix__sterling-$-stdLib-$-drop (N) (L) (RA)) ->
+    ($fix__sterling-$-stdLib-$-drop (N) (L) (RB)) -> RA = RB.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(70);" id="toggleproof70">[Show Proof]</a>
+<div class="proof" id="proof70" style="display: none;">
+induction on 1.  intros DA DB.  DA: case DA.  DB: case DB.  search.
+apply sterling-$-stdLib-$-drop_is_integer to DB1.
+L: apply extensibella-$-stdLib-$-lt_plus_one to DB _.  GEq: apply sterling-$-stdLib-$-drop_geq_0 to DB1.
+apply extensibella-$-stdLib-$-greatereq_less_integer_false to GEq L.  DB: case DB.
+apply sterling-$-stdLib-$-drop_is_integer to DA1.  L: apply extensibella-$-stdLib-$-lt_plus_one to DA _.
+GEq: apply sterling-$-stdLib-$-drop_geq_0 to DA1.
+apply extensibella-$-stdLib-$-greatereq_less_integer_false to GEq L.
+apply sterling-$-stdLib-$-drop_is_integer to DA1.  apply sterling-$-stdLib-$-drop_is_integer to DB1.
+apply extensibella-$-stdLib-$-plus_integer_unique_addend to _ _ _ DA DB.  apply IH to DA1 DB1.  search.  </div>
+
+Theorem sterling-$-stdLib-$-append_drop[A] :
+  forall N (L2 : list A) (L : list A) (L1 : list A),
+    ($append (L1) (L2) (L)) -> (extensibella-$-stdLib-$-length (L1) (N)) ->
+    $fix__sterling-$-stdLib-$-drop (N) (L) (L2).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(71);" id="toggleproof71">[Show Proof]</a>
+<div class="proof" id="proof71" style="display: none;">
+induction on 2.  intros App Len.  Len: case Len.  case App.  search.
+App: case App.  apply IH to App Len.  search.  </div>
+
+Theorem sterling-$-stdLib-$-take_is_integer[A] :
+  forall N (F : list A) (L : list A),
+    ($fix__sterling-$-stdLib-$-take (N) (L) (F)) -> is_integer (N).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(72);" id="toggleproof72">[Show Proof]</a>
+<div class="proof" id="proof72" style="display: none;">
+induction on 1.  intros T.  T: case T.  search.
+apply IH to T1.  apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ T.  search.  </div>
+
+Theorem sterling-$-stdLib-$-take_geq_0[A] :
+  forall N (F : list A) (L : list A),
+    ($fix__sterling-$-stdLib-$-take (N) (L) (F)) -> $greatereq_integer (N) (($posInt) ($zero)).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(73);" id="toggleproof73">[Show Proof]</a>
+<div class="proof" id="proof73" style="display: none;">
+induction on 1.  intros T.  T: case T.  search.  GEq: apply IH to T1.  LEq: case GEq.
+G: apply extensibella-$-stdLib-$-greater_integer__add_positive to _ _ T.
+L: apply extensibella-$-stdLib-$-greater_integer_flip_less to G.
+apply extensibella-$-stdLib-$-less_integer_lesseq to L.  search.  </div>
+
+Theorem sterling-$-stdLib-$-take_unique[A] :
+   forall N (RA : list A) (RB : list A) (L : list A),
+     ($fix__sterling-$-stdLib-$-take (N) (L) (RA)) ->
+     ($fix__sterling-$-stdLib-$-take (N) (L) (RB)) -> RA = RB.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(74);" id="toggleproof74">[Show Proof]</a>
+<div class="proof" id="proof74" style="display: none;">
+induction on 1.  intros TA TB.  TA: case TA.  TB: case TB.  search.
+apply sterling-$-stdLib-$-take_is_integer to TB1.  L: apply extensibella-$-stdLib-$-lt_plus_one to TB _.
+GEq: apply sterling-$-stdLib-$-take_geq_0 to TB1.
+apply extensibella-$-stdLib-$-greatereq_less_integer_false to GEq L.  TB: case TB.
+apply sterling-$-stdLib-$-take_is_integer to TA1.  L: apply extensibella-$-stdLib-$-lt_plus_one to TA _.
+GEq: apply sterling-$-stdLib-$-take_geq_0 to TA1.
+apply extensibella-$-stdLib-$-greatereq_less_integer_false to GEq L.
+apply sterling-$-stdLib-$-take_is_integer to TA1.  apply sterling-$-stdLib-$-take_is_integer to TB1.
+apply extensibella-$-stdLib-$-plus_integer_unique_addend to _ _ _ TA TB.  apply IH to TA1 TB1.  search.  </div>
+
+Theorem sterling-$-stdLib-$-take_length[A] :
+  forall N (R : list A) (L : list A),
+    ($fix__sterling-$-stdLib-$-take (N) (L) (R)) -> extensibella-$-stdLib-$-length (R) (N).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(75);" id="toggleproof75">[Show Proof]</a>
+<div class="proof" id="proof75" style="display: none;">
+induction on 1.  intros T.  T: case T.  search.  L: apply IH to T1.  search.  </div>
+
+Theorem sterling-$-stdLib-$-append_take[A] :
+  forall N (L2 : list A) (L : list A) (L1 : list A),
+    ($append (L1) (L2) (L)) -> (extensibella-$-stdLib-$-length (L1) (N)) ->
+    $fix__sterling-$-stdLib-$-take (N) (L) (L1).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(76);" id="toggleproof76">[Show Proof]</a>
+<div class="proof" id="proof76" style="display: none;">
+induction on 2.  intros App Len.  Len: case Len.  search.  App: case App.  apply IH to App Len.  search.  </div>
+
+Theorem sterling-$-stdLib-$-range_is :
+  forall Low High R,
+    (is_integer (Low)) -> ($fix__sterling-$-stdLib-$-range (Low) (High) (R)) ->
+    is_list (is_integer) (R).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(77);" id="toggleproof77">[Show Proof]</a>
+<div class="proof" id="proof77" style="display: none;">
+induction on 2.  intros IsLow R.  R: case R.  search.
+IsPlusOne: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ R1.
+apply IH to IsPlusOne R2.  search.  </div>
+
+Theorem sterling-$-stdLib-$-is_list_int_mem :
+  forall L (X : $lib__integer),
+    (is_list (is_integer) (L)) -> ($fix__sterling-$-stdLib-$-mem (X) (L)) -> is_integer (X).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(78);" id="toggleproof78">[Show Proof]</a>
+<div class="proof" id="proof78" style="display: none;">
+induction on 2.  intros IsL Mem.  Mem: case Mem.  case IsL.  search.
+Is: case IsL.  apply IH to _ Mem.  search.  </div>
+
+Theorem sterling-$-stdLib-$-range_low_lesseq :
+  forall Low High R X,
+    (is_integer (Low)) -> ($fix__sterling-$-stdLib-$-range (Low) (High) (R)) ->
+    ($fix__sterling-$-stdLib-$-mem (X) (R)) -> $lesseq_integer (Low) (X).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(79);" id="toggleproof79">[Show Proof]</a>
+<div class="proof" id="proof79" style="display: none;">
+induction on 3.  intros IsLow Range Mem.  apply sterling-$-stdLib-$-range_is to IsLow Range.
+IsX: apply sterling-$-stdLib-$-is_list_int_mem to _ Mem.  Mem: case Mem.  R: case Range.
+apply extensibella-$-stdLib-$-is_integer_lesseq to IsX.  search.  R: case Range.
+apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ R1.  LEq: apply IH to _ R2 Mem.
+L: apply extensibella-$-stdLib-$-lt_plus_one to R1 _.
+LEq': apply extensibella-$-stdLib-$-less_integer_lesseq to L.
+apply extensibella-$-stdLib-$-lesseq_integer_transitive to LEq' LEq.  search.  </div>
+
+Theorem sterling-$-stdLib-$-range_high_lesseq :
+  forall Low High R X,
+    (is_integer (Low)) -> ($fix__sterling-$-stdLib-$-range (Low) (High) (R)) ->
+    ($fix__sterling-$-stdLib-$-mem (X) (R)) -> $lesseq_integer (X) (High).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(80);" id="toggleproof80">[Show Proof]</a>
+<div class="proof" id="proof80" style="display: none;">
+induction on 2.  intros IsLow Range Mem.  Range: case Range.  case Mem.  Mem: case Mem.  search.
+apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Range1.  apply IH to _ Range2 Mem.  search.  </div>
+
+Theorem sterling-$-stdLib-$-in_range :
+  forall Low High R X,
+    (is_integer (Low)) -> (is_integer (X)) ->
+    ($fix__sterling-$-stdLib-$-range (Low) (High) (R)) -> ($lesseq_integer (Low) (X)) ->
+    ($lesseq_integer (X) (High)) -> $fix__sterling-$-stdLib-$-mem (X) (R).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(81);" id="toggleproof81">[Show Proof]</a>
+<div class="proof" id="proof81" style="display: none;">
+induction on 3.  intros IsLow IsX R LowX XHigh.  R: case R.
+L: apply extensibella-$-stdLib-$-lesseq_integer_transitive to LowX XHigh.
+apply extensibella-$-stdLib-$-greater_lesseq_integer_false to R L.
+Or: apply extensibella-$-stdLib-$-lesseq_integer_less_or_eq to LowX.  L: case Or.
+P: apply extensibella-$-stdLib-$-plus_integer_comm to _ _ R1.
+IsPlusOne: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ P.
+apply extensibella-$-stdLib-$-less_lesseq_plus_one to _ _ L P.  apply IH to _ _ R2 _ _.  search.  search.  </div>
+
+Theorem sterling-$-stdLib-$-range_unique :
+  forall Low High R1 R2,
+    ($fix__sterling-$-stdLib-$-range (Low) (High) (R1)) ->
+    ($fix__sterling-$-stdLib-$-range (Low) (High) (R2)) -> R1 = R2.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(82);" id="toggleproof82">[Show Proof]</a>
+<div class="proof" id="proof82" style="display: none;">
+induction on 1.  intros RA RB.  RA: case RA.  RB: case RB.  search.
+apply extensibella-$-stdLib-$-greater_lesseq_integer_false to RA RB.  RB: case RB.
+apply extensibella-$-stdLib-$-greater_lesseq_integer_false to RB RA.
+apply extensibella-$-stdLib-$-plus_integer_unique to RA1 RB1.  apply IH to RA2 RB2.  search.  </div>
+
+Theorem sterling-$-stdLib-$-range_smaller_exists :
+  forall Low High R Low',
+    (is_integer (Low)) -> (is_integer (Low')) ->
+    ($fix__sterling-$-stdLib-$-range (Low) (High) (R)) -> ($less_integer (Low) (Low')) ->
+    exists R', $fix__sterling-$-stdLib-$-range (Low') (High) (R').<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(83);" id="toggleproof83">[Show Proof]</a>
+<div class="proof" id="proof83" style="display: none;">
+induction on 3.  intros IsLow IsLow' R L.  R: case R.
+G: apply extensibella-$-stdLib-$-less_integer_flip_greater to L.
+apply extensibella-$-stdLib-$-greater_integer_transitive to G R.  search.
+IsPlusOne: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ R1.
+P: apply extensibella-$-stdLib-$-plus_integer_comm to _ _ R1.
+LEq: apply extensibella-$-stdLib-$-less_lesseq_plus_one to _ _ L P.
+Or: apply extensibella-$-stdLib-$-lesseq_integer_less_or_eq to LEq.  L: case Or.
+apply IH to _ _ R2 L1.  search.  search.  </div>
+
+Theorem sterling-$-stdLib-$-range_subset :
+  forall Low Low' High R R',
+   (is_integer (Low)) -> (is_integer (Low')) ->
+   ($fix__sterling-$-stdLib-$-range (Low) (High) (R)) ->
+   ($fix__sterling-$-stdLib-$-range (Low') (High) (R')) -> ($less_integer (Low) (Low')) ->
+   $fix__sterling-$-stdLib-$-subset (R') (R).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(84);" id="toggleproof84">[Show Proof]</a>
+<div class="proof" id="proof84" style="display: none;">
+induction on 4.  intros IsLow IsLow' R R' L.  R': case R'.  search.
+P: apply extensibella-$-stdLib-$-plus_integer_comm to _ _ R'1.
+LEq: apply extensibella-$-stdLib-$-less_integer_lesseq to L.
+M: apply sterling-$-stdLib-$-in_range to _ _ R _ R'.
+L': apply extensibella-$-stdLib-$-lt_plus_one to R'1 _.
+apply extensibella-$-stdLib-$-less_integer_transitive to L L'.
+apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ R'1.  apply IH to _ _ R R'2 _.  search.  </div>
+
+Theorem sterling-$-stdLib-$-range_select_unique :
+  forall Low High R X Rest Rest',
+    (is_integer (Low)) -> ($fix__sterling-$-stdLib-$-range (Low) (High) (R)) ->
+    ($fix__sterling-$-stdLib-$-select (X) (Rest) (R)) ->
+    ($fix__sterling-$-stdLib-$-select (X) (Rest') (R)) -> Rest = Rest'.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(85);" id="toggleproof85">[Show Proof]</a>
+<div class="proof" id="proof85" style="display: none;">
+induction on 2.  intros IsLow Range Slct Slct'.  Range: case Range.  case Slct.  Slct: case Slct.
+Slct': case Slct'.  search.  L: apply extensibella-$-stdLib-$-lt_plus_one to Range1 _.
+M: apply sterling-$-stdLib-$-select_mem to Slct'.
+IsPlusOne: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Range1.
+LEq: apply sterling-$-stdLib-$-range_low_lesseq to _ Range2 M.
+G: apply extensibella-$-stdLib-$-less_integer_flip_greater to L.
+apply extensibella-$-stdLib-$-greater_lesseq_integer_false to G LEq.  Slct': case Slct'.
+L: apply extensibella-$-stdLib-$-lt_plus_one to Range1 _.
+M: apply sterling-$-stdLib-$-select_mem to Slct.
+IsPlusOne: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Range1.
+LEq: apply sterling-$-stdLib-$-range_low_lesseq to _ Range2 M.
+G: apply extensibella-$-stdLib-$-less_integer_flip_greater to L.
+apply extensibella-$-stdLib-$-greater_lesseq_integer_false to G LEq.
+apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Range1.
+apply IH to _ Range2 Slct Slct'.  search.  </div>
+
+Theorem sterling-$-stdLib-$-range_exists :
+  forall Low High,
+    (is_integer (Low)) -> (is_integer (High)) ->
+    exists R, $fix__sterling-$-stdLib-$-range (Low) (High) (R).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(86);" id="toggleproof86">[Show Proof]</a>
+<div class="proof" id="proof86" style="display: none;">
+assert forall Low High Diff,
+         (is_integer (Low)) -> (is_integer (High)) -> ($minus_integer (High) (Low) (Diff)) ->
+         (acc (Diff)) -> exists R, $fix__sterling-$-stdLib-$-range (Low) (High) (R).
+induction on 4.  intros IsLow IsHigh Minus Acc.
+Or: apply extensibella-$-stdLib-$-integer_compare_total to IsLow IsHigh.  Comp: case Or.
+P: apply extensibella-$-stdLib-$-plus_integer_total to _ IsLow with N1 = ($posInt) (($succ) ($zero)).
+IsN3: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ P.
+LowN3: apply extensibella-$-stdLib-$-lt_plus_one to P _.
+Minus': apply extensibella-$-stdLib-$-minus_integer_total to IsHigh IsN3.
+L: apply extensibella-$-stdLib-$-minus_larger to _ Minus Minus' LowN3.  Acc: case Acc.
+Or: apply extensibella-$-stdLib-$-integer_compare_total to IsN3 IsHigh.  Comp: case Or.
+Or: apply extensibella-$-stdLib-$-lesseq_integer_less_or_eq to Comp1.  L': case Or.
+L0N1: apply extensibella-$-stdLib-$-minus_smaller_positive to Minus' L'.
+LEq: apply extensibella-$-stdLib-$-less_integer_lesseq to L0N1.  A: apply Acc to LEq L.
+apply IH to _ _ Minus' A.  search.  M: apply extensibella-$-stdLib-$-minus_integer_same to IsHigh.
+apply extensibella-$-stdLib-$-minus_integer_unique to M Minus'.  A: apply Acc to _ L.
+apply IH to _ _ Minus' A.  search.  search.  search.  intros IsLow IsHigh.
+Minus: apply extensibella-$-stdLib-$-minus_integer_total to IsHigh IsLow.
+IsN3: apply extensibella-$-stdLib-$-minus_integer_is_integer to _ _ Minus.
+Or: apply extensibella-$-stdLib-$-integer_compare_total to _ IsN3 with A = ($posInt) ($zero).
+Comp: case Or.  apply extensibella-$-stdLib-$-all_acc to IsN3 Comp.  apply H1 to _ _ Minus _.  search.
+NegN3: apply extensibella-$-stdLib-$-greater_integer_flip_less to Comp.
+apply extensibella-$-stdLib-$-minus_integer_diff_neg to NegN3 Minus.  search.  </div>
+
+Theorem walkthrough-$-host-$-typeOf_unique :
+  forall Ctx T TyA TyB,
+    ($ext__1__walkthrough-$-host-$-typeOf (Ctx) (T) (TyA)) ->
+    ($ext__1__walkthrough-$-host-$-typeOf (Ctx) (T) (TyB)) -> TyA = TyB.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(87);" id="toggleproof87">[Show Proof]</a>
+<div class="proof" id="proof87" style="display: none;">
+induction on 1. 
+ intros TyA TyB. TyA: case TyA (keep).
+  TyB: case TyB.   apply sterling-$-stdLib-$-lookup_unique to TyA1 TyB.   search.  
+  TyB: case TyB.   apply IH to TyA1 TyB.   search.  
+  TyB: case TyB.   apply IH to TyA1 TyB.   apply IH to TyA2 TyB1.   search.  
+  TyB: case TyB.   apply IH to TyA1 TyB.   apply IH to TyA2 TyB1.   search.  </div>
+
+Theorem walkthrough-$-host-$-ty_lookup :
+  forall Ctx1 Ctx2 T Ty,
+    ($ext__1__walkthrough-$-host-$-typeOf (Ctx1) (T) (Ty)) ->
+    (forall X XTy, ($fix__sterling-$-stdLib-$-lookup (Ctx1) (X) (XTy)) ->
+    $fix__sterling-$-stdLib-$-lookup (Ctx2) (X) (XTy)) ->
+    $ext__1__walkthrough-$-host-$-typeOf (Ctx2) (T) (Ty).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(88);" id="toggleproof88">[Show Proof]</a>
+<div class="proof" id="proof88" style="display: none;">
+induction on 1. 
+ intros Ty L. Ty: case Ty (keep).
+  apply L to Ty1.   search.  
+  apply IH to Ty1 _ with Ctx2 = (($pair_c) (X) (Ty1))::(Ctx2).   intros LkpX.   LkpX: case LkpX.
+      search.   apply L to LkpX1.   search.   search.  
+  apply IH to Ty1 L.   apply IH to Ty2 L.   search.  
+  apply IH to Ty1 L.   apply IH to Ty2 _ with Ctx2 = (($pair_c) (X) (Ty1))::(Ctx2).   intros Lkp.
+      Lkp: case Lkp.   search.   apply L to Lkp1.   search.   search.  </div>
+
+Theorem walkthrough-$-host-$-empty_ty_any :
+  forall T Ty Ctx,
+    ($ext__1__walkthrough-$-host-$-typeOf (nil) (T) (Ty)) ->
+    $ext__1__walkthrough-$-host-$-typeOf (Ctx) (T) (Ty).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(89);" id="toggleproof89">[Show Proof]</a>
+<div class="proof" id="proof89" style="display: none;">
+intros T.  backchain walkthrough-$-host-$-ty_lookup.  intros L.  case L.  </div>
+
+Theorem walkthrough-$-host-$-subst_type_preservation :
+  forall T Ctx X XTy Ty R S,
+    ($ext__1__walkthrough-$-host-$-typeOf ((($pair_c) (X) (XTy))::(Ctx)) (T) (Ty)) ->
+    ($ext__2__walkthrough-$-host-$-subst (X) (R) (T) (S)) ->
+    ($ext__1__walkthrough-$-host-$-typeOf (nil) (R) (XTy)) ->
+    $ext__1__walkthrough-$-host-$-typeOf (Ctx) (S) (Ty).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(90);" id="toggleproof90">[Show Proof]</a>
+<div class="proof" id="proof90" style="display: none;">
+induction on 2. 
+ intros TTy S RTy. S: case S (keep).
+  Ty: case TTy.   Lkp: case Ty.   apply S1 to _.   search.  
+  Ty: case TTy.   L: case Ty.   backchain walkthrough-$-host-$-empty_ty_any.   apply L to _.  
+  Ty: case TTy.   Ty': apply walkthrough-$-host-$-ty_lookup to Ty _ with
+                                Ctx2 = (($pair_c) (X) (XTy))::((($pair_c) (Y) (Ty1))::(Ctx)).
+       intros L.   L: case L.   search.   L: case L1.   search.   search.   apply IH to Ty' S2 _.   search.  
+  Ty: case TTy.   apply walkthrough-$-host-$-ty_lookup to Ty _ with Ctx2 = (($pair_c) (X) (Ty1))::(Ctx).
+       intros L.   L: case L.   search.   L: case L1.   apply L to _.   search.   search.  
+  Ty: case TTy.   apply IH to Ty S1 _.   apply IH to Ty1 S2 _.   search.  
+  Ty: case TTy.   apply IH to Ty S2 RTy.   Ty': apply walkthrough-$-host-$-ty_lookup to Ty1 _ with
+                                Ctx2 = (($pair_c) (X) (XTy))::((($pair_c) (Y) (Ty1))::(Ctx)).
+       intros L.   L: case L.   search.   L: case L1.   search.   search.   apply IH to Ty' S3 RTy.   search.  
+  Ty: case TTy.   apply IH to Ty S1 RTy.   apply walkthrough-$-host-$-ty_lookup to Ty1 _ with
+                                                    Ctx2 = (($pair_c) (X) (Ty1))::(Ctx).
+       intros L.   L: case L.   search.   L: case L1.   apply L to _.   search.   search.  </div>
+
+Theorem walkthrough-$-host-$-type_preservation :
+   forall T Ty T',
+      ($ext__1__walkthrough-$-host-$-typeOf (nil) (T) (Ty)) ->
+      ($ext__0__walkthrough-$-host-$-eval (T) (T')) ->
+      $ext__1__walkthrough-$-host-$-typeOf (nil) (T') (Ty).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(91);" id="toggleproof91">[Show Proof]</a>
+<div class="proof" id="proof91" style="display: none;">
+induction on 2. 
+ intros Ty Ev. Ev: case Ev (keep).
+  Ty: case Ty.   apply IH to Ty Ev1.   search.  
+  Ty: case Ty.   apply IH to Ty1 Ev2.   search.  
+  Ty: case Ty.   Ty: case Ty.   apply walkthrough-$-host-$-subst_type_preservation to Ty Ev2 Ty1.   search.  
+  Ty: case Ty.   apply IH to Ty Ev1.   search.  
+  Ty: case Ty.   apply walkthrough-$-host-$-subst_type_preservation to Ty1 Ev2 Ty.   search.  </div>
+
+Theorem walkthrough-$-host-$-trans_type_same  :
+   forall G T Ty T_T,
+     ($trans__walkthrough-$-host-$-tm (G) (T) (T_T)) ->
+     ($ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty)) ->
+     $ext__1__walkthrough-$-host-$-typeOf (G) (T_T) (Ty).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(92);" id="toggleproof92">[Show Proof]</a>
+<div class="proof" id="proof92" style="display: none;">
+intros Hyp Hyp1.  Hyp: case Hyp (keep).   case Hyp1.
+apply walkthrough-$-host-$-typeOf_unique to Hyp2 H1.  search.  </div>
+
+Theorem walkthrough-$-host-$-ext_ind_pos_typeOf :
+  forall G T Ty N,
+    ($extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) ) ->
+    $lesseq_integer (($posInt) ($zero)) (N) .<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(93);" id="toggleproof93">[Show Proof]</a>
+<div class="proof" id="proof93" style="display: none;">
+induction on 1.
+intros ES. ES1: case ES.
+ search.
+ apply IH to ES1. search.
+ apply IH to ES2. apply IH to ES3. apply extensibella-$-stdLib-$-lesseq_integer__add_positive to _ _ ES1. search.
+ apply IH to ES3. apply IH to ES4. apply extensibella-$-stdLib-$-lesseq_integer__add_positive to _ _ ES2.
+     apply extensibella-$-stdLib-$-lesseq_integer__add_positive to _ _ ES1. search.</div>
+
+Theorem walkthrough-$-host-$-ext_ind_is_int_typeOf :
+  forall G T Ty N,
+    ($extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) ) -> is_integer (N) .<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(94);" id="toggleproof94">[Show Proof]</a>
+<div class="proof" id="proof94" style="display: none;">
+induction on 1.
+intros ES. ES1: case ES.
+ search.
+ apply IH to ES1. search.
+ apply IH to ES2. apply IH to ES3. apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ ES1. search.
+ apply IH to ES3. apply IH to ES4. apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ ES2.
+     apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ ES1. search.</div>
+
+Theorem walkthrough-$-host-$-drop_ext_ind_typeOf :
+  forall G T Ty N,
+    ($extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) ) ->
+    $ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(95);" id="toggleproof95">[Show Proof]</a>
+<div class="proof" id="proof95" style="display: none;">
+induction on 1.
+intros ES. ES1: case ES.
+ search.
+ apply IH to ES1. search.
+ apply IH to ES2. apply IH to ES3. search.
+ apply IH to ES3. apply IH to ES4. search.</div>
+
+Theorem $toExtSize__$ext__1__walkthrough-$-host-$-typeOf :
+  forall G T Ty,
+    ($ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
+    exists N, $extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) .<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(96);" id="toggleproof96">[Show Proof]</a>
+<div class="proof" id="proof96" style="display: none;">
+induction on 1. rename IH to IH0.
+ intros R. R1: case R.
+  search.
+  ES42: apply IH0 to R1. Is43: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to ES42.  search.
+  ES44: apply IH0 to R1. ES45: apply IH0 to R2.
+      Is46: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to ES44.
+      Is47: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to ES45.
+      Plus48: apply extensibella-$-stdLib-$-plus_integer_total to Is46 Is47.
+      Is49: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Plus48. search.
+  ES50: apply IH0 to R1. ES51: apply IH0 to R2.
+      Is52: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to ES50.
+      Is53: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to ES51.
+      Plus54: apply extensibella-$-stdLib-$-plus_integer_total to Is52 Is53.
+      Is55: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Plus54.
+      apply extensibella-$-stdLib-$-plus_integer_total to _ Is55 with N1 = $posInt ($succ $zero). search.</div>
+
+Theorem $toTransRel__$ext__1__walkthrough-$-host-$-typeOf :
+  forall N G T Ty,
+    ($extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) ) -> (acc (N) ) ->
+    $transRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(97);" id="toggleproof97">[Show Proof]</a>
+<div class="proof" id="proof97" style="display: none;">
+induction on 2. induction on 1.
+ intros Rel Acc. Rel: case Rel (keep).
+  search.
+  apply walkthrough-$-host-$-ext_ind_pos_typeOf to Rel1.
+      apply walkthrough-$-host-$-ext_ind_is_int_typeOf to Rel1.
+      IS56: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to Rel1.
+      LE57: apply extensibella-$-stdLib-$-is_integer_lesseq to IS56.
+      A58: case Acc (keep). Or59: apply extensibella-$-stdLib-$-lesseq_integer_less_or_eq to LE57.
+      L60: case Or59. A61: apply A58 to _ L60. apply IH1 to Rel1 A61. search. apply IH1 to Rel1 Acc. search.
+  apply walkthrough-$-host-$-ext_ind_pos_typeOf to Rel2.
+      apply walkthrough-$-host-$-ext_ind_is_int_typeOf to Rel2.
+      apply walkthrough-$-host-$-ext_ind_pos_typeOf to Rel3.
+      apply walkthrough-$-host-$-ext_ind_is_int_typeOf to Rel3.
+      apply extensibella-$-stdLib-$-lesseq_integer__add_positives to _ _ Rel1.
+      apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Rel1.
+      LE_R62: apply extensibella-$-stdLib-$-lte_right to Rel1 _ _ _.
+      LE_L63: apply extensibella-$-stdLib-$-lte_left to Rel1 _ _ _.
+      A64: case Acc (keep). Or65: apply extensibella-$-stdLib-$-lesseq_integer_less_or_eq to LE_R62.
+      L66: case Or65. A67: apply A64 to _ L66. apply IH1 to Rel3 A67.
+      Or68: apply extensibella-$-stdLib-$-lesseq_integer_less_or_eq to LE_L63. L69: case Or68.
+      A70: apply A64 to _ L69. apply IH1 to Rel2 A70. search. apply IH1 to Rel2 Acc. search.
+      apply IH1 to Rel3 Acc. Or68: apply extensibella-$-stdLib-$-lesseq_integer_less_or_eq to LE_L63.
+      L69: case Or68. A70: apply A64 to _ L69. apply IH1 to Rel2 A70. search. apply IH1 to Rel2 Acc. search.
+Acc: case Acc.   unfold .
+ apply walkthrough-$-host-$-drop_ext_ind_typeOf to Rel3.
+      assert $trans__walkthrough-$-host-$-tm (G) ((walkthrough-$-let-$-let) (X) (T1) (T2))
+                     ((walkthrough-$-host-$-app) ((walkthrough-$-host-$-abs) (X) (Ty1) (T2)) (T1)).
+      IsN2: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to Rel3.
+      IsN3: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to Rel4.
+      IsN4: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Rel2.
+      L: apply extensibella-$-stdLib-$-lt_plus_one to Rel1 _.
+      PosN2: apply walkthrough-$-host-$-ext_ind_pos_typeOf to Rel3.
+      PosN3: apply walkthrough-$-host-$-ext_ind_pos_typeOf to Rel4.
+      assert $transRel__walkthrough-$-host-$-typeOf (G) (T1) (Ty1).
+      Or: apply extensibella-$-stdLib-$-lt_left to Rel2 _ _.   L': case Or.
+      L'': apply extensibella-$-stdLib-$-less_integer_transitive to L' L.   A: apply Acc to _ L''.
+      apply IH to Rel3 A.   search.   A: apply Acc to _ L.   apply IH to Rel3 A.   search.
+      assert $transRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(G)) (T2) (Ty).
+      Or: apply extensibella-$-stdLib-$-lt_right to Rel2 _ _ _.   L': case Or.
+      L'': apply extensibella-$-stdLib-$-less_integer_transitive to L' L.   A: apply Acc to _ L''.
+      apply IH to Rel4 A.   search.   A: apply Acc to _ L.   apply IH to Rel4 A.   search.
+      exists (walkthrough-$-host-$-app) ((walkthrough-$-host-$-abs) (X) (Ty1) (T2)) (T1), Ty1.   search.  </div>
+
+
+
+Theorem $extInd_$ext__1__walkthrough-$-host-$-typeOf :
+  forall G T Ty,
+    ($ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
+    $transRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(98);" id="toggleproof98">[Show Proof]</a>
+<div class="proof" id="proof98" style="display: none;">
+intros R. ES: apply $toExtSize__$ext__1__walkthrough-$-host-$-typeOf to R.
+P: apply walkthrough-$-host-$-ext_ind_pos_typeOf to ES.
+Is: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to ES. A: apply extensibella-$-stdLib-$-all_acc to Is P.
+apply $toTransRel__$ext__1__walkthrough-$-host-$-typeOf to ES A. search.
+Theorem $dropT_$ext__1__walkthrough-$-host-$-typeOf :
+   forall G T Ty,
+     ($transRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
+     $ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) .
+induction on 1.
+intros R. R: case R (keep).
+  search.
+  apply IH to R1. search.
+  apply IH to R1. apply IH to R2. search.
+  apply IH to R3. apply IH to R4. search.</div>
+
+
+
+Theorem walkthrough-$-big_step-$-big_step_type_preservation :
+  forall T Ty T',
+    ($ext__1__walkthrough-$-host-$-typeOf (nil) (T) (Ty)) ->
+    ($ext__0__walkthrough-$-big_step-$-big_step (T) (T')) ->
+    $ext__1__walkthrough-$-host-$-typeOf (nil) (T') (Ty).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(99);" id="toggleproof99">[Show Proof]</a>
+<div class="proof" id="proof99" style="display: none;">
+induction on 2. 
+ intros Ty Big. Big: case Big (keep).
+  search.  
+  apply walkthrough-$-host-$-type_preservation to Ty Big1.   apply IH to _ Big2.   search.  
+  apply walkthrough-$-host-$-trans_type_same to Big1 Ty.   apply IH to _ Big2.   search.</div></pre>
+
+  <p>
+    In this file, in addition to the language definitions and theorems
+    about standard library relations, of which there are many, we have
+    the Abella versions of the proofs for the theorems introduced by
+    the host language and the big step extension.  These are down at
+    the end of the file.  Note they are in the same order as in the
+    composed module, an order that maintains the order used by the
+    host language and the order used by the big step extension.  Each
+    of the proofs of these theorems is built by taking pieces of the
+    proofs for each module and combining them.
+  </p>
+
+  <p>
+    If we look at the proof for type preservation, pulled out here, we
+    see we start the proof by induction and case analysis on the key
+    relation, giving us five cases:
+    <pre class="code abella">
+Theorem walkthrough-$-host-$-type_preservation :
+  forall T Ty T',
+    ($ext__1__walkthrough-$-host-$-typeOf (nil) (T) (Ty)) ->
+    ($ext__0__walkthrough-$-host-$-eval (T) (T')) ->
+    $ext__1__walkthrough-$-host-$-typeOf (nil) (T') (Ty).
+induction on 2.  intros Ty Ev. Ev: case Ev (keep).
+  Ty: case Ty. apply IH to Ty Ev1. search.
+  Ty: case Ty. apply IH to Ty1 Ev2. search.
+  Ty: case Ty. Ty: case Ty. apply walkthrough-$-host-$-subst_type_preservation to Ty Ev2 Ty1. search.
+  Ty: case Ty. apply IH to Ty Ev1. search.
+  Ty: case Ty. apply walkthrough-$-host-$-subst_type_preservation to Ty1 Ev2 Ty. search.</pre>
+    Compare these to the three cases given by the host language
+    <pre class="code extensibella">
+<span class="comment">%E-App-Step1</span>
+ Ty: case Ty. apply IH to Ty Ev1. search.
+<span class="comment">%E-App-Step2</span>
+ Ty: case Ty. apply IH to Ty1 Ev2. search.
+<span class="comment">%E-App-Subst</span>
+ Ty: case Ty. Ty: case Ty.
+ apply subst_type_preservation to Ty Ev2 Ty1. search.</pre>
+    and the two given by the let extension
+    <pre class="code extensibella">
+<span class="comment">%E-Let-Step</span>
+ Ty: case Ty. apply IH to Ty Ev1. search.
+<span class="comment">%E-Let-Subst</span>
+ Ty: case Ty. apply subst_type_preservation to Ty1 Ev2 Ty. search.</pre>
+    We see they are the same, modulo the use of full names for the
+    lemmas, because the full proof is built by taking the cases from
+    the proofs from the individual modules and putting them together.
+    The same can be observed for the other extensible theorems from
+    the host language, including the translation constraint
+    and <code class="extensibella">Ext_Ind</code> proof, both of which
+    are declared in Abella with <code class="abella">Theorem</code>,
+    the only type of theorem declaration in Abella.
+  </p>
+
+  <p>
+    We can see a similar thing with the proof of the big step
+    extension's property, where we have three cases:
+    <pre class="code abella">
+Theorem walkthrough-$-big_step-$-big_step_type_preservation :
+  forall T Ty T',
+    ($ext__1__walkthrough-$-host-$-typeOf (nil) (T) (Ty)) ->
+    ($ext__0__walkthrough-$-big_step-$-big_step (T) (T')) ->
+    $ext__1__walkthrough-$-host-$-typeOf (nil) (T') (Ty).
+induction on 2. intros Ty Big. Big: case Big (keep).
+  search.
+  apply walkthrough-$-host-$-type_preservation to Ty Big1. apply IH to _ Big2. search.
+  apply walkthrough-$-host-$-trans_type_same to Big1 Ty. apply IH to _ Big2. search.</pre>
+    Keep in mind the definition of <code>big_step</code> in the
+    composed language:
+    <pre class="code abella">
+Define $ext__0__walkthrough-$-big_step-$-big_step : ($ty__walkthrough-$-host-$-tm) ->
+                                                    ($ty__walkthrough-$-host-$-tm) -> prop by
+$ext__0__walkthrough-$-big_step-$-big_step (T) (T) := $ext__0__walkthrough-$-host-$-value (T);
+$ext__0__walkthrough-$-big_step-$-big_step (T) (T2) :=
+    exists T1, ($ext__0__walkthrough-$-host-$-eval (T) (T1)) /\
+               ($ext__0__walkthrough-$-big_step-$-big_step (T1) (T2));
+$ext__0__walkthrough-$-big_step-$-big_step (walkthrough-$-let-$-let (S) (Tm1) (Tm)) (T1) :=
+    exists T_T, ($trans__walkthrough-$-host-$-tm (nil) (walkthrough-$-let-$-let (S) (Tm1) (Tm)) (T_T)) /\
+                ($ext__0__walkthrough-$-big_step-$-big_step (T_T) (T1)).</pre>
+    We have three clauses, one corresponding to the
+    <code class="sterling">Big-End</code> rule, one corresponding to
+    the <code class="sterling">Big-Step</code> rule, and one
+    corresponding to the <code class="sterling">Big-Trans</code> rule
+    instantiated for the <code>let</code> construct from the let
+    extension.  When the big step extension wrote its proof, it knew
+    the first two rules, but its proof for the third rule was generic,
+    as it did not know the <code>let</code> constructor:
+    <pre class="code extensibella">
+<span class="comment">%Big-End</span>
+ search.
+<span class="comment">%Big-Step</span>
+ apply type_preservation to Ty Big1. apply IH to _ Big2. search.
+<span class="comment">%Big-Trans</span>
+ apply trans_type_same to Big1 Ty. apply IH to _ Big2. search.</pre>
+    Because of the restrictions Extensibella places on proofs, as we
+    saw above when writing the generic proof, this generic proof can
+    be used even when the rule is instantiated for <code>let</code>,
+    or any other construct.  If our composed language contained more
+    constructs from other extensions, this proof would be present with
+    one copy for each, and it would be valid for all.
+  </p>
+
+  <p>
+    Note that the lemmas
+    <code class="extensibella">ext_ind_is_int_typeOf</code> and
+    <code class="extensibella">ext_ind_pos_typeOf</code> we used in
+    the proof of <code class="extensibella">Ext_Ind</code> in the let
+    extension have been given full, automatically-generated proofs in
+    the composition, validating our use of them as lemmas by showing
+    they do hold.
   </p>
 </div>
 
+<div class="section">
+  <h2>Moving Forward</h2>
+  <p>
+    This concludes our walkthrough of modular metatheory in
+    Extensibella.  A few places to go from here:
+  </p>
+  <ul>
+    <li>Try proving the properties of this language that we skipped
+      past in the walkthrough
+    <li>For more about the theory behind modular metatheory and how it
+        works, read our paper,
+      <a href="https://arxiv.org/abs/2312.14374">"A Modular
+        Approach to Metatheoretic Reasoning for Extensible
+        Languages"</a>
+    <li>For more examples, see the
+      <a href="examples/examples.html">examples page</a> showing what
+      is possible in our framework
+    <li>Write your own extensible languages and prove their metatheory
+  </ul>
+</div>
 
 </body>
 </html>
