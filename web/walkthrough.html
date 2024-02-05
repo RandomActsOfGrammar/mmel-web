@@ -527,8 +527,8 @@ typeOf G T Ty</pre>
     our extensions:
     <pre class="code">
 extensibella --compile host.xthm</pre>
-    The compilation process has Extensibella read pull out the
-    theorems in the proof file and store and their order in a place it
+    The compilation process has Extensibella pull out the
+    theorems in the proof file and store their order in a place it
     knows.  When Extensibella goes to reason about an extension, it
     then reads this information so it knows the proof obligations the
     extension has for the properties from the host language, and the
@@ -739,9 +739,11 @@ Prove_Ext_Ind walkthrough:host:typeOf.<span> </span><a class="fold-link" href="j
     <code class="extensibella">ty_lookup</code> extensible theorem.
     This is because the <code class="extensibella">empty_ty_any</code>
     theorem is part of the order from the host language and the
-    validity of the proofs for a composed language is dependent on
-    maintaining this order.
+    validity of the proofs for a composed language, which will be
+    built from the modular proofs written by each module separately,
+    is dependent on maintaining this order.
   </p>
+</div>
 
 
 <div class="section" id="bigStep">
@@ -841,7 +843,7 @@ Extensible_Theorem
     As we saw with the let extension, Extensibella knows
     the <code>walkthrough:big_step</code> module builds on the host
     language and thus expects the
-    <code class="extensibella">Prove</code> version of each theorem
+    <code class="extensibella">Prove</code> version of each extensible theorem
     from the host language.  Unlike in the let extension, the big step
     extension does not introduce any new syntax or new rules for the
     key relations of these theorems, and thus has nothing new to
@@ -853,7 +855,10 @@ Extensible_Theorem
     clear where <em>new</em> theorems, such as
     <code class="extensibella">big_step_type_preservation</code>,
     belong in the order and what existing theorems they may use as
-    lemmas.  We see this in the proof of this new theorem, as we use
+    lemmas and, in more complex examples, what host properties may use
+    <em>them</em> as lemmas in the new proofs.  We see this use of
+    existing properties as lemmas in proving a new theorem in the
+    proof of <code class="extensibella">big_step_type_preservation</code>, as we use
     both the <code class="extensibella">type_preservation</code>
     theorem and <code class="extensibella">trans_type_same</code>
     translation constraint from the host language as lemmas.
@@ -883,7 +888,9 @@ Extensible_Theorem
     rule (<code class="sterling">Big-Trans</code>).  This last one is
     the generic case that will be used for unknown constructs from
     other extensions in the composition, like the <code>let</code>
-    from the let extension.
+    from the let extension.  The details of this generic proof are
+    discussed in the
+    <a href="extensibella/walkthrough.html">reasoning walkthrough</a>.
   </p>
 </div>
 
@@ -2222,8 +2229,8 @@ induction on 2.  intros Ty Ev. Ev: case Ev (keep).
     We see they are the same, modulo the use of full names for the
     lemmas, because the full proof is built by taking the cases from
     the proofs from the individual modules and putting them together.
-    The same can be observed for the other theorems, including the
-    translation constraint
+    The same can be observed for the other extensible theorems from
+    the host language, including the translation constraint
     and <code class="extensibella">Ext_Ind</code> proof, both of which
     are declared in Abella with <code class="abella">Theorem</code>,
     the only type of theorem declaration in Abella.
