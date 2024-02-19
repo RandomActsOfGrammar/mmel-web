@@ -39,36 +39,6 @@ def check_file(fContents, filename, dirname):
     return output
 
 
-#check all links in a file for validity, returning a list of messages
-#for missing files
-def check_file2(fContents, filename, dirname):
-    output = []
-    while fContents != "":
-        found_href = fContents.find('href="')
-        found_src = fContents.find('src="')
-        if found_href >= 0 or found_src >= 0:
-            if found_href < found_src or found_src == -1: #href first
-                fContents = fContents[found_href + 6:]
-            else: #src first
-                fContents = fContents[found_src + 5:]
-            quotes = fContents.find('"')
-            lookForName = fContents[:quotes]
-            if '#' in lookForName: #remove id on page
-                lookForName = lookForName[:lookForName.rfind('#')]
-            full = dirname + "/" + lookForName
-            if  not (lookForName.startswith("https://") or \
-                     lookForName.startswith("http://")) and \
-                not lookForName == "javascript:void" and \
-                not lookForName == "" and \
-                not os.path.isfile(full):
-                output += ["'" + lookForName + "' missing (linked in '" +
-                           dirname + "/" + filename + "')"]
-            fContents = fContents[quotes + 1:]
-        else:
-            fContents = ""
-    return output
-
-
 def main(args):
     if len(args) < 2:
         print("Must give directory to check")
