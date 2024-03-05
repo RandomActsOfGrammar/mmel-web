@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  modelingMSOS:print</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  modelingMSOS:print</h1><div class="section">
+<h3>File:  print.sos</h3>
+<a class="fold-link" href="javascript:void" id="toggleprint.sos" onclick="toggleFile('print.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="print.sos">[Raw File]</a>
+<pre class="code sterling" id="print.sos">
+Module modelingMSOS:print
+
+Builds on modelingMSOS:host
+
+c ::= ...
+    | print(e)
+
+----------------------- [P-Print]
+|{c}- print(E) ~~> nill
+
+
+ctxElem ::= ...
+          | output([e])
+
+------------------------------------- [P-Output]
+|{ctxElem}- output(L) ~~> placeholder
+
+
+
+
+ev Ctx E E1 Ctx1
+-------------------------------- [E-Print-Step]
+ev_c Ctx print(E) print(E1) Ctx1
+
+
+value E
+getOutput Ctx L
+L ++ [E] = NewL
+replaceOutput Ctx NewL Ctx1
+--------------------------- [E-Print-End]
+ev_c Ctx print(E) nill Ctx1
+
+
+
+Fixed Judgment getOutput : [ctxElem] [e]
+Fixed Judgment replaceOutput : [ctxElem] [e] [ctxElem]
+
+=========================== [GO-First]
+getOutput output(L)::Rest L
+
+
+getOutput Rest L
+==================== [GO-Later]
+getOutput CE::Rest L
+
+
+
+================================================ [RO-First]
+replaceOutput output(L0)::Rest L output(L)::Rest
+
+
+replaceOutput Rest L Rest1
+================================== [RO-Later]
+replaceOutput CE::Rest L CE::Rest1
+</pre>
+<div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

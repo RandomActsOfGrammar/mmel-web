@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  modelingMSOS:bool</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  modelingMSOS:bool</h1><div class="section">
+<h3>File:  bool.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglebool.sos" onclick="toggleFile('bool.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="bool.sos">[Raw File]</a>
+<pre class="code sterling" id="bool.sos">
+Module modelingMSOS:bool
+
+Builds on modelingMSOS:host
+
+e ::= ...
+    | tt
+    | ff
+
+---------------------- [P-TT]
+|{e}- tt ~~> intlit(1)
+
+---------------------- [P-FF]
+|{e}- ff ~~> intlit(0)
+
+
+
+c ::= ...
+    | ifte(e, c, c)
+    | while(e, c)
+
+---------------------------------------- [P-Ifte]
+|{c}- ifte(Cond, Th, El) ~~> seq(Th, El)
+
+-------------------------------- [P-While]
+|{c}- while(Cond, Body) ~~> Body
+
+
+
+
+ev Ctx C C1 Ctx1
+------------------------------------------ [E-Ifte-Step]
+ev_c Ctx ifte(C, T, E) ifte(C1, T, E) Ctx1
+
+
+----------------------------- [E-Ifte-TT]
+ev_c Ctx ifte(tt, T, E) T Ctx
+
+
+----------------------------- [E-Ifte-FF]
+ev_c Ctx ifte(ff, T, E) E Ctx
+
+
+--------------------------------------------------------- [E-While]
+{ev_c Ctx while(Cond, Body)
+      ifte(Cond, seq(Body, while(Cond, Body)), nill) Ctx}
+
+
+
+
+-------- [V-TT]
+value tt
+
+-------- [V-FF]
+value ff
+</pre>
+<div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

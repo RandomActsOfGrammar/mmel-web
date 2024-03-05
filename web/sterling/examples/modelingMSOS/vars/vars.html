@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  modelingMSOS:vars</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  modelingMSOS:vars</h1><div class="section">
+<h3>File:  vars.sos</h3>
+<a class="fold-link" href="javascript:void" id="togglevars.sos" onclick="toggleFile('vars.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="vars.sos">[Raw File]</a>
+<pre class="code sterling" id="vars.sos">
+Module modelingMSOS:vars
+
+Builds on modelingMSOS:host
+
+<span class="comment">/*MSOS paper includes vars in initial language, but it really doesn't
+  have to do so; they work as an extension/addition along with let*/</span>
+
+e ::= ...
+    | var(string)
+    | let(string, e, e)
+
+-------------------------- [P-Var]
+|{e}- var(X) ~~> intlit(0)
+
+
+------------------------------------------ [P-Let]
+|{e}- let(X, E1, E2) ~~> bOp(E1, plus, E2)
+
+
+
+c ::= ...
+    | decl(string, e)
+<span class="comment">/*note this declares a constant that cannot be updated*/</span>
+
+------------------------- [P-Decl]
+|{c}- decl(X, E) ~~> nill
+
+
+
+ctxElem ::= ...
+          | env([(string, e)])
+
+---------------------------------- [P-Env]
+|{ctxElem}- env(G) ~~> placeholder
+
+
+
+
+getEnv Ctx G
+lookup G X V
+------------------- [E-Var]
+ev Ctx var(X) V Ctx
+
+
+ev Ctx E1 E11 Ctx1
+------------------------------------------ [E-Let-Step]
+ev Ctx let(X, E1, E2) let(X, E11, E2) Ctx1
+
+
+value E1
+<span class="comment">/*update binding for X to eval E2*/</span>
+getEnv Ctx G
+replaceEnv Ctx (X, E1)::G Ctx1
+<span class="comment">/*eval E2*/</span>
+ev Ctx1 E2 E21 Ctx2
+<span class="comment">/*undo update, but taking any non-env changes from E2*/</span>
+replaceEnv Ctx2 G Ctx3
+------------------------------------------ [E-Let]
+ev Ctx let(X, E1, E2) let(X, E1, E21) Ctx3
+
+
+value E2
+---------------------------- [E-Let-End]
+ev Ctx let(X, E1, E2) E2 Ctx
+
+
+
+ev Ctx E E1 Ctx1
+------------------------------------ [E-Decl-Step]
+ev_c Ctx decl(X, E) decl(X, E1) Ctx1
+
+
+value E
+getEnv Ctx G
+replaceEnv Ctx (X, E)::G Ctx1
+----------------------------- [E-Decl-End]
+ev_c Ctx decl(X, E) nill Ctx1
+<span class="comment">/*becomes nill because no more computation remains*/</span>
+
+
+
+<span class="comment">/*Find/Replace *an* env in the context
+  May not be first one, so should be only one for well-formedness*/</span>
+Fixed Judgment getEnv : [ctxElem] [(string, e)]
+Fixed Judgment replaceEnv : [ctxElem] [(string, e)] [ctxElem]
+
+===================== [GE-First]
+getEnv env(G)::Rest G
+
+
+getEnv Rest G
+================= [GE-Later]
+getEnv CE::Rest G
+
+
+
+======================================= [RE-First]
+replaceEnv env(G0)::Rest G env(G)::Rest
+
+
+replaceEnv Rest G Rest1
+=============================== [RE-Later]
+replaceEnv CE::Rest G CE::Rest1
+</pre>
+<div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

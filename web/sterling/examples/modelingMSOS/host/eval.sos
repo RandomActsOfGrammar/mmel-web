@@ -1,0 +1,51 @@
+Module modelingMSOS:host
+
+/*we need something here for parsing;
+  conceptually, we have nothing*/
+ctxElem ::= placeholder
+Translation ctxElem :
+
+
+Judgment ev : [ctxElem] e* e [ctxElem]
+
+/*No rule for intlit because it is already a value*/
+
+ev Ctx E0 E01 Ctx1
+------------------------------------------ [E-BOp-0]
+ev Ctx bOp(E0, B, E1) bOp(E01, B, E1) Ctx1
+
+
+ev Ctx E1 E11 Ctx1
+------------------------------------------ [E-BOp-1]
+ev Ctx bOp(E0, B, E1) bOp(E0, B, E11) Ctx1
+
+
+N0 + N1 = N
+----------------------------------------- [E-BOp-Plus]
+{ev Ctx bOp(intlit(N0), plus, intlit(N1))
+        intlit(N) Ctx}
+
+
+N0 - N1 = N
+------------------------------------------ [E-BOp-Minus]
+{ev Ctx bOp(intlit(N0), minus, intlit(N1))
+        intlit(N) Ctx}
+
+
+Judgment ev_c : [ctxElem] c* c [ctxElem]
+
+/*No rule for nill because it is already a "value"*/
+
+ev_c Ctx C0 C01 Ctx1
+-------------------------------------- [E-Seq-Step]
+ev_c Ctx seq(C0, C1) seq(C01, C1) Ctx1
+
+
+--------------------------- [E-Seq-Nill]
+ev_c Ctx seq(nill, C) C Ctx
+
+
+Judgment value : e*
+
+--------------- [V-Intlit]
+value intlit(N)

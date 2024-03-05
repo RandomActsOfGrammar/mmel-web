@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>Sterling Examples:  Modeling Modular Structural Operational Semantics</title>
+<link href="../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../actions.js"></script>
+<link rel="icon" href="../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../index.html">
+<img class="header-logo" src="../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<div class="section">
+  <h1>Modeling Modular Structural Operational Semantics</h1>
+  <p>
+    <a href="https://www.sciencedirect.com/science/article/pii/S156783260400027X">Modular
+      Structural operational semantics (MSOS)</a> is a way of writing
+    language specifications using inference rules.  The modularity
+    focus in MSOS is on reusing inference rules when new effects are
+    added to a language.  In traditional SOS, if we define evaluation
+    for an arithmetic language, we need to rewrite the rules to
+    include an environment if we want to add variables.  MSOS gives us
+    a formal way to reuse the rules from the arithmetic language
+    without modification.
+  </p>
+
+  <p>
+    In this example, we examine whether we can model in Sterling the
+    same addition of effects to evaluation without modifying rules.
+    We do this by threading around a context to which we may add new
+    types of elements for new effects, such as an environment for a
+    language including variables.  Our language is based on the one in
+    the
+    <a href="https://www.sciencedirect.com/science/article/pii/S156783260400027X">MSOS
+      paper</a>.  However, in the interests of examining different
+    types of additions, we pare the host language back farther than
+    in the paper, moving Booleans and constant declarations into
+    extensions.
+  </p>
+  <ul>
+    <li><a href="host/host.html">Host language</a>:  Arithmetic
+      expressions and sequence command
+    <li><a href="vars/vars.html">Vars extension</a>:  New syntax for
+      let bindings and names in expressions and constant declarations
+      commands; adds an environment to the context
+    <li><a href="stores/stores.html">Stores extension</a>:  New
+      syntax for variables acting as pointers to memory locations
+      building on the vars extension; adds a store of memory locations
+      for changeable variables
+    <li><a href="bool/bool.html">Boolean extension</a>:  New syntax
+      for true and false expressions and conditional and while-loop
+      commands
+    <li><a href="print/print.html">Print extension</a>:  New syntax
+      for print commands; adds a list of printed values to the context
+  </ul>
+
+  <p>
+    There are some parts of MSOS extensibility we cannot mimic.
+    Because its modularity is focused on adding effects to existing
+    evaluation relations, not on adding new syntax or semantic
+    relations, it allows extensions to write new rules for evaluating
+    existing constructs.  In the paper language, this is used for
+    adding errors in evaluation as a modular effect, defining error
+    evaluation as part of an extension for host-language-introduced
+    arithmetic expressions.  Because of Sterling's focus on adding new
+    syntax and semantic relations in extensions and ensuring the
+    composed semantics are reasonable, we do not allow the
+    introduction of such rules and thus cannot completely model MSOS.
+  </p>
+</div>
+
+<div class="section">
+  <a href="modelingMSOS.tar.gz">Download example tarball</a>
+</div>
+
+<div class="section">
+  <a class="navlink" href="../examples.html">Back to examples</a>
+</div>
+
+</body>
+</html>

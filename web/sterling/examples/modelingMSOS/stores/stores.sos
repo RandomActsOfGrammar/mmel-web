@@ -1,0 +1,168 @@
+Module modelingMSOS:stores
+
+Builds on modelingMSOS:host
+Builds on modelingMSOS:vars
+
+e ::= ...
+    | loc(int)
+/*In the paper, there are separate rules for evaluating names
+  depending on whether they are from constant declarations (decl) or
+  variable declarations (varDecl).  We cannot do that with them split
+  into separate modules, so instead we let names for variables
+  evaluate to locations which can then evaluate further by pointer
+  dereferencing themselves.*/
+
+-------------------------- [P-Loc]
+|{e}- loc(L) ~~> intlit(L)
+
+
+c ::= ...
+    | varDecl(string, e)
+    | varAssign(string, e)
+/*unlike decl, this declares an updatable variable
+  the value stored in env is a location*/
+
+---------------------------------- [P-VarDecl]
+|{c}- varDecl(X, E) ~~> decl(X, E)
+
+------------------------------------ [P-VarAssign]
+|{c}- varAssign(X, E) ~~> decl(X, E)
+
+
+ctxElem ::= ...
+          | store([e])
+
+------------------------------------ [P-Store]
+|{ctxElem}- store(L) ~~> placeholder
+
+
+
+
+getStore Ctx S
+getLoc S L V
+------------------- [E-Loc]
+ev Ctx loc(L) V Ctx
+
+
+
+
+ev Ctx E E1 Ctx1
+------------------------------------------ [E-VarDecl-Step]
+ev_c Ctx varDecl(X, E) varDecl(X, E1) Ctx1
+
+
+value E
+/*update the store*/
+getStore Ctx S
+addToStore S E L S1
+replaceStore Ctx S1 Ctx1
+/*update the variable context*/
+getEnv Ctx1 G
+replaceEnv Ctx1 (X, loc(L))::G Ctx2
+----------------------------------- [E-VarDecl-End]
+ev_c Ctx varDecl(X, E) nill Ctx2
+
+
+ev Ctx E E1 Ctx1
+---------------------------------------------- [E-VarAssign-Step]
+ev_c Ctx varAssign(X, E) varAssign(X, E1) Ctx1
+
+
+value E
+/*get the location*/
+getEnv Ctx G
+lookup G X loc(L)
+/*update the store*/
+getStore Ctx S
+updateStore S L E S1
+replaceStore Ctx S1 Ctx1
+---------------------------------- [E-VarAssign-End]
+ev_c Ctx varAssign(X, E) nill Ctx1
+
+
+
+Fixed Judgment getStore : [ctxElem] [e]
+Fixed Judgment replaceStore : [ctxElem] [e] [ctxElem]
+
+========================= [GS-First]
+getStore store(S)::Rest S
+
+
+getStore Rest S
+=================== [GS-Later]
+getStore CE::Rest S
+
+
+
+============================================= [RS-First]
+replaceStore store(S0)::Rest S store(S)::Rest
+
+
+replaceStore Rest S Rest1
+================================= [RS-Later]
+replaceStore CE::Rest S CE::Rest1
+
+
+
+
+/*Create new store location Loc holding V:
+  addToStore OriginalStore V Loc NewStore*/
+Fixed Judgment addToStore : [e] e int [e]
+Fixed Judgment addToStore_help : int [e] e int [e]
+
+addToStore_help 0 S0 V L S
+========================== [AddToStore]
+addToStore S0 V L S
+
+
+============================ [ATSH-Nil]
+addToStore_help L [] V L [V]
+
+
+1 + I = I1
+addToStore_help I1 Rest V L Rest1
+====================================== [ATSH-Later]
+addToStore_help I E::Rest V L E::Rest1
+
+
+
+
+/*Update the value in location Loc to value V:
+  updateStore OriginalStore Loc V NewStore*/
+Fixed Judgment updateStore : [e] int e [e]
+Fixed Judgment updateStore_help : int [e] int e [e]
+
+updateStore_help 0 S0 L V S
+=========================== [UpdateStore]
+updateStore S0 L V S
+
+
+======================================= [USH-First]
+updateStore_help L V0::Rest L V V::Rest
+
+
+1 + I = I1
+updateStore_help I1 Rest L V Rest1
+======================================= [USH-Later]
+updateStore_help I E::Rest L V E::Rest1
+
+
+
+
+/*Get the value V in location Loc:  getLoc S Loc V*/
+Fixed Judgment getLoc : [e] int e
+Fixed Judgment getLoc_help : int [e] int e
+
+getLoc_help 0 S L V
+=================== [GetLoc]
+getLoc S L V
+
+
+====================== [GLH-First]
+getLoc_help L V::S L V
+
+
+1 + I = I1
+getLoc_help I1 Rest L V
+========================== [GLH-Later]
+getLoc_help I V0::Rest L V

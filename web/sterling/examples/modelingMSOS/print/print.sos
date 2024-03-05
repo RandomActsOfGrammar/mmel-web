@@ -1,0 +1,54 @@
+Module modelingMSOS:print
+
+Builds on modelingMSOS:host
+
+c ::= ...
+    | print(e)
+
+----------------------- [P-Print]
+|{c}- print(E) ~~> nill
+
+
+ctxElem ::= ...
+          | output([e])
+
+------------------------------------- [P-Output]
+|{ctxElem}- output(L) ~~> placeholder
+
+
+
+
+ev Ctx E E1 Ctx1
+-------------------------------- [E-Print-Step]
+ev_c Ctx print(E) print(E1) Ctx1
+
+
+value E
+getOutput Ctx L
+L ++ [E] = NewL
+replaceOutput Ctx NewL Ctx1
+--------------------------- [E-Print-End]
+ev_c Ctx print(E) nill Ctx1
+
+
+
+Fixed Judgment getOutput : [ctxElem] [e]
+Fixed Judgment replaceOutput : [ctxElem] [e] [ctxElem]
+
+=========================== [GO-First]
+getOutput output(L)::Rest L
+
+
+getOutput Rest L
+==================== [GO-Later]
+getOutput CE::Rest L
+
+
+
+================================================ [RO-First]
+replaceOutput output(L0)::Rest L output(L)::Rest
+
+
+replaceOutput Rest L Rest1
+================================== [RO-Later]
+replaceOutput CE::Rest L CE::Rest1
