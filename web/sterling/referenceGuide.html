@@ -289,6 +289,31 @@ erel A B </pre>
     but may have any form.  The conclusion must have a variable as its
     primary component argument.
   </p>
+
+  <h3>Extensibella Stand-In Rules</h3>
+  <p>
+    When using Sterling to write specifications
+    for <a href="../extensibella/index.html">Extensibella</a>
+    reasoning, we often need to specify stand-in rules that will be
+    used to model the behavior of other, unknown extensions.  These
+    are written as regular extensible rules, but within
+    an <code>Extensibella_Stand_In</code> environment:
+  <pre class="code sterling">
+Extensibella_Stand_In {
+  &lt;premises&gt;
+  ----------- [Erel-Q]
+  erel &lt;args&gt;
+}
+</pre>
+    These rules do not have any effect on a language's semantics and
+    are only used in the generated Extensibella specification.  All
+    arguments to the conclusion must be unique variables; structured
+    terms or repeated variable names are not allowed, as they would
+    limit the applicability of this rule that is supposed to
+    represent <i>all</i> unknown rules.  As with default rules,
+    stand-in rules can only be introduced by the module introducing
+    the relation being defined.
+  </p>
 </div>
 
 
