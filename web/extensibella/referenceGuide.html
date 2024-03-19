@@ -291,7 +291,7 @@
     </tr>
 
     <tr>
-      <td><code><code>Translation_Constraint &lt;name&gt; :
+      <td><code>Translation_Constraint &lt;name&gt; :
             forall &lt;bindings&gt;,
             &lt;hyp name&gt; : &lt;args&gt; |{&lt;ty&gt;}-
             &lt;original&gt; ~~&gt; &lt;translation&gt; -&gt;
@@ -304,10 +304,38 @@
     </tr>
 
     <tr>
-      <td><code>Ext_Ind &lt;rel&gt; &lt;rel args&gt; with
-          forall &lt;bindings&gt;,
-          &lt;trans args&gt; |{&lt;ty&gt;}- &lt;original&gt; ~~&gt;
-          &lt;translation&gt;.</code></td>
+      <td><code>Ext_Size &lt;rel&gt; &lt;args&gt;.</code></td>
+    </tr>
+    <tr>
+      <td><blockquote>Declares the extension size version
+          of <code>&lt;rel&gt;</code>, which adds an integer argument
+          counting up the number of rules introduced by extensions
+          used in the derivation</blockquote></td>
+    </tr>
+    <tr>
+      <td><blockquote>This also introduces three lemmas the user does
+          not need to prove but can use.  For a
+          relation <code>rel</code>, we have
+          <ul>
+            <li><code>ext_ind_is_int_rel</code>, that the extension
+              size has the <code>is_integer</code> relation hold for
+              it
+            <li><code>ext_ind_pos_rel</code>, that the extension size
+              is greater than or equal to zero
+            <li><code>drop_ext_ind_rel</code>, that the extension
+              size version of the relation is equivalent to the
+              relation itself
+            <li><code>add_ext_ind_rel</code>, that the relation is
+              equivalent to the extension size version of itself
+          </ul>
+      </blockquote></td>
+    </tr>
+
+    <tr>
+      <td><code>Ext_Ind forall &lt;bindings&gt;,
+          &lt;rel&gt; &lt;rel args&gt; with
+          &lt;hyp name&gt; : &lt;formula&gt;, ...,
+          &lt;hyp name&gt; : &lt;formula&gt;.</code></td>
     </tr>
     <tr>
       <td><blockquote>Declares a requirement for modules to show
@@ -316,31 +344,27 @@
           induction</blockquote></td>
     </tr>
     <tr>
-      <td><blockquote>This also introduces three lemmas the user does
-          not need to prove but can use.  For a
-          relation <code>rel</code>, we have
-          <ul>
-            <li> <code>ext_ind_is_int_rel</code>, that the extension
-              size has the <code>is_integer</code> relation hold for
-              it
-            <li> <code>ext_ind_pos_rel</code>, that the extension size
-              is greater than or equal to zero
-            <li> <code>drop_ext_ind_rel</code>, that the extension
-              size version of the relation is equivalent to the
-              relation itself
-          </ul>
-      </blockquote></td>
+      <td><blockquote>Uses the extension size version
+          of <code>&lt;rel&gt;</code> for the proof if it is declared,
+          or <code>&lt;rel&gt;</code> itself if it is not
+          declared</blockquote></td>
+    </tr>
+    <tr>
+      <td><blockquote>The <code>with</code> clause adds extra
+          assumptions to be used in the proof; if there are none,
+          the <code>with</code> keyword is dropped</blockquote></td>
     </tr>
   </table>
   Each of these extensible top-level commands also has
   a <code>Prove</code> version, used for adding to its proof in
   modules that build on the module introducing it.  They
   are <code>Prove_Theorem</code>, <code>Prove_Constraint</code>,
+  <code>Add_Ext_Size</code>,
   and <code>Prove_Ext_Ind</code>, respectively.  Each of these takes a
-  list of qualified names (<emph>note</emph> short names) for the
-  theorems, or, in the last case, relations, for the proofs to which
+  list of qualified names (<i>not</i> short names) for the
+  theorems or relations to which
   it is adding, and presents the user with the new cases to prove in
-  the current module.
+  the current module, if any exist.
 </div>
 
 <div class="section" id="tactics">
@@ -591,23 +615,24 @@
     <tr>
       <td><blockquote>Set the value of various runtime options:
           <ul>
-            <li> <code>display_width</code>
+            <li><code>display_width</code>
               <ul>
-                <li> Set the maximum width for lines in the proof
+                <li>Set the maximum width for lines in the proof
                   state display (default value is <code>80</code>)
-                <li> Values:  any positive integer
+                <li>Values:  any positive integer
               </ul>
-            <li> <code>search_depth</code>
+            <li><code>search_depth</code>
               <ul>
-                <li> Set the depth which <code>search</code> and other
+                <li>Set the depth which <code>search</code> and other
                   tactics use (default value is <code>5</code>)
-                <li> Values:  any positive integer
+                <li>Values:  any positive integer
               </ul>
-            <li> <code>debug</code>
+            <li><code>debug</code>
               <ul>
-                <li> Set whether to display information about
-                  communication with Abella for debugging Abella
-                <li> Values:  <code>on</code> or <code>off</code>
+                <li>Set whether to display information about
+                  communication with Abella for debugging the
+                  behind-the-scenes Abella interaction
+                <li>Values:  <code>on</code> or <code>off</code>
               </ul>
           </ul>
       </blockquote></td>
@@ -618,8 +643,9 @@
     </tr>
     <tr>
       <td><blockquote>Display a previously-proven theorem.  The name
-          may either be a qualified name or a short
-          name.</blockquote></td>
+          may either be a qualified name or a short name, with short
+          names only working if there is only one known theorem with
+          that name.</blockquote></td>
     </tr>
 
     <tr>
@@ -636,12 +662,12 @@
   All terms and formulas in Extensibella must be well-typed.
   Extensibella includes several built-in types:
   <ul>
-    <li> <code>integer</code>
-    <li> <code>string</code>
-    <li> <code>bool</code>
-    <li> <code>list</code> (kind <code>type -> type</code>,
+    <li><code>integer</code>
+    <li><code>string</code>
+    <li><code>bool</code>
+    <li><code>list</code> (kind <code>type -> type</code>,
       written <code>list A</code>)
-    <li> <code>pair</code> (kind <code>type -> type -> type</code>,
+    <li><code>pair</code> (kind <code>type -> type -> type</code>,
     written <code>pair A B</code>)
   </ul>
 
@@ -749,16 +775,16 @@ extensibella --compose out.thm mo:du:le file_1.xthm file_2.xthm ... file_n.xthm<
     where the listed files are the proof files for all modules
     included in the composition.  A few notes:
     <ul>
-      <li> Each module file included in the composition must be able
+      <li>Each module file included in the composition must be able
         to be checked, so the specification of each module must be
         compiled for Extensibella and the proofs of all properties in
         the modules completed.
-      <li> The module defining the language being composed,
+      <li>The module defining the language being composed,
         module <code>mo:du:le</code> in our example command, must be
         compiled for an Extensibella full language; this has slightly
         different requirements than the modular compiled format, so
         both will be needed.
-      <li> If you are
+      <li>If you are
         using <a href="../sterling/index.html">Sterling</a> for your
         language specifications, the list of proof files must include
         the one for the Sterling standard library as well.
