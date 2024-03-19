@@ -16,7 +16,23 @@ Translation_Constraint trans_ty_is : forall Ty Ty',
   |{ty}- Ty ~~> Ty' -> is_ty Ty -> is_ty Ty'.
 
 
-Ext_Ind is_e E with |{e}- E ~~> T.
+Ext_Ind forall E, is_e E.
+%var
+ search.
+%intlit
+ search.
+%trueE
+ search.
+%falseE
+ search.
+%add
+ apply IH to R1. apply IH to R2. search.
+%eq
+ apply IH to R1. apply IH to R2. search.
+%gt
+ apply IH to R1. apply IH to R2. search.
+%not
+ apply IH to R1. search.
 
 
 Extensible_Theorem
@@ -517,7 +533,56 @@ Translation_Constraint trans_s_eval : forall S S' G G2,
   |{s}- S ~~> S' -> eval_s G S G2 -> exists G', eval_s G S' G'.
 
 
-Ext_Ind eval_s G S G1 with |{s}- S ~~> T.
+Ext_Size eval_s G S G1.
+
+
+Ext_Ind forall G S G1, eval_s G S G1.
+%X-skip
+ search.
+%X-decl
+ search.
+%X-assign
+ search.
+%X-seq
+ apply ext_ind_is_int_eval_s to R2. apply ext_ind_is_int_eval_s to R3.
+ apply ext_ind_pos_eval_s to R2. apply ext_ind_pos_eval_s to R3.
+ Or2: apply lt_left to R1 _ _. Or3: apply lt_right to R1 _ _ _.
+ A: case Acc (keep). Or2: case Or2.
+   %N2 < N
+    AN2: apply A to _ Or2. apply IH to R2 AN2. Or3: case Or3.
+      %N3 < N
+       AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+      %N3 = N
+       apply IH1 to R3 Acc. search.
+   %N2 = N
+    apply IH1 to R2 Acc. Or3: case Or3.
+      %N3 < N
+       AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+      %N3 = N
+       apply IH1 to R3 Acc. search.
+%X-ifte-True
+ apply IH1 to R2 Acc. search.
+%X-ifte-False
+ apply IH1 to R2 Acc. search.
+%X-while-True
+ apply ext_ind_is_int_eval_s to R3. apply ext_ind_is_int_eval_s to R4.
+ apply ext_ind_pos_eval_s to R3. apply ext_ind_pos_eval_s to R4.
+ Or2: apply lt_left to R1 _ _. Or3: apply lt_right to R1 _ _ _.
+ A: case Acc (keep). Or2: case Or2.
+   %N2 < N
+    AN2: apply A to _ Or2. apply IH to R3 AN2. Or3: case Or3.
+      %N3 < N
+       AN3: apply A to _ Or3. apply IH to R4 AN3. search.
+      %N3 = N
+       apply IH1 to R4 Acc. search.
+   %N2 = N
+    apply IH1 to R3 Acc. Or3: case Or3.
+      %N3 < N
+       AN3: apply A to _ Or3. apply IH to R4 AN3. search.
+      %N3 = N
+       apply IH1 to R4 Acc. search.
+%X-while-False
+ search.
 
 
 Translation_Constraint trans_s_eval_results :

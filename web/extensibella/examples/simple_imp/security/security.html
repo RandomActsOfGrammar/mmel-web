@@ -305,13 +305,14 @@ secure PC G C G1
 <a class="command" href="security-details.html#33">Prove_Constraint simple_imp:host:trans_c_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(34);" id="toggleproof34">[Show Proof]</a>
 <div class="proof" id="proof34" style="display: none;">
 <span class="comment">%declareSec</span>
- <a class="tactic" href="security-details.html#34">Ev: case Hyp1.</a> <a class="tactic" href="security-details.html#35">search.</a></div>
+ <a class="tactic" href="security-details.html#34">Ev: case Hyp1.</a> <a class="tactic" href="security-details.html#35">search.</a>
 
-<a class="command" href="security-details.html#36">Prove_Ext_Ind simple_imp:host:eval_c.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(37);" id="toggleproof37">[Show Proof]</a>
-<div class="proof" id="proof37" style="display: none;">
+<a class="tactic" href="security-details.html#36">Add_Ext_Size simple_imp:host:eval_c.</a></div>
+
+<a class="command" href="security-details.html#37">Prove_Ext_Ind simple_imp:host:eval_c.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(38);" id="toggleproof38">[Show Proof]</a>
+<div class="proof" id="proof38" style="display: none;">
 <span class="comment">%declareSec</span>
- <a class="tactic" href="security-details.html#37">Trans: assert |{c}- declareSec X S Ty E ~~> declare X Ty E.</a>
- <a class="tactic" href="security-details.html#38">assert <eval_c {T}> G (declare X Ty E) ((X, V)::G).</a> <a class="tactic" href="security-details.html#39">search.</a></div>
+ <a class="tactic" href="security-details.html#38">Trans: assert |{c}- declareSec X S Ty E ~~> declare X Ty E.</a> <a class="tactic" href="security-details.html#39">search.</a></div>
 
 <a class="command" href="security-details.html#40">Prove simple_imp:host:eval_c_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(41);" id="toggleproof41">[Show Proof]</a>
 <div class="proof" id="proof41" style="display: none;">
@@ -436,7 +437,7 @@ secure PC G C G1
    <a class="tactic" href="security-details.html#119">Vars: case Vars.</a> <a class="tactic" href="security-details.html#120">apply IH1 to Lev1 Vars Mem.</a> <a class="tactic" href="security-details.html#121">search.</a>
   <span class="comment">%S-RecField</span>
    <a class="tactic" href="security-details.html#122">Vars: case Vars.</a> <a class="tactic" href="security-details.html#123">apply IH to Lev1 Vars Mem.</a> <a class="tactic" href="security-details.html#124">search.</a>
-  <span class="comment">%Preservability</span>
+  <span class="comment">%S-TransExpr</span>
    <a class="tactic" href="security-details.html#125">V: apply trans_e_vars_exist to Lev1 Vars.</a>
    <a class="tactic" href="security-details.html#126">Mem: apply trans_e_vars to Lev1 Vars V Mem.</a>
    <a class="tactic" href="security-details.html#127">apply IH to Lev2 V Mem1.</a> <a class="tactic" href="security-details.html#128">search.</a>
@@ -450,7 +451,7 @@ secure PC G C G1
       <a class="tactic" href="security-details.html#135">apply IH to Lev1 Vars2 Mem'.</a> <a class="tactic" href="security-details.html#136">search.</a>
      <span class="comment">%mem DRest</span>
       <a class="tactic" href="security-details.html#137">apply IH1 to Lev2 Vars1 Mem'.</a> <a class="tactic" href="security-details.html#138">search.</a>
-  <span class="comment">%Preservability</span>
+  <span class="comment">%S-RFTrans</span>
    <a class="tactic" href="security-details.html#139">V: apply trans_rf_vars_exist to Lev1 Vars.</a>
    <a class="tactic" href="security-details.html#140">Mem: apply trans_rf_vars to Lev1 Vars V Mem.</a>
    <a class="tactic" href="security-details.html#141">apply IH1 to Lev2 V Mem1.</a> <a class="tactic" href="security-details.html#142">search.</a></div>
@@ -563,7 +564,7 @@ public_equiv S G1 G2 :=
   <a class="tactic" href="security-details.html#229">LevB: case LevB.</a> <a class="tactic" href="security-details.html#230">apply IH1 to LevA1 LevB.</a> <a class="tactic" href="security-details.html#231">search.</a>
  <span class="comment">%S-RecField</span>
   <a class="tactic" href="security-details.html#232">LevB: case LevB.</a> <a class="tactic" href="security-details.html#233">apply IH to LevA1 LevB.</a> <a class="tactic" href="security-details.html#234">search.</a>
- <span class="comment">%Preservability</span>
+ <span class="comment">%S-TransExpr</span>
   <a class="tactic" href="security-details.html#235">LevB: case LevB.</a> <a class="tactic" href="security-details.html#236">apply trans_e_unique to LevA1 LevB.</a>
   <a class="tactic" href="security-details.html#237">apply IH to LevA2 LevB1.</a> <a class="tactic" href="security-details.html#238">search.</a>
 <span class="comment">%level_rf_unique</span>
@@ -572,7 +573,7 @@ public_equiv S G1 G2 :=
  <span class="comment">%S-RFAdd</span>
   <a class="tactic" href="security-details.html#241">LevB: case LevB.</a> <a class="tactic" href="security-details.html#242">apply IH to LevA1 LevB.</a> <a class="tactic" href="security-details.html#243">apply IH1 to LevA2 LevB1.</a>
   <a class="tactic" href="security-details.html#244">apply join_unique to LevA3 LevB2.</a> <a class="tactic" href="security-details.html#245">search.</a>
- <span class="comment">%Preservability</span>
+ <span class="comment">%S-RFTrans</span>
   <a class="tactic" href="security-details.html#246">LevB: case LevB.</a> <a class="tactic" href="security-details.html#247">apply trans_rf_unique to LevA1 LevB.</a>
   <a class="tactic" href="security-details.html#248">apply IH1 to LevA2 LevB1.</a> <a class="tactic" href="security-details.html#249">search.</a></div>
 
@@ -633,9 +634,9 @@ public_equiv S G1 G2 :=
     <a class="tactic" href="security-details.html#291">assert X1 = X -> false.</a>
       <a class="tactic" href="security-details.html#292">intros Eq.</a> <a class="tactic" href="security-details.html#293">case Eq.</a> <a class="tactic" href="security-details.html#294">apply no_lookup to Sec1 LkpSec.</a>
     <a class="tactic" href="security-details.html#295">search.</a>
-<span class="comment">%Preservability</span>
- <a class="tactic" href="security-details.html#296">Sec: case Sec.</a> <a class="tactic" href="security-details.html#297">apply trans_c_unique to Ev2 Sec.</a>
- <a class="tactic" href="security-details.html#298">apply IH to Sec1 Ev1 _.</a> <a class="tactic" href="security-details.html#299">search.</a></div>
+<span class="comment">%E-Q</span>
+ <a class="tactic" href="security-details.html#296">Sec: case Sec.</a> <a class="tactic" href="security-details.html#297">apply trans_c_unique to Ev1 Sec.</a>
+ <a class="tactic" href="security-details.html#298">apply IH to Sec1 Ev2 _.</a> <a class="tactic" href="security-details.html#299">search.</a></div>
 
 
 <a class="command" href="security-details.html#300">Theorem public_equiv_swap : forall SG SG' GA GB,
@@ -775,8 +776,8 @@ public_equiv S G1 G2 :=
           <a class="tactic" href="security-details.html#424">search.</a>
    <span class="comment">%S-DeclareSecPublic</span>
     <a class="tactic" href="security-details.html#425">apply NEq to _.</a>
-<span class="comment">%Preservability</span>
- <a class="tactic" href="security-details.html#426">Sec: case Sec.</a> <a class="tactic" href="security-details.html#427">apply trans_c_unique to Ev2 Sec.</a> <a class="tactic" href="security-details.html#428">apply IH to _ _ Ev1.</a>
+<span class="comment">%E-Q</span>
+ <a class="tactic" href="security-details.html#426">Sec: case Sec.</a> <a class="tactic" href="security-details.html#427">apply trans_c_unique to Ev1 Sec.</a> <a class="tactic" href="security-details.html#428">apply IH to _ _ Ev2.</a>
  <a class="tactic" href="security-details.html#429">search.</a></div>
 
 
@@ -1115,13 +1116,13 @@ public_equiv S G1 G2 :=
              <a class="tactic" href="security-details.html#747">apply LkpSec to _.</a>
             <span class="comment">%Lkp later</span>
              <a class="tactic" href="security-details.html#748">Rel: case Rel.</a> <a class="tactic" href="security-details.html#749">apply Rel2 to LkpSec1 Lkp1.</a> <a class="tactic" href="security-details.html#750">search.</a>
-<span class="comment">%Preservability</span>
- <a class="tactic" href="security-details.html#751">Sec: case Sec.</a> <a class="tactic" href="security-details.html#752">apply trans_c_unique to EvA2 Sec.</a>
- <a class="tactic" href="security-details.html#753">EvBTrans: apply trans_c_eval to EvA2 EvB.</a>
+<span class="comment">%E-Q</span>
+ <a class="tactic" href="security-details.html#751">Sec: case Sec.</a> <a class="tactic" href="security-details.html#752">apply trans_c_unique to EvA1 Sec.</a>
+ <a class="tactic" href="security-details.html#753">EvBTrans: apply trans_c_eval to EvA1 EvB.</a>
  <a class="tactic" href="security-details.html#754">IsCT: apply trans_c_is to Sec Is.</a>
- <a class="tactic" href="security-details.html#755">Equiv: apply IH to _ Sec1 Rel EvA1 EvBTrans.</a>
+ <a class="tactic" href="security-details.html#755">Equiv: apply IH to _ Sec1 Rel EvA2 EvBTrans.</a>
  <a class="tactic" href="security-details.html#756">LkpGB'G': assert forall X V, lookup GB' X V -> lookup G' X V.</a>
-   <a class="tactic" href="security-details.html#757">intros L.</a> <a class="tactic" href="security-details.html#758">apply trans_c_eval_results to EvA2 EvB EvBTrans L.</a> <a class="tactic" href="security-details.html#759">search.</a>
+   <a class="tactic" href="security-details.html#757">intros L.</a> <a class="tactic" href="security-details.html#758">apply trans_c_eval_results to EvA1 EvB EvBTrans L.</a> <a class="tactic" href="security-details.html#759">search.</a>
  <a class="tactic" href="security-details.html#760">EqG'GB': assert public_equiv SG1 G' GB'.</a>
    <a class="tactic" href="security-details.html#761">unfold.</a>
      <span class="comment">%First part</span>

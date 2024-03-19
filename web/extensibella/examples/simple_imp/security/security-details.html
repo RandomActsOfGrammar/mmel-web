@@ -253,6 +253,11 @@ Ev : eval_e G E V
 Proof completed.
 </pre>
 <pre class="code extensibella"id="36">
+ &lt; <b>Add_Ext_Size simple_imp:host:eval_c.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="37">
  &lt; <b>Prove_Ext_Ind simple_imp:host:eval_c.</b>
 
 Subgoal 10:
@@ -261,13 +266,13 @@ Variables: G V X E Ty S
 IH : forall N G C G1, &lt;eval_c {ES}&gt; G C G1 N -&gt; acc N * -&gt; &lt;eval_c {T}&gt; G C G1
 IH1 : forall N G C G1,
         &lt;eval_c {ES}&gt; G C G1 N ** -&gt; acc N @ -&gt; &lt;eval_c {T}&gt; G C G1
-Rel : &lt;eval_c {ES}&gt; G (declareSec X S Ty E) ((X, V)::G) 1 @@
+R : &lt;eval_c {ES}&gt; G (declareSec X S Ty E) ((X, V)::G) 1 @@
 Acc : acc 1 @
-Rel1 : eval_e G E V
+R1 : eval_e G E V
 ============================
  &lt;eval_c {T}&gt; G (declareSec X S Ty E) ((X, V)::G)
 </pre>
-<pre class="code extensibella"id="37">
+<pre class="code extensibella"id="38">
  &lt; <b>Trans: assert |{c}- declareSec X S Ty E ~~&gt; declare X Ty E.</b>
 
 Subgoal 10:
@@ -276,27 +281,10 @@ Variables: G V X E Ty S
 IH : forall N G C G1, &lt;eval_c {ES}&gt; G C G1 N -&gt; acc N * -&gt; &lt;eval_c {T}&gt; G C G1
 IH1 : forall N G C G1,
         &lt;eval_c {ES}&gt; G C G1 N ** -&gt; acc N @ -&gt; &lt;eval_c {T}&gt; G C G1
-Rel : &lt;eval_c {ES}&gt; G (declareSec X S Ty E) ((X, V)::G) 1 @@
+R : &lt;eval_c {ES}&gt; G (declareSec X S Ty E) ((X, V)::G) 1 @@
 Acc : acc 1 @
-Rel1 : eval_e G E V
+R1 : eval_e G E V
 Trans : |{c}- declareSec X S Ty E ~~&gt; declare X Ty E
-============================
- &lt;eval_c {T}&gt; G (declareSec X S Ty E) ((X, V)::G)
-</pre>
-<pre class="code extensibella"id="38">
- &lt; <b>assert &lt;eval_c {T}&gt; G (declare X Ty E) ((X, V)::G).</b>
-
-Subgoal 10:
-
-Variables: G V X E Ty S
-IH : forall N G C G1, &lt;eval_c {ES}&gt; G C G1 N -&gt; acc N * -&gt; &lt;eval_c {T}&gt; G C G1
-IH1 : forall N G C G1,
-        &lt;eval_c {ES}&gt; G C G1 N ** -&gt; acc N @ -&gt; &lt;eval_c {T}&gt; G C G1
-Rel : &lt;eval_c {ES}&gt; G (declareSec X S Ty E) ((X, V)::G) 1 @@
-Acc : acc 1 @
-Rel1 : eval_e G E V
-Trans : |{c}- declareSec X S Ty E ~~&gt; declare X Ty E
-H1 : &lt;eval_c {T}&gt; G (declare X Ty E) ((X, V)::G)
 ============================
  &lt;eval_c {T}&gt; G (declareSec X S Ty E) ((X, V)::G)
 </pre>
@@ -1738,10 +1726,10 @@ IH : forall SG E V X,
        level SG E public * -&gt; vars E V -&gt; mem X V -&gt; lookup SG X public
 IH1 : forall SG RF V X,
         rf_level SG RF public * -&gt; vars_rf RF V -&gt; mem X V -&gt; lookup SG X public
-Lev : level SG &lt;unknown e&gt; public @
-Vars : vars &lt;unknown e&gt; V
+Lev : level SG &lt;unknown I e&gt; public @
+Vars : vars &lt;unknown I e&gt; V
 Mem : mem X V
-Lev1 : |{e}- &lt;unknown e&gt; ~~&gt; ET
+Lev1 : |{e}- &lt;unknown I e&gt; ~~&gt; ET
 Lev2 : level SG ET public *
 ============================
  lookup SG X public
@@ -1756,10 +1744,10 @@ IH : forall SG E V X,
        level SG E public * -&gt; vars E V -&gt; mem X V -&gt; lookup SG X public
 IH1 : forall SG RF V X,
         rf_level SG RF public * -&gt; vars_rf RF V -&gt; mem X V -&gt; lookup SG X public
-Lev : level SG &lt;unknown e&gt; public @
-Vars : vars &lt;unknown e&gt; V
+Lev : level SG &lt;unknown I e&gt; public @
+Vars : vars &lt;unknown I e&gt; V
 Mem : mem X V
-Lev1 : |{e}- &lt;unknown e&gt; ~~&gt; ET
+Lev1 : |{e}- &lt;unknown I e&gt; ~~&gt; ET
 Lev2 : level SG ET public *
 V : vars ET V'
 ============================
@@ -1775,10 +1763,10 @@ IH : forall SG E V X,
        level SG E public * -&gt; vars E V -&gt; mem X V -&gt; lookup SG X public
 IH1 : forall SG RF V X,
         rf_level SG RF public * -&gt; vars_rf RF V -&gt; mem X V -&gt; lookup SG X public
-Lev : level SG &lt;unknown e&gt; public @
-Vars : vars &lt;unknown e&gt; V
+Lev : level SG &lt;unknown I e&gt; public @
+Vars : vars &lt;unknown I e&gt; V
 Mem : mem X V
-Lev1 : |{e}- &lt;unknown e&gt; ~~&gt; ET
+Lev1 : |{e}- &lt;unknown I e&gt; ~~&gt; ET
 Lev2 : level SG ET public *
 V : vars ET V'
 Mem1 : mem X V'
@@ -1795,10 +1783,10 @@ IH : forall SG E V X,
        level SG E public * -&gt; vars E V -&gt; mem X V -&gt; lookup SG X public
 IH1 : forall SG RF V X,
         rf_level SG RF public * -&gt; vars_rf RF V -&gt; mem X V -&gt; lookup SG X public
-Lev : level SG &lt;unknown e&gt; public @
-Vars : vars &lt;unknown e&gt; V
+Lev : level SG &lt;unknown I e&gt; public @
+Vars : vars &lt;unknown I e&gt; V
 Mem : mem X V
-Lev1 : |{e}- &lt;unknown e&gt; ~~&gt; ET
+Lev1 : |{e}- &lt;unknown I e&gt; ~~&gt; ET
 Lev2 : level SG ET public *
 V : vars ET V'
 Mem1 : mem X V'
@@ -2020,10 +2008,10 @@ IH : forall SG E V X,
        level SG E public * -&gt; vars E V -&gt; mem X V -&gt; lookup SG X public
 IH1 : forall SG RF V X,
         rf_level SG RF public * -&gt; vars_rf RF V -&gt; mem X V -&gt; lookup SG X public
-Lev : rf_level SG &lt;unknown recFieldExprs&gt; public @
-Vars : vars_rf &lt;unknown recFieldExprs&gt; V
+Lev : rf_level SG &lt;unknown I recFieldExprs&gt; public @
+Vars : vars_rf &lt;unknown I recFieldExprs&gt; V
 Mem : mem X V
-Lev1 : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT
+Lev1 : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT
 Lev2 : rf_level SG RFT public *
 ============================
  lookup SG X public
@@ -2038,10 +2026,10 @@ IH : forall SG E V X,
        level SG E public * -&gt; vars E V -&gt; mem X V -&gt; lookup SG X public
 IH1 : forall SG RF V X,
         rf_level SG RF public * -&gt; vars_rf RF V -&gt; mem X V -&gt; lookup SG X public
-Lev : rf_level SG &lt;unknown recFieldExprs&gt; public @
-Vars : vars_rf &lt;unknown recFieldExprs&gt; V
+Lev : rf_level SG &lt;unknown I recFieldExprs&gt; public @
+Vars : vars_rf &lt;unknown I recFieldExprs&gt; V
 Mem : mem X V
-Lev1 : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT
+Lev1 : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT
 Lev2 : rf_level SG RFT public *
 V : vars_rf RFT V'
 ============================
@@ -2057,10 +2045,10 @@ IH : forall SG E V X,
        level SG E public * -&gt; vars E V -&gt; mem X V -&gt; lookup SG X public
 IH1 : forall SG RF V X,
         rf_level SG RF public * -&gt; vars_rf RF V -&gt; mem X V -&gt; lookup SG X public
-Lev : rf_level SG &lt;unknown recFieldExprs&gt; public @
-Vars : vars_rf &lt;unknown recFieldExprs&gt; V
+Lev : rf_level SG &lt;unknown I recFieldExprs&gt; public @
+Vars : vars_rf &lt;unknown I recFieldExprs&gt; V
 Mem : mem X V
-Lev1 : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT
+Lev1 : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT
 Lev2 : rf_level SG RFT public *
 V : vars_rf RFT V'
 Mem1 : mem X V'
@@ -2077,10 +2065,10 @@ IH : forall SG E V X,
        level SG E public * -&gt; vars E V -&gt; mem X V -&gt; lookup SG X public
 IH1 : forall SG RF V X,
         rf_level SG RF public * -&gt; vars_rf RF V -&gt; mem X V -&gt; lookup SG X public
-Lev : rf_level SG &lt;unknown recFieldExprs&gt; public @
-Vars : vars_rf &lt;unknown recFieldExprs&gt; V
+Lev : rf_level SG &lt;unknown I recFieldExprs&gt; public @
+Vars : vars_rf &lt;unknown I recFieldExprs&gt; V
 Mem : mem X V
-Lev1 : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT
+Lev1 : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT
 Lev2 : rf_level SG RFT public *
 V : vars_rf RFT V'
 Mem1 : mem X V'
@@ -3463,9 +3451,9 @@ Subgoal 1.12:
 Variables: SG S1 S2 ET
 IH : forall SG E S1 S2, level SG E S1 * -&gt; level SG E S2 -&gt; S1 = S2
 IH1 : forall SG RF S1 S2, rf_level SG RF S1 * -&gt; rf_level SG RF S2 -&gt; S1 = S2
-LevA : level SG &lt;unknown e&gt; S1 @
-LevB : level SG &lt;unknown e&gt; S2
-LevA1 : |{e}- &lt;unknown e&gt; ~~&gt; ET
+LevA : level SG &lt;unknown I e&gt; S1 @
+LevB : level SG &lt;unknown I e&gt; S2
+LevA1 : |{e}- &lt;unknown I e&gt; ~~&gt; ET
 LevA2 : level SG ET S1 *
 ============================
  S1 = S2
@@ -3478,10 +3466,10 @@ Subgoal 1.12:
 Variables: SG S1 S2 ET ET1
 IH : forall SG E S1 S2, level SG E S1 * -&gt; level SG E S2 -&gt; S1 = S2
 IH1 : forall SG RF S1 S2, rf_level SG RF S1 * -&gt; rf_level SG RF S2 -&gt; S1 = S2
-LevA : level SG &lt;unknown e&gt; S1 @
-LevA1 : |{e}- &lt;unknown e&gt; ~~&gt; ET
+LevA : level SG &lt;unknown I e&gt; S1 @
+LevA1 : |{e}- &lt;unknown I e&gt; ~~&gt; ET
 LevA2 : level SG ET S1 *
-LevB : |{e}- &lt;unknown e&gt; ~~&gt; ET1
+LevB : |{e}- &lt;unknown I e&gt; ~~&gt; ET1
 LevB1 : level SG ET1 S2
 ============================
  S1 = S2
@@ -3494,10 +3482,10 @@ Subgoal 1.12:
 Variables: SG S1 S2 ET1
 IH : forall SG E S1 S2, level SG E S1 * -&gt; level SG E S2 -&gt; S1 = S2
 IH1 : forall SG RF S1 S2, rf_level SG RF S1 * -&gt; rf_level SG RF S2 -&gt; S1 = S2
-LevA : level SG &lt;unknown e&gt; S1 @
-LevA1 : |{e}- &lt;unknown e&gt; ~~&gt; ET1
+LevA : level SG &lt;unknown I e&gt; S1 @
+LevA1 : |{e}- &lt;unknown I e&gt; ~~&gt; ET1
 LevA2 : level SG ET1 S1 *
-LevB : |{e}- &lt;unknown e&gt; ~~&gt; ET1
+LevB : |{e}- &lt;unknown I e&gt; ~~&gt; ET1
 LevB1 : level SG ET1 S2
 ============================
  S1 = S2
@@ -3510,10 +3498,10 @@ Subgoal 1.12:
 Variables: SG S2 ET1
 IH : forall SG E S1 S2, level SG E S1 * -&gt; level SG E S2 -&gt; S1 = S2
 IH1 : forall SG RF S1 S2, rf_level SG RF S1 * -&gt; rf_level SG RF S2 -&gt; S1 = S2
-LevA : level SG &lt;unknown e&gt; S2 @
-LevA1 : |{e}- &lt;unknown e&gt; ~~&gt; ET1
+LevA : level SG &lt;unknown I e&gt; S2 @
+LevA1 : |{e}- &lt;unknown I e&gt; ~~&gt; ET1
 LevA2 : level SG ET1 S2 *
-LevB : |{e}- &lt;unknown e&gt; ~~&gt; ET1
+LevB : |{e}- &lt;unknown I e&gt; ~~&gt; ET1
 LevB1 : level SG ET1 S2
 ============================
  S2 = S2
@@ -3639,9 +3627,9 @@ Subgoal 2.3:
 Variables: SG S1 S2 RFT
 IH : forall SG E S1 S2, level SG E S1 * -&gt; level SG E S2 -&gt; S1 = S2
 IH1 : forall SG RF S1 S2, rf_level SG RF S1 * -&gt; rf_level SG RF S2 -&gt; S1 = S2
-LevA : rf_level SG &lt;unknown recFieldExprs&gt; S1 @
-LevB : rf_level SG &lt;unknown recFieldExprs&gt; S2
-LevA1 : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT
+LevA : rf_level SG &lt;unknown I recFieldExprs&gt; S1 @
+LevB : rf_level SG &lt;unknown I recFieldExprs&gt; S2
+LevA1 : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT
 LevA2 : rf_level SG RFT S1 *
 ============================
  S1 = S2
@@ -3654,10 +3642,10 @@ Subgoal 2.3:
 Variables: SG S1 S2 RFT RFT1
 IH : forall SG E S1 S2, level SG E S1 * -&gt; level SG E S2 -&gt; S1 = S2
 IH1 : forall SG RF S1 S2, rf_level SG RF S1 * -&gt; rf_level SG RF S2 -&gt; S1 = S2
-LevA : rf_level SG &lt;unknown recFieldExprs&gt; S1 @
-LevA1 : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT
+LevA : rf_level SG &lt;unknown I recFieldExprs&gt; S1 @
+LevA1 : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT
 LevA2 : rf_level SG RFT S1 *
-LevB : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT1
+LevB : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT1
 LevB1 : rf_level SG RFT1 S2
 ============================
  S1 = S2
@@ -3670,10 +3658,10 @@ Subgoal 2.3:
 Variables: SG S1 S2 RFT1
 IH : forall SG E S1 S2, level SG E S1 * -&gt; level SG E S2 -&gt; S1 = S2
 IH1 : forall SG RF S1 S2, rf_level SG RF S1 * -&gt; rf_level SG RF S2 -&gt; S1 = S2
-LevA : rf_level SG &lt;unknown recFieldExprs&gt; S1 @
-LevA1 : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT1
+LevA : rf_level SG &lt;unknown I recFieldExprs&gt; S1 @
+LevA1 : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT1
 LevA2 : rf_level SG RFT1 S1 *
-LevB : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT1
+LevB : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT1
 LevB1 : rf_level SG RFT1 S2
 ============================
  S1 = S2
@@ -3686,10 +3674,10 @@ Subgoal 2.3:
 Variables: SG S2 RFT1
 IH : forall SG E S1 S2, level SG E S1 * -&gt; level SG E S2 -&gt; S1 = S2
 IH1 : forall SG RF S1 S2, rf_level SG RF S1 * -&gt; rf_level SG RF S2 -&gt; S1 = S2
-LevA : rf_level SG &lt;unknown recFieldExprs&gt; S2 @
-LevA1 : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT1
+LevA : rf_level SG &lt;unknown I recFieldExprs&gt; S2 @
+LevA1 : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT1
 LevA2 : rf_level SG RFT1 S2 *
-LevB : |{recFieldExprs}- &lt;unknown recFieldExprs&gt; ~~&gt; RFT1
+LevB : |{recFieldExprs}- &lt;unknown I recFieldExprs&gt; ~~&gt; RFT1
 LevB1 : rf_level SG RFT1 S2
 ============================
  S2 = S2
@@ -4447,14 +4435,14 @@ H1 : X1 = X -&gt; false
 
 Subgoal 11:
 
-Variables: PC SG SG2 G G2 X Trans
+Variables: PC SG SG2 G G2 X T
 IH : forall PC SG SG2 G G2 C X,
        secure PC SG C SG2 -&gt; eval_c G C G2 * -&gt; lookup SG X public -&gt; lookup SG2 X public
-Sec : secure PC SG &lt;unknown c&gt; SG2
-Ev : eval_c G &lt;unknown c&gt; G2 @
+Sec : secure PC SG &lt;unknown K eval_c&gt; SG2
+Ev : eval_c G &lt;unknown K eval_c&gt; G2 @
 LkpSec : lookup SG X public
-Ev1 : eval_c G Trans G2 *
-Ev2 : |{c}- &lt;unknown c&gt; ~~&gt; Trans
+Ev1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; T
+Ev2 : eval_c G T G2 *
 ============================
  lookup SG2 X public
 </pre>
@@ -4463,48 +4451,48 @@ Ev2 : |{c}- &lt;unknown c&gt; ~~&gt; Trans
 
 Subgoal 11:
 
-Variables: PC SG SG2 G G2 X Trans CT
+Variables: PC SG SG2 G G2 X T CT
 IH : forall PC SG SG2 G G2 C X,
        secure PC SG C SG2 -&gt; eval_c G C G2 * -&gt; lookup SG X public -&gt; lookup SG2 X public
-Ev : eval_c G &lt;unknown c&gt; G2 @
+Ev : eval_c G &lt;unknown K eval_c&gt; G2 @
 LkpSec : lookup SG X public
-Ev1 : eval_c G Trans G2 *
-Ev2 : |{c}- &lt;unknown c&gt; ~~&gt; Trans
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+Ev1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; T
+Ev2 : eval_c G T G2 *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG2
 ============================
  lookup SG2 X public
 </pre>
 <pre class="code extensibella"id="297">
- &lt; <b>apply trans_c_unique to Ev2 Sec.</b>
+ &lt; <b>apply trans_c_unique to Ev1 Sec.</b>
 
 Subgoal 11:
 
 Variables: PC SG SG2 G G2 X CT
 IH : forall PC SG SG2 G G2 C X,
        secure PC SG C SG2 -&gt; eval_c G C G2 * -&gt; lookup SG X public -&gt; lookup SG2 X public
-Ev : eval_c G &lt;unknown c&gt; G2 @
+Ev : eval_c G &lt;unknown K eval_c&gt; G2 @
 LkpSec : lookup SG X public
-Ev1 : eval_c G CT G2 *
-Ev2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+Ev1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+Ev2 : eval_c G CT G2 *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG2
 ============================
  lookup SG2 X public
 </pre>
 <pre class="code extensibella"id="298">
- &lt; <b>apply IH to Sec1 Ev1 _.</b>
+ &lt; <b>apply IH to Sec1 Ev2 _.</b>
 
 Subgoal 11:
 
 Variables: PC SG SG2 G G2 X CT
 IH : forall PC SG SG2 G G2 C X,
        secure PC SG C SG2 -&gt; eval_c G C G2 * -&gt; lookup SG X public -&gt; lookup SG2 X public
-Ev : eval_c G &lt;unknown c&gt; G2 @
+Ev : eval_c G &lt;unknown K eval_c&gt; G2 @
 LkpSec : lookup SG X public
-Ev1 : eval_c G CT G2 *
-Ev2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+Ev1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+Ev2 : eval_c G CT G2 *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG2
 H1 : lookup SG2 X public
 ============================
@@ -6772,14 +6760,14 @@ Sec1 : no_lookup SG X
 
 Subgoal 11:
 
-Variables: S SG SG1 G G1 Trans
+Variables: S SG SG1 G G1 T
 IH : forall C S SG SG1 G G1,
        secure S SG C SG1 -&gt; (S = public -&gt; false) -&gt; eval_c G C G1 * -&gt; public_equiv SG G G1
-Sec : secure S SG &lt;unknown c&gt; SG1
+Sec : secure S SG &lt;unknown K eval_c&gt; SG1
 NEq : S = public -&gt; false
-Ev : eval_c G &lt;unknown c&gt; G1 @
-Ev1 : eval_c G Trans G1 *
-Ev2 : |{c}- &lt;unknown c&gt; ~~&gt; Trans
+Ev : eval_c G &lt;unknown K eval_c&gt; G1 @
+Ev1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; T
+Ev2 : eval_c G T G1 *
 ============================
  public_equiv SG G G1
 </pre>
@@ -6788,20 +6776,20 @@ Ev2 : |{c}- &lt;unknown c&gt; ~~&gt; Trans
 
 Subgoal 11:
 
-Variables: S SG SG1 G G1 Trans CT
+Variables: S SG SG1 G G1 T CT
 IH : forall C S SG SG1 G G1,
        secure S SG C SG1 -&gt; (S = public -&gt; false) -&gt; eval_c G C G1 * -&gt; public_equiv SG G G1
 NEq : S = public -&gt; false
-Ev : eval_c G &lt;unknown c&gt; G1 @
-Ev1 : eval_c G Trans G1 *
-Ev2 : |{c}- &lt;unknown c&gt; ~~&gt; Trans
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+Ev : eval_c G &lt;unknown K eval_c&gt; G1 @
+Ev1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; T
+Ev2 : eval_c G T G1 *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure S SG CT SG1
 ============================
  public_equiv SG G G1
 </pre>
 <pre class="code extensibella"id="427">
- &lt; <b>apply trans_c_unique to Ev2 Sec.</b>
+ &lt; <b>apply trans_c_unique to Ev1 Sec.</b>
 
 Subgoal 11:
 
@@ -6809,16 +6797,16 @@ Variables: S SG SG1 G G1 CT
 IH : forall C S SG SG1 G G1,
        secure S SG C SG1 -&gt; (S = public -&gt; false) -&gt; eval_c G C G1 * -&gt; public_equiv SG G G1
 NEq : S = public -&gt; false
-Ev : eval_c G &lt;unknown c&gt; G1 @
-Ev1 : eval_c G CT G1 *
-Ev2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+Ev : eval_c G &lt;unknown K eval_c&gt; G1 @
+Ev1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+Ev2 : eval_c G CT G1 *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure S SG CT SG1
 ============================
  public_equiv SG G G1
 </pre>
 <pre class="code extensibella"id="428">
- &lt; <b>apply IH to _ _ Ev1.</b>
+ &lt; <b>apply IH to _ _ Ev2.</b>
 
 Subgoal 11:
 
@@ -6826,10 +6814,10 @@ Variables: S SG SG1 G G1 CT
 IH : forall C S SG SG1 G G1,
        secure S SG C SG1 -&gt; (S = public -&gt; false) -&gt; eval_c G C G1 * -&gt; public_equiv SG G G1
 NEq : S = public -&gt; false
-Ev : eval_c G &lt;unknown c&gt; G1 @
-Ev1 : eval_c G CT G1 *
-Ev2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+Ev : eval_c G &lt;unknown K eval_c&gt; G1 @
+Ev1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+Ev2 : eval_c G CT G1 *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure S SG CT SG1
 H1 : public_equiv SG G G1
 ============================
@@ -14906,17 +14894,17 @@ H1 : lookup GA X1 V2
 
 Subgoal 11:
 
-Variables: PC SG SG1 GA GA' GB GB' Trans
+Variables: PC SG SG1 GA GA' GB GB' T
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
-Sec : secure PC SG &lt;unknown c&gt; SG1
+Is : is_c &lt;unknown K eval_c&gt;
+Sec : secure PC SG &lt;unknown K eval_c&gt; SG1
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA Trans GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; Trans
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; T
+EvA2 : eval_c GA T GA' *
 ============================
  public_equiv SG1 GA' GB'
 </pre>
@@ -14925,23 +14913,23 @@ EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; Trans
 
 Subgoal 11:
 
-Variables: PC SG SG1 GA GA' GB GB' Trans CT
+Variables: PC SG SG1 GA GA' GB GB' T CT
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA Trans GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; Trans
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; T
+EvA2 : eval_c GA T GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 ============================
  public_equiv SG1 GA' GB'
 </pre>
 <pre class="code extensibella"id="752">
- &lt; <b>apply trans_c_unique to EvA2 Sec.</b>
+ &lt; <b>apply trans_c_unique to EvA1 Sec.</b>
 
 Subgoal 11:
 
@@ -14949,19 +14937,19 @@ Variables: PC SG SG1 GA GA' GB GB' CT
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 ============================
  public_equiv SG1 GA' GB'
 </pre>
 <pre class="code extensibella"id="753">
- &lt; <b>EvBTrans: apply trans_c_eval to EvA2 EvB.</b>
+ &lt; <b>EvBTrans: apply trans_c_eval to EvA1 EvB.</b>
 
 Subgoal 11:
 
@@ -14969,13 +14957,13 @@ Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 ============================
@@ -14990,13 +14978,13 @@ Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15004,7 +14992,7 @@ IsCT : is_c CT
  public_equiv SG1 GA' GB'
 </pre>
 <pre class="code extensibella"id="755">
- &lt; <b>Equiv: apply IH to _ Sec1 Rel EvA1 EvBTrans.</b>
+ &lt; <b>Equiv: apply IH to _ Sec1 Rel EvA2 EvBTrans.</b>
 
 Subgoal 11:
 
@@ -15012,13 +15000,13 @@ Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15030,19 +15018,19 @@ Equiv : public_equiv SG1 GA' G'
  &lt; <b>LkpGB'G': assert forall X V,
      lookup GB' X V -&gt; lookup G' X V.</b>
 
-Subgoal 11.2:
+Subgoal 11.1:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15053,19 +15041,19 @@ Equiv : public_equiv SG1 GA' G'
 <pre class="code extensibella"id="757">
  &lt; <b>intros L.</b>
 
-Subgoal 11.2:
+Subgoal 11.1:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G' X V
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15075,21 +15063,21 @@ L : lookup GB' X V
  lookup G' X V
 </pre>
 <pre class="code extensibella"id="758">
- &lt; <b>apply trans_c_eval_results to EvA2 EvB EvBTrans L.</b>
+ &lt; <b>apply trans_c_eval_results to EvA1 EvB EvBTrans L.</b>
 
-Subgoal 11.2:
+Subgoal 11.1:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G' X V
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15108,13 +15096,13 @@ Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15126,19 +15114,19 @@ LkpGB'G' : forall X V, lookup GB' X V -&gt; lookup G' X V
 <pre class="code extensibella"id="760">
  &lt; <b>EqG'GB': assert public_equiv SG1 G' GB'.</b>
 
-Subgoal 11.3:
+Subgoal 11.2:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15150,19 +15138,19 @@ LkpGB'G' : forall X V, lookup GB' X V -&gt; lookup G' X V
 <pre class="code extensibella"id="761">
  &lt; <b>unfold .</b>
 
-Subgoal 11.3.1:
+Subgoal 11.2.1:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15175,19 +15163,19 @@ LkpGB'G' : forall X V, lookup GB' X V -&gt; lookup G' X V
 <pre class="code extensibella"id="762">
  &lt; <b>intros LkpSec LkpG' LkpGB'.</b>
 
-Subgoal 11.3.1:
+Subgoal 11.2.1:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G' X V1 V2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15202,19 +15190,19 @@ LkpGB' : lookup GB' X V2
 <pre class="code extensibella"id="763">
  &lt; <b>Lkp: apply LkpGB'G' to LkpGB'.</b>
 
-Subgoal 11.3.1:
+Subgoal 11.2.1:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G' X V1 V2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15230,19 +15218,19 @@ Lkp : lookup G' X V2
 <pre class="code extensibella"id="764">
  &lt; <b>apply lookup_unique to LkpG' Lkp.</b>
 
-Subgoal 11.3.1:
+Subgoal 11.2.1:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G' X V2
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15258,19 +15246,19 @@ Lkp : lookup G' X V2
 <pre class="code extensibella"id="765">
  &lt; <b>search.</b>
 
-Subgoal 11.3.2:
+Subgoal 11.2.2:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15282,19 +15270,19 @@ LkpGB'G' : forall X V, lookup GB' X V -&gt; lookup G' X V
 <pre class="code extensibella"id="766">
  &lt; <b>intros LkpSec LkpG'.</b>
 
-Subgoal 11.3.2:
+Subgoal 11.2.2:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G' X V
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15308,19 +15296,19 @@ LkpG' : lookup G' X V
 <pre class="code extensibella"id="767">
  &lt; <b>apply trans_c_eval_results_back to Sec EvB EvBTrans LkpG'.</b>
 
-Subgoal 11.3.2:
+Subgoal 11.2.2:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G' X V
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15335,19 +15323,19 @@ H1 : lookup GB' X V
 <pre class="code extensibella"id="768">
  &lt; <b>search.</b>
 
-Subgoal 11.3.3:
+Subgoal 11.2.3:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15359,19 +15347,19 @@ LkpGB'G' : forall X V, lookup GB' X V -&gt; lookup G' X V
 <pre class="code extensibella"id="769">
  &lt; <b>intros LkpSec LkpGB'.</b>
 
-Subgoal 11.3.3:
+Subgoal 11.2.3:
 
 Variables: PC SG SG1 GA GA' GB GB' CT G' X V
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15391,13 +15379,13 @@ Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT
@@ -15416,13 +15404,13 @@ Variables: PC SG SG1 GA GA' GB GB' CT G'
 IH : forall C PC SG SG1 GA GA' GB GB',
        is_c C -&gt; secure PC SG C SG1 -&gt; public_equiv SG GA GB -&gt; eval_c GA C GA' * -&gt;
        eval_c GB C GB' -&gt; public_equiv SG1 GA' GB'
-Is : is_c &lt;unknown c&gt;
+Is : is_c &lt;unknown K eval_c&gt;
 Rel : public_equiv SG GA GB
-EvA : eval_c GA &lt;unknown c&gt; GA' @
-EvB : eval_c GB &lt;unknown c&gt; GB'
-EvA1 : eval_c GA CT GA' *
-EvA2 : |{c}- &lt;unknown c&gt; ~~&gt; CT
-Sec : |{c}- &lt;unknown c&gt; ~~&gt; CT
+EvA : eval_c GA &lt;unknown K eval_c&gt; GA' @
+EvB : eval_c GB &lt;unknown K eval_c&gt; GB'
+EvA1 : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
+EvA2 : eval_c GA CT GA' *
+Sec : |{c}- &lt;unknown K eval_c&gt; ~~&gt; CT
 Sec1 : secure PC SG CT SG1
 EvBTrans : eval_c GB CT G'
 IsCT : is_c CT

@@ -46,144 +46,36 @@ Proof completed.
 
 Subgoal 4:
 
-Variables: N N2 E1 Ty S
-IH : forall N E, &lt;is_e {ES}&gt; E N -&gt; acc N * -&gt; &lt;is_e {T}&gt; E
-IH1 : forall N E, &lt;is_e {ES}&gt; E N ** -&gt; acc N @ -&gt; &lt;is_e {T}&gt; E
-Rel : &lt;is_e {ES}&gt; (tyabs S Ty E1) N @@
-Acc : acc N @
-Rel1 : 1 + N2 = N
-Rel2 : is_string S
-Rel3 : is_ty Ty
-Rel4 : &lt;is_e {ES}&gt; E1 N2 **
+Variables: E1 Ty S
+IH : forall E, is_e E * -&gt; &lt;is_e {T}&gt; E
+R : is_e (tyabs S Ty E1) @
+R1 : is_string S
+R2 : is_ty Ty
+R3 : is_e E1 *
 ============================
  &lt;is_e {T}&gt; (tyabs S Ty E1)
 </pre>
 <pre class="code extensibella"id="5">
- &lt; <b>apply ext_ind_is_int_is_e to Rel4.</b>
+ &lt; <b>apply IH to R3.</b>
 
 Subgoal 4:
 
-Variables: N N2 E1 Ty S
-IH : forall N E, &lt;is_e {ES}&gt; E N -&gt; acc N * -&gt; &lt;is_e {T}&gt; E
-IH1 : forall N E, &lt;is_e {ES}&gt; E N ** -&gt; acc N @ -&gt; &lt;is_e {T}&gt; E
-Rel : &lt;is_e {ES}&gt; (tyabs S Ty E1) N @@
-Acc : acc N @
-Rel1 : 1 + N2 = N
-Rel2 : is_string S
-Rel3 : is_ty Ty
-Rel4 : &lt;is_e {ES}&gt; E1 N2 **
-H1 : is_integer N2
+Variables: E1 Ty S
+IH : forall E, is_e E * -&gt; &lt;is_e {T}&gt; E
+R : is_e (tyabs S Ty E1) @
+R1 : is_string S
+R2 : is_ty Ty
+R3 : is_e E1 *
+H1 : &lt;is_e {T}&gt; E1
 ============================
  &lt;is_e {T}&gt; (tyabs S Ty E1)
 </pre>
 <pre class="code extensibella"id="6">
- &lt; <b>apply ext_ind_pos_is_e to Rel4.</b>
-
-Subgoal 4:
-
-Variables: N N2 E1 Ty S
-IH : forall N E, &lt;is_e {ES}&gt; E N -&gt; acc N * -&gt; &lt;is_e {T}&gt; E
-IH1 : forall N E, &lt;is_e {ES}&gt; E N ** -&gt; acc N @ -&gt; &lt;is_e {T}&gt; E
-Rel : &lt;is_e {ES}&gt; (tyabs S Ty E1) N @@
-Acc : acc N @
-Rel1 : 1 + N2 = N
-Rel2 : is_string S
-Rel3 : is_ty Ty
-Rel4 : &lt;is_e {ES}&gt; E1 N2 **
-H1 : is_integer N2
-H2 : 0 &lt;= N2
-============================
- &lt;is_e {T}&gt; (tyabs S Ty E1)
-</pre>
-<pre class="code extensibella"id="7">
- &lt; <b>L: apply lt_plus_one to Rel1 _.</b>
-
-Subgoal 4:
-
-Variables: N N2 E1 Ty S
-IH : forall N E, &lt;is_e {ES}&gt; E N -&gt; acc N * -&gt; &lt;is_e {T}&gt; E
-IH1 : forall N E, &lt;is_e {ES}&gt; E N ** -&gt; acc N @ -&gt; &lt;is_e {T}&gt; E
-Rel : &lt;is_e {ES}&gt; (tyabs S Ty E1) N @@
-Acc : acc N @
-Rel1 : 1 + N2 = N
-Rel2 : is_string S
-Rel3 : is_ty Ty
-Rel4 : &lt;is_e {ES}&gt; E1 N2 **
-H1 : is_integer N2
-H2 : 0 &lt;= N2
-L : N2 &lt; N
-============================
- &lt;is_e {T}&gt; (tyabs S Ty E1)
-</pre>
-<pre class="code extensibella"id="8">
- &lt; <b>Acc: case Acc.</b>
-
-Subgoal 4:
-
-Variables: N N2 E1 Ty S
-IH : forall N E, &lt;is_e {ES}&gt; E N -&gt; acc N * -&gt; &lt;is_e {T}&gt; E
-IH1 : forall N E, &lt;is_e {ES}&gt; E N ** -&gt; acc N @ -&gt; &lt;is_e {T}&gt; E
-Rel : &lt;is_e {ES}&gt; (tyabs S Ty E1) N @@
-Rel1 : 1 + N2 = N
-Rel2 : is_string S
-Rel3 : is_ty Ty
-Rel4 : &lt;is_e {ES}&gt; E1 N2 **
-H1 : is_integer N2
-H2 : 0 &lt;= N2
-L : N2 &lt; N
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-============================
- &lt;is_e {T}&gt; (tyabs S Ty E1)
-</pre>
-<pre class="code extensibella"id="9">
- &lt; <b>A2: apply Acc to _ L.</b>
-
-Subgoal 4:
-
-Variables: N N2 E1 Ty S
-IH : forall N E, &lt;is_e {ES}&gt; E N -&gt; acc N * -&gt; &lt;is_e {T}&gt; E
-IH1 : forall N E, &lt;is_e {ES}&gt; E N ** -&gt; acc N @ -&gt; &lt;is_e {T}&gt; E
-Rel : &lt;is_e {ES}&gt; (tyabs S Ty E1) N @@
-Rel1 : 1 + N2 = N
-Rel2 : is_string S
-Rel3 : is_ty Ty
-Rel4 : &lt;is_e {ES}&gt; E1 N2 **
-H1 : is_integer N2
-H2 : 0 &lt;= N2
-L : N2 &lt; N
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-A2 : acc N2 *
-============================
- &lt;is_e {T}&gt; (tyabs S Ty E1)
-</pre>
-<pre class="code extensibella"id="10">
- &lt; <b>apply IH to Rel4 A2.</b>
-
-Subgoal 4:
-
-Variables: N N2 E1 Ty S
-IH : forall N E, &lt;is_e {ES}&gt; E N -&gt; acc N * -&gt; &lt;is_e {T}&gt; E
-IH1 : forall N E, &lt;is_e {ES}&gt; E N ** -&gt; acc N @ -&gt; &lt;is_e {T}&gt; E
-Rel : &lt;is_e {ES}&gt; (tyabs S Ty E1) N @@
-Rel1 : 1 + N2 = N
-Rel2 : is_string S
-Rel3 : is_ty Ty
-Rel4 : &lt;is_e {ES}&gt; E1 N2 **
-H1 : is_integer N2
-H2 : 0 &lt;= N2
-L : N2 &lt; N
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-A2 : acc N2 *
-H3 : &lt;is_e {T}&gt; E1
-============================
- &lt;is_e {T}&gt; (tyabs S Ty E1)
-</pre>
-<pre class="code extensibella"id="11">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="12">
+<pre class="code extensibella"id="7">
  &lt; <b>Prove_Constraint lambda_calculus:host:trans_same.</b>
 
 Variables: E2 Body X Ty
@@ -192,7 +84,7 @@ Hyp1 : |{e}- tyabs X Ty Body ~~&gt; E2
 ============================
  abs X Body = E2
 </pre>
-<pre class="code extensibella"id="13">
+<pre class="code extensibella"id="8">
  &lt; <b>case Hyp1.</b>
 
 Variables: Body X Ty
@@ -200,12 +92,12 @@ Hyp : |{e}- tyabs X Ty Body ~~&gt; abs X Body
 ============================
  abs X Body = abs X Body
 </pre>
-<pre class="code extensibella"id="14">
+<pre class="code extensibella"id="9">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="15">
+<pre class="code extensibella"id="10">
  &lt; <b>Prove lambda_calculus:host:subst_exists.</b>
 
 Subgoal 4:
@@ -221,7 +113,7 @@ IsE3 : is_e E1 *
 ============================
  exists S1, subst X R (tyabs S Ty E1) S1
 </pre>
-<pre class="code extensibella"id="16">
+<pre class="code extensibella"id="11">
  &lt; <b>Or: apply is_string_eq_or_not to IsX IsE1.</b>
 
 Subgoal 4:
@@ -238,7 +130,7 @@ Or : X = S \/ (X = S -&gt; false)
 ============================
  exists S1, subst X R (tyabs S Ty E1) S1
 </pre>
-<pre class="code extensibella"id="17">
+<pre class="code extensibella"id="12">
  &lt; <b>Eq: case Or.</b>
 
 Subgoal 4.1:
@@ -254,7 +146,7 @@ IsE3 : is_e E1 *
 ============================
  exists S1, subst S R (tyabs S Ty E1) S1
 </pre>
-<pre class="code extensibella"id="18">
+<pre class="code extensibella"id="13">
  &lt; <b>search.</b>
 
 Subgoal 4.2:
@@ -271,7 +163,7 @@ Eq : X = S -&gt; false
 ============================
  exists S1, subst X R (tyabs S Ty E1) S1
 </pre>
-<pre class="code extensibella"id="19">
+<pre class="code extensibella"id="14">
  &lt; <b>apply IH to IsE3 IsX IsR.</b>
 
 Subgoal 4.2:
@@ -289,12 +181,12 @@ H1 : subst X R E1 S1
 ============================
  exists S1, subst X R (tyabs S Ty E1) S1
 </pre>
-<pre class="code extensibella"id="20">
+<pre class="code extensibella"id="15">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="21">
+<pre class="code extensibella"id="16">
  &lt; <b>Prove lambda_calculus:host:subst_is.</b>
 
 Subgoal 6:
@@ -309,7 +201,7 @@ S : subst X R (tyabs X Ty Body) (abs X Body) @
 ============================
  is_e (abs X Body)
 </pre>
-<pre class="code extensibella"id="22">
+<pre class="code extensibella"id="17">
  &lt; <b>case IsE.</b>
 
 Subgoal 6:
@@ -326,7 +218,7 @@ H3 : is_e Body
 ============================
  is_e (abs X Body)
 </pre>
-<pre class="code extensibella"id="23">
+<pre class="code extensibella"id="18">
  &lt; <b>search.</b>
 
 Subgoal 7:
@@ -343,7 +235,7 @@ S2 : subst X R Body B *
 ============================
  is_e (abs Y B)
 </pre>
-<pre class="code extensibella"id="24">
+<pre class="code extensibella"id="19">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 7:
@@ -362,7 +254,7 @@ Is2 : is_e Body
 ============================
  is_e (abs Y B)
 </pre>
-<pre class="code extensibella"id="25">
+<pre class="code extensibella"id="20">
  &lt; <b>apply IH to _ _ _ S2.</b>
 
 Subgoal 7:
@@ -382,12 +274,12 @@ H1 : is_e B
 ============================
  is_e (abs Y B)
 </pre>
-<pre class="code extensibella"id="26">
+<pre class="code extensibella"id="21">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="27">
+<pre class="code extensibella"id="22">
  &lt; <b>Prove lambda_calculus:host:eval_is.</b>
 
 Subgoal 3:
@@ -399,7 +291,7 @@ Ev : eval (tyabs X Ty Body) (abs X Body) @
 ============================
  is_e (abs X Body)
 </pre>
-<pre class="code extensibella"id="28">
+<pre class="code extensibella"id="23">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 3:
@@ -413,12 +305,12 @@ Is2 : is_e Body
 ============================
  is_e (abs X Body)
 </pre>
-<pre class="code extensibella"id="29">
+<pre class="code extensibella"id="24">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="30">
+<pre class="code extensibella"id="25">
  &lt; <b>Prove lambda_calculus:host:subst_unique.</b>
 
 Subgoal 6:
@@ -434,7 +326,7 @@ SB : subst X R (tyabs X Ty Body) SB
 ============================
  abs X Body = SB
 </pre>
-<pre class="code extensibella"id="31">
+<pre class="code extensibella"id="26">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 6.1:
@@ -449,7 +341,7 @@ SA : subst X R (tyabs X Ty Body) (abs X Body) @
 ============================
  abs X Body = abs X Body
 </pre>
-<pre class="code extensibella"id="32">
+<pre class="code extensibella"id="27">
  &lt; <b>search.</b>
 
 Subgoal 6.2:
@@ -466,7 +358,7 @@ SB1 : subst X R Body B
 ============================
  abs X Body = abs X B
 </pre>
-<pre class="code extensibella"id="33">
+<pre class="code extensibella"id="28">
  &lt; <b>apply SB to _.</b>
 
 Subgoal 7:
@@ -484,7 +376,7 @@ SA2 : subst X R Body B *
 ============================
  abs Y B = SB
 </pre>
-<pre class="code extensibella"id="34">
+<pre class="code extensibella"id="29">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 7.1:
@@ -501,7 +393,7 @@ SA2 : subst Y R Body B *
 ============================
  abs Y B = abs Y Body
 </pre>
-<pre class="code extensibella"id="35">
+<pre class="code extensibella"id="30">
  &lt; <b>apply SA1 to _.</b>
 
 Subgoal 7.2:
@@ -520,7 +412,7 @@ SB1 : subst X R Body B1
 ============================
  abs Y B = abs Y B1
 </pre>
-<pre class="code extensibella"id="36">
+<pre class="code extensibella"id="31">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 7.2:
@@ -541,7 +433,7 @@ Is2 : is_e Body
 ============================
  abs Y B = abs Y B1
 </pre>
-<pre class="code extensibella"id="37">
+<pre class="code extensibella"id="32">
  &lt; <b>apply IH to _ _ _ SA2 SB1.</b>
 
 Subgoal 7.2:
@@ -562,12 +454,12 @@ Is2 : is_e Body
 ============================
  abs Y B1 = abs Y B1
 </pre>
-<pre class="code extensibella"id="38">
+<pre class="code extensibella"id="33">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="39">
+<pre class="code extensibella"id="34">
  &lt; <b>Prove lambda_calculus:host:eval_unique.</b>
 
 Subgoal 3:
@@ -580,7 +472,7 @@ EvB : eval (tyabs X Ty Body) VB
 ============================
  abs X Body = VB
 </pre>
-<pre class="code extensibella"id="40">
+<pre class="code extensibella"id="35">
  &lt; <b>case EvB.</b>
 
 Subgoal 3:
@@ -592,12 +484,12 @@ EvA : eval (tyabs X Ty Body) (abs X Body) @
 ============================
  abs X Body = abs X Body
 </pre>
-<pre class="code extensibella"id="41">
+<pre class="code extensibella"id="36">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="42">
+<pre class="code extensibella"id="37">
  &lt; <b>Prove_Constraint lambda_calculus:host:trans_subst.</b>
 
 Variables: X R S Body X1 Ty
@@ -609,7 +501,7 @@ S : subst X R (tyabs X1 Ty Body) S
 ============================
  exists S', subst X R (abs X1 Body) S'
 </pre>
-<pre class="code extensibella"id="43">
+<pre class="code extensibella"id="38">
  &lt; <b>S: case S.</b>
 
 Subgoal 1:
@@ -622,7 +514,7 @@ IsR : is_e R
 ============================
  exists S', subst X1 R (abs X1 Body) S'
 </pre>
-<pre class="code extensibella"id="44">
+<pre class="code extensibella"id="39">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -637,12 +529,12 @@ S1 : subst X R Body B
 ============================
  exists S', subst X R (abs X1 Body) S'
 </pre>
-<pre class="code extensibella"id="45">
+<pre class="code extensibella"id="40">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="46">
+<pre class="code extensibella"id="41">
  &lt; <b>Prove_Constraint lambda_calculus:host:trans_subst_same.</b>
 
 Variables: X R S S' Body X1 Ty
@@ -655,7 +547,7 @@ S' : subst X R (abs X1 Body) S'
 ============================
  S = S'
 </pre>
-<pre class="code extensibella"id="47">
+<pre class="code extensibella"id="42">
  &lt; <b>S: case S.</b>
 
 Subgoal 1:
@@ -669,7 +561,7 @@ S' : subst X1 R (abs X1 Body) S'
 ============================
  abs X1 Body = S'
 </pre>
-<pre class="code extensibella"id="48">
+<pre class="code extensibella"id="43">
  &lt; <b>S': case S'.</b>
 
 Subgoal 1.1:
@@ -682,7 +574,7 @@ IsR : is_e R
 ============================
  abs X1 Body = abs X1 Body
 </pre>
-<pre class="code extensibella"id="49">
+<pre class="code extensibella"id="44">
  &lt; <b>search.</b>
 
 Subgoal 1.2:
@@ -697,7 +589,7 @@ S'1 : subst X1 R Body B
 ============================
  abs X1 Body = abs X1 B
 </pre>
-<pre class="code extensibella"id="50">
+<pre class="code extensibella"id="45">
  &lt; <b>apply S' to _.</b>
 
 Subgoal 2:
@@ -713,7 +605,7 @@ S1 : subst X R Body B
 ============================
  abs X1 B = S'
 </pre>
-<pre class="code extensibella"id="51">
+<pre class="code extensibella"id="46">
  &lt; <b>S': case S'.</b>
 
 Subgoal 2.1:
@@ -728,7 +620,7 @@ S1 : subst X1 R Body B
 ============================
  abs X1 B = abs X1 Body
 </pre>
-<pre class="code extensibella"id="52">
+<pre class="code extensibella"id="47">
  &lt; <b>apply S to _.</b>
 
 Subgoal 2.2:
@@ -745,7 +637,7 @@ S'1 : subst X R Body B1
 ============================
  abs X1 B = abs X1 B1
 </pre>
-<pre class="code extensibella"id="53">
+<pre class="code extensibella"id="48">
  &lt; <b>case IsE.</b>
 
 Subgoal 2.2:
@@ -764,7 +656,7 @@ H3 : is_e Body
 ============================
  abs X1 B = abs X1 B1
 </pre>
-<pre class="code extensibella"id="54">
+<pre class="code extensibella"id="49">
  &lt; <b>apply subst_unique to _ _ _ S1 S'1.</b>
 
 Subgoal 2.2:
@@ -783,12 +675,12 @@ H3 : is_e Body
 ============================
  abs X1 B1 = abs X1 B1
 </pre>
-<pre class="code extensibella"id="55">
+<pre class="code extensibella"id="50">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="56">
+<pre class="code extensibella"id="51">
  &lt; <b>Prove_Constraint lambda_calculus:host:trans_eval.</b>
 
 Variables: V Body X Ty
@@ -798,7 +690,7 @@ Ev : eval (tyabs X Ty Body) V
 ============================
  exists V', eval (abs X Body) V'
 </pre>
-<pre class="code extensibella"id="57">
+<pre class="code extensibella"id="52">
  &lt; <b>case Ev.</b>
 
 Variables: Body X Ty
@@ -807,12 +699,12 @@ IsE : is_e (tyabs X Ty Body)
 ============================
  exists V', eval (abs X Body) V'
 </pre>
-<pre class="code extensibella"id="58">
+<pre class="code extensibella"id="53">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="59">
+<pre class="code extensibella"id="54">
  &lt; <b>Prove_Constraint lambda_calculus:host:trans_eval_same.</b>
 
 Variables: V V' Body X Ty
@@ -823,7 +715,7 @@ Ev' : eval (abs X Body) V'
 ============================
  V = V'
 </pre>
-<pre class="code extensibella"id="60">
+<pre class="code extensibella"id="55">
  &lt; <b>case Ev.</b>
 
 Variables: V' Body X Ty
@@ -833,7 +725,7 @@ Ev' : eval (abs X Body) V'
 ============================
  abs X Body = V'
 </pre>
-<pre class="code extensibella"id="61">
+<pre class="code extensibella"id="56">
  &lt; <b>case Ev'.</b>
 
 Variables: Body X Ty
@@ -842,12 +734,17 @@ IsE : is_e (tyabs X Ty Body)
 ============================
  abs X Body = abs X Body
 </pre>
-<pre class="code extensibella"id="62">
+<pre class="code extensibella"id="57">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="63">
+<pre class="code extensibella"id="58">
+ &lt; <b>Add_Ext_Size lambda_calculus:host:eval.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="59">
  &lt; <b>Prove_Ext_Ind lambda_calculus:host:eval.</b>
 
 Subgoal 3:
@@ -855,17 +752,17 @@ Subgoal 3:
 Variables: Body X Ty
 IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {T}&gt; E V
 IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {T}&gt; E V
-Rel : &lt;eval {ES}&gt; (tyabs X Ty Body) (abs X Body) 1 @@
+R : &lt;eval {ES}&gt; (tyabs X Ty Body) (abs X Body) 1 @@
 Acc : acc 1 @
 ============================
  &lt;eval {T}&gt; (tyabs X Ty Body) (abs X Body)
 </pre>
-<pre class="code extensibella"id="64">
+<pre class="code extensibella"id="60">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="65">
+<pre class="code extensibella"id="61">
  &lt; <b>Extensible_Theorem
       type_weakening : forall G E Ty G',
          IsE : is_e E -&gt;
@@ -888,7 +785,7 @@ Ty1 : lookup G X Ty
 ============================
  typeOf G' (var X) Ty
 </pre>
-<pre class="code extensibella"id="66">
+<pre class="code extensibella"id="62">
  &lt; <b>apply Lkp to Ty1.</b>
 
 Subgoal 1:
@@ -905,7 +802,7 @@ H1 : lookup G' X Ty
 ============================
  typeOf G' (var X) Ty
 </pre>
-<pre class="code extensibella"id="67">
+<pre class="code extensibella"id="63">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -921,7 +818,7 @@ Ty1 : typeOf ((X, Ty1)::G) Body Ty2 *
 ============================
  typeOf G' (abs X Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="68">
+<pre class="code extensibella"id="64">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 2:
@@ -938,7 +835,7 @@ Is1 : is_e Body
 ============================
  typeOf G' (abs X Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="69">
+<pre class="code extensibella"id="65">
  &lt; <b>apply IH to _ Ty1 _ with
      G' = (X, Ty1)::G'.</b>
 
@@ -956,7 +853,7 @@ Is1 : is_e Body
 ============================
  forall X1 XTy, lookup ((X, Ty1)::G) X1 XTy -&gt; lookup ((X, Ty1)::G') X1 XTy
 </pre>
-<pre class="code extensibella"id="70">
+<pre class="code extensibella"id="66">
  &lt; <b>intros L.</b>
 
 Subgoal 2.1:
@@ -974,7 +871,7 @@ L : lookup ((X, Ty1)::G) X1 XTy
 ============================
  lookup ((X, Ty1)::G') X1 XTy
 </pre>
-<pre class="code extensibella"id="71">
+<pre class="code extensibella"id="67">
  &lt; <b>L: case L.</b>
 
 Subgoal 2.1.1:
@@ -991,7 +888,7 @@ Is1 : is_e Body
 ============================
  lookup ((X1, XTy)::G') X1 XTy
 </pre>
-<pre class="code extensibella"id="72">
+<pre class="code extensibella"id="68">
  &lt; <b>search.</b>
 
 Subgoal 2.1.2:
@@ -1010,7 +907,7 @@ L1 : lookup G X1 XTy
 ============================
  lookup ((X, Ty1)::G') X1 XTy
 </pre>
-<pre class="code extensibella"id="73">
+<pre class="code extensibella"id="69">
  &lt; <b>apply Lkp to L1.</b>
 
 Subgoal 2.1.2:
@@ -1030,7 +927,7 @@ H1 : lookup G' X1 XTy
 ============================
  lookup ((X, Ty1)::G') X1 XTy
 </pre>
-<pre class="code extensibella"id="74">
+<pre class="code extensibella"id="70">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1048,7 +945,7 @@ H1 : typeOf ((X, Ty1)::G') Body Ty2
 ============================
  typeOf G' (abs X Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="75">
+<pre class="code extensibella"id="71">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -1064,7 +961,7 @@ Ty1 : typeOf ((X, Ty1)::G) Body Ty2 *
 ============================
  typeOf G' (tyabs X Ty1 Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="76">
+<pre class="code extensibella"id="72">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 3:
@@ -1082,7 +979,7 @@ Is2 : is_e Body
 ============================
  typeOf G' (tyabs X Ty1 Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="77">
+<pre class="code extensibella"id="73">
  &lt; <b>apply IH to _ Ty1 _ with
      G' = (X, Ty1)::G'.</b>
 
@@ -1101,7 +998,7 @@ Is2 : is_e Body
 ============================
  forall X1 XTy, lookup ((X, Ty1)::G) X1 XTy -&gt; lookup ((X, Ty1)::G') X1 XTy
 </pre>
-<pre class="code extensibella"id="78">
+<pre class="code extensibella"id="74">
  &lt; <b>intros L.</b>
 
 Subgoal 3.1:
@@ -1120,7 +1017,7 @@ L : lookup ((X, Ty1)::G) X1 XTy
 ============================
  lookup ((X, Ty1)::G') X1 XTy
 </pre>
-<pre class="code extensibella"id="79">
+<pre class="code extensibella"id="75">
  &lt; <b>L: case L.</b>
 
 Subgoal 3.1.1:
@@ -1138,7 +1035,7 @@ Is2 : is_e Body
 ============================
  lookup ((X1, XTy)::G') X1 XTy
 </pre>
-<pre class="code extensibella"id="80">
+<pre class="code extensibella"id="76">
  &lt; <b>search.</b>
 
 Subgoal 3.1.2:
@@ -1158,7 +1055,7 @@ L1 : lookup G X1 XTy
 ============================
  lookup ((X, Ty1)::G') X1 XTy
 </pre>
-<pre class="code extensibella"id="81">
+<pre class="code extensibella"id="77">
  &lt; <b>apply Lkp to L1.</b>
 
 Subgoal 3.1.2:
@@ -1179,7 +1076,7 @@ H1 : lookup G' X1 XTy
 ============================
  lookup ((X, Ty1)::G') X1 XTy
 </pre>
-<pre class="code extensibella"id="82">
+<pre class="code extensibella"id="78">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -1198,7 +1095,7 @@ H1 : typeOf ((X, Ty1)::G') Body Ty2
 ============================
  typeOf G' (tyabs X Ty1 Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="83">
+<pre class="code extensibella"id="79">
  &lt; <b>search.</b>
 
 Subgoal 4:
@@ -1215,7 +1112,7 @@ Ty2 : typeOf G E2 Ty1 *
 ============================
  typeOf G' (app E1 E2) Ty
 </pre>
-<pre class="code extensibella"id="84">
+<pre class="code extensibella"id="80">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 4:
@@ -1233,7 +1130,7 @@ Is1 : is_e E2
 ============================
  typeOf G' (app E1 E2) Ty
 </pre>
-<pre class="code extensibella"id="85">
+<pre class="code extensibella"id="81">
  &lt; <b>apply IH to _ Ty1 _.</b>
 
 Subgoal 4:
@@ -1252,7 +1149,7 @@ H1 : typeOf G' E1 (arrowTy Ty1 Ty)
 ============================
  typeOf G' (app E1 E2) Ty
 </pre>
-<pre class="code extensibella"id="86">
+<pre class="code extensibella"id="82">
  &lt; <b>apply IH to _ Ty2 _.</b>
 
 Subgoal 4:
@@ -1272,7 +1169,7 @@ H2 : typeOf G' E2 Ty1
 ============================
  typeOf G' (app E1 E2) Ty
 </pre>
-<pre class="code extensibella"id="87">
+<pre class="code extensibella"id="83">
  &lt; <b>search.</b>
 
 Subgoal 5:
@@ -1281,15 +1178,15 @@ Variables: G Ty G' E_T
 IH : forall G E Ty G',
        is_e E -&gt; typeOf G E Ty * -&gt; (forall X XTy,
          lookup G X XTy -&gt; lookup G' X XTy) -&gt; typeOf G' E Ty
-IsE : is_e &lt;unknown e&gt;
-Ty : typeOf G &lt;unknown e&gt; Ty @
+IsE : is_e &lt;unknown I e&gt;
+Ty : typeOf G &lt;unknown I e&gt; Ty @
 Lkp : forall X XTy, lookup G X XTy -&gt; lookup G' X XTy
-Ty1 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
+Ty1 : |{e}- &lt;unknown I e&gt; ~~&gt; E_T
 Ty2 : typeOf G E_T Ty *
 ============================
- typeOf G' &lt;unknown e&gt; Ty
+ typeOf G' &lt;unknown I e&gt; Ty
 </pre>
-<pre class="code extensibella"id="88">
+<pre class="code extensibella"id="84">
  &lt; <b>apply trans_is to Ty1 IsE.</b>
 
 Subgoal 5:
@@ -1298,16 +1195,16 @@ Variables: G Ty G' E_T
 IH : forall G E Ty G',
        is_e E -&gt; typeOf G E Ty * -&gt; (forall X XTy,
          lookup G X XTy -&gt; lookup G' X XTy) -&gt; typeOf G' E Ty
-IsE : is_e &lt;unknown e&gt;
-Ty : typeOf G &lt;unknown e&gt; Ty @
+IsE : is_e &lt;unknown I e&gt;
+Ty : typeOf G &lt;unknown I e&gt; Ty @
 Lkp : forall X XTy, lookup G X XTy -&gt; lookup G' X XTy
-Ty1 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
+Ty1 : |{e}- &lt;unknown I e&gt; ~~&gt; E_T
 Ty2 : typeOf G E_T Ty *
 H1 : is_e E_T
 ============================
- typeOf G' &lt;unknown e&gt; Ty
+ typeOf G' &lt;unknown I e&gt; Ty
 </pre>
-<pre class="code extensibella"id="89">
+<pre class="code extensibella"id="85">
  &lt; <b>apply IH to _ Ty2 _.</b>
 
 Subgoal 5:
@@ -1316,29 +1213,29 @@ Variables: G Ty G' E_T
 IH : forall G E Ty G',
        is_e E -&gt; typeOf G E Ty * -&gt; (forall X XTy,
          lookup G X XTy -&gt; lookup G' X XTy) -&gt; typeOf G' E Ty
-IsE : is_e &lt;unknown e&gt;
-Ty : typeOf G &lt;unknown e&gt; Ty @
+IsE : is_e &lt;unknown I e&gt;
+Ty : typeOf G &lt;unknown I e&gt; Ty @
 Lkp : forall X XTy, lookup G X XTy -&gt; lookup G' X XTy
-Ty1 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
+Ty1 : |{e}- &lt;unknown I e&gt; ~~&gt; E_T
 Ty2 : typeOf G E_T Ty *
 H1 : is_e E_T
 H2 : typeOf G' E_T Ty
 ============================
- typeOf G' &lt;unknown e&gt; Ty
+ typeOf G' &lt;unknown I e&gt; Ty
 </pre>
-<pre class="code extensibella"id="90">
+<pre class="code extensibella"id="86">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="91">
+<pre class="code extensibella"id="87">
  &lt; <b>Theorem any_ctx :
      forall E Ty G, is_e E -&gt; typeOf [] E Ty -&gt; typeOf G E Ty.</b>
 
 ============================
  forall E Ty G, is_e E -&gt; typeOf [] E Ty -&gt; typeOf G E Ty
 </pre>
-<pre class="code extensibella"id="92">
+<pre class="code extensibella"id="88">
  &lt; <b>intros Is Ty.</b>
 
 Variables: E Ty G
@@ -1347,7 +1244,7 @@ Ty : typeOf [] E Ty
 ============================
  typeOf G E Ty
 </pre>
-<pre class="code extensibella"id="93">
+<pre class="code extensibella"id="89">
  &lt; <b>backchain type_weakening to
    G = [].</b>
 
@@ -1357,7 +1254,7 @@ Ty : typeOf [] E Ty
 ============================
  forall X XTy, lookup [] X XTy -&gt; lookup G X XTy
 </pre>
-<pre class="code extensibella"id="94">
+<pre class="code extensibella"id="90">
  &lt; <b>intros L.</b>
 
 Variables: E Ty G X XTy
@@ -1367,12 +1264,12 @@ L : lookup [] X XTy
 ============================
  lookup G X XTy
 </pre>
-<pre class="code extensibella"id="95">
+<pre class="code extensibella"id="91">
  &lt; <b>case L.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="96">
+<pre class="code extensibella"id="92">
  &lt; <b>Extensible_Theorem
       tyabs_or_not : forall E,
          IsE : is_e E -&gt;
@@ -1392,7 +1289,7 @@ IsE1 : is_string S
  (exists X Ty B, var S = tyabs X Ty B) \/
  ((exists X Ty B, var S = tyabs X Ty B) -&gt; false)
 </pre>
-<pre class="code extensibella"id="97">
+<pre class="code extensibella"id="93">
  &lt; <b>right.</b>
 
 Subgoal 1:
@@ -1406,7 +1303,7 @@ IsE1 : is_string S
 ============================
  (exists X Ty B, var S = tyabs X Ty B) -&gt; false
 </pre>
-<pre class="code extensibella"id="98">
+<pre class="code extensibella"id="94">
  &lt; <b>intros E.</b>
 
 Subgoal 1:
@@ -1421,7 +1318,7 @@ E : exists X Ty B, var S = tyabs X Ty B
 ============================
  false
 </pre>
-<pre class="code extensibella"id="99">
+<pre class="code extensibella"id="95">
  &lt; <b>case E.</b>
 
 Subgoal 2:
@@ -1437,7 +1334,7 @@ IsE2 : is_e E1 *
  (exists X Ty B, abs S E1 = tyabs X Ty B) \/
  ((exists X Ty B, abs S E1 = tyabs X Ty B) -&gt; false)
 </pre>
-<pre class="code extensibella"id="100">
+<pre class="code extensibella"id="96">
  &lt; <b>right.</b>
 
 Subgoal 2:
@@ -1452,7 +1349,7 @@ IsE2 : is_e E1 *
 ============================
  (exists X Ty B, abs S E1 = tyabs X Ty B) -&gt; false
 </pre>
-<pre class="code extensibella"id="101">
+<pre class="code extensibella"id="97">
  &lt; <b>intros E.</b>
 
 Subgoal 2:
@@ -1468,7 +1365,7 @@ E : exists X Ty B, abs S E1 = tyabs X Ty B
 ============================
  false
 </pre>
-<pre class="code extensibella"id="102">
+<pre class="code extensibella"id="98">
  &lt; <b>case E.</b>
 
 Subgoal 3:
@@ -1484,7 +1381,7 @@ IsE2 : is_e E2 *
  (exists X Ty B, app E1 E2 = tyabs X Ty B) \/
  ((exists X Ty B, app E1 E2 = tyabs X Ty B) -&gt; false)
 </pre>
-<pre class="code extensibella"id="103">
+<pre class="code extensibella"id="99">
  &lt; <b>right.</b>
 
 Subgoal 3:
@@ -1499,7 +1396,7 @@ IsE2 : is_e E2 *
 ============================
  (exists X Ty B, app E1 E2 = tyabs X Ty B) -&gt; false
 </pre>
-<pre class="code extensibella"id="104">
+<pre class="code extensibella"id="100">
  &lt; <b>intros E.</b>
 
 Subgoal 3:
@@ -1515,7 +1412,7 @@ E : exists X Ty B, app E1 E2 = tyabs X Ty B
 ============================
  false
 </pre>
-<pre class="code extensibella"id="105">
+<pre class="code extensibella"id="101">
  &lt; <b>case E.</b>
 
 Subgoal 4:
@@ -1532,59 +1429,59 @@ IsE3 : is_e E1 *
  (exists X Ty1 B, tyabs S Ty E1 = tyabs X Ty1 B) \/
  ((exists X Ty1 B, tyabs S Ty E1 = tyabs X Ty1 B) -&gt; false)
 </pre>
-<pre class="code extensibella"id="106">
+<pre class="code extensibella"id="102">
  &lt; <b>search.</b>
 
 Subgoal 5:
 
-Variables: Trans
+Variables: X_T
 IH : forall E,
        is_e E * -&gt; (exists X Ty B, E = tyabs X Ty B) \/
        ((exists X Ty B, E = tyabs X Ty B) -&gt; false)
-IsE : is_e &lt;unknown e&gt; @
-IsE1 : is_e Trans *
-IsE2 : |{e}- &lt;unknown e&gt; ~~&gt; Trans
+IsE : is_e &lt;unknown K is_e&gt; @
+IsE1 : |{e}- &lt;unknown K is_e&gt; ~~&gt; X_T
+IsE2 : is_e X_T *
 ============================
- (exists X Ty B, &lt;unknown e&gt; = tyabs X Ty B) \/
- ((exists X Ty B, &lt;unknown e&gt; = tyabs X Ty B) -&gt; false)
+ (exists X Ty B, &lt;unknown K is_e&gt; = tyabs X Ty B) \/
+ ((exists X Ty B, &lt;unknown K is_e&gt; = tyabs X Ty B) -&gt; false)
 </pre>
-<pre class="code extensibella"id="107">
+<pre class="code extensibella"id="103">
  &lt; <b>right.</b>
 
 Subgoal 5:
 
-Variables: Trans
+Variables: X_T
 IH : forall E,
        is_e E * -&gt; (exists X Ty B, E = tyabs X Ty B) \/
        ((exists X Ty B, E = tyabs X Ty B) -&gt; false)
-IsE : is_e &lt;unknown e&gt; @
-IsE1 : is_e Trans *
-IsE2 : |{e}- &lt;unknown e&gt; ~~&gt; Trans
+IsE : is_e &lt;unknown K is_e&gt; @
+IsE1 : |{e}- &lt;unknown K is_e&gt; ~~&gt; X_T
+IsE2 : is_e X_T *
 ============================
- (exists X Ty B, &lt;unknown e&gt; = tyabs X Ty B) -&gt; false
+ (exists X Ty B, &lt;unknown K is_e&gt; = tyabs X Ty B) -&gt; false
 </pre>
-<pre class="code extensibella"id="108">
+<pre class="code extensibella"id="104">
  &lt; <b>intros E.</b>
 
 Subgoal 5:
 
-Variables: Trans
+Variables: X_T
 IH : forall E,
        is_e E * -&gt; (exists X Ty B, E = tyabs X Ty B) \/
        ((exists X Ty B, E = tyabs X Ty B) -&gt; false)
-IsE : is_e &lt;unknown e&gt; @
-IsE1 : is_e Trans *
-IsE2 : |{e}- &lt;unknown e&gt; ~~&gt; Trans
-E : exists X Ty B, &lt;unknown e&gt; = tyabs X Ty B
+IsE : is_e &lt;unknown K is_e&gt; @
+IsE1 : |{e}- &lt;unknown K is_e&gt; ~~&gt; X_T
+IsE2 : is_e X_T *
+E : exists X Ty B, &lt;unknown K is_e&gt; = tyabs X Ty B
 ============================
  false
 </pre>
-<pre class="code extensibella"id="109">
+<pre class="code extensibella"id="105">
  &lt; <b>case E.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="110">
+<pre class="code extensibella"id="106">
  &lt; <b>Extensible_Theorem
       subst_type_preservation : forall X R E S G TyE TyX G',
          IsE : is_e E -&gt;
@@ -1616,7 +1513,7 @@ TyE1 : lookup G X1 TyE
 ============================
  typeOf G' S TyE
 </pre>
-<pre class="code extensibella"id="111">
+<pre class="code extensibella"id="107">
  &lt; <b>S: case S.</b>
 
 Subgoal 1.1:
@@ -1636,7 +1533,7 @@ TyE1 : lookup G X1 TyE
 ============================
  typeOf G' S TyE
 </pre>
-<pre class="code extensibella"id="112">
+<pre class="code extensibella"id="108">
  &lt; <b>apply any_ctx to _ TyR with
      G = G'.</b>
 
@@ -1658,7 +1555,7 @@ H1 : typeOf G' S TyX
 ============================
  typeOf G' S TyE
 </pre>
-<pre class="code extensibella"id="113">
+<pre class="code extensibella"id="109">
  &lt; <b>apply lookup_unique to Lkp TyE1.</b>
 
 Subgoal 1.1:
@@ -1679,7 +1576,7 @@ H1 : typeOf G' S TyE
 ============================
  typeOf G' S TyE
 </pre>
-<pre class="code extensibella"id="114">
+<pre class="code extensibella"id="110">
  &lt; <b>search.</b>
 
 Subgoal 1.2:
@@ -1700,7 +1597,7 @@ S : X = X1 -&gt; false
 ============================
  typeOf G' (var X1) TyE
 </pre>
-<pre class="code extensibella"id="115">
+<pre class="code extensibella"id="111">
  &lt; <b>NEq: assert X1 = X -&gt; false.</b>
 
 Subgoal 1.2.1:
@@ -1721,7 +1618,7 @@ S : X = X1 -&gt; false
 ============================
  X1 = X -&gt; false
 </pre>
-<pre class="code extensibella"id="116">
+<pre class="code extensibella"id="112">
  &lt; <b>intros E.</b>
 
 Subgoal 1.2.1:
@@ -1743,7 +1640,7 @@ E : X1 = X
 ============================
  false
 </pre>
-<pre class="code extensibella"id="117">
+<pre class="code extensibella"id="113">
  &lt; <b>case E.</b>
 
 Subgoal 1.2.1:
@@ -1764,7 +1661,7 @@ S : X = X -&gt; false
 ============================
  false
 </pre>
-<pre class="code extensibella"id="118">
+<pre class="code extensibella"id="114">
  &lt; <b>backchain S.</b>
 
 Subgoal 1.2:
@@ -1786,7 +1683,7 @@ NEq : X1 = X -&gt; false
 ============================
  typeOf G' (var X1) TyE
 </pre>
-<pre class="code extensibella"id="119">
+<pre class="code extensibella"id="115">
  &lt; <b>apply select_lookup to TyE1 Slct NEq.</b>
 
 Subgoal 1.2:
@@ -1809,7 +1706,7 @@ H1 : lookup G' X1 TyE
 ============================
  typeOf G' (var X1) TyE
 </pre>
-<pre class="code extensibella"id="120">
+<pre class="code extensibella"id="116">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1830,7 +1727,7 @@ TyE1 : typeOf ((X1, Ty1)::G) Body Ty2 *
 ============================
  typeOf G' S (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="121">
+<pre class="code extensibella"id="117">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 2:
@@ -1852,7 +1749,7 @@ Is1 : is_e Body
 ============================
  typeOf G' S (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="122">
+<pre class="code extensibella"id="118">
  &lt; <b>S: case S.</b>
 
 Subgoal 2.1:
@@ -1873,7 +1770,7 @@ Is1 : is_e Body
 ============================
  typeOf G' (abs X1 Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="123">
+<pre class="code extensibella"id="119">
  &lt; <b>L: assert forall Z ZTy,
      lookup ((X1, Ty1)::G) Z ZTy -&gt; lookup ((X1, Ty1)::G') Z ZTy.</b>
 
@@ -1895,7 +1792,7 @@ Is1 : is_e Body
 ============================
  forall Z ZTy, lookup ((X1, Ty1)::G) Z ZTy -&gt; lookup ((X1, Ty1)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="124">
+<pre class="code extensibella"id="120">
  &lt; <b>intros L.</b>
 
 Subgoal 2.1.1:
@@ -1917,7 +1814,7 @@ L : lookup ((X1, Ty1)::G) Z ZTy
 ============================
  lookup ((X1, Ty1)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="125">
+<pre class="code extensibella"id="121">
  &lt; <b>L: case L.</b>
 
 Subgoal 2.1.1.1:
@@ -1938,7 +1835,7 @@ Is1 : is_e Body
 ============================
  lookup ((Z, ZTy)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="126">
+<pre class="code extensibella"id="122">
  &lt; <b>search.</b>
 
 Subgoal 2.1.1.2:
@@ -1961,7 +1858,7 @@ L1 : lookup G Z ZTy
 ============================
  lookup ((X1, Ty1)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="127">
+<pre class="code extensibella"id="123">
  &lt; <b>NEq: assert Z = X1 -&gt; false.</b>
 
 Subgoal 2.1.1.2.1:
@@ -1984,7 +1881,7 @@ L1 : lookup G Z ZTy
 ============================
  Z = X1 -&gt; false
 </pre>
-<pre class="code extensibella"id="128">
+<pre class="code extensibella"id="124">
  &lt; <b>intros E.</b>
 
 Subgoal 2.1.1.2.1:
@@ -2008,7 +1905,7 @@ E : Z = X1
 ============================
  false
 </pre>
-<pre class="code extensibella"id="129">
+<pre class="code extensibella"id="125">
  &lt; <b>case E.</b>
 
 Subgoal 2.1.1.2.1:
@@ -2031,7 +1928,7 @@ L1 : lookup G X1 ZTy
 ============================
  false
 </pre>
-<pre class="code extensibella"id="130">
+<pre class="code extensibella"id="126">
  &lt; <b>backchain L.</b>
 
 Subgoal 2.1.1.2:
@@ -2055,7 +1952,7 @@ NEq : Z = X1 -&gt; false
 ============================
  lookup ((X1, Ty1)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="131">
+<pre class="code extensibella"id="127">
  &lt; <b>apply select_lookup to L1 Slct NEq.</b>
 
 Subgoal 2.1.1.2:
@@ -2080,7 +1977,7 @@ H1 : lookup G' Z ZTy
 ============================
  lookup ((X1, Ty1)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="132">
+<pre class="code extensibella"id="128">
  &lt; <b>search.</b>
 
 Subgoal 2.1:
@@ -2102,7 +1999,7 @@ L : forall Z ZTy, lookup ((X1, Ty1)::G) Z ZTy -&gt; lookup ((X1, Ty1)::G') Z ZTy
 ============================
  typeOf G' (abs X1 Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="133">
+<pre class="code extensibella"id="129">
  &lt; <b>apply type_weakening to _ TyE1 L.</b>
 
 Subgoal 2.1:
@@ -2125,7 +2022,7 @@ H1 : typeOf ((X1, Ty1)::G') Body Ty2
 ============================
  typeOf G' (abs X1 Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="134">
+<pre class="code extensibella"id="130">
  &lt; <b>search.</b>
 
 Subgoal 2.2:
@@ -2148,7 +2045,7 @@ S1 : subst X R Body B
 ============================
  typeOf G' (abs X1 B) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="135">
+<pre class="code extensibella"id="131">
  &lt; <b>assert X1 = X -&gt; false.</b>
 
 Subgoal 2.2.1:
@@ -2171,7 +2068,7 @@ S1 : subst X R Body B
 ============================
  X1 = X -&gt; false
 </pre>
-<pre class="code extensibella"id="136">
+<pre class="code extensibella"id="132">
  &lt; <b>intros E.</b>
 
 Subgoal 2.2.1:
@@ -2195,7 +2092,7 @@ E : X1 = X
 ============================
  false
 </pre>
-<pre class="code extensibella"id="137">
+<pre class="code extensibella"id="133">
  &lt; <b>case E.</b>
 
 Subgoal 2.2.1:
@@ -2218,7 +2115,7 @@ S1 : subst X R Body B
 ============================
  false
 </pre>
-<pre class="code extensibella"id="138">
+<pre class="code extensibella"id="134">
  &lt; <b>backchain S.</b>
 
 Subgoal 2.2:
@@ -2242,7 +2139,7 @@ H1 : X1 = X -&gt; false
 ============================
  typeOf G' (abs X1 B) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="139">
+<pre class="code extensibella"id="135">
  &lt; <b>apply IH to _ _ _ S1 TyE1 _ _ _ with
      G' = (X1, Ty1)::G'.</b>
 
@@ -2268,7 +2165,7 @@ H2 : typeOf ((X1, Ty1)::G') B Ty2
 ============================
  typeOf G' (abs X1 B) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="140">
+<pre class="code extensibella"id="136">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -2289,7 +2186,7 @@ TyE1 : typeOf ((X1, Ty1)::G) Body Ty2 *
 ============================
  typeOf G' S (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="141">
+<pre class="code extensibella"id="137">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 3:
@@ -2312,7 +2209,7 @@ Is2 : is_e Body
 ============================
  typeOf G' S (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="142">
+<pre class="code extensibella"id="138">
  &lt; <b>S: case S.</b>
 
 Subgoal 3.1:
@@ -2334,7 +2231,7 @@ Is2 : is_e Body
 ============================
  typeOf G' (abs X1 Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="143">
+<pre class="code extensibella"id="139">
  &lt; <b>L: assert forall Z ZTy,
      lookup ((X1, Ty1)::G) Z ZTy -&gt; lookup ((X1, Ty1)::G') Z ZTy.</b>
 
@@ -2357,7 +2254,7 @@ Is2 : is_e Body
 ============================
  forall Z ZTy, lookup ((X1, Ty1)::G) Z ZTy -&gt; lookup ((X1, Ty1)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="144">
+<pre class="code extensibella"id="140">
  &lt; <b>intros L.</b>
 
 Subgoal 3.1.1:
@@ -2380,7 +2277,7 @@ L : lookup ((X1, Ty1)::G) Z ZTy
 ============================
  lookup ((X1, Ty1)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="145">
+<pre class="code extensibella"id="141">
  &lt; <b>L: case L.</b>
 
 Subgoal 3.1.1.1:
@@ -2402,7 +2299,7 @@ Is2 : is_e Body
 ============================
  lookup ((Z, ZTy)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="146">
+<pre class="code extensibella"id="142">
  &lt; <b>search.</b>
 
 Subgoal 3.1.1.2:
@@ -2426,7 +2323,7 @@ L1 : lookup G Z ZTy
 ============================
  lookup ((X1, Ty1)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="147">
+<pre class="code extensibella"id="143">
  &lt; <b>NEq: assert Z = X1 -&gt; false.</b>
 
 Subgoal 3.1.1.2.1:
@@ -2450,7 +2347,7 @@ L1 : lookup G Z ZTy
 ============================
  Z = X1 -&gt; false
 </pre>
-<pre class="code extensibella"id="148">
+<pre class="code extensibella"id="144">
  &lt; <b>intros E.</b>
 
 Subgoal 3.1.1.2.1:
@@ -2475,7 +2372,7 @@ E : Z = X1
 ============================
  false
 </pre>
-<pre class="code extensibella"id="149">
+<pre class="code extensibella"id="145">
  &lt; <b>case E.</b>
 
 Subgoal 3.1.1.2.1:
@@ -2499,7 +2396,7 @@ L1 : lookup G X1 ZTy
 ============================
  false
 </pre>
-<pre class="code extensibella"id="150">
+<pre class="code extensibella"id="146">
  &lt; <b>backchain L.</b>
 
 Subgoal 3.1.1.2:
@@ -2524,7 +2421,7 @@ NEq : Z = X1 -&gt; false
 ============================
  lookup ((X1, Ty1)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="151">
+<pre class="code extensibella"id="147">
  &lt; <b>apply select_lookup to L1 Slct NEq.</b>
 
 Subgoal 3.1.1.2:
@@ -2550,7 +2447,7 @@ H1 : lookup G' Z ZTy
 ============================
  lookup ((X1, Ty1)::G') Z ZTy
 </pre>
-<pre class="code extensibella"id="152">
+<pre class="code extensibella"id="148">
  &lt; <b>search.</b>
 
 Subgoal 3.1:
@@ -2573,7 +2470,7 @@ L : forall Z ZTy, lookup ((X1, Ty1)::G) Z ZTy -&gt; lookup ((X1, Ty1)::G') Z ZTy
 ============================
  typeOf G' (abs X1 Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="153">
+<pre class="code extensibella"id="149">
  &lt; <b>apply type_weakening to _ TyE1 L.</b>
 
 Subgoal 3.1:
@@ -2597,7 +2494,7 @@ H1 : typeOf ((X1, Ty1)::G') Body Ty2
 ============================
  typeOf G' (abs X1 Body) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="154">
+<pre class="code extensibella"id="150">
  &lt; <b>search.</b>
 
 Subgoal 3.2:
@@ -2621,7 +2518,7 @@ S1 : subst X R Body B
 ============================
  typeOf G' (abs X1 B) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="155">
+<pre class="code extensibella"id="151">
  &lt; <b>assert X1 = X -&gt; false.</b>
 
 Subgoal 3.2.1:
@@ -2645,7 +2542,7 @@ S1 : subst X R Body B
 ============================
  X1 = X -&gt; false
 </pre>
-<pre class="code extensibella"id="156">
+<pre class="code extensibella"id="152">
  &lt; <b>intros E.</b>
 
 Subgoal 3.2.1:
@@ -2670,7 +2567,7 @@ E : X1 = X
 ============================
  false
 </pre>
-<pre class="code extensibella"id="157">
+<pre class="code extensibella"id="153">
  &lt; <b>case E.</b>
 
 Subgoal 3.2.1:
@@ -2694,7 +2591,7 @@ S1 : subst X R Body B
 ============================
  false
 </pre>
-<pre class="code extensibella"id="158">
+<pre class="code extensibella"id="154">
  &lt; <b>backchain S.</b>
 
 Subgoal 3.2:
@@ -2719,7 +2616,7 @@ H1 : X1 = X -&gt; false
 ============================
  typeOf G' (abs X1 B) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="159">
+<pre class="code extensibella"id="155">
  &lt; <b>apply IH to _ _ _ S1 TyE1 _ _ _ with
      G' = (X1, Ty1)::G'.</b>
 
@@ -2746,7 +2643,7 @@ H2 : typeOf ((X1, Ty1)::G') B Ty2
 ============================
  typeOf G' (abs X1 B) (arrowTy Ty1 Ty2)
 </pre>
-<pre class="code extensibella"id="160">
+<pre class="code extensibella"id="156">
  &lt; <b>search.</b>
 
 Subgoal 4:
@@ -2768,7 +2665,7 @@ TyE2 : typeOf G E2 Ty1 *
 ============================
  typeOf G' S TyE
 </pre>
-<pre class="code extensibella"id="161">
+<pre class="code extensibella"id="157">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 4:
@@ -2791,7 +2688,7 @@ Is1 : is_e E2
 ============================
  typeOf G' S TyE
 </pre>
-<pre class="code extensibella"id="162">
+<pre class="code extensibella"id="158">
  &lt; <b>S: case S.</b>
 
 Subgoal 4:
@@ -2815,7 +2712,7 @@ S1 : subst X R E2 S2
 ============================
  typeOf G' (app S1 S2) TyE
 </pre>
-<pre class="code extensibella"id="163">
+<pre class="code extensibella"id="159">
  &lt; <b>apply IH to _ _ _ S TyE1 _ _ _.</b>
 
 Subgoal 4:
@@ -2840,7 +2737,7 @@ H1 : typeOf G' S1 (arrowTy Ty1 TyE)
 ============================
  typeOf G' (app S1 S2) TyE
 </pre>
-<pre class="code extensibella"id="164">
+<pre class="code extensibella"id="160">
  &lt; <b>apply IH to _ _ _ S1 TyE2 _ _ _.</b>
 
 Subgoal 4:
@@ -2866,7 +2763,7 @@ H2 : typeOf G' S2 Ty1
 ============================
  typeOf G' (app S1 S2) TyE
 </pre>
-<pre class="code extensibella"id="165">
+<pre class="code extensibella"id="161">
  &lt; <b>search.</b>
 
 Subgoal 5:
@@ -2875,20 +2772,20 @@ Variables: X R S G TyE TyX G' E_T
 IH : forall X R E S G TyE TyX G',
        is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S -&gt; typeOf G E TyE * -&gt; typeOf [] R TyX -&gt;
        lookup G X TyX -&gt; select (X, TyX) G' G -&gt; typeOf G' S TyE
-IsE : is_e &lt;unknown e&gt;
+IsE : is_e &lt;unknown I e&gt;
 IsX : is_string X
 IsR : is_e R
-S : subst X R &lt;unknown e&gt; S
-TyE : typeOf G &lt;unknown e&gt; TyE @
+S : subst X R &lt;unknown I e&gt; S
+TyE : typeOf G &lt;unknown I e&gt; TyE @
 TyR : typeOf [] R TyX
 Lkp : lookup G X TyX
 Slct : select (X, TyX) G' G
-TyE1 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
+TyE1 : |{e}- &lt;unknown I e&gt; ~~&gt; E_T
 TyE2 : typeOf G E_T TyE *
 ============================
  typeOf G' S TyE
 </pre>
-<pre class="code extensibella"id="166">
+<pre class="code extensibella"id="162">
  &lt; <b>ST: apply trans_subst to TyE1 _ _ _ S.</b>
 
 Subgoal 5:
@@ -2897,21 +2794,21 @@ Variables: X R S G TyE TyX G' E_T S'
 IH : forall X R E S G TyE TyX G',
        is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S -&gt; typeOf G E TyE * -&gt; typeOf [] R TyX -&gt;
        lookup G X TyX -&gt; select (X, TyX) G' G -&gt; typeOf G' S TyE
-IsE : is_e &lt;unknown e&gt;
+IsE : is_e &lt;unknown I e&gt;
 IsX : is_string X
 IsR : is_e R
-S : subst X R &lt;unknown e&gt; S
-TyE : typeOf G &lt;unknown e&gt; TyE @
+S : subst X R &lt;unknown I e&gt; S
+TyE : typeOf G &lt;unknown I e&gt; TyE @
 TyR : typeOf [] R TyX
 Lkp : lookup G X TyX
 Slct : select (X, TyX) G' G
-TyE1 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
+TyE1 : |{e}- &lt;unknown I e&gt; ~~&gt; E_T
 TyE2 : typeOf G E_T TyE *
 ST : subst X R E_T S'
 ============================
  typeOf G' S TyE
 </pre>
-<pre class="code extensibella"id="167">
+<pre class="code extensibella"id="163">
  &lt; <b>apply trans_is to TyE1 _.</b>
 
 Subgoal 5:
@@ -2920,22 +2817,22 @@ Variables: X R S G TyE TyX G' E_T S'
 IH : forall X R E S G TyE TyX G',
        is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S -&gt; typeOf G E TyE * -&gt; typeOf [] R TyX -&gt;
        lookup G X TyX -&gt; select (X, TyX) G' G -&gt; typeOf G' S TyE
-IsE : is_e &lt;unknown e&gt;
+IsE : is_e &lt;unknown I e&gt;
 IsX : is_string X
 IsR : is_e R
-S : subst X R &lt;unknown e&gt; S
-TyE : typeOf G &lt;unknown e&gt; TyE @
+S : subst X R &lt;unknown I e&gt; S
+TyE : typeOf G &lt;unknown I e&gt; TyE @
 TyR : typeOf [] R TyX
 Lkp : lookup G X TyX
 Slct : select (X, TyX) G' G
-TyE1 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
+TyE1 : |{e}- &lt;unknown I e&gt; ~~&gt; E_T
 TyE2 : typeOf G E_T TyE *
 ST : subst X R E_T S'
 H1 : is_e E_T
 ============================
  typeOf G' S TyE
 </pre>
-<pre class="code extensibella"id="168">
+<pre class="code extensibella"id="164">
  &lt; <b>apply trans_subst_same to TyE1 _ _ _ S ST.</b>
 
 Subgoal 5:
@@ -2944,22 +2841,22 @@ Variables: X R G TyE TyX G' E_T S'
 IH : forall X R E S G TyE TyX G',
        is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S -&gt; typeOf G E TyE * -&gt; typeOf [] R TyX -&gt;
        lookup G X TyX -&gt; select (X, TyX) G' G -&gt; typeOf G' S TyE
-IsE : is_e &lt;unknown e&gt;
+IsE : is_e &lt;unknown I e&gt;
 IsX : is_string X
 IsR : is_e R
-S : subst X R &lt;unknown e&gt; S'
-TyE : typeOf G &lt;unknown e&gt; TyE @
+S : subst X R &lt;unknown I e&gt; S'
+TyE : typeOf G &lt;unknown I e&gt; TyE @
 TyR : typeOf [] R TyX
 Lkp : lookup G X TyX
 Slct : select (X, TyX) G' G
-TyE1 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
+TyE1 : |{e}- &lt;unknown I e&gt; ~~&gt; E_T
 TyE2 : typeOf G E_T TyE *
 ST : subst X R E_T S'
 H1 : is_e E_T
 ============================
  typeOf G' S' TyE
 </pre>
-<pre class="code extensibella"id="169">
+<pre class="code extensibella"id="165">
  &lt; <b>apply IH to _ _ _ ST TyE2 _ _ _.</b>
 
 Subgoal 5:
@@ -2968,15 +2865,15 @@ Variables: X R G TyE TyX G' E_T S'
 IH : forall X R E S G TyE TyX G',
        is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S -&gt; typeOf G E TyE * -&gt; typeOf [] R TyX -&gt;
        lookup G X TyX -&gt; select (X, TyX) G' G -&gt; typeOf G' S TyE
-IsE : is_e &lt;unknown e&gt;
+IsE : is_e &lt;unknown I e&gt;
 IsX : is_string X
 IsR : is_e R
-S : subst X R &lt;unknown e&gt; S'
-TyE : typeOf G &lt;unknown e&gt; TyE @
+S : subst X R &lt;unknown I e&gt; S'
+TyE : typeOf G &lt;unknown I e&gt; TyE @
 TyR : typeOf [] R TyX
 Lkp : lookup G X TyX
 Slct : select (X, TyX) G' G
-TyE1 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
+TyE1 : |{e}- &lt;unknown I e&gt; ~~&gt; E_T
 TyE2 : typeOf G E_T TyE *
 ST : subst X R E_T S'
 H1 : is_e E_T
@@ -2984,12 +2881,12 @@ H2 : typeOf G' S' TyE
 ============================
  typeOf G' S' TyE
 </pre>
-<pre class="code extensibella"id="170">
+<pre class="code extensibella"id="166">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="171">
+<pre class="code extensibella"id="167">
  &lt; <b>Extensible_Theorem
       type_preservation : forall E Ty V,
          IsE : is_e E -&gt;
@@ -3008,7 +2905,7 @@ Ev : eval (abs X Body) (abs X Body) @
 ============================
  typeOf [] (abs X Body) Ty
 </pre>
-<pre class="code extensibella"id="172">
+<pre class="code extensibella"id="168">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -3025,7 +2922,7 @@ Ev4 : eval B V *
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="173">
+<pre class="code extensibella"id="169">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 2:
@@ -3043,7 +2940,7 @@ Is1 : is_e E2
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="174">
+<pre class="code extensibella"id="170">
  &lt; <b>Ty: case Ty.</b>
 
 Subgoal 2:
@@ -3062,7 +2959,7 @@ Ty1 : typeOf [] E2 Ty1
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="175">
+<pre class="code extensibella"id="171">
  &lt; <b>AbsTy: apply IH to _ Ty Ev1.</b>
 
 Subgoal 2:
@@ -3082,7 +2979,7 @@ AbsTy : typeOf [] (abs X Body) (arrowTy Ty1 Ty)
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="176">
+<pre class="code extensibella"id="172">
  &lt; <b>Ty': case AbsTy.</b>
 
 Subgoal 2:
@@ -3102,7 +2999,7 @@ Ty' : typeOf [(X, Ty1)] Body Ty
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="177">
+<pre class="code extensibella"id="173">
  &lt; <b>apply IH to _ Ty1 Ev2.</b>
 
 Subgoal 2:
@@ -3123,7 +3020,7 @@ H1 : typeOf [] V2 Ty1
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="178">
+<pre class="code extensibella"id="174">
  &lt; <b>apply eval_is to _ Ev2.</b>
 
 Subgoal 2:
@@ -3145,7 +3042,7 @@ H2 : is_e V2
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="179">
+<pre class="code extensibella"id="175">
  &lt; <b>IsAbs: apply eval_is to _ Ev1.</b>
 
 Subgoal 2:
@@ -3168,7 +3065,7 @@ IsAbs : is_e (abs X Body)
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="180">
+<pre class="code extensibella"id="176">
  &lt; <b>case IsAbs.</b>
 
 Subgoal 2:
@@ -3192,7 +3089,7 @@ H4 : is_e Body
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="181">
+<pre class="code extensibella"id="177">
  &lt; <b>TyB: apply subst_type_preservation to _ _ _ Ev3 Ty' _ _ _.</b>
 
 Subgoal 2:
@@ -3217,7 +3114,7 @@ TyB : typeOf [] B Ty
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="182">
+<pre class="code extensibella"id="178">
  &lt; <b>apply subst_is to _ _ _ Ev3.</b>
 
 Subgoal 2:
@@ -3243,7 +3140,7 @@ H5 : is_e B
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="183">
+<pre class="code extensibella"id="179">
  &lt; <b>apply IH to _ TyB Ev4.</b>
 
 Subgoal 2:
@@ -3270,7 +3167,7 @@ H6 : typeOf [] V Ty
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="184">
+<pre class="code extensibella"id="180">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -3283,7 +3180,7 @@ Ev : eval (tyabs X Ty1 Body) (abs X Body) @
 ============================
  typeOf [] (abs X Body) Ty
 </pre>
-<pre class="code extensibella"id="185">
+<pre class="code extensibella"id="181">
  &lt; <b>case Ty.</b>
 
 Subgoal 3:
@@ -3296,89 +3193,89 @@ H1 : typeOf [(X, Ty1)] Body Ty3
 ============================
  typeOf [] (abs X Body) (arrowTy Ty1 Ty3)
 </pre>
-<pre class="code extensibella"id="186">
+<pre class="code extensibella"id="182">
  &lt; <b>search.</b>
 
 Subgoal 4:
 
-Variables: Ty V Trans
+Variables: Ty V E_T
 IH : forall E Ty V, is_e E -&gt; typeOf [] E Ty -&gt; eval E V * -&gt; typeOf [] V Ty
-IsE : is_e &lt;unknown e&gt;
-Ty : typeOf [] &lt;unknown e&gt; Ty
-Ev : eval &lt;unknown e&gt; V @
-Ev1 : eval Trans V *
-Ev2 : |{e}- &lt;unknown e&gt; ~~&gt; Trans
+IsE : is_e &lt;unknown K eval&gt;
+Ty : typeOf [] &lt;unknown K eval&gt; Ty
+Ev : eval &lt;unknown K eval&gt; V @
+Ev1 : |{e}- &lt;unknown K eval&gt; ~~&gt; E_T
+Ev2 : eval E_T V *
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="187">
+<pre class="code extensibella"id="183">
  &lt; <b>Ty: case Ty.</b>
 
 Subgoal 4:
 
-Variables: Ty V Trans E_T
+Variables: Ty V E_T E_T1
 IH : forall E Ty V, is_e E -&gt; typeOf [] E Ty -&gt; eval E V * -&gt; typeOf [] V Ty
-IsE : is_e &lt;unknown e&gt;
-Ev : eval &lt;unknown e&gt; V @
-Ev1 : eval Trans V *
-Ev2 : |{e}- &lt;unknown e&gt; ~~&gt; Trans
-Ty : |{e}- &lt;unknown e&gt; ~~&gt; E_T
-Ty1 : typeOf [] E_T Ty
+IsE : is_e &lt;unknown K eval&gt;
+Ev : eval &lt;unknown K eval&gt; V @
+Ev1 : |{e}- &lt;unknown K eval&gt; ~~&gt; E_T
+Ev2 : eval E_T V *
+Ty : |{e}- &lt;unknown K eval&gt; ~~&gt; E_T1
+Ty1 : typeOf [] E_T1 Ty
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="188">
- &lt; <b>apply trans_same to Ev2 Ty.</b>
+<pre class="code extensibella"id="184">
+ &lt; <b>apply trans_same to Ev1 Ty.</b>
 
 Subgoal 4:
 
-Variables: Ty V E_T
+Variables: Ty V E_T1
 IH : forall E Ty V, is_e E -&gt; typeOf [] E Ty -&gt; eval E V * -&gt; typeOf [] V Ty
-IsE : is_e &lt;unknown e&gt;
-Ev : eval &lt;unknown e&gt; V @
-Ev1 : eval E_T V *
-Ev2 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
-Ty : |{e}- &lt;unknown e&gt; ~~&gt; E_T
-Ty1 : typeOf [] E_T Ty
+IsE : is_e &lt;unknown K eval&gt;
+Ev : eval &lt;unknown K eval&gt; V @
+Ev1 : |{e}- &lt;unknown K eval&gt; ~~&gt; E_T1
+Ev2 : eval E_T1 V *
+Ty : |{e}- &lt;unknown K eval&gt; ~~&gt; E_T1
+Ty1 : typeOf [] E_T1 Ty
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="189">
+<pre class="code extensibella"id="185">
  &lt; <b>apply trans_is to Ty _.</b>
 
 Subgoal 4:
 
-Variables: Ty V E_T
+Variables: Ty V E_T1
 IH : forall E Ty V, is_e E -&gt; typeOf [] E Ty -&gt; eval E V * -&gt; typeOf [] V Ty
-IsE : is_e &lt;unknown e&gt;
-Ev : eval &lt;unknown e&gt; V @
-Ev1 : eval E_T V *
-Ev2 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
-Ty : |{e}- &lt;unknown e&gt; ~~&gt; E_T
-Ty1 : typeOf [] E_T Ty
-H1 : is_e E_T
+IsE : is_e &lt;unknown K eval&gt;
+Ev : eval &lt;unknown K eval&gt; V @
+Ev1 : |{e}- &lt;unknown K eval&gt; ~~&gt; E_T1
+Ev2 : eval E_T1 V *
+Ty : |{e}- &lt;unknown K eval&gt; ~~&gt; E_T1
+Ty1 : typeOf [] E_T1 Ty
+H1 : is_e E_T1
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="190">
- &lt; <b>apply IH to _ Ty1 Ev1.</b>
+<pre class="code extensibella"id="186">
+ &lt; <b>apply IH to _ Ty1 Ev2.</b>
 
 Subgoal 4:
 
-Variables: Ty V E_T
+Variables: Ty V E_T1
 IH : forall E Ty V, is_e E -&gt; typeOf [] E Ty -&gt; eval E V * -&gt; typeOf [] V Ty
-IsE : is_e &lt;unknown e&gt;
-Ev : eval &lt;unknown e&gt; V @
-Ev1 : eval E_T V *
-Ev2 : |{e}- &lt;unknown e&gt; ~~&gt; E_T
-Ty : |{e}- &lt;unknown e&gt; ~~&gt; E_T
-Ty1 : typeOf [] E_T Ty
-H1 : is_e E_T
+IsE : is_e &lt;unknown K eval&gt;
+Ev : eval &lt;unknown K eval&gt; V @
+Ev1 : |{e}- &lt;unknown K eval&gt; ~~&gt; E_T1
+Ev2 : eval E_T1 V *
+Ty : |{e}- &lt;unknown K eval&gt; ~~&gt; E_T1
+Ty1 : typeOf [] E_T1 Ty
+H1 : is_e E_T1
 H2 : typeOf [] V Ty
 ============================
  typeOf [] V Ty
 </pre>
-<pre class="code extensibella"id="191">
+<pre class="code extensibella"id="187">
  &lt; <b>search.</b>
 
 Proof completed.

@@ -41,21 +41,20 @@ Prove_Ext_Ind unsat_proofs:lrat:is_clause.
            is_integer Low -> is_integer High -> range Low High R ->
            <is_clause {T}> (rangeClause Low High).
    Set search_depth 5. %back to normal
+   clear R R1 R2. %remove the outer things
    induction on 3. intros IsLow IsHigh R. R: case R.
      %Range-End
       unfold. exists emptyClause. search.
      %Range-Step
       unfold. IsPlusOne: apply plus_integer_is_integer to _ _ R1.
-      IsCT: apply IH2 to _ _ R2.
+      IsCT: apply IH1 to _ _ R2.
       Tr: assert |{clause}- rangeClause Low High ~~>
                             or (pos Low) (rangeClause PlusOne High).
       exists or (pos Low) (rangeClause PlusOne High). search.
- R: apply range_exists to Rel1 Rel2. apply Helper to _ _ R. search 2.
+ R': apply range_exists to R1 R2. apply Helper to _ _ R'. search 2.
 %is_clause (noteClause S Clause)
- assert |{clause}- noteClause S Clause ~~> Clause. Acc: case Acc.
- apply ext_ind_is_int_is_clause to Rel3.
- L: apply lt_plus_one to Rel1 _. apply ext_ind_pos_is_clause to Rel3.
- A: apply Acc to _ L. apply IH to Rel3 A. search 2.
+ assert |{clause}- noteClause S Clause ~~> Clause. apply IH to R2.
+ search.
 
 
 Prove unsat_proofs:lrat:is_lit_eq_or_not__pos.
@@ -87,7 +86,7 @@ Extensible_Theorem
  search.
 %noteClause
  search.
-%preservability
+%generic
  search.
 Extensible_Theorem
   is_clause_noteClause_or_not : forall C,
@@ -103,7 +102,7 @@ Extensible_Theorem
  search.
 %noteClause
  search.
-%preservability
+%generic
  search.
 Prove unsat_proofs:lrat:is_clause_eq_or_not.
 %is_clause (rangeClause I1 I)
@@ -554,7 +553,12 @@ Prove unsat_proofs:lrat:negate_lits_unsat.
 Prove_Constraint unsat_proofs:lrat:trans_proof_is.
 Prove unsat_proofs:lrat:check_proof_correct.
 Prove unsat_proofs:lrat:checkProof_orderless.
+
+
+Add_Ext_Size unsat_proofs:lrat:checkProof.
 Prove_Ext_Ind unsat_proofs:lrat:checkProof.
+
+
 Prove_Constraint unsat_proofs:lrat:trans_checkProof.
 
 

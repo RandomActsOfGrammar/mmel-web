@@ -100,6 +100,14 @@ typeOf Ctx T1 arrowTy(Ty1, Ty2)
 typeOf Ctx T2 Ty1
 ------------------------------- [T-App]
 typeOf Ctx app(T1, T2) Ty2
+
+
+Extensibella_Stand_In {
+  Ctx |{tm}- T ~~> T_T
+  typeOf Ctx T_T Ty
+  -------------------- [T-Q]
+  typeOf Ctx T Ty
+}
 </pre>
 </div>
 <div class="section reasoning">
@@ -217,10 +225,36 @@ typeOf Ctx app(T1, T2) Ty2
 
 
 <a class="command" href="host-details.html#73">Translation_Constraint trans_type_same : forall G T Ty T_T,
-  G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.</a>
+  G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(74);" id="toggleproof74">[Show Proof]</a>
+<div class="proof" id="proof74" style="display: none;">
 
 
-<a class="command" href="host-details.html#74">Ext_Ind typeOf G T Ty with G |{tm}- T ~~> T'.</a>
+<a class="tactic" href="host-details.html#74">Ext_Size typeOf G T Ty.</a></div>
+
+<a class="command" href="host-details.html#75">Ext_Ind forall G T Ty, typeOf G T Ty.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(76);" id="toggleproof76">[Show Proof]</a>
+<div class="proof" id="proof76" style="display: none;">
+<span class="comment">%T-Var</span>
+ <a class="tactic" href="host-details.html#76">search.</a>
+<span class="comment">%T-Abs</span>
+ <a class="tactic" href="host-details.html#77">apply IH1 to R1 Acc.</a> <a class="tactic" href="host-details.html#78">search.</a>
+<span class="comment">%T-App</span>
+ <a class="tactic" href="host-details.html#79">apply ext_ind_is_int_typeOf to R2.</a> <a class="tactic" href="host-details.html#80">apply ext_ind_is_int_typeOf to R3.</a>
+ <a class="tactic" href="host-details.html#81">apply ext_ind_pos_typeOf to R2.</a> <a class="tactic" href="host-details.html#82">apply ext_ind_pos_typeOf to R3.</a>
+ <a class="tactic" href="host-details.html#83">Or2: apply lt_left to R1 _ _.</a> <a class="tactic" href="host-details.html#84">Or3: apply lt_right to R1 _ _ _.</a>
+ <a class="tactic" href="host-details.html#85">A: case Acc (keep).</a> <a class="tactic" href="host-details.html#86">Or2: case Or2.</a>
+   <span class="comment">%N2 < N</span>
+    <a class="tactic" href="host-details.html#87">AN2: apply A to _ Or2.</a> <a class="tactic" href="host-details.html#88">apply IH to R2 AN2.</a> <a class="tactic" href="host-details.html#89">Or3: case Or3.</a>
+      <span class="comment">%N3 < N</span>
+       <a class="tactic" href="host-details.html#90">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#91">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#92">search.</a>
+      <span class="comment">%N3 = N</span>
+       <a class="tactic" href="host-details.html#93">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#94">search.</a>
+   <span class="comment">%N2 = N</span>
+    <a class="tactic" href="host-details.html#95">apply IH1 to R2 Acc.</a> <a class="tactic" href="host-details.html#96">Or3: case Or3.</a>
+      <span class="comment">%N3 < N</span>
+       <a class="tactic" href="host-details.html#97">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#98">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#99">search.</a>
+      <span class="comment">%N3 = N</span>
+       <a class="tactic" href="host-details.html#100">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#101">search.</a></div>
+<a class="command" href="host-details.html#102"></a>
 </pre>
 </div>
 <div class="section">

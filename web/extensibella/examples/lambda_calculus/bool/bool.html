@@ -95,210 +95,171 @@ subst X R if(Cond, T, F) app(app(CS, TS), FS)
 <span class="comment">%false</span>
  <a class="tactic" href="bool-details.html#10">unfold.</a> <a class="tactic" href="bool-details.html#11">exists abs "a" (abs "b" (var "b")).</a> <a class="tactic" href="bool-details.html#12">search 7.</a>
 <span class="comment">%if</span>
- <a class="tactic" href="bool-details.html#13">IsN3: apply ext_ind_is_int_is_e to Rel4.</a>
- <a class="tactic" href="bool-details.html#14">IsN2: apply ext_ind_is_int_is_e to Rel5.</a>
- <a class="tactic" href="bool-details.html#15">IsN4: apply ext_ind_is_int_is_e to Rel6.</a>
- <a class="tactic" href="bool-details.html#16">IsN6: apply plus_integer_is_integer to _ _ Rel3.</a>
- <a class="tactic" href="bool-details.html#17">IsN5: apply plus_integer_is_integer to _ _ Rel2.</a>
- <a class="tactic" href="bool-details.html#18">L_N5_N: apply lt_plus_one to Rel1 _.</a>
- <a class="tactic" href="bool-details.html#19">GN3: apply ext_ind_pos_is_e to Rel4.</a>
- <a class="tactic" href="bool-details.html#20">GN2: apply ext_ind_pos_is_e to Rel5.</a>
- <a class="tactic" href="bool-details.html#21">GN4: apply ext_ind_pos_is_e to Rel6.</a>
- <a class="tactic" href="bool-details.html#22">GN6: apply lesseq_integer__add_positive to GN2 _ Rel3.</a>
- <a class="tactic" href="bool-details.html#23">GN5: apply lesseq_integer__add_positive to GN3 _ Rel2.</a>
- <a class="tactic" href="bool-details.html#24">L_N3_N: assert N3 < N.</a>
-   <a class="tactic" href="bool-details.html#25">Or: apply lesseq_integer_less_or_eq to GN6.</a> <a class="tactic" href="bool-details.html#26">case Or.</a>
-     <span class="comment">%0 < N6</span>
-      <a class="tactic" href="bool-details.html#27">G: apply greater_plus_positive to _ _ Rel2 _.</a>
-      <a class="tactic" href="bool-details.html#28">L: apply greater_integer_flip_less to G.</a>
-      <a class="tactic" href="bool-details.html#29">apply less_integer_transitive to L L_N5_N.</a> <a class="tactic" href="bool-details.html#30">search.</a>
-     <span class="comment">%N6 = 0</span>
-      <a class="tactic" href="bool-details.html#31">apply plus_zero_right to Rel2.</a> <a class="tactic" href="bool-details.html#32">search.</a>
- <a class="tactic" href="bool-details.html#33">Acc: case Acc.</a> <a class="tactic" href="bool-details.html#34">A3: apply Acc to _ L_N3_N.</a> <a class="tactic" href="bool-details.html#35">apply IH to Rel4 A3.</a>
- <a class="tactic" href="bool-details.html#36">LE_N6_N5: assert N6 <= N5.</a>
-   <a class="tactic" href="bool-details.html#37">Or: apply lt_right to Rel2 _ _ _.</a> <a class="tactic" href="bool-details.html#38">L: case Or.</a>
-     <span class="comment">%N6 < N5</span>
-      <a class="tactic" href="bool-details.html#39">backchain less_integer_lesseq.</a>
-     <span class="comment">%N6 = N5</span>
-      <a class="tactic" href="bool-details.html#40">backchain is_integer_lesseq.</a>
- <a class="tactic" href="bool-details.html#41">L_N2_N: assert N2 < N.</a>
-   <a class="tactic" href="bool-details.html#42">Or: apply lt_left to Rel3 _ _.</a> <a class="tactic" href="bool-details.html#43">L: case Or.</a>
-     <span class="comment">%N2 < N6</span>
-      <a class="tactic" href="bool-details.html#44">L': apply less_lesseq_integer_transitive to L LE_N6_N5.</a>
-      <a class="tactic" href="bool-details.html#45">apply less_integer_transitive to L' L_N5_N.</a> <a class="tactic" href="bool-details.html#46">search.</a>
-     <span class="comment">%N2 = N6</span>
-      <a class="tactic" href="bool-details.html#47">apply lesseq_less_integer_transitive to LE_N6_N5 L_N5_N.</a> <a class="tactic" href="bool-details.html#48">search.</a>
- <a class="tactic" href="bool-details.html#49">A2: apply Acc to _ L_N2_N.</a> <a class="tactic" href="bool-details.html#50">apply IH to Rel5 A2.</a>
- <a class="tactic" href="bool-details.html#51">L_N4_N: assert N4 < N.</a>
-   <a class="tactic" href="bool-details.html#52">Or: apply lt_right to Rel3 _ _ _.</a> <a class="tactic" href="bool-details.html#53">L: case Or.</a>
-     <span class="comment">%N4 < N6</span>
-      <a class="tactic" href="bool-details.html#54">L': apply less_lesseq_integer_transitive to L LE_N6_N5.</a>
-      <a class="tactic" href="bool-details.html#55">apply less_integer_transitive to L' L_N5_N.</a> <a class="tactic" href="bool-details.html#56">search.</a>
-     <span class="comment">%N4 = N6</span>
-      <a class="tactic" href="bool-details.html#57">apply lesseq_less_integer_transitive to LE_N6_N5 L_N5_N.</a> <a class="tactic" href="bool-details.html#58">search.</a>
- <a class="tactic" href="bool-details.html#59">A4: apply Acc to _ L_N4_N.</a> <a class="tactic" href="bool-details.html#60">apply IH to Rel6 A4.</a> <a class="tactic" href="bool-details.html#61">unfold.</a>
- <a class="tactic" href="bool-details.html#62">exists app (app E2 E1) E3.</a> <a class="tactic" href="bool-details.html#63">search.</a></div>
+ <a class="tactic" href="bool-details.html#13">apply IH to R1.</a> <a class="tactic" href="bool-details.html#14">apply IH to R2.</a> <a class="tactic" href="bool-details.html#15">apply IH to R3.</a> <a class="tactic" href="bool-details.html#16">search.</a></div>
 
 
-<a class="command" href="bool-details.html#64">Prove_Constraint lambda_calculus:host:trans_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(65);" id="toggleproof65">[Show Proof]</a>
-<div class="proof" id="proof65" style="display: none;">
+<a class="command" href="bool-details.html#17">Prove_Constraint lambda_calculus:host:trans_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(18);" id="toggleproof18">[Show Proof]</a>
+<div class="proof" id="proof18" style="display: none;">
 <span class="comment">%true</span>
- <a class="tactic" href="bool-details.html#65">case Hyp1.</a> <a class="tactic" href="bool-details.html#66">search.</a>
+ <a class="tactic" href="bool-details.html#18">case Hyp1.</a> <a class="tactic" href="bool-details.html#19">search.</a>
 <span class="comment">%false</span>
- <a class="tactic" href="bool-details.html#67">case Hyp1.</a> <a class="tactic" href="bool-details.html#68">search.</a>
+ <a class="tactic" href="bool-details.html#20">case Hyp1.</a> <a class="tactic" href="bool-details.html#21">search.</a>
 <span class="comment">%if</span>
- <a class="tactic" href="bool-details.html#69">case Hyp1.</a> <a class="tactic" href="bool-details.html#70">search.</a></div>
+ <a class="tactic" href="bool-details.html#22">case Hyp1.</a> <a class="tactic" href="bool-details.html#23">search.</a></div>
 
 
-<a class="command" href="bool-details.html#71">Prove lambda_calculus:host:subst_exists.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(72);" id="toggleproof72">[Show Proof]</a>
-<div class="proof" id="proof72" style="display: none;">
+<a class="command" href="bool-details.html#24">Prove lambda_calculus:host:subst_exists.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(25);" id="toggleproof25">[Show Proof]</a>
+<div class="proof" id="proof25" style="display: none;">
 <span class="comment">%true</span>
- <a class="tactic" href="bool-details.html#72">search.</a>
+ <a class="tactic" href="bool-details.html#25">search.</a>
 <span class="comment">%false</span>
- <a class="tactic" href="bool-details.html#73">search.</a>
+ <a class="tactic" href="bool-details.html#26">search.</a>
 <span class="comment">%if</span>
- <a class="tactic" href="bool-details.html#74">apply IH to IsE1 _ IsR.</a> <a class="tactic" href="bool-details.html#75">apply IH to IsE2 _ IsR.</a>
- <a class="tactic" href="bool-details.html#76">apply IH to IsE3 _ IsR.</a> <a class="tactic" href="bool-details.html#77">search.</a></div>
+ <a class="tactic" href="bool-details.html#27">apply IH to IsE1 _ IsR.</a> <a class="tactic" href="bool-details.html#28">apply IH to IsE2 _ IsR.</a>
+ <a class="tactic" href="bool-details.html#29">apply IH to IsE3 _ IsR.</a> <a class="tactic" href="bool-details.html#30">search.</a></div>
 
 
-<a class="command" href="bool-details.html#78">Prove lambda_calculus:host:subst_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(79);" id="toggleproof79">[Show Proof]</a>
-<div class="proof" id="proof79" style="display: none;">
+<a class="command" href="bool-details.html#31">Prove lambda_calculus:host:subst_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(32);" id="toggleproof32">[Show Proof]</a>
+<div class="proof" id="proof32" style="display: none;">
 <span class="comment">%S-True</span>
- <a class="tactic" href="bool-details.html#79">search 7.</a>
+ <a class="tactic" href="bool-details.html#32">search 7.</a>
 <span class="comment">%S-False</span>
- <a class="tactic" href="bool-details.html#80">search 7.</a>
+ <a class="tactic" href="bool-details.html#33">search 7.</a>
 <span class="comment">%S-If</span>
- <a class="tactic" href="bool-details.html#81">Is: case IsE.</a> <a class="tactic" href="bool-details.html#82">apply IH to _ _ _ S1.</a> <a class="tactic" href="bool-details.html#83">apply IH to _ _ _ S2.</a>
- <a class="tactic" href="bool-details.html#84">apply IH to _ _ _ S3.</a> <a class="tactic" href="bool-details.html#85">search.</a></div>
+ <a class="tactic" href="bool-details.html#34">Is: case IsE.</a> <a class="tactic" href="bool-details.html#35">apply IH to _ _ _ S1.</a> <a class="tactic" href="bool-details.html#36">apply IH to _ _ _ S2.</a>
+ <a class="tactic" href="bool-details.html#37">apply IH to _ _ _ S3.</a> <a class="tactic" href="bool-details.html#38">search.</a></div>
 
 
-<a class="command" href="bool-details.html#86">Prove lambda_calculus:host:eval_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(87);" id="toggleproof87">[Show Proof]</a>
-<div class="proof" id="proof87" style="display: none;">
+<a class="command" href="bool-details.html#39">Prove lambda_calculus:host:eval_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(40);" id="toggleproof40">[Show Proof]</a>
+<div class="proof" id="proof40" style="display: none;">
 <span class="comment">%E-True</span>
- <a class="tactic" href="bool-details.html#87">search 7.</a>
+ <a class="tactic" href="bool-details.html#40">search 7.</a>
 <span class="comment">%E-False</span>
- <a class="tactic" href="bool-details.html#88">search 7.</a>
+ <a class="tactic" href="bool-details.html#41">search 7.</a>
 <span class="comment">%E-If</span>
- <a class="tactic" href="bool-details.html#89">Is: case IsE.</a> <a class="tactic" href="bool-details.html#90">IsC: apply IH to _ Ev1.</a> <a class="tactic" href="bool-details.html#91">search.</a></div>
+ <a class="tactic" href="bool-details.html#42">Is: case IsE.</a> <a class="tactic" href="bool-details.html#43">IsC: apply IH to _ Ev1.</a> <a class="tactic" href="bool-details.html#44">search.</a></div>
 
 
-<a class="command" href="bool-details.html#92">Prove lambda_calculus:host:subst_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(93);" id="toggleproof93">[Show Proof]</a>
-<div class="proof" id="proof93" style="display: none;">
+<a class="command" href="bool-details.html#45">Prove lambda_calculus:host:subst_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(46);" id="toggleproof46">[Show Proof]</a>
+<div class="proof" id="proof46" style="display: none;">
 <span class="comment">%S-True</span>
- <a class="tactic" href="bool-details.html#93">case SB.</a> <a class="tactic" href="bool-details.html#94">search.</a>
+ <a class="tactic" href="bool-details.html#46">case SB.</a> <a class="tactic" href="bool-details.html#47">search.</a>
 <span class="comment">%S-False</span>
- <a class="tactic" href="bool-details.html#95">case SB.</a> <a class="tactic" href="bool-details.html#96">search.</a>
+ <a class="tactic" href="bool-details.html#48">case SB.</a> <a class="tactic" href="bool-details.html#49">search.</a>
 <span class="comment">%S-If</span>
- <a class="tactic" href="bool-details.html#97">SB: case SB.</a> <a class="tactic" href="bool-details.html#98">Is: case IsE.</a> <a class="tactic" href="bool-details.html#99">apply IH to _ _ _ SA1 SB.</a>
- <a class="tactic" href="bool-details.html#100">apply IH to _ _ _ SA2 SB1.</a> <a class="tactic" href="bool-details.html#101">apply IH to _ _ _ SA3 SB2.</a> <a class="tactic" href="bool-details.html#102">search.</a></div>
+ <a class="tactic" href="bool-details.html#50">SB: case SB.</a> <a class="tactic" href="bool-details.html#51">Is: case IsE.</a> <a class="tactic" href="bool-details.html#52">apply IH to _ _ _ SA1 SB.</a>
+ <a class="tactic" href="bool-details.html#53">apply IH to _ _ _ SA2 SB1.</a> <a class="tactic" href="bool-details.html#54">apply IH to _ _ _ SA3 SB2.</a> <a class="tactic" href="bool-details.html#55">search.</a></div>
 
 
-<a class="command" href="bool-details.html#103">Prove lambda_calculus:host:eval_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(104);" id="toggleproof104">[Show Proof]</a>
-<div class="proof" id="proof104" style="display: none;">
+<a class="command" href="bool-details.html#56">Prove lambda_calculus:host:eval_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(57);" id="toggleproof57">[Show Proof]</a>
+<div class="proof" id="proof57" style="display: none;">
 <span class="comment">%E-True</span>
- <a class="tactic" href="bool-details.html#104">case EvB.</a> <a class="tactic" href="bool-details.html#105">search.</a>
+ <a class="tactic" href="bool-details.html#57">case EvB.</a> <a class="tactic" href="bool-details.html#58">search.</a>
 <span class="comment">%E-False</span>
- <a class="tactic" href="bool-details.html#106">case EvB.</a> <a class="tactic" href="bool-details.html#107">search.</a>
+ <a class="tactic" href="bool-details.html#59">case EvB.</a> <a class="tactic" href="bool-details.html#60">search.</a>
 <span class="comment">%E-If</span>
- <a class="tactic" href="bool-details.html#108">EvB: case EvB.</a> <a class="tactic" href="bool-details.html#109">Is: case IsE.</a> <a class="tactic" href="bool-details.html#110">apply IH to _ EvA1 EvB.</a> <a class="tactic" href="bool-details.html#111">search.</a></div>
+ <a class="tactic" href="bool-details.html#61">EvB: case EvB.</a> <a class="tactic" href="bool-details.html#62">Is: case IsE.</a> <a class="tactic" href="bool-details.html#63">apply IH to _ EvA1 EvB.</a> <a class="tactic" href="bool-details.html#64">search.</a></div>
 
 
-<a class="command" href="bool-details.html#112">Prove_Constraint lambda_calculus:host:trans_subst.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(113);" id="toggleproof113">[Show Proof]</a>
-<div class="proof" id="proof113" style="display: none;">
+<a class="command" href="bool-details.html#65">Prove_Constraint lambda_calculus:host:trans_subst.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(66);" id="toggleproof66">[Show Proof]</a>
+<div class="proof" id="proof66" style="display: none;">
 <span class="comment">%true</span>
- <a class="tactic" href="bool-details.html#113">OrA: apply is_string_eq_or_not to IsX _ with S2 = "a".</a>
- <a class="tactic" href="bool-details.html#114">OrB: apply is_string_eq_or_not to IsX _ with S2 = "b".</a> <a class="tactic" href="bool-details.html#115">A: case OrA.</a>
+ <a class="tactic" href="bool-details.html#66">OrA: apply is_string_eq_or_not to IsX _ with S2 = "a".</a>
+ <a class="tactic" href="bool-details.html#67">OrB: apply is_string_eq_or_not to IsX _ with S2 = "b".</a> <a class="tactic" href="bool-details.html#68">A: case OrA.</a>
    <span class="comment">%X = "a"</span>
-    <a class="tactic" href="bool-details.html#116">search.</a>
+    <a class="tactic" href="bool-details.html#69">search.</a>
    <span class="comment">%X != "a"</span>
-    <a class="tactic" href="bool-details.html#117">B: case OrB.</a>
+    <a class="tactic" href="bool-details.html#70">B: case OrB.</a>
       <span class="comment">%X = "b"</span>
-       <a class="tactic" href="bool-details.html#118">search.</a>
+       <a class="tactic" href="bool-details.html#71">search.</a>
       <span class="comment">%X != "b"</span>
-       <a class="tactic" href="bool-details.html#119">search.</a>
+       <a class="tactic" href="bool-details.html#72">search.</a>
 <span class="comment">%false</span>
- <a class="tactic" href="bool-details.html#120">OrA: apply is_string_eq_or_not to IsX _ with S2 = "a".</a>
- <a class="tactic" href="bool-details.html#121">OrB: apply is_string_eq_or_not to IsX _ with S2 = "b".</a> <a class="tactic" href="bool-details.html#122">A: case OrA.</a>
+ <a class="tactic" href="bool-details.html#73">OrA: apply is_string_eq_or_not to IsX _ with S2 = "a".</a>
+ <a class="tactic" href="bool-details.html#74">OrB: apply is_string_eq_or_not to IsX _ with S2 = "b".</a> <a class="tactic" href="bool-details.html#75">A: case OrA.</a>
    <span class="comment">%X = "a"</span>
-    <a class="tactic" href="bool-details.html#123">search.</a>
+    <a class="tactic" href="bool-details.html#76">search.</a>
    <span class="comment">%X != "a"</span>
-    <a class="tactic" href="bool-details.html#124">B: case OrB.</a>
+    <a class="tactic" href="bool-details.html#77">B: case OrB.</a>
       <span class="comment">%X = "b"</span>
-       <a class="tactic" href="bool-details.html#125">search.</a>
+       <a class="tactic" href="bool-details.html#78">search.</a>
       <span class="comment">%X != "b"</span>
-       <a class="tactic" href="bool-details.html#126">search.</a>
+       <a class="tactic" href="bool-details.html#79">search.</a>
 <span class="comment">%if</span>
- <a class="tactic" href="bool-details.html#127">Is: case IsE.</a> <a class="tactic" href="bool-details.html#128">S: case S.</a> <a class="tactic" href="bool-details.html#129">search.</a></div>
+ <a class="tactic" href="bool-details.html#80">Is: case IsE.</a> <a class="tactic" href="bool-details.html#81">S: case S.</a> <a class="tactic" href="bool-details.html#82">search.</a></div>
 
 
-<a class="command" href="bool-details.html#130">Prove_Constraint lambda_calculus:host:trans_subst_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(131);" id="toggleproof131">[Show Proof]</a>
-<div class="proof" id="proof131" style="display: none;">
+<a class="command" href="bool-details.html#83">Prove_Constraint lambda_calculus:host:trans_subst_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(84);" id="toggleproof84">[Show Proof]</a>
+<div class="proof" id="proof84" style="display: none;">
 <span class="comment">%true</span>
- <a class="tactic" href="bool-details.html#131">case S.</a> <a class="tactic" href="bool-details.html#132">S': case S'.</a>
+ <a class="tactic" href="bool-details.html#84">case S.</a> <a class="tactic" href="bool-details.html#85">S': case S'.</a>
    <span class="comment">%S-Abs-Eq</span>
-    <a class="tactic" href="bool-details.html#133">search.</a>
+    <a class="tactic" href="bool-details.html#86">search.</a>
    <span class="comment">%S-Abs-NEq</span>
-    <a class="tactic" href="bool-details.html#134">T: case S'1.</a>
+    <a class="tactic" href="bool-details.html#87">T: case S'1.</a>
       <span class="comment">%S-Abs-Eq</span>
-       <a class="tactic" href="bool-details.html#135">search.</a>
+       <a class="tactic" href="bool-details.html#88">search.</a>
       <span class="comment">%S-Abs-NEq</span>
-       <a class="tactic" href="bool-details.html#136">U: case T1.</a>
+       <a class="tactic" href="bool-details.html#89">U: case T1.</a>
          <span class="comment">%S-Var-Eq</span>
-          <a class="tactic" href="bool-details.html#137">apply S' to _.</a>
+          <a class="tactic" href="bool-details.html#90">apply S' to _.</a>
          <span class="comment">%S-Var-NEq</span>
-          <a class="tactic" href="bool-details.html#138">search.</a>
+          <a class="tactic" href="bool-details.html#91">search.</a>
 <span class="comment">%false</span>
- <a class="tactic" href="bool-details.html#139">case S.</a> <a class="tactic" href="bool-details.html#140">S': case S'.</a>
+ <a class="tactic" href="bool-details.html#92">case S.</a> <a class="tactic" href="bool-details.html#93">S': case S'.</a>
    <span class="comment">%S-Abs-Eq</span>
-    <a class="tactic" href="bool-details.html#141">search.</a>
+    <a class="tactic" href="bool-details.html#94">search.</a>
    <span class="comment">%S-Abs-NEq</span>
-    <a class="tactic" href="bool-details.html#142">T: case S'1.</a>
+    <a class="tactic" href="bool-details.html#95">T: case S'1.</a>
       <span class="comment">%S-Abs-Eq</span>
-       <a class="tactic" href="bool-details.html#143">search.</a>
+       <a class="tactic" href="bool-details.html#96">search.</a>
       <span class="comment">%S-Abs-NEq</span>
-       <a class="tactic" href="bool-details.html#144">U: case T1.</a>
+       <a class="tactic" href="bool-details.html#97">U: case T1.</a>
          <span class="comment">%S-Var-Eq</span>
-          <a class="tactic" href="bool-details.html#145">apply T to _.</a>
+          <a class="tactic" href="bool-details.html#98">apply T to _.</a>
          <span class="comment">%S-Var-NEq</span>
-          <a class="tactic" href="bool-details.html#146">search.</a>
+          <a class="tactic" href="bool-details.html#99">search.</a>
 <span class="comment">%if</span>
- <a class="tactic" href="bool-details.html#147">S: case S.</a> <a class="tactic" href="bool-details.html#148">S': case S'.</a> <a class="tactic" href="bool-details.html#149">S'': case S'.</a> <a class="tactic" href="bool-details.html#150">Is: case IsE.</a>
- <a class="tactic" href="bool-details.html#151">apply subst_unique to _ _ _ S S''.</a>
- <a class="tactic" href="bool-details.html#152">apply subst_unique to _ _ _ S1 S''1.</a>
- <a class="tactic" href="bool-details.html#153">apply subst_unique to _ _ _ S2 S'1.</a> <a class="tactic" href="bool-details.html#154">search.</a></div>
+ <a class="tactic" href="bool-details.html#100">S: case S.</a> <a class="tactic" href="bool-details.html#101">S': case S'.</a> <a class="tactic" href="bool-details.html#102">S'': case S'.</a> <a class="tactic" href="bool-details.html#103">Is: case IsE.</a>
+ <a class="tactic" href="bool-details.html#104">apply subst_unique to _ _ _ S S''.</a>
+ <a class="tactic" href="bool-details.html#105">apply subst_unique to _ _ _ S1 S''1.</a>
+ <a class="tactic" href="bool-details.html#106">apply subst_unique to _ _ _ S2 S'1.</a> <a class="tactic" href="bool-details.html#107">search.</a></div>
 
 
-<a class="command" href="bool-details.html#155">Prove_Constraint lambda_calculus:host:trans_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(156);" id="toggleproof156">[Show Proof]</a>
-<div class="proof" id="proof156" style="display: none;">
+<a class="command" href="bool-details.html#108">Prove_Constraint lambda_calculus:host:trans_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(109);" id="toggleproof109">[Show Proof]</a>
+<div class="proof" id="proof109" style="display: none;">
 <span class="comment">%true</span>
- <a class="tactic" href="bool-details.html#156">search.</a>
+ <a class="tactic" href="bool-details.html#109">search.</a>
 <span class="comment">%false</span>
- <a class="tactic" href="bool-details.html#157">search.</a>
+ <a class="tactic" href="bool-details.html#110">search.</a>
 <span class="comment">%if</span>
- <a class="tactic" href="bool-details.html#158">Ev: case Ev.</a> <a class="tactic" href="bool-details.html#159">search.</a></div>
+ <a class="tactic" href="bool-details.html#111">Ev: case Ev.</a> <a class="tactic" href="bool-details.html#112">search.</a></div>
 
 
-<a class="command" href="bool-details.html#160">Prove_Constraint lambda_calculus:host:trans_eval_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(161);" id="toggleproof161">[Show Proof]</a>
-<div class="proof" id="proof161" style="display: none;">
+<a class="command" href="bool-details.html#113">Prove_Constraint lambda_calculus:host:trans_eval_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(114);" id="toggleproof114">[Show Proof]</a>
+<div class="proof" id="proof114" style="display: none;">
 <span class="comment">%true</span>
- <a class="tactic" href="bool-details.html#161">case Ev.</a> <a class="tactic" href="bool-details.html#162">case Ev'.</a> <a class="tactic" href="bool-details.html#163">search.</a>
+ <a class="tactic" href="bool-details.html#114">case Ev.</a> <a class="tactic" href="bool-details.html#115">case Ev'.</a> <a class="tactic" href="bool-details.html#116">search.</a>
 <span class="comment">%false</span>
- <a class="tactic" href="bool-details.html#164">case Ev.</a> <a class="tactic" href="bool-details.html#165">case Ev'.</a> <a class="tactic" href="bool-details.html#166">search.</a>
+ <a class="tactic" href="bool-details.html#117">case Ev.</a> <a class="tactic" href="bool-details.html#118">case Ev'.</a> <a class="tactic" href="bool-details.html#119">search.</a>
 <span class="comment">%if</span>
- <a class="tactic" href="bool-details.html#167">Ev: case Ev.</a> <a class="tactic" href="bool-details.html#168">case IsE.</a> <a class="tactic" href="bool-details.html#169">apply eval_unique to _ Ev' Ev.</a> <a class="tactic" href="bool-details.html#170">search.</a></div>
+ <a class="tactic" href="bool-details.html#120">Ev: case Ev.</a> <a class="tactic" href="bool-details.html#121">case IsE.</a> <a class="tactic" href="bool-details.html#122">apply eval_unique to _ Ev' Ev.</a> <a class="tactic" href="bool-details.html#123">search.</a>
 
 
-<a class="command" href="bool-details.html#171">Prove_Ext_Ind lambda_calculus:host:eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(172);" id="toggleproof172">[Show Proof]</a>
-<div class="proof" id="proof172" style="display: none;">
+<a class="tactic" href="bool-details.html#124">Add_Ext_Size lambda_calculus:host:eval.</a></div>
+
+
+<a class="command" href="bool-details.html#125">Prove_Ext_Ind lambda_calculus:host:eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(126);" id="toggleproof126">[Show Proof]</a>
+<div class="proof" id="proof126" style="display: none;">
 <span class="comment">%true</span>
- <a class="tactic" href="bool-details.html#172">unfold.</a> <a class="tactic" href="bool-details.html#173">exists abs "a" (abs "b" (var "a")).</a> <a class="tactic" href="bool-details.html#174">search 7.</a>
+ <a class="tactic" href="bool-details.html#126">unfold.</a> <a class="tactic" href="bool-details.html#127">exists abs "a" (abs "b" (var "a")).</a> <a class="tactic" href="bool-details.html#128">search 7.</a>
 <span class="comment">%false</span>
- <a class="tactic" href="bool-details.html#175">unfold.</a> <a class="tactic" href="bool-details.html#176">exists abs "a" (abs "b" (var "b")).</a> <a class="tactic" href="bool-details.html#177">search 7.</a>
+ <a class="tactic" href="bool-details.html#129">unfold.</a> <a class="tactic" href="bool-details.html#130">exists abs "a" (abs "b" (var "b")).</a> <a class="tactic" href="bool-details.html#131">search 7.</a>
 <span class="comment">%if</span>
- <a class="tactic" href="bool-details.html#178">apply ext_ind_is_int_eval to Rel2.</a> <a class="tactic" href="bool-details.html#179">L: apply lt_plus_one to Rel1 _.</a>
- <a class="tactic" href="bool-details.html#180">apply ext_ind_pos_eval to Rel2.</a> <a class="tactic" href="bool-details.html#181">Acc: case Acc.</a> <a class="tactic" href="bool-details.html#182">A: apply Acc to _ L.</a>
- <a class="tactic" href="bool-details.html#183">apply IH to Rel2 A.</a> <a class="tactic" href="bool-details.html#184">exists app (app Cond T) F.</a> <a class="tactic" href="bool-details.html#185">search.</a></div>
-<a class="command" href="bool-details.html#186"></a>
+ <a class="tactic" href="bool-details.html#132">apply ext_ind_is_int_eval to R2.</a> <a class="tactic" href="bool-details.html#133">L: apply lt_plus_one to R1 _.</a>
+ <a class="tactic" href="bool-details.html#134">apply ext_ind_pos_eval to R2.</a> <a class="tactic" href="bool-details.html#135">Acc: case Acc.</a> <a class="tactic" href="bool-details.html#136">A: apply Acc to _ L.</a>
+ <a class="tactic" href="bool-details.html#137">apply IH to R2 A.</a> <a class="tactic" href="bool-details.html#138">exists app (app Cond T) F.</a> <a class="tactic" href="bool-details.html#139">search.</a></div>
+<a class="command" href="bool-details.html#140"></a>
 </pre>
 </div>
 <div class="section">

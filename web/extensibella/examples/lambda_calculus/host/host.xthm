@@ -6,7 +6,13 @@ Translation_Constraint trans_is : forall E E',
 
 %Generally a good idea to include this so extensions can prove things
 %based on the structure of a term
-Ext_Ind is_e E with |{e}- E ~~> E'.
+Ext_Ind forall E, is_e E.
+%var
+ search.
+%abs
+ apply IH to R2. search.
+%app
+ apply IH to R1. apply IH to R2. search.
 
 
 Translation_Constraint trans_same : forall E E1 E2,
@@ -154,4 +160,71 @@ Translation_Constraint trans_eval_same : forall E E' V V',
   V = V'.
 
 
-Ext_Ind eval E V with |{e}- E ~~> E'.
+Ext_Size eval E V.
+
+Ext_Ind forall E V, eval E V.
+%E-Abs
+ search.
+%E-App
+ apply ext_ind_is_int_eval to R3. apply ext_ind_is_int_eval to R4.
+ apply ext_ind_is_int_eval to R6. apply ext_ind_pos_eval to R3.
+ apply ext_ind_pos_eval to R4. apply ext_ind_pos_eval to R6.
+ Or2: apply lt_left to R2 _ _. Or4: apply lt_right to R2 _ _ _.
+ apply lesseq_integer__add_positive to _ _ R2.
+ Or3: apply lt_left to R1 _ _. apply plus_integer_is_integer to _ _ R2.
+ LeN5: apply lte_right to R1 _ _ _. A: case Acc (keep). Or2: case Or2.
+   %N2 < N5
+    LN2: apply less_lesseq_integer_transitive to Or2 LeN5.
+    AN2: apply A to _ LN2. apply IH to R4 AN2. Or4: case Or4.
+      %N4 < N5
+       LN4: apply less_lesseq_integer_transitive to Or4 LeN5.
+       AN4: apply A to _ LN4. apply IH to R6 AN4. Or3: case Or3.
+         %N3 < N
+          AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+         %N3 = N
+          apply IH1 to R3 Acc. search.
+      %N4 = N5
+       Or5: apply lesseq_integer_less_or_eq to LeN5. Or5: case Or5.
+         %N5 < N
+          AN5: apply A to _ Or5. apply IH to R6 AN5. Or3: case Or3.
+            %N3 < N
+             AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+            %N3 = N
+             apply IH1 to R3 Acc. search.
+         %N5 = N
+          apply IH1 to R6 Acc. Or3: case Or3.
+            %N3 < N
+             AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+            %N3 = N
+             apply IH1 to R3 Acc. search.
+   %N2 = N5
+    Or5: apply lesseq_integer_less_or_eq to LeN5. Or5: case Or5.
+      %N5 < N
+       AN5: apply A to _ Or5. apply IH1 to R4 AN5. Or4: case Or4.
+         %N4 < N5
+          LN4: apply less_integer_transitive to Or4 Or5.
+          AN4: apply A to _ LN4. apply IH to R6 AN4. Or3: case Or3.
+            %N3 < N
+             AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+            %N3 = N
+             apply IH1 to R3 Acc. search.
+         %N4 = N5
+          apply IH to R6 AN5. Or3: case Or3.
+            %N3 < N
+             AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+            %N3 = N
+             apply IH1 to R3 Acc. search.
+      %N5 = N
+       apply IH1 to R4 Acc. Or4: case Or4.
+         %N4 < N
+          AN4: apply A to _ Or4. apply IH to R6 AN4. Or3: case Or3.
+            %N3 < N
+             AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+            %N3 = N
+             apply IH1 to R3 Acc. search.
+         %N4 = N
+          apply IH1 to R6 Acc. Or3: case Or3.
+            %N3 < N
+             AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+            %N3 = N
+             apply IH1 to R3 Acc. search.

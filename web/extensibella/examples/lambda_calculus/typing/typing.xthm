@@ -8,9 +8,7 @@ Prove_Constraint lambda_calculus:host:trans_is.
 
 Prove_Ext_Ind lambda_calculus:host:is_e.
 %tyabs
- apply ext_ind_is_int_is_e to Rel4. apply ext_ind_pos_is_e to Rel4.
- L: apply lt_plus_one to Rel1 _. Acc: case Acc. A2: apply Acc to _ L.
- apply IH to Rel4 A2. search.
+ apply IH to R3. search.
 
 
 Prove_Constraint lambda_calculus:host:trans_same.
@@ -93,6 +91,9 @@ Prove_Constraint lambda_calculus:host:trans_eval_same.
  case Ev. case Ev'. search.
 
 
+Add_Ext_Size lambda_calculus:host:eval.
+
+
 Prove_Ext_Ind lambda_calculus:host:eval.
 %E-Tyabs
  search.
@@ -125,7 +126,7 @@ Extensible_Theorem
  search.
 %T-App
  Is: case IsE. apply IH to _ Ty1 _. apply IH to _ Ty2 _. search.
-%Preservability
+%T-Trans
  apply trans_is to Ty1 IsE. apply IH to _ Ty2 _. search.
 
 Theorem any_ctx : forall E Ty G,
@@ -204,7 +205,7 @@ Extensible_Theorem
 %T-App
  Is: case IsE. S: case S. apply IH to _ _ _ S TyE1 _ _ _.
  apply IH to _ _ _ S1 TyE2 _ _ _. search.
-%Preservability
+%T-Trans
  ST: apply trans_subst to TyE1 _ _ _ S. apply trans_is to TyE1 _.
  apply trans_subst_same to TyE1 _ _ _ S ST.
  apply IH to _ _ _ ST TyE2 _ _ _. search.
@@ -227,15 +228,15 @@ Extensible_Theorem
  apply subst_is to _ _ _ Ev3. apply IH to _ TyB Ev4. search.
 %E-Tyabs
  case Ty. search.
-%Preservability
- Ty: case Ty. apply trans_same to Ev2 Ty. apply trans_is to Ty _.
- apply IH to _ Ty1 Ev1. search.
+%E-Q
+ Ty: case Ty. apply trans_same to Ev1 Ty. apply trans_is to Ty _.
+ apply IH to _ Ty1 Ev2. search.
 
 /*
   Note we do not have type uniqueness because abs(X, var(X)) could
-  have any type.
+  have any arrow type.
 
-  We also cannot prove progress because, in the preservability case,
+  We also cannot prove progress because, in the generic case,
   we could show the translation would evaluate, but we do not have a
   translation constraint that would allow us to lift this back to the
   new syntax.

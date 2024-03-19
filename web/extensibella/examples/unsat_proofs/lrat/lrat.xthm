@@ -35,7 +35,11 @@ Translation_Constraint trans_formula_is : forall F FT,
 %that use them, and then we want properties of them.
 
 
-Ext_Ind is_clause C with |{clause}- C ~~> C'.
+Ext_Ind forall C, is_clause C.
+%emptyClause
+ search.
+%or
+ apply IH to R2. search.
 
 
 
@@ -45,7 +49,7 @@ Ext_Ind is_clause C with |{clause}- C ~~> C'.
   that a term of that type either has each possible form or not, then
   to use these lemmas to break down the second one in the actual
   theorem.  This type of lemma can also be proven in extensions, since
-  thi unknown constructor in the preservability case is different from
+  thi unknown constructor in the generic case is different from
   any known constructor.
  */
 /*
@@ -1503,7 +1507,15 @@ Extensible_Theorem
  apply IH to Is1 _ _ GCL_L' CP2 PrmSub. search.
 
 
-Ext_Ind checkProof Known P with Known |{proof}- P ~~> P'.
+Ext_Size checkProof Known P.
+
+Ext_Ind forall Known P, checkProof Known P.
+%CP-EmptyLrat
+ search.
+%CP-AddLrup
+ apply IH1 to R3 Acc. search.
+%CP-DeleteLrat
+ apply IH1 to R2 Acc. search.
 
 
 %Translated proof still checks out

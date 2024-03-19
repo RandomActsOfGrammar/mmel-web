@@ -81,6 +81,9 @@ Prove_Constraint library:host:trans_s_eval.
  case Hyp1. search.
 
 
+Add_Ext_Size library:host:eval_s.
+
+
 Prove_Ext_Ind library:host:eval_s.
 %secdecl
  search.
@@ -404,8 +407,8 @@ Extensible_Theorem
           search.
    %S-secdecl-private
     apply NEq to _.
-%preservability
- Sec: case Sec. apply trans_s_unique to Ev2 Sec. apply IH to _ _ Ev1.
+%X-Q
+ Sec: case Sec. apply trans_s_unique to Ev1 Sec. apply IH to _ _ Ev2.
  search.
 
 
@@ -622,13 +625,13 @@ Extensible_Theorem
              apply LkpSec to _.
             %Lkp later
              Rel: case Rel. apply Rel1 to LkpSec1 Lkp1. search.
-%preservability
- Sec: case Sec. apply trans_s_unique to EvA2 Sec.
- EvBTrans: apply trans_s_eval to EvA2 EvB.
+%X-Q
+ Sec: case Sec. apply trans_s_unique to EvA1 Sec.
+ EvBTrans: apply trans_s_eval to EvA1 EvB.
  IsCT: apply trans_s_is to Sec Is.
- Equiv: apply IH to _ Sec1 Rel EvA1 EvBTrans.
+ Equiv: apply IH to _ Sec1 Rel EvA2 EvBTrans.
  LkpGB'G': assert forall X V, lookup GB' X V -> lookup G' X V.
-   intros L. apply trans_s_eval_results to EvA2 EvB EvBTrans L. search.
+   intros L. apply trans_s_eval_results to EvA1 EvB EvBTrans L. search.
  EqG'GB': assert public_equiv SG1 G' GB'.
    unfold.
      %1

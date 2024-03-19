@@ -252,36 +252,41 @@ Proof completed.
 Proof completed.
 </pre>
 <pre class="code extensibella"id="48">
- &lt; <b>Prove_Ext_Ind unsat_proofs:lrat:checkProof.</b>
+ &lt; <b>Add_Ext_Size unsat_proofs:lrat:checkProof.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="49">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_checkProof.</b>
+ &lt; <b>Prove_Ext_Ind unsat_proofs:lrat:checkProof.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="50">
- &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_all_greater.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_checkProof.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="51">
- &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_all_unique.</b>
+ &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_all_greater.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="52">
- &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_sat_formula.</b>
+ &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_all_unique.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="53">
- &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_is.</b>
+ &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_sat_formula.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="54">
+ &lt; <b>Prove unsat_proofs:lrat:formulaToKnown_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="55">
  &lt; <b>Theorem rupProof_help__drup_help :
      forall KnownL KnownD A Prf,
        rupProof_help KnownL A Prf -&gt; values KnownL KnownD -&gt; drup_help KnownD A.</b>
@@ -290,7 +295,7 @@ Proof completed.
  forall KnownL KnownD A Prf,
    rupProof_help KnownL A Prf -&gt; values KnownL KnownD -&gt; drup_help KnownD A
 </pre>
-<pre class="code extensibella"id="55">
+<pre class="code extensibella"id="56">
  &lt; <b>induction on 1.</b>
 
 IH : forall KnownL KnownD A Prf,
@@ -299,7 +304,7 @@ IH : forall KnownL KnownD A Prf,
  forall KnownL KnownD A Prf,
    rupProof_help KnownL A Prf @ -&gt; values KnownL KnownD -&gt; drup_help KnownD A
 </pre>
-<pre class="code extensibella"id="56">
+<pre class="code extensibella"id="57">
  &lt; <b>intros RUP V.</b>
 
 Variables: KnownL KnownD A Prf
@@ -310,7 +315,7 @@ V : values KnownL KnownD
 ============================
  drup_help KnownD A
 </pre>
-<pre class="code extensibella"id="57">
+<pre class="code extensibella"id="58">
  &lt; <b>RUP: case RUP.</b>
 
 Subgoal 1:
@@ -324,7 +329,7 @@ RUP1 : unsat_clause A C
 ============================
  drup_help KnownD A
 </pre>
-<pre class="code extensibella"id="58">
+<pre class="code extensibella"id="59">
  &lt; <b>MemL: apply lookup_mem to RUP.</b>
 
 Subgoal 1:
@@ -339,7 +344,7 @@ MemL : mem (ID, C) KnownL
 ============================
  drup_help KnownD A
 </pre>
-<pre class="code extensibella"id="59">
+<pre class="code extensibella"id="60">
  &lt; <b>MemD: apply values_mem to MemL V.</b>
 
 Subgoal 1:
@@ -355,7 +360,7 @@ MemD : mem C KnownD
 ============================
  drup_help KnownD A
 </pre>
-<pre class="code extensibella"id="60">
+<pre class="code extensibella"id="61">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -370,7 +375,7 @@ RUP2 : rupProof_help KnownL (L::A) Prf1 *
 ============================
  drup_help KnownD A
 </pre>
-<pre class="code extensibella"id="61">
+<pre class="code extensibella"id="62">
  &lt; <b>MemL: apply lookup_mem to RUP.</b>
 
 Subgoal 2:
@@ -386,7 +391,7 @@ MemL : mem (ID, C) KnownL
 ============================
  drup_help KnownD A
 </pre>
-<pre class="code extensibella"id="62">
+<pre class="code extensibella"id="63">
  &lt; <b>MemD: apply values_mem to MemL V.</b>
 
 Subgoal 2:
@@ -403,7 +408,7 @@ MemD : mem C KnownD
 ============================
  drup_help KnownD A
 </pre>
-<pre class="code extensibella"id="63">
+<pre class="code extensibella"id="64">
  &lt; <b>apply IH to RUP2 _.</b>
 
 Subgoal 2:
@@ -421,12 +426,12 @@ H1 : drup_help KnownD (L::A)
 ============================
  drup_help KnownD A
 </pre>
-<pre class="code extensibella"id="64">
+<pre class="code extensibella"id="65">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="65">
+<pre class="code extensibella"id="66">
  &lt; <b>Theorem rupProof__drup :
      forall KnownL KnownD C Prf,
        rupProof KnownL C Prf -&gt; values KnownL KnownD -&gt; drup KnownD C.</b>
@@ -435,7 +440,7 @@ Proof completed.
  forall KnownL KnownD C Prf,
    rupProof KnownL C Prf -&gt; values KnownL KnownD -&gt; drup KnownD C
 </pre>
-<pre class="code extensibella"id="66">
+<pre class="code extensibella"id="67">
  &lt; <b>intros R Vals.</b>
 
 Variables: KnownL KnownD C Prf
@@ -444,7 +449,7 @@ Vals : values KnownL KnownD
 ============================
  drup KnownD C
 </pre>
-<pre class="code extensibella"id="67">
+<pre class="code extensibella"id="68">
  &lt; <b>R: case R.</b>
 
 Variables: KnownL KnownD C Prf Lits A
@@ -455,7 +460,7 @@ R2 : rupProof_help KnownL A Prf
 ============================
  drup KnownD C
 </pre>
-<pre class="code extensibella"id="68">
+<pre class="code extensibella"id="69">
  &lt; <b>apply rupProof_help__drup_help to R2 Vals.</b>
 
 Variables: KnownL KnownD C Prf Lits A
@@ -467,12 +472,12 @@ H1 : drup_help KnownD A
 ============================
  drup KnownD C
 </pre>
-<pre class="code extensibella"id="69">
+<pre class="code extensibella"id="70">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="70">
+<pre class="code extensibella"id="71">
  &lt; <b>Theorem remove_all_no_mem_same :
      forall K ID KRest,
        remove_all K ID KRest -&gt; ((exists C, mem (ID, C) K) -&gt; false) -&gt; K = KRest.</b>
@@ -481,7 +486,7 @@ Proof completed.
  forall K ID KRest,
    remove_all K ID KRest -&gt; ((exists C, mem (ID, C) K) -&gt; false) -&gt; K = KRest
 </pre>
-<pre class="code extensibella"id="71">
+<pre class="code extensibella"id="72">
  &lt; <b>induction on 1.</b>
 
 IH : forall K ID KRest,
@@ -490,7 +495,7 @@ IH : forall K ID KRest,
  forall K ID KRest,
    remove_all K ID KRest @ -&gt; ((exists C, mem (ID, C) K) -&gt; false) -&gt; K = KRest
 </pre>
-<pre class="code extensibella"id="72">
+<pre class="code extensibella"id="73">
  &lt; <b>intros RA NEq.</b>
 
 Variables: K ID KRest
@@ -501,7 +506,7 @@ NEq : (exists C, mem (ID, C) K) -&gt; false
 ============================
  K = KRest
 </pre>
-<pre class="code extensibella"id="73">
+<pre class="code extensibella"id="74">
  &lt; <b>RA: case RA.</b>
 
 Subgoal 1:
@@ -513,7 +518,7 @@ NEq : (exists C, mem (ID, C) []) -&gt; false
 ============================
  [] = []
 </pre>
-<pre class="code extensibella"id="74">
+<pre class="code extensibella"id="75">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -526,7 +531,7 @@ RA : remove_all IRest ID KRest *
 ============================
  (ID, C)::IRest = KRest
 </pre>
-<pre class="code extensibella"id="75">
+<pre class="code extensibella"id="76">
  &lt; <b>apply NEq to _.</b>
 
 Subgoal 3:
@@ -540,7 +545,7 @@ RA1 : remove_all IRest ID Rest *
 ============================
  (A, C)::IRest = (A, C)::Rest
 </pre>
-<pre class="code extensibella"id="76">
+<pre class="code extensibella"id="77">
  &lt; <b>assert (exists C, mem (ID, C) IRest) -&gt; false.</b>
 
 Subgoal 3.1:
@@ -554,7 +559,7 @@ RA1 : remove_all IRest ID Rest *
 ============================
  (exists C1, mem (ID, C1) IRest) -&gt; false
 </pre>
-<pre class="code extensibella"id="77">
+<pre class="code extensibella"id="78">
  &lt; <b>intros Ex.</b>
 
 Subgoal 3.1:
@@ -569,7 +574,7 @@ Ex : exists C1, mem (ID, C1) IRest
 ============================
  false
 </pre>
-<pre class="code extensibella"id="78">
+<pre class="code extensibella"id="79">
  &lt; <b>case Ex.</b>
 
 Subgoal 3.1:
@@ -584,7 +589,7 @@ H1 : mem (ID, C1) IRest
 ============================
  false
 </pre>
-<pre class="code extensibella"id="79">
+<pre class="code extensibella"id="80">
  &lt; <b>backchain NEq.</b>
 
 Subgoal 3:
@@ -599,7 +604,7 @@ H1 : (exists C1, mem (ID, C1) IRest) -&gt; false
 ============================
  (A, C)::IRest = (A, C)::Rest
 </pre>
-<pre class="code extensibella"id="80">
+<pre class="code extensibella"id="81">
  &lt; <b>apply IH to RA1 _.</b>
 
 Subgoal 3:
@@ -614,12 +619,12 @@ H1 : (exists C1, mem (ID, C1) Rest) -&gt; false
 ============================
  (A, C)::Rest = (A, C)::Rest
 </pre>
-<pre class="code extensibella"id="81">
+<pre class="code extensibella"id="82">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="82">
+<pre class="code extensibella"id="83">
  &lt; <b>Theorem remove_all_good_clause_list_select :
      forall K ID KRA C KS,
        good_clause_list K -&gt; remove_all K ID KRA -&gt; select (ID, C) KS K -&gt; KRA = KS.</b>
@@ -628,7 +633,7 @@ Proof completed.
  forall K ID KRA C KS,
    good_clause_list K -&gt; remove_all K ID KRA -&gt; select (ID, C) KS K -&gt; KRA = KS
 </pre>
-<pre class="code extensibella"id="83">
+<pre class="code extensibella"id="84">
  &lt; <b>induction on 2.</b>
 
 IH : forall K ID KRA C KS,
@@ -637,7 +642,7 @@ IH : forall K ID KRA C KS,
  forall K ID KRA C KS,
    good_clause_list K -&gt; remove_all K ID KRA @ -&gt; select (ID, C) KS K -&gt; KRA = KS
 </pre>
-<pre class="code extensibella"id="84">
+<pre class="code extensibella"id="85">
  &lt; <b>intros GCL RA Slct.</b>
 
 Variables: K ID KRA C KS
@@ -649,7 +654,7 @@ Slct : select (ID, C) KS K
 ============================
  KRA = KS
 </pre>
-<pre class="code extensibella"id="85">
+<pre class="code extensibella"id="86">
  &lt; <b>RA: case RA.</b>
 
 Subgoal 1:
@@ -662,7 +667,7 @@ Slct : select (ID, C) KS []
 ============================
  [] = KS
 </pre>
-<pre class="code extensibella"id="86">
+<pre class="code extensibella"id="87">
  &lt; <b>case Slct.</b>
 
 Subgoal 2:
@@ -676,7 +681,7 @@ RA : remove_all IRest ID KRA *
 ============================
  KRA = KS
 </pre>
-<pre class="code extensibella"id="87">
+<pre class="code extensibella"id="88">
  &lt; <b>Slct: case Slct.</b>
 
 Subgoal 2.1:
@@ -689,7 +694,7 @@ RA : remove_all IRest ID KRA *
 ============================
  KRA = IRest
 </pre>
-<pre class="code extensibella"id="88">
+<pre class="code extensibella"id="89">
  &lt; <b>assert (exists C', mem (ID, C') IRest) -&gt; false.</b>
 
 Subgoal 2.1.1:
@@ -702,7 +707,7 @@ RA : remove_all IRest ID KRA *
 ============================
  (exists C', mem (ID, C') IRest) -&gt; false
 </pre>
-<pre class="code extensibella"id="89">
+<pre class="code extensibella"id="90">
  &lt; <b>intros Ex.</b>
 
 Subgoal 2.1.1:
@@ -716,7 +721,7 @@ Ex : exists C', mem (ID, C') IRest
 ============================
  false
 </pre>
-<pre class="code extensibella"id="90">
+<pre class="code extensibella"id="91">
  &lt; <b>M: case Ex.</b>
 
 Subgoal 2.1.1:
@@ -730,7 +735,7 @@ M : mem (ID, C') IRest
 ============================
  false
 </pre>
-<pre class="code extensibella"id="91">
+<pre class="code extensibella"id="92">
  &lt; <b>GCL: case GCL.</b>
 
 Subgoal 2.1.1:
@@ -745,7 +750,7 @@ GCL : forall ID1 C2 KRest C3,
 ============================
  false
 </pre>
-<pre class="code extensibella"id="92">
+<pre class="code extensibella"id="93">
  &lt; <b>backchain GCL.</b>
 
 Subgoal 2.1:
@@ -759,7 +764,7 @@ H1 : (exists C', mem (ID, C') IRest) -&gt; false
 ============================
  KRA = IRest
 </pre>
-<pre class="code extensibella"id="93">
+<pre class="code extensibella"id="94">
  &lt; <b>apply remove_all_no_mem_same to RA _.</b>
 
 Subgoal 2.1:
@@ -773,7 +778,7 @@ H1 : (exists C', mem (ID, C') KRA) -&gt; false
 ============================
  KRA = KRA
 </pre>
-<pre class="code extensibella"id="94">
+<pre class="code extensibella"id="95">
  &lt; <b>search.</b>
 
 Subgoal 2.2:
@@ -787,7 +792,7 @@ Slct : select (ID, C) L1 IRest
 ============================
  KRA = (ID, C1)::L1
 </pre>
-<pre class="code extensibella"id="95">
+<pre class="code extensibella"id="96">
  &lt; <b>M: apply select_mem to Slct.</b>
 
 Subgoal 2.2:
@@ -802,7 +807,7 @@ M : mem (ID, C) IRest
 ============================
  KRA = (ID, C1)::L1
 </pre>
-<pre class="code extensibella"id="96">
+<pre class="code extensibella"id="97">
  &lt; <b>GCL: case GCL.</b>
 
 Subgoal 2.2:
@@ -818,7 +823,7 @@ GCL : forall ID1 C2 KRest C3,
 ============================
  KRA = (ID, C1)::L1
 </pre>
-<pre class="code extensibella"id="97">
+<pre class="code extensibella"id="98">
  &lt; <b>apply GCL to _ M.</b>
 
 Subgoal 3:
@@ -833,7 +838,7 @@ RA1 : remove_all IRest ID Rest *
 ============================
  (A, C1)::Rest = KS
 </pre>
-<pre class="code extensibella"id="98">
+<pre class="code extensibella"id="99">
  &lt; <b>Slct: case Slct.</b>
 
 Subgoal 3.1:
@@ -847,7 +852,7 @@ RA1 : remove_all IRest A Rest *
 ============================
  (A, C1)::Rest = IRest
 </pre>
-<pre class="code extensibella"id="99">
+<pre class="code extensibella"id="100">
  &lt; <b>apply RA to _.</b>
 
 Subgoal 3.2:
@@ -862,7 +867,7 @@ Slct : select (ID, C) L1 IRest
 ============================
  (A, C1)::Rest = (A, C1)::L1
 </pre>
-<pre class="code extensibella"id="100">
+<pre class="code extensibella"id="101">
  &lt; <b>apply good_clause_list_drop to GCL.</b>
 
 Subgoal 3.2:
@@ -878,7 +883,7 @@ H1 : good_clause_list IRest
 ============================
  (A, C1)::Rest = (A, C1)::L1
 </pre>
-<pre class="code extensibella"id="101">
+<pre class="code extensibella"id="102">
  &lt; <b>apply IH to _ RA1 Slct.</b>
 
 Subgoal 3.2:
@@ -894,26 +899,26 @@ H1 : good_clause_list IRest
 ============================
  (A, C1)::L1 = (A, C1)::L1
 </pre>
-<pre class="code extensibella"id="102">
+<pre class="code extensibella"id="103">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="103">
+<pre class="code extensibella"id="104">
  &lt; <b>Theorem remove_all_subset :
      forall K ID KRest, remove_all K ID KRest -&gt; subset KRest K.</b>
 
 ============================
  forall K ID KRest, remove_all K ID KRest -&gt; subset KRest K
 </pre>
-<pre class="code extensibella"id="104">
+<pre class="code extensibella"id="105">
  &lt; <b>induction on 1.</b>
 
 IH : forall K ID KRest, remove_all K ID KRest * -&gt; subset KRest K
 ============================
  forall K ID KRest, remove_all K ID KRest @ -&gt; subset KRest K
 </pre>
-<pre class="code extensibella"id="105">
+<pre class="code extensibella"id="106">
  &lt; <b>intros RA.</b>
 
 Variables: K ID KRest
@@ -922,7 +927,7 @@ RA : remove_all K ID KRest @
 ============================
  subset KRest K
 </pre>
-<pre class="code extensibella"id="106">
+<pre class="code extensibella"id="107">
  &lt; <b>RA: case RA.</b>
 
 Subgoal 1:
@@ -932,7 +937,7 @@ IH : forall K ID KRest, remove_all K ID KRest * -&gt; subset KRest K
 ============================
  subset [] []
 </pre>
-<pre class="code extensibella"id="107">
+<pre class="code extensibella"id="108">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -943,7 +948,7 @@ RA : remove_all IRest ID KRest *
 ============================
  subset KRest ((ID, C)::IRest)
 </pre>
-<pre class="code extensibella"id="108">
+<pre class="code extensibella"id="109">
  &lt; <b>S: apply IH to RA.</b>
 
 Subgoal 2:
@@ -955,7 +960,7 @@ S : subset KRest IRest
 ============================
  subset KRest ((ID, C)::IRest)
 </pre>
-<pre class="code extensibella"id="109">
+<pre class="code extensibella"id="110">
  &lt; <b>backchain subset_add_right.</b>
 
 Subgoal 3:
@@ -967,7 +972,7 @@ RA1 : remove_all IRest ID Rest *
 ============================
  subset ((A, C)::Rest) ((A, C)::IRest)
 </pre>
-<pre class="code extensibella"id="110">
+<pre class="code extensibella"id="111">
  &lt; <b>S: apply IH to RA1.</b>
 
 Subgoal 3:
@@ -980,7 +985,7 @@ S : subset Rest IRest
 ============================
  subset ((A, C)::Rest) ((A, C)::IRest)
 </pre>
-<pre class="code extensibella"id="111">
+<pre class="code extensibella"id="112">
  &lt; <b>apply subset_add_right to S with
      A = (A, C).</b>
 
@@ -995,12 +1000,12 @@ H1 : subset Rest ((A, C)::IRest)
 ============================
  subset ((A, C)::Rest) ((A, C)::IRest)
 </pre>
-<pre class="code extensibella"id="112">
+<pre class="code extensibella"id="113">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="113">
+<pre class="code extensibella"id="114">
  &lt; <b>Theorem subset_values  [A, B] :
      forall (A : list (pair A B)) (B : list (pair A B)) VA VB,
        subset A B -&gt; values A VA -&gt; values B VB -&gt; subset VA VB.</b>
@@ -1008,7 +1013,7 @@ Proof completed.
 ============================
  forall A B VA VB, subset A B -&gt; values A VA -&gt; values B VB -&gt; subset VA VB
 </pre>
-<pre class="code extensibella"id="114">
+<pre class="code extensibella"id="115">
  &lt; <b>induction on 1.</b>
 
 IH : forall A B VA VB,
@@ -1016,7 +1021,7 @@ IH : forall A B VA VB,
 ============================
  forall A B VA VB, subset A B @ -&gt; values A VA -&gt; values B VB -&gt; subset VA VB
 </pre>
-<pre class="code extensibella"id="115">
+<pre class="code extensibella"id="116">
  &lt; <b>intros S VA VB.</b>
 
 Variables: A B VA VB
@@ -1028,7 +1033,7 @@ VB : values B VB
 ============================
  subset VA VB
 </pre>
-<pre class="code extensibella"id="116">
+<pre class="code extensibella"id="117">
  &lt; <b>S: case S.</b>
 
 Subgoal 1:
@@ -1041,7 +1046,7 @@ VB : values B VB
 ============================
  subset VA VB
 </pre>
-<pre class="code extensibella"id="117">
+<pre class="code extensibella"id="118">
  &lt; <b>case VA.</b>
 
 Subgoal 1:
@@ -1053,7 +1058,7 @@ VB : values B VB
 ============================
  subset [] VB
 </pre>
-<pre class="code extensibella"id="118">
+<pre class="code extensibella"id="119">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1068,7 +1073,7 @@ S1 : subset Rest B *
 ============================
  subset VA VB
 </pre>
-<pre class="code extensibella"id="119">
+<pre class="code extensibella"id="120">
  &lt; <b>VA: case VA.</b>
 
 Subgoal 2:
@@ -1083,7 +1088,7 @@ VA : values Rest VRest
 ============================
  subset (B1::VRest) VB
 </pre>
-<pre class="code extensibella"id="120">
+<pre class="code extensibella"id="121">
  &lt; <b>apply IH to S1 VA VB.</b>
 
 Subgoal 2:
@@ -1099,7 +1104,7 @@ H1 : subset VRest VB
 ============================
  subset (B1::VRest) VB
 </pre>
-<pre class="code extensibella"id="121">
+<pre class="code extensibella"id="122">
  &lt; <b>apply values_mem to S VB.</b>
 
 Subgoal 2:
@@ -1116,19 +1121,19 @@ H2 : mem B1 VB
 ============================
  subset (B1::VRest) VB
 </pre>
-<pre class="code extensibella"id="122">
+<pre class="code extensibella"id="123">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="123">
+<pre class="code extensibella"id="124">
  &lt; <b>Theorem values_exist :
      forall K, is_list (is_pair is_integer is_clause) K -&gt; exists V, values K V.</b>
 
 ============================
  forall K, is_list (is_pair is_integer is_clause) K -&gt; exists V, values K V
 </pre>
-<pre class="code extensibella"id="124">
+<pre class="code extensibella"id="125">
  &lt; <b>induction on 1.</b>
 
 IH : forall K,
@@ -1136,7 +1141,7 @@ IH : forall K,
 ============================
  forall K, is_list (is_pair is_integer is_clause) K @ -&gt; exists V, values K V
 </pre>
-<pre class="code extensibella"id="125">
+<pre class="code extensibella"id="126">
  &lt; <b>intros Is.</b>
 
 Variables: K
@@ -1146,7 +1151,7 @@ Is : is_list (is_pair is_integer is_clause) K @
 ============================
  exists V, values K V
 </pre>
-<pre class="code extensibella"id="126">
+<pre class="code extensibella"id="127">
  &lt; <b>Is: case Is.</b>
 
 Subgoal 1:
@@ -1156,7 +1161,7 @@ IH : forall K,
 ============================
  exists V, values [] V
 </pre>
-<pre class="code extensibella"id="127">
+<pre class="code extensibella"id="128">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1169,7 +1174,7 @@ Is1 : is_list (is_pair is_integer is_clause) T *
 ============================
  exists V, values (H::T) V
 </pre>
-<pre class="code extensibella"id="128">
+<pre class="code extensibella"id="129">
  &lt; <b>case Is.</b>
 
 Subgoal 2:
@@ -1183,7 +1188,7 @@ H2 : is_clause B
 ============================
  exists V, values ((A, B)::T) V
 </pre>
-<pre class="code extensibella"id="129">
+<pre class="code extensibella"id="130">
  &lt; <b>apply IH to Is1.</b>
 
 Subgoal 2:
@@ -1198,26 +1203,26 @@ H3 : values T V
 ============================
  exists V, values ((A, B)::T) V
 </pre>
-<pre class="code extensibella"id="130">
+<pre class="code extensibella"id="131">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="131">
+<pre class="code extensibella"id="132">
  &lt; <b>Theorem remove_all_unique :
      forall K ID KA KB, remove_all K ID KA -&gt; remove_all K ID KB -&gt; KA = KB.</b>
 
 ============================
  forall K ID KA KB, remove_all K ID KA -&gt; remove_all K ID KB -&gt; KA = KB
 </pre>
-<pre class="code extensibella"id="132">
+<pre class="code extensibella"id="133">
  &lt; <b>induction on 1.</b>
 
 IH : forall K ID KA KB, remove_all K ID KA * -&gt; remove_all K ID KB -&gt; KA = KB
 ============================
  forall K ID KA KB, remove_all K ID KA @ -&gt; remove_all K ID KB -&gt; KA = KB
 </pre>
-<pre class="code extensibella"id="133">
+<pre class="code extensibella"id="134">
  &lt; <b>intros RAA RAB.</b>
 
 Variables: K ID KA KB
@@ -1227,7 +1232,7 @@ RAB : remove_all K ID KB
 ============================
  KA = KB
 </pre>
-<pre class="code extensibella"id="134">
+<pre class="code extensibella"id="135">
  &lt; <b>RAA: case RAA.</b>
 
 Subgoal 1:
@@ -1238,7 +1243,7 @@ RAB : remove_all [] ID KB
 ============================
  [] = KB
 </pre>
-<pre class="code extensibella"id="135">
+<pre class="code extensibella"id="136">
  &lt; <b>case RAB.</b>
 
 Subgoal 1:
@@ -1248,7 +1253,7 @@ IH : forall K ID KA KB, remove_all K ID KA * -&gt; remove_all K ID KB -&gt; KA =
 ============================
  [] = []
 </pre>
-<pre class="code extensibella"id="136">
+<pre class="code extensibella"id="137">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1260,7 +1265,7 @@ RAA : remove_all IRest ID KA *
 ============================
  KA = KB
 </pre>
-<pre class="code extensibella"id="137">
+<pre class="code extensibella"id="138">
  &lt; <b>RAB: case RAB.</b>
 
 Subgoal 2.1:
@@ -1272,7 +1277,7 @@ RAB : remove_all IRest ID KB
 ============================
  KA = KB
 </pre>
-<pre class="code extensibella"id="138">
+<pre class="code extensibella"id="139">
  &lt; <b>apply IH to RAA RAB.</b>
 
 Subgoal 2.1:
@@ -1284,7 +1289,7 @@ RAB : remove_all IRest ID KB
 ============================
  KB = KB
 </pre>
-<pre class="code extensibella"id="139">
+<pre class="code extensibella"id="140">
  &lt; <b>search.</b>
 
 Subgoal 2.2:
@@ -1297,7 +1302,7 @@ RAB1 : remove_all IRest ID Rest
 ============================
  KA = (ID, C)::Rest
 </pre>
-<pre class="code extensibella"id="140">
+<pre class="code extensibella"id="141">
  &lt; <b>apply RAB to _.</b>
 
 Subgoal 3:
@@ -1310,7 +1315,7 @@ RAA1 : remove_all IRest ID Rest *
 ============================
  (A, C)::Rest = KB
 </pre>
-<pre class="code extensibella"id="141">
+<pre class="code extensibella"id="142">
  &lt; <b>RAB: case RAB.</b>
 
 Subgoal 3.1:
@@ -1323,7 +1328,7 @@ RAB : remove_all IRest ID KB
 ============================
  (ID, C)::Rest = KB
 </pre>
-<pre class="code extensibella"id="142">
+<pre class="code extensibella"id="143">
  &lt; <b>apply RAA to _.</b>
 
 Subgoal 3.2:
@@ -1337,7 +1342,7 @@ RAB1 : remove_all IRest ID Rest1
 ============================
  (A, C)::Rest = (A, C)::Rest1
 </pre>
-<pre class="code extensibella"id="143">
+<pre class="code extensibella"id="144">
  &lt; <b>apply IH to RAA1 RAB1.</b>
 
 Subgoal 3.2:
@@ -1351,26 +1356,26 @@ RAB1 : remove_all IRest ID Rest1
 ============================
  (A, C)::Rest1 = (A, C)::Rest1
 </pre>
-<pre class="code extensibella"id="144">
+<pre class="code extensibella"id="145">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="145">
+<pre class="code extensibella"id="146">
  &lt; <b>Theorem drup_help_subset :
      forall KA C KB, drup_help KA C -&gt; subset KA KB -&gt; drup_help KB C.</b>
 
 ============================
  forall KA C KB, drup_help KA C -&gt; subset KA KB -&gt; drup_help KB C
 </pre>
-<pre class="code extensibella"id="146">
+<pre class="code extensibella"id="147">
  &lt; <b>induction on 1.</b>
 
 IH : forall KA C KB, drup_help KA C * -&gt; subset KA KB -&gt; drup_help KB C
 ============================
  forall KA C KB, drup_help KA C @ -&gt; subset KA KB -&gt; drup_help KB C
 </pre>
-<pre class="code extensibella"id="147">
+<pre class="code extensibella"id="148">
  &lt; <b>intros D S.</b>
 
 Variables: KA C KB
@@ -1380,7 +1385,7 @@ S : subset KA KB
 ============================
  drup_help KB C
 </pre>
-<pre class="code extensibella"id="148">
+<pre class="code extensibella"id="149">
  &lt; <b>D: case D.</b>
 
 Subgoal 1:
@@ -1393,7 +1398,7 @@ D1 : unsat_clause C C1
 ============================
  drup_help KB C
 </pre>
-<pre class="code extensibella"id="149">
+<pre class="code extensibella"id="150">
  &lt; <b>apply subset_mem to S D.</b>
 
 Subgoal 1:
@@ -1407,7 +1412,7 @@ H1 : mem C1 KB
 ============================
  drup_help KB C
 </pre>
-<pre class="code extensibella"id="150">
+<pre class="code extensibella"id="151">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1421,7 +1426,7 @@ D2 : drup_help KA (L::C) *
 ============================
  drup_help KB C
 </pre>
-<pre class="code extensibella"id="151">
+<pre class="code extensibella"id="152">
  &lt; <b>apply IH to D2 S.</b>
 
 Subgoal 2:
@@ -1436,7 +1441,7 @@ H1 : drup_help KB (L::C)
 ============================
  drup_help KB C
 </pre>
-<pre class="code extensibella"id="152">
+<pre class="code extensibella"id="153">
  &lt; <b>apply subset_mem to S D.</b>
 
 Subgoal 2:
@@ -1452,19 +1457,19 @@ H2 : mem C1 KB
 ============================
  drup_help KB C
 </pre>
-<pre class="code extensibella"id="153">
+<pre class="code extensibella"id="154">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="154">
+<pre class="code extensibella"id="155">
  &lt; <b>Theorem drup_subset :
      forall KA C KB, drup KA C -&gt; subset KA KB -&gt; drup KB C.</b>
 
 ============================
  forall KA C KB, drup KA C -&gt; subset KA KB -&gt; drup KB C
 </pre>
-<pre class="code extensibella"id="155">
+<pre class="code extensibella"id="156">
  &lt; <b>intros D S.</b>
 
 Variables: KA C KB
@@ -1473,7 +1478,7 @@ S : subset KA KB
 ============================
  drup KB C
 </pre>
-<pre class="code extensibella"id="156">
+<pre class="code extensibella"id="157">
  &lt; <b>D: case D.</b>
 
 Variables: KA C KB L NL
@@ -1484,7 +1489,7 @@ D2 : drup_help KA NL
 ============================
  drup KB C
 </pre>
-<pre class="code extensibella"id="157">
+<pre class="code extensibella"id="158">
  &lt; <b>apply drup_help_subset to D2 S.</b>
 
 Variables: KA C KB L NL
@@ -1496,12 +1501,12 @@ H1 : drup_help KB NL
 ============================
  drup KB C
 </pre>
-<pre class="code extensibella"id="158">
+<pre class="code extensibella"id="159">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="159">
+<pre class="code extensibella"id="160">
  &lt; <b>Theorem good_clause_list_selects :
      forall K ID CA KA CB KB,
        good_clause_list K -&gt; select (ID, CA) KA K -&gt; select (ID, CB) KB K -&gt; KA = KB.</b>
@@ -1510,7 +1515,7 @@ Proof completed.
  forall K ID CA KA CB KB,
    good_clause_list K -&gt; select (ID, CA) KA K -&gt; select (ID, CB) KB K -&gt; KA = KB
 </pre>
-<pre class="code extensibella"id="160">
+<pre class="code extensibella"id="161">
  &lt; <b>induction on 2.</b>
 
 IH : forall K ID CA KA CB KB,
@@ -1519,7 +1524,7 @@ IH : forall K ID CA KA CB KB,
  forall K ID CA KA CB KB,
    good_clause_list K -&gt; select (ID, CA) KA K @ -&gt; select (ID, CB) KB K -&gt; KA = KB
 </pre>
-<pre class="code extensibella"id="161">
+<pre class="code extensibella"id="162">
  &lt; <b>intros GCL SA SB.</b>
 
 Variables: K ID CA KA CB KB
@@ -1531,7 +1536,7 @@ SB : select (ID, CB) KB K
 ============================
  KA = KB
 </pre>
-<pre class="code extensibella"id="162">
+<pre class="code extensibella"id="163">
  &lt; <b>SA: case SA.</b>
 
 Subgoal 1:
@@ -1544,7 +1549,7 @@ SB : select (ID, CB) KB ((ID, CA)::KA)
 ============================
  KA = KB
 </pre>
-<pre class="code extensibella"id="163">
+<pre class="code extensibella"id="164">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 1.1:
@@ -1556,7 +1561,7 @@ GCL : good_clause_list ((ID, CA)::KA)
 ============================
  KA = KA
 </pre>
-<pre class="code extensibella"id="164">
+<pre class="code extensibella"id="165">
  &lt; <b>search.</b>
 
 Subgoal 1.2:
@@ -1569,7 +1574,7 @@ SB : select (ID, CB) L1 KA
 ============================
  KA = (ID, CA)::L1
 </pre>
-<pre class="code extensibella"id="165">
+<pre class="code extensibella"id="166">
  &lt; <b>GCL: case GCL.</b>
 
 Subgoal 1.2:
@@ -1583,7 +1588,7 @@ GCL : forall ID1 C1 KRest C2,
 ============================
  KA = (ID, CA)::L1
 </pre>
-<pre class="code extensibella"id="166">
+<pre class="code extensibella"id="167">
  &lt; <b>M: apply select_mem to SB.</b>
 
 Subgoal 1.2:
@@ -1598,7 +1603,7 @@ M : mem (ID, CB) KA
 ============================
  KA = (ID, CA)::L1
 </pre>
-<pre class="code extensibella"id="167">
+<pre class="code extensibella"id="168">
  &lt; <b>apply GCL to _ M.</b>
 
 Subgoal 2:
@@ -1612,7 +1617,7 @@ SA : select (ID, CA) L1 L2 *
 ============================
  I::L1 = KB
 </pre>
-<pre class="code extensibella"id="168">
+<pre class="code extensibella"id="169">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 2.1:
@@ -1625,7 +1630,7 @@ SA : select (ID, CA) L1 L2 *
 ============================
  (ID, CB)::L1 = L2
 </pre>
-<pre class="code extensibella"id="169">
+<pre class="code extensibella"id="170">
  &lt; <b>GCL: case GCL.</b>
 
 Subgoal 2.1:
@@ -1639,7 +1644,7 @@ GCL : forall ID1 C1 KRest C2,
 ============================
  (ID, CB)::L1 = L2
 </pre>
-<pre class="code extensibella"id="170">
+<pre class="code extensibella"id="171">
  &lt; <b>M: apply select_mem to SA.</b>
 
 Subgoal 2.1:
@@ -1654,7 +1659,7 @@ M : mem (ID, CA) L2
 ============================
  (ID, CB)::L1 = L2
 </pre>
-<pre class="code extensibella"id="171">
+<pre class="code extensibella"id="172">
  &lt; <b>apply GCL to _ M.</b>
 
 Subgoal 2.2:
@@ -1668,7 +1673,7 @@ SB : select (ID, CB) L3 L2
 ============================
  I::L1 = I::L3
 </pre>
-<pre class="code extensibella"id="172">
+<pre class="code extensibella"id="173">
  &lt; <b>apply good_clause_list_drop to GCL.</b>
 
 Subgoal 2.2:
@@ -1683,7 +1688,7 @@ H1 : good_clause_list L2
 ============================
  I::L1 = I::L3
 </pre>
-<pre class="code extensibella"id="173">
+<pre class="code extensibella"id="174">
  &lt; <b>apply IH to _ SA SB.</b>
 
 Subgoal 2.2:
@@ -1698,12 +1703,12 @@ H1 : good_clause_list L2
 ============================
  I::L3 = I::L3
 </pre>
-<pre class="code extensibella"id="174">
+<pre class="code extensibella"id="175">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="175">
+<pre class="code extensibella"id="176">
  &lt; <b>Theorem values_is :
      forall K V,
        is_list (is_pair is_integer is_clause) K -&gt; values K V -&gt; is_list is_clause V.</b>
@@ -1712,7 +1717,7 @@ Proof completed.
  forall K V,
    is_list (is_pair is_integer is_clause) K -&gt; values K V -&gt; is_list is_clause V
 </pre>
-<pre class="code extensibella"id="176">
+<pre class="code extensibella"id="177">
  &lt; <b>induction on 2.</b>
 
 IH : forall K V,
@@ -1721,7 +1726,7 @@ IH : forall K V,
  forall K V,
    is_list (is_pair is_integer is_clause) K -&gt; values K V @ -&gt; is_list is_clause V
 </pre>
-<pre class="code extensibella"id="177">
+<pre class="code extensibella"id="178">
  &lt; <b>intros IsK V.</b>
 
 Variables: K V
@@ -1732,7 +1737,7 @@ V : values K V @
 ============================
  is_list is_clause V
 </pre>
-<pre class="code extensibella"id="178">
+<pre class="code extensibella"id="179">
  &lt; <b>V: case V.</b>
 
 Subgoal 1:
@@ -1743,7 +1748,7 @@ IsK : is_list (is_pair is_integer is_clause) []
 ============================
  is_list is_clause []
 </pre>
-<pre class="code extensibella"id="179">
+<pre class="code extensibella"id="180">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1756,7 +1761,7 @@ V : values Rest VRest *
 ============================
  is_list is_clause (B::VRest)
 </pre>
-<pre class="code extensibella"id="180">
+<pre class="code extensibella"id="181">
  &lt; <b>Is: case IsK.</b>
 
 Subgoal 2:
@@ -1770,7 +1775,7 @@ Is1 : is_list (is_pair is_integer is_clause) Rest
 ============================
  is_list is_clause (B::VRest)
 </pre>
-<pre class="code extensibella"id="181">
+<pre class="code extensibella"id="182">
  &lt; <b>apply IH to Is1 V.</b>
 
 Subgoal 2:
@@ -1785,7 +1790,7 @@ H1 : is_list is_clause VRest
 ============================
  is_list is_clause (B::VRest)
 </pre>
-<pre class="code extensibella"id="182">
+<pre class="code extensibella"id="183">
  &lt; <b>case Is.</b>
 
 Subgoal 2:
@@ -1801,12 +1806,12 @@ H3 : is_clause B
 ============================
  is_list is_clause (B::VRest)
 </pre>
-<pre class="code extensibella"id="183">
+<pre class="code extensibella"id="184">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="184">
+<pre class="code extensibella"id="185">
  &lt; <b>Theorem select_is_clause :
      forall Known KRest IDC,
        is_list is_clause Known -&gt; select IDC KRest Known -&gt; is_list is_clause KRest.</b>
@@ -1815,7 +1820,7 @@ Proof completed.
  forall Known KRest IDC,
    is_list is_clause Known -&gt; select IDC KRest Known -&gt; is_list is_clause KRest
 </pre>
-<pre class="code extensibella"id="185">
+<pre class="code extensibella"id="186">
  &lt; <b>induction on 2.</b>
 
 IH : forall Known KRest IDC,
@@ -1824,7 +1829,7 @@ IH : forall Known KRest IDC,
  forall Known KRest IDC,
    is_list is_clause Known -&gt; select IDC KRest Known @ -&gt; is_list is_clause KRest
 </pre>
-<pre class="code extensibella"id="186">
+<pre class="code extensibella"id="187">
  &lt; <b>intros Is Slct.</b>
 
 Variables: Known KRest IDC
@@ -1835,7 +1840,7 @@ Slct : select IDC KRest Known @
 ============================
  is_list is_clause KRest
 </pre>
-<pre class="code extensibella"id="187">
+<pre class="code extensibella"id="188">
  &lt; <b>Slct: case Slct.</b>
 
 Subgoal 1:
@@ -1847,7 +1852,7 @@ Is : is_list is_clause (IDC::KRest)
 ============================
  is_list is_clause KRest
 </pre>
-<pre class="code extensibella"id="188">
+<pre class="code extensibella"id="189">
  &lt; <b>case Is.</b>
 
 Subgoal 1:
@@ -1860,7 +1865,7 @@ H2 : is_list is_clause KRest
 ============================
  is_list is_clause KRest
 </pre>
-<pre class="code extensibella"id="189">
+<pre class="code extensibella"id="190">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1873,7 +1878,7 @@ Slct : select IDC L1 L2 *
 ============================
  is_list is_clause (I::L1)
 </pre>
-<pre class="code extensibella"id="190">
+<pre class="code extensibella"id="191">
  &lt; <b>Is: case Is.</b>
 
 Subgoal 2:
@@ -1887,7 +1892,7 @@ Is1 : is_list is_clause L2
 ============================
  is_list is_clause (I::L1)
 </pre>
-<pre class="code extensibella"id="191">
+<pre class="code extensibella"id="192">
  &lt; <b>apply IH to _ Slct.</b>
 
 Subgoal 2:
@@ -1902,26 +1907,26 @@ H1 : is_list is_clause L1
 ============================
  is_list is_clause (I::L1)
 </pre>
-<pre class="code extensibella"id="192">
+<pre class="code extensibella"id="193">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="193">
+<pre class="code extensibella"id="194">
  &lt; <b>Theorem mem_is_clause :
      forall Known C, is_list is_clause Known -&gt; mem C Known -&gt; is_clause C.</b>
 
 ============================
  forall Known C, is_list is_clause Known -&gt; mem C Known -&gt; is_clause C
 </pre>
-<pre class="code extensibella"id="194">
+<pre class="code extensibella"id="195">
  &lt; <b>induction on 2.</b>
 
 IH : forall Known C, is_list is_clause Known -&gt; mem C Known * -&gt; is_clause C
 ============================
  forall Known C, is_list is_clause Known -&gt; mem C Known @ -&gt; is_clause C
 </pre>
-<pre class="code extensibella"id="195">
+<pre class="code extensibella"id="196">
  &lt; <b>intros Is Mem.</b>
 
 Variables: Known C
@@ -1931,7 +1936,7 @@ Mem : mem C Known @
 ============================
  is_clause C
 </pre>
-<pre class="code extensibella"id="196">
+<pre class="code extensibella"id="197">
  &lt; <b>Mem: case Mem.</b>
 
 Subgoal 1:
@@ -1942,7 +1947,7 @@ Is : is_list is_clause (C::Rest)
 ============================
  is_clause C
 </pre>
-<pre class="code extensibella"id="197">
+<pre class="code extensibella"id="198">
  &lt; <b>Is: case Is.</b>
 
 Subgoal 1:
@@ -1954,7 +1959,7 @@ Is1 : is_list is_clause Rest
 ============================
  is_clause C
 </pre>
-<pre class="code extensibella"id="198">
+<pre class="code extensibella"id="199">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1966,7 +1971,7 @@ Mem : mem C Rest *
 ============================
  is_clause C
 </pre>
-<pre class="code extensibella"id="199">
+<pre class="code extensibella"id="200">
  &lt; <b>Is: case Is.</b>
 
 Subgoal 2:
@@ -1979,7 +1984,7 @@ Is1 : is_list is_clause Rest
 ============================
  is_clause C
 </pre>
-<pre class="code extensibella"id="200">
+<pre class="code extensibella"id="201">
  &lt; <b>apply IH to _ Mem.</b>
 
 Subgoal 2:
@@ -1993,26 +1998,26 @@ H1 : is_clause C
 ============================
  is_clause C
 </pre>
-<pre class="code extensibella"id="201">
+<pre class="code extensibella"id="202">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="202">
+<pre class="code extensibella"id="203">
  &lt; <b>Theorem is_count_exists_clause :
      forall L C, is_list is_clause L -&gt; is_clause C -&gt; exists N, count C L N.</b>
 
 ============================
  forall L C, is_list is_clause L -&gt; is_clause C -&gt; exists N, count C L N
 </pre>
-<pre class="code extensibella"id="203">
+<pre class="code extensibella"id="204">
  &lt; <b>induction on 1.</b>
 
 IH : forall L C, is_list is_clause L * -&gt; is_clause C -&gt; exists N, count C L N
 ============================
  forall L C, is_list is_clause L @ -&gt; is_clause C -&gt; exists N, count C L N
 </pre>
-<pre class="code extensibella"id="204">
+<pre class="code extensibella"id="205">
  &lt; <b>intros IsL IsC.</b>
 
 Variables: L C
@@ -2022,7 +2027,7 @@ IsC : is_clause C
 ============================
  exists N, count C L N
 </pre>
-<pre class="code extensibella"id="205">
+<pre class="code extensibella"id="206">
  &lt; <b>Is: case IsL.</b>
 
 Subgoal 1:
@@ -2033,7 +2038,7 @@ IsC : is_clause C
 ============================
  exists N, count C [] N
 </pre>
-<pre class="code extensibella"id="206">
+<pre class="code extensibella"id="207">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -2046,7 +2051,7 @@ Is1 : is_list is_clause T *
 ============================
  exists N, count C (H::T) N
 </pre>
-<pre class="code extensibella"id="207">
+<pre class="code extensibella"id="208">
  &lt; <b>Or: apply is_clause_eq_or_not to IsC Is.</b>
 
 Subgoal 2:
@@ -2060,7 +2065,7 @@ Or : C = H \/ (C = H -&gt; false)
 ============================
  exists N, count C (H::T) N
 </pre>
-<pre class="code extensibella"id="208">
+<pre class="code extensibella"id="209">
  &lt; <b>C: apply IH to Is1 IsC.</b>
 
 Subgoal 2:
@@ -2075,7 +2080,7 @@ C : count C T N
 ============================
  exists N, count C (H::T) N
 </pre>
-<pre class="code extensibella"id="209">
+<pre class="code extensibella"id="210">
  &lt; <b>Eq: case Or.</b>
 
 Subgoal 2.1:
@@ -2089,7 +2094,7 @@ C : count H T N
 ============================
  exists N, count H (H::T) N
 </pre>
-<pre class="code extensibella"id="210">
+<pre class="code extensibella"id="211">
  &lt; <b>IsN: apply count_is_integer to C.</b>
 
 Subgoal 2.1:
@@ -2104,7 +2109,7 @@ IsN : is_integer N
 ============================
  exists N, count H (H::T) N
 </pre>
-<pre class="code extensibella"id="211">
+<pre class="code extensibella"id="212">
  &lt; <b>apply plus_integer_total to _ IsN with
      N1 = 1.</b>
 
@@ -2121,7 +2126,7 @@ H1 : 1 + N = N3
 ============================
  exists N, count H (H::T) N
 </pre>
-<pre class="code extensibella"id="212">
+<pre class="code extensibella"id="213">
  &lt; <b>search.</b>
 
 Subgoal 2.2:
@@ -2136,19 +2141,19 @@ Eq : C = H -&gt; false
 ============================
  exists N, count C (H::T) N
 </pre>
-<pre class="code extensibella"id="213">
+<pre class="code extensibella"id="214">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="214">
+<pre class="code extensibella"id="215">
  &lt; <b>Theorem counts_drop_head  [A] :
      forall (H : A) T X N N', count X (H::T) N -&gt; count X T N' -&gt; N &gt;= N'.</b>
 
 ============================
  forall H T X N N', count X (H::T) N -&gt; count X T N' -&gt; N &gt;= N'
 </pre>
-<pre class="code extensibella"id="215">
+<pre class="code extensibella"id="216">
  &lt; <b>intros C CT.</b>
 
 Variables: H T X N N'
@@ -2157,7 +2162,7 @@ CT : count X T N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="216">
+<pre class="code extensibella"id="217">
  &lt; <b>C: case C.</b>
 
 Subgoal 1:
@@ -2169,7 +2174,7 @@ C1 : 1 + N1 = N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="217">
+<pre class="code extensibella"id="218">
  &lt; <b>apply count_unique to C CT.</b>
 
 Subgoal 1:
@@ -2181,7 +2186,7 @@ C1 : 1 + N' = N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="218">
+<pre class="code extensibella"id="219">
  &lt; <b>apply count_is_integer to C.</b>
 
 Subgoal 1:
@@ -2194,7 +2199,7 @@ H1 : is_integer N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="219">
+<pre class="code extensibella"id="220">
  &lt; <b>L: apply lt_plus_one to C1 _.</b>
 
 Subgoal 1:
@@ -2208,7 +2213,7 @@ L : N' &lt; N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="220">
+<pre class="code extensibella"id="221">
  &lt; <b>apply less_integer_lesseq to L.</b>
 
 Subgoal 1:
@@ -2223,7 +2228,7 @@ H2 : N' &lt;= N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="221">
+<pre class="code extensibella"id="222">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -2235,7 +2240,7 @@ C1 : count X T N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="222">
+<pre class="code extensibella"id="223">
  &lt; <b>apply count_unique to CT C1.</b>
 
 Subgoal 2:
@@ -2247,7 +2252,7 @@ C1 : count X T N
 ============================
  N &gt;= N
 </pre>
-<pre class="code extensibella"id="223">
+<pre class="code extensibella"id="224">
  &lt; <b>apply count_is_integer to CT.</b>
 
 Subgoal 2:
@@ -2260,12 +2265,12 @@ H1 : is_integer N
 ============================
  N &gt;= N
 </pre>
-<pre class="code extensibella"id="224">
+<pre class="code extensibella"id="225">
  &lt; <b>backchain is_integer_greatereq.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="225">
+<pre class="code extensibella"id="226">
  &lt; <b>Theorem counts_subset :
      forall A B,
        is_list is_clause A -&gt; is_list is_clause B -&gt; (forall C NA NB,
@@ -2276,7 +2281,7 @@ Proof completed.
    is_list is_clause A -&gt; is_list is_clause B -&gt; (forall C NA NB,
      count C A NA -&gt; count C B NB -&gt; NB &gt;= NA) -&gt; subset A B
 </pre>
-<pre class="code extensibella"id="226">
+<pre class="code extensibella"id="227">
  &lt; <b>induction on 1.</b>
 
 IH : forall A B,
@@ -2287,7 +2292,7 @@ IH : forall A B,
    is_list is_clause A @ -&gt; is_list is_clause B -&gt; (forall C NA NB,
      count C A NA -&gt; count C B NB -&gt; NB &gt;= NA) -&gt; subset A B
 </pre>
-<pre class="code extensibella"id="227">
+<pre class="code extensibella"id="228">
  &lt; <b>intros IsA IsB Counts.</b>
 
 Variables: A B
@@ -2300,7 +2305,7 @@ Counts : forall C NA NB, count C A NA -&gt; count C B NB -&gt; NB &gt;= NA
 ============================
  subset A B
 </pre>
-<pre class="code extensibella"id="228">
+<pre class="code extensibella"id="229">
  &lt; <b>IsA: case IsA.</b>
 
 Subgoal 1:
@@ -2314,7 +2319,7 @@ Counts : forall C NA NB, count C [] NA -&gt; count C B NB -&gt; NB &gt;= NA
 ============================
  subset [] B
 </pre>
-<pre class="code extensibella"id="229">
+<pre class="code extensibella"id="230">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -2330,7 +2335,7 @@ IsA1 : is_list is_clause T *
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="230">
+<pre class="code extensibella"id="231">
  &lt; <b>CA: apply is_count_exists_clause to IsA1 IsA.</b>
 
 Subgoal 2:
@@ -2347,7 +2352,7 @@ CA : count H T N
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="231">
+<pre class="code extensibella"id="232">
  &lt; <b>IsN: apply count_is_integer to CA.</b>
 
 Subgoal 2:
@@ -2365,7 +2370,7 @@ IsN : is_integer N
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="232">
+<pre class="code extensibella"id="233">
  &lt; <b>P: apply plus_integer_total to _ IsN with
         N1 = 1.</b>
 
@@ -2385,7 +2390,7 @@ P : 1 + N = N3
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="233">
+<pre class="code extensibella"id="234">
  &lt; <b>CB: apply is_count_exists_clause to IsB IsA.</b>
 
 Subgoal 2:
@@ -2405,7 +2410,7 @@ CB : count H B N1
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="234">
+<pre class="code extensibella"id="235">
  &lt; <b>CAA: assert count H (H::T) N3.</b>
 
 Subgoal 2:
@@ -2426,7 +2431,7 @@ CAA : count H (H::T) N3
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="235">
+<pre class="code extensibella"id="236">
  &lt; <b>GEq: apply Counts to CAA CB.</b>
 
 Subgoal 2:
@@ -2448,7 +2453,7 @@ GEq : N1 &gt;= N3
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="236">
+<pre class="code extensibella"id="237">
  &lt; <b>IsN: apply count_is_integer to CA.</b>
 
 Subgoal 2:
@@ -2471,7 +2476,7 @@ IsN1 : is_integer N
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="237">
+<pre class="code extensibella"id="238">
  &lt; <b>N0: apply count_geq_0 to CA.</b>
 
 Subgoal 2:
@@ -2495,7 +2500,7 @@ N0 : N &gt;= 0
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="238">
+<pre class="code extensibella"id="239">
  &lt; <b>NN3: apply lt_plus_one to P _.</b>
 
 Subgoal 2:
@@ -2520,7 +2525,7 @@ NN3 : N &lt; N3
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="239">
+<pre class="code extensibella"id="240">
  &lt; <b>G: assert N3 &gt; 0.</b>
 
 Subgoal 2.1:
@@ -2545,7 +2550,7 @@ NN3 : N &lt; N3
 ============================
  N3 &gt; 0
 </pre>
-<pre class="code extensibella"id="240">
+<pre class="code extensibella"id="241">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to N0.</b>
 
 Subgoal 2.1:
@@ -2571,7 +2576,7 @@ Or : N &gt; 0 \/ N = 0
 ============================
  N3 &gt; 0
 </pre>
-<pre class="code extensibella"id="241">
+<pre class="code extensibella"id="242">
  &lt; <b>G: case Or.</b>
 
 Subgoal 2.1.1:
@@ -2597,7 +2602,7 @@ G : N &gt; 0
 ============================
  N3 &gt; 0
 </pre>
-<pre class="code extensibella"id="242">
+<pre class="code extensibella"id="243">
  &lt; <b>G2: apply less_integer_flip_greater to NN3.</b>
 
 Subgoal 2.1.1:
@@ -2624,7 +2629,7 @@ G2 : N3 &gt; N
 ============================
  N3 &gt; 0
 </pre>
-<pre class="code extensibella"id="243">
+<pre class="code extensibella"id="244">
  &lt; <b>apply greater_integer_transitive to G2 G.</b>
 
 Subgoal 2.1.1:
@@ -2652,7 +2657,7 @@ H1 : N3 &gt; 0
 ============================
  N3 &gt; 0
 </pre>
-<pre class="code extensibella"id="244">
+<pre class="code extensibella"id="245">
  &lt; <b>search.</b>
 
 Subgoal 2.1.2:
@@ -2677,7 +2682,7 @@ NN3 : 0 &lt; N3
 ============================
  N3 &gt; 0
 </pre>
-<pre class="code extensibella"id="245">
+<pre class="code extensibella"id="246">
  &lt; <b>apply less_integer_flip_greater to NN3.</b>
 
 Subgoal 2.1.2:
@@ -2703,7 +2708,7 @@ H1 : N3 &gt; 0
 ============================
  N3 &gt; 0
 </pre>
-<pre class="code extensibella"id="246">
+<pre class="code extensibella"id="247">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -2729,7 +2734,7 @@ G : N3 &gt; 0
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="247">
+<pre class="code extensibella"id="248">
  &lt; <b>N10: assert N1 &gt; 0.</b>
 
 Subgoal 2.2:
@@ -2755,7 +2760,7 @@ G : N3 &gt; 0
 ============================
  N1 &gt; 0
 </pre>
-<pre class="code extensibella"id="248">
+<pre class="code extensibella"id="249">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to GEq.</b>
 
 Subgoal 2.2:
@@ -2782,7 +2787,7 @@ Or : N1 &gt; N3 \/ N1 = N3
 ============================
  N1 &gt; 0
 </pre>
-<pre class="code extensibella"id="249">
+<pre class="code extensibella"id="250">
  &lt; <b>E: case Or.</b>
 
 Subgoal 2.2.1:
@@ -2809,7 +2814,7 @@ E : N1 &gt; N3
 ============================
  N1 &gt; 0
 </pre>
-<pre class="code extensibella"id="250">
+<pre class="code extensibella"id="251">
  &lt; <b>apply greater_integer_transitive to E G.</b>
 
 Subgoal 2.2.1:
@@ -2837,7 +2842,7 @@ H1 : N1 &gt; 0
 ============================
  N1 &gt; 0
 </pre>
-<pre class="code extensibella"id="251">
+<pre class="code extensibella"id="252">
  &lt; <b>search.</b>
 
 Subgoal 2.2.2:
@@ -2863,7 +2868,7 @@ G : N3 &gt; 0
 ============================
  N3 &gt; 0
 </pre>
-<pre class="code extensibella"id="252">
+<pre class="code extensibella"id="253">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -2890,7 +2895,7 @@ N10 : N1 &gt; 0
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="253">
+<pre class="code extensibella"id="254">
  &lt; <b>MHB: apply count_mem to CB N10.</b>
 
 Subgoal 2:
@@ -2918,7 +2923,7 @@ MHB : mem H B
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="254">
+<pre class="code extensibella"id="255">
  &lt; <b>assert forall C NA NB,
      count C T NA -&gt; count C B NB -&gt; NB &gt;= NA.</b>
 
@@ -2947,7 +2952,7 @@ MHB : mem H B
 ============================
  forall C NA NB, count C T NA -&gt; count C B NB -&gt; NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="255">
+<pre class="code extensibella"id="256">
  &lt; <b>intros CT CB'.</b>
 
 Subgoal 2.3:
@@ -2977,7 +2982,7 @@ CB' : count C B NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="256">
+<pre class="code extensibella"id="257">
  &lt; <b>GEqNA: apply count_geq_0 to CT.</b>
 
 Subgoal 2.3:
@@ -3008,7 +3013,7 @@ GEqNA : NA &gt;= 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="257">
+<pre class="code extensibella"id="258">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to GEqNA.</b>
 
 Subgoal 2.3:
@@ -3040,7 +3045,7 @@ Or : NA &gt; 0 \/ NA = 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="258">
+<pre class="code extensibella"id="259">
  &lt; <b>E: case Or.</b>
 
 Subgoal 2.3.1:
@@ -3072,7 +3077,7 @@ E : NA &gt; 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="259">
+<pre class="code extensibella"id="260">
  &lt; <b>M: apply count_mem to CT E.</b>
 
 Subgoal 2.3.1:
@@ -3105,7 +3110,7 @@ M : mem C T
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="260">
+<pre class="code extensibella"id="261">
  &lt; <b>IsC: apply mem_is_clause to _ M.</b>
 
 Subgoal 2.3.1:
@@ -3139,7 +3144,7 @@ IsC : is_clause C
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="261">
+<pre class="code extensibella"id="262">
  &lt; <b>Or: apply is_clause_eq_or_not to IsC IsA.</b>
 
 Subgoal 2.3.1:
@@ -3174,7 +3179,7 @@ Or : C = H \/ (C = H -&gt; false)
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="262">
+<pre class="code extensibella"id="263">
  &lt; <b>Eq: case Or.</b>
 
 Subgoal 2.3.1.1:
@@ -3208,7 +3213,7 @@ IsC : is_clause H
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="263">
+<pre class="code extensibella"id="264">
  &lt; <b>apply count_unique to CA CT.</b>
 
 Subgoal 2.3.1.1:
@@ -3242,7 +3247,7 @@ IsC : is_clause H
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="264">
+<pre class="code extensibella"id="265">
  &lt; <b>apply count_unique to CB CB'.</b>
 
 Subgoal 2.3.1.1:
@@ -3276,7 +3281,7 @@ IsC : is_clause H
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="265">
+<pre class="code extensibella"id="266">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to GEq.</b>
 
 Subgoal 2.3.1.1:
@@ -3311,7 +3316,7 @@ Or : NB &gt; N3 \/ NB = N3
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="266">
+<pre class="code extensibella"id="267">
  &lt; <b>C: case Or.</b>
 
 Subgoal 2.3.1.1.1:
@@ -3346,7 +3351,7 @@ C : NB &gt; N3
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="267">
+<pre class="code extensibella"id="268">
  &lt; <b>L: apply greater_integer_flip_less to C.</b>
 
 Subgoal 2.3.1.1.1:
@@ -3382,7 +3387,7 @@ L : N3 &lt; NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="268">
+<pre class="code extensibella"id="269">
  &lt; <b>L': apply less_integer_transitive to NN3 L.</b>
 
 Subgoal 2.3.1.1.1:
@@ -3419,7 +3424,7 @@ L' : NA &lt; NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="269">
+<pre class="code extensibella"id="270">
  &lt; <b>apply less_integer_lesseq to L'.</b>
 
 Subgoal 2.3.1.1.1:
@@ -3457,7 +3462,7 @@ H1 : NA &lt;= NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="270">
+<pre class="code extensibella"id="271">
  &lt; <b>search.</b>
 
 Subgoal 2.3.1.1.2:
@@ -3491,7 +3496,7 @@ IsC : is_clause H
 ============================
  N3 &gt;= NA
 </pre>
-<pre class="code extensibella"id="271">
+<pre class="code extensibella"id="272">
  &lt; <b>apply less_integer_lesseq to NN3.</b>
 
 Subgoal 2.3.1.1.2:
@@ -3526,7 +3531,7 @@ H1 : NA &lt;= N3
 ============================
  N3 &gt;= NA
 </pre>
-<pre class="code extensibella"id="272">
+<pre class="code extensibella"id="273">
  &lt; <b>search.</b>
 
 Subgoal 2.3.1.2:
@@ -3561,7 +3566,7 @@ Eq : C = H -&gt; false
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="273">
+<pre class="code extensibella"id="274">
  &lt; <b>backchain Counts.</b>
 
 Subgoal 2.3.2:
@@ -3592,7 +3597,7 @@ GEqNA : 0 &gt;= 0
 ============================
  NB &gt;= 0
 </pre>
-<pre class="code extensibella"id="274">
+<pre class="code extensibella"id="275">
  &lt; <b>apply count_geq_0 to CB'.</b>
 
 Subgoal 2.3.2:
@@ -3624,7 +3629,7 @@ H1 : NB &gt;= 0
 ============================
  NB &gt;= 0
 </pre>
-<pre class="code extensibella"id="275">
+<pre class="code extensibella"id="276">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -3653,7 +3658,7 @@ H1 : forall C NA NB, count C T NA -&gt; count C B NB -&gt; NB &gt;= NA
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="276">
+<pre class="code extensibella"id="277">
  &lt; <b>apply IH to IsA1 IsB _.</b>
 
 Subgoal 2:
@@ -3683,12 +3688,12 @@ H2 : subset T B
 ============================
  subset (H::T) B
 </pre>
-<pre class="code extensibella"id="277">
+<pre class="code extensibella"id="278">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="278">
+<pre class="code extensibella"id="279">
  &lt; <b>Theorem remove_all_reduce_counts :
      forall K ID KRest V VR X N N',
        remove_all K ID KRest -&gt; values K V -&gt; values KRest VR -&gt; count X V N -&gt; count X VR N' -&gt;
@@ -3699,7 +3704,7 @@ Proof completed.
    remove_all K ID KRest -&gt; values K V -&gt; values KRest VR -&gt; count X V N -&gt; count X VR N' -&gt;
    N &gt;= N'
 </pre>
-<pre class="code extensibella"id="279">
+<pre class="code extensibella"id="280">
  &lt; <b>induction on 1.</b>
 
 IH : forall K ID KRest V VR X N N',
@@ -3710,7 +3715,7 @@ IH : forall K ID KRest V VR X N N',
    remove_all K ID KRest @ -&gt; values K V -&gt; values KRest VR -&gt; count X V N -&gt; count X VR N' -&gt;
    N &gt;= N'
 </pre>
-<pre class="code extensibella"id="280">
+<pre class="code extensibella"id="281">
  &lt; <b>intros RA VK VKR CV CVR.</b>
 
 Variables: K ID KRest V VR X N N'
@@ -3725,7 +3730,7 @@ CVR : count X VR N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="281">
+<pre class="code extensibella"id="282">
  &lt; <b>RA: case RA.</b>
 
 Subgoal 1:
@@ -3741,7 +3746,7 @@ CVR : count X VR N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="282">
+<pre class="code extensibella"id="283">
  &lt; <b>case VK.</b>
 
 Subgoal 1:
@@ -3756,7 +3761,7 @@ CVR : count X VR N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="283">
+<pre class="code extensibella"id="284">
  &lt; <b>case VKR.</b>
 
 Subgoal 1:
@@ -3770,7 +3775,7 @@ CVR : count X [] N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="284">
+<pre class="code extensibella"id="285">
  &lt; <b>case CV.</b>
 
 Subgoal 1:
@@ -3783,7 +3788,7 @@ CVR : count X [] N'
 ============================
  0 &gt;= N'
 </pre>
-<pre class="code extensibella"id="285">
+<pre class="code extensibella"id="286">
  &lt; <b>case CVR.</b>
 
 Subgoal 1:
@@ -3795,7 +3800,7 @@ IH : forall K ID KRest V VR X N N',
 ============================
  0 &gt;= 0
 </pre>
-<pre class="code extensibella"id="286">
+<pre class="code extensibella"id="287">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -3812,7 +3817,7 @@ RA : remove_all IRest ID KRest *
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="287">
+<pre class="code extensibella"id="288">
  &lt; <b>VK: case VK.</b>
 
 Subgoal 2:
@@ -3829,7 +3834,7 @@ VK : values IRest VRest
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="288">
+<pre class="code extensibella"id="289">
  &lt; <b>CV: case CV.</b>
 
 Subgoal 2.1:
@@ -3847,7 +3852,7 @@ CV1 : 1 + N1 = N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="289">
+<pre class="code extensibella"id="290">
  &lt; <b>GEq: apply IH to RA VK VKR CV CVR.</b>
 
 Subgoal 2.1:
@@ -3866,7 +3871,7 @@ GEq : N1 &gt;= N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="290">
+<pre class="code extensibella"id="291">
  &lt; <b>apply count_is_integer to CV.</b>
 
 Subgoal 2.1:
@@ -3886,7 +3891,7 @@ H1 : is_integer N1
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="291">
+<pre class="code extensibella"id="292">
  &lt; <b>L: apply lt_plus_one to CV1 _.</b>
 
 Subgoal 2.1:
@@ -3907,7 +3912,7 @@ L : N1 &lt; N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="292">
+<pre class="code extensibella"id="293">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to GEq.</b>
 
 Subgoal 2.1:
@@ -3929,7 +3934,7 @@ Or : N1 &gt; N' \/ N1 = N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="293">
+<pre class="code extensibella"id="294">
  &lt; <b>E: case Or.</b>
 
 Subgoal 2.1.1:
@@ -3951,7 +3956,7 @@ E : N1 &gt; N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="294">
+<pre class="code extensibella"id="295">
  &lt; <b>L': apply greater_integer_flip_less to E.</b>
 
 Subgoal 2.1.1:
@@ -3974,7 +3979,7 @@ L' : N' &lt; N1
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="295">
+<pre class="code extensibella"id="296">
  &lt; <b>L2: apply less_integer_transitive to L' L.</b>
 
 Subgoal 2.1.1:
@@ -3998,7 +4003,7 @@ L2 : N' &lt; N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="296">
+<pre class="code extensibella"id="297">
  &lt; <b>apply less_integer_lesseq to L2.</b>
 
 Subgoal 2.1.1:
@@ -4023,7 +4028,7 @@ H2 : N' &lt;= N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="297">
+<pre class="code extensibella"id="298">
  &lt; <b>search.</b>
 
 Subgoal 2.1.2:
@@ -4044,7 +4049,7 @@ L : N' &lt; N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="298">
+<pre class="code extensibella"id="299">
  &lt; <b>apply less_integer_lesseq to L.</b>
 
 Subgoal 2.1.2:
@@ -4066,7 +4071,7 @@ H2 : N' &lt;= N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="299">
+<pre class="code extensibella"id="300">
  &lt; <b>search.</b>
 
 Subgoal 2.2:
@@ -4084,7 +4089,7 @@ CV1 : count X VRest N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="300">
+<pre class="code extensibella"id="301">
  &lt; <b>apply IH to RA VK VKR CV1 CVR.</b>
 
 Subgoal 2.2:
@@ -4103,7 +4108,7 @@ H1 : N &gt;= N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="301">
+<pre class="code extensibella"id="302">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -4121,7 +4126,7 @@ RA1 : remove_all IRest ID Rest *
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="302">
+<pre class="code extensibella"id="303">
  &lt; <b>VK: case VK.</b>
 
 Subgoal 3:
@@ -4139,7 +4144,7 @@ VK : values IRest VRest
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="303">
+<pre class="code extensibella"id="304">
  &lt; <b>VKR: case VKR.</b>
 
 Subgoal 3:
@@ -4157,7 +4162,7 @@ VKR : values Rest VRest1
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="304">
+<pre class="code extensibella"id="305">
  &lt; <b>CV: case CV.</b>
 
 Subgoal 3.1:
@@ -4176,7 +4181,7 @@ CV1 : 1 + N1 = N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="305">
+<pre class="code extensibella"id="306">
  &lt; <b>CVR: case CVR.</b>
 
 Subgoal 3.1.1:
@@ -4196,7 +4201,7 @@ CVR1 : 1 + N2 = N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="306">
+<pre class="code extensibella"id="307">
  &lt; <b>GEq: apply IH to RA1 VK VKR CV CVR.</b>
 
 Subgoal 3.1.1:
@@ -4217,7 +4222,7 @@ GEq : N1 &gt;= N2
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="307">
+<pre class="code extensibella"id="308">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to GEq.</b>
 
 Subgoal 3.1.1:
@@ -4239,7 +4244,7 @@ Or : N1 &gt; N2 \/ N1 = N2
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="308">
+<pre class="code extensibella"id="309">
  &lt; <b>E: case Or.</b>
 
 Subgoal 3.1.1.1:
@@ -4261,7 +4266,7 @@ E : N1 &gt; N2
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="309">
+<pre class="code extensibella"id="310">
  &lt; <b>L: apply greater_integer_flip_less to E.</b>
 
 Subgoal 3.1.1.1:
@@ -4284,7 +4289,7 @@ L : N2 &lt; N1
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="310">
+<pre class="code extensibella"id="311">
  &lt; <b>L': apply less_sums to CVR1 CV1 _ _.</b>
 
 Subgoal 3.1.1.1:
@@ -4308,7 +4313,7 @@ L' : N' &lt; N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="311">
+<pre class="code extensibella"id="312">
  &lt; <b>apply less_integer_lesseq to L'.</b>
 
 Subgoal 3.1.1.1:
@@ -4333,7 +4338,7 @@ H1 : N' &lt;= N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="312">
+<pre class="code extensibella"id="313">
  &lt; <b>search.</b>
 
 Subgoal 3.1.1.2:
@@ -4354,7 +4359,7 @@ GEq : N2 &gt;= N2
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="313">
+<pre class="code extensibella"id="314">
  &lt; <b>apply plus_integer_unique to CV1 CVR1.</b>
 
 Subgoal 3.1.1.2:
@@ -4375,7 +4380,7 @@ GEq : N2 &gt;= N2
 ============================
  N' &gt;= N'
 </pre>
-<pre class="code extensibella"id="314">
+<pre class="code extensibella"id="315">
  &lt; <b>apply count_is_integer to CV.</b>
 
 Subgoal 3.1.1.2:
@@ -4397,7 +4402,7 @@ H1 : is_integer N2
 ============================
  N' &gt;= N'
 </pre>
-<pre class="code extensibella"id="315">
+<pre class="code extensibella"id="316">
  &lt; <b>apply plus_integer_is_integer to _ _ CV1.</b>
 
 Subgoal 3.1.1.2:
@@ -4420,7 +4425,7 @@ H2 : is_integer N'
 ============================
  N' &gt;= N'
 </pre>
-<pre class="code extensibella"id="316">
+<pre class="code extensibella"id="317">
  &lt; <b>backchain is_integer_greatereq.</b>
 
 Subgoal 3.1.2:
@@ -4440,7 +4445,7 @@ CVR1 : count C VRest1 N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="317">
+<pre class="code extensibella"id="318">
  &lt; <b>apply CVR to _.</b>
 
 Subgoal 3.2:
@@ -4459,7 +4464,7 @@ CV1 : count X VRest N
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="318">
+<pre class="code extensibella"id="319">
  &lt; <b>CVR: case CVR.</b>
 
 Subgoal 3.2.1:
@@ -4479,7 +4484,7 @@ CVR1 : 1 + N1 = N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="319">
+<pre class="code extensibella"id="320">
  &lt; <b>apply CV to _.</b>
 
 Subgoal 3.2.2:
@@ -4499,7 +4504,7 @@ CVR1 : count X VRest1 N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="320">
+<pre class="code extensibella"id="321">
  &lt; <b>apply IH to RA1 VK VKR CV1 CVR1.</b>
 
 Subgoal 3.2.2:
@@ -4520,12 +4525,12 @@ H1 : N &gt;= N'
 ============================
  N &gt;= N'
 </pre>
-<pre class="code extensibella"id="321">
+<pre class="code extensibella"id="322">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="322">
+<pre class="code extensibella"id="323">
  &lt; <b>Extensible_Theorem
       toDrat_maintains_proof : forall P D KnownL KnownD V,
          IsKnownL : is_list (is_pair is_integer is_clause) KnownL -&gt;
@@ -4559,7 +4564,7 @@ Counts : forall C NA NB, count C V NA -&gt; count C KnownD NB -&gt; NB &gt;= NA
 ============================
  checkDrat KnownD addDratEmpty
 </pre>
-<pre class="code extensibella"id="323">
+<pre class="code extensibella"id="324">
  &lt; <b>CP: case CP.</b>
 
 Subgoal 1:
@@ -4581,7 +4586,7 @@ CP : rupProof KnownL emptyClause Prf
 ============================
  checkDrat KnownD addDratEmpty
 </pre>
-<pre class="code extensibella"id="324">
+<pre class="code extensibella"id="325">
  &lt; <b>IsV: apply values_is to _ Vals.</b>
 
 Subgoal 1:
@@ -4604,7 +4609,7 @@ IsV : is_list is_clause V
 ============================
  checkDrat KnownD addDratEmpty
 </pre>
-<pre class="code extensibella"id="325">
+<pre class="code extensibella"id="326">
  &lt; <b>S: apply counts_subset to IsV IsKnownD Counts.</b>
 
 Subgoal 1:
@@ -4628,7 +4633,7 @@ S : subset V KnownD
 ============================
  checkDrat KnownD addDratEmpty
 </pre>
-<pre class="code extensibella"id="326">
+<pre class="code extensibella"id="327">
  &lt; <b>D: apply rupProof__drup to CP Vals.</b>
 
 Subgoal 1:
@@ -4653,7 +4658,7 @@ D : drup V emptyClause
 ============================
  checkDrat KnownD addDratEmpty
 </pre>
-<pre class="code extensibella"id="327">
+<pre class="code extensibella"id="328">
  &lt; <b>D': apply drup_subset to D S.</b>
 
 Subgoal 1:
@@ -4679,7 +4684,7 @@ D' : drup KnownD emptyClause
 ============================
  checkDrat KnownD addDratEmpty
 </pre>
-<pre class="code extensibella"id="328">
+<pre class="code extensibella"id="329">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -4703,7 +4708,7 @@ TD2 : toDrat ((ID, C)::KRest) Rest DRest *
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="329">
+<pre class="code extensibella"id="330">
  &lt; <b>CP: case CP.</b>
 
 Subgoal 2:
@@ -4729,7 +4734,7 @@ CP2 : checkProof ((ID, C)::KRest1) Rest
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="330">
+<pre class="code extensibella"id="331">
  &lt; <b>Is: case IsP.</b>
 
 Subgoal 2:
@@ -4758,7 +4763,7 @@ Is3 : is_proof Rest
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="331">
+<pre class="code extensibella"id="332">
  &lt; <b>IsV: apply values_is to _ Vals.</b>
 
 Subgoal 2:
@@ -4788,7 +4793,7 @@ IsV : is_list is_clause V
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="332">
+<pre class="code extensibella"id="333">
  &lt; <b>S: apply counts_subset to IsV IsKnownD Counts.</b>
 
 Subgoal 2:
@@ -4819,7 +4824,7 @@ S : subset V KnownD
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="333">
+<pre class="code extensibella"id="334">
  &lt; <b>D: apply rupProof__drup to CP1 Vals.</b>
 
 Subgoal 2:
@@ -4851,7 +4856,7 @@ D : drup V C
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="334">
+<pre class="code extensibella"id="335">
  &lt; <b>D': apply drup_subset to D S.</b>
 
 Subgoal 2:
@@ -4884,7 +4889,7 @@ D' : drup KnownD C
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="335">
+<pre class="code extensibella"id="336">
  &lt; <b>apply remove_all_unique to CP TD1.</b>
 
 Subgoal 2:
@@ -4917,7 +4922,7 @@ D' : drup KnownD C
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="336">
+<pre class="code extensibella"id="337">
  &lt; <b>GCL_KR: apply good_clause_list_remove_all_add to _ TD1 with
              C = C.</b>
 
@@ -4952,7 +4957,7 @@ GCL_KR : good_clause_list ((ID, C)::KRest)
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="337">
+<pre class="code extensibella"id="338">
  &lt; <b>IsKR: apply remove_all_is to _ TD1.</b>
 
 Subgoal 2:
@@ -4987,7 +4992,7 @@ IsKR : is_list (is_pair is_integer is_clause) KRest
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="338">
+<pre class="code extensibella"id="339">
  &lt; <b>VKR: apply values_exist to IsKR.</b>
 
 Subgoal 2:
@@ -5023,7 +5028,7 @@ VKR : values KRest V1
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="339">
+<pre class="code extensibella"id="340">
  &lt; <b>VKR+: assert values ((ID, C)::KRest) (C::V1).</b>
 
 Subgoal 2:
@@ -5060,7 +5065,7 @@ VKR+ : values ((ID, C)::KRest) (C::V1)
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="340">
+<pre class="code extensibella"id="341">
  &lt; <b>assert forall C1 NA NB,
      count C1 (C::V1) NA -&gt; count C1 (C::KnownD) NB -&gt; NB &gt;= NA.</b>
 
@@ -5098,7 +5103,7 @@ VKR+ : values ((ID, C)::KRest) (C::V1)
 ============================
  forall C1 NA NB, count C1 (C::V1) NA -&gt; count C1 (C::KnownD) NB -&gt; NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="341">
+<pre class="code extensibella"id="342">
  &lt; <b>intros CA CB.</b>
 
 Subgoal 2.1:
@@ -5137,7 +5142,7 @@ CB : count C1 (C::KnownD) NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="342">
+<pre class="code extensibella"id="343">
  &lt; <b>CA: case CA.</b>
 
 Subgoal 2.1.1:
@@ -5177,7 +5182,7 @@ CA1 : 1 + N = NA
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="343">
+<pre class="code extensibella"id="344">
  &lt; <b>CB: case CB.</b>
 
 Subgoal 2.1.1.1:
@@ -5218,7 +5223,7 @@ CB1 : 1 + N1 = NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="344">
+<pre class="code extensibella"id="345">
  &lt; <b>CV: apply is_count_exists_clause to IsV Is1.</b>
 
 Subgoal 2.1.1.1:
@@ -5260,7 +5265,7 @@ CV : count C V N2
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="345">
+<pre class="code extensibella"id="346">
  &lt; <b>GEq: apply Counts to CV CB.</b>
 
 Subgoal 2.1.1.1:
@@ -5303,7 +5308,7 @@ GEq : N1 &gt;= N2
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="346">
+<pre class="code extensibella"id="347">
  &lt; <b>GEq': apply remove_all_reduce_counts to TD1 Vals VKR CV CA.</b>
 
 Subgoal 2.1.1.1:
@@ -5347,7 +5352,7 @@ GEq' : N2 &gt;= N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="347">
+<pre class="code extensibella"id="348">
  &lt; <b>GEq'': apply greatereq_integer_transitive to GEq GEq'.</b>
 
 Subgoal 2.1.1.1:
@@ -5392,7 +5397,7 @@ GEq'' : N1 &gt;= N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="348">
+<pre class="code extensibella"id="349">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to GEq''.</b>
 
 Subgoal 2.1.1.1:
@@ -5438,7 +5443,7 @@ Or : N1 &gt; N \/ N1 = N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="349">
+<pre class="code extensibella"id="350">
  &lt; <b>E: case Or.</b>
 
 Subgoal 2.1.1.1.1:
@@ -5484,7 +5489,7 @@ E : N1 &gt; N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="350">
+<pre class="code extensibella"id="351">
  &lt; <b>L: apply greater_integer_flip_less to E.</b>
 
 Subgoal 2.1.1.1.1:
@@ -5531,7 +5536,7 @@ L : N &lt; N1
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="351">
+<pre class="code extensibella"id="352">
  &lt; <b>L': apply less_sums to CA1 CB1 _ _.</b>
 
 Subgoal 2.1.1.1.1:
@@ -5579,7 +5584,7 @@ L' : NA &lt; NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="352">
+<pre class="code extensibella"id="353">
  &lt; <b>apply less_integer_lesseq to L'.</b>
 
 Subgoal 2.1.1.1.1:
@@ -5628,7 +5633,7 @@ H1 : NA &lt;= NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="353">
+<pre class="code extensibella"id="354">
  &lt; <b>search.</b>
 
 Subgoal 2.1.1.1.2:
@@ -5673,7 +5678,7 @@ GEq'' : N &gt;= N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="354">
+<pre class="code extensibella"id="355">
  &lt; <b>apply plus_integer_unique to CA1 CB1.</b>
 
 Subgoal 2.1.1.1.2:
@@ -5718,7 +5723,7 @@ GEq'' : N &gt;= N
 ============================
  NB &gt;= NB
 </pre>
-<pre class="code extensibella"id="355">
+<pre class="code extensibella"id="356">
  &lt; <b>apply count_is_integer to CA.</b>
 
 Subgoal 2.1.1.1.2:
@@ -5764,7 +5769,7 @@ H1 : is_integer N
 ============================
  NB &gt;= NB
 </pre>
-<pre class="code extensibella"id="356">
+<pre class="code extensibella"id="357">
  &lt; <b>apply plus_integer_is_integer to _ _ CB1.</b>
 
 Subgoal 2.1.1.1.2:
@@ -5811,7 +5816,7 @@ H2 : is_integer NB
 ============================
  NB &gt;= NB
 </pre>
-<pre class="code extensibella"id="357">
+<pre class="code extensibella"id="358">
  &lt; <b>backchain is_integer_greatereq.</b>
 
 Subgoal 2.1.1.2:
@@ -5852,7 +5857,7 @@ CB1 : count C KnownD NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="358">
+<pre class="code extensibella"id="359">
  &lt; <b>apply CB to _.</b>
 
 Subgoal 2.1.2:
@@ -5892,7 +5897,7 @@ CA1 : count C1 V1 NA
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="359">
+<pre class="code extensibella"id="360">
  &lt; <b>CB: case CB.</b>
 
 Subgoal 2.1.2.1:
@@ -5933,7 +5938,7 @@ CB1 : 1 + N = NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="360">
+<pre class="code extensibella"id="361">
  &lt; <b>apply CA to _.</b>
 
 Subgoal 2.1.2.2:
@@ -5974,7 +5979,7 @@ CB1 : count C1 KnownD NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="361">
+<pre class="code extensibella"id="362">
  &lt; <b>GEq: apply count_geq_0 to CB1.</b>
 
 Subgoal 2.1.2.2:
@@ -6016,7 +6021,7 @@ GEq : NB &gt;= 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="362">
+<pre class="code extensibella"id="363">
  &lt; <b>GEq': apply count_geq_0 to CA1.</b>
 
 Subgoal 2.1.2.2:
@@ -6059,7 +6064,7 @@ GEq' : NA &gt;= 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="363">
+<pre class="code extensibella"id="364">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to GEq.</b>
 
 Subgoal 2.1.2.2:
@@ -6103,7 +6108,7 @@ Or : NB &gt; 0 \/ NB = 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="364">
+<pre class="code extensibella"id="365">
  &lt; <b>Or': apply greatereq_integer_greater_or_eq to GEq'.</b>
 
 Subgoal 2.1.2.2:
@@ -6148,7 +6153,7 @@ Or' : NA &gt; 0 \/ NA = 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="365">
+<pre class="code extensibella"id="366">
  &lt; <b>E: case Or'.</b>
 
 Subgoal 2.1.2.2.1:
@@ -6193,7 +6198,7 @@ E : NA &gt; 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="366">
+<pre class="code extensibella"id="367">
  &lt; <b>M: apply count_mem to CA1 E.</b>
 
 Subgoal 2.1.2.2.1:
@@ -6239,7 +6244,7 @@ M : mem C1 V1
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="367">
+<pre class="code extensibella"id="368">
  &lt; <b>IsV1: apply values_is to _ VKR.</b>
 
 Subgoal 2.1.2.2.1:
@@ -6286,7 +6291,7 @@ IsV1 : is_list is_clause V1
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="368">
+<pre class="code extensibella"id="369">
  &lt; <b>IsC1: apply mem_is_clause to _ M.</b>
 
 Subgoal 2.1.2.2.1:
@@ -6334,7 +6339,7 @@ IsC1 : is_clause C1
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="369">
+<pre class="code extensibella"id="370">
  &lt; <b>CV: apply is_count_exists_clause to IsV IsC1.</b>
 
 Subgoal 2.1.2.2.1:
@@ -6383,7 +6388,7 @@ CV : count C1 V N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="370">
+<pre class="code extensibella"id="371">
  &lt; <b>GEq2: apply Counts to CV CB1.</b>
 
 Subgoal 2.1.2.2.1:
@@ -6433,7 +6438,7 @@ GEq2 : NB &gt;= N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="371">
+<pre class="code extensibella"id="372">
  &lt; <b>GEq3: apply remove_all_reduce_counts to TD1 Vals VKR CV CA1.</b>
 
 Subgoal 2.1.2.2.1:
@@ -6484,7 +6489,7 @@ GEq3 : N &gt;= NA
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="372">
+<pre class="code extensibella"id="373">
  &lt; <b>apply greatereq_integer_transitive to GEq2 GEq3.</b>
 
 Subgoal 2.1.2.2.1:
@@ -6536,7 +6541,7 @@ H1 : NB &gt;= NA
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="373">
+<pre class="code extensibella"id="374">
  &lt; <b>search.</b>
 
 Subgoal 2.1.2.2.2:
@@ -6580,7 +6585,7 @@ Or : NB &gt; 0 \/ NB = 0
 ============================
  NB &gt;= 0
 </pre>
-<pre class="code extensibella"id="374">
+<pre class="code extensibella"id="375">
  &lt; <b>E: case Or.</b>
 
 Subgoal 2.1.2.2.2.1:
@@ -6624,7 +6629,7 @@ E : NB &gt; 0
 ============================
  NB &gt;= 0
 </pre>
-<pre class="code extensibella"id="375">
+<pre class="code extensibella"id="376">
  &lt; <b>search.</b>
 
 Subgoal 2.1.2.2.2.2:
@@ -6667,7 +6672,7 @@ GEq' : 0 &gt;= 0
 ============================
  0 &gt;= 0
 </pre>
-<pre class="code extensibella"id="376">
+<pre class="code extensibella"id="377">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -6705,7 +6710,7 @@ H1 : forall C1 NA NB, count C1 (C::V1) NA -&gt; count C1 (C::KnownD) NB -&gt; NB
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="377">
+<pre class="code extensibella"id="378">
  &lt; <b>apply IH to _ _ Is3 CP2 GCL_KR TD2 VKR+ _ with
      KnownD = C::KnownD.</b>
 
@@ -6745,7 +6750,7 @@ H2 : checkDrat (C::KnownD) DRest
 ============================
  checkDrat KnownD (addDratClause C DRest)
 </pre>
-<pre class="code extensibella"id="378">
+<pre class="code extensibella"id="379">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -6769,7 +6774,7 @@ TD2 : toDrat KRest Rest DRest *
 ============================
  checkDrat KnownD (deleteDrat C DRest)
 </pre>
-<pre class="code extensibella"id="379">
+<pre class="code extensibella"id="380">
  &lt; <b>CP: case CP.</b>
 
 Subgoal 3:
@@ -6794,7 +6799,7 @@ CP1 : checkProof KRest1 Rest
 ============================
  checkDrat KnownD (deleteDrat C DRest)
 </pre>
-<pre class="code extensibella"id="380">
+<pre class="code extensibella"id="381">
  &lt; <b>Is: case IsP.</b>
 
 Subgoal 3:
@@ -6820,7 +6825,7 @@ Is1 : is_proof Rest
 ============================
  checkDrat KnownD (deleteDrat C DRest)
 </pre>
-<pre class="code extensibella"id="381">
+<pre class="code extensibella"id="382">
  &lt; <b>IsKR: apply select_is to _ TD1.</b>
 
 Subgoal 3:
@@ -6847,7 +6852,7 @@ IsKR : is_list (is_pair is_integer is_clause) KRest
 ============================
  checkDrat KnownD (deleteDrat C DRest)
 </pre>
-<pre class="code extensibella"id="382">
+<pre class="code extensibella"id="383">
  &lt; <b>apply good_clause_list_selects to _ CP TD1.</b>
 
 Subgoal 3:
@@ -6874,7 +6879,7 @@ IsKR : is_list (is_pair is_integer is_clause) KRest
 ============================
  checkDrat KnownD (deleteDrat C DRest)
 </pre>
-<pre class="code extensibella"id="383">
+<pre class="code extensibella"id="384">
  &lt; <b>VS: apply values_select to _ TD1.</b>
 
 Subgoal 3:
@@ -6903,7 +6908,7 @@ VS1 : values KRest VRest
 ============================
  checkDrat KnownD (deleteDrat C DRest)
 </pre>
-<pre class="code extensibella"id="384">
+<pre class="code extensibella"id="385">
  &lt; <b>M: apply select_mem to TD1.</b>
 
 Subgoal 3:
@@ -6933,7 +6938,7 @@ M : mem (ID, C) KnownL
 ============================
  checkDrat KnownD (deleteDrat C DRest)
 </pre>
-<pre class="code extensibella"id="385">
+<pre class="code extensibella"id="386">
  &lt; <b>Is: apply mem_is to _ M.</b>
 
 Subgoal 3:
@@ -6965,7 +6970,7 @@ Is3 : is_clause C2
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="386">
+<pre class="code extensibella"id="387">
  &lt; <b>IsV: apply values_is to _ Vals.</b>
 
 Subgoal 3:
@@ -6998,7 +7003,7 @@ IsV : is_list is_clause V
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="387">
+<pre class="code extensibella"id="388">
  &lt; <b>CV: apply is_count_exists_clause to IsV Is3.</b>
 
 Subgoal 3:
@@ -7032,7 +7037,7 @@ CV : count C2 V N
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="388">
+<pre class="code extensibella"id="389">
  &lt; <b>CKD: apply is_count_exists_clause to IsKnownD Is3.</b>
 
 Subgoal 3:
@@ -7067,7 +7072,7 @@ CKD : count C2 KnownD N1
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="389">
+<pre class="code extensibella"id="390">
  &lt; <b>NPos: assert N &gt; 0.</b>
 
 Subgoal 3.1:
@@ -7102,7 +7107,7 @@ CKD : count C2 KnownD N1
 ============================
  N &gt; 0
 </pre>
-<pre class="code extensibella"id="390">
+<pre class="code extensibella"id="391">
  &lt; <b>GEq: apply count_geq_0 to CV.</b>
 
 Subgoal 3.1:
@@ -7138,7 +7143,7 @@ GEq : N &gt;= 0
 ============================
  N &gt; 0
 </pre>
-<pre class="code extensibella"id="391">
+<pre class="code extensibella"id="392">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to GEq.</b>
 
 Subgoal 3.1:
@@ -7175,7 +7180,7 @@ Or : N &gt; 0 \/ N = 0
 ============================
  N &gt; 0
 </pre>
-<pre class="code extensibella"id="392">
+<pre class="code extensibella"id="393">
  &lt; <b>L: case Or.</b>
 
 Subgoal 3.1.1:
@@ -7212,7 +7217,7 @@ L : N &gt; 0
 ============================
  N &gt; 0
 </pre>
-<pre class="code extensibella"id="393">
+<pre class="code extensibella"id="394">
  &lt; <b>search.</b>
 
 Subgoal 3.1.2:
@@ -7248,7 +7253,7 @@ GEq : 0 &gt;= 0
 ============================
  0 &gt; 0
 </pre>
-<pre class="code extensibella"id="394">
+<pre class="code extensibella"id="395">
  &lt; <b>MV: apply select_mem to VS.</b>
 
 Subgoal 3.1.2:
@@ -7285,7 +7290,7 @@ MV : mem C2 V
 ============================
  0 &gt; 0
 </pre>
-<pre class="code extensibella"id="395">
+<pre class="code extensibella"id="396">
  &lt; <b>apply count_not_mem to CV MV.</b>
 
 Subgoal 3:
@@ -7321,7 +7326,7 @@ NPos : N &gt; 0
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="396">
+<pre class="code extensibella"id="397">
  &lt; <b>N1N: apply Counts to CV CKD.</b>
 
 Subgoal 3:
@@ -7358,7 +7363,7 @@ N1N : N1 &gt;= N
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="397">
+<pre class="code extensibella"id="398">
  &lt; <b>N1Pos: assert N1 &gt; 0.</b>
 
 Subgoal 3.2:
@@ -7395,7 +7400,7 @@ N1N : N1 &gt;= N
 ============================
  N1 &gt; 0
 </pre>
-<pre class="code extensibella"id="398">
+<pre class="code extensibella"id="399">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to N1N.</b>
 
 Subgoal 3.2:
@@ -7433,7 +7438,7 @@ Or : N1 &gt; N \/ N1 = N
 ============================
  N1 &gt; 0
 </pre>
-<pre class="code extensibella"id="399">
+<pre class="code extensibella"id="400">
  &lt; <b>G: case Or.</b>
 
 Subgoal 3.2.1:
@@ -7471,7 +7476,7 @@ G : N1 &gt; N
 ============================
  N1 &gt; 0
 </pre>
-<pre class="code extensibella"id="400">
+<pre class="code extensibella"id="401">
  &lt; <b>apply greater_integer_transitive to G NPos.</b>
 
 Subgoal 3.2.1:
@@ -7510,7 +7515,7 @@ H1 : N1 &gt; 0
 ============================
  N1 &gt; 0
 </pre>
-<pre class="code extensibella"id="401">
+<pre class="code extensibella"id="402">
  &lt; <b>search.</b>
 
 Subgoal 3.2.2:
@@ -7547,7 +7552,7 @@ N1N : N &gt;= N
 ============================
  N &gt; 0
 </pre>
-<pre class="code extensibella"id="402">
+<pre class="code extensibella"id="403">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -7585,7 +7590,7 @@ N1Pos : N1 &gt; 0
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="403">
+<pre class="code extensibella"id="404">
  &lt; <b>clear N1N.</b>
 
 Subgoal 3:
@@ -7622,7 +7627,7 @@ N1Pos : N1 &gt; 0
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="404">
+<pre class="code extensibella"id="405">
  &lt; <b>MKD: apply count_mem to CKD N1Pos.</b>
 
 Subgoal 3:
@@ -7660,7 +7665,7 @@ MKD : mem C2 KnownD
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="405">
+<pre class="code extensibella"id="406">
  &lt; <b>SKD: apply mem_select to MKD.</b>
 
 Subgoal 3:
@@ -7699,7 +7704,7 @@ SKD : select C2 L' KnownD
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="406">
+<pre class="code extensibella"id="407">
  &lt; <b>IsL': apply select_is_clause to _ SKD.</b>
 
 Subgoal 3:
@@ -7739,7 +7744,7 @@ IsL' : is_list is_clause L'
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="407">
+<pre class="code extensibella"id="408">
  &lt; <b>GCL_KR: apply good_clause_list_select to _ TD1.</b>
 
 Subgoal 3:
@@ -7780,7 +7785,7 @@ GCL_KR : good_clause_list KRest
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="408">
+<pre class="code extensibella"id="409">
  &lt; <b>assert forall C NA NB,
      count C VRest NA -&gt; count C L' NB -&gt; NB &gt;= NA.</b>
 
@@ -7822,7 +7827,7 @@ GCL_KR : good_clause_list KRest
 ============================
  forall C NA NB, count C VRest NA -&gt; count C L' NB -&gt; NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="409">
+<pre class="code extensibella"id="410">
  &lt; <b>intros CA CB.</b>
 
 Subgoal 3.3:
@@ -7865,7 +7870,7 @@ CB : count C3 L' NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="410">
+<pre class="code extensibella"id="411">
  &lt; <b>GEq: apply count_geq_0 to CB.</b>
 
 Subgoal 3.3:
@@ -7909,7 +7914,7 @@ GEq : NB &gt;= 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="411">
+<pre class="code extensibella"id="412">
  &lt; <b>GEq': apply count_geq_0 to CA.</b>
 
 Subgoal 3.3:
@@ -7954,7 +7959,7 @@ GEq' : NA &gt;= 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="412">
+<pre class="code extensibella"id="413">
  &lt; <b>Or: apply greatereq_integer_greater_or_eq to GEq.</b>
 
 Subgoal 3.3:
@@ -8000,7 +8005,7 @@ Or : NB &gt; 0 \/ NB = 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="413">
+<pre class="code extensibella"id="414">
  &lt; <b>Or': apply greatereq_integer_greater_or_eq to GEq'.</b>
 
 Subgoal 3.3:
@@ -8047,7 +8052,7 @@ Or' : NA &gt; 0 \/ NA = 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="414">
+<pre class="code extensibella"id="415">
  &lt; <b>E: case Or'.</b>
 
 Subgoal 3.3.1:
@@ -8094,7 +8099,7 @@ E : NA &gt; 0
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="415">
+<pre class="code extensibella"id="416">
  &lt; <b>M': apply count_mem to CA E.</b>
 
 Subgoal 3.3.1:
@@ -8142,7 +8147,7 @@ M' : mem C3 VRest
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="416">
+<pre class="code extensibella"id="417">
  &lt; <b>IsVRest: apply values_is to _ VS1.</b>
 
 Subgoal 3.3.1:
@@ -8191,7 +8196,7 @@ IsVRest : is_list is_clause VRest
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="417">
+<pre class="code extensibella"id="418">
  &lt; <b>IsC3: apply mem_is_clause to _ M'.</b>
 
 Subgoal 3.3.1:
@@ -8241,7 +8246,7 @@ IsC3 : is_clause C3
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="418">
+<pre class="code extensibella"id="419">
  &lt; <b>CV: apply is_count_exists_clause to IsV IsC3.</b>
 
 Subgoal 3.3.1:
@@ -8292,7 +8297,7 @@ CV1 : count C3 V N2
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="419">
+<pre class="code extensibella"id="420">
  &lt; <b>IsC2: apply mem_is_clause to _ MKD.</b>
 
 Subgoal 3.3.1:
@@ -8344,7 +8349,7 @@ IsC2 : is_clause C2
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="420">
+<pre class="code extensibella"id="421">
  &lt; <b>Or'': apply is_clause_eq_or_not to IsC3 IsC2.</b>
 
 Subgoal 3.3.1:
@@ -8397,7 +8402,7 @@ Or'' : C3 = C2 \/ (C3 = C2 -&gt; false)
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="421">
+<pre class="code extensibella"id="422">
  &lt; <b>CE: case Or''.</b>
 
 Subgoal 3.3.1.1:
@@ -8449,7 +8454,7 @@ IsC2 : is_clause C2
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="422">
+<pre class="code extensibella"id="423">
  &lt; <b>IsN2: apply count_is_integer to CV1.</b>
 
 Subgoal 3.3.1.1:
@@ -8502,7 +8507,7 @@ IsN2 : is_integer N2
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="423">
+<pre class="code extensibella"id="424">
  &lt; <b>Minus: apply minus_integer_total to IsN2 _ with
             N2 = 1.</b>
 
@@ -8557,7 +8562,7 @@ Minus : N2 - 1 = N3
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="424">
+<pre class="code extensibella"id="425">
  &lt; <b>P: apply minus_plus_same_integer to _ _ Minus.</b>
 
 Subgoal 3.3.1.1:
@@ -8612,7 +8617,7 @@ P : N3 + 1 = N2
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="425">
+<pre class="code extensibella"id="426">
  &lt; <b>IsN3: apply minus_integer_is_integer to _ _ Minus.</b>
 
 Subgoal 3.3.1.1:
@@ -8668,7 +8673,7 @@ IsN3 : is_integer N3
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="426">
+<pre class="code extensibella"id="427">
  &lt; <b>P': apply plus_integer_comm to _ _ P.</b>
 
 Subgoal 3.3.1.1:
@@ -8725,7 +8730,7 @@ P' : 1 + N3 = N2
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="427">
+<pre class="code extensibella"id="428">
  &lt; <b>CVRest: apply select_count to CV1 VS _.</b>
 
 Subgoal 3.3.1.1:
@@ -8783,7 +8788,7 @@ CVRest : count C2 VRest N3
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="428">
+<pre class="code extensibella"id="429">
  &lt; <b>apply count_unique to CVRest CA.</b>
 
 Subgoal 3.3.1.1:
@@ -8841,7 +8846,7 @@ CVRest : count C2 VRest NA
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="429">
+<pre class="code extensibella"id="430">
  &lt; <b>IsN1: apply count_is_integer to CKD.</b>
 
 Subgoal 3.3.1.1:
@@ -8900,7 +8905,7 @@ IsN1 : is_integer N1
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="430">
+<pre class="code extensibella"id="431">
  &lt; <b>Minus': apply minus_integer_total to IsN1 _ with
              N2 = 1.</b>
 
@@ -8961,7 +8966,7 @@ Minus' : N1 - 1 = N4
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="431">
+<pre class="code extensibella"id="432">
  &lt; <b>P1: apply minus_plus_same_integer to _ _ Minus'.</b>
 
 Subgoal 3.3.1.1:
@@ -9022,7 +9027,7 @@ P1 : N4 + 1 = N1
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="432">
+<pre class="code extensibella"id="433">
  &lt; <b>IsN4: apply minus_integer_is_integer to _ _ Minus'.</b>
 
 Subgoal 3.3.1.1:
@@ -9084,7 +9089,7 @@ IsN4 : is_integer N4
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="433">
+<pre class="code extensibella"id="434">
  &lt; <b>P2: apply plus_integer_comm to _ _ P1.</b>
 
 Subgoal 3.3.1.1:
@@ -9147,7 +9152,7 @@ P2 : 1 + N4 = N1
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="434">
+<pre class="code extensibella"id="435">
  &lt; <b>CDRest: apply select_count to CKD SKD Minus'.</b>
 
 Subgoal 3.3.1.1:
@@ -9211,7 +9216,7 @@ CDRest : count C2 L' N4
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="435">
+<pre class="code extensibella"id="436">
  &lt; <b>apply count_unique to CDRest CB.</b>
 
 Subgoal 3.3.1.1:
@@ -9275,7 +9280,7 @@ CDRest : count C2 L' NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="436">
+<pre class="code extensibella"id="437">
  &lt; <b>GEq1: apply Counts to CV CKD.</b>
 
 Subgoal 3.3.1.1:
@@ -9340,7 +9345,7 @@ GEq1 : N1 &gt;= N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="437">
+<pre class="code extensibella"id="438">
  &lt; <b>apply count_unique to CV1 CV.</b>
 
 Subgoal 3.3.1.1:
@@ -9405,7 +9410,7 @@ GEq1 : N1 &gt;= N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="438">
+<pre class="code extensibella"id="439">
  &lt; <b>Or1: apply greatereq_integer_greater_or_eq to GEq1.</b>
 
 Subgoal 3.3.1.1:
@@ -9471,7 +9476,7 @@ Or1 : N1 &gt; N \/ N1 = N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="439">
+<pre class="code extensibella"id="440">
  &lt; <b>G: case Or1.</b>
 
 Subgoal 3.3.1.1.1:
@@ -9537,7 +9542,7 @@ G : N1 &gt; N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="440">
+<pre class="code extensibella"id="441">
  &lt; <b>L: apply greater_integer_flip_less to G.</b>
 
 Subgoal 3.3.1.1.1:
@@ -9604,7 +9609,7 @@ L : N &lt; N1
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="441">
+<pre class="code extensibella"id="442">
  &lt; <b>OrRel: apply is_integer_related to IsN3 IsN4.</b>
 
 Subgoal 3.3.1.1.1:
@@ -9672,7 +9677,7 @@ OrRel : (NA = NB \/ NA &lt; NB) \/ NA &gt; NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="442">
+<pre class="code extensibella"id="443">
  &lt; <b>C: case OrRel.</b>
 
 Subgoal 3.3.1.1.1.1:
@@ -9739,7 +9744,7 @@ L : N &lt; N1
 ============================
  NB &gt;= NB
 </pre>
-<pre class="code extensibella"id="443">
+<pre class="code extensibella"id="444">
  &lt; <b>backchain is_integer_greatereq.</b>
 
 Subgoal 3.3.1.1.1.2:
@@ -9807,7 +9812,7 @@ C : NA &lt; NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="444">
+<pre class="code extensibella"id="445">
  &lt; <b>G': apply less_integer_flip_greater to C.</b>
 
 Subgoal 3.3.1.1.1.2:
@@ -9876,7 +9881,7 @@ G' : NB &gt; NA
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="445">
+<pre class="code extensibella"id="446">
  &lt; <b>backchain greater_integer_greatereq.</b>
 
 Subgoal 3.3.1.1.1.3:
@@ -9944,7 +9949,7 @@ C : NA &gt; NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="446">
+<pre class="code extensibella"id="447">
  &lt; <b>apply greater_integer_flip_less to C.</b>
 
 Subgoal 3.3.1.1.1.3:
@@ -10013,7 +10018,7 @@ H1 : NB &lt; NA
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="447">
+<pre class="code extensibella"id="448">
  &lt; <b>L': apply less_sums to P2 P' _ _.</b>
 
 Subgoal 3.3.1.1.1.3:
@@ -10083,7 +10088,7 @@ L' : N1 &lt; N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="448">
+<pre class="code extensibella"id="449">
  &lt; <b>G': assert N &gt; N1.</b>
 
 Subgoal 3.3.1.1.1.3:
@@ -10154,7 +10159,7 @@ G' : N &gt; N1
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="449">
+<pre class="code extensibella"id="450">
  &lt; <b>apply greater_less_impossible to G' L.</b>
 
 Subgoal 3.3.1.1.2:
@@ -10219,7 +10224,7 @@ GEq1 : N &gt;= N
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="450">
+<pre class="code extensibella"id="451">
  &lt; <b>apply minus_integer_unique to Minus Minus'.</b>
 
 Subgoal 3.3.1.1.2:
@@ -10284,7 +10289,7 @@ GEq1 : N &gt;= N
 ============================
  NB &gt;= NB
 </pre>
-<pre class="code extensibella"id="451">
+<pre class="code extensibella"id="452">
  &lt; <b>backchain is_integer_greatereq.</b>
 
 Subgoal 3.3.1.2:
@@ -10337,7 +10342,7 @@ CE : C3 = C2 -&gt; false
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="452">
+<pre class="code extensibella"id="453">
  &lt; <b>CV: apply count_select_neq to CA VS _.</b>
 
 Subgoal 3.3.1.2:
@@ -10391,7 +10396,7 @@ CV2 : count C3 V NA
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="453">
+<pre class="code extensibella"id="454">
  &lt; <b>CKD': apply count_select_neq to CB SKD _.</b>
 
 Subgoal 3.3.1.2:
@@ -10446,7 +10451,7 @@ CKD' : count C3 KnownD NB
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="454">
+<pre class="code extensibella"id="455">
  &lt; <b>apply Counts to CV2 CKD'.</b>
 
 Subgoal 3.3.1.2:
@@ -10502,7 +10507,7 @@ H1 : NB &gt;= NA
 ============================
  NB &gt;= NA
 </pre>
-<pre class="code extensibella"id="455">
+<pre class="code extensibella"id="456">
  &lt; <b>search.</b>
 
 Subgoal 3.3.2:
@@ -10548,7 +10553,7 @@ Or : NB &gt; 0 \/ NB = 0
 ============================
  NB &gt;= 0
 </pre>
-<pre class="code extensibella"id="456">
+<pre class="code extensibella"id="457">
  &lt; <b>E: case Or.</b>
 
 Subgoal 3.3.2.1:
@@ -10594,7 +10599,7 @@ E : NB &gt; 0
 ============================
  NB &gt;= 0
 </pre>
-<pre class="code extensibella"id="457">
+<pre class="code extensibella"id="458">
  &lt; <b>search.</b>
 
 Subgoal 3.3.2.2:
@@ -10639,7 +10644,7 @@ GEq' : 0 &gt;= 0
 ============================
  0 &gt;= 0
 </pre>
-<pre class="code extensibella"id="458">
+<pre class="code extensibella"id="459">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -10681,7 +10686,7 @@ H1 : forall C NA NB, count C VRest NA -&gt; count C L' NB -&gt; NB &gt;= NA
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="459">
+<pre class="code extensibella"id="460">
  &lt; <b>apply IH to _ IsL' Is1 CP1 _ TD2 VS1 _.</b>
 
 Subgoal 3:
@@ -10724,7 +10729,7 @@ H2 : checkDrat L' DRest
 ============================
  checkDrat KnownD (deleteDrat C2 DRest)
 </pre>
-<pre class="code extensibella"id="460">
+<pre class="code extensibella"id="461">
  &lt; <b>search.</b>
 
 Subgoal 4:
@@ -10737,18 +10742,18 @@ IH : forall P D KnownL KnownD V,
          count C V NA -&gt; count C KnownD NB -&gt; NB &gt;= NA) -&gt; checkDrat KnownD D
 IsKnownL : is_list (is_pair is_integer is_clause) KnownL
 IsKnownD : is_list is_clause KnownD
-IsP : is_proof &lt;unknown proof&gt;
-CP : checkProof KnownL &lt;unknown proof&gt;
+IsP : is_proof &lt;unknown I proof&gt;
+CP : checkProof KnownL &lt;unknown I proof&gt;
 GCL : good_clause_list KnownL
-TD : toDrat KnownL &lt;unknown proof&gt; D @
+TD : toDrat KnownL &lt;unknown I proof&gt; D @
 Vals : values KnownL V
 Counts : forall C NA NB, count C V NA -&gt; count C KnownD NB -&gt; NB &gt;= NA
-TD1 : KnownL |{proof}- &lt;unknown proof&gt; ~~&gt; PT
+TD1 : KnownL |{proof}- &lt;unknown I proof&gt; ~~&gt; PT
 TD2 : toDrat KnownL PT D *
 ============================
  checkDrat KnownD D
 </pre>
-<pre class="code extensibella"id="461">
+<pre class="code extensibella"id="462">
  &lt; <b>CP': apply trans_checkProof to TD1 CP _ _.</b>
 
 Subgoal 4:
@@ -10761,19 +10766,19 @@ IH : forall P D KnownL KnownD V,
          count C V NA -&gt; count C KnownD NB -&gt; NB &gt;= NA) -&gt; checkDrat KnownD D
 IsKnownL : is_list (is_pair is_integer is_clause) KnownL
 IsKnownD : is_list is_clause KnownD
-IsP : is_proof &lt;unknown proof&gt;
-CP : checkProof KnownL &lt;unknown proof&gt;
+IsP : is_proof &lt;unknown I proof&gt;
+CP : checkProof KnownL &lt;unknown I proof&gt;
 GCL : good_clause_list KnownL
-TD : toDrat KnownL &lt;unknown proof&gt; D @
+TD : toDrat KnownL &lt;unknown I proof&gt; D @
 Vals : values KnownL V
 Counts : forall C NA NB, count C V NA -&gt; count C KnownD NB -&gt; NB &gt;= NA
-TD1 : KnownL |{proof}- &lt;unknown proof&gt; ~~&gt; PT
+TD1 : KnownL |{proof}- &lt;unknown I proof&gt; ~~&gt; PT
 TD2 : toDrat KnownL PT D *
 CP' : checkProof KnownL PT
 ============================
  checkDrat KnownD D
 </pre>
-<pre class="code extensibella"id="462">
+<pre class="code extensibella"id="463">
  &lt; <b>apply trans_proof_is to TD1 IsP _.</b>
 
 Subgoal 4:
@@ -10786,20 +10791,20 @@ IH : forall P D KnownL KnownD V,
          count C V NA -&gt; count C KnownD NB -&gt; NB &gt;= NA) -&gt; checkDrat KnownD D
 IsKnownL : is_list (is_pair is_integer is_clause) KnownL
 IsKnownD : is_list is_clause KnownD
-IsP : is_proof &lt;unknown proof&gt;
-CP : checkProof KnownL &lt;unknown proof&gt;
+IsP : is_proof &lt;unknown I proof&gt;
+CP : checkProof KnownL &lt;unknown I proof&gt;
 GCL : good_clause_list KnownL
-TD : toDrat KnownL &lt;unknown proof&gt; D @
+TD : toDrat KnownL &lt;unknown I proof&gt; D @
 Vals : values KnownL V
 Counts : forall C NA NB, count C V NA -&gt; count C KnownD NB -&gt; NB &gt;= NA
-TD1 : KnownL |{proof}- &lt;unknown proof&gt; ~~&gt; PT
+TD1 : KnownL |{proof}- &lt;unknown I proof&gt; ~~&gt; PT
 TD2 : toDrat KnownL PT D *
 CP' : checkProof KnownL PT
 H1 : is_proof PT
 ============================
  checkDrat KnownD D
 </pre>
-<pre class="code extensibella"id="463">
+<pre class="code extensibella"id="464">
  &lt; <b>apply IH to _ _ _ CP' _ TD2 _ _.</b>
 
 Subgoal 4:
@@ -10812,13 +10817,13 @@ IH : forall P D KnownL KnownD V,
          count C V NA -&gt; count C KnownD NB -&gt; NB &gt;= NA) -&gt; checkDrat KnownD D
 IsKnownL : is_list (is_pair is_integer is_clause) KnownL
 IsKnownD : is_list is_clause KnownD
-IsP : is_proof &lt;unknown proof&gt;
-CP : checkProof KnownL &lt;unknown proof&gt;
+IsP : is_proof &lt;unknown I proof&gt;
+CP : checkProof KnownL &lt;unknown I proof&gt;
 GCL : good_clause_list KnownL
-TD : toDrat KnownL &lt;unknown proof&gt; D @
+TD : toDrat KnownL &lt;unknown I proof&gt; D @
 Vals : values KnownL V
 Counts : forall C NA NB, count C V NA -&gt; count C KnownD NB -&gt; NB &gt;= NA
-TD1 : KnownL |{proof}- &lt;unknown proof&gt; ~~&gt; PT
+TD1 : KnownL |{proof}- &lt;unknown I proof&gt; ~~&gt; PT
 TD2 : toDrat KnownL PT D *
 CP' : checkProof KnownL PT
 H1 : is_proof PT
@@ -10826,7 +10831,7 @@ H2 : checkDrat KnownD D
 ============================
  checkDrat KnownD D
 </pre>
-<pre class="code extensibella"id="464">
+<pre class="code extensibella"id="465">
  &lt; <b>search.</b>
 
 Proof completed.

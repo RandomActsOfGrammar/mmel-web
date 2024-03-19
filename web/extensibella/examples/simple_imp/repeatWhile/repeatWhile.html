@@ -139,69 +139,71 @@ typeOK G repeatWhile(Body, Cond) G
 <a class="command" href="repeatWhile-details.html#40">Prove_Constraint simple_imp:host:trans_c_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(41);" id="toggleproof41">[Show Proof]</a>
 <div class="proof" id="proof41" style="display: none;">
 <span class="comment">%repeatWhile</span>
- <a class="tactic" href="repeatWhile-details.html#41">apply repeatWhile_transEval to Hyp1.</a> <a class="tactic" href="repeatWhile-details.html#42">search.</a></div>
+ <a class="tactic" href="repeatWhile-details.html#41">apply repeatWhile_transEval to Hyp1.</a> <a class="tactic" href="repeatWhile-details.html#42">search.</a>
 
 
-<a class="command" href="repeatWhile-details.html#43">Prove_Ext_Ind simple_imp:host:eval_c.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(44);" id="toggleproof44">[Show Proof]</a>
-<div class="proof" id="proof44" style="display: none;">
+<a class="tactic" href="repeatWhile-details.html#43">Add_Ext_Size simple_imp:host:eval_c.</a></div>
+
+
+<a class="command" href="repeatWhile-details.html#44">Theorem RW_to_SW: forall C B EG EG' N,
+  <eval_c {ES}> EG (repeatWhile B C) EG' N ->
+  exists N', <eval_c {ES}> EG (seq B (while C B)) EG' N' /\ N' < N.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(45);" id="toggleproof45">[Show Proof]</a>
+<div class="proof" id="proof45" style="display: none;">
+<a class="tactic" href="repeatWhile-details.html#45">induction on 1.</a> <a class="tactic" href="repeatWhile-details.html#46">intros EvalRep.</a> <a class="tactic" href="repeatWhile-details.html#47">Ev: case EvalRep.</a>
+  <span class="comment">%E-RepeatWhileTrue</span>
+   <a class="tactic" href="repeatWhile-details.html#48">SubSeq: apply IH to Ev4.</a> <a class="tactic" href="repeatWhile-details.html#49">EvSub: case SubSeq.</a>
+   <a class="tactic" href="repeatWhile-details.html#50">IsN8: apply ext_ind_is_int_eval_c to EvSub1.</a>
+   <a class="tactic" href="repeatWhile-details.html#51">IsN9: apply ext_ind_is_int_eval_c to EvSub2.</a>
+   <a class="tactic" href="repeatWhile-details.html#52">IsN': apply plus_integer_is_integer to _ _ EvSub.</a>
+   <a class="tactic" href="repeatWhile-details.html#53">IsN5: apply ext_ind_is_int_eval_c to Ev2.</a>
+   <a class="tactic" href="repeatWhile-details.html#54">N5+N': apply plus_integer_total to IsN5 IsN'.</a>
+   <a class="tactic" href="repeatWhile-details.html#55">exists N6.</a> <a class="tactic" href="repeatWhile-details.html#56">split.</a>
+     <span class="comment">%eval for the sequence</span>
+      <a class="tactic" href="repeatWhile-details.html#57">search.</a>
+     <span class="comment">%N10 < N1</span>
+      <a class="tactic" href="repeatWhile-details.html#58">IsN6: apply ext_ind_is_int_eval_c to Ev4.</a>
+      <a class="tactic" href="repeatWhile-details.html#59">IsN7: apply plus_integer_is_integer to _ _ Ev1.</a>
+      <a class="tactic" href="repeatWhile-details.html#60">LN7N1: apply lt_plus_one to Ev _.</a>
+      <a class="tactic" href="repeatWhile-details.html#61">LN10N7: apply less_sums to N5+N' Ev1 _ _.</a>
+      <a class="tactic" href="repeatWhile-details.html#62">apply less_integer_transitive to LN10N7 LN7N1.</a> <a class="tactic" href="repeatWhile-details.html#63">search.</a>
+  <span class="comment">%E-RepeatWhileFalse</span>
+   <a class="tactic" href="repeatWhile-details.html#64">IsN5: apply ext_ind_is_int_eval_c to Ev1.</a>
+   <a class="tactic" href="repeatWhile-details.html#65">LN5N1: apply lt_plus_one to Ev _.</a>
+   <a class="tactic" href="repeatWhile-details.html#66">N5+0: apply plus_integer_total to IsN5 _ with N2 = 0.</a>
+   <a class="tactic" href="repeatWhile-details.html#67">apply plus_zero_right to N5+0.</a> <a class="tactic" href="repeatWhile-details.html#68">search.</a></div>
+
+
+<a class="command" href="repeatWhile-details.html#69">Prove_Ext_Ind simple_imp:host:eval_c.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(70);" id="toggleproof70">[Show Proof]</a>
+<div class="proof" id="proof70" style="display: none;">
 <span class="comment">%E-RepeatWhileTrue</span>
- <span class="comment">%We need this as a lemma for the rest of the proof</span>
- <a class="tactic" href="repeatWhile-details.html#44">RW_to_SW: assert forall C B EG EG' N,
-             <eval_c {ES}> EG (repeatWhile B C) EG' N ->
-             exists N', <eval_c {ES}> EG (seq B (while C B)) EG' N' /\
-                        N' < N.</a>
-   <a class="tactic" href="repeatWhile-details.html#45">clear IH IH1 Rel Acc Rel1 Rel2 Rel3 Rel4 Rel5.</a> <span class="comment">%not needed here</span>
-   <a class="tactic" href="repeatWhile-details.html#46">induction on 1.</a> <a class="tactic" href="repeatWhile-details.html#47">intros EvalRep.</a> <a class="tactic" href="repeatWhile-details.html#48">Ev: case EvalRep.</a>
-     <span class="comment">%E-RepeatWhileTrue</span>
-      <a class="tactic" href="repeatWhile-details.html#49">SubSeq: apply IH to Ev4.</a> <a class="tactic" href="repeatWhile-details.html#50">EvSub: case SubSeq.</a>
-      <a class="tactic" href="repeatWhile-details.html#51">IsN8: apply ext_ind_is_int_eval_c to EvSub1.</a>
-      <a class="tactic" href="repeatWhile-details.html#52">IsN9: apply ext_ind_is_int_eval_c to EvSub2.</a>
-      <a class="tactic" href="repeatWhile-details.html#53">IsN': apply plus_integer_is_integer to _ _ EvSub.</a>
-      <a class="tactic" href="repeatWhile-details.html#54">IsN5: apply ext_ind_is_int_eval_c to Ev2.</a>
-      <a class="tactic" href="repeatWhile-details.html#55">N5+N': apply plus_integer_total to IsN5 IsN'.</a>
-      <a class="tactic" href="repeatWhile-details.html#56">exists N10.</a> <a class="tactic" href="repeatWhile-details.html#57">split.</a>
-        <span class="comment">%eval for the sequence</span>
-         <a class="tactic" href="repeatWhile-details.html#58">search.</a>
-        <span class="comment">%N10 < N1</span>
-         <a class="tactic" href="repeatWhile-details.html#59">IsN6: apply ext_ind_is_int_eval_c to Ev4.</a>
-         <a class="tactic" href="repeatWhile-details.html#60">IsN7: apply plus_integer_is_integer to _ _ Ev1.</a>
-         <a class="tactic" href="repeatWhile-details.html#61">LN7N1: apply lt_plus_one to Ev _.</a>
-         <a class="tactic" href="repeatWhile-details.html#62">LN10N7: apply less_sums to N5+N' Ev1 _ _.</a>
-         <a class="tactic" href="repeatWhile-details.html#63">apply less_integer_transitive to LN10N7 LN7N1.</a> <a class="tactic" href="repeatWhile-details.html#64">search.</a>
-     <span class="comment">%E-RepeatWhileFalse</span>
-      <a class="tactic" href="repeatWhile-details.html#65">IsN5: apply ext_ind_is_int_eval_c to Ev1.</a>
-      <a class="tactic" href="repeatWhile-details.html#66">LN5N1: apply lt_plus_one to Ev _.</a>
-      <a class="tactic" href="repeatWhile-details.html#67">N5+0: apply plus_integer_total to IsN5 _ with N2 = 0.</a>
-      <a class="tactic" href="repeatWhile-details.html#68">apply plus_zero_right to N5+0.</a> <a class="tactic" href="repeatWhile-details.html#69">search.</a>
- <span class="comment">%Rest of the proof:</span>
- <a class="tactic" href="repeatWhile-details.html#70">Acc: case Acc.</a> <a class="tactic" href="repeatWhile-details.html#71">IsN2: apply ext_ind_is_int_eval_c to Rel3.</a>
- <a class="tactic" href="repeatWhile-details.html#72">IsN3: apply ext_ind_is_int_eval_c to Rel5.</a>
- <a class="tactic" href="repeatWhile-details.html#73">IsN4: apply plus_integer_is_integer to _ _ Rel2.</a>
- <a class="tactic" href="repeatWhile-details.html#74">PosN2: apply ext_ind_pos_eval_c to Rel3.</a>
- <a class="tactic" href="repeatWhile-details.html#75">PosN3: apply ext_ind_pos_eval_c to Rel5.</a>
- <a class="tactic" href="repeatWhile-details.html#76">LN4N: apply lt_plus_one to Rel1 _.</a>
+ <a class="tactic" href="repeatWhile-details.html#70">Acc: case Acc.</a> <a class="tactic" href="repeatWhile-details.html#71">IsN2: apply ext_ind_is_int_eval_c to R3.</a>
+ <a class="tactic" href="repeatWhile-details.html#72">IsN3: apply ext_ind_is_int_eval_c to R5.</a>
+ <a class="tactic" href="repeatWhile-details.html#73">IsN4: apply plus_integer_is_integer to _ _ R2.</a>
+ <a class="tactic" href="repeatWhile-details.html#74">PosN2: apply ext_ind_pos_eval_c to R3.</a>
+ <a class="tactic" href="repeatWhile-details.html#75">PosN3: apply ext_ind_pos_eval_c to R5.</a>
+ <a class="tactic" href="repeatWhile-details.html#76">LN4N: apply lt_plus_one to R1 _.</a>
  <a class="tactic" href="repeatWhile-details.html#77">LN2N: assert N2 < N.</a>
-    <a class="tactic" href="repeatWhile-details.html#78">OrN2: apply lt_left to Rel2 _ _.</a> <a class="tactic" href="repeatWhile-details.html#79">L: case OrN2.</a>
+    <a class="tactic" href="repeatWhile-details.html#78">OrN2: apply lt_left to R2 _ _.</a> <a class="tactic" href="repeatWhile-details.html#79">L: case OrN2.</a>
        <a class="tactic" href="repeatWhile-details.html#80">apply less_integer_transitive to L LN4N.</a> <a class="tactic" href="repeatWhile-details.html#81">search.</a>
        <a class="tactic" href="repeatWhile-details.html#82">search.</a>
  <a class="tactic" href="repeatWhile-details.html#83">LN3N: assert N3 < N.</a>
-    <a class="tactic" href="repeatWhile-details.html#84">OrN3: apply lt_right to Rel2 _ _ _.</a> <a class="tactic" href="repeatWhile-details.html#85">L: case OrN3.</a>
+    <a class="tactic" href="repeatWhile-details.html#84">OrN3: apply lt_right to R2 _ _ _.</a> <a class="tactic" href="repeatWhile-details.html#85">L: case OrN3.</a>
        <a class="tactic" href="repeatWhile-details.html#86">apply less_integer_transitive to L LN4N.</a> <a class="tactic" href="repeatWhile-details.html#87">search.</a>
        <a class="tactic" href="repeatWhile-details.html#88">search.</a>
  <a class="tactic" href="repeatWhile-details.html#89">AccN2: apply Acc to _ LN2N.</a> <a class="tactic" href="repeatWhile-details.html#90">AccN3: apply Acc to _ LN3N.</a>
- <a class="tactic" href="repeatWhile-details.html#91">EvalTBody: apply IH to Rel3 AccN2.</a> <a class="tactic" href="repeatWhile-details.html#92">EvalTRep: apply IH to Rel5 AccN3.</a>
+ <a class="tactic" href="repeatWhile-details.html#91">EvalTBody: apply IH to R3 AccN2.</a> <a class="tactic" href="repeatWhile-details.html#92">EvalTRep: apply IH to R5 AccN3.</a>
  <a class="tactic" href="repeatWhile-details.html#93">Trans: assert |{c}- repeatWhile Body Cond ~~>
                      seq Body (while Cond Body).</a>
- <a class="tactic" href="repeatWhile-details.html#94">SW: apply RW_to_SW to Rel5.</a>
+ <a class="tactic" href="repeatWhile-details.html#94">SW: apply RW_to_SW to R5.</a>
  <a class="tactic" href="repeatWhile-details.html#95">LN'N: apply less_integer_transitive to SW1 LN3N.</a>
  <a class="tactic" href="repeatWhile-details.html#96">L0N': apply ext_ind_pos_eval_c to SW.</a> <a class="tactic" href="repeatWhile-details.html#97">AccN': apply Acc to _ LN'N.</a>
  <a class="tactic" href="repeatWhile-details.html#98">EvalTSeq: apply IH to SW AccN'.</a> <a class="tactic" href="repeatWhile-details.html#99">EvalTParts: case EvalTSeq.</a>
  <a class="tactic" href="repeatWhile-details.html#100">unfold.</a> <a class="tactic" href="repeatWhile-details.html#101">exists seq Body (while Cond Body), G2.</a> <a class="tactic" href="repeatWhile-details.html#102">search.</a>
 <span class="comment">%E-RepeatWhileFalse</span>
- <a class="tactic" href="repeatWhile-details.html#103">Acc: case Acc.</a> <a class="tactic" href="repeatWhile-details.html#104">L0N2: apply ext_ind_pos_eval_c to Rel2.</a>
- <a class="tactic" href="repeatWhile-details.html#105">IsN2: apply ext_ind_is_int_eval_c to Rel2.</a>
- <a class="tactic" href="repeatWhile-details.html#106">LN2N: apply lt_plus_one to Rel1 _.</a> <a class="tactic" href="repeatWhile-details.html#107">AccN2: apply Acc to _ LN2N.</a>
- <a class="tactic" href="repeatWhile-details.html#108">EvalTBody: apply IH to Rel2 AccN2.</a>
+ <a class="tactic" href="repeatWhile-details.html#103">Acc: case Acc.</a> <a class="tactic" href="repeatWhile-details.html#104">L0N2: apply ext_ind_pos_eval_c to R2.</a>
+ <a class="tactic" href="repeatWhile-details.html#105">IsN2: apply ext_ind_is_int_eval_c to R2.</a>
+ <a class="tactic" href="repeatWhile-details.html#106">LN2N: apply lt_plus_one to R1 _.</a> <a class="tactic" href="repeatWhile-details.html#107">AccN2: apply Acc to _ LN2N.</a>
+ <a class="tactic" href="repeatWhile-details.html#108">EvalTBody: apply IH to R2 AccN2.</a>
  <a class="tactic" href="repeatWhile-details.html#109">Trans: assert |{c}- repeatWhile Body Cond ~~>
                      seq Body (while Cond Body).</a> <a class="tactic" href="repeatWhile-details.html#110">search 3.</a></div>
 

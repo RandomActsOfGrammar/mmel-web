@@ -47,10 +47,11 @@ Prove_Constraint simple_imp:host:trans_c_eval.
 %declareSec
  Ev: case Hyp1. search.
 
+Add_Ext_Size simple_imp:host:eval_c.
+
 Prove_Ext_Ind simple_imp:host:eval_c.
 %declareSec
- Trans: assert |{c}- declareSec X S Ty E ~~> declare X Ty E.
- assert <eval_c {T}> G (declare X Ty E) ((X, V)::G). search.
+ Trans: assert |{c}- declareSec X S Ty E ~~> declare X Ty E. search.
 
 Prove simple_imp:host:eval_c_unique.
 %declareSec
@@ -168,7 +169,7 @@ Extensible_Theorem
    Vars: case Vars. apply IH1 to Lev1 Vars Mem. search.
   %S-RecField
    Vars: case Vars. apply IH to Lev1 Vars Mem. search.
-  %Preservability
+  %S-TransExpr
    V: apply trans_e_vars_exist to Lev1 Vars.
    Mem: apply trans_e_vars to Lev1 Vars V Mem.
    apply IH to Lev2 V Mem1. search.
@@ -182,7 +183,7 @@ Extensible_Theorem
       apply IH to Lev1 Vars2 Mem'. search.
      %mem DRest
       apply IH1 to Lev2 Vars1 Mem'. search.
-  %Preservability
+  %S-RFTrans
    V: apply trans_rf_vars_exist to Lev1 Vars.
    Mem: apply trans_rf_vars to Lev1 Vars V Mem.
    apply IH1 to Lev2 V Mem1. search.
@@ -290,7 +291,7 @@ Extensible_Theorem
   LevB: case LevB. apply IH1 to LevA1 LevB. search.
  %S-RecField
   LevB: case LevB. apply IH to LevA1 LevB. search.
- %Preservability
+ %S-TransExpr
   LevB: case LevB. apply trans_e_unique to LevA1 LevB.
   apply IH to LevA2 LevB1. search.
 %level_rf_unique
@@ -299,7 +300,7 @@ Extensible_Theorem
  %S-RFAdd
   LevB: case LevB. apply IH to LevA1 LevB. apply IH1 to LevA2 LevB1.
   apply join_unique to LevA3 LevB2. search.
- %Preservability
+ %S-RFTrans
   LevB: case LevB. apply trans_rf_unique to LevA1 LevB.
   apply IH1 to LevA2 LevB1. search.
 
@@ -358,9 +359,9 @@ Extensible_Theorem
     assert X1 = X -> false.
       intros Eq. case Eq. apply no_lookup to Sec1 LkpSec.
     search.
-%Preservability
- Sec: case Sec. apply trans_c_unique to Ev2 Sec.
- apply IH to Sec1 Ev1 _. search.
+%E-Q
+ Sec: case Sec. apply trans_c_unique to Ev1 Sec.
+ apply IH to Sec1 Ev2 _. search.
 
 
 Theorem public_equiv_swap : forall SG SG' GA GB,
@@ -498,8 +499,8 @@ Extensible_Theorem
           search.
    %S-DeclareSecPublic
     apply NEq to _.
-%Preservability
- Sec: case Sec. apply trans_c_unique to Ev2 Sec. apply IH to _ _ Ev1.
+%E-Q
+ Sec: case Sec. apply trans_c_unique to Ev1 Sec. apply IH to _ _ Ev2.
  search.
 
 
@@ -835,13 +836,13 @@ Extensible_Theorem
              apply LkpSec to _.
             %Lkp later
              Rel: case Rel. apply Rel2 to LkpSec1 Lkp1. search.
-%Preservability
- Sec: case Sec. apply trans_c_unique to EvA2 Sec.
- EvBTrans: apply trans_c_eval to EvA2 EvB.
+%E-Q
+ Sec: case Sec. apply trans_c_unique to EvA1 Sec.
+ EvBTrans: apply trans_c_eval to EvA1 EvB.
  IsCT: apply trans_c_is to Sec Is.
- Equiv: apply IH to _ Sec1 Rel EvA1 EvBTrans.
+ Equiv: apply IH to _ Sec1 Rel EvA2 EvBTrans.
  LkpGB'G': assert forall X V, lookup GB' X V -> lookup G' X V.
-   intros L. apply trans_c_eval_results to EvA2 EvB EvBTrans L. search.
+   intros L. apply trans_c_eval_results to EvA1 EvB EvBTrans L. search.
  EqG'GB': assert public_equiv SG1 G' GB'.
    unfold.
      %First part

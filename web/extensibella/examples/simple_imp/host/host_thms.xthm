@@ -478,7 +478,58 @@ Translation_Constraint trans_c_eval : forall C C' G G2,
   |{c}- C ~~> C' -> eval_c G C G2 -> exists G', eval_c G C' G'.
 
 
-Ext_Ind eval_c G C G1 with |{c}- C ~~> T.
+Ext_Size eval_c G C G1.
+
+
+Ext_Ind forall G C G1, eval_c G C G1.
+%E-Noop
+ search.
+%E-Seq
+ apply ext_ind_is_int_eval_c to R2. apply ext_ind_is_int_eval_c to R3.
+ apply ext_ind_pos_eval_c to R2. apply ext_ind_pos_eval_c to R3.
+ Or2: apply lt_left to R1 _ _. Or3: apply lt_right to R1 _ _ _.
+ A: case Acc (keep). Or2: case Or2.
+   %N2 < N
+    AN2: apply A to _ Or2. apply IH to R2 AN2. Or3: case Or3.
+      %N3 < N
+       AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+      %N3 = N
+       apply IH1 to R3 Acc. search.
+   %N2 = N
+    apply IH1 to R2 Acc. Or3: case Or3.
+      %N3 < N
+       AN3: apply A to _ Or3. apply IH to R3 AN3. search.
+      %N3 = N
+       apply IH1 to R3 Acc. search.
+%E-Declare
+ search.
+%E-Assign
+ search.
+%E-IfThenElseTrue
+ apply IH1 to R2 Acc. search.
+%E-IfThenElseFalse
+ apply IH1 to R2 Acc. search.
+%E-WhileFalse
+ search.
+%E-WhileTrue
+ apply ext_ind_is_int_eval_c to R3. apply ext_ind_is_int_eval_c to R4.
+ apply ext_ind_pos_eval_c to R3. apply ext_ind_pos_eval_c to R4.
+ Or2: apply lt_left to R1 _ _. Or3: apply lt_right to R1 _ _ _.
+ A: case Acc (keep). Or2: case Or2.
+   %N2 < N
+    AN2: apply A to _ Or2. apply IH to R3 AN2. Or3: case Or3.
+      %N3 < N
+       AN3: apply A to _ Or3. apply IH to R4 AN3. search.
+      %N3 = N
+       apply IH1 to R4 Acc. search.
+   %N2 = N
+    apply IH1 to R3 Acc. Or3: case Or3.
+      %N3 < N
+       AN3: apply A to _ Or3. apply IH to R4 AN3. search.
+      %N3 = N
+       apply IH1 to R4 Acc. search.
+%E-RecUpdate
+ search.
 
 
 Extensible_Theorem

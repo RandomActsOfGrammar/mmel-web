@@ -45,44 +45,13 @@ Prove_Ext_Ind library:host:is_e.
 %nil
  search.
 %cons
- Trans: assert |{e}- cons E1 E2 ~~> eq E1 E2. Acc: case Acc.
- ESTrans: assert <is_e {ES}> (eq E1 E2) N4.
- IsN2: apply ext_ind_is_int_is_e to Rel3.
- IsN3: apply ext_ind_is_int_is_e to Rel4.
- IsN4: apply plus_integer_is_integer to _ _ Rel2.
- L: apply lt_plus_one to Rel1 IsN4.
- N2Pos: apply ext_ind_pos_is_e to Rel3.
- N3Pos: apply ext_ind_pos_is_e to Rel4.
- N4Pos: apply lesseq_integer__add_positive to N2Pos N3Pos Rel2.
- A: apply Acc to _ L. TTrans: apply IH to ESTrans A.
- LN2: assert N2 < N.
-   Or: apply lt_left to Rel2 N2Pos N3Pos. E: case Or.
-     apply less_integer_transitive to E L. search.
-     search.
- LN3: assert N3 < N.
-   Or: apply lt_right to Rel2 IsN3 N2Pos N3Pos. E: case Or.
-     apply less_integer_transitive to E L. search.
-     search.
- AN2: apply Acc to N2Pos LN2. AN3: apply Acc to N3Pos LN3.
- apply IH to Rel3 AN2. apply IH to Rel4 AN3. search.
+ apply IH to R1. apply IH to R2. search.
 %null
- Trans: assert |{e}- null E1 ~~> E1.
- IsN2: apply ext_ind_is_int_is_e to Rel2.
- L: apply lt_plus_one to Rel1 IsN2. Acc: case Acc.
- N2Pos: apply ext_ind_pos_is_e to Rel2. AN2: apply Acc to N2Pos L.
- apply IH to Rel2 AN2. search.
+ apply IH to R1. search.
 %head
- Trans: assert |{e}- head E1 ~~> E1.
- IsN2: apply ext_ind_is_int_is_e to Rel2.
- L: apply lt_plus_one to Rel1 IsN2. Acc: case Acc.
- N2Pos: apply ext_ind_pos_is_e to Rel2. AN2: apply Acc to N2Pos L.
- apply IH to Rel2 AN2. search.
+ apply IH to R1. search.
 %tail
- Trans: assert |{e}- tail E1 ~~> E1.
- IsN2: apply ext_ind_is_int_is_e to Rel2.
- L: apply lt_plus_one to Rel1 IsN2. Acc: case Acc.
- N2Pos: apply ext_ind_pos_is_e to Rel2. AN2: apply Acc to N2Pos L.
- apply IH to Rel2 AN2. search.
+ apply IH to R1. search.
 
 
 Prove library:host:is_e_var_or_not.
@@ -375,6 +344,7 @@ Prove_Constraint library:host:trans_s_eval.
        search.
    %eval latter assign to Hd
     assert Tl = Hd -> false. intros E. case E. backchain Ev1. search.
+Add_Ext_Size library:host:eval_s.
 Prove_Ext_Ind library:host:eval_s.
 %P-splitlist
  assert |{s}- splitlist Hd Tl E ~~>
@@ -384,6 +354,16 @@ Prove_Ext_Ind library:host:eval_s.
  exists (seq (seq (assign Hd E)
                   (assign Tl (tail (var Hd))))
                   (assign Hd (head (var Hd)))), VHd, GHd, VTl. split.
+   %eval E
+    search.
+   %Hd != Tl
+    search.
+   %select Hd
+    search.
+   %select Tl
+    search.
+   %trans
+    search.
    %eval trans
     unfold. exists (Tl, V2)::(Hd, cons V1 V2)::GTl. split.
       %eval first two assigns
@@ -393,18 +373,8 @@ Prove_Ext_Ind library:host:eval_s.
          %eval Tl assign
           search.
       %eval latter assign to Hd
-       assert Tl = Hd -> false. intros E. case E. backchain Rel2.
+       assert Tl = Hd -> false. intros E. case E. backchain R2.
        search.
-   %trans
-    search.
-   %eval E
-    search.
-   %Hd != Tl
-    search.
-   %select Hd
-    search.
-   %select Tl
-    search.
 
 
 Prove_Constraint library:host:trans_s_eval_results.

@@ -516,6 +516,14 @@ update_rec_fields RecFields Fields V Result
              (Rec, recVal(Result))::G}
 
 
+Extensibella_Stand_In {
+  |{c}- C ~~> T
+  eval_c G T G1
+  ------------- [E-Q]
+  eval_c G C G1
+}
+
+
 <span class="comment">/*Update the associations in the first tyCtx for the fields,
   descending through it to place the value in the final one, producing
   the ending tyCtx*/</span>
@@ -1059,91 +1067,144 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 
 <a class="command" href="host-details.html#343">Translation_Constraint trans_c_eval : forall C C' G G2,
-  |{c}- C ~~> C' -> eval_c G C G2 -> exists G', eval_c G C' G'.</a>
+  |{c}- C ~~> C' -> eval_c G C G2 -> exists G', eval_c G C' G'.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(344);" id="toggleproof344">[Show Proof]</a>
+<div class="proof" id="proof344" style="display: none;">
 
 
-<a class="command" href="host-details.html#344">Ext_Ind eval_c G C G1 with |{c}- C ~~> T.</a>
+<a class="tactic" href="host-details.html#344">Ext_Size eval_c G C G1.</a></div>
 
 
-<a class="command" href="host-details.html#345">Extensible_Theorem
+<a class="command" href="host-details.html#345">Ext_Ind forall G C G1, eval_c G C G1.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(346);" id="toggleproof346">[Show Proof]</a>
+<div class="proof" id="proof346" style="display: none;">
+<span class="comment">%E-Noop</span>
+ <a class="tactic" href="host-details.html#346">search.</a>
+<span class="comment">%E-Seq</span>
+ <a class="tactic" href="host-details.html#347">apply ext_ind_is_int_eval_c to R2.</a> <a class="tactic" href="host-details.html#348">apply ext_ind_is_int_eval_c to R3.</a>
+ <a class="tactic" href="host-details.html#349">apply ext_ind_pos_eval_c to R2.</a> <a class="tactic" href="host-details.html#350">apply ext_ind_pos_eval_c to R3.</a>
+ <a class="tactic" href="host-details.html#351">Or2: apply lt_left to R1 _ _.</a> <a class="tactic" href="host-details.html#352">Or3: apply lt_right to R1 _ _ _.</a>
+ <a class="tactic" href="host-details.html#353">A: case Acc (keep).</a> <a class="tactic" href="host-details.html#354">Or2: case Or2.</a>
+   <span class="comment">%N2 < N</span>
+    <a class="tactic" href="host-details.html#355">AN2: apply A to _ Or2.</a> <a class="tactic" href="host-details.html#356">apply IH to R2 AN2.</a> <a class="tactic" href="host-details.html#357">Or3: case Or3.</a>
+      <span class="comment">%N3 < N</span>
+       <a class="tactic" href="host-details.html#358">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#359">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#360">search.</a>
+      <span class="comment">%N3 = N</span>
+       <a class="tactic" href="host-details.html#361">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#362">search.</a>
+   <span class="comment">%N2 = N</span>
+    <a class="tactic" href="host-details.html#363">apply IH1 to R2 Acc.</a> <a class="tactic" href="host-details.html#364">Or3: case Or3.</a>
+      <span class="comment">%N3 < N</span>
+       <a class="tactic" href="host-details.html#365">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#366">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#367">search.</a>
+      <span class="comment">%N3 = N</span>
+       <a class="tactic" href="host-details.html#368">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#369">search.</a>
+<span class="comment">%E-Declare</span>
+ <a class="tactic" href="host-details.html#370">search.</a>
+<span class="comment">%E-Assign</span>
+ <a class="tactic" href="host-details.html#371">search.</a>
+<span class="comment">%E-IfThenElseTrue</span>
+ <a class="tactic" href="host-details.html#372">apply IH1 to R2 Acc.</a> <a class="tactic" href="host-details.html#373">search.</a>
+<span class="comment">%E-IfThenElseFalse</span>
+ <a class="tactic" href="host-details.html#374">apply IH1 to R2 Acc.</a> <a class="tactic" href="host-details.html#375">search.</a>
+<span class="comment">%E-WhileFalse</span>
+ <a class="tactic" href="host-details.html#376">search.</a>
+<span class="comment">%E-WhileTrue</span>
+ <a class="tactic" href="host-details.html#377">apply ext_ind_is_int_eval_c to R3.</a> <a class="tactic" href="host-details.html#378">apply ext_ind_is_int_eval_c to R4.</a>
+ <a class="tactic" href="host-details.html#379">apply ext_ind_pos_eval_c to R3.</a> <a class="tactic" href="host-details.html#380">apply ext_ind_pos_eval_c to R4.</a>
+ <a class="tactic" href="host-details.html#381">Or2: apply lt_left to R1 _ _.</a> <a class="tactic" href="host-details.html#382">Or3: apply lt_right to R1 _ _ _.</a>
+ <a class="tactic" href="host-details.html#383">A: case Acc (keep).</a> <a class="tactic" href="host-details.html#384">Or2: case Or2.</a>
+   <span class="comment">%N2 < N</span>
+    <a class="tactic" href="host-details.html#385">AN2: apply A to _ Or2.</a> <a class="tactic" href="host-details.html#386">apply IH to R3 AN2.</a> <a class="tactic" href="host-details.html#387">Or3: case Or3.</a>
+      <span class="comment">%N3 < N</span>
+       <a class="tactic" href="host-details.html#388">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#389">apply IH to R4 AN3.</a> <a class="tactic" href="host-details.html#390">search.</a>
+      <span class="comment">%N3 = N</span>
+       <a class="tactic" href="host-details.html#391">apply IH1 to R4 Acc.</a> <a class="tactic" href="host-details.html#392">search.</a>
+   <span class="comment">%N2 = N</span>
+    <a class="tactic" href="host-details.html#393">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#394">Or3: case Or3.</a>
+      <span class="comment">%N3 < N</span>
+       <a class="tactic" href="host-details.html#395">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#396">apply IH to R4 AN3.</a> <a class="tactic" href="host-details.html#397">search.</a>
+      <span class="comment">%N3 = N</span>
+       <a class="tactic" href="host-details.html#398">apply IH1 to R4 Acc.</a> <a class="tactic" href="host-details.html#399">search.</a>
+<span class="comment">%E-RecUpdate</span>
+ <a class="tactic" href="host-details.html#400">search.</a></div>
+
+
+<a class="command" href="host-details.html#401">Extensible_Theorem
   eval_c_unique : forall G C G1 G2,
     Ev1 : eval_c G C G1 ->
     Ev2 : eval_c G C G2 ->
     G1 = G2
-  on Ev1.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(346);" id="toggleproof346">[Show Proof]</a>
-<div class="proof" id="proof346" style="display: none;">
+  on Ev1.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(402);" id="toggleproof402">[Show Proof]</a>
+<div class="proof" id="proof402" style="display: none;">
 <span class="comment">%1 by E-Noop</span>
- <a class="tactic" href="host-details.html#346">case Ev2.</a> <a class="tactic" href="host-details.html#347">search.</a>
+ <a class="tactic" href="host-details.html#402">case Ev2.</a> <a class="tactic" href="host-details.html#403">search.</a>
 <span class="comment">%1 by E-Seq</span>
- <a class="tactic" href="host-details.html#348">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#349">apply IH to Ev3 Ev2.</a> <a class="tactic" href="host-details.html#350">apply IH to Ev4 Ev5.</a> <a class="tactic" href="host-details.html#351">search.</a>
+ <a class="tactic" href="host-details.html#404">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#405">apply IH to Ev3 Ev2.</a> <a class="tactic" href="host-details.html#406">apply IH to Ev4 Ev5.</a> <a class="tactic" href="host-details.html#407">search.</a>
 <span class="comment">%1 by E-Declare</span>
- <a class="tactic" href="host-details.html#352">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#353">apply eval_e_unique to Ev3 Ev2.</a> <a class="tactic" href="host-details.html#354">search.</a>
+ <a class="tactic" href="host-details.html#408">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#409">apply eval_e_unique to Ev3 Ev2.</a> <a class="tactic" href="host-details.html#410">search.</a>
 <span class="comment">%1 by E-Assign</span>
- <a class="tactic" href="host-details.html#355">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#356">apply eval_e_unique to Ev3 Ev2.</a> <a class="tactic" href="host-details.html#357">search.</a>
+ <a class="tactic" href="host-details.html#411">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#412">apply eval_e_unique to Ev3 Ev2.</a> <a class="tactic" href="host-details.html#413">search.</a>
 <span class="comment">%1 by E-IfThenElseTrue</span>
- <a class="tactic" href="host-details.html#358">Ev2: case Ev2.</a>
+ <a class="tactic" href="host-details.html#414">Ev2: case Ev2.</a>
    <span class="comment">%2 by E-IfThenElseTrue</span>
-    <a class="tactic" href="host-details.html#359">apply IH to Ev4 Ev5.</a> <a class="tactic" href="host-details.html#360">search.</a>
+    <a class="tactic" href="host-details.html#415">apply IH to Ev4 Ev5.</a> <a class="tactic" href="host-details.html#416">search.</a>
    <span class="comment">%2 by E-IfThenElseFalse</span>
-    <a class="tactic" href="host-details.html#361">apply eval_e_unique to Ev3 Ev2.</a>
+    <a class="tactic" href="host-details.html#417">apply eval_e_unique to Ev3 Ev2.</a>
 <span class="comment">%1 by E-IfThenElseFalse</span>
- <a class="tactic" href="host-details.html#362">Ev2: case Ev2.</a>
+ <a class="tactic" href="host-details.html#418">Ev2: case Ev2.</a>
    <span class="comment">%2 by E-IfThenElseTrue</span>
-    <a class="tactic" href="host-details.html#363">apply eval_e_unique to Ev3 Ev2.</a>
+    <a class="tactic" href="host-details.html#419">apply eval_e_unique to Ev3 Ev2.</a>
    <span class="comment">%2 by E-IfThenElseFalse</span>
-    <a class="tactic" href="host-details.html#364">apply IH to Ev4 Ev5.</a> <a class="tactic" href="host-details.html#365">search.</a>
+    <a class="tactic" href="host-details.html#420">apply IH to Ev4 Ev5.</a> <a class="tactic" href="host-details.html#421">search.</a>
 <span class="comment">%1 by E-WhileFalse</span>
- <a class="tactic" href="host-details.html#366">Ev2: case Ev2.</a>
+ <a class="tactic" href="host-details.html#422">Ev2: case Ev2.</a>
    <span class="comment">%2 by E-WhileFalse</span>
-    <a class="tactic" href="host-details.html#367">search.</a>
+    <a class="tactic" href="host-details.html#423">search.</a>
    <span class="comment">%2 by E-WhileTrue</span>
-    <a class="tactic" href="host-details.html#368">apply eval_e_unique to Ev3 Ev2.</a>
+    <a class="tactic" href="host-details.html#424">apply eval_e_unique to Ev3 Ev2.</a>
 <span class="comment">%1 by E-WhileTrue</span>
- <a class="tactic" href="host-details.html#369">Ev2: case Ev2.</a>
+ <a class="tactic" href="host-details.html#425">Ev2: case Ev2.</a>
    <span class="comment">%2 by E-WhileFalse</span>
-    <a class="tactic" href="host-details.html#370">apply eval_e_unique to Ev3 Ev2.</a>
+    <a class="tactic" href="host-details.html#426">apply eval_e_unique to Ev3 Ev2.</a>
    <span class="comment">%2 by E-WhileTrue</span>
-    <a class="tactic" href="host-details.html#371">apply IH to Ev4 Ev6.</a> <a class="tactic" href="host-details.html#372">apply IH to Ev5 Ev7.</a> <a class="tactic" href="host-details.html#373">search.</a>
+    <a class="tactic" href="host-details.html#427">apply IH to Ev4 Ev6.</a> <a class="tactic" href="host-details.html#428">apply IH to Ev5 Ev7.</a> <a class="tactic" href="host-details.html#429">search.</a>
 <span class="comment">%1 by E-RecUpdate</span>
- <a class="tactic" href="host-details.html#374">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#375">apply lookup_unique to Ev4 Ev6.</a>
- <a class="tactic" href="host-details.html#376">apply eval_e_unique to Ev3 Ev2.</a>
- <a class="tactic" href="host-details.html#377">apply update_rec_fields_unique to Ev5 Ev7.</a> <a class="tactic" href="host-details.html#378">search.</a></div>
+ <a class="tactic" href="host-details.html#430">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#431">apply lookup_unique to Ev4 Ev6.</a>
+ <a class="tactic" href="host-details.html#432">apply eval_e_unique to Ev3 Ev2.</a>
+ <a class="tactic" href="host-details.html#433">apply update_rec_fields_unique to Ev5 Ev7.</a> <a class="tactic" href="host-details.html#434">search.</a></div>
 
 
-<a class="command" href="host-details.html#379">Translation_Constraint trans_c_eval_results :
+<a class="command" href="host-details.html#435">Translation_Constraint trans_c_eval_results :
   forall C C' G G1 G2 X V,
     |{c}- C ~~> C' -> eval_c G C G1 -> eval_c G C' G2 ->
     lookup G1 X V -> lookup G2 X V.</a>
 
-<a class="command" href="host-details.html#380">Translation_Constraint trans_c_eval_results_back :
+<a class="command" href="host-details.html#436">Translation_Constraint trans_c_eval_results_back :
   forall C C' G G1 G2 X V,
     |{c}- C ~~> C' -> eval_c G C G1 -> eval_c G C' G2 ->
     lookup G2 X V -> lookup G1 X V.</a>
 
 
-<a class="command" href="host-details.html#381">Theorem vars_equiv_left :
+<a class="command" href="host-details.html#437">Theorem vars_equiv_left :
   forall (G1 : list (pair string value)) G2 D D1 D2,
     (forall X U1 U2, mem X D -> lookup G1 X U1 ->
                      lookup G2 X U2 -> U1 = U2) ->
     D1 ++ D2 = D ->
     (forall X U1 U2, mem X D1 -> lookup G1 X U1 ->
-                     lookup G2 X U2 -> U1 = U2).</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(382);" id="toggleproof382">[Show Proof]</a>
-<div class="proof" id="proof382" style="display: none;">
-<a class="tactic" href="host-details.html#382">intros Equiv J Mem Lkp1 Lkp2.</a> <a class="tactic" href="host-details.html#383">backchain Equiv with X = X.</a>
-<a class="tactic" href="host-details.html#384">backchain mem_append_left.</a></div>
-<a class="command" href="host-details.html#385">Theorem vars_equiv_right :
+                     lookup G2 X U2 -> U1 = U2).</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(438);" id="toggleproof438">[Show Proof]</a>
+<div class="proof" id="proof438" style="display: none;">
+<a class="tactic" href="host-details.html#438">intros Equiv J Mem Lkp1 Lkp2.</a> <a class="tactic" href="host-details.html#439">backchain Equiv with X = X.</a>
+<a class="tactic" href="host-details.html#440">backchain mem_append_left.</a></div>
+<a class="command" href="host-details.html#441">Theorem vars_equiv_right :
   forall (G1 : list (pair string value)) G2 D D1 D2,
     (forall X U1 U2, mem X D -> lookup G1 X U1 ->
                      lookup G2 X U2 -> U1 = U2) ->
     D1 ++ D2 = D ->
     (forall X U1 U2, mem X D2 -> lookup G1 X U1 ->
-                     lookup G2 X U2 -> U1 = U2).</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(386);" id="toggleproof386">[Show Proof]</a>
-<div class="proof" id="proof386" style="display: none;">
-<a class="tactic" href="host-details.html#386">intros Equiv J Mem Lkp1 Lkp2.</a> <a class="tactic" href="host-details.html#387">backchain Equiv with X = X.</a>
-<a class="tactic" href="host-details.html#388">backchain mem_append_right.</a></div>
+                     lookup G2 X U2 -> U1 = U2).</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(442);" id="toggleproof442">[Show Proof]</a>
+<div class="proof" id="proof442" style="display: none;">
+<a class="tactic" href="host-details.html#442">intros Equiv J Mem Lkp1 Lkp2.</a> <a class="tactic" href="host-details.html#443">backchain Equiv with X = X.</a>
+<a class="tactic" href="host-details.html#444">backchain mem_append_right.</a></div>
 
 
-<a class="command" href="host-details.html#389">Extensible_Theorem
+<a class="command" href="host-details.html#445">Extensible_Theorem
   vars_eval_same_result : forall G1 G2 E D V1 V2,
     Equiv : (forall X U1 U2,
                 mem X D ->
@@ -1163,118 +1224,118 @@ evalctx_eq (X, V1)::Rest1 EC2
     Ev1 : eval_rf G1 RF V1 ->
     Ev2 : eval_rf G2 RF V2 ->
     V1 = V2
-  on Ev1.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(390);" id="toggleproof390">[Show Proof]</a>
-<div class="proof" id="proof390" style="display: none;">
+  on Ev1.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(446);" id="toggleproof446">[Show Proof]</a>
+<div class="proof" id="proof446" style="display: none;">
 <span class="comment">%vars_equal_same_result</span>
   <span class="comment">%1 by E-Num</span>
-   <a class="tactic" href="host-details.html#390">case Ev2.</a> <a class="tactic" href="host-details.html#391">search.</a>
+   <a class="tactic" href="host-details.html#446">case Ev2.</a> <a class="tactic" href="host-details.html#447">search.</a>
   <span class="comment">%1 by E-Plus</span>
-   <a class="tactic" href="host-details.html#392">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#393">Vars1: case Vars.</a>
-   <a class="tactic" href="host-details.html#394">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#395">backchain vars_equiv_left.</a>
-   <a class="tactic" href="host-details.html#396">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#397">backchain vars_equiv_right.</a>
-   <a class="tactic" href="host-details.html#398">apply plus_integer_unique to Ev5 Ev7.</a> <a class="tactic" href="host-details.html#399">search.</a>
+   <a class="tactic" href="host-details.html#448">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#449">Vars1: case Vars.</a>
+   <a class="tactic" href="host-details.html#450">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#451">backchain vars_equiv_left.</a>
+   <a class="tactic" href="host-details.html#452">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#453">backchain vars_equiv_right.</a>
+   <a class="tactic" href="host-details.html#454">apply plus_integer_unique to Ev5 Ev7.</a> <a class="tactic" href="host-details.html#455">search.</a>
   <span class="comment">%1 by E-Name</span>
-   <a class="tactic" href="host-details.html#400">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#401">Vars: case Vars.</a> <a class="tactic" href="host-details.html#402">apply Equiv to _ Ev3 Ev2.</a> <a class="tactic" href="host-details.html#403">search.</a>
+   <a class="tactic" href="host-details.html#456">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#457">Vars: case Vars.</a> <a class="tactic" href="host-details.html#458">apply Equiv to _ Ev3 Ev2.</a> <a class="tactic" href="host-details.html#459">search.</a>
   <span class="comment">%1 by E-GreaterTrue</span>
-   <a class="tactic" href="host-details.html#404">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#405">Ev2: case Ev2.</a>
+   <a class="tactic" href="host-details.html#460">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#461">Ev2: case Ev2.</a>
      <span class="comment">%2 by E-GreaterTrue</span>
-      <a class="tactic" href="host-details.html#406">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#407">backchain vars_equiv_left.</a>
-      <a class="tactic" href="host-details.html#408">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#409">backchain vars_equiv_right.</a> <a class="tactic" href="host-details.html#410">search.</a>
+      <a class="tactic" href="host-details.html#462">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#463">backchain vars_equiv_left.</a>
+      <a class="tactic" href="host-details.html#464">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#465">backchain vars_equiv_right.</a> <a class="tactic" href="host-details.html#466">search.</a>
      <span class="comment">%2 by E-GreaterFalse</span>
-      <a class="tactic" href="host-details.html#411">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#412">backchain vars_equiv_left.</a>
-      <a class="tactic" href="host-details.html#413">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#414">backchain vars_equiv_right.</a>
-      <a class="tactic" href="host-details.html#415">apply greater_lesseq_integer_false to Ev5 Ev7.</a>
-  <span class="comment">%1 by E-GreaterFalse</span>
-   <a class="tactic" href="host-details.html#416">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#417">Ev2: case Ev2.</a>
-     <span class="comment">%2 by E-GreaterTrue</span>
-      <a class="tactic" href="host-details.html#418">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#419">backchain vars_equiv_left.</a>
-      <a class="tactic" href="host-details.html#420">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#421">backchain vars_equiv_right.</a>
-      <a class="tactic" href="host-details.html#422">apply greater_lesseq_integer_false to Ev7 Ev5.</a>
-     <span class="comment">%2 by E-GreaterFalse</span>
-      <a class="tactic" href="host-details.html#423">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#424">backchain vars_equiv_left.</a>
-      <a class="tactic" href="host-details.html#425">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#426">backchain vars_equiv_right.</a> <a class="tactic" href="host-details.html#427">search.</a>
-  <span class="comment">%1 by E-EqTrue</span>
-   <a class="tactic" href="host-details.html#428">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#429">Ev2: case Ev2.</a>
-     <span class="comment">%2 by E-EqTrue</span>
-      <a class="tactic" href="host-details.html#430">search.</a>
-     <span class="comment">%2 by E-EqFalse</span>
-      <a class="tactic" href="host-details.html#431">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#432">backchain vars_equiv_left.</a>
-      <a class="tactic" href="host-details.html#433">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#434">backchain vars_equiv_right.</a>
-      <a class="tactic" href="host-details.html#435">apply Ev7 to _.</a>
-  <span class="comment">%1 by E-EqFalse</span>
-   <a class="tactic" href="host-details.html#436">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#437">Ev2: case Ev2.</a>
-     <span class="comment">%2 by E-EqTrue</span>
-      <a class="tactic" href="host-details.html#438">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#439">backchain vars_equiv_left.</a>
-      <a class="tactic" href="host-details.html#440">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#441">backchain vars_equiv_right.</a>
-      <a class="tactic" href="host-details.html#442">apply Ev5 to _.</a>
-     <span class="comment">%2 by E-EqFalse</span>
-      <a class="tactic" href="host-details.html#443">search.</a>
-  <span class="comment">%1 by E-AndTrue</span>
-   <a class="tactic" href="host-details.html#444">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#445">Ev2: case Ev2.</a>
-     <span class="comment">%2 by E-AndTrue</span>
-      <a class="tactic" href="host-details.html#446">search.</a>
-     <span class="comment">%2 by E-AndFalse1</span>
-      <a class="tactic" href="host-details.html#447">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#448">backchain vars_equiv_left.</a>
-     <span class="comment">%2 by E-AndFalse2</span>
-      <a class="tactic" href="host-details.html#449">apply IH to _ Vars2 Ev4 Ev5.</a> <a class="tactic" href="host-details.html#450">backchain vars_equiv_right.</a>
-  <span class="comment">%1 by E-AndFalse1</span>
-   <a class="tactic" href="host-details.html#451">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#452">Ev2: case Ev2.</a>
-     <span class="comment">%2 by E-AndTrue</span>
-      <a class="tactic" href="host-details.html#453">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#454">backchain vars_equiv_left.</a>
-     <span class="comment">%2 by E-AndFalse1</span>
-      <a class="tactic" href="host-details.html#455">search.</a>
-     <span class="comment">%2 by E-AndFalse2</span>
-      <a class="tactic" href="host-details.html#456">search.</a>
-  <span class="comment">%1 by E-Andfalse2</span>
-   <a class="tactic" href="host-details.html#457">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#458">Ev2: case Ev2.</a>
-     <span class="comment">%2 by E-AndTrue</span>
-      <a class="tactic" href="host-details.html#459">apply IH to _ Vars2 Ev4 Ev5.</a> <a class="tactic" href="host-details.html#460">backchain vars_equiv_right.</a>
-     <span class="comment">%2 by E-AndFalse1</span>
-      <a class="tactic" href="host-details.html#461">search.</a>
-     <span class="comment">%2 by E-AndFalse2</span>
-      <a class="tactic" href="host-details.html#462">search.</a>
-  <span class="comment">%1 by E-OrTrue1</span>
-   <a class="tactic" href="host-details.html#463">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#464">Ev2: case Ev2.</a>
-     <span class="comment">%2 by E-OrTrue1</span>
-      <a class="tactic" href="host-details.html#465">search.</a>
-     <span class="comment">%2 by E-OrTrue2</span>
-      <a class="tactic" href="host-details.html#466">search.</a>
-     <span class="comment">%2 by E-OrFalse</span>
       <a class="tactic" href="host-details.html#467">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#468">backchain vars_equiv_left.</a>
+      <a class="tactic" href="host-details.html#469">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#470">backchain vars_equiv_right.</a>
+      <a class="tactic" href="host-details.html#471">apply greater_lesseq_integer_false to Ev5 Ev7.</a>
+  <span class="comment">%1 by E-GreaterFalse</span>
+   <a class="tactic" href="host-details.html#472">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#473">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-GreaterTrue</span>
+      <a class="tactic" href="host-details.html#474">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#475">backchain vars_equiv_left.</a>
+      <a class="tactic" href="host-details.html#476">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#477">backchain vars_equiv_right.</a>
+      <a class="tactic" href="host-details.html#478">apply greater_lesseq_integer_false to Ev7 Ev5.</a>
+     <span class="comment">%2 by E-GreaterFalse</span>
+      <a class="tactic" href="host-details.html#479">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#480">backchain vars_equiv_left.</a>
+      <a class="tactic" href="host-details.html#481">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#482">backchain vars_equiv_right.</a> <a class="tactic" href="host-details.html#483">search.</a>
+  <span class="comment">%1 by E-EqTrue</span>
+   <a class="tactic" href="host-details.html#484">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#485">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-EqTrue</span>
+      <a class="tactic" href="host-details.html#486">search.</a>
+     <span class="comment">%2 by E-EqFalse</span>
+      <a class="tactic" href="host-details.html#487">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#488">backchain vars_equiv_left.</a>
+      <a class="tactic" href="host-details.html#489">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#490">backchain vars_equiv_right.</a>
+      <a class="tactic" href="host-details.html#491">apply Ev7 to _.</a>
+  <span class="comment">%1 by E-EqFalse</span>
+   <a class="tactic" href="host-details.html#492">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#493">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-EqTrue</span>
+      <a class="tactic" href="host-details.html#494">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#495">backchain vars_equiv_left.</a>
+      <a class="tactic" href="host-details.html#496">apply IH to _ Vars2 Ev4 Ev6.</a> <a class="tactic" href="host-details.html#497">backchain vars_equiv_right.</a>
+      <a class="tactic" href="host-details.html#498">apply Ev5 to _.</a>
+     <span class="comment">%2 by E-EqFalse</span>
+      <a class="tactic" href="host-details.html#499">search.</a>
+  <span class="comment">%1 by E-AndTrue</span>
+   <a class="tactic" href="host-details.html#500">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#501">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-AndTrue</span>
+      <a class="tactic" href="host-details.html#502">search.</a>
+     <span class="comment">%2 by E-AndFalse1</span>
+      <a class="tactic" href="host-details.html#503">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#504">backchain vars_equiv_left.</a>
+     <span class="comment">%2 by E-AndFalse2</span>
+      <a class="tactic" href="host-details.html#505">apply IH to _ Vars2 Ev4 Ev5.</a> <a class="tactic" href="host-details.html#506">backchain vars_equiv_right.</a>
+  <span class="comment">%1 by E-AndFalse1</span>
+   <a class="tactic" href="host-details.html#507">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#508">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-AndTrue</span>
+      <a class="tactic" href="host-details.html#509">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#510">backchain vars_equiv_left.</a>
+     <span class="comment">%2 by E-AndFalse1</span>
+      <a class="tactic" href="host-details.html#511">search.</a>
+     <span class="comment">%2 by E-AndFalse2</span>
+      <a class="tactic" href="host-details.html#512">search.</a>
+  <span class="comment">%1 by E-Andfalse2</span>
+   <a class="tactic" href="host-details.html#513">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#514">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-AndTrue</span>
+      <a class="tactic" href="host-details.html#515">apply IH to _ Vars2 Ev4 Ev5.</a> <a class="tactic" href="host-details.html#516">backchain vars_equiv_right.</a>
+     <span class="comment">%2 by E-AndFalse1</span>
+      <a class="tactic" href="host-details.html#517">search.</a>
+     <span class="comment">%2 by E-AndFalse2</span>
+      <a class="tactic" href="host-details.html#518">search.</a>
+  <span class="comment">%1 by E-OrTrue1</span>
+   <a class="tactic" href="host-details.html#519">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#520">Ev2: case Ev2.</a>
+     <span class="comment">%2 by E-OrTrue1</span>
+      <a class="tactic" href="host-details.html#521">search.</a>
+     <span class="comment">%2 by E-OrTrue2</span>
+      <a class="tactic" href="host-details.html#522">search.</a>
+     <span class="comment">%2 by E-OrFalse</span>
+      <a class="tactic" href="host-details.html#523">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#524">backchain vars_equiv_left.</a>
   <span class="comment">%1 by E-OrTrue2</span>
-   <a class="tactic" href="host-details.html#469">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#470">Ev2: case Ev2.</a>
+   <a class="tactic" href="host-details.html#525">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#526">Ev2: case Ev2.</a>
      <span class="comment">%2 by E-OrTrue1</span>
-      <a class="tactic" href="host-details.html#471">search.</a>
+      <a class="tactic" href="host-details.html#527">search.</a>
      <span class="comment">%2 by E-OrTrue2</span>
-      <a class="tactic" href="host-details.html#472">search.</a>
+      <a class="tactic" href="host-details.html#528">search.</a>
      <span class="comment">%2 by E-OrFalse</span>
-      <a class="tactic" href="host-details.html#473">apply IH to _Vars2 Ev4 Ev5.</a> <a class="tactic" href="host-details.html#474">backchain vars_equiv_right.</a>
+      <a class="tactic" href="host-details.html#529">apply IH to _Vars2 Ev4 Ev5.</a> <a class="tactic" href="host-details.html#530">backchain vars_equiv_right.</a>
   <span class="comment">%1 by E-OrFalse</span>
-   <a class="tactic" href="host-details.html#475">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#476">Ev2: case Ev2.</a>
+   <a class="tactic" href="host-details.html#531">Vars1: case Vars.</a> <a class="tactic" href="host-details.html#532">Ev2: case Ev2.</a>
      <span class="comment">%2 by E-OrTrue1</span>
-      <a class="tactic" href="host-details.html#477">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#478">backchain vars_equiv_left.</a>
+      <a class="tactic" href="host-details.html#533">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#534">backchain vars_equiv_left.</a>
      <span class="comment">%2 by E-OrTrue2</span>
-      <a class="tactic" href="host-details.html#479">apply IH to _ Vars2 Ev4 Ev5.</a> <a class="tactic" href="host-details.html#480">backchain vars_equiv_right.</a>
+      <a class="tactic" href="host-details.html#535">apply IH to _ Vars2 Ev4 Ev5.</a> <a class="tactic" href="host-details.html#536">backchain vars_equiv_right.</a>
      <span class="comment">%2 by E-OrFalse</span>
-      <a class="tactic" href="host-details.html#481">search.</a>
+      <a class="tactic" href="host-details.html#537">search.</a>
   <span class="comment">%1 by E-True</span>
-   <a class="tactic" href="host-details.html#482">case Ev2.</a> <a class="tactic" href="host-details.html#483">search.</a>
+   <a class="tactic" href="host-details.html#538">case Ev2.</a> <a class="tactic" href="host-details.html#539">search.</a>
   <span class="comment">%1 by E-False</span>
-   <a class="tactic" href="host-details.html#484">case Ev2.</a> <a class="tactic" href="host-details.html#485">search.</a>
+   <a class="tactic" href="host-details.html#540">case Ev2.</a> <a class="tactic" href="host-details.html#541">search.</a>
   <span class="comment">%1 by E-RecBuild</span>
-   <a class="tactic" href="host-details.html#486">Vars: case Vars.</a> <a class="tactic" href="host-details.html#487">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#488">apply IH1 to _ Vars Ev3 Ev2.</a>
-   <a class="tactic" href="host-details.html#489">search.</a>
+   <a class="tactic" href="host-details.html#542">Vars: case Vars.</a> <a class="tactic" href="host-details.html#543">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#544">apply IH1 to _ Vars Ev3 Ev2.</a>
+   <a class="tactic" href="host-details.html#545">search.</a>
   <span class="comment">%1 by E-RecField</span>
-   <a class="tactic" href="host-details.html#490">Vars: case Vars.</a> <a class="tactic" href="host-details.html#491">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#492">apply IH to _ Vars Ev3 Ev2.</a>
-   <a class="tactic" href="host-details.html#493">apply lookup_unique to Ev4 Ev5.</a> <a class="tactic" href="host-details.html#494">search.</a>
+   <a class="tactic" href="host-details.html#546">Vars: case Vars.</a> <a class="tactic" href="host-details.html#547">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#548">apply IH to _ Vars Ev3 Ev2.</a>
+   <a class="tactic" href="host-details.html#549">apply lookup_unique to Ev4 Ev5.</a> <a class="tactic" href="host-details.html#550">search.</a>
 <span class="comment">%vars_equal_rf_same_result</span>
   <span class="comment">%1 by ERF-End</span>
-   <a class="tactic" href="host-details.html#495">case Ev2.</a> <a class="tactic" href="host-details.html#496">search.</a>
+   <a class="tactic" href="host-details.html#551">case Ev2.</a> <a class="tactic" href="host-details.html#552">search.</a>
   <span class="comment">%1 by ERF-Add</span>
-   <a class="tactic" href="host-details.html#497">Vars: case Vars.</a> <a class="tactic" href="host-details.html#498">Ev2: case Ev2.</a>
-   <a class="tactic" href="host-details.html#499">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#500">backchain vars_equiv_left.</a>
-   <a class="tactic" href="host-details.html#501">apply IH1 to _ Vars Ev4 Ev5.</a> <a class="tactic" href="host-details.html#502">backchain vars_equiv_right.</a> <a class="tactic" href="host-details.html#503">search.</a></div>
-<a class="command" href="host-details.html#504"></a>
+   <a class="tactic" href="host-details.html#553">Vars: case Vars.</a> <a class="tactic" href="host-details.html#554">Ev2: case Ev2.</a>
+   <a class="tactic" href="host-details.html#555">apply IH to _ Vars1 Ev3 Ev2.</a> <a class="tactic" href="host-details.html#556">backchain vars_equiv_left.</a>
+   <a class="tactic" href="host-details.html#557">apply IH1 to _ Vars Ev4 Ev5.</a> <a class="tactic" href="host-details.html#558">backchain vars_equiv_right.</a> <a class="tactic" href="host-details.html#559">search.</a></div>
+<a class="command" href="host-details.html#560"></a>
 </pre>
 </div>
 <div class="section">

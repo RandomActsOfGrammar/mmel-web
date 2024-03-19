@@ -57,28 +57,33 @@ Prove_Constraint walkthrough:host:trans_type_same.
  case Hyp1. apply typeOf_unique to Hyp2 H1. search.
 
 
+Add_Ext_Size walkthrough:host:typeOf.
+
+
 Prove_Ext_Ind walkthrough:host:typeOf.
 %T-Let
- Acc: case Acc. unfold. apply drop_ext_ind_typeOf to Rel3.
+ Acc: case Acc. unfold. apply drop_ext_ind_typeOf to R3.
  assert G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1.
- IsN2: apply ext_ind_is_int_typeOf to Rel3.
- IsN3: apply ext_ind_is_int_typeOf to Rel4.
- IsN4: apply plus_integer_is_integer to _ _ Rel2.
- L: apply lt_plus_one to Rel1 _.
- PosN2: apply ext_ind_pos_typeOf to Rel3.
- PosN3: apply ext_ind_pos_typeOf to Rel4.
- assert <typeOf {T}> G T1 Ty1.
-   Or: apply lt_left to Rel2 _ _. L': case Or.
-     %N2 < N4
-      L'': apply less_integer_transitive to L' L.
-      A: apply Acc to _ L''. apply IH to Rel3 A. search.
-     %N2 = N4
-      A: apply Acc to _ L. apply IH to Rel3 A. search.
- assert <typeOf {T}> ((X, Ty1)::G) T2 Ty.
-   Or: apply lt_right to Rel2 _ _ _. L': case Or.
-     %N3 < N4
-      L'': apply less_integer_transitive to L' L.
-      A: apply Acc to _ L''. apply IH to Rel4 A. search.
-     %N3 = N4
-      A: apply Acc to _ L. apply IH to Rel4 A. search.
- exists app (abs X Ty1 T2) T1, Ty1. search.
+ IsN2: apply ext_ind_is_int_typeOf to R3.
+ IsN3: apply ext_ind_is_int_typeOf to R4.
+ IsN4: apply plus_integer_is_integer to _ _ R2.
+ L: apply lt_plus_one to R1 _.
+ PosN2: apply ext_ind_pos_typeOf to R3.
+ PosN3: apply ext_ind_pos_typeOf to R4.
+ Or2: apply lt_left to R2 _ _. Or3: apply lt_right to R2 _ _ _.
+ Or2: case Or2.
+   %N2 < N4
+    LN2: apply less_integer_transitive to Or2 L.
+    AN2: apply Acc to _ LN2. apply IH1 to R3 AN2. Or3: case Or3.
+      %N3 < N4
+       LN3: apply less_integer_transitive to Or3 L.
+       AN3: apply Acc to _ LN3. apply IH1 to R4 AN3. search.
+      %N3 = N4
+       AN4: apply Acc to _ L. apply IH1 to R4 AN4. search.
+   %N2 = N4
+    AN4: apply Acc to _ L. apply IH1 to R3 AN4. Or3: case Or3.
+      %N3 < N4
+       LN3: apply less_integer_transitive to Or3 L.
+       AN3: apply Acc to _ LN3. apply IH1 to R4 AN3. search.
+      %N3 = N4
+       apply IH1 to R4 AN4. search.
