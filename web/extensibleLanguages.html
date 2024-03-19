@@ -21,16 +21,27 @@
     portions of them are developed separately, then put together.  The
     specific view of extensible languages we take is one in which the
     language's syntax and semantics are given by a set of
-    independently-developed modules building on each other, where one
+    independently-developed modules building on each other.  A common
+    form for this to take is one where one
     module is the host language and the other modules are extensions
     adding to it.  A language is built by choosing some subset of
     these modules, creating a language with all the constructs and
-    semantics of the host language and all included extensions.
+    semantics of all included modules.
   </p>
 
   <p>
-    The view of a host language and extensions adding to it is not
-    new.  Some examples of previous work using this idea:
+    While we are not tied to the host-and-extensions model, we will
+    often use it, and in particular will use the term "extension" to
+    refer to any module building on another, to highlight the fact
+    it <i>extends</i> the other.  We occasionally also use "host" to
+    refer to modules not building on others.  Also, most of our
+    examples will use a direct host-and-extensions structure.
+  </p>
+
+  <p>
+    This view of extensibility is not
+    new.  Some examples of previous work using the host-and-extensions
+    model:
     <ul>
       <li> <a href="https://jastadd.cs.lth.se/">JastAdd</a> is a Java
         compiler that permits adding extensions to Java.
@@ -66,7 +77,7 @@
     building the composed language needing to write any glue code to
     fill in missing equations.  Our work in general seeks to give
     guarantees for the <i>correctness of the semantics</i> of
-    composed languages has another aspect of guaranteed composition.
+    composed languages as another aspect of guaranteed composition.
   </p>
 </div>
 
@@ -143,7 +154,7 @@
     it on new syntax from other extensions.  This rule is written with
     a variable in the place of the primary component.  For example, we
     might have an <code>optimize</code> relation reducing constant
-    computations in an expression, with the translation rule stating
+    computations in an expression, with the default rule stating
     optimizing an unknown expression leaves it as it
     is:  <code>optimize E E</code> (a safe, if uninspiring, choice).
     When a composed language is built, combining several extensions,

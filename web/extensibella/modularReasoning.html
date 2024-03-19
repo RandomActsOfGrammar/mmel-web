@@ -82,7 +82,7 @@
     syntax constructors also from that module.  This prevents new
     rules from being added in further extension modules that will
     apply to known syntax, and thus we know, in the context of a
-    module and its imports, all the cases that might apply in such a
+    module and its imports, all the rules that might apply in such a
     case even when we move to the context of a composed language.
   </p>
 </div>
@@ -144,13 +144,13 @@
   <p>
     The cases for constructors introduced by other modules are grouped
     together as a single proof case for the module introducing the
-    property to prove, called <em>preservability</em>.  The idea is to
+    property to prove.  The idea is to
     show the property holds for any constructor of the primary
     component introduced by another module that does not know the
     relation.  In this case, the relation is defined for the unknown
     constructors by the default rule.  We handle this in Extensibella
-    by a special <code>&lt;unknown ty&gt;</code> constructor for
-    type <code>ty</code> where the relation is explicitly defined by
+    by a special generic constructor for the primary component
+    type where the relation is explicitly defined by
     the default rule.  This proof fragment can then be used for each
     instantiation of the default rule in the composition.
   </p>
@@ -162,7 +162,7 @@
     each module introducing a new constructor of the primary component
     will also introduce the rules defining the relation for it.
     However, not every module will know the property exists, so we
-    cannot distribute the proof work across all the module knowing the
+    cannot distribute the proof work across all the modules knowing the
     relation.
   </p>
 
@@ -178,16 +178,18 @@
 
   <p>
     The cases for rules introduced by other modules are grouped into a
-    preservability proof case for the module introducing the property
-    to prove as before, using the <code>&lt;unknown ty&gt;</code>
-    constructor.  However, the rules for the unknown cases are each
+    generic proof case for the module introducing the property
+    to prove as before, using a different generic constructor than the
+    previous case.  Here the rules for the unknown cases are each
     introduced by the other modules, and are thus unknown to the
     module introducing the property.  The module introducing the
     relation must have given a special property, introduced in
     Extensibella by <code>Ext_Ind</code>, showing what can be expected
-    of a rule introduced by another extension.  This gives a rule
-    for <code>&lt;unknown ty&gt;</code> using this behavior.  The
-    preservability proof fragment proves the property holds for this
+    of a rule introduced by another extension.  This relies on a rule
+    introduced in Sterling using <code>Extensibella_Stand_In</code>,
+    with <code>Ext_Ind</code> showing this rule is a valid way to view
+    the behavior other extensions will introduce.  The
+    generic proof fragment proves the property holds for this
     rule, and the <code>Ext_Ind</code> property will allow us to lift
     this to any actual rule in the composition.
   </p>
@@ -219,9 +221,9 @@
         relation but not the property
     </ul>
     These require a combination of the approaches for the two previous
-    situations.  We have two preservability proofs, one for the
-    default rule and one for the other cases
-    using <code>Ext_Ind</code>.  The appropriate preservability proof
+    situations.  We have two generic proofs, one for the
+    default rule and one for the other cases using the stand-in rule.
+    The appropriate generic proof
     can then be used for each unknown case in the composition.
   </p>
 </div>
@@ -236,7 +238,7 @@
     distribute.  Instead the full proof will be given by the module
     introducing the property.  The restrictions on case analysis from
     above are still enforced, preventing new cases from being added to
-    the proof in the composition.
+    the proof in the composition and ensuring its validity in there.
   </p>
 </div>
 
