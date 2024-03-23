@@ -1,12 +1,12 @@
 Module unsat_proofs:drat.
 
 
-Prove_Constraint unsat_proofs:lrat:trans_lit_unique.
-Prove_Constraint unsat_proofs:lrat:trans_lit_is.
-Prove_Constraint unsat_proofs:lrat:trans_clause_unique.
-Prove_Constraint unsat_proofs:lrat:trans_clause_is.
-Prove_Constraint unsat_proofs:lrat:trans_formula_unique.
-Prove_Constraint unsat_proofs:lrat:trans_formula_is.
+Prove_Constraint unsat_proofs:lrat:proj_lit_unique.
+Prove_Constraint unsat_proofs:lrat:proj_lit_is.
+Prove_Constraint unsat_proofs:lrat:proj_clause_unique.
+Prove_Constraint unsat_proofs:lrat:proj_clause_is.
+Prove_Constraint unsat_proofs:lrat:proj_formula_unique.
+Prove_Constraint unsat_proofs:lrat:proj_formula_is.
 
 
 Prove_Ext_Ind unsat_proofs:lrat:is_clause.
@@ -29,12 +29,12 @@ Prove unsat_proofs:lrat:negate_lit_is_lit_back.
 Prove unsat_proofs:lrat:negate_lit_exists.
 
 
-Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.
-Prove_Constraint unsat_proofs:lrat:sat_clause_trans_to_ext.
-Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_trans.
-Prove_Constraint unsat_proofs:lrat:unsat_clause_trans_to_ext.
-Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_trans.
-Prove_Constraint unsat_proofs:lrat:sat_formula_trans_to_ext.
+Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_proj.
+Prove_Constraint unsat_proofs:lrat:sat_clause_proj_to_ext.
+Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_proj.
+Prove_Constraint unsat_proofs:lrat:unsat_clause_proj_to_ext.
+Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_proj.
+Prove_Constraint unsat_proofs:lrat:sat_formula_proj_to_ext.
 
 
 Prove unsat_proofs:lrat:unsat_sat_clause.
@@ -57,8 +57,8 @@ Prove unsat_proofs:lrat:gatherLits_is.
 Prove unsat_proofs:lrat:gatherLits_exists.
 Prove unsat_proofs:lrat:gatherLits_permutation.
 
-Prove_Constraint unsat_proofs:lrat:trans_gatherLits.
-Prove_Constraint unsat_proofs:lrat:trans_gatherLits_permutation.
+Prove_Constraint unsat_proofs:lrat:proj_gatherLits.
+Prove_Constraint unsat_proofs:lrat:proj_gatherLits_permutation.
 
 Prove unsat_proofs:lrat:gatherLits_sat.
 Prove unsat_proofs:lrat:gatherLits_mem_sat.
@@ -66,7 +66,7 @@ Prove unsat_proofs:lrat:gatherLits_unsat.
 Prove unsat_proofs:lrat:negate_lits_unsat.
 
 
-Prove_Constraint unsat_proofs:lrat:trans_proof_is.
+Prove_Constraint unsat_proofs:lrat:proj_proof_is.
 
 
 Prove unsat_proofs:lrat:check_proof_correct.
@@ -77,7 +77,7 @@ Add_Ext_Size unsat_proofs:lrat:checkProof.
 Prove_Ext_Ind unsat_proofs:lrat:checkProof.
 
 
-Prove_Constraint unsat_proofs:lrat:trans_checkProof.
+Prove_Constraint unsat_proofs:lrat:proj_checkProof.
 
 
 Prove unsat_proofs:lrat:formulaToKnown_all_greater.
@@ -533,6 +533,6 @@ Extensible_Theorem
          search.
  apply IH to _ IsL' Is1 CP1 _ TD2 VS1 _. search.
 %CP-Q
- CP': apply trans_checkProof to TD1 CP _ _.
- apply trans_proof_is to TD1 IsP _. apply IH to _ _ _ CP' _ TD2 _ _.
+ CP': apply proj_checkProof to TD1 CP _ _.
+ apply proj_proof_is to TD1 IsP _. apply IH to _ _ _ CP' _ TD2 _ _.
  search.

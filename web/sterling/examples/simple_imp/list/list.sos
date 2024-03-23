@@ -2,7 +2,7 @@ Module simple_imp:list
 
 Builds on simple_imp:host
 
-/*New Expressions and Translations*/
+/*New Expressions and Projections*/
 e ::= ...
     | nil
     | cons(e, e)
@@ -13,13 +13,13 @@ e ::= ...
     | length(e)
 
 
---------------------------------------------- [Trans-Nil]
+--------------------------------------------- [Proj-Nil]
 |{e}- nil ~~>
       recBuild(addRecFieldExprs("null", true,
                endRecFieldExprs))
 
 
----------------------------------------------------------- [Trans-Cons]
+---------------------------------------------------------- [Proj-Cons]
 |{e}- cons(E1, E2) ~~>
       recBuild(
          addRecFieldExprs("null", false,
@@ -27,51 +27,51 @@ e ::= ...
          addRecFieldExprs("tail", E2, endRecFieldExprs))))
 
 
-------------------- [Trans-Null]
+------------------- [Proj-Null]
 |{e}- null(E) ~~> E
 
 
-------------------- [Trans-Head]
+------------------- [Proj-Head]
 |{e}- head(E) ~~> E
 
 
-------------------- [Trans-Tail]
+------------------- [Proj-Tail]
 |{e}- tail(E) ~~> E
 
 
--------------------------------------------------- [Trans-Index]
+-------------------------------------------------- [Proj-Index]
 |{e}- index(Lst, Index) ~~> and(null(Lst),
                                 eq(num(0), Index))
 
 
---------------------- [Trans-Length]
+--------------------- [Proj-Length]
 |{e}- length(E) ~~> E
 
 
 
-/*New Type and Translation*/
+/*New Type and Projection*/
 ty ::= ...
      | listTy(ty)
 
 
------------------------------------------------ [Trans-ListTy]
+----------------------------------------------- [Proj-ListTy]
 |{ty}- listTy(T) ~~>
        recTy([("head", T), ("tail", listTy(T)),
               ("null", boolTy)])
 
 
 
-/*New Value and Translation*/
+/*New Value and Projection*/
 value ::= ...
         | nilVal
         | consVal(value, value)
 
 
------------------------------------------------- [Trans-NilVal]
+------------------------------------------------ [Proj-NilVal]
 |{value}- nilVal ~~> recVal([("null", trueVal)])
 
 
---------------------------------------------- [Trans-ConsVal]
+--------------------------------------------- [Proj-ConsVal]
 |{value}- consVal(Hd, Tl) ~~>
           recVal([("head", Hd), ("tail", Tl),
                   ("null", falseVal)])

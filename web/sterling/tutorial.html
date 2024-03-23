@@ -108,25 +108,25 @@ tm ::= var(string)
 
   <p>
     For each syntactic category we introduce, we must also give its
-    translation type:
+    projection type:
 <pre class="code sterling">
-Translation tm :
+Projection tm :
 </pre>
     Each constructor of a syntactic category introduced by an
-    extension will introduce a translation of terms built by that
-    constructor.  These translations can then be used to define
+    extension will introduce a projection of terms built by that
+    constructor.  These projections can then be used to define
     relations extensions introduce for constructs from other
     extensions, as we shall see below.
   </p>
 
   <p>
-    The empty translation type we have for <code>tm</code> means the
-    translation will relation two terms of type <code>tm</code>.  In
-    some cases, it is useful to condition the translation on other
+    The empty projection type we have for <code>tm</code> means the
+    projection will relation two terms of type <code>tm</code>.  In
+    some cases, it is useful to condition the projection on other
     arguments.  For example, we might want to be able to condition the
-    translation on the object-level types of sub-terms.  In that case,
-    we would want a translation type with a typing context so we could
-    determine the types of sub-terms in the rules for translation.
+    projection on the object-level types of sub-terms.  In that case,
+    we would want a projection type with a typing context so we could
+    determine the types of sub-terms in the rules for projection.
   </p>
 
   <h3>Defining Relations</h3>
@@ -307,11 +307,11 @@ tm ::= ...
 
   <p>
     Because <code>let</code> builds a syntactic category from a
-    built-on module, we need to give it a translation that eliminates
+    built-on module, we need to give it a projection that eliminates
     the <code>let</code> constructor:
 <pre class="code sterling">
 
---------------------------------------------- [Trans-Let]
+--------------------------------------------- [Proj-Let]
 |{tm}- let(X, T1, T2) ~~> app(abs(X, T2), T1)
 </pre>
     This says a term built by the <code>let</code> constructor is
@@ -390,19 +390,19 @@ Builds on tutorial:host
 ty ::= baseTy
      | arrowTy(ty, ty)
 
-Translation ty :
+Projection ty :
 </pre>
   </p>
 
   <p>
-    We also add a typed version of an abstraction, translating to a
+    We also add a typed version of an abstraction, projecting to a
     basic abstraction (<code>abs</code>) and define the host
     language's judgments on it:
 <pre class="code sterling">
 tm ::= ...
      | tyAbs(string, ty, tm)
 
------------------------------------- [Trans-TyAbs]
+------------------------------------ [Proj-TyAbs]
 |{tm}- tyAbs(X, Ty, T) ~~> abs(X, T)
 
 
@@ -485,20 +485,20 @@ typeOf G abs(X, T) arrowTy(Ty1, Ty2)
 <pre class="code sterling">
 |{tm}- T ~~> T_T
 typeOf G T_T Ty
----------------- [T-Trans]*
+---------------- [T-D]*
 typeOf G T Ty
 </pre>
     For example, this rule would be instantiated for
     the <code>let</code> extension's <code>let</code> constructor,
-    defining its typing by the typing of its translation.
+    defining its typing by the typing of its projection.
   </p>
 
   <p>
     Each relation introduced by an extension with a primary component
     introduced by one of the modules on which it builds must include a
     single default rule.  Often this takes the form seen
-    in <code>T-Trans</code>, where the other arguments to the relation
-    are copied directly from the translation of the primary component.
+    in <code>T-D</code>, where the other arguments to the relation
+    are copied directly from the projection of the primary component.
     However, this form is not required, and default rules may take any
     form.  The only requirement is that the primary component in the
     conclusion must be a meta-variable, as it will be filled with
@@ -532,7 +532,7 @@ Builds on tutorial:typing
   <p>
     We extend both <code>tm</code> from the host language
     and <code>ty</code> from the <code>typing</code> extension, giving
-    translations for the new constructors from both:
+    projections for the new constructors from both:
 <pre class="code sterling">
 tm ::= ...
      | num(int)
@@ -541,11 +541,11 @@ tm ::= ...
 ty ::= ...
      | intTy
 
----------------------------------------------------------- [Trans-IntTy]
+---------------------------------------------------------- [Proj-IntTy]
 |{ty}- intTy ~~> arrowTy(arrowTy(Ty, Ty), arrowTy(Ty, Ty))
 
 
----------------------------------------------------------- [Trans-Plus]
+---------------------------------------------------------- [Proj-Plus]
 |{tm}- plus(T1, T2) ~~>
        abs("m", abs("n", abs("f", abs("x",
           app(var("m"), app(var("f"),
@@ -553,10 +553,10 @@ ty ::= ...
 
 
 buildNumTerm I T
---------------------------------------- [Trans-Num]
+--------------------------------------- [Proj-Num]
 |{tm}- num(I) ~~> abs("f", abs("x", T))
 </pre>
-    The <code>[Trans-Num]</code> rule uses another relation to build
+    The <code>[Proj-Num]</code> rule uses another relation to build
     the appropriate Church encoding for its number:
 <pre class="code sterling">
 <span class="comment">/*Build the body of a Church encoding of a number,
@@ -647,10 +647,10 @@ typeOf G plus(T1, T2) intTy
   </p>
 
   <p>
-    Note that the translation of <code>plus</code> will not evaluate
+    Note that the projection of <code>plus</code> will not evaluate
     with the rules above because it relies on the Church encoding of
-    numbers, that is, the translation of <code>num(I)</code>.  If we
-    believe it is important the translation capture evaluation
+    numbers, that is, the projection of <code>num(I)</code>.  If we
+    believe it is important the projection capture evaluation
     behavior, we can add a rule for <code>absForm</code>
     for <code>num</code> capturing its Church encoding:
 <pre class="code sterling">

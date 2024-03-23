@@ -1,7 +1,7 @@
 Module stlc:pair.
 
-Prove_Constraint stlc:host:trans_ty_is.
-%Trans-PairTy
+Prove_Constraint stlc:host:proj_ty_is.
+%Proj-PairTy
  case IsTy. search.
 
 
@@ -14,13 +14,13 @@ Prove stlc:host:type_is.
  Is: case IsT. IsTy: apply IH to _ _ Ty1. case IsTy. search.
 
 
-Prove_Constraint stlc:host:trans_is.
-%Trans-Pair
- case IsT. apply type_is to _ _ Trans1. search 11.
-%Trans-Fst
- case IsT. IsTy: apply type_is to _ _ Trans1. case IsTy. search 7.
-%Trans-Snd
- case IsT. IsTy: apply type_is to _ _ Trans1. case IsTy. search 7.
+Prove_Constraint stlc:host:proj_is.
+%Proj-Pair
+ case IsT. apply type_is to _ _ Proj1. search 11.
+%Proj-Fst
+ case IsT. IsTy: apply type_is to _ _ Proj1. case IsTy. search 7.
+%Proj-Snd
+ case IsT. IsTy: apply type_is to _ _ Proj1. case IsTy. search 7.
 
 
 Prove stlc:host:type_unique.
@@ -32,17 +32,17 @@ Prove stlc:host:type_unique.
  case IsT. TyB: case TyB. apply IH to _ _ TyA1 TyB. search.
 
 
-Prove_Constraint stlc:host:trans_ty_unique.
-%Trans-PairTy
+Prove_Constraint stlc:host:proj_ty_unique.
+%Proj-PairTy
  case Hyp1. search.
 
 
-Prove_Constraint stlc:host:trans_tm_unique.
-%Trans-Pair
+Prove_Constraint stlc:host:proj_tm_unique.
+%Proj-Pair
  case Hyp1. case Hyp2. apply type_unique to _ _ Hyp4 H1. search.
-%Trans-Fst
+%Proj-Fst
  case Hyp1. case Hyp2. apply type_unique to _ _ Hyp4 H1. search.
-%Trans-Snd
+%Proj-Snd
  case Hyp1. case Hyp2. apply type_unique to _ _ Hyp4 H1. search.
 
 

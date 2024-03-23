@@ -1,21 +1,21 @@
 Module simple_imp:security.
 
-Prove_Constraint simple_imp:host:trans_e_unique.
-Prove_Constraint simple_imp:host:trans_e_is.
-Prove_Constraint simple_imp:host:trans_rf_unique.
-Prove_Constraint simple_imp:host:trans_rf_is.
-Prove_Constraint simple_imp:host:trans_c_unique.
+Prove_Constraint simple_imp:host:proj_e_unique.
+Prove_Constraint simple_imp:host:proj_e_is.
+Prove_Constraint simple_imp:host:proj_rf_unique.
+Prove_Constraint simple_imp:host:proj_rf_is.
+Prove_Constraint simple_imp:host:proj_c_unique.
 %declareSec
  case Hyp1. search.
-Prove_Constraint simple_imp:host:trans_c_is.
+Prove_Constraint simple_imp:host:proj_c_is.
 %declareSec
  case Hyp1. search.
-Prove_Constraint simple_imp:host:trans_recFields_unique.
-Prove_Constraint simple_imp:host:trans_recFields_is.
-Prove_Constraint simple_imp:host:trans_ty_unique.
-Prove_Constraint simple_imp:host:trans_ty_is.
-Prove_Constraint simple_imp:host:trans_value_unique.
-Prove_Constraint simple_imp:host:trans_value_is.
+Prove_Constraint simple_imp:host:proj_recFields_unique.
+Prove_Constraint simple_imp:host:proj_recFields_is.
+Prove_Constraint simple_imp:host:proj_ty_unique.
+Prove_Constraint simple_imp:host:proj_ty_is.
+Prove_Constraint simple_imp:host:proj_value_unique.
+Prove_Constraint simple_imp:host:proj_value_is.
 
 Prove simple_imp:host:vars_join,
       simple_imp:host:vars_rf_join.
@@ -23,10 +23,10 @@ Prove simple_imp:host:vars_join,
 Prove simple_imp:host:vars_unique,
       simple_imp:host:vars_rf_unique.
 
-Prove_Constraint simple_imp:host:trans_e_vars_exist.
-Prove_Constraint simple_imp:host:trans_e_vars.
-Prove_Constraint simple_imp:host:trans_rf_vars_exist.
-Prove_Constraint simple_imp:host:trans_rf_vars.
+Prove_Constraint simple_imp:host:proj_e_vars_exist.
+Prove_Constraint simple_imp:host:proj_e_vars.
+Prove_Constraint simple_imp:host:proj_rf_vars_exist.
+Prove_Constraint simple_imp:host:proj_rf_vars.
 
 Prove simple_imp:host:vars_is, simple_imp:host:vars_rf_is.
 Prove simple_imp:host:vars_exist, simple_imp:host:vars_rf_exist.
@@ -36,14 +36,14 @@ Prove simple_imp:host:typeOK_unique.
 %declareSec
  Ty2: case Ty2. apply typeOf_unique to Ty4 Ty5. search.
 
-Prove_Constraint simple_imp:host:trans_eval_e.
+Prove_Constraint simple_imp:host:proj_eval_e.
 
 Prove simple_imp:host:eval_e_unique,
       simple_imp:host:eval_rf_unique.
 
 Prove simple_imp:host:update_rec_fields_unique.
 
-Prove_Constraint simple_imp:host:trans_c_eval.
+Prove_Constraint simple_imp:host:proj_c_eval.
 %declareSec
  Ev: case Hyp1. search.
 
@@ -51,18 +51,18 @@ Add_Ext_Size simple_imp:host:eval_c.
 
 Prove_Ext_Ind simple_imp:host:eval_c.
 %declareSec
- Trans: assert |{c}- declareSec X S Ty E ~~> declare X Ty E. search.
+ Proj: assert |{c}- declareSec X S Ty E ~~> declare X Ty E. search.
 
 Prove simple_imp:host:eval_c_unique.
 %declareSec
  Ev2: case Ev2. apply eval_e_unique to Ev3 Ev2. search.
 
-Prove_Constraint simple_imp:host:trans_c_eval_results.
+Prove_Constraint simple_imp:host:proj_c_eval_results.
 %declareSec
  Ev1: case Hyp1. Ev2: case Hyp2. apply eval_e_unique to Ev1 Ev2.
  search.
 
-Prove_Constraint simple_imp:host:trans_c_eval_results_back.
+Prove_Constraint simple_imp:host:proj_c_eval_results_back.
 %declareSec
  Ev1: case Hyp1. Ev2: case Hyp2. apply eval_e_unique to Ev1 Ev2.
  search.
@@ -169,9 +169,9 @@ Extensible_Theorem
    Vars: case Vars. apply IH1 to Lev1 Vars Mem. search.
   %S-RecField
    Vars: case Vars. apply IH to Lev1 Vars Mem. search.
-  %S-TransExpr
-   V: apply trans_e_vars_exist to Lev1 Vars.
-   Mem: apply trans_e_vars to Lev1 Vars V Mem.
+  %S-Expr-D
+   V: apply proj_e_vars_exist to Lev1 Vars.
+   Mem: apply proj_e_vars to Lev1 Vars V Mem.
    apply IH to Lev2 V Mem1. search.
 %level_public_vars_rf
   %S-RfEnd
@@ -183,9 +183,9 @@ Extensible_Theorem
       apply IH to Lev1 Vars2 Mem'. search.
      %mem DRest
       apply IH1 to Lev2 Vars1 Mem'. search.
-  %S-RFTrans
-   V: apply trans_rf_vars_exist to Lev1 Vars.
-   Mem: apply trans_rf_vars to Lev1 Vars V Mem.
+  %S-RF-D
+   V: apply proj_rf_vars_exist to Lev1 Vars.
+   Mem: apply proj_rf_vars to Lev1 Vars V Mem.
    apply IH1 to Lev2 V Mem1. search.
 
 
@@ -291,8 +291,8 @@ Extensible_Theorem
   LevB: case LevB. apply IH1 to LevA1 LevB. search.
  %S-RecField
   LevB: case LevB. apply IH to LevA1 LevB. search.
- %S-TransExpr
-  LevB: case LevB. apply trans_e_unique to LevA1 LevB.
+ %S-Expr-D
+  LevB: case LevB. apply proj_e_unique to LevA1 LevB.
   apply IH to LevA2 LevB1. search.
 %level_rf_unique
  %S-RFEnd
@@ -300,8 +300,8 @@ Extensible_Theorem
  %S-RFAdd
   LevB: case LevB. apply IH to LevA1 LevB. apply IH1 to LevA2 LevB1.
   apply join_unique to LevA3 LevB2. search.
- %S-RFTrans
-  LevB: case LevB. apply trans_rf_unique to LevA1 LevB.
+ %S-RF-D
+  LevB: case LevB. apply proj_rf_unique to LevA1 LevB.
   apply IH1 to LevA2 LevB1. search.
 
 
@@ -360,7 +360,7 @@ Extensible_Theorem
       intros Eq. case Eq. apply no_lookup to Sec1 LkpSec.
     search.
 %E-Q
- Sec: case Sec. apply trans_c_unique to Ev1 Sec.
+ Sec: case Sec. apply proj_c_unique to Ev1 Sec.
  apply IH to Sec1 Ev2 _. search.
 
 
@@ -500,7 +500,7 @@ Extensible_Theorem
    %S-DeclareSecPublic
     apply NEq to _.
 %E-Q
- Sec: case Sec. apply trans_c_unique to Ev1 Sec. apply IH to _ _ Ev2.
+ Sec: case Sec. apply proj_c_unique to Ev1 Sec. apply IH to _ _ Ev2.
  search.
 
 
@@ -837,12 +837,12 @@ Extensible_Theorem
             %Lkp later
              Rel: case Rel. apply Rel2 to LkpSec1 Lkp1. search.
 %E-Q
- Sec: case Sec. apply trans_c_unique to EvA1 Sec.
- EvBTrans: apply trans_c_eval to EvA1 EvB.
- IsCT: apply trans_c_is to Sec Is.
- Equiv: apply IH to _ Sec1 Rel EvA2 EvBTrans.
+ Sec: case Sec. apply proj_c_unique to EvA1 Sec.
+ EvBProj: apply proj_c_eval to EvA1 EvB.
+ IsCT: apply proj_c_is to Sec Is.
+ Equiv: apply IH to _ Sec1 Rel EvA2 EvBProj.
  LkpGB'G': assert forall X V, lookup GB' X V -> lookup G' X V.
-   intros L. apply trans_c_eval_results to EvA1 EvB EvBTrans L. search.
+   intros L. apply proj_c_eval_results to EvA1 EvB EvBProj L. search.
  EqG'GB': assert public_equiv SG1 G' GB'.
    unfold.
      %First part
@@ -850,7 +850,7 @@ Extensible_Theorem
       apply lookup_unique to LkpG' Lkp. search.
      %Second part
       intros LkpSec LkpG'.
-      apply trans_c_eval_results_back to Sec EvB EvBTrans LkpG'. search.
+      apply proj_c_eval_results_back to Sec EvB EvBProj LkpG'. search.
      %Third part
       intros LkpSec LkpGB'. backchain LkpGB'G'.
  apply public_equiv_trans to Equiv EqG'GB'. search.

@@ -30,11 +30,11 @@ e ::= num(int)
     | false
     | recBuild(recFieldExprs)
     | recFieldAccess(e, string)
-Translation e :
+Projection e :
 
 recFieldExprs ::= endRecFieldExprs
                 | addRecFieldExprs(string, e, recFieldExprs)
-Translation recFieldExprs :
+Projection recFieldExprs :
 
 
 <span class="comment">/*Statement Commands*/</span>
@@ -45,18 +45,18 @@ c ::= noop
     | ifThenElse(e, c, c)
     | while(e, c)
     | recUpdate(string, recFields, e) <span class="comment">/*rec.field = e*/</span>
-Translation c :
+Projection c :
 
 recFields ::= oneField(string)
             | addField(string, recFields)
-Translation recFields :
+Projection recFields :
 
 
 <span class="comment">/*Types*/</span>
 ty ::= intTy
      | boolTy
      | recTy([(string, ty)])
-Translation ty :
+Projection ty :
 
 
 <span class="comment">/*Evaluation Values*/</span>
@@ -64,7 +64,7 @@ value ::= intVal(int)
         | trueVal
         | falseVal
         | recVal([(string, value)])
-Translation value :
+Projection value :
 
 </pre>
 <h3>File:  vars.sos</h3>
@@ -580,40 +580,41 @@ evalctx_eq (X, V1)::Rest1 EC2
 <a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
 <span> </span><a class="fold-link" href="host_thms.xthm">[Raw File]</a>
 <p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
-<a class="command" href="host-details.html#0">Module simple_imp:host.</a>
+<a class="command" href="host-details.html#0">Module simple_imp:host.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(1);" id="toggleproof1">[Show Proof]</a>
+<div class="proof" id="proof1" style="display: none;">
 
-<a class="command" href="host-details.html#1">Translation_Constraint trans_e_unique : forall E E1 E2,
+<a class="tactic" href="host-details.html#1">Projection_Constraint proj_e_unique : forall E E1 E2,
   |{e}- E ~~> E1 -> |{e}- E ~~> E2 -> E1 = E2.</a>
-<a class="command" href="host-details.html#2">Translation_Constraint trans_e_is : forall E E',
+<a class="tactic" href="host-details.html#2">Projection_Constraint proj_e_is : forall E E',
   |{e}- E ~~> E' -> is_e E -> is_e E'.</a>
 
-<a class="command" href="host-details.html#3">Translation_Constraint trans_rf_unique : forall RF RF1 RF2,
+<a class="tactic" href="host-details.html#3">Projection_Constraint proj_rf_unique : forall RF RF1 RF2,
   |{recFieldExprs}- RF ~~> RF1 ->
   |{recFieldExprs}- RF ~~> RF2 ->
   RF1 = RF2.</a>
-<a class="command" href="host-details.html#4">Translation_Constraint trans_rf_is : forall RF RF',
+<a class="tactic" href="host-details.html#4">Projection_Constraint proj_rf_is : forall RF RF',
   |{recFieldExprs}- RF ~~> RF' -> is_recFieldExprs RF ->
   is_recFieldExprs RF'.</a>
 
-<a class="command" href="host-details.html#5">Translation_Constraint trans_c_unique : forall C C1 C2,
+<a class="tactic" href="host-details.html#5">Projection_Constraint proj_c_unique : forall C C1 C2,
   |{c}- C ~~> C1 -> |{c}- C ~~> C2 -> C1 = C2.</a>
-<a class="command" href="host-details.html#6">Translation_Constraint trans_c_is : forall C C',
+<a class="tactic" href="host-details.html#6">Projection_Constraint proj_c_is : forall C C',
   |{c}- C ~~> C' -> is_c C -> is_c C'.</a>
 
-<a class="command" href="host-details.html#7">Translation_Constraint trans_recFields_unique : forall RF RF1 RF2,
+<a class="tactic" href="host-details.html#7">Projection_Constraint proj_recFields_unique : forall RF RF1 RF2,
   |{recFields}- RF ~~> RF1 -> |{recFields}- RF ~~> RF2 -> RF1 = RF2.</a>
-<a class="command" href="host-details.html#8">Translation_Constraint trans_recFields_is : forall RF RF',
+<a class="tactic" href="host-details.html#8">Projection_Constraint proj_recFields_is : forall RF RF',
   |{recFields}- RF ~~> RF' -> is_recFields RF -> is_recFields RF'.</a>
 
-<a class="command" href="host-details.html#9">Translation_Constraint trans_ty_unique : forall Ty Ty1 Ty2,
+<a class="tactic" href="host-details.html#9">Projection_Constraint proj_ty_unique : forall Ty Ty1 Ty2,
   |{ty}- Ty ~~> Ty1 -> |{ty}- Ty ~~> Ty2 -> Ty1 = Ty2.</a>
-<a class="command" href="host-details.html#10">Translation_Constraint trans_ty_is : forall Ty Ty',
+<a class="tactic" href="host-details.html#10">Projection_Constraint proj_ty_is : forall Ty Ty',
   |{ty}- Ty ~~> Ty' -> is_ty Ty -> is_ty Ty'.</a>
 
-<a class="command" href="host-details.html#11">Translation_Constraint trans_value_unique : forall V V1 V2,
+<a class="tactic" href="host-details.html#11">Projection_Constraint proj_value_unique : forall V V1 V2,
   |{value}- V ~~> V1 -> |{value}- V ~~> V2 -> V1 = V2.</a>
-<a class="command" href="host-details.html#12">Translation_Constraint trans_value_is : forall V V',
-  |{value}- V ~~> V' -> is_value V -> is_value V'.</a>
+<a class="tactic" href="host-details.html#12">Projection_Constraint proj_value_is : forall V V',
+  |{value}- V ~~> V' -> is_value V -> is_value V'.</a></div>
 
 
 <a class="command" href="host-details.html#13">Extensible_Theorem
@@ -714,29 +715,29 @@ evalctx_eq (X, V1)::Rest1 EC2
  <span class="comment">%VRF-Add</span>
   <a class="tactic" href="host-details.html#95">Vars2: case Vars2.</a> <a class="tactic" href="host-details.html#96">apply IH to Vars4 Vars6.</a>
   <a class="tactic" href="host-details.html#97">apply IH1 to Vars3 Vars2.</a> <a class="tactic" href="host-details.html#98">apply append_unique to Vars5 Vars7.</a>
-  <a class="tactic" href="host-details.html#99">search.</a></div>
+  <a class="tactic" href="host-details.html#99">search.</a>
 
 
-<a class="command" href="host-details.html#100">Translation_Constraint trans_e_vars_exist : forall E E' V,
+<a class="tactic" href="host-details.html#100">Projection_Constraint proj_e_vars_exist : forall E E' V,
   |{e}- E ~~> E' -> vars E V -> exists V', vars E' V'.</a>
 
 <span class="comment">%Rationale for TC:</span>
 <span class="comment">%Evaluation depends on the variables in an expression.  In fact, by</span>
 <span class="comment">%the property vars_eval_same_result below, evaluation is determined</span>
 <span class="comment">%*entirely* by the variables in an expression.  Therefore making the</span>
-<span class="comment">%variables in an expression be a subset of those in its translation</span>
+<span class="comment">%variables in an expression be a subset of those in its projection</span>
 <span class="comment">%gives other extensions a handle on understanding the behavior of an</span>
 <span class="comment">%unknown expression in particular contexts.</span>
-<a class="command" href="host-details.html#101">Translation_Constraint trans_e_vars : forall E E' V V' X,
+<a class="tactic" href="host-details.html#101">Projection_Constraint proj_e_vars : forall E E' V V' X,
   |{e}- E ~~> E' -> vars E V -> vars E' V' ->
   mem X V -> mem X V'.</a>
 
-<a class="command" href="host-details.html#102">Translation_Constraint trans_rf_vars_exist : forall RF RF' V,
+<a class="tactic" href="host-details.html#102">Projection_Constraint proj_rf_vars_exist : forall RF RF' V,
   |{recFieldExprs}- RF ~~> RF' -> vars_rf RF V ->
   exists V', vars_rf RF' V'.</a>
-<a class="command" href="host-details.html#103">Translation_Constraint trans_rf_vars : forall RF RF' V V' X,
+<a class="tactic" href="host-details.html#103">Projection_Constraint proj_rf_vars : forall RF RF' V V' X,
   |{recFieldExprs}- RF ~~> RF' -> vars_rf RF V -> vars_rf RF' V' ->
-  mem X V -> mem X V'.</a>
+  mem X V -> mem X V'.</a></div>
 
 
 <a class="command" href="host-details.html#104">Theorem append__is_list__is_string : forall L1 L2 L,
@@ -934,12 +935,12 @@ evalctx_eq (X, V1)::Rest1 EC2
 <span class="comment">%T-While</span>
  <a class="tactic" href="host-details.html#258">Ty2: case Ty2.</a> <a class="tactic" href="host-details.html#259">apply IH to Ty4 Ty5.</a> <a class="tactic" href="host-details.html#260">search.</a>
 <span class="comment">%T-RecUpdate</span>
- <a class="tactic" href="host-details.html#261">Ty2: case Ty2.</a> <a class="tactic" href="host-details.html#262">search.</a></div>
+ <a class="tactic" href="host-details.html#261">Ty2: case Ty2.</a> <a class="tactic" href="host-details.html#262">search.</a>
 
 
-<a class="command" href="host-details.html#263">Translation_Constraint trans_eval_e : forall G E E' V,
+<a class="tactic" href="host-details.html#263">Projection_Constraint proj_eval_e : forall G E E' V,
   |{e}- E ~~> E' -> eval_e G E V ->
-  exists V', eval_e G E' V'.</a>
+  exists V', eval_e G E' V'.</a></div>
 
 
 <a class="command" href="host-details.html#264">Extensible_Theorem
@@ -1063,12 +1064,11 @@ evalctx_eq (X, V1)::Rest1 EC2
  <a class="tactic" href="host-details.html#337">case U2.</a> <a class="tactic" href="host-details.html#338">search.</a>
 <span class="comment">%1 by URF-Step</span>
  <a class="tactic" href="host-details.html#339">U2: case U2.</a> <a class="tactic" href="host-details.html#340">apply lookup_unique to U3 U2.</a> <a class="tactic" href="host-details.html#341">apply IH to U4 U5.</a>
- <a class="tactic" href="host-details.html#342">search.</a></div>
+ <a class="tactic" href="host-details.html#342">search.</a>
 
 
-<a class="command" href="host-details.html#343">Translation_Constraint trans_c_eval : forall C C' G G2,
-  |{c}- C ~~> C' -> eval_c G C G2 -> exists G', eval_c G C' G'.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(344);" id="toggleproof344">[Show Proof]</a>
-<div class="proof" id="proof344" style="display: none;">
+<a class="tactic" href="host-details.html#343">Projection_Constraint proj_c_eval : forall C C' G G2,
+  |{c}- C ~~> C' -> eval_c G C G2 -> exists G', eval_c G C' G'.</a>
 
 
 <a class="tactic" href="host-details.html#344">Ext_Size eval_c G C G1.</a></div>
@@ -1168,18 +1168,18 @@ evalctx_eq (X, V1)::Rest1 EC2
 <span class="comment">%1 by E-RecUpdate</span>
  <a class="tactic" href="host-details.html#430">Ev2: case Ev2.</a> <a class="tactic" href="host-details.html#431">apply lookup_unique to Ev4 Ev6.</a>
  <a class="tactic" href="host-details.html#432">apply eval_e_unique to Ev3 Ev2.</a>
- <a class="tactic" href="host-details.html#433">apply update_rec_fields_unique to Ev5 Ev7.</a> <a class="tactic" href="host-details.html#434">search.</a></div>
+ <a class="tactic" href="host-details.html#433">apply update_rec_fields_unique to Ev5 Ev7.</a> <a class="tactic" href="host-details.html#434">search.</a>
 
 
-<a class="command" href="host-details.html#435">Translation_Constraint trans_c_eval_results :
+<a class="tactic" href="host-details.html#435">Projection_Constraint proj_c_eval_results :
   forall C C' G G1 G2 X V,
     |{c}- C ~~> C' -> eval_c G C G1 -> eval_c G C' G2 ->
     lookup G1 X V -> lookup G2 X V.</a>
 
-<a class="command" href="host-details.html#436">Translation_Constraint trans_c_eval_results_back :
+<a class="tactic" href="host-details.html#436">Projection_Constraint proj_c_eval_results_back :
   forall C C' G G1 G2 X V,
     |{c}- C ~~> C' -> eval_c G C G1 -> eval_c G C' G2 ->
-    lookup G2 X V -> lookup G1 X V.</a>
+    lookup G2 X V -> lookup G1 X V.</a></div>
 
 
 <a class="command" href="host-details.html#437">Theorem vars_equiv_left :

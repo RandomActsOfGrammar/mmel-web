@@ -1,6 +1,6 @@
 Module lambda_calculus:host.
 
-Translation_Constraint trans_is : forall E E',
+Projection_Constraint proj_is : forall E E',
   |{e}- E ~~> E' -> is_e E -> is_e E'.
 
 
@@ -15,7 +15,7 @@ Ext_Ind forall E, is_e E.
  apply IH to R1. apply IH to R2. search.
 
 
-Translation_Constraint trans_same : forall E E1 E2,
+Projection_Constraint proj_same : forall E E1 E2,
   |{e}- E ~~> E1 -> |{e}- E ~~> E2 -> E1 = E2.
 
 
@@ -130,16 +130,16 @@ Extensible_Theorem
  search.
 
 
-%anything evaluation-related must be the same across translation
-Translation_Constraint trans_subst : forall X R E S E',
-  Trans : |{e}- E ~~> E' ->
+%anything evaluation-related must be the same across projection
+Projection_Constraint proj_subst : forall X R E S E',
+  Proj : |{e}- E ~~> E' ->
   IsE : is_e E ->
   IsX : is_string X ->
   IsR : is_e R ->
   S : subst X R E S ->
   exists S', subst X R E' S'.
-Translation_Constraint trans_subst_same : forall X R E S E' S',
-  Trans : |{e}- E ~~> E' ->
+Projection_Constraint proj_subst_same : forall X R E S E' S',
+  Proj : |{e}- E ~~> E' ->
   IsE : is_e E ->
   isX : is_string X ->
   IsR : is_e R ->
@@ -147,13 +147,13 @@ Translation_Constraint trans_subst_same : forall X R E S E' S',
   S' : subst X R E' S' ->
   S = S'.
 
-Translation_Constraint trans_eval : forall E E' V,
-  Trans : |{e}- E ~~> E' ->
+Projection_Constraint proj_eval : forall E E' V,
+  Proj : |{e}- E ~~> E' ->
   IsE : is_e E ->
   Ev : eval E V ->
   exists V', eval E' V'.
-Translation_Constraint trans_eval_same : forall E E' V V',
-  Trans : |{e}- E ~~> E' ->
+Projection_Constraint proj_eval_same : forall E E' V V',
+  Proj : |{e}- E ~~> E' ->
   IsE : is_e E ->
   Ev : eval E V ->
   Ev' : eval E' V' ->

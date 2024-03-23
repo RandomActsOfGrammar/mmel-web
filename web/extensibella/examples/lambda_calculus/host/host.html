@@ -22,7 +22,7 @@ e ::= var(string)
     | abs(string, e)
     | app(e, e)
 
-Translation e :
+Projection e :
 </pre>
 <h3>File:  eval.sos</h3>
 <a class="fold-link" href="javascript:void" id="toggleeval.sos" onclick="toggleFile('eval.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="eval.sos">[Raw File]</a>
@@ -84,10 +84,11 @@ subst X R app(E1, E2) app(S1, S2)
 <a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
 <span> </span><a class="fold-link" href="host.xthm">[Raw File]</a>
 <p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
-<a class="command" href="host-details.html#0">Module lambda_calculus:host.</a>
+<a class="command" href="host-details.html#0">Module lambda_calculus:host.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(1);" id="toggleproof1">[Show Proof]</a>
+<div class="proof" id="proof1" style="display: none;">
 
-<a class="command" href="host-details.html#1">Translation_Constraint trans_is : forall E E',
-  |{e}- E ~~> E' -> is_e E -> is_e E'.</a>
+<a class="tactic" href="host-details.html#1">Projection_Constraint proj_is : forall E E',
+  |{e}- E ~~> E' -> is_e E -> is_e E'.</a></div>
 
 
 <span class="comment">%Generally a good idea to include this so extensions can prove things</span>
@@ -99,11 +100,11 @@ subst X R app(E1, E2) app(S1, S2)
 <span class="comment">%abs</span>
  <a class="tactic" href="host-details.html#4">apply IH to R2.</a> <a class="tactic" href="host-details.html#5">search.</a>
 <span class="comment">%app</span>
- <a class="tactic" href="host-details.html#6">apply IH to R1.</a> <a class="tactic" href="host-details.html#7">apply IH to R2.</a> <a class="tactic" href="host-details.html#8">search.</a></div>
+ <a class="tactic" href="host-details.html#6">apply IH to R1.</a> <a class="tactic" href="host-details.html#7">apply IH to R2.</a> <a class="tactic" href="host-details.html#8">search.</a>
 
 
-<a class="command" href="host-details.html#9">Translation_Constraint trans_same : forall E E1 E2,
-  |{e}- E ~~> E1 -> |{e}- E ~~> E2 -> E1 = E2.</a>
+<a class="tactic" href="host-details.html#9">Projection_Constraint proj_same : forall E E1 E2,
+  |{e}- E ~~> E1 -> |{e}- E ~~> E2 -> E1 = E2.</a></div>
 
 
 <a class="command" href="host-details.html#10">Extensible_Theorem
@@ -219,19 +220,19 @@ subst X R app(E1, E2) app(S1, S2)
  <a class="tactic" href="host-details.html#69">apply IH to _ EvA2 EvB1.</a> <a class="tactic" href="host-details.html#70">IsAbs: apply eval_is to _ EvA1.</a> <a class="tactic" href="host-details.html#71">case IsAbs.</a>
  <a class="tactic" href="host-details.html#72">apply eval_is to _ EvA2.</a> <a class="tactic" href="host-details.html#73">apply subst_is to _ _ _ EvA3.</a>
  <a class="tactic" href="host-details.html#74">apply subst_unique to _ _ _ EvA3 EvB2.</a> <a class="tactic" href="host-details.html#75">apply IH to _ EvA4 EvB3.</a>
- <a class="tactic" href="host-details.html#76">search.</a></div>
+ <a class="tactic" href="host-details.html#76">search.</a>
 
 
-<span class="comment">%anything evaluation-related must be the same across translation</span>
-<a class="command" href="host-details.html#77">Translation_Constraint trans_subst : forall X R E S E',
-  Trans : |{e}- E ~~> E' ->
+<span class="comment">%anything evaluation-related must be the same across projection</span>
+<a class="tactic" href="host-details.html#77">Projection_Constraint proj_subst : forall X R E S E',
+  Proj : |{e}- E ~~> E' ->
   IsE : is_e E ->
   IsX : is_string X ->
   IsR : is_e R ->
   S : subst X R E S ->
   exists S', subst X R E' S'.</a>
-<a class="command" href="host-details.html#78">Translation_Constraint trans_subst_same : forall X R E S E' S',
-  Trans : |{e}- E ~~> E' ->
+<a class="tactic" href="host-details.html#78">Projection_Constraint proj_subst_same : forall X R E S E' S',
+  Proj : |{e}- E ~~> E' ->
   IsE : is_e E ->
   isX : is_string X ->
   IsR : is_e R ->
@@ -239,18 +240,17 @@ subst X R app(E1, E2) app(S1, S2)
   S' : subst X R E' S' ->
   S = S'.</a>
 
-<a class="command" href="host-details.html#79">Translation_Constraint trans_eval : forall E E' V,
-  Trans : |{e}- E ~~> E' ->
+<a class="tactic" href="host-details.html#79">Projection_Constraint proj_eval : forall E E' V,
+  Proj : |{e}- E ~~> E' ->
   IsE : is_e E ->
   Ev : eval E V ->
   exists V', eval E' V'.</a>
-<a class="command" href="host-details.html#80">Translation_Constraint trans_eval_same : forall E E' V V',
-  Trans : |{e}- E ~~> E' ->
+<a class="tactic" href="host-details.html#80">Projection_Constraint proj_eval_same : forall E E' V V',
+  Proj : |{e}- E ~~> E' ->
   IsE : is_e E ->
   Ev : eval E V ->
   Ev' : eval E' V' ->
-  V = V'.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(81);" id="toggleproof81">[Show Proof]</a>
-<div class="proof" id="proof81" style="display: none;">
+  V = V'.</a>
 
 
 <a class="tactic" href="host-details.html#81">Ext_Size eval E V.</a></div>

@@ -17,7 +17,7 @@
  < <b>Module lambda_calculus:typing.</b>
 </pre>
 <pre class="code extensibella"id="1">
- &lt; <b>Prove_Constraint lambda_calculus:host:trans_is.</b>
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_is.</b>
 
 Variables: Body X Ty
 Hyp : |{e}- tyabs X Ty Body ~~&gt; abs X Body
@@ -76,7 +76,7 @@ H1 : &lt;is_e {T}&gt; E1
 Proof completed.
 </pre>
 <pre class="code extensibella"id="7">
- &lt; <b>Prove_Constraint lambda_calculus:host:trans_same.</b>
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_same.</b>
 
 Variables: E2 Body X Ty
 Hyp : |{e}- tyabs X Ty Body ~~&gt; abs X Body
@@ -490,10 +490,10 @@ EvA : eval (tyabs X Ty Body) (abs X Body) @
 Proof completed.
 </pre>
 <pre class="code extensibella"id="37">
- &lt; <b>Prove_Constraint lambda_calculus:host:trans_subst.</b>
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_subst.</b>
 
 Variables: X R S Body X1 Ty
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 IsE : is_e (tyabs X1 Ty Body)
 IsX : is_string X
 IsR : is_e R
@@ -507,7 +507,7 @@ S : subst X R (tyabs X1 Ty Body) S
 Subgoal 1:
 
 Variables: R Body X1 Ty
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 IsE : is_e (tyabs X1 Ty Body)
 IsX : is_string X1
 IsR : is_e R
@@ -520,7 +520,7 @@ IsR : is_e R
 Subgoal 2:
 
 Variables: X R Body X1 Ty B
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 IsE : is_e (tyabs X1 Ty Body)
 IsX : is_string X
 IsR : is_e R
@@ -535,10 +535,10 @@ S1 : subst X R Body B
 Proof completed.
 </pre>
 <pre class="code extensibella"id="41">
- &lt; <b>Prove_Constraint lambda_calculus:host:trans_subst_same.</b>
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_subst_same.</b>
 
 Variables: X R S S' Body X1 Ty
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 IsE : is_e (tyabs X1 Ty Body)
 isX : is_string X
 IsR : is_e R
@@ -553,7 +553,7 @@ S' : subst X R (abs X1 Body) S'
 Subgoal 1:
 
 Variables: R S' Body X1 Ty
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 IsE : is_e (tyabs X1 Ty Body)
 isX : is_string X1
 IsR : is_e R
@@ -567,7 +567,7 @@ S' : subst X1 R (abs X1 Body) S'
 Subgoal 1.1:
 
 Variables: R Body X1 Ty
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 IsE : is_e (tyabs X1 Ty Body)
 isX : is_string X1
 IsR : is_e R
@@ -580,7 +580,7 @@ IsR : is_e R
 Subgoal 1.2:
 
 Variables: R Body X1 Ty B
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 IsE : is_e (tyabs X1 Ty Body)
 isX : is_string X1
 IsR : is_e R
@@ -595,7 +595,7 @@ S'1 : subst X1 R Body B
 Subgoal 2:
 
 Variables: X R S' Body X1 Ty B
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 IsE : is_e (tyabs X1 Ty Body)
 isX : is_string X
 IsR : is_e R
@@ -611,7 +611,7 @@ S1 : subst X R Body B
 Subgoal 2.1:
 
 Variables: R Body X1 Ty B
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 IsE : is_e (tyabs X1 Ty Body)
 isX : is_string X1
 IsR : is_e R
@@ -626,7 +626,7 @@ S1 : subst X1 R Body B
 Subgoal 2.2:
 
 Variables: X R Body X1 Ty B B1
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 IsE : is_e (tyabs X1 Ty Body)
 isX : is_string X
 IsR : is_e R
@@ -643,7 +643,7 @@ S'1 : subst X R Body B1
 Subgoal 2.2:
 
 Variables: X R Body X1 Ty B B1
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 isX : is_string X
 IsR : is_e R
 S : X = X1 -&gt; false
@@ -662,7 +662,7 @@ H3 : is_e Body
 Subgoal 2.2:
 
 Variables: X R Body X1 Ty B1
-Trans : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
+Proj : |{e}- tyabs X1 Ty Body ~~&gt; abs X1 Body
 isX : is_string X
 IsR : is_e R
 S : X = X1 -&gt; false
@@ -681,10 +681,10 @@ H3 : is_e Body
 Proof completed.
 </pre>
 <pre class="code extensibella"id="51">
- &lt; <b>Prove_Constraint lambda_calculus:host:trans_eval.</b>
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_eval.</b>
 
 Variables: V Body X Ty
-Trans : |{e}- tyabs X Ty Body ~~&gt; abs X Body
+Proj : |{e}- tyabs X Ty Body ~~&gt; abs X Body
 IsE : is_e (tyabs X Ty Body)
 Ev : eval (tyabs X Ty Body) V
 ============================
@@ -694,7 +694,7 @@ Ev : eval (tyabs X Ty Body) V
  &lt; <b>case Ev.</b>
 
 Variables: Body X Ty
-Trans : |{e}- tyabs X Ty Body ~~&gt; abs X Body
+Proj : |{e}- tyabs X Ty Body ~~&gt; abs X Body
 IsE : is_e (tyabs X Ty Body)
 ============================
  exists V', eval (abs X Body) V'
@@ -705,10 +705,10 @@ IsE : is_e (tyabs X Ty Body)
 Proof completed.
 </pre>
 <pre class="code extensibella"id="54">
- &lt; <b>Prove_Constraint lambda_calculus:host:trans_eval_same.</b>
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_eval_same.</b>
 
 Variables: V V' Body X Ty
-Trans : |{e}- tyabs X Ty Body ~~&gt; abs X Body
+Proj : |{e}- tyabs X Ty Body ~~&gt; abs X Body
 IsE : is_e (tyabs X Ty Body)
 Ev : eval (tyabs X Ty Body) V
 Ev' : eval (abs X Body) V'
@@ -719,7 +719,7 @@ Ev' : eval (abs X Body) V'
  &lt; <b>case Ev.</b>
 
 Variables: V' Body X Ty
-Trans : |{e}- tyabs X Ty Body ~~&gt; abs X Body
+Proj : |{e}- tyabs X Ty Body ~~&gt; abs X Body
 IsE : is_e (tyabs X Ty Body)
 Ev' : eval (abs X Body) V'
 ============================
@@ -729,7 +729,7 @@ Ev' : eval (abs X Body) V'
  &lt; <b>case Ev'.</b>
 
 Variables: Body X Ty
-Trans : |{e}- tyabs X Ty Body ~~&gt; abs X Body
+Proj : |{e}- tyabs X Ty Body ~~&gt; abs X Body
 IsE : is_e (tyabs X Ty Body)
 ============================
  abs X Body = abs X Body
@@ -1187,7 +1187,7 @@ Ty2 : typeOf G E_T Ty *
  typeOf G' &lt;unknown I e&gt; Ty
 </pre>
 <pre class="code extensibella"id="84">
- &lt; <b>apply trans_is to Ty1 IsE.</b>
+ &lt; <b>apply proj_is to Ty1 IsE.</b>
 
 Subgoal 5:
 
@@ -2786,7 +2786,7 @@ TyE2 : typeOf G E_T TyE *
  typeOf G' S TyE
 </pre>
 <pre class="code extensibella"id="162">
- &lt; <b>ST: apply trans_subst to TyE1 _ _ _ S.</b>
+ &lt; <b>ST: apply proj_subst to TyE1 _ _ _ S.</b>
 
 Subgoal 5:
 
@@ -2809,7 +2809,7 @@ ST : subst X R E_T S'
  typeOf G' S TyE
 </pre>
 <pre class="code extensibella"id="163">
- &lt; <b>apply trans_is to TyE1 _.</b>
+ &lt; <b>apply proj_is to TyE1 _.</b>
 
 Subgoal 5:
 
@@ -2833,7 +2833,7 @@ H1 : is_e E_T
  typeOf G' S TyE
 </pre>
 <pre class="code extensibella"id="164">
- &lt; <b>apply trans_subst_same to TyE1 _ _ _ S ST.</b>
+ &lt; <b>apply proj_subst_same to TyE1 _ _ _ S ST.</b>
 
 Subgoal 5:
 
@@ -3225,7 +3225,7 @@ Ty1 : typeOf [] E_T1 Ty
  typeOf [] V Ty
 </pre>
 <pre class="code extensibella"id="184">
- &lt; <b>apply trans_same to Ev1 Ty.</b>
+ &lt; <b>apply proj_same to Ev1 Ty.</b>
 
 Subgoal 4:
 
@@ -3241,7 +3241,7 @@ Ty1 : typeOf [] E_T1 Ty
  typeOf [] V Ty
 </pre>
 <pre class="code extensibella"id="185">
- &lt; <b>apply trans_is to Ty _.</b>
+ &lt; <b>apply proj_is to Ty _.</b>
 
 Subgoal 4:
 

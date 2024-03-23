@@ -1,7 +1,7 @@
 Module simple_imp:list.
 
 
-Prove_Constraint simple_imp:host:trans_e_unique.
+Prove_Constraint simple_imp:host:proj_e_unique.
 %nil
  case Hyp1. search.
 %cons
@@ -16,7 +16,7 @@ Prove_Constraint simple_imp:host:trans_e_unique.
  case Hyp1. search.
 %length
  case Hyp1. search.
-Prove_Constraint simple_imp:host:trans_e_is.
+Prove_Constraint simple_imp:host:proj_e_is.
 %nil
  search 8. %too big to solve at default depth
 %cons
@@ -33,28 +33,28 @@ Prove_Constraint simple_imp:host:trans_e_is.
  case Hyp1. search.
 
 
-Prove_Constraint simple_imp:host:trans_rf_unique.
-Prove_Constraint simple_imp:host:trans_rf_is.
-Prove_Constraint simple_imp:host:trans_c_unique.
-Prove_Constraint simple_imp:host:trans_c_is.
-Prove_Constraint simple_imp:host:trans_recFields_unique.
-Prove_Constraint simple_imp:host:trans_recFields_is.
+Prove_Constraint simple_imp:host:proj_rf_unique.
+Prove_Constraint simple_imp:host:proj_rf_is.
+Prove_Constraint simple_imp:host:proj_c_unique.
+Prove_Constraint simple_imp:host:proj_c_is.
+Prove_Constraint simple_imp:host:proj_recFields_unique.
+Prove_Constraint simple_imp:host:proj_recFields_is.
 
 
-Prove_Constraint simple_imp:host:trans_ty_unique.
+Prove_Constraint simple_imp:host:proj_ty_unique.
 %listTy
  case Hyp1. search.
-Prove_Constraint simple_imp:host:trans_ty_is.
+Prove_Constraint simple_imp:host:proj_ty_is.
 %listTy
  case Hyp1. search 11.
 
 
-Prove_Constraint simple_imp:host:trans_value_unique.
+Prove_Constraint simple_imp:host:proj_value_unique.
 %nilVal
  case Hyp1. search.
 %consVal
  case Hyp1. search.
-Prove_Constraint simple_imp:host:trans_value_is.
+Prove_Constraint simple_imp:host:proj_value_is.
 %nilVal
  search 9.
 %consVal
@@ -104,7 +104,7 @@ Prove simple_imp:host:vars_unique,
   Vars2: case Vars2. apply IH to Vars3 Vars2. search.
 
 
-Prove_Constraint simple_imp:host:trans_e_vars_exist.
+Prove_Constraint simple_imp:host:proj_e_vars_exist.
 %nil
  search.
 %cons
@@ -133,7 +133,7 @@ Prove_Constraint simple_imp:host:trans_e_vars_exist.
  Vars: case Hyp1. search.
 %length
  case Hyp1. search.
-Prove_Constraint simple_imp:host:trans_e_vars.
+Prove_Constraint simple_imp:host:proj_e_vars.
 %nil
  case Hyp2. case H1. case H2. case H3. case H4. case Hyp1. search.
 %cons
@@ -159,8 +159,8 @@ Prove_Constraint simple_imp:host:trans_e_vars.
  search.
 %length
  case Hyp1. apply vars_unique to Hyp2 H1. search.
-Prove_Constraint simple_imp:host:trans_rf_vars_exist.
-Prove_Constraint simple_imp:host:trans_rf_vars.
+Prove_Constraint simple_imp:host:proj_rf_vars_exist.
+Prove_Constraint simple_imp:host:proj_rf_vars.
 
 
 Prove simple_imp:host:vars_is,
@@ -233,7 +233,7 @@ Prove simple_imp:host:typeOf_unique,
 Prove simple_imp:host:typeOK_unique.
 
 
-Prove_Constraint simple_imp:host:trans_eval_e.
+Prove_Constraint simple_imp:host:proj_eval_e.
 %nil
  search.
 %cons
@@ -255,7 +255,7 @@ Prove_Constraint simple_imp:host:trans_eval_e.
      forall E L I V G, indexRel L I V -> eval_e G E L ->
                                  exists V', eval_e G (null E) V'
    but this fails in the generic case because the definition of
-   indexRel is copied from L's translation, but E still evaluates to
+   indexRel is copied from L's projection, but E still evaluates to
    the original L, so we can't apply the IH.*/
  Ev: case Hyp1. search.
 %length
@@ -273,7 +273,7 @@ Extensible_Theorem
  IsSubIndex: apply IH to Index2.
  Is: apply minus_integer_is_integer_result to IsSubIndex Index1.
  search.
-%Index-Trans
+%Index-D
  backchain IH.
 Extensible_Theorem
   index_negative_false : forall L I V,
@@ -288,7 +288,7 @@ Extensible_Theorem
  apply less_integer__subtract_positive to _ _ Neg _ Index1.
  apply minus_integer_is_integer to _ _ Index1.
  apply IH to Index2 _.
-%Index-Trans
+%Index-D
  apply IH to Index2 Neg.
 Extensible_Theorem
   index_unique : forall L I V1 V2,
@@ -309,8 +309,8 @@ Extensible_Theorem
    %2 by Index-Step
     apply minus_integer_unique to Index3 Index2.
     apply IH to Index4 Index5. search.
-%1 by Index-Trans
- Index2: case Index2. apply trans_value_unique to Index3 Index2.
+%1 by Index-D
+ Index2: case Index2. apply proj_value_unique to Index3 Index2.
  apply IH to Index4 Index5. search.
 
 Extensible_Theorem
@@ -323,7 +323,7 @@ Extensible_Theorem
 %Len-Cons
  IsSubLen: apply IH to Len1.
  apply plus_integer_is_integer to _ _ Len2. search.
-%Len-Trans
+%Len-D
  apply IH to Len2. search.
 Extensible_Theorem
   length_unique : forall L V1 V2,
@@ -336,8 +336,8 @@ Extensible_Theorem
 %1 by Len-Cons
  Len2: case Len2. apply IH to Len3 Len2.
  apply plus_integer_unique to Len4 Len5. search.
-%1 by Len-Trans
- Len2: case Len2. apply trans_value_unique to Len3 Len2.
+%1 by Len-D
+ Len2: case Len2. apply proj_value_unique to Len3 Len2.
  apply IH to Len4 Len5. search.
 
 
@@ -375,7 +375,7 @@ Prove simple_imp:host:eval_e_unique,
 Prove simple_imp:host:update_rec_fields_unique.
 
 
-Prove_Constraint simple_imp:host:trans_c_eval.
+Prove_Constraint simple_imp:host:proj_c_eval.
 
 
 Add_Ext_Size simple_imp:host:eval_c.
@@ -387,8 +387,8 @@ Prove_Ext_Ind simple_imp:host:eval_c.
 Prove simple_imp:host:eval_c_unique.
 
 
-Prove_Constraint simple_imp:host:trans_c_eval_results.
-Prove_Constraint simple_imp:host:trans_c_eval_results_back.
+Prove_Constraint simple_imp:host:proj_c_eval_results.
+Prove_Constraint simple_imp:host:proj_c_eval_results_back.
 
 
 Prove simple_imp:host:vars_eval_same_result,

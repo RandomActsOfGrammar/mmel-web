@@ -27,17 +27,17 @@ clause ::= ...
 
 Low <= High
 1 + Low = PlusOne
----------------------------------------------- [Trans-RangeClauseStep]
+---------------------------------------------- [Proj-RangeClauseStep]
 |{clause}- rangeClause(Low, High) ~~>
       or(pos(Low), rangeClause(PlusOne, High))
 
 
 Low > High
-------------------------------------------------- [Trans-RangeClauseEnd]
+------------------------------------------------- [Proj-RangeClauseEnd]
 |{clause}- rangeClause(Low, High) ~~> emptyClause
 
 
----------------------------------------------- [Trans-NoteClause]
+---------------------------------------------- [Proj-NoteClause]
 |{clause}- noteClause(Note, Clause) ~~> Clause
 </pre>
 <h3>File:  sat.sos</h3>
@@ -138,40 +138,40 @@ unit_clause A noteClause(Note, Clause) L
 <a class="command" href="clauses-details.html#0">Module unsat_proofs:clauses.</a>
 
 
-<a class="command" href="clauses-details.html#1">Prove_Constraint unsat_proofs:lrat:trans_lit_unique.</a>
-<a class="command" href="clauses-details.html#2">Prove_Constraint unsat_proofs:lrat:trans_lit_is.</a>
+<a class="command" href="clauses-details.html#1">Prove_Constraint unsat_proofs:lrat:proj_lit_unique.</a>
+<a class="command" href="clauses-details.html#2">Prove_Constraint unsat_proofs:lrat:proj_lit_is.</a>
 
 
-<a class="command" href="clauses-details.html#3">Prove_Constraint unsat_proofs:lrat:trans_clause_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(4);" id="toggleproof4">[Show Proof]</a>
+<a class="command" href="clauses-details.html#3">Prove_Constraint unsat_proofs:lrat:proj_clause_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(4);" id="toggleproof4">[Show Proof]</a>
 <div class="proof" id="proof4" style="display: none;">
-<span class="comment">%Trans-RangeClauseStep</span>
- <a class="tactic" href="clauses-details.html#4">TransB: case TransB.</a>
-   <span class="comment">%Trans-RangeClauseStep</span>
-    <a class="tactic" href="clauses-details.html#5">apply plus_integer_unique to TransA2 TransB1.</a> <a class="tactic" href="clauses-details.html#6">search.</a>
-   <span class="comment">%Trans-RangeClauseEnd</span>
-    <a class="tactic" href="clauses-details.html#7">apply greater_lesseq_integer_false to TransB TransA1.</a>
-<span class="comment">%Trans-RangeClauseEnd</span>
- <a class="tactic" href="clauses-details.html#8">TransB: case TransB.</a>
-   <span class="comment">%Trans-RangeClauseStep</span>
-    <a class="tactic" href="clauses-details.html#9">apply greater_lesseq_integer_false to TransA1 TransB.</a>
-   <span class="comment">%Trans-RangeClauseEnd</span>
+<span class="comment">%Proj-RangeClauseStep</span>
+ <a class="tactic" href="clauses-details.html#4">ProjB: case ProjB.</a>
+   <span class="comment">%Proj-RangeClauseStep</span>
+    <a class="tactic" href="clauses-details.html#5">apply plus_integer_unique to ProjA2 ProjB1.</a> <a class="tactic" href="clauses-details.html#6">search.</a>
+   <span class="comment">%Proj-RangeClauseEnd</span>
+    <a class="tactic" href="clauses-details.html#7">apply greater_lesseq_integer_false to ProjB ProjA1.</a>
+<span class="comment">%Proj-RangeClauseEnd</span>
+ <a class="tactic" href="clauses-details.html#8">ProjB: case ProjB.</a>
+   <span class="comment">%Proj-RangeClauseStep</span>
+    <a class="tactic" href="clauses-details.html#9">apply greater_lesseq_integer_false to ProjA1 ProjB.</a>
+   <span class="comment">%Proj-RangeClauseEnd</span>
     <a class="tactic" href="clauses-details.html#10">search.</a>
-<span class="comment">%Trans-NoteClause</span>
- <a class="tactic" href="clauses-details.html#11">case TransB.</a> <a class="tactic" href="clauses-details.html#12">search.</a></div>
+<span class="comment">%Proj-NoteClause</span>
+ <a class="tactic" href="clauses-details.html#11">case ProjB.</a> <a class="tactic" href="clauses-details.html#12">search.</a></div>
 
 
-<a class="command" href="clauses-details.html#13">Prove_Constraint unsat_proofs:lrat:trans_clause_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(14);" id="toggleproof14">[Show Proof]</a>
+<a class="command" href="clauses-details.html#13">Prove_Constraint unsat_proofs:lrat:proj_clause_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(14);" id="toggleproof14">[Show Proof]</a>
 <div class="proof" id="proof14" style="display: none;">
-<span class="comment">%Trans-RangeClauseStep</span>
- <a class="tactic" href="clauses-details.html#14">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#15">apply plus_integer_is_integer to _ _ Trans2.</a> <a class="tactic" href="clauses-details.html#16">search.</a>
-<span class="comment">%Trans-RangeClauseEnd</span>
+<span class="comment">%Proj-RangeClauseStep</span>
+ <a class="tactic" href="clauses-details.html#14">Is: case IsC.</a> <a class="tactic" href="clauses-details.html#15">apply plus_integer_is_integer to _ _ Proj2.</a> <a class="tactic" href="clauses-details.html#16">search.</a>
+<span class="comment">%Proj-RangeClauseEnd</span>
  <a class="tactic" href="clauses-details.html#17">search.</a>
-<span class="comment">%Trans-NoteClause</span>
+<span class="comment">%Proj-NoteClause</span>
  <a class="tactic" href="clauses-details.html#18">case IsC.</a> <a class="tactic" href="clauses-details.html#19">search.</a></div>
 
 
-<a class="command" href="clauses-details.html#20">Prove_Constraint unsat_proofs:lrat:trans_formula_unique.</a>
-<a class="command" href="clauses-details.html#21">Prove_Constraint unsat_proofs:lrat:trans_formula_is.</a>
+<a class="command" href="clauses-details.html#20">Prove_Constraint unsat_proofs:lrat:proj_formula_unique.</a>
+<a class="command" href="clauses-details.html#21">Prove_Constraint unsat_proofs:lrat:proj_formula_is.</a>
 
 <a class="command" href="clauses-details.html#22">Prove_Ext_Ind unsat_proofs:lrat:is_clause.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(23);" id="toggleproof23">[Show Proof]</a>
 <div class="proof" id="proof23" style="display: none;">
@@ -179,7 +179,7 @@ unit_clause A noteClause(Note, Clause) L
  <a class="tactic" href="clauses-details.html#23">Set search_depth 2.</a> <span class="comment">%make the next part not hang</span>
  <a class="tactic" href="clauses-details.html#24">Helper: assert forall Low High R,
            is_integer Low -> is_integer High -> range Low High R ->
-           <is_clause {T}> (rangeClause Low High).</a>
+           <is_clause {P}> (rangeClause Low High).</a>
    <a class="tactic" href="clauses-details.html#25">Set search_depth 5.</a> <span class="comment">%back to normal</span>
    <a class="tactic" href="clauses-details.html#26">clear R R1 R2.</a> <span class="comment">%remove the outer things</span>
    <a class="tactic" href="clauses-details.html#27">induction on 3.</a> <a class="tactic" href="clauses-details.html#28">intros IsLow IsHigh R.</a> <a class="tactic" href="clauses-details.html#29">R: case R.</a>
@@ -290,9 +290,9 @@ unit_clause A noteClause(Note, Clause) L
 <a class="command" href="clauses-details.html#112">Prove unsat_proofs:lrat:negate_lit_exists.</a>
 
 
-<a class="command" href="clauses-details.html#113">Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(114);" id="toggleproof114">[Show Proof]</a>
+<a class="command" href="clauses-details.html#113">Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_proj.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(114);" id="toggleproof114">[Show Proof]</a>
 <div class="proof" id="proof114" style="display: none;">
-<span class="comment">%Trans-RangeClauseStep</span>
+<span class="comment">%Proj-RangeClauseStep</span>
  <a class="tactic" href="clauses-details.html#114">Sat: case Hyp3.</a> <a class="tactic" href="clauses-details.html#115">Or: apply lesseq_integer_less_or_eq to Sat.</a>
  <a class="tactic" href="clauses-details.html#116">L: case Or.</a>
    <span class="comment">%Low < X</span>
@@ -301,7 +301,7 @@ unit_clause A noteClause(Note, Clause) L
     <a class="tactic" href="clauses-details.html#121">apply less_lesseq_plus_one to _ _ L P.</a> <a class="tactic" href="clauses-details.html#122">search.</a>
    <span class="comment">%Low = X</span>
     <a class="tactic" href="clauses-details.html#123">search.</a>
-<span class="comment">%Trans-RangeClauseEnd</span>
+<span class="comment">%Proj-RangeClauseEnd</span>
  <a class="tactic" href="clauses-details.html#124">Sat: case Hyp3.</a> <a class="tactic" href="clauses-details.html#125">Or: apply lesseq_integer_less_or_eq to Sat.</a>
  <a class="tactic" href="clauses-details.html#126">L: case Or.</a>
    <span class="comment">%Low < X</span>
@@ -310,12 +310,12 @@ unit_clause A noteClause(Note, Clause) L
     <a class="tactic" href="clauses-details.html#129">apply greater_lesseq_integer_false to _ Sat1.</a>
    <span class="comment">%Low = X</span>
     <a class="tactic" href="clauses-details.html#130">apply greater_lesseq_integer_false to Hyp4 Sat1.</a>
-<span class="comment">%Trans-NoteClause</span>
+<span class="comment">%Proj-NoteClause</span>
  <a class="tactic" href="clauses-details.html#131">case Hyp3.</a> <a class="tactic" href="clauses-details.html#132">search.</a></div>
 
-<a class="command" href="clauses-details.html#133">Prove_Constraint unsat_proofs:lrat:sat_clause_trans_to_ext.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(134);" id="toggleproof134">[Show Proof]</a>
+<a class="command" href="clauses-details.html#133">Prove_Constraint unsat_proofs:lrat:sat_clause_proj_to_ext.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(134);" id="toggleproof134">[Show Proof]</a>
 <div class="proof" id="proof134" style="display: none;">
-<span class="comment">%Trans-RangeClauseStep</span>
+<span class="comment">%Proj-RangeClauseStep</span>
  <a class="tactic" href="clauses-details.html#134">Sat: case Hyp3.</a>
    <span class="comment">%SC-Here</span>
     <a class="tactic" href="clauses-details.html#135">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#136">apply is_integer_lesseq to Is.</a> <a class="tactic" href="clauses-details.html#137">search.</a>
@@ -331,9 +331,9 @@ unit_clause A noteClause(Note, Clause) L
       <span class="comment">%PlusOne = X</span>
        <a class="tactic" href="clauses-details.html#149">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#150">L: apply lt_plus_one to Hyp5 _.</a>
        <a class="tactic" href="clauses-details.html#151">apply less_integer_lesseq to L.</a> <a class="tactic" href="clauses-details.html#152">search.</a>
-<span class="comment">%Trans-RangeClauseEnd</span>
+<span class="comment">%Proj-RangeClauseEnd</span>
  <a class="tactic" href="clauses-details.html#153">case Hyp3.</a>
-<span class="comment">%Trans-NoteClause</span>
+<span class="comment">%Proj-NoteClause</span>
  <a class="tactic" href="clauses-details.html#154">search.</a></div>
 
 <a class="command" href="clauses-details.html#155">Theorem negs_total : forall L,
@@ -363,9 +363,9 @@ unit_clause A noteClause(Note, Clause) L
   <span class="comment">%Sbst-Cons</span>
    <a class="tactic" href="clauses-details.html#177">NA: case NA.</a> <a class="tactic" href="clauses-details.html#178">apply IH to S1 NA NB.</a> <a class="tactic" href="clauses-details.html#179">apply negs_mem to S NB.</a> <a class="tactic" href="clauses-details.html#180">search.</a></div>
 
-<a class="command" href="clauses-details.html#181">Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_trans.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(182);" id="toggleproof182">[Show Proof]</a>
+<a class="command" href="clauses-details.html#181">Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_proj.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(182);" id="toggleproof182">[Show Proof]</a>
 <div class="proof" id="proof182" style="display: none;">
-<span class="comment">%Trans-RangeClauseStep</span>
+<span class="comment">%Proj-RangeClauseStep</span>
  <a class="tactic" href="clauses-details.html#182">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#183">IsPlusOne: apply plus_integer_is_integer to _ _ Hyp5.</a>
  <a class="tactic" href="clauses-details.html#184">Unsat: case Hyp3.</a> <a class="tactic" href="clauses-details.html#185">L: apply lt_plus_one to Hyp5 _.</a>
  <a class="tactic" href="clauses-details.html#186">R: apply range_smaller_exists to _ _ Unsat L.</a>
@@ -390,26 +390,26 @@ unit_clause A noteClause(Note, Clause) L
        <a class="tactic" href="clauses-details.html#207">search.</a>
       <span class="comment">%subset N1 Unsat</span>
        <a class="tactic" href="clauses-details.html#208">apply subset_trans to S' Unsat2.</a> <a class="tactic" href="clauses-details.html#209">search.</a>
-<span class="comment">%Trans-RangeClauseEnd</span>
+<span class="comment">%Proj-RangeClauseEnd</span>
  <a class="tactic" href="clauses-details.html#210">search.</a>
-<span class="comment">%Trans-NoteClause</span>
+<span class="comment">%Proj-NoteClause</span>
  <a class="tactic" href="clauses-details.html#211">case Hyp3.</a> <a class="tactic" href="clauses-details.html#212">search.</a></div>
 
-<a class="command" href="clauses-details.html#213">Prove_Constraint unsat_proofs:lrat:unsat_clause_trans_to_ext.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(214);" id="toggleproof214">[Show Proof]</a>
+<a class="command" href="clauses-details.html#213">Prove_Constraint unsat_proofs:lrat:unsat_clause_proj_to_ext.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(214);" id="toggleproof214">[Show Proof]</a>
 <div class="proof" id="proof214" style="display: none;">
-<span class="comment">%Trans-RangeClauseStep</span>
+<span class="comment">%Proj-RangeClauseStep</span>
  <a class="tactic" href="clauses-details.html#214">Unsat: case Hyp3.</a> <a class="tactic" href="clauses-details.html#215">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#216">US: case Unsat2.</a>
  <a class="tactic" href="clauses-details.html#217">R: assert range Low High (Low::R).</a>
  <a class="tactic" href="clauses-details.html#218">N: assert negs (Low::R) (neg Low::N).</a> <a class="tactic" href="clauses-details.html#219">case Unsat.</a>
  <a class="tactic" href="clauses-details.html#220">assert subset (neg Low::N) Unsat.</a> <a class="tactic" href="clauses-details.html#221">search.</a>
-<span class="comment">%Trans-RangeClauseEnd</span>
+<span class="comment">%Proj-RangeClauseEnd</span>
  <a class="tactic" href="clauses-details.html#222">R: assert range Low High [].</a> <a class="tactic" href="clauses-details.html#223">assert negs [] [].</a> <a class="tactic" href="clauses-details.html#224">search.</a>
-<span class="comment">%Trans-NoteClause</span>
+<span class="comment">%Proj-NoteClause</span>
  <a class="tactic" href="clauses-details.html#225">search.</a></div>
 
 
-<a class="command" href="clauses-details.html#226">Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_trans.</a>
-<a class="command" href="clauses-details.html#227">Prove_Constraint unsat_proofs:lrat:sat_formula_trans_to_ext.</a>
+<a class="command" href="clauses-details.html#226">Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_proj.</a>
+<a class="command" href="clauses-details.html#227">Prove_Constraint unsat_proofs:lrat:sat_formula_proj_to_ext.</a>
 
 
 <a class="command" href="clauses-details.html#228">Theorem negs_form : forall L N X,
@@ -639,21 +639,21 @@ unit_clause A noteClause(Note, Clause) L
 <span class="comment">%GL-NoteClause</span>
  <a class="tactic" href="clauses-details.html#435">GL': case GL2.</a> <a class="tactic" href="clauses-details.html#436">case IsC.</a> <a class="tactic" href="clauses-details.html#437">apply IH to _ GL3 GL'.</a> <a class="tactic" href="clauses-details.html#438">search.</a></div>
 
-<a class="command" href="clauses-details.html#439">Prove_Constraint unsat_proofs:lrat:trans_gatherLits.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(440);" id="toggleproof440">[Show Proof]</a>
+<a class="command" href="clauses-details.html#439">Prove_Constraint unsat_proofs:lrat:proj_gatherLits.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(440);" id="toggleproof440">[Show Proof]</a>
 <div class="proof" id="proof440" style="display: none;">
-<span class="comment">%Trans-RangeClauseStep</span>
+<span class="comment">%Proj-RangeClauseStep</span>
  <a class="tactic" href="clauses-details.html#440">GL: case Hyp2.</a> <a class="tactic" href="clauses-details.html#441">Is: case Hyp1.</a> <a class="tactic" href="clauses-details.html#442">L: apply lt_plus_one to Hyp4 _.</a>
  <a class="tactic" href="clauses-details.html#443">IsPlusOne: apply plus_integer_is_integer to _ _ Hyp4.</a>
  <a class="tactic" href="clauses-details.html#444">R: apply range_smaller_exists to _ _ GL L.</a>
  <a class="tactic" href="clauses-details.html#445">IsR': apply range_is to _ R.</a> <a class="tactic" href="clauses-details.html#446">apply posLits_total to IsR'.</a> <a class="tactic" href="clauses-details.html#447">search.</a>
-<span class="comment">%Trans-RangeClauseEnd</span>
+<span class="comment">%Proj-RangeClauseEnd</span>
  <a class="tactic" href="clauses-details.html#448">search.</a>
-<span class="comment">%Trans-NoteClause</span>
+<span class="comment">%Proj-NoteClause</span>
  <a class="tactic" href="clauses-details.html#449">case Hyp2.</a> <a class="tactic" href="clauses-details.html#450">search.</a></div>
 
-<a class="command" href="clauses-details.html#451">Prove_Constraint unsat_proofs:lrat:trans_gatherLits_permutation.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(452);" id="toggleproof452">[Show Proof]</a>
+<a class="command" href="clauses-details.html#451">Prove_Constraint unsat_proofs:lrat:proj_gatherLits_permutation.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(452);" id="toggleproof452">[Show Proof]</a>
 <div class="proof" id="proof452" style="display: none;">
-<span class="comment">%Trans-RangeClauseStep</span>
+<span class="comment">%Proj-RangeClauseStep</span>
  <a class="tactic" href="clauses-details.html#452">GL: case Hyp2.</a> <a class="tactic" href="clauses-details.html#453">GL': case Hyp3.</a> <a class="tactic" href="clauses-details.html#454">GL': case GL'.</a> <a class="tactic" href="clauses-details.html#455">R: case GL.</a>
    <span class="comment">%Range-End</span>
     <a class="tactic" href="clauses-details.html#456">apply greater_lesseq_integer_false to R Hyp4.</a>
@@ -664,13 +664,13 @@ unit_clause A noteClause(Note, Clause) L
     <a class="tactic" href="clauses-details.html#462">apply plus_integer_is_integer to _ _ R1.</a>
     <a class="tactic" href="clauses-details.html#463">apply range_is to _ GL'.</a> <a class="tactic" href="clauses-details.html#464">IsLRest1: apply posLits_is to _ PL.</a>
     <a class="tactic" href="clauses-details.html#465">apply permutation_reflexive_lits to IsLRest1.</a> <a class="tactic" href="clauses-details.html#466">search.</a>
-<span class="comment">%Trans-RangeClauseEnd</span>
+<span class="comment">%Proj-RangeClauseEnd</span>
  <a class="tactic" href="clauses-details.html#467">GL: case Hyp2.</a> <a class="tactic" href="clauses-details.html#468">case Hyp3.</a> <a class="tactic" href="clauses-details.html#469">R: case GL.</a>
    <span class="comment">%Range-End</span>
     <a class="tactic" href="clauses-details.html#470">case GL1.</a> <a class="tactic" href="clauses-details.html#471">search.</a>
    <span class="comment">%Range-Step</span>
     <a class="tactic" href="clauses-details.html#472">apply greater_lesseq_integer_false to Hyp4 R.</a>
-<span class="comment">%Trans-NoteClause</span>
+<span class="comment">%Proj-NoteClause</span>
  <a class="tactic" href="clauses-details.html#473">GL: case Hyp2.</a> <a class="tactic" href="clauses-details.html#474">Is: case Hyp1.</a>
  <a class="tactic" href="clauses-details.html#475">apply gatherLits_permutation to _ GL Hyp3.</a> <a class="tactic" href="clauses-details.html#476">search.</a></div>
 
@@ -732,7 +732,7 @@ unit_clause A noteClause(Note, Clause) L
  <a class="tactic" href="clauses-details.html#538">case IsC.</a> <a class="tactic" href="clauses-details.html#539">apply IH to _ GL1 _.</a> <a class="tactic" href="clauses-details.html#540">search.</a></div>
 
 
-<a class="command" href="clauses-details.html#541">Prove_Constraint unsat_proofs:lrat:trans_proof_is.</a>
+<a class="command" href="clauses-details.html#541">Prove_Constraint unsat_proofs:lrat:proj_proof_is.</a>
 <a class="command" href="clauses-details.html#542">Prove unsat_proofs:lrat:check_proof_correct.</a>
 <a class="command" href="clauses-details.html#543">Prove unsat_proofs:lrat:checkProof_orderless.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(544);" id="toggleproof544">[Show Proof]</a>
 <div class="proof" id="proof544" style="display: none;">
@@ -742,7 +742,7 @@ unit_clause A noteClause(Note, Clause) L
 <a class="command" href="clauses-details.html#545">Prove_Ext_Ind unsat_proofs:lrat:checkProof.</a>
 
 
-<a class="command" href="clauses-details.html#546">Prove_Constraint unsat_proofs:lrat:trans_checkProof.</a>
+<a class="command" href="clauses-details.html#546">Prove_Constraint unsat_proofs:lrat:proj_checkProof.</a>
 
 
 <a class="command" href="clauses-details.html#547">Prove unsat_proofs:lrat:formulaToKnown_all_greater.</a>

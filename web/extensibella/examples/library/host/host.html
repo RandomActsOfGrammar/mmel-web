@@ -36,9 +36,9 @@ e ::= var(string)
 ty ::= intTy <span class="comment">/*just "int" is built-in*/</span>
      | bool
 
-Translation s :
-Translation e :
-Translation ty :
+Projection s :
+Projection e :
+Projection ty :
 </pre>
 <h3>File:  vars.sos</h3>
 <a class="fold-link" href="javascript:void" id="togglevars.sos" onclick="toggleFile('vars.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="vars.sos">[Raw File]</a>
@@ -328,22 +328,23 @@ Extensibella_Stand_In {
 <a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
 <span> </span><a class="fold-link" href="host.xthm">[Raw File]</a>
 <p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
-<a class="command" href="host-details.html#0">Module library:host.</a>
+<a class="command" href="host-details.html#0">Module library:host.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(1);" id="toggleproof1">[Show Proof]</a>
+<div class="proof" id="proof1" style="display: none;">
 
-<a class="command" href="host-details.html#1">Translation_Constraint trans_e_unique : forall E E1 E2,
+<a class="tactic" href="host-details.html#1">Projection_Constraint proj_e_unique : forall E E1 E2,
   |{e}- E ~~> E1 -> |{e}- E ~~> E2 -> E1 = E2.</a>
-<a class="command" href="host-details.html#2">Translation_Constraint trans_e_is : forall E E',
+<a class="tactic" href="host-details.html#2">Projection_Constraint proj_e_is : forall E E',
   |{e}- E ~~> E' -> is_e E -> is_e E'.</a>
 
-<a class="command" href="host-details.html#3">Translation_Constraint trans_s_unique : forall S S1 S2,
+<a class="tactic" href="host-details.html#3">Projection_Constraint proj_s_unique : forall S S1 S2,
   |{s}- S ~~> S1 -> |{s}- S ~~> S2 -> S1 = S2.</a>
-<a class="command" href="host-details.html#4">Translation_Constraint trans_s_is : forall S S',
+<a class="tactic" href="host-details.html#4">Projection_Constraint proj_s_is : forall S S',
   |{s}- S ~~> S' -> is_s S -> is_s S'.</a>
 
-<a class="command" href="host-details.html#5">Translation_Constraint trans_ty_unique : forall Ty Ty1 Ty2,
+<a class="tactic" href="host-details.html#5">Projection_Constraint proj_ty_unique : forall Ty Ty1 Ty2,
   |{ty}- Ty ~~> Ty1 -> |{ty}- Ty ~~> Ty2 -> Ty1 = Ty2.</a>
-<a class="command" href="host-details.html#6">Translation_Constraint trans_ty_is : forall Ty Ty',
-  |{ty}- Ty ~~> Ty' -> is_ty Ty -> is_ty Ty'.</a>
+<a class="tactic" href="host-details.html#6">Projection_Constraint proj_ty_is : forall Ty Ty',
+  |{ty}- Ty ~~> Ty' -> is_ty Ty -> is_ty Ty'.</a></div>
 
 
 <a class="command" href="host-details.html#7">Ext_Ind forall E, is_e E.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(8);" id="toggleproof8">[Show Proof]</a>
@@ -546,22 +547,22 @@ Extensibella_Stand_In {
  <a class="tactic" href="host-details.html#237">V: case Vars2.</a> <a class="tactic" href="host-details.html#238">apply IH to Vars3 V.</a> <a class="tactic" href="host-details.html#239">apply IH to Vars4 V1.</a>
  <a class="tactic" href="host-details.html#240">apply append_unique to Vars5 V2.</a> <a class="tactic" href="host-details.html#241">search.</a>
 <span class="comment">%VR-not</span>
- <a class="tactic" href="host-details.html#242">V: case Vars2.</a> <a class="tactic" href="host-details.html#243">apply IH to Vars3 V.</a> <a class="tactic" href="host-details.html#244">search.</a></div>
+ <a class="tactic" href="host-details.html#242">V: case Vars2.</a> <a class="tactic" href="host-details.html#243">apply IH to Vars3 V.</a> <a class="tactic" href="host-details.html#244">search.</a>
 
 
-<a class="command" href="host-details.html#245">Translation_Constraint trans_e_vars_exist : forall E E' V,
+<a class="tactic" href="host-details.html#245">Projection_Constraint proj_e_vars_exist : forall E E' V,
   |{e}- E ~~> E' -> vars E V -> exists V', vars E' V'.</a>
 
 <span class="comment">%Rationale for TC:</span>
 <span class="comment">%Evaluation depends on the variables in an expression.  In fact, by</span>
 <span class="comment">%the property vars_eval_same_result below, evaluation is determined</span>
 <span class="comment">%*entirely* by the variables in an expression.  Therefore making the</span>
-<span class="comment">%variables in an expression be a subset of those in its translation</span>
+<span class="comment">%variables in an expression be a subset of those in its projection</span>
 <span class="comment">%gives other extensions a handle on understanding the behavior of an</span>
 <span class="comment">%unknown expression in particular contexts.</span>
-<a class="command" href="host-details.html#246">Translation_Constraint trans_e_vars : forall E E' V V' X,
+<a class="tactic" href="host-details.html#246">Projection_Constraint proj_e_vars : forall E E' V V' X,
   |{e}- E ~~> E' -> vars E V -> vars E' V' ->
-  mem X V -> mem X V'.</a>
+  mem X V -> mem X V'.</a></div>
 
 
 <a class="command" href="host-details.html#247">Theorem append__is_list__is_string : forall L1 L2 L,
@@ -814,13 +815,13 @@ Extensibella_Stand_In {
    <a class="tactic" href="host-details.html#428">apply IH to Ty2 Ev2 Rel L LV.</a> <a class="tactic" href="host-details.html#429">search.</a>
  <a class="tactic" href="host-details.html#430">apply IH to Ty Ev3 Rel' LkpTy LkpV.</a> <a class="tactic" href="host-details.html#431">search.</a>
 <span class="comment">%X-while-False</span>
- <a class="tactic" href="host-details.html#432">Ty: case Ty.</a> <a class="tactic" href="host-details.html#433">backchain Rel.</a></div>
+ <a class="tactic" href="host-details.html#432">Ty: case Ty.</a> <a class="tactic" href="host-details.html#433">backchain Rel.</a>
 
 
-<a class="command" href="host-details.html#434">Translation_Constraint trans_eval_e : forall G E E' V,
+<a class="tactic" href="host-details.html#434">Projection_Constraint proj_eval_e : forall G E E' V,
   |{e}- E ~~> E' -> eval_e G E V ->
   is_list (is_pair is_string is_e) G -> is_e E ->
-  exists V', eval_e G E' V'.</a>
+  exists V', eval_e G E' V'.</a></div>
 
 
 <a class="command" href="host-details.html#435">Extensible_Theorem
@@ -878,12 +879,11 @@ Extensibella_Stand_In {
    <span class="comment">%E-not-True</span>
     <a class="tactic" href="host-details.html#474">apply IH to Ev3 Ev2.</a>
    <span class="comment">%E-not-False</span>
-    <a class="tactic" href="host-details.html#475">search.</a></div>
+    <a class="tactic" href="host-details.html#475">search.</a>
 
 
-<a class="command" href="host-details.html#476">Translation_Constraint trans_s_eval : forall S S' G G2,
-  |{s}- S ~~> S' -> eval_s G S G2 -> exists G', eval_s G S' G'.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(477);" id="toggleproof477">[Show Proof]</a>
-<div class="proof" id="proof477" style="display: none;">
+<a class="tactic" href="host-details.html#476">Projection_Constraint proj_s_eval : forall S S' G G2,
+  |{s}- S ~~> S' -> eval_s G S G2 -> exists G', eval_s G S' G'.</a>
 
 
 <a class="tactic" href="host-details.html#477">Ext_Size eval_s G S G1.</a></div>
@@ -936,17 +936,17 @@ Extensibella_Stand_In {
       <span class="comment">%N3 = N</span>
        <a class="tactic" href="host-details.html#530">apply IH1 to R4 Acc.</a> <a class="tactic" href="host-details.html#531">search.</a>
 <span class="comment">%X-while-False</span>
- <a class="tactic" href="host-details.html#532">search.</a></div>
+ <a class="tactic" href="host-details.html#532">search.</a>
 
 
-<a class="command" href="host-details.html#533">Translation_Constraint trans_s_eval_results :
+<a class="tactic" href="host-details.html#533">Projection_Constraint proj_s_eval_results :
   forall S S' G G1 G2 X V,
     |{s}- S ~~> S' -> eval_s G S G1 -> eval_s G S' G2 ->
     lookup G1 X V -> lookup G2 X V.</a>
-<a class="command" href="host-details.html#534">Translation_Constraint trans_s_eval_results_back :
+<a class="tactic" href="host-details.html#534">Projection_Constraint proj_s_eval_results_back :
   forall S S' G G1 G2 X V,
     |{s}- S ~~> S' -> eval_s G S G1 -> eval_s G S' G2 ->
-    lookup G2 X V -> lookup G1 X V.</a>
+    lookup G2 X V -> lookup G1 X V.</a></div>
 
 
 <a class="command" href="host-details.html#535">Extensible_Theorem

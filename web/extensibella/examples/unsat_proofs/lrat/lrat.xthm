@@ -1,37 +1,37 @@
 Module unsat_proofs:lrat.
 
 /********************************************************************
- *                           TRANSLATIONS                           *
+ *                           PROJECTIONS                            *
  ********************************************************************/
-Translation_Constraint trans_lit_unique : forall L LA LB,
-  TransA : |{lit}- L ~~> LA ->
-  TransB : |{lit}- L ~~> LB ->
+Projection_Constraint proj_lit_unique : forall L LA LB,
+  ProjA : |{lit}- L ~~> LA ->
+  ProjB : |{lit}- L ~~> LB ->
   LA = LB.
-Translation_Constraint trans_lit_is : forall L LT,
-  Trans : |{lit}- L ~~> LT ->
+Projection_Constraint proj_lit_is : forall L LT,
+  Proj : |{lit}- L ~~> LT ->
   IsL : is_lit L ->
   is_lit LT.
 
-Translation_Constraint trans_clause_unique : forall C CA CB,
-  TransA : |{clause}- C ~~> CA ->
-  TransB : |{clause}- C ~~> CB ->
+Projection_Constraint proj_clause_unique : forall C CA CB,
+  ProjA : |{clause}- C ~~> CA ->
+  ProjB : |{clause}- C ~~> CB ->
   CA = CB.
-Translation_Constraint trans_clause_is : forall C CT,
-  Trans : |{clause}- C ~~> CT ->
+Projection_Constraint proj_clause_is : forall C CT,
+  Proj : |{clause}- C ~~> CT ->
   IsC : is_clause C ->
   is_clause CT.
 
-Translation_Constraint trans_formula_unique : forall F FA FB,
-  TransA : |{formula}- F ~~> FA ->
-  TransB : |{formula}- F ~~> FB ->
+Projection_Constraint proj_formula_unique : forall F FA FB,
+  ProjA : |{formula}- F ~~> FA ->
+  projB : |{formula}- F ~~> FB ->
   FA = FB.
-Translation_Constraint trans_formula_is : forall F FT,
-  Trans : |{formula}- F ~~> FT ->
+Projection_Constraint proj_formula_is : forall F FT,
+  Proj : |{formula}- F ~~> FT ->
   IsF : is_formula F ->
   is_formula FT.
 
-%Have trans_proof_is later because, relying on the known clauses as
-%the translation may, it might be it also relies on other relations
+%Have proj_proof_is later because, relying on the known clauses as
+%the projection may, it might be it also relies on other relations
 %that use them, and then we want properties of them.
 
 
@@ -562,26 +562,26 @@ Extensible_Theorem
  search.
 
 
-%Translations are equisatisfiable with their translating clauses
-Translation_Constraint sat_clause_ext_to_trans : forall C C' Sat,
+%Projections are equisatisfiable with their projecting clauses
+Projection_Constraint sat_clause_ext_to_proj : forall C C' Sat,
   |{clause}- C ~~> C' -> is_list is_lit Sat -> is_clause C ->
   sat_clause Sat C -> sat_clause Sat C'.
-Translation_Constraint sat_clause_trans_to_ext : forall C C' Sat,
+Projection_Constraint sat_clause_proj_to_ext : forall C C' Sat,
   |{clause}- C ~~> C' -> is_list is_lit Sat -> is_clause C ->
   sat_clause Sat C' -> sat_clause Sat C.
-Translation_Constraint unsat_clause_ext_to_trans : forall C C' Unsat,
+Projection_Constraint unsat_clause_ext_to_proj : forall C C' Unsat,
   |{clause}- C ~~> C' -> is_list is_lit Unsat -> is_clause C ->
   unsat_clause Unsat C -> unsat_clause Unsat C'.
-Translation_Constraint unsat_clause_trans_to_ext : forall C C' Unsat,
+Projection_Constraint unsat_clause_proj_to_ext : forall C C' Unsat,
   |{clause}- C ~~> C' -> is_list is_lit Unsat -> is_clause C ->
   unsat_clause Unsat C' -> unsat_clause Unsat C.
 
 
-%Translations are equisatisfiable with their translating formulas
-Translation_Constraint sat_formula_ext_to_trans : forall F F' Sat,
+%Projections are equisatisfiable with their projecting formulas
+Projection_Constraint sat_formula_ext_to_proj : forall F F' Sat,
   |{formula}- F ~~> F' -> is_list is_lit Sat -> sat_formula Sat F ->
   sat_formula Sat F'.
-Translation_Constraint sat_formula_trans_to_ext : forall F F' Sat,
+Projection_Constraint sat_formula_proj_to_ext : forall F F' Sat,
   |{formula}- F ~~> F' -> is_list is_lit Sat -> sat_formula Sat F' ->
   sat_formula Sat F.
 
@@ -1180,12 +1180,12 @@ Extensible_Theorem
  GL2: case GL2. Is: case IsC. apply IH to _ GL3 GL2. search.
 
 
-Translation_Constraint trans_gatherLits : forall C C' L,
+Projection_Constraint proj_gatherLits : forall C C' L,
   |{clause}- C ~~> C' -> is_clause C -> gatherLits C L ->
   exists L', gatherLits C' L'.
 
 
-Translation_Constraint trans_gatherLits_permutation :
+Projection_Constraint proj_gatherLits_permutation :
   forall C C' L L',
     |{clause}- C ~~> C' -> is_clause C -> gatherLits C L ->
     gatherLits C' L' -> permutation L L'.
@@ -1399,12 +1399,12 @@ apply rupProof_orderless to IsK1 IsK2 GCL RUP MemBoth. search.
  *                          CHECK PROOF                             *
  ********************************************************************/
 /*
- Don't have trans_proof_unique because there could be multiple ways to
+ Don't have proj_proof_unique because there could be multiple ways to
  prove a clause, so it doesn't necessarily make sense to say the proof
  hint needs to be the same
 */
-Translation_Constraint trans_proof_is : forall Known P PT,
-  Trans : Known |{proof}- P ~~> PT ->
+Projection_Constraint proj_proof_is : forall Known P PT,
+  Proj : Known |{proof}- P ~~> PT ->
   IsP : is_proof P ->
   IsKnown : is_list (is_pair is_integer is_clause) Known ->
   is_proof PT.
@@ -1518,8 +1518,8 @@ Ext_Ind forall Known P, checkProof Known P.
  apply IH1 to R2 Acc. search.
 
 
-%Translated proof still checks out
-Translation_Constraint trans_checkProof : forall Known P P',
+%Projected proof still checks out
+Projection_Constraint proj_checkProof : forall Known P P',
   Known |{proof}- P ~~> P' -> checkProof Known P ->
   is_list (is_pair is_integer is_clause) Known ->
   good_clause_list Known ->

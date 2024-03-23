@@ -19,7 +19,7 @@ Module functions:list
 
 Builds on functions:host
 
-<span class="comment">/*New Expressions and Translations*/</span>
+<span class="comment">/*New Expressions and Projections*/</span>
 e ::= ...
     | nil
     | cons(e, e)
@@ -30,13 +30,13 @@ e ::= ...
     | length(e)
 
 
---------------------------------------------- [Trans-Nil]
+--------------------------------------------- [Proj-Nil]
 |{e}- nil ~~>
       recBuild(addRecFieldExprs("null", true,
                endRecFieldExprs))
 
 
----------------------------------------------------------- [Trans-Cons]
+---------------------------------------------------------- [Proj-Cons]
 |{e}- cons(E1, E2) ~~>
       recBuild(
          addRecFieldExprs("null", false,
@@ -44,50 +44,50 @@ e ::= ...
          addRecFieldExprs("tail", E2, endRecFieldExprs))))
 
 
-------------------------------------------- [Trans-Null]
+------------------------------------------- [Proj-Null]
 |{e}- null(E) ~~> recFieldAccess(E, "null")
 
 
-------------------------------------------- [Trans-Head]
+------------------------------------------- [Proj-Head]
 |{e}- head(E) ~~> recFieldAccess(E, "head")
 
 
-------------------------------------------- [Trans-Tail]
+------------------------------------------- [Proj-Tail]
 |{e}- tail(E) ~~> recFieldAccess(E, "tail")
 
 
--------------------------------------------- [Trans-Index]
+-------------------------------------------- [Proj-Index]
 |{e}- index(Lst, Index) ~~> plus(Lst, Index)
 
 
---------------------- [Trans-Length]
+--------------------- [Proj-Length]
 |{e}- length(E) ~~> E
 
 
 
-<span class="comment">/*New Type and Translation*/</span>
+<span class="comment">/*New Type and Projection*/</span>
 ty ::= ...
      | listTy(ty)
 
 
------------------------------------------------ [Trans-ListTy]
+----------------------------------------------- [Proj-ListTy]
 |{ty}- listTy(T) ~~>
        recTy([("head", T), ("tail", listTy(T)),
               ("null", boolTy)])
 
 
 
-<span class="comment">/*New Value and Translation*/</span>
+<span class="comment">/*New Value and Projection*/</span>
 value ::= ...
         | nilVal
         | consVal(value, value)
 
 
------------------------------------------------- [Trans-NilVal]
+------------------------------------------------ [Proj-NilVal]
 |{value}- nilVal ~~> recVal([("null", trueVal)])
 
 
---------------------------------------------- [Trans-ConsVal]
+--------------------------------------------- [Proj-ConsVal]
 |{value}- consVal(Hd, Tl) ~~>
           recVal([("head", Hd), ("tail", Tl),
                   ("null", falseVal)])
@@ -261,7 +261,7 @@ index consVal(Hd, Tl) Index V
 
 |{value}- V ~~> VT
 index VT I Result
------------------- [Index-Trans]*
+------------------ [Index-D]*
 index V I Result
 
 
@@ -279,7 +279,7 @@ length consVal(Hd, Tl) Len
 
 |{value}- V ~~> VT
 length VT Len
------------------- [Len-Trans]*
+------------------ [Len-D]*
 length V Len
 
 

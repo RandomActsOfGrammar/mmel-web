@@ -29,11 +29,11 @@ e ::= num(int)
     | false
     | recBuild(recFieldExprs)
     | recFieldAccess(e, string)
-Translation e :
+Projection e :
 
 recFieldExprs ::= endRecFieldExprs
                 | addRecFieldExprs(string, e, recFieldExprs)
-Translation recFieldExprs :
+Projection recFieldExprs :
 
 
 <span class="comment">/*Statement Commands*/</span>
@@ -44,18 +44,18 @@ c ::= noop
     | ifThenElse(e, c, c)
     | while(e, c)
     | recUpdate(string, recFields, e) <span class="comment">/*rec.field = e*/</span>
-Translation c :
+Projection c :
 
 recFields ::= oneField(string)
             | addField(string, recFields)
-Translation recFields :
+Projection recFields :
 
 
 <span class="comment">/*Types*/</span>
 ty ::= intTy
      | boolTy
      | recTy([(string, ty)])
-Translation ty :
+Projection ty :
 
 
 <span class="comment">/*Evaluation Values*/</span>
@@ -63,7 +63,7 @@ value ::= intVal(int)
         | trueVal
         | falseVal
         | recVal([(string, value)])
-Translation value :
+Projection value :
 
 </pre>
 <h3>File:  vars.sos</h3>

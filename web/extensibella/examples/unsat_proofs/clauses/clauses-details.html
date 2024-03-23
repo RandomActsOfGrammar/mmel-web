@@ -17,53 +17,53 @@
  < <b>Module unsat_proofs:clauses.</b>
 </pre>
 <pre class="code extensibella"id="1">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_lit_unique.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:proj_lit_unique.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="2">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_lit_is.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:proj_lit_is.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="3">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_clause_unique.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:proj_clause_unique.</b>
 
 Subgoal 1:
 
 Variables: CB High PlusOne Low
-TransA : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
-TransB : |{clause}- rangeClause Low High ~~&gt; CB
-TransA1 : Low &lt;= High
-TransA2 : 1 + Low = PlusOne
+ProjA : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
+ProjB : |{clause}- rangeClause Low High ~~&gt; CB
+ProjA1 : Low &lt;= High
+ProjA2 : 1 + Low = PlusOne
 ============================
  or (pos Low) (rangeClause PlusOne High) = CB
 </pre>
 <pre class="code extensibella"id="4">
- &lt; <b>TransB: case TransB.</b>
+ &lt; <b>ProjB: case ProjB.</b>
 
 Subgoal 1.1:
 
 Variables: High PlusOne Low PlusOne1
-TransA : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
-TransA1 : Low &lt;= High
-TransA2 : 1 + Low = PlusOne
-TransB : Low &lt;= High
-TransB1 : 1 + Low = PlusOne1
+ProjA : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
+ProjA1 : Low &lt;= High
+ProjA2 : 1 + Low = PlusOne
+ProjB : Low &lt;= High
+ProjB1 : 1 + Low = PlusOne1
 ============================
  or (pos Low) (rangeClause PlusOne High) = or (pos Low) (rangeClause PlusOne1 High)
 </pre>
 <pre class="code extensibella"id="5">
- &lt; <b>apply plus_integer_unique to TransA2 TransB1.</b>
+ &lt; <b>apply plus_integer_unique to ProjA2 ProjB1.</b>
 
 Subgoal 1.1:
 
 Variables: High Low PlusOne1
-TransA : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne1 High)
-TransA1 : Low &lt;= High
-TransA2 : 1 + Low = PlusOne1
-TransB : Low &lt;= High
-TransB1 : 1 + Low = PlusOne1
+ProjA : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne1 High)
+ProjA1 : Low &lt;= High
+ProjA2 : 1 + Low = PlusOne1
+ProjB : Low &lt;= High
+ProjB1 : 1 + Low = PlusOne1
 ============================
  or (pos Low) (rangeClause PlusOne1 High) = or (pos Low) (rangeClause PlusOne1 High)
 </pre>
@@ -73,47 +73,47 @@ TransB1 : 1 + Low = PlusOne1
 Subgoal 1.2:
 
 Variables: High PlusOne Low
-TransA : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
-TransA1 : Low &lt;= High
-TransA2 : 1 + Low = PlusOne
-TransB : Low &gt; High
+ProjA : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
+ProjA1 : Low &lt;= High
+ProjA2 : 1 + Low = PlusOne
+ProjB : Low &gt; High
 ============================
  or (pos Low) (rangeClause PlusOne High) = emptyClause
 </pre>
 <pre class="code extensibella"id="7">
- &lt; <b>apply greater_lesseq_integer_false to TransB TransA1.</b>
+ &lt; <b>apply greater_lesseq_integer_false to ProjB ProjA1.</b>
 
 Subgoal 2:
 
 Variables: CB High Low
-TransA : |{clause}- rangeClause Low High ~~&gt; emptyClause
-TransB : |{clause}- rangeClause Low High ~~&gt; CB
-TransA1 : Low &gt; High
+ProjA : |{clause}- rangeClause Low High ~~&gt; emptyClause
+ProjB : |{clause}- rangeClause Low High ~~&gt; CB
+ProjA1 : Low &gt; High
 ============================
  emptyClause = CB
 </pre>
 <pre class="code extensibella"id="8">
- &lt; <b>TransB: case TransB.</b>
+ &lt; <b>ProjB: case ProjB.</b>
 
 Subgoal 2.1:
 
 Variables: High Low PlusOne
-TransA : |{clause}- rangeClause Low High ~~&gt; emptyClause
-TransA1 : Low &gt; High
-TransB : Low &lt;= High
-TransB1 : 1 + Low = PlusOne
+ProjA : |{clause}- rangeClause Low High ~~&gt; emptyClause
+ProjA1 : Low &gt; High
+ProjB : Low &lt;= High
+ProjB1 : 1 + Low = PlusOne
 ============================
  emptyClause = or (pos Low) (rangeClause PlusOne High)
 </pre>
 <pre class="code extensibella"id="9">
- &lt; <b>apply greater_lesseq_integer_false to TransA1 TransB.</b>
+ &lt; <b>apply greater_lesseq_integer_false to ProjA1 ProjB.</b>
 
 Subgoal 2.2:
 
 Variables: High Low
-TransA : |{clause}- rangeClause Low High ~~&gt; emptyClause
-TransA1 : Low &gt; High
-TransB : Low &gt; High
+ProjA : |{clause}- rangeClause Low High ~~&gt; emptyClause
+ProjA1 : Low &gt; High
+ProjB : Low &gt; High
 ============================
  emptyClause = emptyClause
 </pre>
@@ -123,18 +123,18 @@ TransB : Low &gt; High
 Subgoal 3:
 
 Variables: CA CB Note
-TransA : |{clause}- noteClause Note CA ~~&gt; CA
-TransB : |{clause}- noteClause Note CA ~~&gt; CB
+ProjA : |{clause}- noteClause Note CA ~~&gt; CA
+ProjB : |{clause}- noteClause Note CA ~~&gt; CB
 ============================
  CA = CB
 </pre>
 <pre class="code extensibella"id="11">
- &lt; <b>case TransB.</b>
+ &lt; <b>case ProjB.</b>
 
 Subgoal 3:
 
 Variables: CB Note
-TransA : |{clause}- noteClause Note CB ~~&gt; CB
+ProjA : |{clause}- noteClause Note CB ~~&gt; CB
 ============================
  CB = CB
 </pre>
@@ -144,15 +144,15 @@ TransA : |{clause}- noteClause Note CB ~~&gt; CB
 Proof completed.
 </pre>
 <pre class="code extensibella"id="13">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_clause_is.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:proj_clause_is.</b>
 
 Subgoal 1:
 
 Variables: High PlusOne Low
-Trans : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
+Proj : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
 IsC : is_clause (rangeClause Low High)
-Trans1 : Low &lt;= High
-Trans2 : 1 + Low = PlusOne
+Proj1 : Low &lt;= High
+Proj2 : 1 + Low = PlusOne
 ============================
  is_clause (or (pos Low) (rangeClause PlusOne High))
 </pre>
@@ -162,23 +162,23 @@ Trans2 : 1 + Low = PlusOne
 Subgoal 1:
 
 Variables: High PlusOne Low
-Trans : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
-Trans1 : Low &lt;= High
-Trans2 : 1 + Low = PlusOne
+Proj : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
+Proj1 : Low &lt;= High
+Proj2 : 1 + Low = PlusOne
 Is : is_integer Low
 Is1 : is_integer High
 ============================
  is_clause (or (pos Low) (rangeClause PlusOne High))
 </pre>
 <pre class="code extensibella"id="15">
- &lt; <b>apply plus_integer_is_integer to _ _ Trans2.</b>
+ &lt; <b>apply plus_integer_is_integer to _ _ Proj2.</b>
 
 Subgoal 1:
 
 Variables: High PlusOne Low
-Trans : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
-Trans1 : Low &lt;= High
-Trans2 : 1 + Low = PlusOne
+Proj : |{clause}- rangeClause Low High ~~&gt; or (pos Low) (rangeClause PlusOne High)
+Proj1 : Low &lt;= High
+Proj2 : 1 + Low = PlusOne
 Is : is_integer Low
 Is1 : is_integer High
 H1 : is_integer PlusOne
@@ -191,9 +191,9 @@ H1 : is_integer PlusOne
 Subgoal 2:
 
 Variables: High Low
-Trans : |{clause}- rangeClause Low High ~~&gt; emptyClause
+Proj : |{clause}- rangeClause Low High ~~&gt; emptyClause
 IsC : is_clause (rangeClause Low High)
-Trans1 : Low &gt; High
+Proj1 : Low &gt; High
 ============================
  is_clause emptyClause
 </pre>
@@ -203,7 +203,7 @@ Trans1 : Low &gt; High
 Subgoal 3:
 
 Variables: CT Note
-Trans : |{clause}- noteClause Note CT ~~&gt; CT
+Proj : |{clause}- noteClause Note CT ~~&gt; CT
 IsC : is_clause (noteClause Note CT)
 ============================
  is_clause CT
@@ -214,7 +214,7 @@ IsC : is_clause (noteClause Note CT)
 Subgoal 3:
 
 Variables: CT Note
-Trans : |{clause}- noteClause Note CT ~~&gt; CT
+Proj : |{clause}- noteClause Note CT ~~&gt; CT
 H1 : is_string Note
 H2 : is_clause CT
 ============================
@@ -226,12 +226,12 @@ H2 : is_clause CT
 Proof completed.
 </pre>
 <pre class="code extensibella"id="20">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_formula_unique.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:proj_formula_unique.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="21">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_formula_is.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:proj_formula_is.</b>
 
 Proof completed.
 </pre>
@@ -1570,7 +1570,7 @@ Proof completed.
 Proof completed.
 </pre>
 <pre class="code extensibella"id="113">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_proj.</b>
 
 Subgoal 1:
 
@@ -1906,7 +1906,7 @@ H1 : sat_clause Sat C'
 Proof completed.
 </pre>
 <pre class="code extensibella"id="133">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_clause_trans_to_ext.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_clause_proj_to_ext.</b>
 
 Subgoal 1:
 
@@ -2566,7 +2566,7 @@ H2 : mem (neg X) NB
 Proof completed.
 </pre>
 <pre class="code extensibella"id="181">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_trans.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_proj.</b>
 
 Subgoal 1:
 
@@ -3316,7 +3316,7 @@ H1 : unsat_clause Unsat C'
 Proof completed.
 </pre>
 <pre class="code extensibella"id="213">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:unsat_clause_trans_to_ext.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:unsat_clause_proj_to_ext.</b>
 
 Subgoal 1:
 
@@ -3535,12 +3535,12 @@ Hyp3 : unsat_clause Unsat C'
 Proof completed.
 </pre>
 <pre class="code extensibella"id="226">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_trans.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_proj.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="227">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_formula_trans_to_ext.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:sat_formula_proj_to_ext.</b>
 
 Proof completed.
 </pre>
@@ -7150,7 +7150,7 @@ H3 : permutation L1 L2
 Proof completed.
 </pre>
 <pre class="code extensibella"id="439">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_gatherLits.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:proj_gatherLits.</b>
 
 Subgoal 1:
 
@@ -7332,7 +7332,7 @@ H1 : gatherLits C' L
 Proof completed.
 </pre>
 <pre class="code extensibella"id="451">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_gatherLits_permutation.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:proj_gatherLits_permutation.</b>
 
 Subgoal 1:
 
@@ -8823,7 +8823,7 @@ H3 : unsat_clause NL Clause
 Proof completed.
 </pre>
 <pre class="code extensibella"id="541">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_proof_is.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:proj_proof_is.</b>
 
 Proof completed.
 </pre>
@@ -8848,7 +8848,7 @@ Proof completed.
 Proof completed.
 </pre>
 <pre class="code extensibella"id="546">
- &lt; <b>Prove_Constraint unsat_proofs:lrat:trans_checkProof.</b>
+ &lt; <b>Prove_Constraint unsat_proofs:lrat:proj_checkProof.</b>
 
 Proof completed.
 </pre>

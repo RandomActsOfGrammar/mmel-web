@@ -135,9 +135,9 @@ H1 : is_ty Ty
 Proof completed.
 </pre>
 <pre class="code extensibella"id="11">
- &lt; <b>Translation_Constraint trans_ty_is :
+ &lt; <b>Projection_Constraint proj_ty_is :
    forall Ty Ty',
-   Trans : |{ty}- Ty ~~&gt; Ty' -&gt;
+   Proj : |{ty}- Ty ~~&gt; Ty' -&gt;
    IsTy : is_ty Ty -&gt;
    is_ty Ty'.</b>
 
@@ -336,9 +336,9 @@ Ty2 : typeOf Ctx T2 intTy *
 Proof completed.
 </pre>
 <pre class="code extensibella"id="24">
- &lt; <b>Translation_Constraint trans_is :
+ &lt; <b>Projection_Constraint proj_is :
    forall Ctx T T',
-   Trans : Ctx |{tm}- T ~~&gt; T' -&gt;
+   Proj : Ctx |{tm}- T ~~&gt; T' -&gt;
    IsCtx : is_list (is_pair is_string is_ty) Ctx -&gt;
    IsT : is_tm T -&gt;
    is_tm T'.</b>
@@ -648,14 +648,14 @@ H2 : typeOf Ctx T2 intTy
 Proof completed.
 </pre>
 <pre class="code extensibella"id="42">
- &lt; <b>Translation_Constraint trans_ty_unique :
+ &lt; <b>Projection_Constraint proj_ty_unique :
    forall Ty TyA TyB,
    |{ty}- Ty ~~&gt; TyA -&gt; |{ty}- Ty ~~&gt; TyB -&gt; is_ty Ty -&gt; TyA = TyB.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="43">
- &lt; <b>Translation_Constraint trans_tm_unique :
+ &lt; <b>Projection_Constraint proj_tm_unique :
    forall Ctx T TA TB,
    Ctx |{tm}- T ~~&gt; TA -&gt; Ctx |{tm}- T ~~&gt; TB -&gt; is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt;
    TA = TB.</b>
@@ -4465,7 +4465,7 @@ DB1 : desugar_ty Ty_T1 TyB
  TyA = TyB
 </pre>
 <pre class="code extensibella"id="307">
- &lt; <b>apply trans_ty_unique to DA DB _.</b>
+ &lt; <b>apply proj_ty_unique to DA DB _.</b>
 
 Subgoal 3.3:
 
@@ -4481,7 +4481,7 @@ DB1 : desugar_ty Ty_T1 TyB
  TyA = TyB
 </pre>
 <pre class="code extensibella"id="308">
- &lt; <b>apply trans_ty_is to DA _.</b>
+ &lt; <b>apply proj_ty_is to DA _.</b>
 
 Subgoal 3.3:
 
@@ -5100,7 +5100,7 @@ DB1 : desugar_tm Ctx T_T1 TB
  TA = TB
 </pre>
 <pre class="code extensibella"id="345">
- &lt; <b>apply trans_tm_unique to DA DB _ _.</b>
+ &lt; <b>apply proj_tm_unique to DA DB _ _.</b>
 
 Subgoal 6.6:
 
@@ -5118,7 +5118,7 @@ DB1 : desugar_tm Ctx T_T1 TB
  TA = TB
 </pre>
 <pre class="code extensibella"id="346">
- &lt; <b>apply trans_is to DA _ _.</b>
+ &lt; <b>apply proj_is to DA _ _.</b>
 
 Subgoal 6.6:
 

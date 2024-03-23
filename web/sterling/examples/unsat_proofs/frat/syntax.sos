@@ -9,7 +9,7 @@ Builds on unsat_proofs:lrat
 fratProof ::= addOriginal(int, clause, fratProof)
             | endOriginal(proof)
 
-Translation fratProof :
+Projection fratProof :
 
 
 
@@ -32,17 +32,17 @@ proof ::= ...
 
 
 rupProof Known emptyClause Prf
------------------------------------------------------- [Trans-EndFrat]
+------------------------------------------------------ [Proj-EndFrat]
 Known |{proof}- endFrat(ID, FC) ~~> emptyLrat(ID, Prf)
 
 
-------------------------------------------- [Trans-EndFratPrf]
+------------------------------------------- [Proj-EndFratPrf]
 Known |{proof}- endFratPrf(ID, Prf, FC) ~~>
                 emptyLrat(ID, Prf)
 
 
 rupProof Known C Prf
----------------------------------------------- [Trans-AddProofless]
+---------------------------------------------- [Proj-AddProofless]
 Known |{proof}- addProofless(ID, C, Rest) ~~>
                 addLrupProof(ID, C, Prf, Rest)
 
@@ -52,22 +52,22 @@ Known |{proof}- addProofless(ID, C, Rest) ~~>
 */
 T != F
 mem (F, C) Known
----------------------------------------------- [Trans-RelocateProof]
+---------------------------------------------- [Proj-RelocateProof]
 Known |{proof}- relocateClause(F, T, Rest) ~~>
                 addLrupProof(T, C, [F],
                      deleteLratProof(F, Rest))
 
 
------------------------------------------------------ [Trans-RelocateProofSame]
+----------------------------------------------------- [Proj-RelocateProofSame]
 Known |{proof}- relocateClause(ID, ID, Rest) ~~> Rest
 
 
---------------------------------------- [Trans-DeleteFrat]
+--------------------------------------- [Proj-DeleteFrat]
 K |{proof}- deleteFrat(ID, C, Rest) ~~>
             deleteLratProof(ID, Rest)
 
 
------------------------------------------------- [Trans-CommentProof]
+------------------------------------------------ [Proj-CommentProof]
 K |{proof}- commentProof(Comment, Rest) ~~> Rest
 
 
@@ -77,4 +77,4 @@ K |{proof}- commentProof(Comment, Rest) ~~> Rest
 finalClauses ::= addFClause(int, clause, finalClauses)
                | endFClause
 
-Translation finalClauses :
+Projection finalClauses :

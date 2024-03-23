@@ -1,20 +1,20 @@
 Module library:security.
 
 
-Prove_Constraint library:host:trans_e_unique.
-Prove_Constraint library:host:trans_e_is.
+Prove_Constraint library:host:proj_e_unique.
+Prove_Constraint library:host:proj_e_is.
 
 
-Prove_Constraint library:host:trans_s_unique.
+Prove_Constraint library:host:proj_s_unique.
 %secdecl
  case Hyp1. search.
-Prove_Constraint library:host:trans_s_is.
+Prove_Constraint library:host:proj_s_is.
 %secdecl
  case Hyp1. search.
 
 
-Prove_Constraint library:host:trans_ty_unique.
-Prove_Constraint library:host:trans_ty_is.
+Prove_Constraint library:host:proj_ty_unique.
+Prove_Constraint library:host:proj_ty_is.
 
 
 Prove_Ext_Ind library:host:is_e.
@@ -32,8 +32,8 @@ Prove library:host:is_e_eq_or_not.
 Prove library:host:vars_unique.
 
 
-Prove_Constraint library:host:trans_e_vars_exist.
-Prove_Constraint library:host:trans_e_vars.
+Prove_Constraint library:host:proj_e_vars_exist.
+Prove_Constraint library:host:proj_e_vars.
 
 
 Prove library:host:vars_is.
@@ -70,13 +70,13 @@ Prove library:host:type_preservation_s.
        backchain Rel.
 
 
-Prove_Constraint library:host:trans_eval_e.
+Prove_Constraint library:host:proj_eval_e.
 
 
 Prove library:host:eval_e_unique.
 
 
-Prove_Constraint library:host:trans_s_eval.
+Prove_Constraint library:host:proj_s_eval.
 %secdecl
  case Hyp1. search.
 
@@ -88,12 +88,12 @@ Prove_Ext_Ind library:host:eval_s.
 %secdecl
  search.
 
-Prove_Constraint library:host:trans_s_eval_results.
+Prove_Constraint library:host:proj_s_eval_results.
 %secdecl
  VS: case Hyp1. VD: case Hyp2. apply eval_e_unique to VS VD. search.
 
 
-Prove_Constraint library:host:trans_s_eval_results_back.
+Prove_Constraint library:host:proj_s_eval_results_back.
 %secdecl
  VS: case Hyp1. VD: case Hyp2. apply eval_e_unique to VS VD. search.
 
@@ -193,8 +193,8 @@ Extensible_Theorem
 %L-not
  V: case Vars. apply IH to Lev1 V Mem. search.
 %LF-level
- V: apply trans_e_vars_exist to Lev1 Vars.
- M: apply trans_e_vars to Lev1 Vars V Mem. apply IH to Lev2 V M.
+ V: apply proj_e_vars_exist to Lev1 Vars.
+ M: apply proj_e_vars to Lev1 Vars V Mem. apply IH to Lev2 V M.
  search.
 
 
@@ -277,7 +277,7 @@ Extensible_Theorem
 %L-not
  L: case LevB. apply IH to LevA1 L. search.
 %LF-level
- L: case LevB. apply trans_e_unique to LevA1 L. apply IH to LevA2 L1.
+ L: case LevB. apply proj_e_unique to LevA1 L. apply IH to LevA2 L1.
  search.
 
 
@@ -408,7 +408,7 @@ Extensible_Theorem
    %S-secdecl-private
     apply NEq to _.
 %X-Q
- Sec: case Sec. apply trans_s_unique to Ev1 Sec. apply IH to _ _ Ev2.
+ Sec: case Sec. apply proj_s_unique to Ev1 Sec. apply IH to _ _ Ev2.
  search.
 
 
@@ -626,17 +626,17 @@ Extensible_Theorem
             %Lkp later
              Rel: case Rel. apply Rel1 to LkpSec1 Lkp1. search.
 %X-Q
- Sec: case Sec. apply trans_s_unique to EvA1 Sec.
- EvBTrans: apply trans_s_eval to EvA1 EvB.
- IsCT: apply trans_s_is to Sec Is.
- Equiv: apply IH to _ Sec1 Rel EvA2 EvBTrans.
+ Sec: case Sec. apply proj_s_unique to EvA1 Sec.
+ EvBProj: apply proj_s_eval to EvA1 EvB.
+ IsCT: apply proj_s_is to Sec Is.
+ Equiv: apply IH to _ Sec1 Rel EvA2 EvBProj.
  LkpGB'G': assert forall X V, lookup GB' X V -> lookup G' X V.
-   intros L. apply trans_s_eval_results to EvA1 EvB EvBTrans L. search.
+   intros L. apply proj_s_eval_results to EvA1 EvB EvBProj L. search.
  EqG'GB': assert public_equiv SG1 G' GB'.
    unfold.
      %1
       intros LkpSec LkpG'.
-      apply trans_s_eval_results_back to Sec EvB EvBTrans LkpG'. search.
+      apply proj_s_eval_results_back to Sec EvB EvBProj LkpG'. search.
      %2
       intros LkpSec LkpGB'. backchain LkpGB'G'.
  apply public_equiv_trans to Equiv EqG'GB'. search.

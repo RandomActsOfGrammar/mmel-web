@@ -26,10 +26,10 @@ e ::= ...
 ty ::= baseTy <span class="comment">/*just so we can have concrete types*/</span>
      | arrowTy(ty, ty)
 
-Translation ty :
+Projection ty :
 
 
------------------------------------------ [Trans-Tyabs]
+----------------------------------------- [Proj-Tyabs]
 |{e}- tyabs(X, Ty, Body) ~~> abs(X, Body)
 
 
@@ -79,7 +79,7 @@ typeOf G app(E1, E2) Ty2
 
 |{e}- E ~~> E_T
 typeOf G E_T Ty
---------------- [T-Trans]*
+--------------- [T-D]*
 typeOf G E Ty
 </pre>
 </div>
@@ -91,7 +91,7 @@ typeOf G E Ty
 <a class="command" href="typing-details.html#0">Module lambda_calculus:typing.</a>
 
 
-<a class="command" href="typing-details.html#1">Prove_Constraint lambda_calculus:host:trans_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<a class="command" href="typing-details.html#1">Prove_Constraint lambda_calculus:host:proj_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
 <div class="proof" id="proof2" style="display: none;">
 <span class="comment">%tyabs</span>
  <a class="tactic" href="typing-details.html#2">case Hyp1.</a> <a class="tactic" href="typing-details.html#3">search.</a></div>
@@ -103,7 +103,7 @@ typeOf G E Ty
  <a class="tactic" href="typing-details.html#5">apply IH to R3.</a> <a class="tactic" href="typing-details.html#6">search.</a></div>
 
 
-<a class="command" href="typing-details.html#7">Prove_Constraint lambda_calculus:host:trans_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(8);" id="toggleproof8">[Show Proof]</a>
+<a class="command" href="typing-details.html#7">Prove_Constraint lambda_calculus:host:proj_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(8);" id="toggleproof8">[Show Proof]</a>
 <div class="proof" id="proof8" style="display: none;">
 <span class="comment">%tyabs</span>
  <a class="tactic" href="typing-details.html#8">case Hyp1.</a> <a class="tactic" href="typing-details.html#9">search.</a></div>
@@ -155,7 +155,7 @@ typeOf G E Ty
  <a class="tactic" href="typing-details.html#35">case EvB.</a> <a class="tactic" href="typing-details.html#36">search.</a></div>
 
 
-<a class="command" href="typing-details.html#37">Prove_Constraint lambda_calculus:host:trans_subst.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(38);" id="toggleproof38">[Show Proof]</a>
+<a class="command" href="typing-details.html#37">Prove_Constraint lambda_calculus:host:proj_subst.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(38);" id="toggleproof38">[Show Proof]</a>
 <div class="proof" id="proof38" style="display: none;">
 <span class="comment">%tyabs</span>
  <a class="tactic" href="typing-details.html#38">S: case S.</a>
@@ -164,7 +164,7 @@ typeOf G E Ty
    <span class="comment">%S-Tyabs-NEq</span>
     <a class="tactic" href="typing-details.html#40">search.</a></div>
 
-<a class="command" href="typing-details.html#41">Prove_Constraint lambda_calculus:host:trans_subst_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(42);" id="toggleproof42">[Show Proof]</a>
+<a class="command" href="typing-details.html#41">Prove_Constraint lambda_calculus:host:proj_subst_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(42);" id="toggleproof42">[Show Proof]</a>
 <div class="proof" id="proof42" style="display: none;">
 <span class="comment">%tyabs</span>
  <a class="tactic" href="typing-details.html#42">S: case S.</a>
@@ -182,12 +182,12 @@ typeOf G E Ty
        <a class="tactic" href="typing-details.html#48">case IsE.</a> <a class="tactic" href="typing-details.html#49">apply subst_unique to _ _ _ S1 S'1.</a> <a class="tactic" href="typing-details.html#50">search.</a></div>
 
 
-<a class="command" href="typing-details.html#51">Prove_Constraint lambda_calculus:host:trans_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(52);" id="toggleproof52">[Show Proof]</a>
+<a class="command" href="typing-details.html#51">Prove_Constraint lambda_calculus:host:proj_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(52);" id="toggleproof52">[Show Proof]</a>
 <div class="proof" id="proof52" style="display: none;">
 <span class="comment">%tyabs</span>
  <a class="tactic" href="typing-details.html#52">case Ev.</a> <a class="tactic" href="typing-details.html#53">search.</a></div>
 
-<a class="command" href="typing-details.html#54">Prove_Constraint lambda_calculus:host:trans_eval_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(55);" id="toggleproof55">[Show Proof]</a>
+<a class="command" href="typing-details.html#54">Prove_Constraint lambda_calculus:host:proj_eval_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(55);" id="toggleproof55">[Show Proof]</a>
 <div class="proof" id="proof55" style="display: none;">
 <span class="comment">%tyabs</span>
  <a class="tactic" href="typing-details.html#55">case Ev.</a> <a class="tactic" href="typing-details.html#56">case Ev'.</a> <a class="tactic" href="typing-details.html#57">search.</a>
@@ -230,8 +230,8 @@ typeOf G E Ty
  <a class="tactic" href="typing-details.html#79">search.</a>
 <span class="comment">%T-App</span>
  <a class="tactic" href="typing-details.html#80">Is: case IsE.</a> <a class="tactic" href="typing-details.html#81">apply IH to _ Ty1 _.</a> <a class="tactic" href="typing-details.html#82">apply IH to _ Ty2 _.</a> <a class="tactic" href="typing-details.html#83">search.</a>
-<span class="comment">%T-Trans</span>
- <a class="tactic" href="typing-details.html#84">apply trans_is to Ty1 IsE.</a> <a class="tactic" href="typing-details.html#85">apply IH to _ Ty2 _.</a> <a class="tactic" href="typing-details.html#86">search.</a></div>
+<span class="comment">%T-D</span>
+ <a class="tactic" href="typing-details.html#84">apply proj_is to Ty1 IsE.</a> <a class="tactic" href="typing-details.html#85">apply IH to _ Ty2 _.</a> <a class="tactic" href="typing-details.html#86">search.</a></div>
 
 <a class="command" href="typing-details.html#87">Theorem any_ctx : forall E Ty G,
   is_e E -> typeOf [] E Ty -> typeOf G E Ty.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(88);" id="toggleproof88">[Show Proof]</a>
@@ -312,9 +312,9 @@ typeOf G E Ty
 <span class="comment">%T-App</span>
  <a class="tactic" href="typing-details.html#157">Is: case IsE.</a> <a class="tactic" href="typing-details.html#158">S: case S.</a> <a class="tactic" href="typing-details.html#159">apply IH to _ _ _ S TyE1 _ _ _.</a>
  <a class="tactic" href="typing-details.html#160">apply IH to _ _ _ S1 TyE2 _ _ _.</a> <a class="tactic" href="typing-details.html#161">search.</a>
-<span class="comment">%T-Trans</span>
- <a class="tactic" href="typing-details.html#162">ST: apply trans_subst to TyE1 _ _ _ S.</a> <a class="tactic" href="typing-details.html#163">apply trans_is to TyE1 _.</a>
- <a class="tactic" href="typing-details.html#164">apply trans_subst_same to TyE1 _ _ _ S ST.</a>
+<span class="comment">%T-D</span>
+ <a class="tactic" href="typing-details.html#162">ST: apply proj_subst to TyE1 _ _ _ S.</a> <a class="tactic" href="typing-details.html#163">apply proj_is to TyE1 _.</a>
+ <a class="tactic" href="typing-details.html#164">apply proj_subst_same to TyE1 _ _ _ S ST.</a>
  <a class="tactic" href="typing-details.html#165">apply IH to _ _ _ ST TyE2 _ _ _.</a> <a class="tactic" href="typing-details.html#166">search.</a></div>
 
 
@@ -337,7 +337,7 @@ typeOf G E Ty
 <span class="comment">%E-Tyabs</span>
  <a class="tactic" href="typing-details.html#181">case Ty.</a> <a class="tactic" href="typing-details.html#182">search.</a>
 <span class="comment">%E-Q</span>
- <a class="tactic" href="typing-details.html#183">Ty: case Ty.</a> <a class="tactic" href="typing-details.html#184">apply trans_same to Ev1 Ty.</a> <a class="tactic" href="typing-details.html#185">apply trans_is to Ty _.</a>
+ <a class="tactic" href="typing-details.html#183">Ty: case Ty.</a> <a class="tactic" href="typing-details.html#184">apply proj_same to Ev1 Ty.</a> <a class="tactic" href="typing-details.html#185">apply proj_is to Ty _.</a>
  <a class="tactic" href="typing-details.html#186">apply IH to _ Ty1 Ev2.</a> <a class="tactic" href="typing-details.html#187">search.</a></div>
 
 <span class="comment">/*
@@ -345,8 +345,8 @@ typeOf G E Ty
   have any arrow type.
 
   We also cannot prove progress because, in the generic case,
-  we could show the translation would evaluate, but we do not have a
-  translation constraint that would allow us to lift this back to the
+  we could show the projection would evaluate, but we do not have a
+  projection constraint that would allow us to lift this back to the
   new syntax.
 */</span>
 <a class="command" href="typing-details.html#188"></a>

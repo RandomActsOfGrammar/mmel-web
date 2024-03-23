@@ -17,54 +17,54 @@
  < <b>Module unsat_proofs:lrat.</b>
 </pre>
 <pre class="code extensibella"id="1">
- &lt; <b>Translation_Constraint trans_lit_unique :
+ &lt; <b>Projection_Constraint proj_lit_unique :
    forall L LA LB,
-   TransA : |{lit}- L ~~&gt; LA -&gt;
-   TransB : |{lit}- L ~~&gt; LB -&gt;
+   ProjA : |{lit}- L ~~&gt; LA -&gt;
+   ProjB : |{lit}- L ~~&gt; LB -&gt;
    LA = LB.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="2">
- &lt; <b>Translation_Constraint trans_lit_is :
+ &lt; <b>Projection_Constraint proj_lit_is :
    forall L LT,
-   Trans : |{lit}- L ~~&gt; LT -&gt;
+   Proj : |{lit}- L ~~&gt; LT -&gt;
    IsL : is_lit L -&gt;
    is_lit LT.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="3">
- &lt; <b>Translation_Constraint trans_clause_unique :
+ &lt; <b>Projection_Constraint proj_clause_unique :
    forall C CA CB,
-   TransA : |{clause}- C ~~&gt; CA -&gt;
-   TransB : |{clause}- C ~~&gt; CB -&gt;
+   ProjA : |{clause}- C ~~&gt; CA -&gt;
+   ProjB : |{clause}- C ~~&gt; CB -&gt;
    CA = CB.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="4">
- &lt; <b>Translation_Constraint trans_clause_is :
+ &lt; <b>Projection_Constraint proj_clause_is :
    forall C CT,
-   Trans : |{clause}- C ~~&gt; CT -&gt;
+   Proj : |{clause}- C ~~&gt; CT -&gt;
    IsC : is_clause C -&gt;
    is_clause CT.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="5">
- &lt; <b>Translation_Constraint trans_formula_unique :
+ &lt; <b>Projection_Constraint proj_formula_unique :
    forall F FA FB,
-   TransA : |{formula}- F ~~&gt; FA -&gt;
-   TransB : |{formula}- F ~~&gt; FB -&gt;
+   ProjA : |{formula}- F ~~&gt; FA -&gt;
+   projB : |{formula}- F ~~&gt; FB -&gt;
    FA = FB.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="6">
- &lt; <b>Translation_Constraint trans_formula_is :
+ &lt; <b>Projection_Constraint proj_formula_is :
    forall F FT,
-   Trans : |{formula}- F ~~&gt; FT -&gt;
+   Proj : |{formula}- F ~~&gt; FT -&gt;
    IsF : is_formula F -&gt;
    is_formula FT.</b>
 
@@ -6521,7 +6521,7 @@ IsL1 : is_integer I
 Proof completed.
 </pre>
 <pre class="code extensibella"id="401">
- &lt; <b>Translation_Constraint sat_clause_ext_to_trans :
+ &lt; <b>Projection_Constraint sat_clause_ext_to_proj :
    forall C C' Sat,
    |{clause}- C ~~&gt; C' -&gt; is_list is_lit Sat -&gt; is_clause C -&gt; sat_clause Sat C -&gt;
    sat_clause Sat C'.</b>
@@ -6529,7 +6529,7 @@ Proof completed.
 Proof completed.
 </pre>
 <pre class="code extensibella"id="402">
- &lt; <b>Translation_Constraint sat_clause_trans_to_ext :
+ &lt; <b>Projection_Constraint sat_clause_proj_to_ext :
    forall C C' Sat,
    |{clause}- C ~~&gt; C' -&gt; is_list is_lit Sat -&gt; is_clause C -&gt; sat_clause Sat C' -&gt;
    sat_clause Sat C.</b>
@@ -6537,7 +6537,7 @@ Proof completed.
 Proof completed.
 </pre>
 <pre class="code extensibella"id="403">
- &lt; <b>Translation_Constraint unsat_clause_ext_to_trans :
+ &lt; <b>Projection_Constraint unsat_clause_ext_to_proj :
    forall C C' Unsat,
    |{clause}- C ~~&gt; C' -&gt; is_list is_lit Unsat -&gt; is_clause C -&gt; unsat_clause Unsat C -&gt;
    unsat_clause Unsat C'.</b>
@@ -6545,7 +6545,7 @@ Proof completed.
 Proof completed.
 </pre>
 <pre class="code extensibella"id="404">
- &lt; <b>Translation_Constraint unsat_clause_trans_to_ext :
+ &lt; <b>Projection_Constraint unsat_clause_proj_to_ext :
    forall C C' Unsat,
    |{clause}- C ~~&gt; C' -&gt; is_list is_lit Unsat -&gt; is_clause C -&gt; unsat_clause Unsat C' -&gt;
    unsat_clause Unsat C.</b>
@@ -6553,14 +6553,14 @@ Proof completed.
 Proof completed.
 </pre>
 <pre class="code extensibella"id="405">
- &lt; <b>Translation_Constraint sat_formula_ext_to_trans :
+ &lt; <b>Projection_Constraint sat_formula_ext_to_proj :
    forall F F' Sat,
    |{formula}- F ~~&gt; F' -&gt; is_list is_lit Sat -&gt; sat_formula Sat F -&gt; sat_formula Sat F'.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="406">
- &lt; <b>Translation_Constraint sat_formula_trans_to_ext :
+ &lt; <b>Projection_Constraint sat_formula_proj_to_ext :
    forall F F' Sat,
    |{formula}- F ~~&gt; F' -&gt; is_list is_lit Sat -&gt; sat_formula Sat F' -&gt; sat_formula Sat F.</b>
 
@@ -13407,7 +13407,7 @@ H1 : permutation LRest LRest1
 Proof completed.
 </pre>
 <pre class="code extensibella"id="806">
- &lt; <b>Translation_Constraint trans_gatherLits :
+ &lt; <b>Projection_Constraint proj_gatherLits :
    forall C C' L,
    |{clause}- C ~~&gt; C' -&gt; is_clause C -&gt; gatherLits C L -&gt; exists L',
      gatherLits C' L'.</b>
@@ -13415,7 +13415,7 @@ Proof completed.
 Proof completed.
 </pre>
 <pre class="code extensibella"id="807">
- &lt; <b>Translation_Constraint trans_gatherLits_permutation :
+ &lt; <b>Projection_Constraint proj_gatherLits_permutation :
    forall C C' L L',
    |{clause}- C ~~&gt; C' -&gt; is_clause C -&gt; gatherLits C L -&gt; gatherLits C' L' -&gt; permutation L L'.</b>
 
@@ -15850,9 +15850,9 @@ H1 : rupProof K2 C Prf
 Proof completed.
 </pre>
 <pre class="code extensibella"id="941">
- &lt; <b>Translation_Constraint trans_proof_is :
+ &lt; <b>Projection_Constraint proj_proof_is :
    forall Known P PT,
-   Trans : Known |{proof}- P ~~&gt; PT -&gt;
+   Proj : Known |{proof}- P ~~&gt; PT -&gt;
    IsP : is_proof P -&gt;
    IsKnown : is_list (is_pair is_integer is_clause) Known -&gt;
    is_proof PT.</b>
@@ -17999,7 +17999,7 @@ H1 : &lt;checkProof {T}&gt; KRest Rest
 Proof completed.
 </pre>
 <pre class="code extensibella"id="1029">
- &lt; <b>Translation_Constraint trans_checkProof :
+ &lt; <b>Projection_Constraint proj_checkProof :
    forall Known P P',
    Known |{proof}- P ~~&gt; P' -&gt; checkProof Known P -&gt; is_list (is_pair is_integer is_clause) Known -&gt;
    good_clause_list Known -&gt; checkProof Known P'.</b>

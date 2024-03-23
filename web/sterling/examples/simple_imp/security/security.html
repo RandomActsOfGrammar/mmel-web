@@ -19,17 +19,17 @@ Module simple_imp:security
 
 Builds on simple_imp:host
 
-<span class="comment">/*New Statement and Translation*/</span>
+<span class="comment">/*New Statement and Projection*/</span>
 c ::= ...
     | declareSec(string, seclevel, ty, e)
 
 
---------------------------------------------------- [Trans-DeclareSec]
+--------------------------------------------------- [Proj-DeclareSec]
 |{c}- declareSec(X, S, Ty, E) ~~> declare(X, Ty, E)
 
 
 seclevel ::= public | private
-Translation seclevel :
+Projection seclevel :
 
 
 
@@ -140,7 +140,7 @@ level G recFieldAccess(Rec, Field) S
 
 |{e}- E ~~> ET
 level G ET S
--------------- [S-TransExpr]*
+-------------- [S-ProjExpr]*
 level G E S
 
 
@@ -160,7 +160,7 @@ rf_level G addRecFieldExprs(L, E, Rest) S
 
 |{recFieldExprs}- RF ~~> RFT
 rf_level G RFT S
----------------------------- [S-RFTrans]*
+---------------------------- [S-RFProj]*
 rf_level G RF S
 
 
@@ -243,7 +243,7 @@ secure PC G while(Cond, Body) G
 
 |{c}- C ~~> CT
 secure PC G CT G1
------------------ [S-Trans]*
+----------------- [S-Proj]*
 secure PC G C G1
 
 </pre>

@@ -25,15 +25,15 @@ e ::= ...
     | falseE
     | if(e, e, e)
 
--------------------------------------------- [Trans-True]
+-------------------------------------------- [Proj-True]
 |{e}- trueE ~~> abs("a", abs("b", var("a")))
 
 
---------------------------------------------- [Trans-False]
+--------------------------------------------- [Proj-False]
 |{e}- falseE ~~> abs("a", abs("b", var("b")))
 
 
---------------------------------------------- [Trans-If]
+--------------------------------------------- [Proj-If]
 |{e}- if(Cond, T, F) ~~> app(app(Cond, T), F)
 </pre>
 <h3>File:  eval.sos</h3>
@@ -78,7 +78,7 @@ subst X R if(Cond, T, F) app(app(CS, TS), FS)
 <a class="command" href="bool-details.html#0">Module lambda_calculus:bool.</a>
 
 
-<a class="command" href="bool-details.html#1">Prove_Constraint lambda_calculus:host:trans_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<a class="command" href="bool-details.html#1">Prove_Constraint lambda_calculus:host:proj_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
 <div class="proof" id="proof2" style="display: none;">
 <span class="comment">%true</span>
  <a class="tactic" href="bool-details.html#2">search 6.</a>
@@ -98,7 +98,7 @@ subst X R if(Cond, T, F) app(app(CS, TS), FS)
  <a class="tactic" href="bool-details.html#13">apply IH to R1.</a> <a class="tactic" href="bool-details.html#14">apply IH to R2.</a> <a class="tactic" href="bool-details.html#15">apply IH to R3.</a> <a class="tactic" href="bool-details.html#16">search.</a></div>
 
 
-<a class="command" href="bool-details.html#17">Prove_Constraint lambda_calculus:host:trans_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(18);" id="toggleproof18">[Show Proof]</a>
+<a class="command" href="bool-details.html#17">Prove_Constraint lambda_calculus:host:proj_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(18);" id="toggleproof18">[Show Proof]</a>
 <div class="proof" id="proof18" style="display: none;">
 <span class="comment">%true</span>
  <a class="tactic" href="bool-details.html#18">case Hyp1.</a> <a class="tactic" href="bool-details.html#19">search.</a>
@@ -161,7 +161,7 @@ subst X R if(Cond, T, F) app(app(CS, TS), FS)
  <a class="tactic" href="bool-details.html#61">EvB: case EvB.</a> <a class="tactic" href="bool-details.html#62">Is: case IsE.</a> <a class="tactic" href="bool-details.html#63">apply IH to _ EvA1 EvB.</a> <a class="tactic" href="bool-details.html#64">search.</a></div>
 
 
-<a class="command" href="bool-details.html#65">Prove_Constraint lambda_calculus:host:trans_subst.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(66);" id="toggleproof66">[Show Proof]</a>
+<a class="command" href="bool-details.html#65">Prove_Constraint lambda_calculus:host:proj_subst.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(66);" id="toggleproof66">[Show Proof]</a>
 <div class="proof" id="proof66" style="display: none;">
 <span class="comment">%true</span>
  <a class="tactic" href="bool-details.html#66">OrA: apply is_string_eq_or_not to IsX _ with S2 = "a".</a>
@@ -189,7 +189,7 @@ subst X R if(Cond, T, F) app(app(CS, TS), FS)
  <a class="tactic" href="bool-details.html#80">Is: case IsE.</a> <a class="tactic" href="bool-details.html#81">S: case S.</a> <a class="tactic" href="bool-details.html#82">search.</a></div>
 
 
-<a class="command" href="bool-details.html#83">Prove_Constraint lambda_calculus:host:trans_subst_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(84);" id="toggleproof84">[Show Proof]</a>
+<a class="command" href="bool-details.html#83">Prove_Constraint lambda_calculus:host:proj_subst_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(84);" id="toggleproof84">[Show Proof]</a>
 <div class="proof" id="proof84" style="display: none;">
 <span class="comment">%true</span>
  <a class="tactic" href="bool-details.html#84">case S.</a> <a class="tactic" href="bool-details.html#85">S': case S'.</a>
@@ -226,7 +226,7 @@ subst X R if(Cond, T, F) app(app(CS, TS), FS)
  <a class="tactic" href="bool-details.html#106">apply subst_unique to _ _ _ S2 S'1.</a> <a class="tactic" href="bool-details.html#107">search.</a></div>
 
 
-<a class="command" href="bool-details.html#108">Prove_Constraint lambda_calculus:host:trans_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(109);" id="toggleproof109">[Show Proof]</a>
+<a class="command" href="bool-details.html#108">Prove_Constraint lambda_calculus:host:proj_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(109);" id="toggleproof109">[Show Proof]</a>
 <div class="proof" id="proof109" style="display: none;">
 <span class="comment">%true</span>
  <a class="tactic" href="bool-details.html#109">search.</a>
@@ -236,7 +236,7 @@ subst X R if(Cond, T, F) app(app(CS, TS), FS)
  <a class="tactic" href="bool-details.html#111">Ev: case Ev.</a> <a class="tactic" href="bool-details.html#112">search.</a></div>
 
 
-<a class="command" href="bool-details.html#113">Prove_Constraint lambda_calculus:host:trans_eval_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(114);" id="toggleproof114">[Show Proof]</a>
+<a class="command" href="bool-details.html#113">Prove_Constraint lambda_calculus:host:proj_eval_same.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(114);" id="toggleproof114">[Show Proof]</a>
 <div class="proof" id="proof114" style="display: none;">
 <span class="comment">%true</span>
  <a class="tactic" href="bool-details.html#114">case Ev.</a> <a class="tactic" href="bool-details.html#115">case Ev'.</a> <a class="tactic" href="bool-details.html#116">search.</a>

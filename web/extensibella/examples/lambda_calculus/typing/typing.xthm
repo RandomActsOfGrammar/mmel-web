@@ -1,7 +1,7 @@
 Module lambda_calculus:typing.
 
 
-Prove_Constraint lambda_calculus:host:trans_is.
+Prove_Constraint lambda_calculus:host:proj_is.
 %tyabs
  case Hyp1. search.
 
@@ -11,7 +11,7 @@ Prove_Ext_Ind lambda_calculus:host:is_e.
  apply IH to R3. search.
 
 
-Prove_Constraint lambda_calculus:host:trans_same.
+Prove_Constraint lambda_calculus:host:proj_same.
 %tyabs
  case Hyp1. search.
 
@@ -57,7 +57,7 @@ Prove lambda_calculus:host:eval_unique.
  case EvB. search.
 
 
-Prove_Constraint lambda_calculus:host:trans_subst.
+Prove_Constraint lambda_calculus:host:proj_subst.
 %tyabs
  S: case S.
    %S-Tyabs-Eq
@@ -65,7 +65,7 @@ Prove_Constraint lambda_calculus:host:trans_subst.
    %S-Tyabs-NEq
     search.
 
-Prove_Constraint lambda_calculus:host:trans_subst_same.
+Prove_Constraint lambda_calculus:host:proj_subst_same.
 %tyabs
  S: case S.
    %S-Tyabs-Eq
@@ -82,11 +82,11 @@ Prove_Constraint lambda_calculus:host:trans_subst_same.
        case IsE. apply subst_unique to _ _ _ S1 S'1. search.
 
 
-Prove_Constraint lambda_calculus:host:trans_eval.
+Prove_Constraint lambda_calculus:host:proj_eval.
 %tyabs
  case Ev. search.
 
-Prove_Constraint lambda_calculus:host:trans_eval_same.
+Prove_Constraint lambda_calculus:host:proj_eval_same.
 %tyabs
  case Ev. case Ev'. search.
 
@@ -126,8 +126,8 @@ Extensible_Theorem
  search.
 %T-App
  Is: case IsE. apply IH to _ Ty1 _. apply IH to _ Ty2 _. search.
-%T-Trans
- apply trans_is to Ty1 IsE. apply IH to _ Ty2 _. search.
+%T-D
+ apply proj_is to Ty1 IsE. apply IH to _ Ty2 _. search.
 
 Theorem any_ctx : forall E Ty G,
   is_e E -> typeOf [] E Ty -> typeOf G E Ty.
@@ -205,9 +205,9 @@ Extensible_Theorem
 %T-App
  Is: case IsE. S: case S. apply IH to _ _ _ S TyE1 _ _ _.
  apply IH to _ _ _ S1 TyE2 _ _ _. search.
-%T-Trans
- ST: apply trans_subst to TyE1 _ _ _ S. apply trans_is to TyE1 _.
- apply trans_subst_same to TyE1 _ _ _ S ST.
+%T-D
+ ST: apply proj_subst to TyE1 _ _ _ S. apply proj_is to TyE1 _.
+ apply proj_subst_same to TyE1 _ _ _ S ST.
  apply IH to _ _ _ ST TyE2 _ _ _. search.
 
 
@@ -229,7 +229,7 @@ Extensible_Theorem
 %E-Tyabs
  case Ty. search.
 %E-Q
- Ty: case Ty. apply trans_same to Ev1 Ty. apply trans_is to Ty _.
+ Ty: case Ty. apply proj_same to Ev1 Ty. apply proj_is to Ty _.
  apply IH to _ Ty1 Ev2. search.
 
 /*
@@ -237,7 +237,7 @@ Extensible_Theorem
   have any arrow type.
 
   We also cannot prove progress because, in the generic case,
-  we could show the translation would evaluate, but we do not have a
-  translation constraint that would allow us to lift this back to the
+  we could show the projection would evaluate, but we do not have a
+  projection constraint that would allow us to lift this back to the
   new syntax.
 */

@@ -10,15 +10,15 @@ induction on 2. intros Is L. L: case L.
    Is: case Is. apply IH to _ L1. search.
 
 
-Translation_Constraint
-  trans_ty_is : forall Ty Ty',
-    Trans : |{ty}- Ty ~~> Ty' ->
+Projection_Constraint
+  proj_ty_is : forall Ty Ty',
+    Proj : |{ty}- Ty ~~> Ty' ->
     IsTy : is_ty Ty ->
     is_ty Ty'.
 
 
 /*
-  This goes before trans_is because translation might depend on the
+  This goes before proj_is because projection might depend on the
   context, and thus the type, so we might need this to prove that.
 */
 Extensible_Theorem
@@ -40,9 +40,9 @@ Extensible_Theorem
  search.
 
 
-Translation_Constraint
-  trans_is : forall Ctx T T',
-    Trans : Ctx |{tm}- T ~~> T' ->
+Projection_Constraint
+  proj_is : forall Ctx T T',
+    Proj : Ctx |{tm}- T ~~> T' ->
     IsCtx : is_list (is_pair is_string is_ty) Ctx ->
     IsT : is_tm T ->
     is_tm T'.
@@ -69,11 +69,11 @@ Extensible_Theorem
  case TyB. search.
 
 
-Translation_Constraint trans_ty_unique : forall Ty TyA TyB,
+Projection_Constraint proj_ty_unique : forall Ty TyA TyB,
   |{ty}- Ty ~~> TyA -> |{ty}- Ty ~~> TyB -> is_ty Ty -> TyA = TyB.
 
 
-Translation_Constraint trans_tm_unique : forall Ctx T TA TB,
+Projection_Constraint proj_tm_unique : forall Ctx T TA TB,
   Ctx |{tm}- T ~~> TA -> Ctx |{tm}- T ~~> TB ->
   is_tm T -> is_list (is_pair is_string is_ty) Ctx -> TA = TB.
 
@@ -375,7 +375,7 @@ Extensible_Theorem
   construct having any type from another extension.  While a relation
   to pull apart the form solves that problem, we still don't have a
   way to prove the extension-introduced form relation would hold
-  because, in the generic case, the translation might not have the
+  because, in the generic case, the projection might not have the
   same type and then the IH would be unhelpful.
 
   In summary, directly proving canonical form lemmas for
@@ -462,7 +462,7 @@ Extensible_Theorem
   this as an extensible property below, in desugar_ty_rel.
 
   Defining desugaring as proof-level relations here ensures terms are
-  fully translated and an extension doesn't define desugaring in a way
+  fully projected and an extension doesn't define desugaring in a way
   that doesn't actually desugar fully.
  */
 Define desugar_ty : ty -> ty -> prop by
@@ -521,7 +521,7 @@ induction on 2. intros IsTy DA DB. DA: case DA.
      %DS-IntTy
       case DA.
      %DS-OtherTy
-      apply trans_ty_unique to DA DB _. apply trans_ty_is to DA _.
+      apply proj_ty_unique to DA DB _. apply proj_ty_is to DA _.
       apply IH to _ DA1 DB1. search.
 
 Theorem desugar_tm_unique : forall Ctx T TA TB,
@@ -574,7 +574,7 @@ induction on 3. intros IsCtx IsT DA DB. DA: case DA.
      %DS-Plus
       case DA.
      %DS-OtherTm
-      apply trans_tm_unique to DA DB _ _. apply trans_is to DA _ _.
+      apply proj_tm_unique to DA DB _ _. apply proj_is to DA _ _.
       apply IH to _ _ DA1 DB1. search.
 
 Extensible_Theorem

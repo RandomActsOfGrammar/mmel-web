@@ -17,10 +17,10 @@
  < <b>Module stlc:pair.</b>
 </pre>
 <pre class="code extensibella"id="1">
- &lt; <b>Prove_Constraint stlc:host:trans_ty_is.</b>
+ &lt; <b>Prove_Constraint stlc:host:proj_ty_is.</b>
 
 Variables: Ty1
-Trans : |{ty}- pairTy Ty1 ~~&gt; arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1
+Proj : |{ty}- pairTy Ty1 ~~&gt; arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1
 IsTy : is_ty (pairTy Ty1)
 ============================
  is_ty (arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1)
@@ -29,7 +29,7 @@ IsTy : is_ty (pairTy Ty1)
  &lt; <b>case IsTy.</b>
 
 Variables: Ty1
-Trans : |{ty}- pairTy Ty1 ~~&gt; arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1
+Proj : |{ty}- pairTy Ty1 ~~&gt; arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1
 H1 : is_ty Ty1
 ============================
  is_ty (arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1)
@@ -220,15 +220,15 @@ H1 : is_ty Ty
 Proof completed.
 </pre>
 <pre class="code extensibella"id="16">
- &lt; <b>Prove_Constraint stlc:host:trans_is.</b>
+ &lt; <b>Prove_Constraint stlc:host:proj_is.</b>
 
 Subgoal 1:
 
 Variables: Ctx T2 T1 Ty
-Trans : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+Proj : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
 IsCtx : is_list (is_pair is_string is_ty) Ctx
 IsT : is_tm (pair T1 T2)
-Trans1 : typeOf Ctx T1 Ty
+Proj1 : typeOf Ctx T1 Ty
 ============================
  is_tm (app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2)
 </pre>
@@ -238,23 +238,23 @@ Trans1 : typeOf Ctx T1 Ty
 Subgoal 1:
 
 Variables: Ctx T2 T1 Ty
-Trans : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+Proj : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
 IsCtx : is_list (is_pair is_string is_ty) Ctx
-Trans1 : typeOf Ctx T1 Ty
+Proj1 : typeOf Ctx T1 Ty
 H1 : is_tm T1
 H2 : is_tm T2
 ============================
  is_tm (app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2)
 </pre>
 <pre class="code extensibella"id="18">
- &lt; <b>apply type_is to _ _ Trans1.</b>
+ &lt; <b>apply type_is to _ _ Proj1.</b>
 
 Subgoal 1:
 
 Variables: Ctx T2 T1 Ty
-Trans : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
+Proj : Ctx |{tm}- pair T1 T2 ~~&gt; app (app (abs "A" Ty (abs "B" Ty (abs "S" (arrowTy Ty (arrowTy Ty Ty)) (app (app (var "S") (var "A")) (var "B"))))) T1) T2
 IsCtx : is_list (is_pair is_string is_ty) Ctx
-Trans1 : typeOf Ctx T1 Ty
+Proj1 : typeOf Ctx T1 Ty
 H1 : is_tm T1
 H2 : is_tm T2
 H3 : is_ty Ty
@@ -267,10 +267,10 @@ H3 : is_ty Ty
 Subgoal 2:
 
 Variables: Ctx Ty T1
-Trans : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+Proj : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
 IsCtx : is_list (is_pair is_string is_ty) Ctx
 IsT : is_tm (fst T1)
-Trans1 : typeOf Ctx T1 (pairTy Ty)
+Proj1 : typeOf Ctx T1 (pairTy Ty)
 ============================
  is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "A"))))
 </pre>
@@ -280,22 +280,22 @@ Trans1 : typeOf Ctx T1 (pairTy Ty)
 Subgoal 2:
 
 Variables: Ctx Ty T1
-Trans : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+Proj : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
 IsCtx : is_list (is_pair is_string is_ty) Ctx
-Trans1 : typeOf Ctx T1 (pairTy Ty)
+Proj1 : typeOf Ctx T1 (pairTy Ty)
 H1 : is_tm T1
 ============================
  is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "A"))))
 </pre>
 <pre class="code extensibella"id="21">
- &lt; <b>IsTy: apply type_is to _ _ Trans1.</b>
+ &lt; <b>IsTy: apply type_is to _ _ Proj1.</b>
 
 Subgoal 2:
 
 Variables: Ctx Ty T1
-Trans : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+Proj : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
 IsCtx : is_list (is_pair is_string is_ty) Ctx
-Trans1 : typeOf Ctx T1 (pairTy Ty)
+Proj1 : typeOf Ctx T1 (pairTy Ty)
 H1 : is_tm T1
 IsTy : is_ty (pairTy Ty)
 ============================
@@ -307,9 +307,9 @@ IsTy : is_ty (pairTy Ty)
 Subgoal 2:
 
 Variables: Ctx Ty T1
-Trans : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
+Proj : Ctx |{tm}- fst T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "A")))
 IsCtx : is_list (is_pair is_string is_ty) Ctx
-Trans1 : typeOf Ctx T1 (pairTy Ty)
+Proj1 : typeOf Ctx T1 (pairTy Ty)
 H1 : is_tm T1
 H2 : is_ty Ty
 ============================
@@ -321,10 +321,10 @@ H2 : is_ty Ty
 Subgoal 3:
 
 Variables: Ctx Ty T1
-Trans : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+Proj : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
 IsCtx : is_list (is_pair is_string is_ty) Ctx
 IsT : is_tm (snd T1)
-Trans1 : typeOf Ctx T1 (pairTy Ty)
+Proj1 : typeOf Ctx T1 (pairTy Ty)
 ============================
  is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "B"))))
 </pre>
@@ -334,22 +334,22 @@ Trans1 : typeOf Ctx T1 (pairTy Ty)
 Subgoal 3:
 
 Variables: Ctx Ty T1
-Trans : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+Proj : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
 IsCtx : is_list (is_pair is_string is_ty) Ctx
-Trans1 : typeOf Ctx T1 (pairTy Ty)
+Proj1 : typeOf Ctx T1 (pairTy Ty)
 H1 : is_tm T1
 ============================
  is_tm (app T1 (abs "A" Ty (abs "B" Ty (var "B"))))
 </pre>
 <pre class="code extensibella"id="25">
- &lt; <b>IsTy: apply type_is to _ _ Trans1.</b>
+ &lt; <b>IsTy: apply type_is to _ _ Proj1.</b>
 
 Subgoal 3:
 
 Variables: Ctx Ty T1
-Trans : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+Proj : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
 IsCtx : is_list (is_pair is_string is_ty) Ctx
-Trans1 : typeOf Ctx T1 (pairTy Ty)
+Proj1 : typeOf Ctx T1 (pairTy Ty)
 H1 : is_tm T1
 IsTy : is_ty (pairTy Ty)
 ============================
@@ -361,9 +361,9 @@ IsTy : is_ty (pairTy Ty)
 Subgoal 3:
 
 Variables: Ctx Ty T1
-Trans : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
+Proj : Ctx |{tm}- snd T1 ~~&gt; app T1 (abs "A" Ty (abs "B" Ty (var "B")))
 IsCtx : is_list (is_pair is_string is_ty) Ctx
-Trans1 : typeOf Ctx T1 (pairTy Ty)
+Proj1 : typeOf Ctx T1 (pairTy Ty)
 H1 : is_tm T1
 H2 : is_ty Ty
 ============================
@@ -593,7 +593,7 @@ TyB : typeOf Ctx T1 (pairTy TyB)
 Proof completed.
 </pre>
 <pre class="code extensibella"id="41">
- &lt; <b>Prove_Constraint stlc:host:trans_ty_unique.</b>
+ &lt; <b>Prove_Constraint stlc:host:proj_ty_unique.</b>
 
 Variables: TyB Ty1
 Hyp : |{ty}- pairTy Ty1 ~~&gt; arrowTy (arrowTy Ty1 (arrowTy Ty1 Ty1)) Ty1
@@ -617,7 +617,7 @@ Hyp2 : is_ty (pairTy Ty1)
 Proof completed.
 </pre>
 <pre class="code extensibella"id="44">
- &lt; <b>Prove_Constraint stlc:host:trans_tm_unique.</b>
+ &lt; <b>Prove_Constraint stlc:host:proj_tm_unique.</b>
 
 Subgoal 1:
 

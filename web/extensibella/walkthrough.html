@@ -122,7 +122,7 @@ $ <b>./build_extensibella</b></pre>
     (<code class="sterling">tm</code>) and types
     (<code class="sterling">ty</code>).  As discussed in
     the <a href="../sterling/tutorial.html">Sterling tutorial</a>,
-    each type must also declare its translation type.
+    each type must also declare its projection type.
   </p>
 
   <p>
@@ -145,12 +145,12 @@ tm ::= var(string)
      | abs(string, ty, tm)
      | app(tm, tm)
 
-Translation tm : [(string, ty)]
+Projection tm : [(string, ty)]
 
 ty ::= arrowTy(ty, ty)
      | intTy
 
-Translation ty :
+Projection ty :
 
 
 
@@ -356,7 +356,7 @@ Extensible_Theorem
  apply subst_type_preservation to Ty Ev2 Ty1. search.</div>
 
 
-Translation_Constraint trans_type_same : forall G T Ty T_T,
+Projection_Constraint proj_type_same : forall G T Ty T_T,
   G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.
 
 
@@ -683,30 +683,30 @@ Proof completed. </pre>
     proofs for any composed language.
   </p>
 
-  <h4>Translation Constraints</h4>
+  <h4>Projection Constraints</h4>
   <p>
-    The penultimate declaration in the file is for a translation
+    The penultimate declaration in the file is for a projection
     constraint, which is a special kind of extensible property.
-    Translation constraints specify how the semantics of
-    extension-introduced constructs must relate to their translations,
-    their translations being defined by special rules in Sterling.
-    For example, the translation constraint our host language
-    introduces requires a term and its translation have the same type.
+    Projection constraints specify how the semantics of
+    extension-introduced constructs must relate to their projections,
+    their projections being defined by special rules in Sterling.
+    For example, the projection constraint our host language
+    introduces requires a term and its projection have the same type.
   </p>
 
   <p>
-    The key relation for a translation constraint is its first
-    premise, which must be a translation of some term.  Note that we
-    have no proof for the translation constraint in the host language.
-    Because its key relation is a translation and the host language
-    does not introduce translating syntax, there are no proof cases
+    The key relation for a projection constraint is its first
+    premise, which must be a projection of some term.  Note that we
+    have no proof for the projection constraint in the host language.
+    Because its key relation is a projection and the host language
+    does not introduce projecting syntax, there are no proof cases
     for the host language to prove.
   </p>
 
   <p>
-    Note that this translation constraint does not contribute to the
+    Note that this projection constraint does not contribute to the
     proof of type preservation, which was the host language's main
-    goal.  Translation constraints can be viewed as a service to
+    goal.  Projection constraints can be viewed as a service to
     extension writers, as they don't generally help the host language
     prove its own properties, but they make it easier for extensions
     to prove their new properties.
@@ -786,8 +786,8 @@ $ <b>extensibella --check --compile host.xthm</b></pre>
     Our first extension adds a new form for terms,
     a <code>let</code>-binding, and defines the relations introduced
     by the host language for the new form.  It also defines its
-    translation in the <code class="sterling">Trans-Let</code> rule,
-    translating to an application of an abstraction.
+    projection in the <code class="sterling">Proj-Let</code> rule,
+    projecting to an application of an abstraction.
   </p>
 
   <a class="fold-link" href="javascript:void" id="togglelet.sos"
@@ -802,7 +802,7 @@ tm ::= ...
 
 
 typeOf Ctx T1 Ty
------------------------------------------------------ [Trans-Let]
+----------------------------------------------------- [Proj-Let]
 Ctx |{tm}- let(X, T1, T2) ~~> app(abs(X, Ty, T2), T1)
 
 
@@ -912,9 +912,9 @@ Prove walkthrough:host:type_preservation.<span> </span><a class="fold-link" href
  Ty: case Ty. apply subst_type_preservation to Ty1 Ev2 Ty. search.</div>
 
 
-Prove_Constraint walkthrough:host:trans_type_same.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(10);" id="toggleproof10">[Show Proof]</a>
+Prove_Constraint walkthrough:host:proj_type_same.<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(10);" id="toggleproof10">[Show Proof]</a>
 <div class="proof" id="proof10" style="display: none;">
-<span class="comment">%Trans-Let</span>
+<span class="comment">%Proj-Let</span>
  case Hyp1. apply typeOf_unique to Hyp2 H1. search.</div>
 
 
@@ -974,7 +974,7 @@ Prove_Ext_Ind walkthrough:host:typeOf.<span> </span><a class="fold-link" href="j
 
   <p>
     We will look at the proofs given by the let extension for type
-    preservation, the translation constraint, and
+    preservation, the projection constraint, and
     <code class="extensibella">Ext_Ind</code> for typing.  The earlier
     properties can be skipped past as we saw in the host language.
   </p>
@@ -1029,14 +1029,14 @@ Ev2 : subst X T1 T2 T'
   <pre class="code extensibella">
 <b>Ty: case Ty. apply subst_type_preservation to Ty1 Ev2 Ty. search.</b> </pre>
 
-  <h4>Proving Translation Constraint</h4>
+  <h4>Proving Projection Constraint</h4>
   <p>
     After proving type preservation, we are ready to prove the
-    translation constraint, and declare so with a
+    projection constraint, and declare so with a
     <code class="extensibella">Prove_Constraint</code> declaration:
   </p>
   <pre class="code extensibella">
- < <b>Prove_Constraint walkthrough:host:trans_type_same.</b>
+ < <b>Prove_Constraint walkthrough:host:proj_type_same.</b>
 
 Variables: G Ty T1 T2 Ty1 X
 Hyp : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
@@ -1046,9 +1046,9 @@ Hyp2 : typeOf G T1 Ty1
  typeOf G (app (abs X Ty1 T2) T1) Ty</pre>
 
   <p>
-    This gives us the case for the translation being derived using
-    the <code>Trans-Let</code> rule.  To show the translation this, we
-    need to show the translation
+    This gives us the case for the projection being derived using
+    the <code>Proj-Let</code> rule.  To show the projection this, we
+    need to show the projection
     <code class="extensibella">app (abs X Ty1 T2) T1</code>
     has the same type as the original term
     <code class="extensibella">let X T1 T2</code>.  We can analyze the
@@ -1107,12 +1107,12 @@ typeOf G T Ty</pre>
     This
     compatibility for a relation <code class="extensibella">rel</code>
     is defined by a relation <code class="extensibella">&lt;rel
-    {T}&gt;</code>, call the translation version
+    {T}&gt;</code>, call the projection version
     of <code class="extensibella">rel</code>.  In our case, this is
     <code class="extensibella">&lt;typeOf {T}&gt;</code>.  Each rule
     for this relation corresponds to one for the underlying relation,
     with those introduced by extensions having the generic rule, with
-    a translation and the relation holding for the translation,
+    a projection and the relation holding for the projection,
     incorporated.  We also have the extension size version of a
     relation, written <code class="extensibella">&lt;typeOf
     {ES}&gt;</code>, which incorporates a count of the number of
@@ -1123,7 +1123,7 @@ typeOf G T Ty</pre>
 
   <p>
     What <code>Ext_Ind</code> requires proving is that we have a
-    derivation of the translation version of a relation whenever we
+    derivation of the projection version of a relation whenever we
     have a derivation of the extension size version of the relation;
     in the case of <code>typeOf</code>, this is
     <pre class="code extensibella">
@@ -1212,15 +1212,15 @@ Acc : forall M, 0 <= M -> M < N -> acc M *
   <p>
     We see the first two conjuncts in the conclusion are those for the
     generic rule, and the others are the premises of
-    the <code>T-Let</code> typing rule, but now using the translation
+    the <code>T-Let</code> typing rule, but now using the projection
     version of the relation.  Then we need to show the
-    original <code>let</code> translates, that its translation has the
+    original <code>let</code> projects, that its projection has the
     same type, and that each of the premises can be turned into their
-    translation version.
+    projection version.
   </p>
 
   <p>
-    We start with showing the translation exists.  This requires a
+    We start with showing the projection exists.  This requires a
     typing derivation for <code>T1</code>, which we can get by
     applying the <code class="extensibella">drop_ext_ind_typeOf</code>
     property introduced by <code class="extensibella">Ext_Ind</code>:
@@ -1269,7 +1269,7 @@ H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
 
   <p>
     The other portions of the conclusion are related, as typing the
-    translation ultimately requires the same premises as
+    projection ultimately requires the same premises as
     the <code>T-Let</code> rule.  These will require using the
     inductive hypothesis, which will in turn require derivations of
     <code class="extensibella">acc</code> for <code>N2</code>
@@ -1807,7 +1807,7 @@ big_step T T2
 
 [] |{tm}- T ~~> T_T
 big_step T_T T1
-------------------- [Big-Trans]*
+------------------- [Big-D]*
 big_step T T1</pre>
 
   <p>
@@ -1816,8 +1816,8 @@ big_step T T1</pre>
     focus on the aspects of proving an extension-introduced property
     rather than the specific property.  The oddness here is that we
     may step through multiple small-step evaluation steps
-    (<code>eval</code> steps) or we may translate away any extension
-    syntax and step through the evaluation of its translation.
+    (<code>eval</code> steps) or we may project away any extension
+    syntax and step through the evaluation of its projection.
   </p>
 
   <p>
@@ -1851,7 +1851,7 @@ Prove walkthrough:host:subst_type_preservation.
 Prove walkthrough:host:type_preservation.
 
 
-Prove_Constraint walkthrough:host:trans_type_same.
+Prove_Constraint walkthrough:host:proj_type_same.
 
 
 Prove_Ext_Ind walkthrough:host:typeOf.
@@ -1868,8 +1868,8 @@ Extensible_Theorem
  search.
 <span class="comment">%Big-Step</span>
  apply type_preservation to Ty Big1. apply IH to _ Big2. search.
-<span class="comment">%Big-Trans</span>
- apply trans_type_same to Big1 Ty. apply IH to _ Big2. search.</div></pre>
+<span class="comment">%Big-D</span>
+ apply proj_type_same to Big1 Ty. apply IH to _ Big2. search.</div></pre>
 
   <p>
     As we saw with the let extension, Extensibella knows
@@ -1892,8 +1892,8 @@ Extensible_Theorem
     existing properties as lemmas in proving a new theorem in the
     proof of <code class="extensibella">big_step_type_preservation</code>, as we use
     both the <code class="extensibella">type_preservation</code>
-    theorem and <code class="extensibella">trans_type_same</code>
-    translation constraint from the host language as lemmas.
+    theorem and <code class="extensibella">proj_type_same</code>
+    projection constraint from the host language as lemmas.
   </p>
 
   <p>
@@ -2005,7 +2005,7 @@ Big2 : big_step T_T T' *
     case for <code>Big-Step</code>, is the generic case.  Because our
     key relation is introduced by this extension, the generic case
     uses the default rule introduced by the
-    module, <code>Big-Trans</code>, which is instantiated for each
+    module, <code>Big-D</code>, which is instantiated for each
     construct introduced by another extension in a composition.  For
     the generic proof, it is instantiated for a special
     term <code class="extensibella">&lt;unknown tm&gt;</code>
@@ -2036,15 +2036,15 @@ Big2 : big_step T_T T' *
 
   <p>
     Because case analysis is limited here, we instead rely on
-    translation constraints and other existing properties to show what
+    projection constraints and other existing properties to show what
     we want about the semantics
     of <code class="extensibella">&lt;unknown tm&gt;</code>.  We can
-    start our proof of this case by using the translation constraint
-    from the host language to show the translation <code>T_T</code>
+    start our proof of this case by using the projection constraint
+    from the host language to show the projection <code>T_T</code>
     has the same type:
   </p>
   <pre class="code extensibella">
- < <b>apply trans_type_same to Big1 Ty.</b>
+ < <b>apply proj_type_same to Big1 Ty.</b>
 Subgoal 3:
 
 Variables: Ty T' T_T
@@ -2162,7 +2162,7 @@ Prove walkthrough:host:subst_type_preservation.
 Prove walkthrough:host:type_preservation.
 
 
-Prove_Constraint walkthrough:host:trans_type_same.
+Prove_Constraint walkthrough:host:proj_type_same.
 
 
 Prove_Ext_Ind walkthrough:host:typeOf.
@@ -2389,13 +2389,13 @@ $ext__0__walkthrough-$-host-$-eval (walkthrough-$-let-$-let (X) (T1) (T2))
 $ext__0__walkthrough-$-host-$-eval (walkthrough-$-let-$-let (X) (T1) (T2)) (V) :=
     ($ext__0__walkthrough-$-host-$-value (T1)) /\
     ($ext__2__walkthrough-$-host-$-subst (X) (T1) (T2) (V)).
-Define $trans__walkthrough-$-host-$-ty : ($ty__walkthrough-$-host-$-ty) ->
+Define $proj__walkthrough-$-host-$-ty : ($ty__walkthrough-$-host-$-ty) ->
                                          ($ty__walkthrough-$-host-$-ty) -> prop by
-$trans__walkthrough-$-host-$-ty (X253) (X254) := false.
-Define $trans__walkthrough-$-host-$-tm :
+$proj__walkthrough-$-host-$-ty (X253) (X254) := false.
+Define $proj__walkthrough-$-host-$-tm :
                (list ($lib__pair (list $char) ($ty__walkthrough-$-host-$-ty))) ->
                ($ty__walkthrough-$-host-$-tm) -> ($ty__walkthrough-$-host-$-tm) -> prop by
-$trans__walkthrough-$-host-$-tm (Ctx) (walkthrough-$-let-$-let (X) (T1) (T2))
+$proj__walkthrough-$-host-$-tm (Ctx) (walkthrough-$-let-$-let (X) (T1) (T2))
            (walkthrough-$-host-$-app (walkthrough-$-host-$-abs (X) (Ty) (T2)) (T1)) :=
     $ext__1__walkthrough-$-host-$-typeOf (Ctx) (T1) (Ty).
 Define $ext__0__walkthrough-$-big_step-$-big_step : ($ty__walkthrough-$-host-$-tm) ->
@@ -2405,7 +2405,7 @@ $ext__0__walkthrough-$-big_step-$-big_step (T) (T2) :=
     exists T1, ($ext__0__walkthrough-$-host-$-eval (T) (T1)) /\
                ($ext__0__walkthrough-$-big_step-$-big_step (T1) (T2));
 $ext__0__walkthrough-$-big_step-$-big_step (walkthrough-$-let-$-let (S) (Tm1) (Tm)) (T1) :=
-    exists T_T, ($trans__walkthrough-$-host-$-tm (nil) (walkthrough-$-let-$-let (S) (Tm1) (Tm)) (T_T)) /\
+    exists T_T, ($proj__walkthrough-$-host-$-tm (nil) (walkthrough-$-let-$-let (S) (Tm1) (Tm)) (T_T)) /\
                 ($ext__0__walkthrough-$-big_step-$-big_step (T_T) (T1)).
 
 
@@ -2434,23 +2434,23 @@ $extSize__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-let-$-let) (X) (T1) 
            (($extSize__walkthrough-$-host-$-typeOf (Ctx) (T1) (Ty1) (N2) ) /\
            ($extSize__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (T2) (Ty2) (N1) ))).
 
-Define $transRel__walkthrough-$-host-$-typeOf :
+Define $projRel__walkthrough-$-host-$-typeOf :
                   (list ($lib__pair (list $char) $ty__walkthrough-$-host-$-ty)) ->
                   $ty__walkthrough-$-host-$-tm -> $ty__walkthrough-$-host-$-ty -> prop by
-$transRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-var) (X)) (Ty)  :=
+$projRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-var) (X)) (Ty)  :=
     $fix__sterling-$-stdLib-$-lookup (Ctx) (X) (Ty);
-$transRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-abs) (X) (Ty1) (Body))
+$projRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-abs) (X) (Ty1) (Body))
                                        ((walkthrough-$-host-$-arrowTy) (Ty1) (Ty2))  :=
-    $transRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (Body) (Ty2);
-$transRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-app) (T1) (T2)) (Ty2)  :=
-    exists Ty1, ($transRel__walkthrough-$-host-$-typeOf (Ctx) (T1)
+    $projRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (Body) (Ty2);
+$projRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-app) (T1) (T2)) (Ty2)  :=
+    exists Ty1, ($projRel__walkthrough-$-host-$-typeOf (Ctx) (T1)
                             ((walkthrough-$-host-$-arrowTy) (Ty1) (Ty2))) /\
-                ($transRel__walkthrough-$-host-$-typeOf (Ctx) (T2) (Ty1));
-$transRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-let-$-let) (X) (T1) (T2)) (Ty2)  :=
-    exists T' Ty1, ($transRel__walkthrough-$-host-$-typeOf (Ctx) (T') (Ty2) ) /\
-           (($trans__walkthrough-$-host-$-tm (Ctx) ((walkthrough-$-let-$-let) (X) (T1) (T2)) (T') ) /\
-           (($transRel__walkthrough-$-host-$-typeOf (Ctx) (T1) (Ty1)) /\
-           ($transRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (T2) (Ty2)))).
+                ($projRel__walkthrough-$-host-$-typeOf (Ctx) (T2) (Ty1));
+$projRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-let-$-let) (X) (T1) (T2)) (Ty2)  :=
+    exists T' Ty1, ($projRel__walkthrough-$-host-$-typeOf (Ctx) (T') (Ty2) ) /\
+           (($proj__walkthrough-$-host-$-tm (Ctx) ((walkthrough-$-let-$-let) (X) (T1) (T2)) (T') ) /\
+           (($projRel__walkthrough-$-host-$-typeOf (Ctx) (T1) (Ty1)) /\
+           ($projRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (T2) (Ty2)))).
 
 
 
@@ -3232,9 +3232,9 @@ induction on 2.
   Ty: case Ty.   apply IH to Ty Ev1.   search.  
   Ty: case Ty.   apply walkthrough-$-host-$-subst_type_preservation to Ty1 Ev2 Ty.   search.  </div>
 
-Theorem walkthrough-$-host-$-trans_type_same  :
+Theorem walkthrough-$-host-$-proj_type_same  :
    forall G T Ty T_T,
-     ($trans__walkthrough-$-host-$-tm (G) (T) (T_T)) ->
+     ($proj__walkthrough-$-host-$-tm (G) (T) (T_T)) ->
      ($ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty)) ->
      $ext__1__walkthrough-$-host-$-typeOf (G) (T_T) (Ty).<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(92);" id="toggleproof92">[Show Proof]</a>
 <div class="proof" id="proof92" style="display: none;">
@@ -3299,10 +3299,10 @@ induction on 1. rename IH to IH0.
       Is55: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Plus54.
       apply extensibella-$-stdLib-$-plus_integer_total to _ Is55 with N1 = $posInt ($succ $zero). search.</div>
 
-Theorem $toTransRel__$ext__1__walkthrough-$-host-$-typeOf :
+Theorem $toProjRel__$ext__1__walkthrough-$-host-$-typeOf :
   forall N G T Ty,
     ($extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) ) -> (acc (N) ) ->
-    $transRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(97);" id="toggleproof97">[Show Proof]</a>
+    $projRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(97);" id="toggleproof97">[Show Proof]</a>
 <div class="proof" id="proof97" style="display: none;">
 induction on 2. induction on 1.
  intros Rel Acc. Rel: case Rel (keep).
@@ -3329,7 +3329,7 @@ induction on 2. induction on 1.
       L69: case Or68. A70: apply A64 to _ L69. apply IH1 to Rel2 A70. search. apply IH1 to Rel2 Acc. search.
 Acc: case Acc.   unfold .
  apply walkthrough-$-host-$-drop_ext_ind_typeOf to Rel3.
-      assert $trans__walkthrough-$-host-$-tm (G) ((walkthrough-$-let-$-let) (X) (T1) (T2))
+      assert $proj__walkthrough-$-host-$-tm (G) ((walkthrough-$-let-$-let) (X) (T1) (T2))
                      ((walkthrough-$-host-$-app) ((walkthrough-$-host-$-abs) (X) (Ty1) (T2)) (T1)).
       IsN2: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to Rel3.
       IsN3: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to Rel4.
@@ -3337,11 +3337,11 @@ Acc: case Acc.   unfold .
       L: apply extensibella-$-stdLib-$-lt_plus_one to Rel1 _.
       PosN2: apply walkthrough-$-host-$-ext_ind_pos_typeOf to Rel3.
       PosN3: apply walkthrough-$-host-$-ext_ind_pos_typeOf to Rel4.
-      assert $transRel__walkthrough-$-host-$-typeOf (G) (T1) (Ty1).
+      assert $projRel__walkthrough-$-host-$-typeOf (G) (T1) (Ty1).
       Or: apply extensibella-$-stdLib-$-lt_left to Rel2 _ _.   L': case Or.
       L'': apply extensibella-$-stdLib-$-less_integer_transitive to L' L.   A: apply Acc to _ L''.
       apply IH to Rel3 A.   search.   A: apply Acc to _ L.   apply IH to Rel3 A.   search.
-      assert $transRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(G)) (T2) (Ty).
+      assert $projRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(G)) (T2) (Ty).
       Or: apply extensibella-$-stdLib-$-lt_right to Rel2 _ _ _.   L': case Or.
       L'': apply extensibella-$-stdLib-$-less_integer_transitive to L' L.   A: apply Acc to _ L''.
       apply IH to Rel4 A.   search.   A: apply Acc to _ L.   apply IH to Rel4 A.   search.
@@ -3352,15 +3352,15 @@ Acc: case Acc.   unfold .
 Theorem $extInd_$ext__1__walkthrough-$-host-$-typeOf :
   forall G T Ty,
     ($ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
-    $transRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(98);" id="toggleproof98">[Show Proof]</a>
+    $projRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(98);" id="toggleproof98">[Show Proof]</a>
 <div class="proof" id="proof98" style="display: none;">
 intros R. ES: apply $toExtSize__$ext__1__walkthrough-$-host-$-typeOf to R.
 P: apply walkthrough-$-host-$-ext_ind_pos_typeOf to ES.
 Is: apply walkthrough-$-host-$-ext_ind_is_int_typeOf to ES. A: apply extensibella-$-stdLib-$-all_acc to Is P.
-apply $toTransRel__$ext__1__walkthrough-$-host-$-typeOf to ES A. search.
+apply $toProjRel__$ext__1__walkthrough-$-host-$-typeOf to ES A. search.
 Theorem $dropT_$ext__1__walkthrough-$-host-$-typeOf :
    forall G T Ty,
-     ($transRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
+     ($projRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
      $ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) .
 induction on 1.
 intros R. R: case R (keep).
@@ -3381,7 +3381,7 @@ induction on 2.
  intros Ty Big. Big: case Big (keep).
   search.  
   apply walkthrough-$-host-$-type_preservation to Ty Big1.   apply IH to _ Big2.   search.  
-  apply walkthrough-$-host-$-trans_type_same to Big1 Ty.   apply IH to _ Big2.   search.</div></pre>
+  apply walkthrough-$-host-$-proj_type_same to Big1 Ty.   apply IH to _ Big2.   search.</div></pre>
 
   <p>
     In this file, in addition to the language definitions and theorems
@@ -3430,7 +3430,7 @@ induction on 2.  intros Ty Ev. Ev: case Ev (keep).
     lemmas, because the full proof is built by taking the cases from
     the proofs from the individual modules and putting them together.
     The same can be observed for the other extensible theorems from
-    the host language, including the translation constraint
+    the host language, including the projection constraint
     and <code class="extensibella">Ext_Ind</code> proof, both of which
     are declared in Abella with <code class="abella">Theorem</code>,
     the only type of theorem declaration in Abella.
@@ -3448,7 +3448,7 @@ Theorem walkthrough-$-big_step-$-big_step_type_preservation :
 induction on 2. intros Ty Big. Big: case Big (keep).
   search.
   apply walkthrough-$-host-$-type_preservation to Ty Big1. apply IH to _ Big2. search.
-  apply walkthrough-$-host-$-trans_type_same to Big1 Ty. apply IH to _ Big2. search.</pre>
+  apply walkthrough-$-host-$-proj_type_same to Big1 Ty. apply IH to _ Big2. search.</pre>
     Keep in mind the definition of <code>big_step</code> in the
     composed language:
     <pre class="code abella">
@@ -3459,12 +3459,12 @@ $ext__0__walkthrough-$-big_step-$-big_step (T) (T2) :=
     exists T1, ($ext__0__walkthrough-$-host-$-eval (T) (T1)) /\
                ($ext__0__walkthrough-$-big_step-$-big_step (T1) (T2));
 $ext__0__walkthrough-$-big_step-$-big_step (walkthrough-$-let-$-let (S) (Tm1) (Tm)) (T1) :=
-    exists T_T, ($trans__walkthrough-$-host-$-tm (nil) (walkthrough-$-let-$-let (S) (Tm1) (Tm)) (T_T)) /\
+    exists T_T, ($proj__walkthrough-$-host-$-tm (nil) (walkthrough-$-let-$-let (S) (Tm1) (Tm)) (T_T)) /\
                 ($ext__0__walkthrough-$-big_step-$-big_step (T_T) (T1)).</pre>
     We have three clauses, one corresponding to the
     <code class="sterling">Big-End</code> rule, one corresponding to
     the <code class="sterling">Big-Step</code> rule, and one
-    corresponding to the <code class="sterling">Big-Trans</code> rule
+    corresponding to the <code class="sterling">Big-D</code> rule
     instantiated for the <code>let</code> construct from the let
     extension.  When the big step extension wrote its proof, it knew
     the first two rules, but its proof for the third rule was generic,
@@ -3474,8 +3474,8 @@ $ext__0__walkthrough-$-big_step-$-big_step (walkthrough-$-let-$-let (S) (Tm1) (T
  search.
 <span class="comment">%Big-Step</span>
  apply type_preservation to Ty Big1. apply IH to _ Big2. search.
-<span class="comment">%Big-Trans</span>
- apply trans_type_same to Big1 Ty. apply IH to _ Big2. search.</pre>
+<span class="comment">%Big-D</span>
+ apply proj_type_same to Big1 Ty. apply IH to _ Big2. search.</pre>
     Because of the restrictions Extensibella places on proofs, as we
     saw above when writing the generic proof, this generic proof can
     be used even when the rule is instantiated for <code>let</code>,

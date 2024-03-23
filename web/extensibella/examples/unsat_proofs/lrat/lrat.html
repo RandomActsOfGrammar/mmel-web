@@ -24,19 +24,19 @@ Module unsat_proofs:lrat
 lit ::= pos(int)
       | neg(int)
 
-Translation lit :
+Projection lit :
 
 
 clause ::= emptyClause
          | or(lit, clause)
 
-Translation clause :
+Projection clause :
 
 
 formula ::= emptyFormula
           | and(clause, formula)
 
-Translation formula :
+Projection formula :
 
 
 
@@ -49,7 +49,7 @@ proof ::= emptyLrat(int, [int])
         | addLrupProof(int, clause, [int], proof)
         | deleteLratProof(int, proof)
 
-Translation proof : [(int, clause)]
+Projection proof : [(int, clause)]
 </pre>
 <h3>File:  sat.sos</h3>
 <a class="fold-link" href="javascript:void" id="togglesat.sos" onclick="toggleFile('sat.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="sat.sos">[Raw File]</a>
@@ -270,40 +270,41 @@ remove_all (A, C)::IRest I (A, C)::Rest
 <a class="fold-link" href="javascript:void" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void" onclick="allProofHide();">[Hide All Proofs]</a>
 <span> </span><a class="fold-link" href="lrat.xthm">[Raw File]</a>
 <p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
-<a class="command" href="lrat-details.html#0">Module unsat_proofs:lrat.</a>
+<a class="command" href="lrat-details.html#0">Module unsat_proofs:lrat.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(1);" id="toggleproof1">[Show Proof]</a>
+<div class="proof" id="proof1" style="display: none;">
 
 <span class="comment">/********************************************************************
- *                           TRANSLATIONS                           *
+ *                           PROJECTIONS                            *
  ********************************************************************/</span>
-<a class="command" href="lrat-details.html#1">Translation_Constraint trans_lit_unique : forall L LA LB,
-  TransA : |{lit}- L ~~> LA ->
-  TransB : |{lit}- L ~~> LB ->
+<a class="tactic" href="lrat-details.html#1">Projection_Constraint proj_lit_unique : forall L LA LB,
+  ProjA : |{lit}- L ~~> LA ->
+  ProjB : |{lit}- L ~~> LB ->
   LA = LB.</a>
-<a class="command" href="lrat-details.html#2">Translation_Constraint trans_lit_is : forall L LT,
-  Trans : |{lit}- L ~~> LT ->
+<a class="tactic" href="lrat-details.html#2">Projection_Constraint proj_lit_is : forall L LT,
+  Proj : |{lit}- L ~~> LT ->
   IsL : is_lit L ->
   is_lit LT.</a>
 
-<a class="command" href="lrat-details.html#3">Translation_Constraint trans_clause_unique : forall C CA CB,
-  TransA : |{clause}- C ~~> CA ->
-  TransB : |{clause}- C ~~> CB ->
+<a class="tactic" href="lrat-details.html#3">Projection_Constraint proj_clause_unique : forall C CA CB,
+  ProjA : |{clause}- C ~~> CA ->
+  ProjB : |{clause}- C ~~> CB ->
   CA = CB.</a>
-<a class="command" href="lrat-details.html#4">Translation_Constraint trans_clause_is : forall C CT,
-  Trans : |{clause}- C ~~> CT ->
+<a class="tactic" href="lrat-details.html#4">Projection_Constraint proj_clause_is : forall C CT,
+  Proj : |{clause}- C ~~> CT ->
   IsC : is_clause C ->
   is_clause CT.</a>
 
-<a class="command" href="lrat-details.html#5">Translation_Constraint trans_formula_unique : forall F FA FB,
-  TransA : |{formula}- F ~~> FA ->
-  TransB : |{formula}- F ~~> FB ->
+<a class="tactic" href="lrat-details.html#5">Projection_Constraint proj_formula_unique : forall F FA FB,
+  ProjA : |{formula}- F ~~> FA ->
+  projB : |{formula}- F ~~> FB ->
   FA = FB.</a>
-<a class="command" href="lrat-details.html#6">Translation_Constraint trans_formula_is : forall F FT,
-  Trans : |{formula}- F ~~> FT ->
+<a class="tactic" href="lrat-details.html#6">Projection_Constraint proj_formula_is : forall F FT,
+  Proj : |{formula}- F ~~> FT ->
   IsF : is_formula F ->
-  is_formula FT.</a>
+  is_formula FT.</a></div>
 
-<span class="comment">%Have trans_proof_is later because, relying on the known clauses as</span>
-<span class="comment">%the translation may, it might be it also relies on other relations</span>
+<span class="comment">%Have proj_proof_is later because, relying on the known clauses as</span>
+<span class="comment">%the projection may, it might be it also relies on other relations</span>
 <span class="comment">%that use them, and then we want properties of them.</span>
 
 
@@ -861,31 +862,31 @@ remove_all (A, C)::IRest I (A, C)::Rest
 <span class="comment">%is_lit (pos I)</span>
  <a class="tactic" href="lrat-details.html#399">search.</a>
 <span class="comment">%is_lit (neg I)</span>
- <a class="tactic" href="lrat-details.html#400">search.</a></div>
+ <a class="tactic" href="lrat-details.html#400">search.</a>
 
 
-<span class="comment">%Translations are equisatisfiable with their translating clauses</span>
-<a class="command" href="lrat-details.html#401">Translation_Constraint sat_clause_ext_to_trans : forall C C' Sat,
+<span class="comment">%Projections are equisatisfiable with their projecting clauses</span>
+<a class="tactic" href="lrat-details.html#401">Projection_Constraint sat_clause_ext_to_proj : forall C C' Sat,
   |{clause}- C ~~> C' -> is_list is_lit Sat -> is_clause C ->
   sat_clause Sat C -> sat_clause Sat C'.</a>
-<a class="command" href="lrat-details.html#402">Translation_Constraint sat_clause_trans_to_ext : forall C C' Sat,
+<a class="tactic" href="lrat-details.html#402">Projection_Constraint sat_clause_proj_to_ext : forall C C' Sat,
   |{clause}- C ~~> C' -> is_list is_lit Sat -> is_clause C ->
   sat_clause Sat C' -> sat_clause Sat C.</a>
-<a class="command" href="lrat-details.html#403">Translation_Constraint unsat_clause_ext_to_trans : forall C C' Unsat,
+<a class="tactic" href="lrat-details.html#403">Projection_Constraint unsat_clause_ext_to_proj : forall C C' Unsat,
   |{clause}- C ~~> C' -> is_list is_lit Unsat -> is_clause C ->
   unsat_clause Unsat C -> unsat_clause Unsat C'.</a>
-<a class="command" href="lrat-details.html#404">Translation_Constraint unsat_clause_trans_to_ext : forall C C' Unsat,
+<a class="tactic" href="lrat-details.html#404">Projection_Constraint unsat_clause_proj_to_ext : forall C C' Unsat,
   |{clause}- C ~~> C' -> is_list is_lit Unsat -> is_clause C ->
   unsat_clause Unsat C' -> unsat_clause Unsat C.</a>
 
 
-<span class="comment">%Translations are equisatisfiable with their translating formulas</span>
-<a class="command" href="lrat-details.html#405">Translation_Constraint sat_formula_ext_to_trans : forall F F' Sat,
+<span class="comment">%Projections are equisatisfiable with their projecting formulas</span>
+<a class="tactic" href="lrat-details.html#405">Projection_Constraint sat_formula_ext_to_proj : forall F F' Sat,
   |{formula}- F ~~> F' -> is_list is_lit Sat -> sat_formula Sat F ->
   sat_formula Sat F'.</a>
-<a class="command" href="lrat-details.html#406">Translation_Constraint sat_formula_trans_to_ext : forall F F' Sat,
+<a class="tactic" href="lrat-details.html#406">Projection_Constraint sat_formula_proj_to_ext : forall F F' Sat,
   |{formula}- F ~~> F' -> is_list is_lit Sat -> sat_formula Sat F' ->
-  sat_formula Sat F.</a>
+  sat_formula Sat F.</a></div>
 
 
 <a class="command" href="lrat-details.html#407">Extensible_Theorem
@@ -1512,18 +1513,18 @@ remove_all (A, C)::IRest I (A, C)::Rest
 <span class="comment">%GL-EmptyClause</span>
  <a class="tactic" href="lrat-details.html#800">case GL2.</a> <a class="tactic" href="lrat-details.html#801">search.</a>
 <span class="comment">%GL-Or</span>
- <a class="tactic" href="lrat-details.html#802">GL2: case GL2.</a> <a class="tactic" href="lrat-details.html#803">Is: case IsC.</a> <a class="tactic" href="lrat-details.html#804">apply IH to _ GL3 GL2.</a> <a class="tactic" href="lrat-details.html#805">search.</a></div>
+ <a class="tactic" href="lrat-details.html#802">GL2: case GL2.</a> <a class="tactic" href="lrat-details.html#803">Is: case IsC.</a> <a class="tactic" href="lrat-details.html#804">apply IH to _ GL3 GL2.</a> <a class="tactic" href="lrat-details.html#805">search.</a>
 
 
-<a class="command" href="lrat-details.html#806">Translation_Constraint trans_gatherLits : forall C C' L,
+<a class="tactic" href="lrat-details.html#806">Projection_Constraint proj_gatherLits : forall C C' L,
   |{clause}- C ~~> C' -> is_clause C -> gatherLits C L ->
   exists L', gatherLits C' L'.</a>
 
 
-<a class="command" href="lrat-details.html#807">Translation_Constraint trans_gatherLits_permutation :
+<a class="tactic" href="lrat-details.html#807">Projection_Constraint proj_gatherLits_permutation :
   forall C C' L L',
     |{clause}- C ~~> C' -> is_clause C -> gatherLits C L ->
-    gatherLits C' L' -> permutation L L'.</a>
+    gatherLits C' L' -> permutation L L'.</a></div>
 
 
 <a class="command" href="lrat-details.html#808">Extensible_Theorem
@@ -1736,7 +1737,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 <a class="tactic" href="lrat-details.html#934">intros IsK1 IsK2 GCL RUP Prm.</a>
 <a class="tactic" href="lrat-details.html#935">MemBoth: assert forall ID C', mem (ID, C') K1 -> mem (ID, C') K2.</a>
   <a class="tactic" href="lrat-details.html#936">intros M.</a> <a class="tactic" href="lrat-details.html#937">apply permutation_mem to Prm M.</a> <a class="tactic" href="lrat-details.html#938">search.</a>
-<a class="tactic" href="lrat-details.html#939">apply rupProof_orderless to IsK1 IsK2 GCL RUP MemBoth.</a> <a class="tactic" href="lrat-details.html#940">search.</a></div>
+<a class="tactic" href="lrat-details.html#939">apply rupProof_orderless to IsK1 IsK2 GCL RUP MemBoth.</a> <a class="tactic" href="lrat-details.html#940">search.</a>
 
 
 
@@ -1746,15 +1747,15 @@ remove_all (A, C)::IRest I (A, C)::Rest
  *                          CHECK PROOF                             *
  ********************************************************************/</span>
 <span class="comment">/*
- Don't have trans_proof_unique because there could be multiple ways to
+ Don't have proj_proof_unique because there could be multiple ways to
  prove a clause, so it doesn't necessarily make sense to say the proof
  hint needs to be the same
 */</span>
-<a class="command" href="lrat-details.html#941">Translation_Constraint trans_proof_is : forall Known P PT,
-  Trans : Known |{proof}- P ~~> PT ->
+<a class="tactic" href="lrat-details.html#941">Projection_Constraint proj_proof_is : forall Known P PT,
+  Proj : Known |{proof}- P ~~> PT ->
   IsP : is_proof P ->
   IsKnown : is_list (is_pair is_integer is_clause) Known ->
-  is_proof PT.</a>
+  is_proof PT.</a></div>
 
 
 <span class="comment">%lemma for the next theorem</span>
@@ -1866,15 +1867,15 @@ remove_all (A, C)::IRest I (A, C)::Rest
 <span class="comment">%CP-AddLrup</span>
  <a class="tactic" href="lrat-details.html#1025">apply IH1 to R3 Acc.</a> <a class="tactic" href="lrat-details.html#1026">search.</a>
 <span class="comment">%CP-DeleteLrat</span>
- <a class="tactic" href="lrat-details.html#1027">apply IH1 to R2 Acc.</a> <a class="tactic" href="lrat-details.html#1028">search.</a></div>
+ <a class="tactic" href="lrat-details.html#1027">apply IH1 to R2 Acc.</a> <a class="tactic" href="lrat-details.html#1028">search.</a>
 
 
-<span class="comment">%Translated proof still checks out</span>
-<a class="command" href="lrat-details.html#1029">Translation_Constraint trans_checkProof : forall Known P P',
+<span class="comment">%Projected proof still checks out</span>
+<a class="tactic" href="lrat-details.html#1029">Projection_Constraint proj_checkProof : forall Known P P',
   Known |{proof}- P ~~> P' -> checkProof Known P ->
   is_list (is_pair is_integer is_clause) Known ->
   good_clause_list Known ->
-  checkProof Known P'.</a>
+  checkProof Known P'.</a></div>
 
 
 

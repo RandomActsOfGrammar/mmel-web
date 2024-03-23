@@ -20,7 +20,7 @@ Module simple_imp:list
 
 Builds on simple_imp:host
 
-<span class="comment">/*New Expressions and Translations*/</span>
+<span class="comment">/*New Expressions and Projections*/</span>
 e ::= ...
     | nil(ty) <span class="comment">/*we need the type to satisfy a host property*/</span>
     | cons(e, e)
@@ -31,13 +31,13 @@ e ::= ...
     | length(e)
 
 
---------------------------------------------- [Trans-Nil]
+--------------------------------------------- [Proj-Nil]
 |{e}- nil(Ty) ~~>
       recBuild(addRecFieldExprs("null", true,
                endRecFieldExprs))
 
 
----------------------------------------------------------- [Trans-Cons]
+---------------------------------------------------------- [Proj-Cons]
 |{e}- cons(E1, E2) ~~>
       recBuild(
          addRecFieldExprs("null", false,
@@ -45,58 +45,58 @@ e ::= ...
          addRecFieldExprs("tail", E2, endRecFieldExprs))))
 
 
-------------------- [Trans-Null]
+------------------- [Proj-Null]
 |{e}- null(E) ~~> E
 
 
-------------------- [Trans-Head]
+------------------- [Proj-Head]
 |{e}- head(E) ~~> E
 
 
-------------------- [Trans-Tail]
+------------------- [Proj-Tail]
 |{e}- tail(E) ~~> E
 
 
 <span class="comment">/*Actually computing the length or index from records would require
-  conditionals, so we'll take advantage of the lax translation
+  conditionals, so we'll take advantage of the lax projection
   constraints and translate to something unrelated to the actual
   value.*/</span>
--------------------------------------------------- [Trans-Index]
+-------------------------------------------------- [Proj-Index]
 |{e}- index(Lst, Index) ~~> and(null(Lst),
                                 eq(num(0), Index))
 
 
---------------------- [Trans-Length]
+--------------------- [Proj-Length]
 |{e}- length(E) ~~> E
 
 
 
-<span class="comment">/*New Type and Translation*/</span>
+<span class="comment">/*New Type and Projection*/</span>
 ty ::= ...
      | listTy(ty)
 
 
 <span class="comment">/*Strictly speaking, an empty list doesn't have the head or tail
-  fields.  However, we don't have any translation constraints on types,
+  fields.  However, we don't have any projection constraints on types,
   so we can do whatever we want, and this is close.*/</span>
------------------------------------------------ [Trans-ListTy]
+----------------------------------------------- [Proj-ListTy]
 |{ty}- listTy(T) ~~>
        recTy([("head", T), ("tail", listTy(T)),
               ("null", boolTy)])
 
 
 
-<span class="comment">/*New Value and Translation*/</span>
+<span class="comment">/*New Value and Projection*/</span>
 value ::= ...
         | nilVal
         | consVal(value, value)
 
 
------------------------------------------------- [Trans-NilVal]
+------------------------------------------------ [Proj-NilVal]
 |{value}- nilVal ~~> recVal([("null", trueVal)])
 
 
---------------------------------------------- [Trans-ConsVal]
+--------------------------------------------- [Proj-ConsVal]
 |{value}- consVal(Hd, Tl) ~~>
           recVal([("head", Hd), ("tail", Tl),
                   ("null", falseVal)])
@@ -271,7 +271,7 @@ indexRel consVal(Hd, Tl) Index V
 
 |{value}- V ~~> VT
 indexRel VT I Result
--------------------- [Index-Trans]*
+-------------------- [Index-D]*
 indexRel V I Result
 
 
@@ -289,7 +289,7 @@ lengthRel consVal(Hd, Tl) Len
 
 |{value}- V ~~> VT
 lengthRel VT Len
------------------- [Len-Trans]*
+------------------ [Len-D]*
 lengthRel V Len
 
 
@@ -316,7 +316,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
 <a class="command" href="list-details.html#0">Module simple_imp:list.</a>
 
 
-<a class="command" href="list-details.html#1">Prove_Constraint simple_imp:host:trans_e_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<a class="command" href="list-details.html#1">Prove_Constraint simple_imp:host:proj_e_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
 <div class="proof" id="proof2" style="display: none;">
 <span class="comment">%nil</span>
  <a class="tactic" href="list-details.html#2">case Hyp1.</a> <a class="tactic" href="list-details.html#3">search.</a>
@@ -332,7 +332,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
  <a class="tactic" href="list-details.html#12">case Hyp1.</a> <a class="tactic" href="list-details.html#13">search.</a>
 <span class="comment">%length</span>
  <a class="tactic" href="list-details.html#14">case Hyp1.</a> <a class="tactic" href="list-details.html#15">search.</a></div>
-<a class="command" href="list-details.html#16">Prove_Constraint simple_imp:host:trans_e_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(17);" id="toggleproof17">[Show Proof]</a>
+<a class="command" href="list-details.html#16">Prove_Constraint simple_imp:host:proj_e_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(17);" id="toggleproof17">[Show Proof]</a>
 <div class="proof" id="proof17" style="display: none;">
 <span class="comment">%nil</span>
  <a class="tactic" href="list-details.html#17">search 8.</a> <span class="comment">%too big to solve at default depth</span>
@@ -350,31 +350,31 @@ val_eq consVal(V11, V12) consVal(V21, V22)
  <a class="tactic" href="list-details.html#28">case Hyp1.</a> <a class="tactic" href="list-details.html#29">search.</a></div>
 
 
-<a class="command" href="list-details.html#30">Prove_Constraint simple_imp:host:trans_rf_unique.</a>
-<a class="command" href="list-details.html#31">Prove_Constraint simple_imp:host:trans_rf_is.</a>
-<a class="command" href="list-details.html#32">Prove_Constraint simple_imp:host:trans_c_unique.</a>
-<a class="command" href="list-details.html#33">Prove_Constraint simple_imp:host:trans_c_is.</a>
-<a class="command" href="list-details.html#34">Prove_Constraint simple_imp:host:trans_recFields_unique.</a>
-<a class="command" href="list-details.html#35">Prove_Constraint simple_imp:host:trans_recFields_is.</a>
+<a class="command" href="list-details.html#30">Prove_Constraint simple_imp:host:proj_rf_unique.</a>
+<a class="command" href="list-details.html#31">Prove_Constraint simple_imp:host:proj_rf_is.</a>
+<a class="command" href="list-details.html#32">Prove_Constraint simple_imp:host:proj_c_unique.</a>
+<a class="command" href="list-details.html#33">Prove_Constraint simple_imp:host:proj_c_is.</a>
+<a class="command" href="list-details.html#34">Prove_Constraint simple_imp:host:proj_recFields_unique.</a>
+<a class="command" href="list-details.html#35">Prove_Constraint simple_imp:host:proj_recFields_is.</a>
 
 
-<a class="command" href="list-details.html#36">Prove_Constraint simple_imp:host:trans_ty_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(37);" id="toggleproof37">[Show Proof]</a>
+<a class="command" href="list-details.html#36">Prove_Constraint simple_imp:host:proj_ty_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(37);" id="toggleproof37">[Show Proof]</a>
 <div class="proof" id="proof37" style="display: none;">
 <span class="comment">%listTy</span>
  <a class="tactic" href="list-details.html#37">case Hyp1.</a> <a class="tactic" href="list-details.html#38">search.</a></div>
-<a class="command" href="list-details.html#39">Prove_Constraint simple_imp:host:trans_ty_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(40);" id="toggleproof40">[Show Proof]</a>
+<a class="command" href="list-details.html#39">Prove_Constraint simple_imp:host:proj_ty_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(40);" id="toggleproof40">[Show Proof]</a>
 <div class="proof" id="proof40" style="display: none;">
 <span class="comment">%listTy</span>
  <a class="tactic" href="list-details.html#40">case Hyp1.</a> <a class="tactic" href="list-details.html#41">search 11.</a></div>
 
 
-<a class="command" href="list-details.html#42">Prove_Constraint simple_imp:host:trans_value_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(43);" id="toggleproof43">[Show Proof]</a>
+<a class="command" href="list-details.html#42">Prove_Constraint simple_imp:host:proj_value_unique.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(43);" id="toggleproof43">[Show Proof]</a>
 <div class="proof" id="proof43" style="display: none;">
 <span class="comment">%nilVal</span>
  <a class="tactic" href="list-details.html#43">case Hyp1.</a> <a class="tactic" href="list-details.html#44">search.</a>
 <span class="comment">%consVal</span>
  <a class="tactic" href="list-details.html#45">case Hyp1.</a> <a class="tactic" href="list-details.html#46">search.</a></div>
-<a class="command" href="list-details.html#47">Prove_Constraint simple_imp:host:trans_value_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(48);" id="toggleproof48">[Show Proof]</a>
+<a class="command" href="list-details.html#47">Prove_Constraint simple_imp:host:proj_value_is.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(48);" id="toggleproof48">[Show Proof]</a>
 <div class="proof" id="proof48" style="display: none;">
 <span class="comment">%nilVal</span>
  <a class="tactic" href="list-details.html#48">search 9.</a>
@@ -427,7 +427,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
   <a class="tactic" href="list-details.html#93">Vars2: case Vars2.</a> <a class="tactic" href="list-details.html#94">apply IH to Vars3 Vars2.</a> <a class="tactic" href="list-details.html#95">search.</a></div>
 
 
-<a class="command" href="list-details.html#96">Prove_Constraint simple_imp:host:trans_e_vars_exist.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(97);" id="toggleproof97">[Show Proof]</a>
+<a class="command" href="list-details.html#96">Prove_Constraint simple_imp:host:proj_e_vars_exist.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(97);" id="toggleproof97">[Show Proof]</a>
 <div class="proof" id="proof97" style="display: none;">
 <span class="comment">%nil</span>
  <a class="tactic" href="list-details.html#97">search.</a>
@@ -457,7 +457,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
  <a class="tactic" href="list-details.html#125">Vars: case Hyp1.</a> <a class="tactic" href="list-details.html#126">search.</a>
 <span class="comment">%length</span>
  <a class="tactic" href="list-details.html#127">case Hyp1.</a> <a class="tactic" href="list-details.html#128">search.</a></div>
-<a class="command" href="list-details.html#129">Prove_Constraint simple_imp:host:trans_e_vars.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(130);" id="toggleproof130">[Show Proof]</a>
+<a class="command" href="list-details.html#129">Prove_Constraint simple_imp:host:proj_e_vars.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(130);" id="toggleproof130">[Show Proof]</a>
 <div class="proof" id="proof130" style="display: none;">
 <span class="comment">%nil</span>
  <a class="tactic" href="list-details.html#130">case Hyp2.</a> <a class="tactic" href="list-details.html#131">case H1.</a> <a class="tactic" href="list-details.html#132">case H2.</a> <a class="tactic" href="list-details.html#133">case H3.</a> <a class="tactic" href="list-details.html#134">case H4.</a> <a class="tactic" href="list-details.html#135">case Hyp1.</a> <a class="tactic" href="list-details.html#136">search.</a>
@@ -484,8 +484,8 @@ val_eq consVal(V11, V12) consVal(V21, V22)
  <a class="tactic" href="list-details.html#172">search.</a>
 <span class="comment">%length</span>
  <a class="tactic" href="list-details.html#173">case Hyp1.</a> <a class="tactic" href="list-details.html#174">apply vars_unique to Hyp2 H1.</a> <a class="tactic" href="list-details.html#175">search.</a></div>
-<a class="command" href="list-details.html#176">Prove_Constraint simple_imp:host:trans_rf_vars_exist.</a>
-<a class="command" href="list-details.html#177">Prove_Constraint simple_imp:host:trans_rf_vars.</a>
+<a class="command" href="list-details.html#176">Prove_Constraint simple_imp:host:proj_rf_vars_exist.</a>
+<a class="command" href="list-details.html#177">Prove_Constraint simple_imp:host:proj_rf_vars.</a>
 
 
 <a class="command" href="list-details.html#178">Prove simple_imp:host:vars_is,
@@ -561,7 +561,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
 <a class="command" href="list-details.html#244">Prove simple_imp:host:typeOK_unique.</a>
 
 
-<a class="command" href="list-details.html#245">Prove_Constraint simple_imp:host:trans_eval_e.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(246);" id="toggleproof246">[Show Proof]</a>
+<a class="command" href="list-details.html#245">Prove_Constraint simple_imp:host:proj_eval_e.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(246);" id="toggleproof246">[Show Proof]</a>
 <div class="proof" id="proof246" style="display: none;">
 <span class="comment">%nil</span>
  <a class="tactic" href="list-details.html#246">search.</a>
@@ -584,7 +584,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
      forall E L I V G, indexRel L I V -> eval_e G E L ->
                                  exists V', eval_e G (null E) V'
    but this fails in the generic case because the definition of
-   indexRel is copied from L's translation, but E still evaluates to
+   indexRel is copied from L's projection, but E still evaluates to
    the original L, so we can't apply the IH.*/</span>
  <a class="tactic" href="list-details.html#256">Ev: case Hyp1.</a> <a class="tactic" href="list-details.html#257">search.</a>
 <span class="comment">%length</span>
@@ -603,7 +603,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
  <a class="tactic" href="list-details.html#262">IsSubIndex: apply IH to Index2.</a>
  <a class="tactic" href="list-details.html#263">Is: apply minus_integer_is_integer_result to IsSubIndex Index1.</a>
  <a class="tactic" href="list-details.html#264">search.</a>
-<span class="comment">%Index-Trans</span>
+<span class="comment">%Index-D</span>
  <a class="tactic" href="list-details.html#265">backchain IH.</a></div>
 <a class="command" href="list-details.html#266">Extensible_Theorem
   index_negative_false : forall L I V,
@@ -619,7 +619,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
  <a class="tactic" href="list-details.html#269">apply less_integer__subtract_positive to _ _ Neg _ Index1.</a>
  <a class="tactic" href="list-details.html#270">apply minus_integer_is_integer to _ _ Index1.</a>
  <a class="tactic" href="list-details.html#271">apply IH to Index2 _.</a>
-<span class="comment">%Index-Trans</span>
+<span class="comment">%Index-D</span>
  <a class="tactic" href="list-details.html#272">apply IH to Index2 Neg.</a></div>
 <a class="command" href="list-details.html#273">Extensible_Theorem
   index_unique : forall L I V1 V2,
@@ -641,8 +641,8 @@ val_eq consVal(V11, V12) consVal(V21, V22)
    <span class="comment">%2 by Index-Step</span>
     <a class="tactic" href="list-details.html#283">apply minus_integer_unique to Index3 Index2.</a>
     <a class="tactic" href="list-details.html#284">apply IH to Index4 Index5.</a> <a class="tactic" href="list-details.html#285">search.</a>
-<span class="comment">%1 by Index-Trans</span>
- <a class="tactic" href="list-details.html#286">Index2: case Index2.</a> <a class="tactic" href="list-details.html#287">apply trans_value_unique to Index3 Index2.</a>
+<span class="comment">%1 by Index-D</span>
+ <a class="tactic" href="list-details.html#286">Index2: case Index2.</a> <a class="tactic" href="list-details.html#287">apply proj_value_unique to Index3 Index2.</a>
  <a class="tactic" href="list-details.html#288">apply IH to Index4 Index5.</a> <a class="tactic" href="list-details.html#289">search.</a></div>
 
 <a class="command" href="list-details.html#290">Extensible_Theorem
@@ -656,7 +656,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
 <span class="comment">%Len-Cons</span>
  <a class="tactic" href="list-details.html#292">IsSubLen: apply IH to Len1.</a>
  <a class="tactic" href="list-details.html#293">apply plus_integer_is_integer to _ _ Len2.</a> <a class="tactic" href="list-details.html#294">search.</a>
-<span class="comment">%Len-Trans</span>
+<span class="comment">%Len-D</span>
  <a class="tactic" href="list-details.html#295">apply IH to Len2.</a> <a class="tactic" href="list-details.html#296">search.</a></div>
 <a class="command" href="list-details.html#297">Extensible_Theorem
   length_unique : forall L V1 V2,
@@ -670,8 +670,8 @@ val_eq consVal(V11, V12) consVal(V21, V22)
 <span class="comment">%1 by Len-Cons</span>
  <a class="tactic" href="list-details.html#300">Len2: case Len2.</a> <a class="tactic" href="list-details.html#301">apply IH to Len3 Len2.</a>
  <a class="tactic" href="list-details.html#302">apply plus_integer_unique to Len4 Len5.</a> <a class="tactic" href="list-details.html#303">search.</a>
-<span class="comment">%1 by Len-Trans</span>
- <a class="tactic" href="list-details.html#304">Len2: case Len2.</a> <a class="tactic" href="list-details.html#305">apply trans_value_unique to Len3 Len2.</a>
+<span class="comment">%1 by Len-D</span>
+ <a class="tactic" href="list-details.html#304">Len2: case Len2.</a> <a class="tactic" href="list-details.html#305">apply proj_value_unique to Len3 Len2.</a>
  <a class="tactic" href="list-details.html#306">apply IH to Len4 Len5.</a> <a class="tactic" href="list-details.html#307">search.</a></div>
 
 
@@ -710,7 +710,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
 <a class="command" href="list-details.html#336">Prove simple_imp:host:update_rec_fields_unique.</a>
 
 
-<a class="command" href="list-details.html#337">Prove_Constraint simple_imp:host:trans_c_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(338);" id="toggleproof338">[Show Proof]</a>
+<a class="command" href="list-details.html#337">Prove_Constraint simple_imp:host:proj_c_eval.</a><span> </span><a class="fold-link" href="javascript:void" onclick="proofToggle(338);" id="toggleproof338">[Show Proof]</a>
 <div class="proof" id="proof338" style="display: none;">
 
 
@@ -723,8 +723,8 @@ val_eq consVal(V11, V12) consVal(V21, V22)
 <a class="command" href="list-details.html#340">Prove simple_imp:host:eval_c_unique.</a>
 
 
-<a class="command" href="list-details.html#341">Prove_Constraint simple_imp:host:trans_c_eval_results.</a>
-<a class="command" href="list-details.html#342">Prove_Constraint simple_imp:host:trans_c_eval_results_back.</a>
+<a class="command" href="list-details.html#341">Prove_Constraint simple_imp:host:proj_c_eval_results.</a>
+<a class="command" href="list-details.html#342">Prove_Constraint simple_imp:host:proj_c_eval_results_back.</a>
 
 
 <a class="command" href="list-details.html#343">Prove simple_imp:host:vars_eval_same_result,

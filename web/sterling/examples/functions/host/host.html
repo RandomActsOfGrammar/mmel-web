@@ -30,15 +30,15 @@ e ::= num(int)
     | call(string, args)
     | recBuild(recFieldExprs)
     | recFieldAccess(e, string)
-Translation e :
+Projection e :
 
 recFieldExprs ::= endRecFieldExprs
                 | addRecFieldExprs(string, e, recFieldExprs)
-Translation recFieldExprs :
+Projection recFieldExprs :
 
 args ::= endArgs
        | addArgs(e, args)
-Translation args :
+Projection args :
 
 
 <span class="comment">/*Statement Commands*/</span>
@@ -50,34 +50,34 @@ c ::= noop
     | while(e, c)
     | recUpdate(string, recFields, e) <span class="comment">/*rec.field = e*/</span>
     | printVal(e)
-Translation c :
+Projection c :
 
 recFields ::= oneField(string)
             | addField(string, recFields)
-Translation recFields :
+Projection recFields :
 
 
 <span class="comment">/*Functions*/</span>
 fun ::= fun(string, ty, string, params, c)
           <span class="comment">/*name, return type, return var, params, body*/</span>
-Translation fun :
+Projection fun :
 
 params ::= endParams
          | addParams(string, ty, params)
-Translation params :
+Projection params :
 
 
 <span class="comment">/*Program*/</span>
 program ::= endProgram
           | addProgram(fun, program) <span class="comment">/*other functions*/</span>
-Translation program :
+Projection program :
 
 
 <span class="comment">/*Types*/</span>
 ty ::= intTy
      | boolTy
      | recTy([(string, ty)])
-Translation ty :
+Projection ty :
 
 
 <span class="comment">/*Evaluation Values*/</span>
@@ -85,7 +85,7 @@ value ::= intVal(int)
         | trueVal
         | falseVal
         | recVal([(string, value)])
-Translation value :
+Projection value :
 
 </pre>
 <h3>File:  vars.sos</h3>
@@ -203,7 +203,7 @@ Module functions:host
 funtyctx ::= emptyFunTy
            | addFunTy(string, ty, [ty], funtyctx)
             <span class="comment">/*function name, return type, parameter types, rest*/</span>
-Translation funtyctx :
+Projection funtyctx :
 
 
 Judgment lookupFunTy : funtyctx* string ty [ty]
@@ -512,7 +512,7 @@ Module functions:host
 functx ::= emptyFun
          | addFun(string, string, [string], c, functx)
                 <span class="comment">/*fun name, ret name, params, body, rest*/</span>
-Translation functx :
+Projection functx :
 
 
 Judgment lookupFun : functx* string string [string] c
@@ -543,7 +543,7 @@ paramsToNameList addParams(X, Ty, Rest) X::NRest
 <span class="comment">/*Output from the program printing*/</span>
 output ::= emptyOutput
          | addOutput(output, value) <span class="comment">/*snoc for appending always*/</span>
-Translation output :
+Projection output :
 
 Judgment appendOutput : output output* output
 

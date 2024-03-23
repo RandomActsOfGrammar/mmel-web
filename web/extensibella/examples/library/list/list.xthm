@@ -1,7 +1,7 @@
 Module library:list.
 
 
-Prove_Constraint library:host:trans_e_unique.
+Prove_Constraint library:host:proj_e_unique.
 %P-null
  case Hyp1. search.
 %P-head
@@ -12,7 +12,7 @@ Prove_Constraint library:host:trans_e_unique.
  case Hyp1. search.
 %P-cons
  case Hyp1. search.
-Prove_Constraint library:host:trans_e_is.
+Prove_Constraint library:host:proj_e_is.
 %P-null
  case Hyp1. search.
 %P-head
@@ -25,18 +25,18 @@ Prove_Constraint library:host:trans_e_is.
  case Hyp1. search.
 
 
-Prove_Constraint library:host:trans_s_unique.
+Prove_Constraint library:host:proj_s_unique.
 %P-splitlist
  case Hyp1. search.
-Prove_Constraint library:host:trans_s_is.
+Prove_Constraint library:host:proj_s_is.
 %P-splitlist
  case Hyp1. search.
 
 
-Prove_Constraint library:host:trans_ty_unique.
+Prove_Constraint library:host:proj_ty_unique.
 %P-list
  case Hyp1. search.
-Prove_Constraint library:host:trans_ty_is.
+Prove_Constraint library:host:proj_ty_is.
 %P-list
  case Hyp1. search.
 
@@ -176,7 +176,7 @@ Prove library:host:vars_unique.
  V: case Vars2. apply IH to Vars3 V. search.
 
 
-Prove_Constraint library:host:trans_e_vars_exist.
+Prove_Constraint library:host:proj_e_vars_exist.
 %P-null
  case Hyp1. search.
 %P-head
@@ -187,7 +187,7 @@ Prove_Constraint library:host:trans_e_vars_exist.
  search.
 %P-cons
  case Hyp1. search.
-Prove_Constraint library:host:trans_e_vars.
+Prove_Constraint library:host:proj_e_vars.
 %P-null
  V: case Hyp1. apply vars_unique to V Hyp2. search.
 %P-head
@@ -290,7 +290,7 @@ Prove library:host:type_preservation_s.
        apply Rel to _ L'. search.
 
 
-Prove_Constraint library:host:trans_eval_e.
+Prove_Constraint library:host:proj_eval_e.
 %P-null
  case Hyp1. search. search.
 %P-head
@@ -332,8 +332,8 @@ Prove library:host:eval_e_unique.
  Ev2: case Ev2. apply IH to Ev3 Ev2. search.
 
 
-Prove_Constraint library:host:trans_s_eval.
-%Trans-splitlist
+Prove_Constraint library:host:proj_s_eval.
+%Proj-splitlist
  Ev: case Hyp1. exists (Hd, V1)::(Tl, V2)::GTl. unfold.
  exists (Tl, V2)::(Hd, cons V1 V2)::GTl. split.
    %eval first two assigns
@@ -362,9 +362,9 @@ Prove_Ext_Ind library:host:eval_s.
     search.
    %select Tl
     search.
-   %trans
+   %proj
     search.
-   %eval trans
+   %eval proj
     unfold. exists (Tl, V2)::(Hd, cons V1 V2)::GTl. split.
       %eval first two assigns
        unfold. exists (Hd, cons V1 V2)::GHd. split.
@@ -377,7 +377,7 @@ Prove_Ext_Ind library:host:eval_s.
        search.
 
 
-Prove_Constraint library:host:trans_s_eval_results.
+Prove_Constraint library:host:proj_s_eval_results.
 %X-splitlist
  EvTr: case Hyp2. EvTr: case EvTr. EvTr: case EvTr. EvTr: case EvTr2.
  EvTr: case EvTr2. EvTr: case EvTr2. case EvTr2.
@@ -420,7 +420,7 @@ Prove_Constraint library:host:trans_s_eval_results.
     apply H1 to _.
 
 
-Prove_Constraint library:host:trans_s_eval_results_back.
+Prove_Constraint library:host:proj_s_eval_results_back.
 %X-splitlist
  EvSL: case Hyp1. EvTr: case Hyp2. EvTr: case EvTr. EvTr: case EvTr1.
  EvTr: case EvTr. apply eval_e_unique to EvTr EvSL. EvTr: case EvTr2.

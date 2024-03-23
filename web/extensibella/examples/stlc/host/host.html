@@ -24,12 +24,12 @@ tm ::= var(string)
      | num(int)
      | plus(tm, tm)
 
-Translation tm : [(string, ty)]
+Projection tm : [(string, ty)]
 
 ty ::= arrowTy(ty, ty)
      | intTy
 
-Translation ty :
+Projection ty :
 
 
 
@@ -173,18 +173,18 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
   <span class="comment">%Lkp-Here</span>
    <a class="tactic" href="host-details.html#5">Is: case Is.</a> <a class="tactic" href="host-details.html#6">case Is.</a> <a class="tactic" href="host-details.html#7">search.</a>
   <span class="comment">%Lkp-Later</span>
-   <a class="tactic" href="host-details.html#8">Is: case Is.</a> <a class="tactic" href="host-details.html#9">apply IH to _ L1.</a> <a class="tactic" href="host-details.html#10">search.</a></div>
+   <a class="tactic" href="host-details.html#8">Is: case Is.</a> <a class="tactic" href="host-details.html#9">apply IH to _ L1.</a> <a class="tactic" href="host-details.html#10">search.</a>
 
 
-<a class="command" href="host-details.html#11">Translation_Constraint
-  trans_ty_is : forall Ty Ty',
-    Trans : |{ty}- Ty ~~> Ty' ->
+<a class="tactic" href="host-details.html#11">Projection_Constraint
+  proj_ty_is : forall Ty Ty',
+    Proj : |{ty}- Ty ~~> Ty' ->
     IsTy : is_ty Ty ->
-    is_ty Ty'.</a>
+    is_ty Ty'.</a></div>
 
 
 <span class="comment">/*
-  This goes before trans_is because translation might depend on the
+  This goes before proj_is because projection might depend on the
   context, and thus the type, so we might need this to prove that.
 */</span>
 <a class="command" href="host-details.html#12">Extensible_Theorem
@@ -204,15 +204,15 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 <span class="comment">%T-Num</span>
  <a class="tactic" href="host-details.html#22">search.</a>
 <span class="comment">%T-Plus</span>
- <a class="tactic" href="host-details.html#23">search.</a></div>
+ <a class="tactic" href="host-details.html#23">search.</a>
 
 
-<a class="command" href="host-details.html#24">Translation_Constraint
-  trans_is : forall Ctx T T',
-    Trans : Ctx |{tm}- T ~~> T' ->
+<a class="tactic" href="host-details.html#24">Projection_Constraint
+  proj_is : forall Ctx T T',
+    Proj : Ctx |{tm}- T ~~> T' ->
     IsCtx : is_list (is_pair is_string is_ty) Ctx ->
     IsT : is_tm T ->
-    is_tm T'.</a>
+    is_tm T'.</a></div>
 
 
 <a class="command" href="host-details.html#25">Extensible_Theorem
@@ -234,16 +234,16 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 <span class="comment">%T-Num</span>
  <a class="tactic" href="host-details.html#38">case TyB.</a> <a class="tactic" href="host-details.html#39">search.</a>
 <span class="comment">%T-Plus</span>
- <a class="tactic" href="host-details.html#40">case TyB.</a> <a class="tactic" href="host-details.html#41">search.</a></div>
+ <a class="tactic" href="host-details.html#40">case TyB.</a> <a class="tactic" href="host-details.html#41">search.</a>
 
 
-<a class="command" href="host-details.html#42">Translation_Constraint trans_ty_unique : forall Ty TyA TyB,
+<a class="tactic" href="host-details.html#42">Projection_Constraint proj_ty_unique : forall Ty TyA TyB,
   |{ty}- Ty ~~> TyA -> |{ty}- Ty ~~> TyB -> is_ty Ty -> TyA = TyB.</a>
 
 
-<a class="command" href="host-details.html#43">Translation_Constraint trans_tm_unique : forall Ctx T TA TB,
+<a class="tactic" href="host-details.html#43">Projection_Constraint proj_tm_unique : forall Ctx T TA TB,
   Ctx |{tm}- T ~~> TA -> Ctx |{tm}- T ~~> TB ->
-  is_tm T -> is_list (is_pair is_string is_ty) Ctx -> TA = TB.</a>
+  is_tm T -> is_list (is_pair is_string is_ty) Ctx -> TA = TB.</a></div>
 
 
 <a class="command" href="host-details.html#44">Extensible_Theorem
@@ -553,7 +553,7 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
   construct having any type from another extension.  While a relation
   to pull apart the form solves that problem, we still don't have a
   way to prove the extension-introduced form relation would hold
-  because, in the generic case, the translation might not have the
+  because, in the generic case, the projection might not have the
   same type and then the IH would be unhelpful.
 
   In summary, directly proving canonical form lemmas for
@@ -644,7 +644,7 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
   this as an extensible property below, in desugar_ty_rel.
 
   Defining desugaring as proof-level relations here ensures terms are
-  fully translated and an extension doesn't define desugaring in a way
+  fully projected and an extension doesn't define desugaring in a way
   that doesn't actually desugar fully.
  */</span>
 <a class="command" href="host-details.html#279">Define desugar_ty : ty -> ty -> prop by
@@ -705,7 +705,7 @@ desugar_ctx ((X, Ty)::Rest) ((X, Ty')::Rest') :=
      <span class="comment">%DS-IntTy</span>
       <a class="tactic" href="host-details.html#306">case DA.</a>
      <span class="comment">%DS-OtherTy</span>
-      <a class="tactic" href="host-details.html#307">apply trans_ty_unique to DA DB _.</a> <a class="tactic" href="host-details.html#308">apply trans_ty_is to DA _.</a>
+      <a class="tactic" href="host-details.html#307">apply proj_ty_unique to DA DB _.</a> <a class="tactic" href="host-details.html#308">apply proj_ty_is to DA _.</a>
       <a class="tactic" href="host-details.html#309">apply IH to _ DA1 DB1.</a> <a class="tactic" href="host-details.html#310">search.</a></div>
 
 <a class="command" href="host-details.html#311">Theorem desugar_tm_unique : forall Ctx T TA TB,
@@ -759,7 +759,7 @@ desugar_ctx ((X, Ty)::Rest) ((X, Ty')::Rest') :=
      <span class="comment">%DS-Plus</span>
       <a class="tactic" href="host-details.html#344">case DA.</a>
      <span class="comment">%DS-OtherTm</span>
-      <a class="tactic" href="host-details.html#345">apply trans_tm_unique to DA DB _ _.</a> <a class="tactic" href="host-details.html#346">apply trans_is to DA _ _.</a>
+      <a class="tactic" href="host-details.html#345">apply proj_tm_unique to DA DB _ _.</a> <a class="tactic" href="host-details.html#346">apply proj_is to DA _ _.</a>
       <a class="tactic" href="host-details.html#347">apply IH to _ _ DA1 DB1.</a> <a class="tactic" href="host-details.html#348">search.</a></div>
 
 <a class="command" href="host-details.html#349">Extensible_Theorem

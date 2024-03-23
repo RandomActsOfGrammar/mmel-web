@@ -1,45 +1,45 @@
 Module unsat_proofs:clauses.
 
 
-Prove_Constraint unsat_proofs:lrat:trans_lit_unique.
-Prove_Constraint unsat_proofs:lrat:trans_lit_is.
+Prove_Constraint unsat_proofs:lrat:proj_lit_unique.
+Prove_Constraint unsat_proofs:lrat:proj_lit_is.
 
 
-Prove_Constraint unsat_proofs:lrat:trans_clause_unique.
-%Trans-RangeClauseStep
- TransB: case TransB.
-   %Trans-RangeClauseStep
-    apply plus_integer_unique to TransA2 TransB1. search.
-   %Trans-RangeClauseEnd
-    apply greater_lesseq_integer_false to TransB TransA1.
-%Trans-RangeClauseEnd
- TransB: case TransB.
-   %Trans-RangeClauseStep
-    apply greater_lesseq_integer_false to TransA1 TransB.
-   %Trans-RangeClauseEnd
+Prove_Constraint unsat_proofs:lrat:proj_clause_unique.
+%Proj-RangeClauseStep
+ ProjB: case ProjB.
+   %Proj-RangeClauseStep
+    apply plus_integer_unique to ProjA2 ProjB1. search.
+   %Proj-RangeClauseEnd
+    apply greater_lesseq_integer_false to ProjB ProjA1.
+%Proj-RangeClauseEnd
+ ProjB: case ProjB.
+   %Proj-RangeClauseStep
+    apply greater_lesseq_integer_false to ProjA1 ProjB.
+   %Proj-RangeClauseEnd
     search.
-%Trans-NoteClause
- case TransB. search.
+%Proj-NoteClause
+ case ProjB. search.
 
 
-Prove_Constraint unsat_proofs:lrat:trans_clause_is.
-%Trans-RangeClauseStep
- Is: case IsC. apply plus_integer_is_integer to _ _ Trans2. search.
-%Trans-RangeClauseEnd
+Prove_Constraint unsat_proofs:lrat:proj_clause_is.
+%Proj-RangeClauseStep
+ Is: case IsC. apply plus_integer_is_integer to _ _ Proj2. search.
+%Proj-RangeClauseEnd
  search.
-%Trans-NoteClause
+%Proj-NoteClause
  case IsC. search.
 
 
-Prove_Constraint unsat_proofs:lrat:trans_formula_unique.
-Prove_Constraint unsat_proofs:lrat:trans_formula_is.
+Prove_Constraint unsat_proofs:lrat:proj_formula_unique.
+Prove_Constraint unsat_proofs:lrat:proj_formula_is.
 
 Prove_Ext_Ind unsat_proofs:lrat:is_clause.
 %is_clause (rangeClause I1 I)
  Set search_depth 2. %make the next part not hang
  Helper: assert forall Low High R,
            is_integer Low -> is_integer High -> range Low High R ->
-           <is_clause {T}> (rangeClause Low High).
+           <is_clause {P}> (rangeClause Low High).
    Set search_depth 5. %back to normal
    clear R R1 R2. %remove the outer things
    induction on 3. intros IsLow IsHigh R. R: case R.
@@ -145,8 +145,8 @@ Prove unsat_proofs:lrat:negate_lit_is_lit_back.
 Prove unsat_proofs:lrat:negate_lit_exists.
 
 
-Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.
-%Trans-RangeClauseStep
+Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_proj.
+%Proj-RangeClauseStep
  Sat: case Hyp3. Or: apply lesseq_integer_less_or_eq to Sat.
  L: case Or.
    %Low < X
@@ -155,7 +155,7 @@ Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.
     apply less_lesseq_plus_one to _ _ L P. search.
    %Low = X
     search.
-%Trans-RangeClauseEnd
+%Proj-RangeClauseEnd
  Sat: case Hyp3. Or: apply lesseq_integer_less_or_eq to Sat.
  L: case Or.
    %Low < X
@@ -164,11 +164,11 @@ Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_trans.
     apply greater_lesseq_integer_false to _ Sat1.
    %Low = X
     apply greater_lesseq_integer_false to Hyp4 Sat1.
-%Trans-NoteClause
+%Proj-NoteClause
  case Hyp3. search.
 
-Prove_Constraint unsat_proofs:lrat:sat_clause_trans_to_ext.
-%Trans-RangeClauseStep
+Prove_Constraint unsat_proofs:lrat:sat_clause_proj_to_ext.
+%Proj-RangeClauseStep
  Sat: case Hyp3.
    %SC-Here
     Is: case Hyp2. apply is_integer_lesseq to Is. search.
@@ -184,9 +184,9 @@ Prove_Constraint unsat_proofs:lrat:sat_clause_trans_to_ext.
       %PlusOne = X
        Is: case Hyp2. L: apply lt_plus_one to Hyp5 _.
        apply less_integer_lesseq to L. search.
-%Trans-RangeClauseEnd
+%Proj-RangeClauseEnd
  case Hyp3.
-%Trans-NoteClause
+%Proj-NoteClause
  search.
 
 Theorem negs_total : forall L,
@@ -213,8 +213,8 @@ induction on 1. intros S NA NB. S: case S.
   %Sbst-Cons
    NA: case NA. apply IH to S1 NA NB. apply negs_mem to S NB. search.
 
-Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_trans.
-%Trans-RangeClauseStep
+Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_proj.
+%Proj-RangeClauseStep
  Is: case Hyp2. IsPlusOne: apply plus_integer_is_integer to _ _ Hyp5.
  Unsat: case Hyp3. L: apply lt_plus_one to Hyp5 _.
  R: apply range_smaller_exists to _ _ Unsat L.
@@ -239,25 +239,25 @@ Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_trans.
        search.
       %subset N1 Unsat
        apply subset_trans to S' Unsat2. search.
-%Trans-RangeClauseEnd
+%Proj-RangeClauseEnd
  search.
-%Trans-NoteClause
+%Proj-NoteClause
  case Hyp3. search.
 
-Prove_Constraint unsat_proofs:lrat:unsat_clause_trans_to_ext.
-%Trans-RangeClauseStep
+Prove_Constraint unsat_proofs:lrat:unsat_clause_proj_to_ext.
+%Proj-RangeClauseStep
  Unsat: case Hyp3. Is: case Hyp2. US: case Unsat2.
  R: assert range Low High (Low::R).
  N: assert negs (Low::R) (neg Low::N). case Unsat.
  assert subset (neg Low::N) Unsat. search.
-%Trans-RangeClauseEnd
+%Proj-RangeClauseEnd
  R: assert range Low High []. assert negs [] []. search.
-%Trans-NoteClause
+%Proj-NoteClause
  search.
 
 
-Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_trans.
-Prove_Constraint unsat_proofs:lrat:sat_formula_trans_to_ext.
+Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_proj.
+Prove_Constraint unsat_proofs:lrat:sat_formula_proj_to_ext.
 
 
 Theorem negs_form : forall L N X,
@@ -465,19 +465,19 @@ Prove unsat_proofs:lrat:gatherLits_permutation.
 %GL-NoteClause
  GL': case GL2. case IsC. apply IH to _ GL3 GL'. search.
 
-Prove_Constraint unsat_proofs:lrat:trans_gatherLits.
-%Trans-RangeClauseStep
+Prove_Constraint unsat_proofs:lrat:proj_gatherLits.
+%Proj-RangeClauseStep
  GL: case Hyp2. Is: case Hyp1. L: apply lt_plus_one to Hyp4 _.
  IsPlusOne: apply plus_integer_is_integer to _ _ Hyp4.
  R: apply range_smaller_exists to _ _ GL L.
  IsR': apply range_is to _ R. apply posLits_total to IsR'. search.
-%Trans-RangeClauseEnd
+%Proj-RangeClauseEnd
  search.
-%Trans-NoteClause
+%Proj-NoteClause
  case Hyp2. search.
 
-Prove_Constraint unsat_proofs:lrat:trans_gatherLits_permutation.
-%Trans-RangeClauseStep
+Prove_Constraint unsat_proofs:lrat:proj_gatherLits_permutation.
+%Proj-RangeClauseStep
  GL: case Hyp2. GL': case Hyp3. GL': case GL'. R: case GL.
    %Range-End
     apply greater_lesseq_integer_false to R Hyp4.
@@ -488,13 +488,13 @@ Prove_Constraint unsat_proofs:lrat:trans_gatherLits_permutation.
     apply plus_integer_is_integer to _ _ R1.
     apply range_is to _ GL'. IsLRest1: apply posLits_is to _ PL.
     apply permutation_reflexive_lits to IsLRest1. search.
-%Trans-RangeClauseEnd
+%Proj-RangeClauseEnd
  GL: case Hyp2. case Hyp3. R: case GL.
    %Range-End
     case GL1. search.
    %Range-Step
     apply greater_lesseq_integer_false to Hyp4 R.
-%Trans-NoteClause
+%Proj-NoteClause
  GL: case Hyp2. Is: case Hyp1.
  apply gatherLits_permutation to _ GL Hyp3. search.
 
@@ -550,7 +550,7 @@ Prove unsat_proofs:lrat:negate_lits_unsat.
  case IsC. apply IH to _ GL1 _. search.
 
 
-Prove_Constraint unsat_proofs:lrat:trans_proof_is.
+Prove_Constraint unsat_proofs:lrat:proj_proof_is.
 Prove unsat_proofs:lrat:check_proof_correct.
 Prove unsat_proofs:lrat:checkProof_orderless.
 
@@ -559,7 +559,7 @@ Add_Ext_Size unsat_proofs:lrat:checkProof.
 Prove_Ext_Ind unsat_proofs:lrat:checkProof.
 
 
-Prove_Constraint unsat_proofs:lrat:trans_checkProof.
+Prove_Constraint unsat_proofs:lrat:proj_checkProof.
 
 
 Prove unsat_proofs:lrat:formulaToKnown_all_greater.

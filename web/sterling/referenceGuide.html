@@ -94,27 +94,27 @@ expr ::= ...
 
   <p>
     Each new syntactic category requires a declaration of its
-    translation type.  For example, we might define translation for an
+    projection type.  For example, we might define projection for an
     expression to depend on a typing context:
-    <pre class="code sterling">Translation expr : typingCtx</pre>
-    Quite often, we find we don't want translations to depend on
+    <pre class="code sterling">Projection expr : typingCtx</pre>
+    Quite often, we find we don't want projections to depend on
     anything, so we can have no arguments:
-    <pre class="code sterling">Translation stmt :</pre>
+    <pre class="code sterling">Projection stmt :</pre>
   </p>
 
   <p>
-    We might translate a <code>repeat-while</code> construct into a
+    We might project a <code>repeat-while</code> construct into a
     regular <code>while</code> loop:
     <pre class="code sterling">
 
------------------------------------------------------------------ [Trans-RepeatWhile]
+----------------------------------------------------------------- [Proj-RepeatWhile]
 |{stmt}- repeatWhile(Body, Cond) ~~> seq(Body, while(Cond, Body)) </pre>
-    We might translate a <code>let</code> binding to the basic
+    We might project a <code>let</code> binding to the basic
     simply-typed lambda calculus by checking the type of the bound
     expression:
     <pre class="code sterling">
 typeOf Ctx E1 Ty
-------------------------------------------------------- [Trans-Let]
+------------------------------------------------------- [Proj-Let]
 Ctx |{expr}- let(X, E1, E2) ~~> app(abs(X, Ty, E2), E1) </pre>
   </p>
 
@@ -216,7 +216,7 @@ Ctx |{expr}- let(X, E1, E2) ~~> app(abs(X, Ty, E2), E1) </pre>
       </tr>
       <tr>
         <td><code>t1, t2, t3 |{c}- t4 ~~> t5</code></td>
-        <td>translation</td>
+        <td>projection</td>
       </tr>
       <tr>
         <td><code>rel t1 t2 t3</code></td>
@@ -282,9 +282,9 @@ Ctx |{expr}- let(X, E1, E2) ~~> app(abs(X, Ty, E2), E1) </pre>
     rule, marked with <code>*</code> after the rule name.  These often
     have the form of a copy rule,
     <pre class="code sterling">
-|{cat}- B ~~> B_Trans
-erel A B_Trans
---------------------- [Erel-Trans]*
+|{cat}- B ~~> B_Proj
+erel A B_Proj
+--------------------- [Erel-Proj]*
 erel A B </pre>
     but may have any form.  The conclusion must have a variable as its
     primary component argument.

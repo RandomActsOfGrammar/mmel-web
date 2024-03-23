@@ -17,7 +17,7 @@
  < <b>Module stlc:let.</b>
 </pre>
 <pre class="code extensibella"id="1">
- &lt; <b>Prove_Constraint stlc:host:trans_ty_is.</b>
+ &lt; <b>Prove_Constraint stlc:host:proj_ty_is.</b>
 
 Proof completed.
 </pre>
@@ -100,13 +100,13 @@ H2 : is_ty Ty
 Proof completed.
 </pre>
 <pre class="code extensibella"id="7">
- &lt; <b>Prove_Constraint stlc:host:trans_is.</b>
+ &lt; <b>Prove_Constraint stlc:host:proj_is.</b>
 
 Variables: Ctx T1 T2 Ty X
-Trans : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty T2) T1
+Proj : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty T2) T1
 IsCtx : is_list (is_pair is_string is_ty) Ctx
 IsT : is_tm (let X T1 T2)
-Trans1 : typeOf Ctx T1 Ty
+Proj1 : typeOf Ctx T1 Ty
 ============================
  is_tm (app (abs X Ty T2) T1)
 </pre>
@@ -114,9 +114,9 @@ Trans1 : typeOf Ctx T1 Ty
  &lt; <b>case IsT.</b>
 
 Variables: Ctx T1 T2 Ty X
-Trans : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty T2) T1
+Proj : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty T2) T1
 IsCtx : is_list (is_pair is_string is_ty) Ctx
-Trans1 : typeOf Ctx T1 Ty
+Proj1 : typeOf Ctx T1 Ty
 H1 : is_string X
 H2 : is_tm T1
 H3 : is_tm T2
@@ -124,12 +124,12 @@ H3 : is_tm T2
  is_tm (app (abs X Ty T2) T1)
 </pre>
 <pre class="code extensibella"id="9">
- &lt; <b>apply type_is to _ _ Trans1.</b>
+ &lt; <b>apply type_is to _ _ Proj1.</b>
 
 Variables: Ctx T1 T2 Ty X
-Trans : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty T2) T1
+Proj : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty T2) T1
 IsCtx : is_list (is_pair is_string is_ty) Ctx
-Trans1 : typeOf Ctx T1 Ty
+Proj1 : typeOf Ctx T1 Ty
 H1 : is_string X
 H2 : is_tm T1
 H3 : is_tm T2
@@ -271,12 +271,12 @@ H4 : is_ty Ty2
 Proof completed.
 </pre>
 <pre class="code extensibella"id="18">
- &lt; <b>Prove_Constraint stlc:host:trans_ty_unique.</b>
+ &lt; <b>Prove_Constraint stlc:host:proj_ty_unique.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="19">
- &lt; <b>Prove_Constraint stlc:host:trans_tm_unique.</b>
+ &lt; <b>Prove_Constraint stlc:host:proj_tm_unique.</b>
 
 Variables: Ctx TB T1 T2 Ty X
 Hyp : Ctx |{tm}- let X T1 T2 ~~&gt; app (abs X Ty T2) T1

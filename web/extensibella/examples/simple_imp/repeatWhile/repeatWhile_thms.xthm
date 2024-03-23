@@ -1,27 +1,27 @@
 Module simple_imp:repeatWhile.
 
 
-Prove_Constraint simple_imp:host:trans_e_unique.
-Prove_Constraint simple_imp:host:trans_e_is.
-Prove_Constraint simple_imp:host:trans_rf_unique.
-Prove_Constraint simple_imp:host:trans_rf_is.
+Prove_Constraint simple_imp:host:proj_e_unique.
+Prove_Constraint simple_imp:host:proj_e_is.
+Prove_Constraint simple_imp:host:proj_rf_unique.
+Prove_Constraint simple_imp:host:proj_rf_is.
 
 
-Prove_Constraint simple_imp:host:trans_c_unique.
+Prove_Constraint simple_imp:host:proj_c_unique.
 %repeatWhile
  case Hyp1. search.
 
-Prove_Constraint simple_imp:host:trans_c_is.
+Prove_Constraint simple_imp:host:proj_c_is.
 %repeatWhile
  case Hyp1. search.
 
 
-Prove_Constraint simple_imp:host:trans_recFields_unique.
-Prove_Constraint simple_imp:host:trans_recFields_is.
-Prove_Constraint simple_imp:host:trans_ty_unique.
-Prove_Constraint simple_imp:host:trans_ty_is.
-Prove_Constraint simple_imp:host:trans_value_unique.
-Prove_Constraint simple_imp:host:trans_value_is.
+Prove_Constraint simple_imp:host:proj_recFields_unique.
+Prove_Constraint simple_imp:host:proj_recFields_is.
+Prove_Constraint simple_imp:host:proj_ty_unique.
+Prove_Constraint simple_imp:host:proj_ty_is.
+Prove_Constraint simple_imp:host:proj_value_unique.
+Prove_Constraint simple_imp:host:proj_value_is.
 
 
 Prove simple_imp:host:vars_join,
@@ -30,10 +30,10 @@ Prove simple_imp:host:vars_unique,
       simple_imp:host:vars_rf_unique.
 
 
-Prove_Constraint simple_imp:host:trans_e_vars_exist.
-Prove_Constraint simple_imp:host:trans_e_vars.
-Prove_Constraint simple_imp:host:trans_rf_vars_exist.
-Prove_Constraint simple_imp:host:trans_rf_vars.
+Prove_Constraint simple_imp:host:proj_e_vars_exist.
+Prove_Constraint simple_imp:host:proj_e_vars.
+Prove_Constraint simple_imp:host:proj_rf_vars_exist.
+Prove_Constraint simple_imp:host:proj_rf_vars.
 
 
 Prove simple_imp:host:vars_is,
@@ -51,7 +51,7 @@ Prove simple_imp:host:typeOK_unique.
  case Ty2. search.
 
 
-Prove_Constraint simple_imp:host:trans_eval_e.
+Prove_Constraint simple_imp:host:proj_eval_e.
 
 
 Prove simple_imp:host:eval_e_unique,
@@ -60,7 +60,7 @@ Prove simple_imp:host:eval_e_unique,
 Prove simple_imp:host:update_rec_fields_unique.
 
 
-Theorem repeatWhile_transEval : forall G Body Cond G1,
+Theorem repeatWhile_projEval : forall G Body Cond G1,
     eval_c G (repeatWhile Body Cond) G1 ->
     exists G2, eval_c G (seq Body (while Cond Body)) G2.
 induction on 1. intros Ev. Ev: case Ev (keep).
@@ -69,9 +69,9 @@ induction on 1. intros Ev. Ev: case Ev (keep).
 %E-RepeatWhileFalse
  search.
 
-Prove_Constraint simple_imp:host:trans_c_eval.
+Prove_Constraint simple_imp:host:proj_c_eval.
 %repeatWhile
- apply repeatWhile_transEval to Hyp1. search.
+ apply repeatWhile_projEval to Hyp1. search.
 
 
 Add_Ext_Size simple_imp:host:eval_c.
@@ -122,8 +122,8 @@ Prove_Ext_Ind simple_imp:host:eval_c.
        search.
  AccN2: apply Acc to _ LN2N. AccN3: apply Acc to _ LN3N.
  EvalTBody: apply IH to R3 AccN2. EvalTRep: apply IH to R5 AccN3.
- Trans: assert |{c}- repeatWhile Body Cond ~~>
-                     seq Body (while Cond Body).
+ Proj: assert |{c}- repeatWhile Body Cond ~~>
+                    seq Body (while Cond Body).
  SW: apply RW_to_SW to R5.
  LN'N: apply less_integer_transitive to SW1 LN3N.
  L0N': apply ext_size_pos_eval_c to SW. AccN': apply Acc to _ LN'N.
@@ -134,8 +134,8 @@ Prove_Ext_Ind simple_imp:host:eval_c.
  IsN2: apply ext_size_is_int_eval_c to R2.
  LN2N: apply lt_plus_one to R1 _. AccN2: apply Acc to _ LN2N.
  EvalTBody: apply IH to R2 AccN2.
- Trans: assert |{c}- repeatWhile Body Cond ~~>
-                     seq Body (while Cond Body). search 3.
+ Proj: assert |{c}- repeatWhile Body Cond ~~>
+                    seq Body (while Cond Body). search 3.
 
 
 Prove simple_imp:host:eval_c_unique.
@@ -153,7 +153,7 @@ Prove simple_imp:host:eval_c_unique.
     apply IH to Ev3 Ev2. search.
 
 
-Theorem repeatWhile_transSame : forall G Body Cond G1 G2,
+Theorem repeatWhile_projSame : forall G Body Cond G1 G2,
     eval_c G (repeatWhile Body Cond) G1 ->
     eval_c G (seq Body (while Cond Body)) G2 ->
     G1 = G2.
@@ -172,14 +172,14 @@ induction on 1. intros EvRW EvSW. EvRW: case EvRW (keep).
    %E-WhileTrue
     apply eval_e_unique to EvRW2 EvW.
 
-Prove_Constraint simple_imp:host:trans_c_eval_results.
+Prove_Constraint simple_imp:host:proj_c_eval_results.
 %repeatWhile
- apply repeatWhile_transSame to Hyp1 Hyp2. search.
+ apply repeatWhile_projSame to Hyp1 Hyp2. search.
 
 
-Prove_Constraint simple_imp:host:trans_c_eval_results_back.
+Prove_Constraint simple_imp:host:proj_c_eval_results_back.
 %repeatWhile
- apply repeatWhile_transSame to Hyp1 Hyp2. search.
+ apply repeatWhile_projSame to Hyp1 Hyp2. search.
 
 
 Prove simple_imp:host:vars_eval_same_result,
