@@ -76,10 +76,10 @@ Proof completed.
 Warning:  No definition of Ext Size for all relations in Ext Ind; defaulting to proving Ext Ind without Ext Size
 Subgoal 1:
 
-IH : forall C, is_clause C * -&gt; &lt;is_clause {T}&gt; C
+IH : forall C, is_clause C * -&gt; &lt;is_clause {P}&gt; C
 R : is_clause emptyClause @
 ============================
- &lt;is_clause {T}&gt; emptyClause
+ &lt;is_clause {P}&gt; emptyClause
 </pre>
 <pre class="code extensibella"id="8">
  &lt; <b>search.</b>
@@ -87,12 +87,12 @@ R : is_clause emptyClause @
 Subgoal 2:
 
 Variables: Clause Lit
-IH : forall C, is_clause C * -&gt; &lt;is_clause {T}&gt; C
+IH : forall C, is_clause C * -&gt; &lt;is_clause {P}&gt; C
 R : is_clause (or Lit Clause) @
 R1 : is_lit Lit
 R2 : is_clause Clause *
 ============================
- &lt;is_clause {T}&gt; (or Lit Clause)
+ &lt;is_clause {P}&gt; (or Lit Clause)
 </pre>
 <pre class="code extensibella"id="9">
  &lt; <b>apply IH to R2.</b>
@@ -100,13 +100,13 @@ R2 : is_clause Clause *
 Subgoal 2:
 
 Variables: Clause Lit
-IH : forall C, is_clause C * -&gt; &lt;is_clause {T}&gt; C
+IH : forall C, is_clause C * -&gt; &lt;is_clause {P}&gt; C
 R : is_clause (or Lit Clause) @
 R1 : is_lit Lit
 R2 : is_clause Clause *
-H1 : &lt;is_clause {T}&gt; Clause
+H1 : &lt;is_clause {P}&gt; Clause
 ============================
- &lt;is_clause {T}&gt; (or Lit Clause)
+ &lt;is_clause {P}&gt; (or Lit Clause)
 </pre>
 <pre class="code extensibella"id="10">
  &lt; <b>search.</b>
@@ -17912,14 +17912,14 @@ Subgoal 1:
 
 Variables: Known Prf ID
 IH : forall N Known P,
-       &lt;checkProof {ES}&gt; Known P N -&gt; acc N * -&gt; &lt;checkProof {T}&gt; Known P
+       &lt;checkProof {ES}&gt; Known P N -&gt; acc N * -&gt; &lt;checkProof {P}&gt; Known P
 IH1 : forall N Known P,
-        &lt;checkProof {ES}&gt; Known P N ** -&gt; acc N @ -&gt; &lt;checkProof {T}&gt; Known P
+        &lt;checkProof {ES}&gt; Known P N ** -&gt; acc N @ -&gt; &lt;checkProof {P}&gt; Known P
 R : &lt;checkProof {ES}&gt; Known (emptyLrat ID Prf) 0 @@
 Acc : acc 0 @
 R1 : rupProof Known emptyClause Prf
 ============================
- &lt;checkProof {T}&gt; Known (emptyLrat ID Prf)
+ &lt;checkProof {P}&gt; Known (emptyLrat ID Prf)
 </pre>
 <pre class="code extensibella"id="1024">
  &lt; <b>search.</b>
@@ -17928,16 +17928,16 @@ Subgoal 2:
 
 Variables: N Known KRest Rest Prf C ID
 IH : forall N Known P,
-       &lt;checkProof {ES}&gt; Known P N -&gt; acc N * -&gt; &lt;checkProof {T}&gt; Known P
+       &lt;checkProof {ES}&gt; Known P N -&gt; acc N * -&gt; &lt;checkProof {P}&gt; Known P
 IH1 : forall N Known P,
-        &lt;checkProof {ES}&gt; Known P N ** -&gt; acc N @ -&gt; &lt;checkProof {T}&gt; Known P
+        &lt;checkProof {ES}&gt; Known P N ** -&gt; acc N @ -&gt; &lt;checkProof {P}&gt; Known P
 R : &lt;checkProof {ES}&gt; Known (addLrupProof ID C Prf Rest) N @@
 Acc : acc N @
 R1 : remove_all Known ID KRest
 R2 : rupProof Known C Prf
 R3 : &lt;checkProof {ES}&gt; ((ID, C)::KRest) Rest N **
 ============================
- &lt;checkProof {T}&gt; Known (addLrupProof ID C Prf Rest)
+ &lt;checkProof {P}&gt; Known (addLrupProof ID C Prf Rest)
 </pre>
 <pre class="code extensibella"id="1025">
  &lt; <b>apply IH1 to R3 Acc.</b>
@@ -17946,17 +17946,17 @@ Subgoal 2:
 
 Variables: N Known KRest Rest Prf C ID
 IH : forall N Known P,
-       &lt;checkProof {ES}&gt; Known P N -&gt; acc N * -&gt; &lt;checkProof {T}&gt; Known P
+       &lt;checkProof {ES}&gt; Known P N -&gt; acc N * -&gt; &lt;checkProof {P}&gt; Known P
 IH1 : forall N Known P,
-        &lt;checkProof {ES}&gt; Known P N ** -&gt; acc N @ -&gt; &lt;checkProof {T}&gt; Known P
+        &lt;checkProof {ES}&gt; Known P N ** -&gt; acc N @ -&gt; &lt;checkProof {P}&gt; Known P
 R : &lt;checkProof {ES}&gt; Known (addLrupProof ID C Prf Rest) N @@
 Acc : acc N @
 R1 : remove_all Known ID KRest
 R2 : rupProof Known C Prf
 R3 : &lt;checkProof {ES}&gt; ((ID, C)::KRest) Rest N **
-H1 : &lt;checkProof {T}&gt; ((ID, C)::KRest) Rest
+H1 : &lt;checkProof {P}&gt; ((ID, C)::KRest) Rest
 ============================
- &lt;checkProof {T}&gt; Known (addLrupProof ID C Prf Rest)
+ &lt;checkProof {P}&gt; Known (addLrupProof ID C Prf Rest)
 </pre>
 <pre class="code extensibella"id="1026">
  &lt; <b>search.</b>
@@ -17965,15 +17965,15 @@ Subgoal 3:
 
 Variables: N Known C KRest Rest ID
 IH : forall N Known P,
-       &lt;checkProof {ES}&gt; Known P N -&gt; acc N * -&gt; &lt;checkProof {T}&gt; Known P
+       &lt;checkProof {ES}&gt; Known P N -&gt; acc N * -&gt; &lt;checkProof {P}&gt; Known P
 IH1 : forall N Known P,
-        &lt;checkProof {ES}&gt; Known P N ** -&gt; acc N @ -&gt; &lt;checkProof {T}&gt; Known P
+        &lt;checkProof {ES}&gt; Known P N ** -&gt; acc N @ -&gt; &lt;checkProof {P}&gt; Known P
 R : &lt;checkProof {ES}&gt; Known (deleteLratProof ID Rest) N @@
 Acc : acc N @
 R1 : select (ID, C) KRest Known
 R2 : &lt;checkProof {ES}&gt; KRest Rest N **
 ============================
- &lt;checkProof {T}&gt; Known (deleteLratProof ID Rest)
+ &lt;checkProof {P}&gt; Known (deleteLratProof ID Rest)
 </pre>
 <pre class="code extensibella"id="1027">
  &lt; <b>apply IH1 to R2 Acc.</b>
@@ -17982,16 +17982,16 @@ Subgoal 3:
 
 Variables: N Known C KRest Rest ID
 IH : forall N Known P,
-       &lt;checkProof {ES}&gt; Known P N -&gt; acc N * -&gt; &lt;checkProof {T}&gt; Known P
+       &lt;checkProof {ES}&gt; Known P N -&gt; acc N * -&gt; &lt;checkProof {P}&gt; Known P
 IH1 : forall N Known P,
-        &lt;checkProof {ES}&gt; Known P N ** -&gt; acc N @ -&gt; &lt;checkProof {T}&gt; Known P
+        &lt;checkProof {ES}&gt; Known P N ** -&gt; acc N @ -&gt; &lt;checkProof {P}&gt; Known P
 R : &lt;checkProof {ES}&gt; Known (deleteLratProof ID Rest) N @@
 Acc : acc N @
 R1 : select (ID, C) KRest Known
 R2 : &lt;checkProof {ES}&gt; KRest Rest N **
-H1 : &lt;checkProof {T}&gt; KRest Rest
+H1 : &lt;checkProof {P}&gt; KRest Rest
 ============================
- &lt;checkProof {T}&gt; Known (deleteLratProof ID Rest)
+ &lt;checkProof {P}&gt; Known (deleteLratProof ID Rest)
 </pre>
 <pre class="code extensibella"id="1028">
  &lt; <b>search.</b>

@@ -5,15 +5,14 @@
 function proofToggle(idx){
     var toggler = document.getElementById("toggleproof" + idx);
     var proof = document.getElementById("proof" + idx);
-    if (toggler.innerHTML == "[Hide Proof]"){
+    if (toggler.innerText == "[Hide Proof]"){
         proof.style = "display: none;";
-        toggler.innerHTML = "[Show Proof]";
+        toggler.innerText = "[Show Proof]";
     }
     else{
         proof.style = "display: block;";
-        toggler.innerHTML = "[Hide Proof]";
+        toggler.innerText = "[Hide Proof]";
     }
-    console.log("I don't know why it is giving the syntax error:");
 }
 
 
@@ -25,7 +24,6 @@ function allProofShow(){
         prf.style = "display: block;";
         toggler.innerHTML = "[Hide Proof]";
     }
-    console.log("I don't know why it is giving the syntax error:");
 }
 
 
@@ -37,7 +35,6 @@ function allProofHide(){
         prf.style = "display: none;";
         toggler.innerHTML = "[Show Proof]";
     }
-    console.log("I don't know why it is giving the syntax error:");
 }
 
 
@@ -56,5 +53,4 @@ function toggleFile(fname){
         file.style = "";
         toggler.innerHTML = "[Reduce File]";
     }
-    console.log("I don't know why it is giving the syntax error:");
 }

@@ -50,7 +50,7 @@ def writeFiles(outF, sosFilenames):
         #heading for file
         outF.write("<h3>File:  " + shortName + "</h3>\n")
         #links
-        foldLink = '<a class="fold-link" href="javascript:void" '
+        foldLink = '<a class="fold-link" href="javascript:void(0)" '
         foldLink += 'id="toggle' + shortName + '" '
         foldLink += 'onclick="toggleFile(\'' + shortName + '\')">'
         foldLink += '[Reduce File]</a>'
