@@ -53,7 +53,7 @@ def writeSpec(outF, sosFilenames):
         #heading for file
         outF.write("<h3>File:  " + shortName + "</h3>\n")
         #collapse/expand
-        foldLink = '<a class="fold-link" href="javascript:void" '
+        foldLink = '<a class="fold-link" href="javascript:void(0)" '
         foldLink += 'id="toggle' + shortName + '" '
         foldLink += 'onclick="toggleFile(\'' + shortName + '\')">'
         foldLink += '[Reduce File]</a>'
@@ -75,10 +75,10 @@ def writeProof(outF, extensibellaFilename, detailsFile):
     outF.write('<div class="section reasoning">\n')
     outF.write('<h2>Reasoning</h2>\n')
     #intro
-    links = '<a class="fold-link" href="javascript:void" '
+    links = '<a class="fold-link" href="javascript:void(0)" '
     links += 'onclick="allProofShow();">[Show All Proofs]</a>'
     links += '<span> </span>'
-    links += '<a class="fold-link" href="javascript:void" '
+    links += '<a class="fold-link" href="javascript:void(0)" '
     links += 'onclick="allProofHide();">[Hide All Proofs]</a>\n'
     links += '<span> </span>'
     links += '<a class="fold-link" href="' + extensibellaFilename + '">'

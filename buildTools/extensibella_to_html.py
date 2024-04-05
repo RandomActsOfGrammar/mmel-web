@@ -129,7 +129,7 @@ def readFullFile(fContents, cmdID, linkedFile):
         if cmdID < rID: #proof given
             text += "<span> </span>" #spacer before hide/show proof
             #proof toggle
-            text += '<a class="fold-link" href="javascript:void" '
+            text += '<a class="fold-link" href="javascript:void(0)" '
             text += 'onclick="proofToggle(' + str(cmdID) + ');" '
             text += 'id="toggleproof' + str(cmdID) + '">[Show Proof]</a>\n'
             #proof block

@@ -31,7 +31,7 @@ def check_file(fContents, filename, dirname):
         full = dirname + "/" + lookForName
         if  not (lookForName.startswith("https://") or \
                  lookForName.startswith("http://")) and \
-            not lookForName == "javascript:void" and \
+            not lookForName == "javascript:void(0)" and \
             not lookForName == "" and \
             not os.path.isfile(full):
             output += ["'" + lookForName + "' missing (linked in '" +
