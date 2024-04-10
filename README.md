@@ -32,3 +32,13 @@ By default this will copy from `full_web`; run it as
 to use a different directory if you built into a different directory.
 This will set the permissions correctly for you, but you need to be in
 the correct group first.
+
+
+----------------------------------------------------------------------
+
+
+The `MMEL.drawio` document contains the drawings of the logos for the
+pages here.  I believe this requires using [draw.io]() to view and to
+extract the logos as images for use.  The logos used in the website
+are also in the appropriate `images/` directories within the `web/`
+directory.
