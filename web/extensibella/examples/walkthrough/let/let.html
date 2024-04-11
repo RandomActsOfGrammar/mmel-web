@@ -144,24 +144,22 @@ typeOf Ctx let(X, T1, T2) Ty2
  <a class="tactic" href="let-details.html#57">L: apply lt_plus_one to R1 _.</a>
  <a class="tactic" href="let-details.html#58">PosN2: apply ext_size_pos_typeOf to R3.</a>
  <a class="tactic" href="let-details.html#59">PosN3: apply ext_size_pos_typeOf to R4.</a>
- <a class="tactic" href="let-details.html#60">Or2: apply lt_left to R2 _ _.</a> <a class="tactic" href="let-details.html#61">Or3: apply lt_right to R2 _ _ _.</a>
- <a class="tactic" href="let-details.html#62">Or2: case Or2.</a>
-   <span class="comment">%N2 < N4</span>
-    <a class="tactic" href="let-details.html#63">LN2: apply less_integer_transitive to Or2 L.</a>
-    <a class="tactic" href="let-details.html#64">AN2: apply Acc to _ LN2.</a> <a class="tactic" href="let-details.html#65">apply IH1 to R3 AN2.</a> <a class="tactic" href="let-details.html#66">Or3: case Or3.</a>
-      <span class="comment">%N3 < N4</span>
-       <a class="tactic" href="let-details.html#67">LN3: apply less_integer_transitive to Or3 L.</a>
-       <a class="tactic" href="let-details.html#68">AN3: apply Acc to _ LN3.</a> <a class="tactic" href="let-details.html#69">apply IH1 to R4 AN3.</a> <a class="tactic" href="let-details.html#70">search.</a>
-      <span class="comment">%N3 = N4</span>
-       <a class="tactic" href="let-details.html#71">AN4: apply Acc to _ L.</a> <a class="tactic" href="let-details.html#72">apply IH1 to R4 AN4.</a> <a class="tactic" href="let-details.html#73">search.</a>
-   <span class="comment">%N2 = N4</span>
-    <a class="tactic" href="let-details.html#74">AN4: apply Acc to _ L.</a> <a class="tactic" href="let-details.html#75">apply IH1 to R3 AN4.</a> <a class="tactic" href="let-details.html#76">Or3: case Or3.</a>
-      <span class="comment">%N3 < N4</span>
-       <a class="tactic" href="let-details.html#77">LN3: apply less_integer_transitive to Or3 L.</a>
-       <a class="tactic" href="let-details.html#78">AN3: apply Acc to _ LN3.</a> <a class="tactic" href="let-details.html#79">apply IH1 to R4 AN3.</a> <a class="tactic" href="let-details.html#80">search.</a>
-      <span class="comment">%N3 = N4</span>
-       <a class="tactic" href="let-details.html#81">apply IH1 to R4 AN4.</a> <a class="tactic" href="let-details.html#82">search.</a></div>
-<a class="command" href="let-details.html#83"></a>
+ <a class="tactic" href="let-details.html#60">assert <typeOf {P}> G T1 Ty1.</a>
+   <a class="tactic" href="let-details.html#61">Or: apply lt_left to R2 _ _.</a> <a class="tactic" href="let-details.html#62">L': case Or.</a>
+     <span class="comment">%N2 < N4</span>
+      <a class="tactic" href="let-details.html#63">L'': apply less_integer_transitive to L' L.</a>
+      <a class="tactic" href="let-details.html#64">A: apply Acc to _ L''.</a> <a class="tactic" href="let-details.html#65">apply IH to R3 A.</a> <a class="tactic" href="let-details.html#66">search.</a>
+     <span class="comment">%N2 = N4</span>
+      <a class="tactic" href="let-details.html#67">A: apply Acc to _ L.</a> <a class="tactic" href="let-details.html#68">apply IH to R3 A.</a> <a class="tactic" href="let-details.html#69">search.</a>
+ <a class="tactic" href="let-details.html#70">assert <typeOf {P}> ((X, Ty1)::G) T2 Ty.</a>
+   <a class="tactic" href="let-details.html#71">Or: apply lt_right to R2 _ _ _.</a> <a class="tactic" href="let-details.html#72">L': case Or.</a>
+     <span class="comment">%N3 < N4</span>
+      <a class="tactic" href="let-details.html#73">L'': apply less_integer_transitive to L' L.</a>
+      <a class="tactic" href="let-details.html#74">A: apply Acc to _ L''.</a> <a class="tactic" href="let-details.html#75">apply IH to R4 A.</a> <a class="tactic" href="let-details.html#76">search.</a>
+     <span class="comment">%N3 = N4</span>
+      <a class="tactic" href="let-details.html#77">A: apply Acc to _ L.</a> <a class="tactic" href="let-details.html#78">apply IH to R4 A.</a> <a class="tactic" href="let-details.html#79">search.</a>
+ <a class="tactic" href="let-details.html#80">exists app (abs X Ty1 T2) T1, Ty1.</a> <a class="tactic" href="let-details.html#81">search.</a></div>
+<a class="command" href="let-details.html#82"></a>
 </pre>
 </div>
 <div class="section">

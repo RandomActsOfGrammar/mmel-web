@@ -105,7 +105,7 @@ def readFullProof(fContents, cmdID, linkedFile):
             text += initSpace
             text += '<a class="tactic"'
             if linkedFile != None: #only link if there is a linked file
-                text += 'href="' + linkedFile + '#' + str(cmdID) + '"'
+                text += ' href="' + linkedFile + '#' + str(cmdID) + '"'
             text += '>' + cmd
             text += '</a>'
             cmdID += 1
