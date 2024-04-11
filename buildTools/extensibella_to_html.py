@@ -103,8 +103,10 @@ def readFullProof(fContents, cmdID, linkedFile):
             reachedEnd = True
         else:
             text += initSpace
-            text += '<a class="tactic" href="' + linkedFile
-            text += '#' + str(cmdID) + '">' + cmd
+            text += '<a class="tactic"'
+            if linkedFile != None: #only link if there is a linked file
+                text += 'href="' + linkedFile + '#' + str(cmdID) + '"'
+            text += '>' + cmd
             text += '</a>'
             cmdID += 1
             fContents = rest
@@ -119,8 +121,10 @@ def readFullFile(fContents, cmdID, linkedFile):
         initSpace, initRest = readSpace(fContents)
         cmd, cmdRest, _ = readFullCommand(initRest)
         #add command
-        text += initSpace + '<a class="command" href="' + linkedFile
-        text += '#' + str(cmdID) + '">' + cmd + '</a>'
+        text += initSpace + '<a class="command"'
+        if linkedFile != None: #only add link if there is a linked file
+            text += ' href="' + linkedFile + '#' + str(cmdID) + '"'
+        text += '>' + cmd + '</a>'
         cmdID += 1
         #read proof
         if cmdRest[:1] == "\n":
@@ -156,7 +160,7 @@ def process(filenameIn, filenameOut, modeOut):
     fIn = open(filenameIn, "r")
     fContents = fIn.read()
     fIn.close()
-    text = markFullFile(fContents)
+    text = markFullFile(fContents, None)
     fOut = open(filenameOut, modeOut)
     fOut.write(text)
     fOut.close()
