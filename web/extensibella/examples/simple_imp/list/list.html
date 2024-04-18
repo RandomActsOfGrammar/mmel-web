@@ -581,7 +581,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
  <span class="comment">/*This is why we need E-Index to specify consVal.  Without that, we
    have no way of determining if (null Lst) will evaluate.  We might
    try proving
-     forall E L I V G, indexRel L I V -> eval_e G E L ->
+     forall E L I V G, indexRel L I V -&gt; eval_e G E L -&gt;
                                  exists V', eval_e G (null E) V'
    but this fails in the generic case because the definition of
    indexRel is copied from L's projection, but E still evaluates to
@@ -593,7 +593,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
 
 <a class="command" href="list-details.html#260">Extensible_Theorem
   index_is_integer : forall L I V,
-    Index : indexRel L I V ->
+    Index : indexRel L I V -&gt;
     is_integer I
   on Index.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(261);" id="toggleproof261">[Show Proof]</a>
 <div class="proof" id="proof261" style="display: none;">
@@ -607,8 +607,8 @@ val_eq consVal(V11, V12) consVal(V21, V22)
  <a class="tactic" href="list-details.html#265">backchain IH.</a></div>
 <a class="command" href="list-details.html#266">Extensible_Theorem
   index_negative_false : forall L I V,
-    Index : indexRel L I V ->
-    Neg : I < 0 ->
+    Index : indexRel L I V -&gt;
+    Neg : I &lt; 0 -&gt;
     false
   on Index.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(267);" id="toggleproof267">[Show Proof]</a>
 <div class="proof" id="proof267" style="display: none;">
@@ -623,8 +623,8 @@ val_eq consVal(V11, V12) consVal(V21, V22)
  <a class="tactic" href="list-details.html#272">apply IH to Index2 Neg.</a></div>
 <a class="command" href="list-details.html#273">Extensible_Theorem
   index_unique : forall L I V1 V2,
-    Index1 : indexRel L I V1 ->
-    Index2 : indexRel L I V2 ->
+    Index1 : indexRel L I V1 -&gt;
+    Index2 : indexRel L I V2 -&gt;
     V1 = V2
   on Index1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(274);" id="toggleproof274">[Show Proof]</a>
 <div class="proof" id="proof274" style="display: none;">
@@ -647,7 +647,7 @@ val_eq consVal(V11, V12) consVal(V21, V22)
 
 <a class="command" href="list-details.html#290">Extensible_Theorem
   length_is_integer : forall L V,
-    Len : lengthRel L V ->
+    Len : lengthRel L V -&gt;
     is_integer V
   on Len.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(291);" id="toggleproof291">[Show Proof]</a>
 <div class="proof" id="proof291" style="display: none;">
@@ -660,8 +660,8 @@ val_eq consVal(V11, V12) consVal(V21, V22)
  <a class="tactic" href="list-details.html#295">apply IH to Len2.</a> <a class="tactic" href="list-details.html#296">search.</a></div>
 <a class="command" href="list-details.html#297">Extensible_Theorem
   length_unique : forall L V1 V2,
-    Len1 : lengthRel L V1 ->
-    Len2 : lengthRel L V2 ->
+    Len1 : lengthRel L V1 -&gt;
+    Len2 : lengthRel L V2 -&gt;
     V1 = V2
   on Len1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(298);" id="toggleproof298">[Show Proof]</a>
 <div class="proof" id="proof298" style="display: none;">

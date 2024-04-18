@@ -155,11 +155,19 @@ def markFullFile(fContents, linkedFile):
     return text
 
 
+#Replace < and > with &lt; and &gt;
+def sanitizeText(text):
+    text = text.replace("<", "&lt;")
+    text = text.replace(">", "&gt;")
+    return text
+
+
 #Read the file, process it, then write it out
 def process(filenameIn, filenameOut, modeOut):
     fIn = open(filenameIn, "r")
     fContents = fIn.read()
     fIn.close()
+    fContents = sanitizeText(fContents)
     text = markFullFile(fContents, None)
     fOut = open(filenameOut, modeOut)
     fOut.write(text)

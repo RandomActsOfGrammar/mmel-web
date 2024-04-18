@@ -91,6 +91,7 @@ def writeProof(outF, extensibellaFilename, detailsFile):
     f = open(extensibellaFilename, "r")
     text = f.read()
     f.close()
+    text = eth.sanitizeText(text)
     htmlText = eth.markFullFile(text, detailsFile)
     outF.write(htmlText)
     outF.write("</div>\n")

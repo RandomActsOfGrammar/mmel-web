@@ -584,46 +584,46 @@ evalctx_eq (X, V1)::Rest1 EC2
 <div class="proof" id="proof1" style="display: none;">
 
 <a class="tactic" href="host-details.html#1">Projection_Constraint proj_e_unique : forall E E1 E2,
-  |{e}- E ~~> E1 -> |{e}- E ~~> E2 -> E1 = E2.</a>
+  |{e}- E ~~&gt; E1 -&gt; |{e}- E ~~&gt; E2 -&gt; E1 = E2.</a>
 <a class="tactic" href="host-details.html#2">Projection_Constraint proj_e_is : forall E E',
-  |{e}- E ~~> E' -> is_e E -> is_e E'.</a>
+  |{e}- E ~~&gt; E' -&gt; is_e E -&gt; is_e E'.</a>
 
 <a class="tactic" href="host-details.html#3">Projection_Constraint proj_rf_unique : forall RF RF1 RF2,
-  |{recFieldExprs}- RF ~~> RF1 ->
-  |{recFieldExprs}- RF ~~> RF2 ->
+  |{recFieldExprs}- RF ~~&gt; RF1 -&gt;
+  |{recFieldExprs}- RF ~~&gt; RF2 -&gt;
   RF1 = RF2.</a>
 <a class="tactic" href="host-details.html#4">Projection_Constraint proj_rf_is : forall RF RF',
-  |{recFieldExprs}- RF ~~> RF' -> is_recFieldExprs RF ->
+  |{recFieldExprs}- RF ~~&gt; RF' -&gt; is_recFieldExprs RF -&gt;
   is_recFieldExprs RF'.</a>
 
 <a class="tactic" href="host-details.html#5">Projection_Constraint proj_c_unique : forall C C1 C2,
-  |{c}- C ~~> C1 -> |{c}- C ~~> C2 -> C1 = C2.</a>
+  |{c}- C ~~&gt; C1 -&gt; |{c}- C ~~&gt; C2 -&gt; C1 = C2.</a>
 <a class="tactic" href="host-details.html#6">Projection_Constraint proj_c_is : forall C C',
-  |{c}- C ~~> C' -> is_c C -> is_c C'.</a>
+  |{c}- C ~~&gt; C' -&gt; is_c C -&gt; is_c C'.</a>
 
 <a class="tactic" href="host-details.html#7">Projection_Constraint proj_recFields_unique : forall RF RF1 RF2,
-  |{recFields}- RF ~~> RF1 -> |{recFields}- RF ~~> RF2 -> RF1 = RF2.</a>
+  |{recFields}- RF ~~&gt; RF1 -&gt; |{recFields}- RF ~~&gt; RF2 -&gt; RF1 = RF2.</a>
 <a class="tactic" href="host-details.html#8">Projection_Constraint proj_recFields_is : forall RF RF',
-  |{recFields}- RF ~~> RF' -> is_recFields RF -> is_recFields RF'.</a>
+  |{recFields}- RF ~~&gt; RF' -&gt; is_recFields RF -&gt; is_recFields RF'.</a>
 
 <a class="tactic" href="host-details.html#9">Projection_Constraint proj_ty_unique : forall Ty Ty1 Ty2,
-  |{ty}- Ty ~~> Ty1 -> |{ty}- Ty ~~> Ty2 -> Ty1 = Ty2.</a>
+  |{ty}- Ty ~~&gt; Ty1 -&gt; |{ty}- Ty ~~&gt; Ty2 -&gt; Ty1 = Ty2.</a>
 <a class="tactic" href="host-details.html#10">Projection_Constraint proj_ty_is : forall Ty Ty',
-  |{ty}- Ty ~~> Ty' -> is_ty Ty -> is_ty Ty'.</a>
+  |{ty}- Ty ~~&gt; Ty' -&gt; is_ty Ty -&gt; is_ty Ty'.</a>
 
 <a class="tactic" href="host-details.html#11">Projection_Constraint proj_value_unique : forall V V1 V2,
-  |{value}- V ~~> V1 -> |{value}- V ~~> V2 -> V1 = V2.</a>
+  |{value}- V ~~&gt; V1 -&gt; |{value}- V ~~&gt; V2 -&gt; V1 = V2.</a>
 <a class="tactic" href="host-details.html#12">Projection_Constraint proj_value_is : forall V V',
-  |{value}- V ~~> V' -> is_value V -> is_value V'.</a></div>
+  |{value}- V ~~&gt; V' -&gt; is_value V -&gt; is_value V'.</a></div>
 
 
 <a class="command" href="host-details.html#13">Extensible_Theorem
   vars_join : forall E V D,
-    Vars : vars E V ->
+    Vars : vars E V -&gt;
     exists D', V ++ D = D'
   on Vars,
   vars_rf_join : forall RF V D,
-    Vars : vars_rf RF V ->
+    Vars : vars_rf RF V -&gt;
     exists D', V ++ D = D'
   on Vars.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(14);" id="toggleproof14">[Show Proof]</a>
 <div class="proof" id="proof14" style="display: none;">
@@ -671,13 +671,13 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 <a class="command" href="host-details.html#53">Extensible_Theorem
   vars_unique : forall E V1 V2,
-    Vars1 : vars E V1 ->
-    Vars2 : vars E V2 ->
+    Vars1 : vars E V1 -&gt;
+    Vars2 : vars E V2 -&gt;
     V1 = V2
   on Vars1,
   vars_rf_unique : forall RF V1 V2,
-    Vars1 : vars_rf RF V1 ->
-    Vars2 : vars_rf RF V2 ->
+    Vars1 : vars_rf RF V1 -&gt;
+    Vars2 : vars_rf RF V2 -&gt;
     V1 = V2
   on Vars1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(54);" id="toggleproof54">[Show Proof]</a>
 <div class="proof" id="proof54" style="display: none;">
@@ -719,7 +719,7 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 
 <a class="tactic" href="host-details.html#100">Projection_Constraint proj_e_vars_exist : forall E E' V,
-  |{e}- E ~~> E' -> vars E V -> exists V', vars E' V'.</a>
+  |{e}- E ~~&gt; E' -&gt; vars E V -&gt; exists V', vars E' V'.</a>
 
 <span class="comment">%Rationale for TC:</span>
 <span class="comment">%Evaluation depends on the variables in an expression.  In fact, by</span>
@@ -729,19 +729,19 @@ evalctx_eq (X, V1)::Rest1 EC2
 <span class="comment">%gives other extensions a handle on understanding the behavior of an</span>
 <span class="comment">%unknown expression in particular contexts.</span>
 <a class="tactic" href="host-details.html#101">Projection_Constraint proj_e_vars : forall E E' V V' X,
-  |{e}- E ~~> E' -> vars E V -> vars E' V' ->
-  mem X V -> mem X V'.</a>
+  |{e}- E ~~&gt; E' -&gt; vars E V -&gt; vars E' V' -&gt;
+  mem X V -&gt; mem X V'.</a>
 
 <a class="tactic" href="host-details.html#102">Projection_Constraint proj_rf_vars_exist : forall RF RF' V,
-  |{recFieldExprs}- RF ~~> RF' -> vars_rf RF V ->
+  |{recFieldExprs}- RF ~~&gt; RF' -&gt; vars_rf RF V -&gt;
   exists V', vars_rf RF' V'.</a>
 <a class="tactic" href="host-details.html#103">Projection_Constraint proj_rf_vars : forall RF RF' V V' X,
-  |{recFieldExprs}- RF ~~> RF' -> vars_rf RF V -> vars_rf RF' V' ->
-  mem X V -> mem X V'.</a></div>
+  |{recFieldExprs}- RF ~~&gt; RF' -&gt; vars_rf RF V -&gt; vars_rf RF' V' -&gt;
+  mem X V -&gt; mem X V'.</a></div>
 
 
 <a class="command" href="host-details.html#104">Theorem append__is_list__is_string : forall L1 L2 L,
-  is_list is_string L1 -> is_list is_string L2 -> L1 ++ L2 = L ->
+  is_list is_string L1 -&gt; is_list is_string L2 -&gt; L1 ++ L2 = L -&gt;
   is_list is_string L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(105);" id="toggleproof105">[Show Proof]</a>
 <div class="proof" id="proof105" style="display: none;">
 <a class="tactic" href="host-details.html#105">induction on 1.</a> <a class="tactic" href="host-details.html#106">intros IsL1 IsL2 App.</a> <a class="tactic" href="host-details.html#107">IsL1': case IsL1.</a>
@@ -752,13 +752,13 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 <a class="command" href="host-details.html#113">Extensible_Theorem
   vars_is : forall E V,
-    IsE : is_e E ->
-    Vars : vars E V ->
+    IsE : is_e E -&gt;
+    Vars : vars E V -&gt;
     is_list is_string V
   on Vars,
   vars_rf_is : forall RF V,
-    IsRF : is_recFieldExprs RF ->
-    Vars : vars_rf RF V ->
+    IsRF : is_recFieldExprs RF -&gt;
+    Vars : vars_rf RF V -&gt;
     is_list is_string V
   on Vars.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(114);" id="toggleproof114">[Show Proof]</a>
 <div class="proof" id="proof114" style="display: none;">
@@ -805,7 +805,7 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 
 <a class="command" href="host-details.html#156">Theorem append__is_list__is_string__total : forall L1 L2,
-  is_list is_string L1 -> is_list is_string L2 ->
+  is_list is_string L1 -&gt; is_list is_string L2 -&gt;
   exists L, L1 ++ L2 = L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(157);" id="toggleproof157">[Show Proof]</a>
 <div class="proof" id="proof157" style="display: none;">
 <a class="tactic" href="host-details.html#157">induction on 1.</a> <a class="tactic" href="host-details.html#158">intros IsL1 IsL2.</a> <a class="tactic" href="host-details.html#159">IsL1': case IsL1.</a>
@@ -816,11 +816,11 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 <a class="command" href="host-details.html#163">Extensible_Theorem
   vars_exist : forall E,
-    IsE : is_e E ->
+    IsE : is_e E -&gt;
     exists V, vars E V
   on IsE,
   vars_rf_exist : forall RF,
-    IsRF : is_recFieldExprs RF ->
+    IsRF : is_recFieldExprs RF -&gt;
     exists V, vars_rf RF V
   on IsRF.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(164);" id="toggleproof164">[Show Proof]</a>
 <div class="proof" id="proof164" style="display: none;">
@@ -874,13 +874,13 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 <a class="command" href="host-details.html#209">Extensible_Theorem
   typeOf_unique : forall G E T1 T2,
-    Ty1: typeOf G E T1 ->
-    Ty2: typeOf G E T2 ->
+    Ty1: typeOf G E T1 -&gt;
+    Ty2: typeOf G E T2 -&gt;
     T1 = T2
   on Ty1,
   typeRecFields_unique : forall G RF T1 T2,
-    Ty1: typeRecFields G RF T1 ->
-    Ty2: typeRecFields G RF T2 ->
+    Ty1: typeRecFields G RF T1 -&gt;
+    Ty2: typeRecFields G RF T2 -&gt;
     T1 = T2
   on Ty1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(210);" id="toggleproof210">[Show Proof]</a>
 <div class="proof" id="proof210" style="display: none;">
@@ -917,8 +917,8 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 <a class="command" href="host-details.html#243">Extensible_Theorem
   typeOK_unique : forall G C G1 G2,
-    Ty1: typeOK G C G1 ->
-    Ty2: typeOK G C G2 ->
+    Ty1: typeOK G C G1 -&gt;
+    Ty2: typeOK G C G2 -&gt;
     G1 = G2
   on Ty1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(244);" id="toggleproof244">[Show Proof]</a>
 <div class="proof" id="proof244" style="display: none;">
@@ -939,19 +939,19 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 
 <a class="tactic" href="host-details.html#263">Projection_Constraint proj_eval_e : forall G E E' V,
-  |{e}- E ~~> E' -> eval_e G E V ->
+  |{e}- E ~~&gt; E' -&gt; eval_e G E V -&gt;
   exists V', eval_e G E' V'.</a></div>
 
 
 <a class="command" href="host-details.html#264">Extensible_Theorem
   eval_e_unique : forall G E V1 V2,
-    Ev1: eval_e G E V1 ->
-    Ev2: eval_e G E V2 ->
+    Ev1: eval_e G E V1 -&gt;
+    Ev2: eval_e G E V2 -&gt;
     V1 = V2
   on Ev1,
   eval_rf_unique : forall G RF V1 V2,
-    Ev1: eval_rf G RF V1 ->
-    Ev2: eval_rf G RF V2 ->
+    Ev1: eval_rf G RF V1 -&gt;
+    Ev2: eval_rf G RF V2 -&gt;
     V1 = V2
   on Ev1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(265);" id="toggleproof265">[Show Proof]</a>
 <div class="proof" id="proof265" style="display: none;">
@@ -1055,8 +1055,8 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 <a class="command" href="host-details.html#336">Extensible_Theorem
   update_rec_fields_unique : forall F G V G1 G2,
-    U1: update_rec_fields F G V G1 ->
-    U2: update_rec_fields F G V G2 ->
+    U1: update_rec_fields F G V G1 -&gt;
+    U2: update_rec_fields F G V G2 -&gt;
     G1 = G2
   on U1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(337);" id="toggleproof337">[Show Proof]</a>
 <div class="proof" id="proof337" style="display: none;">
@@ -1068,7 +1068,7 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 
 <a class="tactic" href="host-details.html#343">Projection_Constraint proj_c_eval : forall C C' G G2,
-  |{c}- C ~~> C' -> eval_c G C G2 -> exists G', eval_c G C' G'.</a>
+  |{c}- C ~~&gt; C' -&gt; eval_c G C G2 -&gt; exists G', eval_c G C' G'.</a>
 
 
 <a class="tactic" href="host-details.html#344">Ext_Size eval_c G C G1.</a></div>
@@ -1083,15 +1083,15 @@ evalctx_eq (X, V1)::Rest1 EC2
  <a class="tactic" href="host-details.html#349">apply ext_size_pos_eval_c to R2.</a> <a class="tactic" href="host-details.html#350">apply ext_size_pos_eval_c to R3.</a>
  <a class="tactic" href="host-details.html#351">Or2: apply lt_left to R1 _ _.</a> <a class="tactic" href="host-details.html#352">Or3: apply lt_right to R1 _ _ _.</a>
  <a class="tactic" href="host-details.html#353">A: case Acc (keep).</a> <a class="tactic" href="host-details.html#354">Or2: case Or2.</a>
-   <span class="comment">%N2 < N</span>
+   <span class="comment">%N2 &lt; N</span>
     <a class="tactic" href="host-details.html#355">AN2: apply A to _ Or2.</a> <a class="tactic" href="host-details.html#356">apply IH to R2 AN2.</a> <a class="tactic" href="host-details.html#357">Or3: case Or3.</a>
-      <span class="comment">%N3 < N</span>
+      <span class="comment">%N3 &lt; N</span>
        <a class="tactic" href="host-details.html#358">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#359">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#360">search.</a>
       <span class="comment">%N3 = N</span>
        <a class="tactic" href="host-details.html#361">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#362">search.</a>
    <span class="comment">%N2 = N</span>
     <a class="tactic" href="host-details.html#363">apply IH1 to R2 Acc.</a> <a class="tactic" href="host-details.html#364">Or3: case Or3.</a>
-      <span class="comment">%N3 < N</span>
+      <span class="comment">%N3 &lt; N</span>
        <a class="tactic" href="host-details.html#365">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#366">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#367">search.</a>
       <span class="comment">%N3 = N</span>
        <a class="tactic" href="host-details.html#368">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#369">search.</a>
@@ -1110,15 +1110,15 @@ evalctx_eq (X, V1)::Rest1 EC2
  <a class="tactic" href="host-details.html#379">apply ext_size_pos_eval_c to R3.</a> <a class="tactic" href="host-details.html#380">apply ext_size_pos_eval_c to R4.</a>
  <a class="tactic" href="host-details.html#381">Or2: apply lt_left to R1 _ _.</a> <a class="tactic" href="host-details.html#382">Or3: apply lt_right to R1 _ _ _.</a>
  <a class="tactic" href="host-details.html#383">A: case Acc (keep).</a> <a class="tactic" href="host-details.html#384">Or2: case Or2.</a>
-   <span class="comment">%N2 < N</span>
+   <span class="comment">%N2 &lt; N</span>
     <a class="tactic" href="host-details.html#385">AN2: apply A to _ Or2.</a> <a class="tactic" href="host-details.html#386">apply IH to R3 AN2.</a> <a class="tactic" href="host-details.html#387">Or3: case Or3.</a>
-      <span class="comment">%N3 < N</span>
+      <span class="comment">%N3 &lt; N</span>
        <a class="tactic" href="host-details.html#388">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#389">apply IH to R4 AN3.</a> <a class="tactic" href="host-details.html#390">search.</a>
       <span class="comment">%N3 = N</span>
        <a class="tactic" href="host-details.html#391">apply IH1 to R4 Acc.</a> <a class="tactic" href="host-details.html#392">search.</a>
    <span class="comment">%N2 = N</span>
     <a class="tactic" href="host-details.html#393">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#394">Or3: case Or3.</a>
-      <span class="comment">%N3 < N</span>
+      <span class="comment">%N3 &lt; N</span>
        <a class="tactic" href="host-details.html#395">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#396">apply IH to R4 AN3.</a> <a class="tactic" href="host-details.html#397">search.</a>
       <span class="comment">%N3 = N</span>
        <a class="tactic" href="host-details.html#398">apply IH1 to R4 Acc.</a> <a class="tactic" href="host-details.html#399">search.</a>
@@ -1128,8 +1128,8 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 <a class="command" href="host-details.html#401">Extensible_Theorem
   eval_c_unique : forall G C G1 G2,
-    Ev1 : eval_c G C G1 ->
-    Ev2 : eval_c G C G2 ->
+    Ev1 : eval_c G C G1 -&gt;
+    Ev2 : eval_c G C G2 -&gt;
     G1 = G2
   on Ev1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(402);" id="toggleproof402">[Show Proof]</a>
 <div class="proof" id="proof402" style="display: none;">
@@ -1173,32 +1173,32 @@ evalctx_eq (X, V1)::Rest1 EC2
 
 <a class="tactic" href="host-details.html#435">Projection_Constraint proj_c_eval_results :
   forall C C' G G1 G2 X V,
-    |{c}- C ~~> C' -> eval_c G C G1 -> eval_c G C' G2 ->
-    lookup G1 X V -> lookup G2 X V.</a>
+    |{c}- C ~~&gt; C' -&gt; eval_c G C G1 -&gt; eval_c G C' G2 -&gt;
+    lookup G1 X V -&gt; lookup G2 X V.</a>
 
 <a class="tactic" href="host-details.html#436">Projection_Constraint proj_c_eval_results_back :
   forall C C' G G1 G2 X V,
-    |{c}- C ~~> C' -> eval_c G C G1 -> eval_c G C' G2 ->
-    lookup G2 X V -> lookup G1 X V.</a></div>
+    |{c}- C ~~&gt; C' -&gt; eval_c G C G1 -&gt; eval_c G C' G2 -&gt;
+    lookup G2 X V -&gt; lookup G1 X V.</a></div>
 
 
 <a class="command" href="host-details.html#437">Theorem vars_equiv_left :
   forall (G1 : list (pair string value)) G2 D D1 D2,
-    (forall X U1 U2, mem X D -> lookup G1 X U1 ->
-                     lookup G2 X U2 -> U1 = U2) ->
-    D1 ++ D2 = D ->
-    (forall X U1 U2, mem X D1 -> lookup G1 X U1 ->
-                     lookup G2 X U2 -> U1 = U2).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(438);" id="toggleproof438">[Show Proof]</a>
+    (forall X U1 U2, mem X D -&gt; lookup G1 X U1 -&gt;
+                     lookup G2 X U2 -&gt; U1 = U2) -&gt;
+    D1 ++ D2 = D -&gt;
+    (forall X U1 U2, mem X D1 -&gt; lookup G1 X U1 -&gt;
+                     lookup G2 X U2 -&gt; U1 = U2).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(438);" id="toggleproof438">[Show Proof]</a>
 <div class="proof" id="proof438" style="display: none;">
 <a class="tactic" href="host-details.html#438">intros Equiv J Mem Lkp1 Lkp2.</a> <a class="tactic" href="host-details.html#439">backchain Equiv with X = X.</a>
 <a class="tactic" href="host-details.html#440">backchain mem_append_left.</a></div>
 <a class="command" href="host-details.html#441">Theorem vars_equiv_right :
   forall (G1 : list (pair string value)) G2 D D1 D2,
-    (forall X U1 U2, mem X D -> lookup G1 X U1 ->
-                     lookup G2 X U2 -> U1 = U2) ->
-    D1 ++ D2 = D ->
-    (forall X U1 U2, mem X D2 -> lookup G1 X U1 ->
-                     lookup G2 X U2 -> U1 = U2).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(442);" id="toggleproof442">[Show Proof]</a>
+    (forall X U1 U2, mem X D -&gt; lookup G1 X U1 -&gt;
+                     lookup G2 X U2 -&gt; U1 = U2) -&gt;
+    D1 ++ D2 = D -&gt;
+    (forall X U1 U2, mem X D2 -&gt; lookup G1 X U1 -&gt;
+                     lookup G2 X U2 -&gt; U1 = U2).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(442);" id="toggleproof442">[Show Proof]</a>
 <div class="proof" id="proof442" style="display: none;">
 <a class="tactic" href="host-details.html#442">intros Equiv J Mem Lkp1 Lkp2.</a> <a class="tactic" href="host-details.html#443">backchain Equiv with X = X.</a>
 <a class="tactic" href="host-details.html#444">backchain mem_append_right.</a></div>
@@ -1207,22 +1207,22 @@ evalctx_eq (X, V1)::Rest1 EC2
 <a class="command" href="host-details.html#445">Extensible_Theorem
   vars_eval_same_result : forall G1 G2 E D V1 V2,
     Equiv : (forall X U1 U2,
-                mem X D ->
-                lookup G1 X U1 ->
-                lookup G2 X U2 -> U1 = U2) ->
-    Vars : vars E D ->
-    Ev1 : eval_e G1 E V1 ->
-    Ev2 : eval_e G2 E V2 ->
+                mem X D -&gt;
+                lookup G1 X U1 -&gt;
+                lookup G2 X U2 -&gt; U1 = U2) -&gt;
+    Vars : vars E D -&gt;
+    Ev1 : eval_e G1 E V1 -&gt;
+    Ev2 : eval_e G2 E V2 -&gt;
     V1 = V2
   on Ev1,
   vars_equal_rf_same_result : forall G1 G2 RF D V1 V2,
     Equiv : (forall X U1 U2,
-                mem X D ->
-                lookup G1 X U1 ->
-                lookup G2 X U2 -> U1 = U2) ->
-    Vars : vars_rf RF D ->
-    Ev1 : eval_rf G1 RF V1 ->
-    Ev2 : eval_rf G2 RF V2 ->
+                mem X D -&gt;
+                lookup G1 X U1 -&gt;
+                lookup G2 X U2 -&gt; U1 = U2) -&gt;
+    Vars : vars_rf RF D -&gt;
+    Ev1 : eval_rf G1 RF V1 -&gt;
+    Ev2 : eval_rf G2 RF V2 -&gt;
     V1 = V2
   on Ev1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(446);" id="toggleproof446">[Show Proof]</a>
 <div class="proof" id="proof446" style="display: none;">

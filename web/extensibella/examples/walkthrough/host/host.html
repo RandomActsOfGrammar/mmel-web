@@ -119,8 +119,8 @@ Extensibella_Stand_In {
 
 <a class="command" href="host-details.html#1">Extensible_Theorem
   typeOf_unique : forall Ctx T TyA TyB,
-    TyA : typeOf Ctx T TyA ->
-    TyB : typeOf Ctx T TyB ->
+    TyA : typeOf Ctx T TyA -&gt;
+    TyB : typeOf Ctx T TyB -&gt;
     TyA = TyB
   on TyA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
 <div class="proof" id="proof2" style="display: none;">
@@ -134,8 +134,8 @@ Extensibella_Stand_In {
 
 <a class="command" href="host-details.html#12">Extensible_Theorem
   ty_lookup : forall Ctx1 Ctx2 T Ty,
-    Ty : typeOf Ctx1 T Ty ->
-    L : (forall X XTy, lookup Ctx1 X XTy -> lookup Ctx2 X XTy) ->
+    Ty : typeOf Ctx1 T Ty -&gt;
+    L : (forall X XTy, lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy) -&gt;
     typeOf Ctx2 T Ty
   on Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(13);" id="toggleproof13">[Show Proof]</a>
 <div class="proof" id="proof13" style="display: none;">
@@ -154,16 +154,16 @@ Extensibella_Stand_In {
 
 
 <a class="command" href="host-details.html#25">Theorem empty_ty_any : forall T Ty Ctx,
-  typeOf [] T Ty -> typeOf Ctx T Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(26);" id="toggleproof26">[Show Proof]</a>
+  typeOf [] T Ty -&gt; typeOf Ctx T Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(26);" id="toggleproof26">[Show Proof]</a>
 <div class="proof" id="proof26" style="display: none;">
 <a class="tactic" href="host-details.html#26">intros T.</a> <a class="tactic" href="host-details.html#27">backchain ty_lookup.</a> <a class="tactic" href="host-details.html#28">intros L.</a> <a class="tactic" href="host-details.html#29">case L.</a></div>
 
 
 <a class="command" href="host-details.html#30">Extensible_Theorem
   subst_type_preservation : forall T Ctx X XTy Ty R S,
-    TTy : typeOf ((X, XTy)::Ctx) T Ty ->
-    S : subst X R T S ->
-    RTy : typeOf [] R XTy ->
+    TTy : typeOf ((X, XTy)::Ctx) T Ty -&gt;
+    S : subst X R T S -&gt;
+    RTy : typeOf [] R XTy -&gt;
     typeOf Ctx S Ty
   on S.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(31);" id="toggleproof31">[Show Proof]</a>
 <div class="proof" id="proof31" style="display: none;">
@@ -210,8 +210,8 @@ Extensibella_Stand_In {
 
 <a class="command" href="host-details.html#62">Extensible_Theorem
   type_preservation : forall T Ty T',
-    Ty : typeOf [] T Ty ->
-    Ev : eval T T' ->
+    Ty : typeOf [] T Ty -&gt;
+    Ev : eval T T' -&gt;
     typeOf [] T' Ty
   on Ev.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(63);" id="toggleproof63">[Show Proof]</a>
 <div class="proof" id="proof63" style="display: none;">
@@ -225,7 +225,7 @@ Extensibella_Stand_In {
 
 
 <a class="tactic" href="host-details.html#73">Projection_Constraint proj_type_same : forall G T Ty T_T,
-  G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.</a>
+  G |{tm}- T ~~&gt; T_T -&gt; typeOf G T Ty -&gt; typeOf G T_T Ty.</a>
 
 
 <a class="tactic" href="host-details.html#74">Ext_Size typeOf G T Ty.</a></div>
@@ -241,15 +241,15 @@ Extensibella_Stand_In {
  <a class="tactic" href="host-details.html#81">apply ext_size_pos_typeOf to R2.</a> <a class="tactic" href="host-details.html#82">apply ext_size_pos_typeOf to R3.</a>
  <a class="tactic" href="host-details.html#83">Or2: apply lt_left to R1 _ _.</a> <a class="tactic" href="host-details.html#84">Or3: apply lt_right to R1 _ _ _.</a>
  <a class="tactic" href="host-details.html#85">A: case Acc (keep).</a> <a class="tactic" href="host-details.html#86">Or2: case Or2.</a>
-   <span class="comment">%N2 < N</span>
+   <span class="comment">%N2 &lt; N</span>
     <a class="tactic" href="host-details.html#87">AN2: apply A to _ Or2.</a> <a class="tactic" href="host-details.html#88">apply IH to R2 AN2.</a> <a class="tactic" href="host-details.html#89">Or3: case Or3.</a>
-      <span class="comment">%N3 < N</span>
+      <span class="comment">%N3 &lt; N</span>
        <a class="tactic" href="host-details.html#90">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#91">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#92">search.</a>
       <span class="comment">%N3 = N</span>
        <a class="tactic" href="host-details.html#93">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#94">search.</a>
    <span class="comment">%N2 = N</span>
     <a class="tactic" href="host-details.html#95">apply IH1 to R2 Acc.</a> <a class="tactic" href="host-details.html#96">Or3: case Or3.</a>
-      <span class="comment">%N3 < N</span>
+      <span class="comment">%N3 &lt; N</span>
        <a class="tactic" href="host-details.html#97">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#98">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#99">search.</a>
       <span class="comment">%N3 = N</span>
        <a class="tactic" href="host-details.html#100">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#101">search.</a></div>

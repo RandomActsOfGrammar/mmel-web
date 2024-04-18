@@ -166,7 +166,7 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 <a class="command" href="host-details.html#0">Module stlc:host.</a>
 
 <a class="command" href="host-details.html#1">Theorem lookup_ty_is : forall Ctx X Ty,
-  is_list (is_pair is_string is_ty) Ctx -> lookup Ctx X Ty ->
+  is_list (is_pair is_string is_ty) Ctx -&gt; lookup Ctx X Ty -&gt;
   is_ty Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
 <div class="proof" id="proof2" style="display: none;">
 <a class="tactic" href="host-details.html#2">induction on 2.</a> <a class="tactic" href="host-details.html#3">intros Is L.</a> <a class="tactic" href="host-details.html#4">L: case L.</a>
@@ -178,8 +178,8 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <a class="tactic" href="host-details.html#11">Projection_Constraint
   proj_ty_is : forall Ty Ty',
-    Proj : |{ty}- Ty ~~> Ty' ->
-    IsTy : is_ty Ty ->
+    Proj : |{ty}- Ty ~~&gt; Ty' -&gt;
+    IsTy : is_ty Ty -&gt;
     is_ty Ty'.</a></div>
 
 
@@ -189,9 +189,9 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 */</span>
 <a class="command" href="host-details.html#12">Extensible_Theorem
   type_is : forall Ctx T Ty,
-    IsCtx : is_list (is_pair is_string is_ty) Ctx ->
-    IsT : is_tm T ->
-    Ty : typeOf Ctx T Ty ->
+    IsCtx : is_list (is_pair is_string is_ty) Ctx -&gt;
+    IsT : is_tm T -&gt;
+    Ty : typeOf Ctx T Ty -&gt;
     is_ty Ty
   on Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(13);" id="toggleproof13">[Show Proof]</a>
 <div class="proof" id="proof13" style="display: none;">
@@ -209,18 +209,18 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <a class="tactic" href="host-details.html#24">Projection_Constraint
   proj_is : forall Ctx T T',
-    Proj : Ctx |{tm}- T ~~> T' ->
-    IsCtx : is_list (is_pair is_string is_ty) Ctx ->
-    IsT : is_tm T ->
+    Proj : Ctx |{tm}- T ~~&gt; T' -&gt;
+    IsCtx : is_list (is_pair is_string is_ty) Ctx -&gt;
+    IsT : is_tm T -&gt;
     is_tm T'.</a></div>
 
 
 <a class="command" href="host-details.html#25">Extensible_Theorem
   type_unique : forall Ctx T TyA TyB,
-    IsCtx : is_list (is_pair is_string is_ty) Ctx ->
-    IsT : is_tm T ->
-    TyA : typeOf Ctx T TyA ->
-    TyB : typeOf Ctx T TyB ->
+    IsCtx : is_list (is_pair is_string is_ty) Ctx -&gt;
+    IsT : is_tm T -&gt;
+    TyA : typeOf Ctx T TyA -&gt;
+    TyB : typeOf Ctx T TyB -&gt;
     TyA = TyB
   on TyA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(26);" id="toggleproof26">[Show Proof]</a>
 <div class="proof" id="proof26" style="display: none;">
@@ -238,20 +238,20 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 
 <a class="tactic" href="host-details.html#42">Projection_Constraint proj_ty_unique : forall Ty TyA TyB,
-  |{ty}- Ty ~~> TyA -> |{ty}- Ty ~~> TyB -> is_ty Ty -> TyA = TyB.</a>
+  |{ty}- Ty ~~&gt; TyA -&gt; |{ty}- Ty ~~&gt; TyB -&gt; is_ty Ty -&gt; TyA = TyB.</a>
 
 
 <a class="tactic" href="host-details.html#43">Projection_Constraint proj_tm_unique : forall Ctx T TA TB,
-  Ctx |{tm}- T ~~> TA -> Ctx |{tm}- T ~~> TB ->
-  is_tm T -> is_list (is_pair is_string is_ty) Ctx -> TA = TB.</a></div>
+  Ctx |{tm}- T ~~&gt; TA -&gt; Ctx |{tm}- T ~~&gt; TB -&gt;
+  is_tm T -&gt; is_list (is_pair is_string is_ty) Ctx -&gt; TA = TB.</a></div>
 
 
 <a class="command" href="host-details.html#44">Extensible_Theorem
   subst_is : forall X R T S,
-    IsT : is_tm T ->
-    IsX : is_string X ->
-    IsR : is_tm R ->
-    S : subst X R T S ->
+    IsT : is_tm T -&gt;
+    IsX : is_string X -&gt;
+    IsR : is_tm R -&gt;
+    S : subst X R T S -&gt;
     is_tm S
   on S.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(45);" id="toggleproof45">[Show Proof]</a>
 <div class="proof" id="proof45" style="display: none;">
@@ -273,8 +273,8 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <a class="command" href="host-details.html#60">Extensible_Theorem
   eval_is : forall T T',
-    IsT : is_tm T ->
-    Ev : eval T T' ->
+    IsT : is_tm T -&gt;
+    Ev : eval T T' -&gt;
     is_tm T'
   on Ev.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(61);" id="toggleproof61">[Show Proof]</a>
 <div class="proof" id="proof61" style="display: none;">
@@ -295,8 +295,8 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <a class="command" href="host-details.html#82">Extensible_Theorem
   subst_unique : forall X R T VA VB,
-    SA : subst X R T VA ->
-    SB : subst X R T VB ->
+    SA : subst X R T VA -&gt;
+    SB : subst X R T VB -&gt;
     VA = VB
   on SA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(83);" id="toggleproof83">[Show Proof]</a>
 <div class="proof" id="proof83" style="display: none;">
@@ -334,8 +334,8 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <a class="command" href="host-details.html#106">Extensible_Theorem
   value_eval_false : forall T V,
-    Val : value T ->
-    Ev : eval T V ->
+    Val : value T -&gt;
+    Ev : eval T V -&gt;
     false
   on Val.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(107);" id="toggleproof107">[Show Proof]</a>
 <div class="proof" id="proof107" style="display: none;">
@@ -347,8 +347,8 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <a class="command" href="host-details.html#109">Extensible_Theorem
   eval_unique : forall T VA VB,
-    EvA : eval T VA ->
-    EvB : eval T VB ->
+    EvA : eval T VA -&gt;
+    EvB : eval T VB -&gt;
     VA = VB
   on EvA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(110);" id="toggleproof110">[Show Proof]</a>
 <div class="proof" id="proof110" style="display: none;">
@@ -404,8 +404,8 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <a class="command" href="host-details.html#140">Extensible_Theorem
   ty_lookup : forall Ctx1 Ctx2 T Ty,
-    Ty : typeOf Ctx1 T Ty ->
-    L : (forall X XTy, lookup Ctx1 X XTy -> lookup Ctx2 X XTy) ->
+    Ty : typeOf Ctx1 T Ty -&gt;
+    L : (forall X XTy, lookup Ctx1 X XTy -&gt; lookup Ctx2 X XTy) -&gt;
     typeOf Ctx2 T Ty
   on Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(141);" id="toggleproof141">[Show Proof]</a>
 <div class="proof" id="proof141" style="display: none;">
@@ -428,16 +428,16 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 
 <a class="command" href="host-details.html#157">Theorem empty_ty_any : forall T Ty Ctx,
-  typeOf [] T Ty -> typeOf Ctx T Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(158);" id="toggleproof158">[Show Proof]</a>
+  typeOf [] T Ty -&gt; typeOf Ctx T Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(158);" id="toggleproof158">[Show Proof]</a>
 <div class="proof" id="proof158" style="display: none;">
 <a class="tactic" href="host-details.html#158">intros T.</a> <a class="tactic" href="host-details.html#159">backchain ty_lookup.</a> <a class="tactic" href="host-details.html#160">intros L.</a> <a class="tactic" href="host-details.html#161">case L.</a></div>
 
 
 <a class="command" href="host-details.html#162">Extensible_Theorem
   subst_type_preservation : forall T Ctx X XTy Ty R S,
-    TTy : typeOf ((X, XTy)::Ctx) T Ty ->
-    S : subst X R T S ->
-    RTy : typeOf [] R XTy ->
+    TTy : typeOf ((X, XTy)::Ctx) T Ty -&gt;
+    S : subst X R T S -&gt;
+    RTy : typeOf [] R XTy -&gt;
     typeOf Ctx S Ty
   on S.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(163);" id="toggleproof163">[Show Proof]</a>
 <div class="proof" id="proof163" style="display: none;">
@@ -488,8 +488,8 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <a class="command" href="host-details.html#200">Extensible_Theorem
   type_preservation : forall T Ty T',
-    Ty : typeOf [] T Ty ->
-    Ev : eval T T' ->
+    Ty : typeOf [] T Ty -&gt;
+    Ev : eval T T' -&gt;
     typeOf [] T' Ty
   on Ev.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(201);" id="toggleproof201">[Show Proof]</a>
 <div class="proof" id="proof201" style="display: none;">
@@ -510,8 +510,8 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <a class="command" href="host-details.html#219">Extensible_Theorem
   subst_total : forall X R T,
-    IsT : is_tm T ->
-    IsX : is_string X ->
+    IsT : is_tm T -&gt;
+    IsX : is_string X -&gt;
     <span class="comment">%explicit decision subst can only use R, not examine it</span>
     <span class="comment">%including `is_tm R` could permit tricks to look at it</span>
     exists S, subst X R T S
@@ -562,8 +562,8 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
  */</span>
 <a class="command" href="host-details.html#236">Extensible_Theorem
   canonical_forms : forall V Ty,
-    V : value V ->
-    Ty : typeOf [] V Ty ->
+    V : value V -&gt;
+    Ty : typeOf [] V Ty -&gt;
     canonicalForm Ty V
   on V.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(237);" id="toggleproof237">[Show Proof]</a>
 <div class="proof" id="proof237" style="display: none;">
@@ -574,7 +574,7 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <span class="comment">%a couple of useful special cases of canonical_forms</span>
 <a class="command" href="host-details.html#241">Theorem canonical_form_intTy : forall V,
-  value V -> typeOf [] V intTy -> exists I, V = num(I).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(242);" id="toggleproof242">[Show Proof]</a>
+  value V -&gt; typeOf [] V intTy -&gt; exists I, V = num(I).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(242);" id="toggleproof242">[Show Proof]</a>
 <div class="proof" id="proof242" style="display: none;">
 <a class="tactic" href="host-details.html#242">intros V Ty.</a> <a class="tactic" href="host-details.html#243">CF: apply canonical_forms to V Ty.</a>
 <span class="comment">/*
@@ -588,7 +588,7 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 <a class="tactic" href="host-details.html#244">case CF.</a> <a class="tactic" href="host-details.html#245">search.</a></div>
 
 <a class="command" href="host-details.html#246">Theorem canonical_form_arrowTy : forall V Ty1 Ty2,
-  value V -> typeOf [] V (arrowTy Ty1 Ty2) ->
+  value V -&gt; typeOf [] V (arrowTy Ty1 Ty2) -&gt;
   exists X B, V = abs X Ty1 B.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(247);" id="toggleproof247">[Show Proof]</a>
 <div class="proof" id="proof247" style="display: none;">
 <a class="tactic" href="host-details.html#247">intros V Ty.</a> <a class="tactic" href="host-details.html#248">CF: apply canonical_forms to V Ty.</a> <a class="tactic" href="host-details.html#249">case CF.</a> <a class="tactic" href="host-details.html#250">search.</a></div>
@@ -596,8 +596,8 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
 
 <a class="command" href="host-details.html#251">Extensible_Theorem
   progress : forall T Ty,
-    IsT : is_tm T ->
-    Ty : typeOf [] T Ty ->
+    IsT : is_tm T -&gt;
+    Ty : typeOf [] T Ty -&gt;
     (exists T', eval T T') \/ value T
   on Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(252);" id="toggleproof252">[Show Proof]</a>
 <div class="proof" id="proof252" style="display: none;">
@@ -647,14 +647,14 @@ canonicalForm arrowTy(Ty1, Ty2) abs(X, Ty1, B)
   fully projected and an extension doesn't define desugaring in a way
   that doesn't actually desugar fully.
  */</span>
-<a class="command" href="host-details.html#279">Define desugar_ty : ty -> ty -> prop by
+<a class="command" href="host-details.html#279">Define desugar_ty : ty -&gt; ty -&gt; prop by
 desugar_ty (arrowTy TyA TyB) (arrowTy TyA' TyB') :=
   desugar_ty TyA TyA' /\ desugar_ty TyB TyB';
 desugar_ty intTy intTy;
 desugar_ty Ty Ty' :=
-  exists Ty_T, |{ty}- Ty ~~> Ty_T /\ desugar_ty Ty_T Ty'.</a>
+  exists Ty_T, |{ty}- Ty ~~&gt; Ty_T /\ desugar_ty Ty_T Ty'.</a>
 
-<a class="command" href="host-details.html#280">Define desugar_tm : list (pair string ty) -> tm -> tm -> prop by
+<a class="command" href="host-details.html#280">Define desugar_tm : list (pair string ty) -&gt; tm -&gt; tm -&gt; prop by
 desugar_tm Ctx (var X) (var X);
 desugar_tm Ctx (abs X Ty Tm) (abs X Ty' Tm') :=
   desugar_ty Ty Ty' /\ desugar_tm ((X, Ty)::Ctx) Tm Tm';
@@ -664,16 +664,16 @@ desugar_tm Ctx (num I) (num I);
 desugar_tm Ctx (plus TmA TmB) (plus TmA' TmB') :=
   desugar_tm Ctx TmA TmA' /\ desugar_tm Ctx TmB TmB';
 desugar_tm Ctx T T' :=
-  exists T_T, Ctx |{tm}- T ~~> T_T /\ desugar_tm Ctx T_T T'.</a>
+  exists T_T, Ctx |{tm}- T ~~&gt; T_T /\ desugar_tm Ctx T_T T'.</a>
 
 <a class="command" href="host-details.html#281">Define desugar_ctx :
-  list (pair string ty) -> list (pair string ty) -> prop by
+  list (pair string ty) -&gt; list (pair string ty) -&gt; prop by
 desugar_ctx [] [];
 desugar_ctx ((X, Ty)::Rest) ((X, Ty')::Rest') :=
   desugar_ty Ty Ty' /\ desugar_ctx Rest Rest'.</a>
 
 <a class="command" href="host-details.html#282">Theorem lookup_desugar_ctx : forall Ctx X Ty Ctx',
-  lookup Ctx X Ty -> desugar_ctx Ctx Ctx' ->
+  lookup Ctx X Ty -&gt; desugar_ctx Ctx Ctx' -&gt;
   exists Ty', lookup Ctx' X Ty' /\ desugar_ty Ty Ty'.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(283);" id="toggleproof283">[Show Proof]</a>
 <div class="proof" id="proof283" style="display: none;">
 <a class="tactic" href="host-details.html#283">induction on 1.</a> <a class="tactic" href="host-details.html#284">intros L D.</a> <a class="tactic" href="host-details.html#285">L: case L.</a>
@@ -683,7 +683,7 @@ desugar_ctx ((X, Ty)::Rest) ((X, Ty')::Rest') :=
    <a class="tactic" href="host-details.html#288">D: case D.</a> <a class="tactic" href="host-details.html#289">apply IH to L1 D1.</a> <a class="tactic" href="host-details.html#290">search.</a></div>
 
 <a class="command" href="host-details.html#291">Theorem desugar_ty_unique : forall Ty TyA TyB,
-  is_ty Ty -> desugar_ty Ty TyA -> desugar_ty Ty TyB -> TyA = TyB.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(292);" id="toggleproof292">[Show Proof]</a>
+  is_ty Ty -&gt; desugar_ty Ty TyA -&gt; desugar_ty Ty TyB -&gt; TyA = TyB.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(292);" id="toggleproof292">[Show Proof]</a>
 <div class="proof" id="proof292" style="display: none;">
 <a class="tactic" href="host-details.html#292">induction on 2.</a> <a class="tactic" href="host-details.html#293">intros IsTy DA DB.</a> <a class="tactic" href="host-details.html#294">DA: case DA.</a>
   <span class="comment">%DS-ArrowTy</span>
@@ -709,8 +709,8 @@ desugar_ctx ((X, Ty)::Rest) ((X, Ty')::Rest') :=
       <a class="tactic" href="host-details.html#309">apply IH to _ DA1 DB1.</a> <a class="tactic" href="host-details.html#310">search.</a></div>
 
 <a class="command" href="host-details.html#311">Theorem desugar_tm_unique : forall Ctx T TA TB,
-  is_list (is_pair is_string is_ty) Ctx -> is_tm T ->
-  desugar_tm Ctx T TA -> desugar_tm Ctx T TB -> TA = TB.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(312);" id="toggleproof312">[Show Proof]</a>
+  is_list (is_pair is_string is_ty) Ctx -&gt; is_tm T -&gt;
+  desugar_tm Ctx T TA -&gt; desugar_tm Ctx T TB -&gt; TA = TB.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(312);" id="toggleproof312">[Show Proof]</a>
 <div class="proof" id="proof312" style="display: none;">
 <a class="tactic" href="host-details.html#312">induction on 3.</a> <a class="tactic" href="host-details.html#313">intros IsCtx IsT DA DB.</a> <a class="tactic" href="host-details.html#314">DA: case DA.</a>
   <span class="comment">%DS-Var</span>
@@ -764,7 +764,7 @@ desugar_ctx ((X, Ty)::Rest) ((X, Ty')::Rest') :=
 
 <a class="command" href="host-details.html#349">Extensible_Theorem
   desugar_ty_exists : forall Ty,
-    IsTy : is_ty Ty ->
+    IsTy : is_ty Ty -&gt;
     exists Ty', desugar_ty Ty Ty'
   on IsTy.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(350);" id="toggleproof350">[Show Proof]</a>
 <div class="proof" id="proof350" style="display: none;">
@@ -775,12 +775,12 @@ desugar_ctx ((X, Ty)::Rest) ((X, Ty')::Rest') :=
 
 <a class="command" href="host-details.html#354">Extensible_Theorem
   desugar_ty_rel : forall Ctx T Ty T' Ty' Ctx',
-    IsT : is_tm T ->
-    IsCtx : is_list (is_pair is_string is_ty) Ctx ->
-    Ty : typeOf Ctx T Ty ->
-    DT : desugar_tm Ctx T T' ->
-    DTy : desugar_ty Ty Ty' ->
-    DCtx : desugar_ctx Ctx Ctx' ->
+    IsT : is_tm T -&gt;
+    IsCtx : is_list (is_pair is_string is_ty) Ctx -&gt;
+    Ty : typeOf Ctx T Ty -&gt;
+    DT : desugar_tm Ctx T T' -&gt;
+    DTy : desugar_ty Ty Ty' -&gt;
+    DCtx : desugar_ctx Ctx Ctx' -&gt;
     typeOf Ctx' T' Ty'
   on Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(355);" id="toggleproof355">[Show Proof]</a>
 <div class="proof" id="proof355" style="display: none;">

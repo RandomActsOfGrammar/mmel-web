@@ -252,7 +252,7 @@ secure SG Sl S SG1
 <a class="command" href="security-details.html#29">Prove library:host:var_types_maintained.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(30);" id="toggleproof30">[Show Proof]</a>
 <div class="proof" id="proof30" style="display: none;">
 <span class="comment">%TS-secdecl</span>
- <a class="tactic" href="security-details.html#30">assert N = X -> false.</a>
+ <a class="tactic" href="security-details.html#30">assert N = X -&gt; false.</a>
    <a class="tactic" href="security-details.html#31">intros E.</a> <a class="tactic" href="security-details.html#32">case E.</a> <a class="tactic" href="security-details.html#33">apply no_lookup to Ty2 Lkp.</a>
  <a class="tactic" href="security-details.html#34">search.</a></div>
 
@@ -327,7 +327,7 @@ secure SG Sl S SG1
 <span class="comment">%adding this property</span>
 <a class="command" href="security-details.html#70">Extensible_Theorem
   sl_form : forall SL,
-    Is : is_sl SL ->
+    Is : is_sl SL -&gt;
     SL = public \/ SL = private
   on Is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(71);" id="toggleproof71">[Show Proof]</a>
 <div class="proof" id="proof71" style="display: none;">
@@ -338,7 +338,7 @@ secure SG Sl S SG1
 
 
 <a class="command" href="security-details.html#73">Theorem join_unique : forall A B S1 S2,
-  join A B S1 -> join A B S2 -> S1 = S2.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(74);" id="toggleproof74">[Show Proof]</a>
+  join A B S1 -&gt; join A B S2 -&gt; S1 = S2.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(74);" id="toggleproof74">[Show Proof]</a>
 <div class="proof" id="proof74" style="display: none;">
 <a class="tactic" href="security-details.html#74">intros J1 J2.</a> <a class="tactic" href="security-details.html#75">case J1.</a>
   <span class="comment">%J-public</span>
@@ -357,16 +357,16 @@ secure SG Sl S SG1
       <a class="tactic" href="security-details.html#83">search.</a></div>
 
 <a class="command" href="security-details.html#84">Theorem join_public : forall A B,
-  join A B public -> A = public /\ B = public.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(85);" id="toggleproof85">[Show Proof]</a>
+  join A B public -&gt; A = public /\ B = public.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(85);" id="toggleproof85">[Show Proof]</a>
 <div class="proof" id="proof85" style="display: none;">
 <a class="tactic" href="security-details.html#85">intros J.</a> <a class="tactic" href="security-details.html#86">case J.</a> <a class="tactic" href="security-details.html#87">search.</a></div>
 
 
 <a class="command" href="security-details.html#88">Extensible_Theorem
   level_public_vars : forall SG E V X,
-    Lev : level SG E public ->
-    Vars : vars E V ->
-    Mem : mem X V ->
+    Lev : level SG E public -&gt;
+    Vars : vars E V -&gt;
+    Mem : mem X V -&gt;
     lookup SG X public
   on Lev.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(89);" id="toggleproof89">[Show Proof]</a>
 <div class="proof" id="proof89" style="display: none;">
@@ -412,18 +412,18 @@ secure SG Sl S SG1
 
 
 <a class="command" href="security-details.html#130">Define public_equiv :
-  list (pair string sl) -> list (pair string e) ->
-  list (pair string e) -> prop by
+  list (pair string sl) -&gt; list (pair string e) -&gt;
+  list (pair string e) -&gt; prop by
 public_equiv S G1 G2 :=
   (forall X V,
-      lookup S X public ->
-      lookup G1 X V -> lookup G2 X V) /\
+      lookup S X public -&gt;
+      lookup G1 X V -&gt; lookup G2 X V) /\
   (forall X V,
-      lookup S X public ->
-      lookup G2 X V -> lookup G1 X V).</a>
+      lookup S X public -&gt;
+      lookup G2 X V -&gt; lookup G1 X V).</a>
 
 <a class="command" href="security-details.html#131">Theorem public_equiv_trans : forall SG GA GB GC,
-  public_equiv SG GA GB -> public_equiv SG GB GC ->
+  public_equiv SG GA GB -&gt; public_equiv SG GB GC -&gt;
   public_equiv SG GA GC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(132);" id="toggleproof132">[Show Proof]</a>
 <div class="proof" id="proof132" style="display: none;">
 <a class="tactic" href="security-details.html#132">intros PEAB PEBC.</a> <a class="tactic" href="security-details.html#133">PEAB: case PEAB.</a> <a class="tactic" href="security-details.html#134">PEBC: case PEBC.</a> <a class="tactic" href="security-details.html#135">unfold.</a>
@@ -436,7 +436,7 @@ public_equiv S G1 G2 :=
 
 
 <a class="command" href="security-details.html#144">Theorem public_equiv_symm : forall SG GA GB,
-  public_equiv SG GA GB -> public_equiv SG GB GA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(145);" id="toggleproof145">[Show Proof]</a>
+  public_equiv SG GA GB -&gt; public_equiv SG GB GA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(145);" id="toggleproof145">[Show Proof]</a>
 <div class="proof" id="proof145" style="display: none;">
 <a class="tactic" href="security-details.html#145">intros Rel.</a> <a class="tactic" href="security-details.html#146">Rel: case Rel.</a> <a class="tactic" href="security-details.html#147">unfold.</a>
   <span class="comment">%First part</span>
@@ -456,8 +456,8 @@ public_equiv S G1 G2 :=
 
 
 <a class="command" href="security-details.html#161">Theorem level_secure : forall SG G1 G2 E V1 V2,
-  is_e E -> level SG E public -> public_equiv SG G1 G2 ->
-  eval_e G1 E V1 -> eval_e G2 E V2 ->
+  is_e E -&gt; level SG E public -&gt; public_equiv SG G1 G2 -&gt;
+  eval_e G1 E V1 -&gt; eval_e G2 E V2 -&gt;
   V1 = V2.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(162);" id="toggleproof162">[Show Proof]</a>
 <div class="proof" id="proof162" style="display: none;">
 <a class="tactic" href="security-details.html#162">intros IsE Lev Equiv Ev1 Ev2.</a> <a class="tactic" href="security-details.html#163">Vars: apply vars_exist to IsE.</a>
@@ -470,8 +470,8 @@ public_equiv S G1 G2 :=
 
 <a class="command" href="security-details.html#172">Extensible_Theorem
   level_unique : forall SG E S1 S2,
-    LevA : level SG E S1 ->
-    LevB : level SG E S2 ->
+    LevA : level SG E S1 -&gt;
+    LevB : level SG E S2 -&gt;
     S1 = S2
   on LevA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(173);" id="toggleproof173">[Show Proof]</a>
 <div class="proof" id="proof173" style="display: none;">
@@ -500,8 +500,8 @@ public_equiv S G1 G2 :=
 
 
 <a class="command" href="security-details.html#204">Theorem level_not_public : forall SG G1 G2 E V1 V2,
-  is_e E -> public_equiv SG G1 G2 -> level SG E public ->
-  eval_e G1 E V1 -> eval_e G2 E V2 -> (V1 = V2 -> false) ->
+  is_e E -&gt; public_equiv SG G1 G2 -&gt; level SG E public -&gt;
+  eval_e G1 E V1 -&gt; eval_e G2 E V2 -&gt; (V1 = V2 -&gt; false) -&gt;
   false.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(205);" id="toggleproof205">[Show Proof]</a>
 <div class="proof" id="proof205" style="display: none;">
 <a class="tactic" href="security-details.html#205">intros Is Equiv Lev Ev1 Ev2 NEq.</a>
@@ -510,8 +510,8 @@ public_equiv S G1 G2 :=
 
 <a class="command" href="security-details.html#208">Extensible_Theorem
   stmt_public_branch : forall SG SL SG2 S X,
-    Sec : secure SG SL S SG2 ->
-    LkpSec : lookup SG X public ->
+    Sec : secure SG SL S SG2 -&gt;
+    LkpSec : lookup SG X public -&gt;
     lookup SG2 X public
   on Sec.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(209);" id="toggleproof209">[Show Proof]</a>
 <div class="proof" id="proof209" style="display: none;">
@@ -520,7 +520,7 @@ public_equiv S G1 G2 :=
 <span class="comment">%S-seq</span>
  <a class="tactic" href="security-details.html#210">L: apply IH to Sec1 LkpSec.</a> <a class="tactic" href="security-details.html#211">apply IH to Sec2 L.</a> <a class="tactic" href="security-details.html#212">search.</a>
 <span class="comment">%S-decl</span>
- <a class="tactic" href="security-details.html#213">assert N = X -> false.</a>
+ <a class="tactic" href="security-details.html#213">assert N = X -&gt; false.</a>
    <a class="tactic" href="security-details.html#214">intros E.</a> <a class="tactic" href="security-details.html#215">case E.</a> <a class="tactic" href="security-details.html#216">apply no_lookup to Sec2 LkpSec.</a>
  <a class="tactic" href="security-details.html#217">search.</a>
 <span class="comment">%S-assign-private</span>
@@ -532,11 +532,11 @@ public_equiv S G1 G2 :=
 <span class="comment">%S-while</span>
  <a class="tactic" href="security-details.html#221">search.</a>
 <span class="comment">%S-secdecl-private</span>
- <a class="tactic" href="security-details.html#222">assert N = X -> false.</a>
+ <a class="tactic" href="security-details.html#222">assert N = X -&gt; false.</a>
    <a class="tactic" href="security-details.html#223">intros E.</a> <a class="tactic" href="security-details.html#224">case E.</a> <a class="tactic" href="security-details.html#225">apply no_lookup to Sec2 LkpSec.</a>
  <a class="tactic" href="security-details.html#226">search.</a>
 <span class="comment">%S-secdecl-public</span>
- <a class="tactic" href="security-details.html#227">assert N = X -> false.</a>
+ <a class="tactic" href="security-details.html#227">assert N = X -&gt; false.</a>
    <a class="tactic" href="security-details.html#228">intros E.</a> <a class="tactic" href="security-details.html#229">case E.</a> <a class="tactic" href="security-details.html#230">apply no_lookup to Sec2 LkpSec.</a>
  <a class="tactic" href="security-details.html#231">search.</a>
 <span class="comment">%LF-secure</span>
@@ -544,8 +544,8 @@ public_equiv S G1 G2 :=
 
 
 <a class="command" href="security-details.html#234">Theorem public_equiv_swap : forall SG SG' GA GB,
-  (forall X, lookup SG X public -> lookup SG' X public) ->
-  public_equiv SG' GA GB -> public_equiv SG GA GB.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(235);" id="toggleproof235">[Show Proof]</a>
+  (forall X, lookup SG X public -&gt; lookup SG' X public) -&gt;
+  public_equiv SG' GA GB -&gt; public_equiv SG GA GB.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(235);" id="toggleproof235">[Show Proof]</a>
 <div class="proof" id="proof235" style="display: none;">
 <a class="tactic" href="security-details.html#235">intros LkpEquiv Eq.</a> <a class="tactic" href="security-details.html#236">Eq: case Eq.</a> <a class="tactic" href="security-details.html#237">unfold.</a>
   <span class="comment">%First part</span>
@@ -558,9 +558,9 @@ public_equiv S G1 G2 :=
 
 <a class="command" href="security-details.html#246">Extensible_Theorem
   stmt_not_public_no_public_change : forall S SG SL SG1 G G1,
-    Sec : secure SG SL S SG1 ->
-    NEq : (SL = public -> false) ->
-    Ev : eval_s G S G1 ->
+    Sec : secure SG SL S SG1 -&gt;
+    NEq : (SL = public -&gt; false) -&gt;
+    Ev : eval_s G S G1 -&gt;
     public_equiv SG G G1
   on Ev.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(247);" id="toggleproof247">[Show Proof]</a>
 <div class="proof" id="proof247" style="display: none;">
@@ -573,37 +573,37 @@ public_equiv S G1 G2 :=
    <span class="comment">%S-assign-private</span>
     <a class="tactic" href="security-details.html#252">unfold.</a>
       <span class="comment">%1</span>
-       <a class="tactic" href="security-details.html#253">intros LS LA.</a> <a class="tactic" href="security-details.html#254">N: assert N = X -> false.</a>
+       <a class="tactic" href="security-details.html#253">intros LS LA.</a> <a class="tactic" href="security-details.html#254">N: assert N = X -&gt; false.</a>
          <a class="tactic" href="security-details.html#255">intros E.</a> <a class="tactic" href="security-details.html#256">case E.</a> <a class="tactic" href="security-details.html#257">apply lookup_unique to Sec1 LS.</a>
-       <a class="tactic" href="security-details.html#258">assert X = N -> false.</a> <a class="tactic" href="security-details.html#259">intros E.</a> <a class="tactic" href="security-details.html#260">case E.</a> <a class="tactic" href="security-details.html#261">backchain N.</a>
+       <a class="tactic" href="security-details.html#258">assert X = N -&gt; false.</a> <a class="tactic" href="security-details.html#259">intros E.</a> <a class="tactic" href="security-details.html#260">case E.</a> <a class="tactic" href="security-details.html#261">backchain N.</a>
        <a class="tactic" href="security-details.html#262">apply select_lookup to LA Ev2 _.</a> <a class="tactic" href="security-details.html#263">search.</a>
       <span class="comment">%2</span>
        <a class="tactic" href="security-details.html#264">intros LS LB.</a> <a class="tactic" href="security-details.html#265">L: case LB.</a>
          <span class="comment">%Lkp-Here</span>
           <a class="tactic" href="security-details.html#266">apply lookup_unique to Sec1 LS.</a>
          <span class="comment">%Lkp-Later</span>
-          <a class="tactic" href="security-details.html#267">assert X = N -> false.</a> <a class="tactic" href="security-details.html#268">intros E.</a> <a class="tactic" href="security-details.html#269">case E.</a> <a class="tactic" href="security-details.html#270">backchain L.</a>
+          <a class="tactic" href="security-details.html#267">assert X = N -&gt; false.</a> <a class="tactic" href="security-details.html#268">intros E.</a> <a class="tactic" href="security-details.html#269">case E.</a> <a class="tactic" href="security-details.html#270">backchain L.</a>
           <a class="tactic" href="security-details.html#271">apply lookup_after_select_before to L1 Ev2 _.</a> <a class="tactic" href="security-details.html#272">search.</a>
    <span class="comment">%S-assign-public</span>
     <a class="tactic" href="security-details.html#273">apply NEq to _.</a>
 <span class="comment">%X-seq</span>
  <a class="tactic" href="security-details.html#274">Sec: case Sec.</a> <a class="tactic" href="security-details.html#275">PE1: apply IH to Sec _ Ev1.</a>
  <a class="tactic" href="security-details.html#276">PE2: apply IH to Sec1 _ Ev2.</a>
- <a class="tactic" href="security-details.html#277">E: assert forall X, lookup SG X public -> lookup SG2 X public.</a>
+ <a class="tactic" href="security-details.html#277">E: assert forall X, lookup SG X public -&gt; lookup SG2 X public.</a>
    <a class="tactic" href="security-details.html#278">intros L.</a> <a class="tactic" href="security-details.html#279">L': apply stmt_public_branch to Sec L.</a> <a class="tactic" href="security-details.html#280">search.</a>
  <a class="tactic" href="security-details.html#281">PE': apply public_equiv_swap to E PE2.</a>
  <a class="tactic" href="security-details.html#282">apply public_equiv_trans to PE1 PE'.</a> <a class="tactic" href="security-details.html#283">search.</a>
 <span class="comment">%X-ifte-True</span>
- <a class="tactic" href="security-details.html#284">Sec: case Sec.</a> <a class="tactic" href="security-details.html#285">assert Sl1 = public -> false.</a>
+ <a class="tactic" href="security-details.html#284">Sec: case Sec.</a> <a class="tactic" href="security-details.html#285">assert Sl1 = public -&gt; false.</a>
    <a class="tactic" href="security-details.html#286">intros E.</a> <a class="tactic" href="security-details.html#287">case E.</a> <a class="tactic" href="security-details.html#288">backchain NEq.</a> <a class="tactic" href="security-details.html#289">apply join_public to Sec1.</a> <a class="tactic" href="security-details.html#290">search.</a>
  <a class="tactic" href="security-details.html#291">apply IH to Sec2 _ Ev2.</a> <a class="tactic" href="security-details.html#292">search.</a>
 <span class="comment">%X-ifte-False</span>
- <a class="tactic" href="security-details.html#293">Sec: case Sec.</a> <a class="tactic" href="security-details.html#294">assert Sl1 = public -> false.</a>
+ <a class="tactic" href="security-details.html#293">Sec: case Sec.</a> <a class="tactic" href="security-details.html#294">assert Sl1 = public -&gt; false.</a>
    <a class="tactic" href="security-details.html#295">intros E.</a> <a class="tactic" href="security-details.html#296">case E.</a> <a class="tactic" href="security-details.html#297">backchain NEq.</a> <a class="tactic" href="security-details.html#298">apply join_public to Sec1.</a> <a class="tactic" href="security-details.html#299">search.</a>
  <a class="tactic" href="security-details.html#300">apply IH to Sec3 _ Ev2.</a> <a class="tactic" href="security-details.html#301">search.</a>
 <span class="comment">%X-while-True</span>
  <a class="tactic" href="security-details.html#302">Sec: case Sec (keep).</a>
- <a class="tactic" href="security-details.html#303">assert Sl1 = public -> false.</a>
+ <a class="tactic" href="security-details.html#303">assert Sl1 = public -&gt; false.</a>
    <a class="tactic" href="security-details.html#304">intros E.</a> <a class="tactic" href="security-details.html#305">case E.</a> <a class="tactic" href="security-details.html#306">backchain NEq.</a> <a class="tactic" href="security-details.html#307">apply join_public to Sec2.</a> <a class="tactic" href="security-details.html#308">search.</a>
  <a class="tactic" href="security-details.html#309">EqGG2: apply IH to Sec3 _ Ev2.</a> <a class="tactic" href="security-details.html#310">EqG2G1: apply IH to _ _ Ev3.</a>
  <a class="tactic" href="security-details.html#311">apply public_equiv_trans to EqGG2 EqG2G1.</a> <a class="tactic" href="security-details.html#312">search.</a>
@@ -618,7 +618,7 @@ public_equiv S G1 G2 :=
    <span class="comment">%S-secdecl-private</span>
     <a class="tactic" href="security-details.html#319">unfold.</a>
       <span class="comment">%1</span>
-       <a class="tactic" href="security-details.html#320">intros LkpSec LkpG.</a> <a class="tactic" href="security-details.html#321">assert (N = X -> false).</a>
+       <a class="tactic" href="security-details.html#320">intros LkpSec LkpG.</a> <a class="tactic" href="security-details.html#321">assert (N = X -&gt; false).</a>
          <a class="tactic" href="security-details.html#322">intros E.</a> <a class="tactic" href="security-details.html#323">case E.</a> <a class="tactic" href="security-details.html#324">apply no_lookup to Sec1 LkpSec.</a>
        <a class="tactic" href="security-details.html#325">search.</a>
       <span class="comment">%2</span>
@@ -635,8 +635,8 @@ public_equiv S G1 G2 :=
 
 
 <a class="command" href="security-details.html#335">Theorem while_no_public_change : forall SG SL SG' Cond Body S G G2,
-  secure SG SL (while Cond Body) SG' -> level SG Cond S ->
-  (S = public -> false) -> eval_s G (while Cond Body) G2 ->
+  secure SG SL (while Cond Body) SG' -&gt; level SG Cond S -&gt;
+  (S = public -&gt; false) -&gt; eval_s G (while Cond Body) G2 -&gt;
   public_equiv SG G G2.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(336);" id="toggleproof336">[Show Proof]</a>
 <div class="proof" id="proof336" style="display: none;">
 <a class="tactic" href="security-details.html#336">induction on 4.</a> <a class="tactic" href="security-details.html#337">intros Sec Lev NEq Ev.</a> <a class="tactic" href="security-details.html#338">Ev: case Ev.</a>
@@ -652,11 +652,11 @@ public_equiv S G1 G2 :=
 
 <a class="command" href="security-details.html#350">Extensible_Theorem
   stmt_secure : forall S SG SL SG1 GA GA' GB GB',
-    Is : is_s S ->
-    Sec : secure SG SL S SG1 ->
-    Rel : public_equiv SG GA GB ->
-    EvA : eval_s GA S GA' ->
-    EvB : eval_s GB S GB' ->
+    Is : is_s S -&gt;
+    Sec : secure SG SL S SG1 -&gt;
+    Rel : public_equiv SG GA GB -&gt;
+    EvA : eval_s GA S GA' -&gt;
+    EvB : eval_s GB S GB' -&gt;
     public_equiv SG1 GA' GB'
   on EvA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(351);" id="toggleproof351">[Show Proof]</a>
 <div class="proof" id="proof351" style="display: none;">
@@ -702,7 +702,7 @@ public_equiv S G1 G2 :=
          <span class="comment">%LkpA here</span>
           <a class="tactic" href="security-details.html#385">apply lookup_unique to Sec1 LkpSec.</a>
          <span class="comment">%LkpA later</span>
-          <a class="tactic" href="security-details.html#386">assert X = N -> false.</a> <a class="tactic" href="security-details.html#387">intros E.</a> <a class="tactic" href="security-details.html#388">case E.</a> <a class="tactic" href="security-details.html#389">backchain LkpA.</a>
+          <a class="tactic" href="security-details.html#386">assert X = N -&gt; false.</a> <a class="tactic" href="security-details.html#387">intros E.</a> <a class="tactic" href="security-details.html#388">case E.</a> <a class="tactic" href="security-details.html#389">backchain LkpA.</a>
           <a class="tactic" href="security-details.html#390">L: apply lookup_after_select_before to LkpA1 EvA2 _.</a>
           <a class="tactic" href="security-details.html#391">R: case Rel.</a> <a class="tactic" href="security-details.html#392">LB: apply R to _ L.</a>
           <a class="tactic" href="security-details.html#393">apply select_lookup to LB EvB1 _.</a> <a class="tactic" href="security-details.html#394">search.</a>
@@ -711,7 +711,7 @@ public_equiv S G1 G2 :=
          <span class="comment">%LkpA here</span>
           <a class="tactic" href="security-details.html#397">apply lookup_unique to Sec1 LkpSec.</a>
          <span class="comment">%LkpA later</span>
-          <a class="tactic" href="security-details.html#398">assert X = N -> false.</a> <a class="tactic" href="security-details.html#399">intros E.</a> <a class="tactic" href="security-details.html#400">case E.</a> <a class="tactic" href="security-details.html#401">backchain LkpB.</a>
+          <a class="tactic" href="security-details.html#398">assert X = N -&gt; false.</a> <a class="tactic" href="security-details.html#399">intros E.</a> <a class="tactic" href="security-details.html#400">case E.</a> <a class="tactic" href="security-details.html#401">backchain LkpB.</a>
           <a class="tactic" href="security-details.html#402">L: apply lookup_after_select_before to LkpB1 EvB1 _.</a>
           <a class="tactic" href="security-details.html#403">R: case Rel.</a> <a class="tactic" href="security-details.html#404">LA: apply R1 to _ L.</a>
           <a class="tactic" href="security-details.html#405">apply select_lookup to LA EvA2 _.</a> <a class="tactic" href="security-details.html#406">search.</a>
@@ -722,7 +722,7 @@ public_equiv S G1 G2 :=
          <span class="comment">%LkpA here</span>
           <a class="tactic" href="security-details.html#411">search.</a>
          <span class="comment">%LkpA later</span>
-          <a class="tactic" href="security-details.html#412">assert X = N -> false.</a> <a class="tactic" href="security-details.html#413">intros E.</a> <a class="tactic" href="security-details.html#414">case E.</a> <a class="tactic" href="security-details.html#415">backchain LkpA.</a>
+          <a class="tactic" href="security-details.html#412">assert X = N -&gt; false.</a> <a class="tactic" href="security-details.html#413">intros E.</a> <a class="tactic" href="security-details.html#414">case E.</a> <a class="tactic" href="security-details.html#415">backchain LkpA.</a>
           <a class="tactic" href="security-details.html#416">LGA: apply lookup_after_select_before to LkpA1 EvA2 _.</a>
           <a class="tactic" href="security-details.html#417">R: case Rel.</a> <a class="tactic" href="security-details.html#418">LGB: apply R to LkpSec LGA.</a>
           <a class="tactic" href="security-details.html#419">apply select_lookup to LGB EvB1 _.</a> <a class="tactic" href="security-details.html#420">search.</a>
@@ -731,7 +731,7 @@ public_equiv S G1 G2 :=
          <span class="comment">%LkpB here</span>
           <a class="tactic" href="security-details.html#423">search.</a>
          <span class="comment">%LkpB later</span>
-          <a class="tactic" href="security-details.html#424">assert X = N -> false.</a> <a class="tactic" href="security-details.html#425">intros E.</a> <a class="tactic" href="security-details.html#426">case E.</a> <a class="tactic" href="security-details.html#427">backchain LkpB.</a>
+          <a class="tactic" href="security-details.html#424">assert X = N -&gt; false.</a> <a class="tactic" href="security-details.html#425">intros E.</a> <a class="tactic" href="security-details.html#426">case E.</a> <a class="tactic" href="security-details.html#427">backchain LkpB.</a>
           <a class="tactic" href="security-details.html#428">LGB: apply lookup_after_select_before to LkpB1 EvB1 _.</a>
           <a class="tactic" href="security-details.html#429">R: case Rel.</a> <a class="tactic" href="security-details.html#430">LGA: apply R1 to LkpSec LGB.</a>
           <a class="tactic" href="security-details.html#431">apply select_lookup to LGA EvA2 _.</a> <a class="tactic" href="security-details.html#432">search.</a>
@@ -742,11 +742,11 @@ public_equiv S G1 G2 :=
  <a class="tactic" href="security-details.html#439">Is: case Is.</a> <a class="tactic" href="security-details.html#440">Sec: case Sec.</a> <a class="tactic" href="security-details.html#441">EvB: case EvB.</a>
    <span class="comment">%EvB by E-ifte-True</span>
     <a class="tactic" href="security-details.html#442">EqGA'GB': apply IH to _ _ _ EvA2 EvB1.</a>
-    <a class="tactic" href="security-details.html#443">LkpEq: assert forall X, lookup SG1 X public -> lookup SG2 X public.</a>
+    <a class="tactic" href="security-details.html#443">LkpEq: assert forall X, lookup SG1 X public -&gt; lookup SG2 X public.</a>
       <a class="tactic" href="security-details.html#444">intros Lkp.</a> <a class="tactic" href="security-details.html#445">apply stmt_public_branch to Sec2 Lkp.</a> <a class="tactic" href="security-details.html#446">search.</a>
     <a class="tactic" href="security-details.html#447">apply public_equiv_swap to LkpEq EqGA'GB'.</a> <a class="tactic" href="security-details.html#448">search.</a>
    <span class="comment">%EvB by E-ifte-False</span>
-    <a class="tactic" href="security-details.html#449">NEq: assert L = public -> false.</a>
+    <a class="tactic" href="security-details.html#449">NEq: assert L = public -&gt; false.</a>
       <a class="tactic" href="security-details.html#450">intros E.</a> <a class="tactic" href="security-details.html#451">case E.</a> <a class="tactic" href="security-details.html#452">apply level_not_public to Is _ Sec EvA1 EvB _.</a>
     <a class="tactic" href="security-details.html#453">EqGAGA': apply stmt_not_public_no_public_change to Sec2 _ EvA2.</a>
       <a class="tactic" href="security-details.html#454">intros E.</a> <a class="tactic" href="security-details.html#455">case E.</a> <a class="tactic" href="security-details.html#456">apply join_public to Sec1.</a> <a class="tactic" href="security-details.html#457">backchain NEq.</a>
@@ -759,7 +759,7 @@ public_equiv S G1 G2 :=
 <span class="comment">%X-ifte-False</span>
  <a class="tactic" href="security-details.html#468">Is: case Is.</a> <a class="tactic" href="security-details.html#469">Sec: case Sec.</a> <a class="tactic" href="security-details.html#470">EvB: case EvB.</a>
    <span class="comment">%EvB by E-ifte-True</span>
-    <a class="tactic" href="security-details.html#471">NEq: assert L = public -> false.</a>
+    <a class="tactic" href="security-details.html#471">NEq: assert L = public -&gt; false.</a>
       <a class="tactic" href="security-details.html#472">intros E.</a> <a class="tactic" href="security-details.html#473">case E.</a> <a class="tactic" href="security-details.html#474">apply level_not_public to Is _ _ EvA1 EvB _.</a>
     <a class="tactic" href="security-details.html#475">EqGAGA': apply stmt_not_public_no_public_change to Sec3 _ EvA2.</a>
       <a class="tactic" href="security-details.html#476">intros E.</a> <a class="tactic" href="security-details.html#477">case E.</a> <a class="tactic" href="security-details.html#478">apply join_public to Sec1.</a> <a class="tactic" href="security-details.html#479">backchain NEq.</a>
@@ -771,19 +771,19 @@ public_equiv S G1 G2 :=
     <a class="tactic" href="security-details.html#488">apply public_equiv_trans to EqGA'GB EqGBGB'.</a> <a class="tactic" href="security-details.html#489">search.</a>
    <span class="comment">%EvB by E-ifte-False</span>
     <a class="tactic" href="security-details.html#490">EqGA'GB': apply IH to _ _ _ EvA2 EvB1.</a>
-    <a class="tactic" href="security-details.html#491">LkpEq: assert forall X, lookup SG1 X public -> lookup SG3 X public.</a>
+    <a class="tactic" href="security-details.html#491">LkpEq: assert forall X, lookup SG1 X public -&gt; lookup SG3 X public.</a>
       <a class="tactic" href="security-details.html#492">intros Lkp.</a> <a class="tactic" href="security-details.html#493">apply stmt_public_branch to Sec3 Lkp.</a> <a class="tactic" href="security-details.html#494">search.</a>
     <a class="tactic" href="security-details.html#495">apply public_equiv_swap to LkpEq EqGA'GB'.</a> <a class="tactic" href="security-details.html#496">search.</a>
 <span class="comment">%X-while-True</span>
  <a class="tactic" href="security-details.html#497">Is: case Is (keep).</a> <a class="tactic" href="security-details.html#498">Sec: case Sec (keep).</a> <a class="tactic" href="security-details.html#499">EvB: case EvB.</a>
    <span class="comment">%EvB by E-while-True</span>
     <a class="tactic" href="security-details.html#500">EqG1G3: apply IH to _ _ _ EvA2 EvB1.</a>
-    <a class="tactic" href="security-details.html#501">LEq: assert forall X, lookup SG1 X public -> lookup SG2 X public.</a>
+    <a class="tactic" href="security-details.html#501">LEq: assert forall X, lookup SG1 X public -&gt; lookup SG2 X public.</a>
       <a class="tactic" href="security-details.html#502">intros Lkp.</a> <a class="tactic" href="security-details.html#503">apply stmt_public_branch to Sec3 Lkp.</a> <a class="tactic" href="security-details.html#504">search.</a>
     <a class="tactic" href="security-details.html#505">apply public_equiv_swap to LEq EqG1G3.</a>
     <a class="tactic" href="security-details.html#506">EqG1GA': apply IH to Is Sec _ EvA3 EvB2.</a> <a class="tactic" href="security-details.html#507">search.</a>
    <span class="comment">%EvB by X-while-False</span>
-    <a class="tactic" href="security-details.html#508">SNEq: assert L = public -> false.</a>
+    <a class="tactic" href="security-details.html#508">SNEq: assert L = public -&gt; false.</a>
       <a class="tactic" href="security-details.html#509">intros E.</a> <a class="tactic" href="security-details.html#510">case E.</a> <a class="tactic" href="security-details.html#511">apply level_not_public to Is1 _ _ EvA1 EvB _.</a>
     <a class="tactic" href="security-details.html#512">EqGAG1: apply stmt_not_public_no_public_change to Sec3 _ EvA2.</a>
       <a class="tactic" href="security-details.html#513">intros E.</a> <a class="tactic" href="security-details.html#514">case E.</a> <a class="tactic" href="security-details.html#515">apply join_public to Sec2.</a> <a class="tactic" href="security-details.html#516">backchain SNEq.</a>
@@ -794,7 +794,7 @@ public_equiv S G1 G2 :=
 <span class="comment">%X-while-False</span>
  <a class="tactic" href="security-details.html#522">Is: case Is (keep).</a> <a class="tactic" href="security-details.html#523">Sec: case Sec (keep).</a> <a class="tactic" href="security-details.html#524">EvB: case EvB.</a>
    <span class="comment">%EvB by E-while-True</span>
-    <a class="tactic" href="security-details.html#525">SNEq: assert L = public -> false.</a>
+    <a class="tactic" href="security-details.html#525">SNEq: assert L = public -&gt; false.</a>
       <a class="tactic" href="security-details.html#526">intros E.</a> <a class="tactic" href="security-details.html#527">case E.</a> <a class="tactic" href="security-details.html#528">apply level_not_public to Is1 _ _ EvA1 EvB _.</a>
     <a class="tactic" href="security-details.html#529">EqGBG2: apply stmt_not_public_no_public_change to Sec3 _ EvB1.</a>
       <a class="tactic" href="security-details.html#530">intros E.</a> <a class="tactic" href="security-details.html#531">case E.</a> <a class="tactic" href="security-details.html#532">apply join_public to Sec2.</a> <a class="tactic" href="security-details.html#533">backchain SNEq.</a>
@@ -854,7 +854,7 @@ public_equiv S G1 G2 :=
  <a class="tactic" href="security-details.html#581">EvBProj: apply proj_s_eval to EvA1 EvB.</a>
  <a class="tactic" href="security-details.html#582">IsCT: apply proj_s_is to Sec Is.</a>
  <a class="tactic" href="security-details.html#583">Equiv: apply IH to _ Sec1 Rel EvA2 EvBProj.</a>
- <a class="tactic" href="security-details.html#584">LkpGB'G': assert forall X V, lookup GB' X V -> lookup G' X V.</a>
+ <a class="tactic" href="security-details.html#584">LkpGB'G': assert forall X V, lookup GB' X V -&gt; lookup G' X V.</a>
    <a class="tactic" href="security-details.html#585">intros L.</a> <a class="tactic" href="security-details.html#586">apply proj_s_eval_results to EvA1 EvB EvBProj L.</a> <a class="tactic" href="security-details.html#587">search.</a>
  <a class="tactic" href="security-details.html#588">EqG'GB': assert public_equiv SG1 G' GB'.</a>
    <a class="tactic" href="security-details.html#589">unfold.</a>

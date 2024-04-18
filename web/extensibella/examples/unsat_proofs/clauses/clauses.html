@@ -178,8 +178,8 @@ unit_clause A noteClause(Note, Clause) L
 <span class="comment">%is_clause (rangeClause I1 I)</span>
  <a class="tactic" href="clauses-details.html#23">Set search_depth 2.</a> <span class="comment">%make the next part not hang</span>
  <a class="tactic" href="clauses-details.html#24">Helper: assert forall Low High R,
-           is_integer Low -> is_integer High -> range Low High R ->
-           <is_clause {P}> (rangeClause Low High).</a>
+           is_integer Low -&gt; is_integer High -&gt; range Low High R -&gt;
+           &lt;is_clause {P}&gt; (rangeClause Low High).</a>
    <a class="tactic" href="clauses-details.html#25">Set search_depth 5.</a> <span class="comment">%back to normal</span>
    <a class="tactic" href="clauses-details.html#26">clear R R1 R2.</a> <span class="comment">%remove the outer things</span>
    <a class="tactic" href="clauses-details.html#27">induction on 3.</a> <a class="tactic" href="clauses-details.html#28">intros IsLow IsHigh R.</a> <a class="tactic" href="clauses-details.html#29">R: case R.</a>
@@ -188,12 +188,12 @@ unit_clause A noteClause(Note, Clause) L
      <span class="comment">%Range-Step</span>
       <a class="tactic" href="clauses-details.html#33">unfold.</a> <a class="tactic" href="clauses-details.html#34">IsPlusOne: apply plus_integer_is_integer to _ _ R1.</a>
       <a class="tactic" href="clauses-details.html#35">IsCT: apply IH1 to _ _ R2.</a>
-      <a class="tactic" href="clauses-details.html#36">Tr: assert |{clause}- rangeClause Low High ~~>
+      <a class="tactic" href="clauses-details.html#36">Tr: assert |{clause}- rangeClause Low High ~~&gt;
                             or (pos Low) (rangeClause PlusOne High).</a>
       <a class="tactic" href="clauses-details.html#37">exists or (pos Low) (rangeClause PlusOne High).</a> <a class="tactic" href="clauses-details.html#38">search.</a>
  <a class="tactic" href="clauses-details.html#39">R': apply range_exists to R1 R2.</a> <a class="tactic" href="clauses-details.html#40">apply Helper to _ _ R'.</a> <a class="tactic" href="clauses-details.html#41">search 2.</a>
 <span class="comment">%is_clause (noteClause S Clause)</span>
- <a class="tactic" href="clauses-details.html#42">assert |{clause}- noteClause S Clause ~~> Clause.</a> <a class="tactic" href="clauses-details.html#43">apply IH to R2.</a>
+ <a class="tactic" href="clauses-details.html#42">assert |{clause}- noteClause S Clause ~~&gt; Clause.</a> <a class="tactic" href="clauses-details.html#43">apply IH to R2.</a>
  <a class="tactic" href="clauses-details.html#44">search.</a></div>
 
 
@@ -216,9 +216,9 @@ unit_clause A noteClause(Note, Clause) L
  <a class="tactic" href="clauses-details.html#53">search.</a></div>
 <a class="command" href="clauses-details.html#54">Extensible_Theorem
   is_clause_rangeClause_or_not : forall C,
-    IsC : is_clause C ->
+    IsC : is_clause C -&gt;
     (exists L H, C = rangeClause L H) \/
-    ((exists L H, C = rangeClause L H) -> false)
+    ((exists L H, C = rangeClause L H) -&gt; false)
   on IsC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(55);" id="toggleproof55">[Show Proof]</a>
 <div class="proof" id="proof55" style="display: none;">
 <span class="comment">%emptyClause</span>
@@ -233,9 +233,9 @@ unit_clause A noteClause(Note, Clause) L
  <a class="tactic" href="clauses-details.html#59">search.</a></div>
 <a class="command" href="clauses-details.html#60">Extensible_Theorem
   is_clause_noteClause_or_not : forall C,
-    IsC : is_clause C ->
+    IsC : is_clause C -&gt;
     (exists Note C', C = noteClause Note C') \/
-    ((exists Note C', C = noteClause Note C') -> false)
+    ((exists Note C', C = noteClause Note C') -&gt; false)
   on IsC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(61);" id="toggleproof61">[Show Proof]</a>
 <div class="proof" id="proof61" style="display: none;">
 <span class="comment">%emptyClause</span>
@@ -295,7 +295,7 @@ unit_clause A noteClause(Note, Clause) L
 <span class="comment">%Proj-RangeClauseStep</span>
  <a class="tactic" href="clauses-details.html#114">Sat: case Hyp3.</a> <a class="tactic" href="clauses-details.html#115">Or: apply lesseq_integer_less_or_eq to Sat.</a>
  <a class="tactic" href="clauses-details.html#116">L: case Or.</a>
-   <span class="comment">%Low < X</span>
+   <span class="comment">%Low &lt; X</span>
     <a class="tactic" href="clauses-details.html#117">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#118">P: apply plus_integer_comm to _ _ Hyp5.</a>
     <a class="tactic" href="clauses-details.html#119">IsPosX: apply mem_is_lit to _ Sat2.</a> <a class="tactic" href="clauses-details.html#120">case IsPosX.</a>
     <a class="tactic" href="clauses-details.html#121">apply less_lesseq_plus_one to _ _ L P.</a> <a class="tactic" href="clauses-details.html#122">search.</a>
@@ -304,7 +304,7 @@ unit_clause A noteClause(Note, Clause) L
 <span class="comment">%Proj-RangeClauseEnd</span>
  <a class="tactic" href="clauses-details.html#124">Sat: case Hyp3.</a> <a class="tactic" href="clauses-details.html#125">Or: apply lesseq_integer_less_or_eq to Sat.</a>
  <a class="tactic" href="clauses-details.html#126">L: case Or.</a>
-   <span class="comment">%Low < X</span>
+   <span class="comment">%Low &lt; X</span>
     <a class="tactic" href="clauses-details.html#127">HL: apply greater_integer_flip_less to Hyp4.</a>
     <a class="tactic" href="clauses-details.html#128">HX: apply less_integer_transitive to HL L.</a>
     <a class="tactic" href="clauses-details.html#129">apply greater_lesseq_integer_false to _ Sat1.</a>
@@ -323,7 +323,7 @@ unit_clause A noteClause(Note, Clause) L
     <a class="tactic" href="clauses-details.html#138">Sat: case Sat.</a> <a class="tactic" href="clauses-details.html#139">IsPosX: apply mem_is_lit to _ Sat2.</a>
     <a class="tactic" href="clauses-details.html#140">IsX: case IsPosX.</a> <a class="tactic" href="clauses-details.html#141">Or: apply lesseq_integer_less_or_eq to Sat.</a>
     <a class="tactic" href="clauses-details.html#142">L: case Or.</a>
-      <span class="comment">%PlusOne < X</span>
+      <span class="comment">%PlusOne &lt; X</span>
        <a class="tactic" href="clauses-details.html#143">Is: case Hyp2.</a> <a class="tactic" href="clauses-details.html#144">P: apply plus_integer_comm to _ _ Hyp5.</a>
        <a class="tactic" href="clauses-details.html#145">L: apply lt_plus_one to Hyp5 _.</a>
        <a class="tactic" href="clauses-details.html#146">LE: apply less_integer_lesseq to L1.</a>
@@ -337,7 +337,7 @@ unit_clause A noteClause(Note, Clause) L
  <a class="tactic" href="clauses-details.html#154">search.</a></div>
 
 <a class="command" href="clauses-details.html#155">Theorem negs_total : forall L,
-  is_list is_integer L -> exists N, negs L N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(156);" id="toggleproof156">[Show Proof]</a>
+  is_list is_integer L -&gt; exists N, negs L N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(156);" id="toggleproof156">[Show Proof]</a>
 <div class="proof" id="proof156" style="display: none;">
 <a class="tactic" href="clauses-details.html#156">induction on 1.</a> <a class="tactic" href="clauses-details.html#157">intros IsL.</a> <a class="tactic" href="clauses-details.html#158">IsL: case IsL.</a>
   <span class="comment">%nil</span>
@@ -346,7 +346,7 @@ unit_clause A noteClause(Note, Clause) L
    <a class="tactic" href="clauses-details.html#160">apply IH to IsL1.</a> <a class="tactic" href="clauses-details.html#161">search.</a></div>
 
 <a class="command" href="clauses-details.html#162">Theorem negs_mem : forall L N X,
-  mem X L -> negs L N -> mem (neg X) N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(163);" id="toggleproof163">[Show Proof]</a>
+  mem X L -&gt; negs L N -&gt; mem (neg X) N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(163);" id="toggleproof163">[Show Proof]</a>
 <div class="proof" id="proof163" style="display: none;">
 <a class="tactic" href="clauses-details.html#163">induction on 1.</a> <a class="tactic" href="clauses-details.html#164">intros Mem Negs.</a> <a class="tactic" href="clauses-details.html#165">Mem: case Mem.</a>
   <span class="comment">%Mem-Here</span>
@@ -355,7 +355,7 @@ unit_clause A noteClause(Note, Clause) L
    <a class="tactic" href="clauses-details.html#168">Negs: case Negs.</a> <a class="tactic" href="clauses-details.html#169">apply IH to Mem Negs.</a> <a class="tactic" href="clauses-details.html#170">search.</a></div>
 
 <a class="command" href="clauses-details.html#171">Theorem negs_subset : forall LA LB NA NB,
-  subset LA LB -> negs LA NA -> negs LB NB -> subset NA NB.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(172);" id="toggleproof172">[Show Proof]</a>
+  subset LA LB -&gt; negs LA NA -&gt; negs LB NB -&gt; subset NA NB.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(172);" id="toggleproof172">[Show Proof]</a>
 <div class="proof" id="proof172" style="display: none;">
 <a class="tactic" href="clauses-details.html#172">induction on 1.</a> <a class="tactic" href="clauses-details.html#173">intros S NA NB.</a> <a class="tactic" href="clauses-details.html#174">S: case S.</a>
   <span class="comment">%Sbst-Nil</span>
@@ -413,7 +413,7 @@ unit_clause A noteClause(Note, Clause) L
 
 
 <a class="command" href="clauses-details.html#228">Theorem negs_form : forall L N X,
-  negs L N -> mem X N -> exists I, X = neg I.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(229);" id="toggleproof229">[Show Proof]</a>
+  negs L N -&gt; mem X N -&gt; exists I, X = neg I.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(229);" id="toggleproof229">[Show Proof]</a>
 <div class="proof" id="proof229" style="display: none;">
 <a class="tactic" href="clauses-details.html#229">induction on 2.</a> <a class="tactic" href="clauses-details.html#230">intros N M.</a> <a class="tactic" href="clauses-details.html#231">M: case M.</a>
   <span class="comment">%Mem-Here</span>
@@ -445,19 +445,19 @@ unit_clause A noteClause(Note, Clause) L
 
 
 <a class="command" href="clauses-details.html#257">Theorem mems_subset : forall Sub Sup,
-  is_list is_lit Sub -> (forall X, mem X Sub -> mem X Sup) ->
+  is_list is_lit Sub -&gt; (forall X, mem X Sub -&gt; mem X Sup) -&gt;
   subset Sub Sup.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(258);" id="toggleproof258">[Show Proof]</a>
 <div class="proof" id="proof258" style="display: none;">
 <a class="tactic" href="clauses-details.html#258">induction on 1.</a> <a class="tactic" href="clauses-details.html#259">intros Is Mems.</a> <a class="tactic" href="clauses-details.html#260">Is: case Is.</a>
   <span class="comment">%nil</span>
    <a class="tactic" href="clauses-details.html#261">search.</a>
   <span class="comment">%cons</span>
-   <a class="tactic" href="clauses-details.html#262">Mems': assert forall X, mem X T -> mem X Sup.</a>
+   <a class="tactic" href="clauses-details.html#262">Mems': assert forall X, mem X T -&gt; mem X Sup.</a>
      <a class="tactic" href="clauses-details.html#263">intros M.</a> <a class="tactic" href="clauses-details.html#264">apply Mems to _ with X = X.</a> <a class="tactic" href="clauses-details.html#265">search.</a>
    <a class="tactic" href="clauses-details.html#266">M: apply Mems to _ with X = H.</a> <a class="tactic" href="clauses-details.html#267">apply IH to Is1 Mems'.</a> <a class="tactic" href="clauses-details.html#268">search.</a></div>
 
 <a class="command" href="clauses-details.html#269">Theorem mems_subset2 [A] : forall (Sub Sup1 Sup2 : list A),
-  subset Sub Sup1 -> (forall X, mem X Sup1 -> mem X Sup2) ->
+  subset Sub Sup1 -&gt; (forall X, mem X Sup1 -&gt; mem X Sup2) -&gt;
   subset Sub Sup2.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(270);" id="toggleproof270">[Show Proof]</a>
 <div class="proof" id="proof270" style="display: none;">
 <a class="tactic" href="clauses-details.html#270">induction on 1.</a> <a class="tactic" href="clauses-details.html#271">intros S Mems.</a> <a class="tactic" href="clauses-details.html#272">S: case S.</a>
@@ -551,7 +551,7 @@ unit_clause A noteClause(Note, Clause) L
 
 
 <a class="command" href="clauses-details.html#354">Theorem posLits_total : forall L,
-  is_list is_integer L -> exists P, posLits L P.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(355);" id="toggleproof355">[Show Proof]</a>
+  is_list is_integer L -&gt; exists P, posLits L P.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(355);" id="toggleproof355">[Show Proof]</a>
 <div class="proof" id="proof355" style="display: none;">
 <a class="tactic" href="clauses-details.html#355">induction on 1.</a> <a class="tactic" href="clauses-details.html#356">intros Is.</a> <a class="tactic" href="clauses-details.html#357">Is: case Is.</a>
   <span class="comment">%nil</span>
@@ -560,7 +560,7 @@ unit_clause A noteClause(Note, Clause) L
    <a class="tactic" href="clauses-details.html#359">apply IH to Is1.</a> <a class="tactic" href="clauses-details.html#360">search.</a></div>
 
 <a class="command" href="clauses-details.html#361">Theorem posLits_unique : forall L P1 P2,
-  posLits L P1 -> posLits L P2 -> P1 = P2.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(362);" id="toggleproof362">[Show Proof]</a>
+  posLits L P1 -&gt; posLits L P2 -&gt; P1 = P2.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(362);" id="toggleproof362">[Show Proof]</a>
 <div class="proof" id="proof362" style="display: none;">
 <a class="tactic" href="clauses-details.html#362">induction on 1.</a> <a class="tactic" href="clauses-details.html#363">intros PL1 PL2.</a> <a class="tactic" href="clauses-details.html#364">PL1: case PL1.</a>
   <span class="comment">%PL-Nil</span>
@@ -569,7 +569,7 @@ unit_clause A noteClause(Note, Clause) L
    <a class="tactic" href="clauses-details.html#367">PL2: case PL2.</a> <a class="tactic" href="clauses-details.html#368">apply IH to PL1 PL2.</a> <a class="tactic" href="clauses-details.html#369">search.</a></div>
 
 <a class="command" href="clauses-details.html#370">Theorem posLits_is : forall L P,
-  is_list is_integer L -> posLits L P -> is_list is_lit P.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(371);" id="toggleproof371">[Show Proof]</a>
+  is_list is_integer L -&gt; posLits L P -&gt; is_list is_lit P.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(371);" id="toggleproof371">[Show Proof]</a>
 <div class="proof" id="proof371" style="display: none;">
 <a class="tactic" href="clauses-details.html#371">induction on 2.</a> <a class="tactic" href="clauses-details.html#372">intros IsL PL.</a> <a class="tactic" href="clauses-details.html#373">PL: case PL.</a>
   <span class="comment">%PL-Nil</span>
@@ -578,7 +578,7 @@ unit_clause A noteClause(Note, Clause) L
    <a class="tactic" href="clauses-details.html#375">Is: case IsL.</a> <a class="tactic" href="clauses-details.html#376">apply IH to _ PL.</a> <a class="tactic" href="clauses-details.html#377">search.</a></div>
 
 <a class="command" href="clauses-details.html#378">Theorem posLits_mem : forall L P X,
-  mem X L -> posLits L P -> mem (pos X) P.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(379);" id="toggleproof379">[Show Proof]</a>
+  mem X L -&gt; posLits L P -&gt; mem (pos X) P.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(379);" id="toggleproof379">[Show Proof]</a>
 <div class="proof" id="proof379" style="display: none;">
 <a class="tactic" href="clauses-details.html#379">induction on 1.</a> <a class="tactic" href="clauses-details.html#380">intros Mem PL.</a> <a class="tactic" href="clauses-details.html#381">Mem: case Mem.</a>
   <span class="comment">%Mem-Here</span>
@@ -587,7 +587,7 @@ unit_clause A noteClause(Note, Clause) L
    <a class="tactic" href="clauses-details.html#384">case PL.</a> <a class="tactic" href="clauses-details.html#385">apply IH to Mem _.</a> <a class="tactic" href="clauses-details.html#386">search.</a></div>
 
 <a class="command" href="clauses-details.html#387">Theorem posLits_form : forall L P X,
-  posLits L P -> mem X P -> exists I, X = pos I.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(388);" id="toggleproof388">[Show Proof]</a>
+  posLits L P -&gt; mem X P -&gt; exists I, X = pos I.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(388);" id="toggleproof388">[Show Proof]</a>
 <div class="proof" id="proof388" style="display: none;">
 <a class="tactic" href="clauses-details.html#388">induction on 2.</a> <a class="tactic" href="clauses-details.html#389">intros PL Mem.</a> <a class="tactic" href="clauses-details.html#390">Mem: case Mem.</a>
   <span class="comment">%Mem-Here</span>
@@ -596,7 +596,7 @@ unit_clause A noteClause(Note, Clause) L
    <a class="tactic" href="clauses-details.html#393">case PL.</a> <a class="tactic" href="clauses-details.html#394">apply IH to _ Mem.</a> <a class="tactic" href="clauses-details.html#395">search.</a></div>
 
 <a class="command" href="clauses-details.html#396">Theorem mem_after_posLits_before : forall L P I,
-  posLits L P -> mem (pos I) P -> mem I L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(397);" id="toggleproof397">[Show Proof]</a>
+  posLits L P -&gt; mem (pos I) P -&gt; mem I L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(397);" id="toggleproof397">[Show Proof]</a>
 <div class="proof" id="proof397" style="display: none;">
 <a class="tactic" href="clauses-details.html#397">induction on 2.</a> <a class="tactic" href="clauses-details.html#398">intros PL Mem.</a> <a class="tactic" href="clauses-details.html#399">Mem: case Mem.</a>
   <span class="comment">%Mem-Here</span>
@@ -621,7 +621,7 @@ unit_clause A noteClause(Note, Clause) L
  <a class="tactic" href="clauses-details.html#418">apply IH to IsC2.</a> <a class="tactic" href="clauses-details.html#419">search.</a></div>
 
 <a class="command" href="clauses-details.html#420">Theorem permutation_reflexive_lits : forall L,
-  is_list is_lit L -> permutation L L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(421);" id="toggleproof421">[Show Proof]</a>
+  is_list is_lit L -&gt; permutation L L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(421);" id="toggleproof421">[Show Proof]</a>
 <div class="proof" id="proof421" style="display: none;">
 <a class="tactic" href="clauses-details.html#421">induction on 1.</a> <a class="tactic" href="clauses-details.html#422">intros Is.</a> <a class="tactic" href="clauses-details.html#423">Is: case Is.</a>
   <span class="comment">%nil</span>
@@ -705,7 +705,7 @@ unit_clause A noteClause(Note, Clause) L
  <a class="tactic" href="clauses-details.html#509">case IsC.</a> <a class="tactic" href="clauses-details.html#510">case GL.</a> <a class="tactic" href="clauses-details.html#511">apply IH to GA _ _ _ Unsat1 _ _.</a></div>
 
 <a class="command" href="clauses-details.html#512">Theorem posLits_negateLitList_negs : forall L P N,
-  posLits L P -> negateLitList P N -> negs L N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(513);" id="toggleproof513">[Show Proof]</a>
+  posLits L P -&gt; negateLitList P N -&gt; negs L N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(513);" id="toggleproof513">[Show Proof]</a>
 <div class="proof" id="proof513" style="display: none;">
 <a class="tactic" href="clauses-details.html#513">induction on 1.</a> <a class="tactic" href="clauses-details.html#514">intros PL N.</a> <a class="tactic" href="clauses-details.html#515">PL: case PL.</a>
   <span class="comment">%PL-Nil</span>
@@ -714,7 +714,7 @@ unit_clause A noteClause(Note, Clause) L
    <a class="tactic" href="clauses-details.html#518">N: case N.</a> <a class="tactic" href="clauses-details.html#519">apply IH to PL N1.</a> <a class="tactic" href="clauses-details.html#520">case N.</a> <a class="tactic" href="clauses-details.html#521">search.</a></div>
 
 <a class="command" href="clauses-details.html#522">Theorem negs_is : forall L N,
-  is_list is_integer L -> negs L N -> is_list is_lit N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(523);" id="toggleproof523">[Show Proof]</a>
+  is_list is_integer L -&gt; negs L N -&gt; is_list is_lit N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(523);" id="toggleproof523">[Show Proof]</a>
 <div class="proof" id="proof523" style="display: none;">
 <a class="tactic" href="clauses-details.html#523">induction on 1.</a> <a class="tactic" href="clauses-details.html#524">intros Is N.</a> <a class="tactic" href="clauses-details.html#525">Is: case Is.</a>
   <span class="comment">%nil</span>

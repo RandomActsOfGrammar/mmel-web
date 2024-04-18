@@ -277,30 +277,30 @@ remove_all (A, C)::IRest I (A, C)::Rest
  *                           PROJECTIONS                            *
  ********************************************************************/</span>
 <a class="tactic" href="lrat-details.html#1">Projection_Constraint proj_lit_unique : forall L LA LB,
-  ProjA : |{lit}- L ~~> LA ->
-  ProjB : |{lit}- L ~~> LB ->
+  ProjA : |{lit}- L ~~&gt; LA -&gt;
+  ProjB : |{lit}- L ~~&gt; LB -&gt;
   LA = LB.</a>
 <a class="tactic" href="lrat-details.html#2">Projection_Constraint proj_lit_is : forall L LT,
-  Proj : |{lit}- L ~~> LT ->
-  IsL : is_lit L ->
+  Proj : |{lit}- L ~~&gt; LT -&gt;
+  IsL : is_lit L -&gt;
   is_lit LT.</a>
 
 <a class="tactic" href="lrat-details.html#3">Projection_Constraint proj_clause_unique : forall C CA CB,
-  ProjA : |{clause}- C ~~> CA ->
-  ProjB : |{clause}- C ~~> CB ->
+  ProjA : |{clause}- C ~~&gt; CA -&gt;
+  ProjB : |{clause}- C ~~&gt; CB -&gt;
   CA = CB.</a>
 <a class="tactic" href="lrat-details.html#4">Projection_Constraint proj_clause_is : forall C CT,
-  Proj : |{clause}- C ~~> CT ->
-  IsC : is_clause C ->
+  Proj : |{clause}- C ~~&gt; CT -&gt;
+  IsC : is_clause C -&gt;
   is_clause CT.</a>
 
 <a class="tactic" href="lrat-details.html#5">Projection_Constraint proj_formula_unique : forall F FA FB,
-  ProjA : |{formula}- F ~~> FA ->
-  projB : |{formula}- F ~~> FB ->
+  ProjA : |{formula}- F ~~&gt; FA -&gt;
+  projB : |{formula}- F ~~&gt; FB -&gt;
   FA = FB.</a>
 <a class="tactic" href="lrat-details.html#6">Projection_Constraint proj_formula_is : forall F FT,
-  Proj : |{formula}- F ~~> FT ->
-  IsF : is_formula F ->
+  Proj : |{formula}- F ~~&gt; FT -&gt;
+  IsF : is_formula F -&gt;
   is_formula FT.</a></div>
 
 <span class="comment">%Have proj_proof_is later because, relying on the known clauses as</span>
@@ -318,7 +318,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <span class="comment">/*
-  We can prove is_<type>_eq_or_not, as long as it is introduced by the
+  We can prove is_&lt;type&gt;_eq_or_not, as long as it is introduced by the
   module introducing the type.  The strategy is to introduce lemmas
   that a term of that type either has each possible form or not, then
   to use these lemmas to break down the second one in the actual
@@ -332,24 +332,24 @@ remove_all (A, C)::IRest I (A, C)::Rest
 */</span>
 <a class="command" href="lrat-details.html#11">Extensible_Theorem
   is_lit_eq_or_not__pos : forall L I,
-    IsL : is_lit L ->
-    IsI : is_integer I ->
-    L = pos I \/ (L = pos I -> false)
+    IsL : is_lit L -&gt;
+    IsI : is_integer I -&gt;
+    L = pos I \/ (L = pos I -&gt; false)
   on IsL.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(12);" id="toggleproof12">[Show Proof]</a>
 <div class="proof" id="proof12" style="display: none;">
 <span class="comment">%pos</span>
  <a class="tactic" href="lrat-details.html#12">Or: apply is_integer_eq_or_not to IsI IsL1.</a> <a class="tactic" href="lrat-details.html#13">Eq: case Or.</a>
    <span class="comment">%I = I1</span>
     <a class="tactic" href="lrat-details.html#14">search.</a>
-   <span class="comment">%I = I1 -> false</span>
+   <span class="comment">%I = I1 -&gt; false</span>
     <a class="tactic" href="lrat-details.html#15">right.</a> <a class="tactic" href="lrat-details.html#16">intros E.</a> <a class="tactic" href="lrat-details.html#17">case E.</a> <a class="tactic" href="lrat-details.html#18">backchain Eq.</a>
 <span class="comment">%neg</span>
  <a class="tactic" href="lrat-details.html#19">search.</a></div>
 <a class="command" href="lrat-details.html#20">Extensible_Theorem
   is_lit_eq_or_not__neg : forall L I,
-    IsL : is_lit L ->
-    IsI : is_integer I ->
-    L = neg I \/ (L = neg I -> false)
+    IsL : is_lit L -&gt;
+    IsI : is_integer I -&gt;
+    L = neg I \/ (L = neg I -&gt; false)
   on IsL.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(21);" id="toggleproof21">[Show Proof]</a>
 <div class="proof" id="proof21" style="display: none;">
 <span class="comment">%pos</span>
@@ -358,14 +358,14 @@ remove_all (A, C)::IRest I (A, C)::Rest
  <a class="tactic" href="lrat-details.html#22">Or: apply is_integer_eq_or_not to IsI IsL1.</a> <a class="tactic" href="lrat-details.html#23">Eq: case Or.</a>
    <span class="comment">%I = I1</span>
     <a class="tactic" href="lrat-details.html#24">search.</a>
-   <span class="comment">%I = I1 -> false</span>
+   <span class="comment">%I = I1 -&gt; false</span>
     <a class="tactic" href="lrat-details.html#25">right.</a> <a class="tactic" href="lrat-details.html#26">intros E.</a> <a class="tactic" href="lrat-details.html#27">case E.</a> <a class="tactic" href="lrat-details.html#28">backchain Eq.</a></div>
 
 <a class="command" href="lrat-details.html#29">Extensible_Theorem
   is_lit_eq_or_not : forall L1 L2,
-    IsL1 : is_lit L1 ->
-    IsL2 : is_lit L2 ->
-    L1 = L2 \/ (L1 = L2 -> false)
+    IsL1 : is_lit L1 -&gt;
+    IsL2 : is_lit L2 -&gt;
+    L1 = L2 \/ (L1 = L2 -&gt; false)
   on IsL1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(30);" id="toggleproof30">[Show Proof]</a>
 <div class="proof" id="proof30" style="display: none;">
 <span class="comment">%pos</span>
@@ -384,8 +384,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#44">Extensible_Theorem
   is_clause_empty_or_not : forall C,
-    IsC : is_clause C ->
-    emptyClause = C \/ (emptyClause = C -> false)
+    IsC : is_clause C -&gt;
+    emptyClause = C \/ (emptyClause = C -&gt; false)
   on IsC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(45);" id="toggleproof45">[Show Proof]</a>
 <div class="proof" id="proof45" style="display: none;">
 <span class="comment">%is_clause emptyClause</span>
@@ -394,8 +394,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
  <a class="tactic" href="lrat-details.html#46">right.</a> <a class="tactic" href="lrat-details.html#47">intros E.</a> <a class="tactic" href="lrat-details.html#48">case E.</a></div>
 <a class="command" href="lrat-details.html#49">Extensible_Theorem
   is_clause_or_or_not : forall C,
-    IsC : is_clause C ->
-    (exists L R, or L R = C) \/ ((exists L R, or L R = C) -> false)
+    IsC : is_clause C -&gt;
+    (exists L R, or L R = C) \/ ((exists L R, or L R = C) -&gt; false)
   on IsC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(50);" id="toggleproof50">[Show Proof]</a>
 <div class="proof" id="proof50" style="display: none;">
 <span class="comment">%is_clause emptyClause</span>
@@ -404,9 +404,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
  <a class="tactic" href="lrat-details.html#53">search.</a></div>
 <a class="command" href="lrat-details.html#54">Extensible_Theorem
   is_clause_eq_or_not : forall C1 C2,
-    IsC1 : is_clause C1 ->
-    IsC2 : is_clause C2 ->
-    C1 = C2 \/ (C1 = C2 -> false)
+    IsC1 : is_clause C1 -&gt;
+    IsC2 : is_clause C2 -&gt;
+    C1 = C2 \/ (C1 = C2 -&gt; false)
   on IsC1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(55);" id="toggleproof55">[Show Proof]</a>
 <div class="proof" id="proof55" style="display: none;">
 <span class="comment">%emptyClause</span>
@@ -438,10 +438,10 @@ remove_all (A, C)::IRest I (A, C)::Rest
  *                           LIST HELPERS                           *
  ********************************************************************/</span>
 <a class="command" href="lrat-details.html#79">Theorem lookup_after_select : forall Known ID ID' C C' KRest,
-  is_list (is_pair is_integer is_clause) Known -> is_integer ID' ->
-  (forall I C1 C2, mem (I, C1) Known ->
-                   mem (I, C2) Known -> C1 = C2) ->
-  select (ID, C) KRest Known -> lookup KRest ID' C' ->
+  is_list (is_pair is_integer is_clause) Known -&gt; is_integer ID' -&gt;
+  (forall I C1 C2, mem (I, C1) Known -&gt;
+                   mem (I, C2) Known -&gt; C1 = C2) -&gt;
+  select (ID, C) KRest Known -&gt; lookup KRest ID' C' -&gt;
   lookup Known ID' C'.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(80);" id="toggleproof80">[Show Proof]</a>
 <div class="proof" id="proof80" style="display: none;">
 <a class="tactic" href="lrat-details.html#80">induction on 4.</a> <a class="tactic" href="lrat-details.html#81">intros IsK IsID' GCL Slct Lkp.</a> <a class="tactic" href="lrat-details.html#82">Slct: case Slct.</a>
@@ -453,14 +453,14 @@ remove_all (A, C)::IRest I (A, C)::Rest
       <a class="tactic" href="lrat-details.html#88">M2: assert mem (ID, C') ((ID, C)::KRest).</a>
       <a class="tactic" href="lrat-details.html#89">M3: assert mem (ID, C) ((ID, C)::KRest).</a>
       <a class="tactic" href="lrat-details.html#90">apply GCL to M2 M3.</a> <a class="tactic" href="lrat-details.html#91">search.</a>
-     <span class="comment">%ID = ID' -> false</span>
+     <span class="comment">%ID = ID' -&gt; false</span>
       <a class="tactic" href="lrat-details.html#92">unfold.</a> <a class="tactic" href="lrat-details.html#93">intros E.</a> <a class="tactic" href="lrat-details.html#94">case E.</a> <a class="tactic" href="lrat-details.html#95">backchain Eq.</a> <a class="tactic" href="lrat-details.html#96">search.</a>
   <span class="comment">%Slct-Later</span>
    <a class="tactic" href="lrat-details.html#97">Is: case IsK.</a> <a class="tactic" href="lrat-details.html#98">Lkp: case Lkp.</a>
      <span class="comment">%Lkp-Here</span>
       <a class="tactic" href="lrat-details.html#99">search.</a>
      <span class="comment">%Lkp-Later</span>
-      <a class="tactic" href="lrat-details.html#100">assert forall I C1 C2, mem (I, C1) L2 -> mem (I, C2) L2 ->
+      <a class="tactic" href="lrat-details.html#100">assert forall I C1 C2, mem (I, C1) L2 -&gt; mem (I, C2) L2 -&gt;
                              C1 = C2.</a>
         <a class="tactic" href="lrat-details.html#101">intros MA MB.</a> <a class="tactic" href="lrat-details.html#102">MA': assert mem (I1, C1) ((K, V)::L2).</a>
         <a class="tactic" href="lrat-details.html#103">MB': assert mem (I1, C2) ((K, V)::L2).</a> <a class="tactic" href="lrat-details.html#104">apply GCL to MA' MB'.</a>
@@ -469,7 +469,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#108">Theorem mem_is : forall Known (IDC : pair integer clause),
-  is_list (is_pair is_integer is_clause) Known -> mem IDC Known ->
+  is_list (is_pair is_integer is_clause) Known -&gt; mem IDC Known -&gt;
   exists ID C, IDC = (ID, C) /\ is_integer ID /\ is_clause C.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(109);" id="toggleproof109">[Show Proof]</a>
 <div class="proof" id="proof109" style="display: none;">
 <a class="tactic" href="lrat-details.html#109">induction on 2.</a> <a class="tactic" href="lrat-details.html#110">intros Is Mem.</a> <a class="tactic" href="lrat-details.html#111">Mem: case Mem.</a>
@@ -480,7 +480,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#118">Theorem mem_is_lit : forall Assignment L,
-  is_list is_lit Assignment -> mem L Assignment -> is_lit L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(119);" id="toggleproof119">[Show Proof]</a>
+  is_list is_lit Assignment -&gt; mem L Assignment -&gt; is_lit L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(119);" id="toggleproof119">[Show Proof]</a>
 <div class="proof" id="proof119" style="display: none;">
 <a class="tactic" href="lrat-details.html#119">induction on 2.</a> <a class="tactic" href="lrat-details.html#120">intros Is Mem.</a> <a class="tactic" href="lrat-details.html#121">Mem: case Mem.</a>
   <span class="comment">%Mem-Here</span>
@@ -490,8 +490,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#127">Theorem select_is : forall Known KRest IDC,
-  is_list (is_pair is_integer is_clause) Known ->
-  select IDC KRest Known ->
+  is_list (is_pair is_integer is_clause) Known -&gt;
+  select IDC KRest Known -&gt;
   is_list (is_pair is_integer is_clause) KRest.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(128);" id="toggleproof128">[Show Proof]</a>
 <div class="proof" id="proof128" style="display: none;">
 <a class="tactic" href="lrat-details.html#128">induction on 2.</a> <a class="tactic" href="lrat-details.html#129">intros Is Slct.</a> <a class="tactic" href="lrat-details.html#130">Slct: case Slct.</a>
@@ -502,8 +502,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#136">Theorem select_is_picked : forall Known IDC KRest,
-  is_list (is_pair is_integer is_clause) Known ->
-  select IDC KRest Known ->
+  is_list (is_pair is_integer is_clause) Known -&gt;
+  select IDC KRest Known -&gt;
   is_pair is_integer is_clause IDC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(137);" id="toggleproof137">[Show Proof]</a>
 <div class="proof" id="proof137" style="display: none;">
 <a class="tactic" href="lrat-details.html#137">induction on 2.</a> <a class="tactic" href="lrat-details.html#138">intros Is Slct.</a> <a class="tactic" href="lrat-details.html#139">Slct: case Slct.</a>
@@ -514,8 +514,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#145">Theorem is_list_lit_mem_or_not : forall A L,
-  is_list is_lit A -> is_lit L ->
-  mem L A \/ (mem L A -> false).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(146);" id="toggleproof146">[Show Proof]</a>
+  is_list is_lit A -&gt; is_lit L -&gt;
+  mem L A \/ (mem L A -&gt; false).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(146);" id="toggleproof146">[Show Proof]</a>
 <div class="proof" id="proof146" style="display: none;">
 <a class="tactic" href="lrat-details.html#146">induction on 1.</a> <a class="tactic" href="lrat-details.html#147">intros IsA IsL.</a> <a class="tactic" href="lrat-details.html#148">IsA: case IsA.</a>
   <span class="comment">%Nil</span>
@@ -524,19 +524,19 @@ remove_all (A, C)::IRest I (A, C)::Rest
    <a class="tactic" href="lrat-details.html#152">Or: apply is_lit_eq_or_not to IsL IsA.</a> <a class="tactic" href="lrat-details.html#153">EqL: case Or.</a>
      <span class="comment">%L = L1</span>
       <a class="tactic" href="lrat-details.html#154">search.</a>
-     <span class="comment">%L = L1 -> false</span>
+     <span class="comment">%L = L1 -&gt; false</span>
       <a class="tactic" href="lrat-details.html#155">Or: apply IH to IsA1 IsL.</a> <a class="tactic" href="lrat-details.html#156">MemRest: case Or.</a>
         <span class="comment">%mem L Rest</span>
          <a class="tactic" href="lrat-details.html#157">search.</a>
-        <span class="comment">%mem L Rest -> false</span>
+        <span class="comment">%mem L Rest -&gt; false</span>
          <a class="tactic" href="lrat-details.html#158">right.</a> <a class="tactic" href="lrat-details.html#159">intros Mem.</a> <a class="tactic" href="lrat-details.html#160">Mem: case Mem.</a> <a class="tactic" href="lrat-details.html#161">backchain EqL.</a>
          <a class="tactic" href="lrat-details.html#162">backchain MemRest.</a></div>
 
 
 <a class="command" href="lrat-details.html#163">Theorem is_list_lit_subset_or_not : forall A B,
-  is_list is_lit A -> is_list is_lit B ->
-  (forall X, mem X A -> mem X B) \/
-  exists X, mem X A /\ (mem X B -> false).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(164);" id="toggleproof164">[Show Proof]</a>
+  is_list is_lit A -&gt; is_list is_lit B -&gt;
+  (forall X, mem X A -&gt; mem X B) \/
+  exists X, mem X A /\ (mem X B -&gt; false).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(164);" id="toggleproof164">[Show Proof]</a>
 <div class="proof" id="proof164" style="display: none;">
 <a class="tactic" href="lrat-details.html#164">induction on 1.</a> <a class="tactic" href="lrat-details.html#165">intros IsA IsB.</a> <a class="tactic" href="lrat-details.html#166">IsA: case IsA.</a>
   <span class="comment">%nil</span>
@@ -545,21 +545,21 @@ remove_all (A, C)::IRest I (A, C)::Rest
    <a class="tactic" href="lrat-details.html#170">Or: apply is_list_lit_mem_or_not to IsB IsA.</a> <a class="tactic" href="lrat-details.html#171">M: case Or.</a>
      <span class="comment">%mem H B</span>
       <a class="tactic" href="lrat-details.html#172">Or: apply IH to IsA1 IsB.</a> <a class="tactic" href="lrat-details.html#173">Sub: case Or.</a>
-        <span class="comment">%forall X, mem X T -> mem X B</span>
+        <span class="comment">%forall X, mem X T -&gt; mem X B</span>
          <a class="tactic" href="lrat-details.html#174">left.</a> <a class="tactic" href="lrat-details.html#175">intros Mem.</a> <a class="tactic" href="lrat-details.html#176">Mem: case Mem.</a>
            <span class="comment">%X = H</span>
             <a class="tactic" href="lrat-details.html#177">search.</a>
            <span class="comment">%mem X T</span>
             <a class="tactic" href="lrat-details.html#178">backchain Sub.</a>
-        <span class="comment">%exists X, mem X T /\ (mem X B -> false)</span>
+        <span class="comment">%exists X, mem X T /\ (mem X B -&gt; false)</span>
          <a class="tactic" href="lrat-details.html#179">right.</a> <a class="tactic" href="lrat-details.html#180">search.</a>
-     <span class="comment">%mem H B -> false</span>
+     <span class="comment">%mem H B -&gt; false</span>
       <a class="tactic" href="lrat-details.html#181">right.</a> <a class="tactic" href="lrat-details.html#182">search.</a></div>
 
 
 <a class="command" href="lrat-details.html#183">Theorem is_list_mem_lookup : forall Known ID C,
-  is_list (is_pair is_integer is_clause) Known ->
-  mem (ID, C) Known -> is_integer ID ->
+  is_list (is_pair is_integer is_clause) Known -&gt;
+  mem (ID, C) Known -&gt; is_integer ID -&gt;
   exists C', lookup Known ID C'.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(184);" id="toggleproof184">[Show Proof]</a>
 <div class="proof" id="proof184" style="display: none;">
 <a class="tactic" href="lrat-details.html#184">induction on 2.</a> <a class="tactic" href="lrat-details.html#185">intros IsK Mem IsID.</a> <a class="tactic" href="lrat-details.html#186">Mem: case Mem.</a>
@@ -570,12 +570,12 @@ remove_all (A, C)::IRest I (A, C)::Rest
    <a class="tactic" href="lrat-details.html#190">Or: apply is_integer_eq_or_not to Is IsID.</a> <a class="tactic" href="lrat-details.html#191">Eq: case Or.</a>
      <span class="comment">%A = ID</span>
       <a class="tactic" href="lrat-details.html#192">search.</a>
-     <span class="comment">%A = ID -> false</span>
+     <span class="comment">%A = ID -&gt; false</span>
       <a class="tactic" href="lrat-details.html#193">apply IH to Is1 Mem IsID.</a> <a class="tactic" href="lrat-details.html#194">search.</a></div>
 
 
 <a class="command" href="lrat-details.html#195">Theorem lookup_is_value : forall K ID C,
-  is_list (is_pair is_integer is_clause) K -> lookup K ID C ->
+  is_list (is_pair is_integer is_clause) K -&gt; lookup K ID C -&gt;
   is_clause C.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(196);" id="toggleproof196">[Show Proof]</a>
 <div class="proof" id="proof196" style="display: none;">
 <a class="tactic" href="lrat-details.html#196">induction on 2.</a> <a class="tactic" href="lrat-details.html#197">intros IsK Lkp.</a> <a class="tactic" href="lrat-details.html#198">Lkp: case Lkp.</a>
@@ -586,7 +586,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#205">Theorem lookup_is_key : forall K ID C,
-  is_list (is_pair is_integer is_clause) K -> lookup K ID C ->
+  is_list (is_pair is_integer is_clause) K -&gt; lookup K ID C -&gt;
   is_integer ID.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(206);" id="toggleproof206">[Show Proof]</a>
 <div class="proof" id="proof206" style="display: none;">
 <a class="tactic" href="lrat-details.html#206">induction on 2.</a> <a class="tactic" href="lrat-details.html#207">intros IsK Lkp.</a> <a class="tactic" href="lrat-details.html#208">Lkp: case Lkp.</a>
@@ -597,9 +597,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#215">Theorem is_pair_eq_or_not : forall (PA PB : pair integer clause),
-  is_pair is_integer is_clause PA ->
-  is_pair is_integer is_clause PB ->
-  PA = PB \/ (PA = PB -> false).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(216);" id="toggleproof216">[Show Proof]</a>
+  is_pair is_integer is_clause PA -&gt;
+  is_pair is_integer is_clause PB -&gt;
+  PA = PB \/ (PA = PB -&gt; false).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(216);" id="toggleproof216">[Show Proof]</a>
 <div class="proof" id="proof216" style="display: none;">
 <a class="tactic" href="lrat-details.html#216">intros IsPA IsPB.</a> <a class="tactic" href="lrat-details.html#217">IsA: case IsPA.</a> <a class="tactic" href="lrat-details.html#218">IsB: case IsPB.</a>
 <a class="tactic" href="lrat-details.html#219">Or: apply is_integer_eq_or_not to IsA IsB.</a> <a class="tactic" href="lrat-details.html#220">Eq: case Or.</a>
@@ -614,8 +614,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#232">Theorem is_count_exists : forall L IDC,
-  is_list (is_pair is_integer is_clause) L ->
-  is_pair is_integer is_clause IDC ->
+  is_list (is_pair is_integer is_clause) L -&gt;
+  is_pair is_integer is_clause IDC -&gt;
   exists N, count IDC L N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(233);" id="toggleproof233">[Show Proof]</a>
 <div class="proof" id="proof233" style="display: none;">
 <a class="tactic" href="lrat-details.html#233">induction on 1.</a> <a class="tactic" href="lrat-details.html#234">intros IsL IsIDC.</a> <a class="tactic" href="lrat-details.html#235">Is: case IsL.</a>
@@ -627,13 +627,13 @@ remove_all (A, C)::IRest I (A, C)::Rest
      <span class="comment">%IDC = H</span>
       <a class="tactic" href="lrat-details.html#240">IsN: apply count_is_integer to C.</a>
       <a class="tactic" href="lrat-details.html#241">apply plus_integer_total to _ IsN with N1 = 1.</a> <a class="tactic" href="lrat-details.html#242">search.</a>
-     <span class="comment">%IDC = H -> false</span>
+     <span class="comment">%IDC = H -&gt; false</span>
       <a class="tactic" href="lrat-details.html#243">search.</a></div>
 
 
 <a class="command" href="lrat-details.html#244">Theorem all_count_0_nil : forall L,
-  is_list (is_pair is_integer is_clause) L ->
-  (forall X N, count X L N -> N = 0) ->
+  is_list (is_pair is_integer is_clause) L -&gt;
+  (forall X N, count X L N -&gt; N = 0) -&gt;
   L = [].</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(245);" id="toggleproof245">[Show Proof]</a>
 <div class="proof" id="proof245" style="display: none;">
 <a class="tactic" href="lrat-details.html#245">intros IsL Count0.</a> <a class="tactic" href="lrat-details.html#246">Is: case IsL.</a>
@@ -646,18 +646,18 @@ remove_all (A, C)::IRest I (A, C)::Rest
    <a class="tactic" href="lrat-details.html#251">C': assert count H (H::T) N3.</a> <a class="tactic" href="lrat-details.html#252">apply Count0 to C'.</a>
    <a class="tactic" href="lrat-details.html#253">GEq: apply count_geq_0 to C.</a>
    <a class="tactic" href="lrat-details.html#254">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="lrat-details.html#255">L: case Or.</a>
-     <span class="comment">%N > 0</span>
+     <span class="comment">%N &gt; 0</span>
       <a class="tactic" href="lrat-details.html#256">G: apply greater_plus_positive to _ _ P _.</a>
-      <a class="tactic" href="lrat-details.html#257">L': assert 0 < 1.</a> <a class="tactic" href="lrat-details.html#258">apply greater_less_impossible to G L'.</a>
+      <a class="tactic" href="lrat-details.html#257">L': assert 0 &lt; 1.</a> <a class="tactic" href="lrat-details.html#258">apply greater_less_impossible to G L'.</a>
      <span class="comment">%N = 0</span>
       <a class="tactic" href="lrat-details.html#259">case P.</a></div>
 
 
 <a class="command" href="lrat-details.html#260">Theorem counts_permutation : forall L P,
-  is_list (is_pair is_integer is_clause) L ->
-  is_list (is_pair is_integer is_clause) P ->
-  (forall X NL NP, is_pair is_integer is_clause X ->
-                   count X L NL -> count X P NP -> NL = NP) ->
+  is_list (is_pair is_integer is_clause) L -&gt;
+  is_list (is_pair is_integer is_clause) P -&gt;
+  (forall X NL NP, is_pair is_integer is_clause X -&gt;
+                   count X L NL -&gt; count X P NP -&gt; NL = NP) -&gt;
   permutation L P.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(261);" id="toggleproof261">[Show Proof]</a>
 <div class="proof" id="proof261" style="display: none;">
 <a class="tactic" href="lrat-details.html#261">induction on 1.</a> <a class="tactic" href="lrat-details.html#262">intros IsL IsP Same.</a> <a class="tactic" href="lrat-details.html#263">Is: case IsL (keep).</a>
@@ -671,10 +671,10 @@ remove_all (A, C)::IRest I (A, C)::Rest
         <span class="comment">%Cnt-ConsEq</span>
          <a class="tactic" href="lrat-details.html#270">GEq: apply count_geq_0 to CP.</a>
          <a class="tactic" href="lrat-details.html#271">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="lrat-details.html#272">E: case Or.</a>
-           <span class="comment">%N1 > 0</span>
+           <span class="comment">%N1 &gt; 0</span>
             <a class="tactic" href="lrat-details.html#273">IsN1: apply count_is_integer to CP.</a>
             <a class="tactic" href="lrat-details.html#274">G: apply greater_plus_positive to _ _ CP1 _.</a>
-            <a class="tactic" href="lrat-details.html#275">L: assert 0 < 1.</a> <a class="tactic" href="lrat-details.html#276">apply greater_less_impossible to G L.</a>
+            <a class="tactic" href="lrat-details.html#275">L: assert 0 &lt; 1.</a> <a class="tactic" href="lrat-details.html#276">apply greater_less_impossible to G L.</a>
            <span class="comment">%N1 = 0</span>
             <a class="tactic" href="lrat-details.html#277">case CP1.</a>
         <span class="comment">%Cnt-ConsNeq</span>
@@ -686,8 +686,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
    <a class="tactic" href="lrat-details.html#283">M: apply count_mem to CPH G.</a> <a class="tactic" href="lrat-details.html#284">S: apply mem_select to M.</a>
    <a class="tactic" href="lrat-details.html#285">IsL': assert is_list (is_pair is_integer is_clause) L'.</a>
      <a class="tactic" href="lrat-details.html#286">case Is.</a> <a class="tactic" href="lrat-details.html#287">apply select_is to _ S.</a> <a class="tactic" href="lrat-details.html#288">search.</a>
-   <a class="tactic" href="lrat-details.html#289">assert forall X NL NP, is_pair is_integer is_clause X ->
-                          count X T NL -> count X L' NP -> NL = NP.</a>
+   <a class="tactic" href="lrat-details.html#289">assert forall X NL NP, is_pair is_integer is_clause X -&gt;
+                          count X T NL -&gt; count X L' NP -&gt; NL = NP.</a>
      <a class="tactic" href="lrat-details.html#290">intros IsX CT CL'.</a> <a class="tactic" href="lrat-details.html#291">Or: apply is_pair_eq_or_not to Is IsX.</a>
      <a class="tactic" href="lrat-details.html#292">E: case Or.</a>
        <span class="comment">%H = X</span>
@@ -702,8 +702,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
         <a class="tactic" href="lrat-details.html#302">P': apply plus_integer_comm to _ _ PlusNL.</a>
         <a class="tactic" href="lrat-details.html#303">M': apply plus_minus_same_integer to _ _ P'.</a>
         <a class="tactic" href="lrat-details.html#304">apply minus_integer_unique to M1 M'.</a> <a class="tactic" href="lrat-details.html#305">search.</a>
-       <span class="comment">%H = X -> false</span>
-        <a class="tactic" href="lrat-details.html#306">assert X = H -> false.</a> <a class="tactic" href="lrat-details.html#307">intros A.</a> <a class="tactic" href="lrat-details.html#308">case A.</a> <a class="tactic" href="lrat-details.html#309">backchain E.</a>
+       <span class="comment">%H = X -&gt; false</span>
+        <a class="tactic" href="lrat-details.html#306">assert X = H -&gt; false.</a> <a class="tactic" href="lrat-details.html#307">intros A.</a> <a class="tactic" href="lrat-details.html#308">case A.</a> <a class="tactic" href="lrat-details.html#309">backchain E.</a>
         <a class="tactic" href="lrat-details.html#310">CXP: apply count_select_neq to CL' S _.</a>
         <a class="tactic" href="lrat-details.html#311">CXL: assert count X (H::T) NL.</a> <a class="tactic" href="lrat-details.html#312">apply Same to _ CXL CXP.</a>
         <a class="tactic" href="lrat-details.html#313">search.</a>
@@ -711,9 +711,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#316">Theorem selects_permutation : forall L P IDC LRest PRest,
-  is_list (is_pair is_integer is_clause) L ->
-  is_list (is_pair is_integer is_clause) P ->
-  permutation L P -> select IDC LRest L -> select IDC PRest P ->
+  is_list (is_pair is_integer is_clause) L -&gt;
+  is_list (is_pair is_integer is_clause) P -&gt;
+  permutation L P -&gt; select IDC LRest L -&gt; select IDC PRest P -&gt;
   permutation LRest PRest.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(317);" id="toggleproof317">[Show Proof]</a>
 <div class="proof" id="proof317" style="display: none;">
 <a class="tactic" href="lrat-details.html#317">intros IsL IsP Prm SL SP.</a>
@@ -723,8 +723,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 <a class="tactic" href="lrat-details.html#323">IsPRest: assert is_list (is_pair is_integer is_clause) PRest.</a>
   <a class="tactic" href="lrat-details.html#324">M: apply select_mem to SP.</a> <a class="tactic" href="lrat-details.html#325">apply mem_is to IsP M.</a>
   <a class="tactic" href="lrat-details.html#326">apply select_is to IsP SP.</a> <a class="tactic" href="lrat-details.html#327">search.</a>
-<a class="tactic" href="lrat-details.html#328">assert forall X NL NP, is_pair is_integer is_clause X ->
-                count X LRest NL -> count X PRest NP -> NL = NP.</a>
+<a class="tactic" href="lrat-details.html#328">assert forall X NL NP, is_pair is_integer is_clause X -&gt;
+                count X LRest NL -&gt; count X PRest NP -&gt; NL = NP.</a>
   <a class="tactic" href="lrat-details.html#329">intros IsX CL CP.</a> <a class="tactic" href="lrat-details.html#330">M: apply select_mem to SL.</a>
   <a class="tactic" href="lrat-details.html#331">Is: apply mem_is to _ M.</a>
   <a class="tactic" href="lrat-details.html#332">IsPair: assert is_pair is_integer is_clause (ID, C).</a>
@@ -742,7 +742,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
      <a class="tactic" href="lrat-details.html#344">NL+: apply plus_integer_comm to _ _ PL.</a>
      <a class="tactic" href="lrat-details.html#345">ML: apply plus_minus_same_integer to _ _ NL+.</a>
      <a class="tactic" href="lrat-details.html#346">apply minus_integer_unique to MP ML.</a> <a class="tactic" href="lrat-details.html#347">search.</a>
-    <span class="comment">%X = (ID, C) -> false</span>
+    <span class="comment">%X = (ID, C) -&gt; false</span>
      <a class="tactic" href="lrat-details.html#348">CLFull: apply count_select_neq to CL SL Eq .</a>
      <a class="tactic" href="lrat-details.html#349">CPFull: apply count_select_neq to CP SP Eq.</a>
      <a class="tactic" href="lrat-details.html#350">apply permutation_counts to Prm CLFull CPFull.</a> <a class="tactic" href="lrat-details.html#351">search.</a>
@@ -750,7 +750,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#354">Theorem permutation_reflexive : forall L,
-  is_list (is_pair is_integer is_clause) L -> permutation L L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(355);" id="toggleproof355">[Show Proof]</a>
+  is_list (is_pair is_integer is_clause) L -&gt; permutation L L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(355);" id="toggleproof355">[Show Proof]</a>
 <div class="proof" id="proof355" style="display: none;">
 <a class="tactic" href="lrat-details.html#355">induction on 1.</a> <a class="tactic" href="lrat-details.html#356">intros Is.</a> <a class="tactic" href="lrat-details.html#357">Is: case Is.</a>
   <span class="comment">%nil</span>
@@ -760,7 +760,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#361">Theorem permutation_is : forall L P,
-  is_list (is_pair is_integer is_clause) P -> permutation L P ->
+  is_list (is_pair is_integer is_clause) P -&gt; permutation L P -&gt;
   is_list (is_pair is_integer is_clause) L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(362);" id="toggleproof362">[Show Proof]</a>
 <div class="proof" id="proof362" style="display: none;">
 <a class="tactic" href="lrat-details.html#362">induction on 2.</a> <a class="tactic" href="lrat-details.html#363">intros IsP Prm.</a> <a class="tactic" href="lrat-details.html#364">Prm: case Prm.</a>
@@ -778,13 +778,13 @@ remove_all (A, C)::IRest I (A, C)::Rest
  *                               SAT                                *
  ********************************************************************/</span>
 <span class="comment">/*assignment only has L or -L, not both*/</span>
-<a class="command" href="lrat-details.html#370">Define good_assignment : list lit -> prop by
+<a class="command" href="lrat-details.html#370">Define good_assignment : list lit -&gt; prop by
   good_assignment A :=
-    forall L NL, mem L A -> negate_lit L NL -> mem NL A -> false.</a>
+    forall L NL, mem L A -&gt; negate_lit L NL -&gt; mem NL A -&gt; false.</a>
 
 
 <a class="command" href="lrat-details.html#371">Theorem good_assignment_sub : forall A B,
-  good_assignment A -> (forall X, mem X B -> mem X A) ->
+  good_assignment A -&gt; (forall X, mem X B -&gt; mem X A) -&gt;
   good_assignment B.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(372);" id="toggleproof372">[Show Proof]</a>
 <div class="proof" id="proof372" style="display: none;">
 <a class="tactic" href="lrat-details.html#372">intros GA Sub.</a> <a class="tactic" href="lrat-details.html#373">unfold.</a> <a class="tactic" href="lrat-details.html#374">intros MLB Neg MNLB.</a> <a class="tactic" href="lrat-details.html#375">GA: case GA.</a>
@@ -794,9 +794,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#379">Extensible_Theorem
   negate_lit_unique : forall L LA LB,
-    IsL : is_lit L ->
-    NegA : negate_lit L LA ->
-    NegB : negate_lit L LB ->
+    IsL : is_lit L -&gt;
+    NegA : negate_lit L LA -&gt;
+    NegB : negate_lit L LB -&gt;
     LA = LB
   on NegA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(380);" id="toggleproof380">[Show Proof]</a>
 <div class="proof" id="proof380" style="display: none;">
@@ -808,8 +808,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#384">Extensible_Theorem
   negate_lit_reverse : forall L NL,
-    IsL : is_lit L ->
-    Neg : negate_lit L NL ->
+    IsL : is_lit L -&gt;
+    Neg : negate_lit L NL -&gt;
     negate_lit NL L
   on Neg.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(385);" id="toggleproof385">[Show Proof]</a>
 <div class="proof" id="proof385" style="display: none;">
@@ -821,16 +821,16 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#387">Extensible_Theorem
   negate_lit_not_same : forall L,
-    IsL : is_lit L ->
-    Neg : negate_lit L L ->
+    IsL : is_lit L -&gt;
+    Neg : negate_lit L L -&gt;
     false
   on Neg.</a>
 
 
 <a class="command" href="lrat-details.html#388">Extensible_Theorem
   negate_lit_is_lit : forall L NL,
-    IsL : is_lit L ->
-    Neg : negate_lit L NL ->
+    IsL : is_lit L -&gt;
+    Neg : negate_lit L NL -&gt;
     is_lit NL
   on Neg.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(389);" id="toggleproof389">[Show Proof]</a>
 <div class="proof" id="proof389" style="display: none;">
@@ -842,8 +842,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#393">Extensible_Theorem
   negate_lit_is_lit_back : forall L NL,
-    IsNL : is_lit NL ->
-    Neg : negate_lit L NL ->
+    IsNL : is_lit NL -&gt;
+    Neg : negate_lit L NL -&gt;
     is_lit L
   on Neg.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(394);" id="toggleproof394">[Show Proof]</a>
 <div class="proof" id="proof394" style="display: none;">
@@ -855,7 +855,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#398">Extensible_Theorem
   negate_lit_exists : forall L,
-    IsL : is_lit L ->
+    IsL : is_lit L -&gt;
     exists NL, negate_lit L NL
   on IsL.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(399);" id="toggleproof399">[Show Proof]</a>
 <div class="proof" id="proof399" style="display: none;">
@@ -867,35 +867,35 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <span class="comment">%Projections are equisatisfiable with their projecting clauses</span>
 <a class="tactic" href="lrat-details.html#401">Projection_Constraint sat_clause_ext_to_proj : forall C C' Sat,
-  |{clause}- C ~~> C' -> is_list is_lit Sat -> is_clause C ->
-  sat_clause Sat C -> sat_clause Sat C'.</a>
+  |{clause}- C ~~&gt; C' -&gt; is_list is_lit Sat -&gt; is_clause C -&gt;
+  sat_clause Sat C -&gt; sat_clause Sat C'.</a>
 <a class="tactic" href="lrat-details.html#402">Projection_Constraint sat_clause_proj_to_ext : forall C C' Sat,
-  |{clause}- C ~~> C' -> is_list is_lit Sat -> is_clause C ->
-  sat_clause Sat C' -> sat_clause Sat C.</a>
+  |{clause}- C ~~&gt; C' -&gt; is_list is_lit Sat -&gt; is_clause C -&gt;
+  sat_clause Sat C' -&gt; sat_clause Sat C.</a>
 <a class="tactic" href="lrat-details.html#403">Projection_Constraint unsat_clause_ext_to_proj : forall C C' Unsat,
-  |{clause}- C ~~> C' -> is_list is_lit Unsat -> is_clause C ->
-  unsat_clause Unsat C -> unsat_clause Unsat C'.</a>
+  |{clause}- C ~~&gt; C' -&gt; is_list is_lit Unsat -&gt; is_clause C -&gt;
+  unsat_clause Unsat C -&gt; unsat_clause Unsat C'.</a>
 <a class="tactic" href="lrat-details.html#404">Projection_Constraint unsat_clause_proj_to_ext : forall C C' Unsat,
-  |{clause}- C ~~> C' -> is_list is_lit Unsat -> is_clause C ->
-  unsat_clause Unsat C' -> unsat_clause Unsat C.</a>
+  |{clause}- C ~~&gt; C' -&gt; is_list is_lit Unsat -&gt; is_clause C -&gt;
+  unsat_clause Unsat C' -&gt; unsat_clause Unsat C.</a>
 
 
 <span class="comment">%Projections are equisatisfiable with their projecting formulas</span>
 <a class="tactic" href="lrat-details.html#405">Projection_Constraint sat_formula_ext_to_proj : forall F F' Sat,
-  |{formula}- F ~~> F' -> is_list is_lit Sat -> sat_formula Sat F ->
+  |{formula}- F ~~&gt; F' -&gt; is_list is_lit Sat -&gt; sat_formula Sat F -&gt;
   sat_formula Sat F'.</a>
 <a class="tactic" href="lrat-details.html#406">Projection_Constraint sat_formula_proj_to_ext : forall F F' Sat,
-  |{formula}- F ~~> F' -> is_list is_lit Sat -> sat_formula Sat F' ->
+  |{formula}- F ~~&gt; F' -&gt; is_list is_lit Sat -&gt; sat_formula Sat F' -&gt;
   sat_formula Sat F.</a></div>
 
 
 <a class="command" href="lrat-details.html#407">Extensible_Theorem
   unsat_sat_clause : forall A C,
-    IsC : is_clause C ->
-    IsA : is_list is_lit A ->
-    UNSAT : unsat_clause A C ->
-    SAT : sat_clause A C ->
-    GA : good_assignment A ->
+    IsC : is_clause C -&gt;
+    IsA : is_list is_lit A -&gt;
+    UNSAT : unsat_clause A C -&gt;
+    SAT : sat_clause A C -&gt;
+    GA : good_assignment A -&gt;
     false
   on UNSAT.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(408);" id="toggleproof408">[Show Proof]</a>
 <div class="proof" id="proof408" style="display: none;">
@@ -911,11 +911,11 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#414">Extensible_Theorem
   sat_clause_orderless : forall A1 A2 C,
-    IsC : is_clause C ->
-    IsA1 : is_list is_lit A1 ->
-    IsA2 : is_list is_lit A2 ->
-    SAT : sat_clause A1 C ->
-    MemA1A2 : (forall L, mem L A1 -> mem L A2) ->
+    IsC : is_clause C -&gt;
+    IsA1 : is_list is_lit A1 -&gt;
+    IsA2 : is_list is_lit A2 -&gt;
+    SAT : sat_clause A1 C -&gt;
+    MemA1A2 : (forall L, mem L A1 -&gt; mem L A2) -&gt;
     sat_clause A2 C
   on SAT.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(415);" id="toggleproof415">[Show Proof]</a>
 <div class="proof" id="proof415" style="display: none;">
@@ -927,11 +927,11 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#420">Extensible_Theorem
   sat_formula_orderless : forall A1 A2 F,
-    IsF : is_formula F ->
-    IsA1 : is_list is_lit A1 ->
-    IsA2 : is_list is_lit A2 ->
-    SAT : sat_formula A1 F ->
-    MemA1A2 : (forall L, mem L A1 -> mem L A2) ->
+    IsF : is_formula F -&gt;
+    IsA1 : is_list is_lit A1 -&gt;
+    IsA2 : is_list is_lit A2 -&gt;
+    SAT : sat_formula A1 F -&gt;
+    MemA1A2 : (forall L, mem L A1 -&gt; mem L A2) -&gt;
     sat_formula A2 F
   on SAT.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(421);" id="toggleproof421">[Show Proof]</a>
 <div class="proof" id="proof421" style="display: none;">
@@ -944,11 +944,11 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#426">Extensible_Theorem
   unsat_clause_orderless : forall A1 A2 C,
-    IsC : is_clause C ->
-    IsA1 : is_list is_lit A1 ->
-    IsA2 : is_list is_lit A2 ->
-    UNSAT : unsat_clause A1 C ->
-    MemA1A2 : (forall L, mem L A1 -> mem L A2) ->
+    IsC : is_clause C -&gt;
+    IsA1 : is_list is_lit A1 -&gt;
+    IsA2 : is_list is_lit A2 -&gt;
+    UNSAT : unsat_clause A1 C -&gt;
+    MemA1A2 : (forall L, mem L A1 -&gt; mem L A2) -&gt;
     unsat_clause A2 C
   on UNSAT.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(427);" id="toggleproof427">[Show Proof]</a>
 <div class="proof" id="proof427" style="display: none;">
@@ -967,9 +967,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
  ********************************************************************/</span>
 <a class="command" href="lrat-details.html#432">Extensible_Theorem
   unit_clause_is : forall A C L,
-    IsC : is_clause C ->
-    IsA : is_list is_lit A ->
-    Unit : unit_clause A C L ->
+    IsC : is_clause C -&gt;
+    IsA : is_list is_lit A -&gt;
+    Unit : unit_clause A C L -&gt;
     is_lit L
   on Unit.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(433);" id="toggleproof433">[Show Proof]</a>
 <div class="proof" id="proof433" style="display: none;">
@@ -981,12 +981,12 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#438">Extensible_Theorem
   unit_clause_unique : forall A B C LA LB,
-    IsC : is_clause C ->
-    IsA : is_list is_lit A ->
-    IsB : is_list is_lit B ->
-    UnitA : unit_clause A C LA ->
-    UnitB : unit_clause B C LB ->
-    Prm : permutation A B ->
+    IsC : is_clause C -&gt;
+    IsA : is_list is_lit A -&gt;
+    IsB : is_list is_lit B -&gt;
+    UnitA : unit_clause A C LA -&gt;
+    UnitB : unit_clause B C LB -&gt;
+    Prm : permutation A B -&gt;
     LA = LB
   on UnitA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(439);" id="toggleproof439">[Show Proof]</a>
 <div class="proof" id="proof439" style="display: none;">
@@ -1011,10 +1011,10 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#456">Extensible_Theorem
   unit_clause_not_assigned : forall A C L,
-    IsC : is_clause C ->
-    IsA : is_list is_lit A ->
-    UC : unit_clause A C L ->
-    Mem : mem L A ->
+    IsC : is_clause C -&gt;
+    IsA : is_list is_lit A -&gt;
+    UC : unit_clause A C L -&gt;
+    Mem : mem L A -&gt;
     false
   on UC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(457);" id="toggleproof457">[Show Proof]</a>
 <div class="proof" id="proof457" style="display: none;">
@@ -1026,11 +1026,11 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#460">Extensible_Theorem
   unit_clause_not_assigned_negate : forall A C L NL,
-    IsC : is_clause C ->
-    IsA : is_list is_lit A ->
-    UC : unit_clause A C L ->
-    Neg : negate_lit L NL ->
-    Mem : mem NL A ->
+    IsC : is_clause C -&gt;
+    IsA : is_list is_lit A -&gt;
+    UC : unit_clause A C L -&gt;
+    Neg : negate_lit L NL -&gt;
+    Mem : mem NL A -&gt;
     false
   on UC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(461);" id="toggleproof461">[Show Proof]</a>
 <div class="proof" id="proof461" style="display: none;">
@@ -1043,14 +1043,14 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#467">Extensible_Theorem
   unit_clause_expand : forall A C L E,
-    IsC : is_clause C ->
-    IsA : is_list is_lit A ->
-    IsE : is_list is_lit E ->
-    UC : unit_clause A C L ->
-    SAT : sat_clause E C ->
-    GA_A : good_assignment A ->
-    GA_E : good_assignment E ->
-    Expand : (forall L, mem L A -> mem L E) ->
+    IsC : is_clause C -&gt;
+    IsA : is_list is_lit A -&gt;
+    IsE : is_list is_lit E -&gt;
+    UC : unit_clause A C L -&gt;
+    SAT : sat_clause E C -&gt;
+    GA_A : good_assignment A -&gt;
+    GA_E : good_assignment E -&gt;
+    Expand : (forall L, mem L A -&gt; mem L E) -&gt;
     mem L E
   on UC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(468);" id="toggleproof468">[Show Proof]</a>
 <div class="proof" id="proof468" style="display: none;">
@@ -1075,11 +1075,11 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#485">Extensible_Theorem
   unit_clause_add : forall A S C L,
-    IsC : is_clause C ->
-    IsA : is_list is_lit A ->
-    IsS : is_list is_lit S ->
-    UC : unit_clause A C L ->
-    Mem : mem L S ->
+    IsC : is_clause C -&gt;
+    IsA : is_list is_lit A -&gt;
+    IsS : is_list is_lit S -&gt;
+    UC : unit_clause A C L -&gt;
+    Mem : mem L S -&gt;
     sat_clause S C
   on UC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(486);" id="toggleproof486">[Show Proof]</a>
 <div class="proof" id="proof486" style="display: none;">
@@ -1090,7 +1090,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#490">Theorem remove_all_no_lookup : forall Known ID KRest,
-  remove_all Known ID KRest -> no_lookup KRest ID.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(491);" id="toggleproof491">[Show Proof]</a>
+  remove_all Known ID KRest -&gt; no_lookup KRest ID.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(491);" id="toggleproof491">[Show Proof]</a>
 <div class="proof" id="proof491" style="display: none;">
 <a class="tactic" href="lrat-details.html#491">induction on 1.</a> <a class="tactic" href="lrat-details.html#492">intros RA.</a> <a class="tactic" href="lrat-details.html#493">RA: case RA.</a>
   <span class="comment">%RA-Nil</span>
@@ -1101,7 +1101,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
    <a class="tactic" href="lrat-details.html#497">apply IH to RA1.</a> <a class="tactic" href="lrat-details.html#498">search.</a></div>
 
 <a class="command" href="lrat-details.html#499">Theorem remove_all_no_mem : forall Known ID KRest C,
-  remove_all Known ID KRest -> mem (ID, C) KRest -> false.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(500);" id="toggleproof500">[Show Proof]</a>
+  remove_all Known ID KRest -&gt; mem (ID, C) KRest -&gt; false.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(500);" id="toggleproof500">[Show Proof]</a>
 <div class="proof" id="proof500" style="display: none;">
 <a class="tactic" href="lrat-details.html#500">induction on 1.</a> <a class="tactic" href="lrat-details.html#501">intros RA M.</a> <a class="tactic" href="lrat-details.html#502">RA: case RA.</a>
   <span class="comment">%RA-Nil</span>
@@ -1116,8 +1116,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
       <a class="tactic" href="lrat-details.html#507">apply IH to RA1 M.</a></div>
 
 <a class="command" href="lrat-details.html#508">Theorem remove_all_still_mem : forall Known ID KRest Other C,
-  remove_all Known ID KRest -> mem (Other, C) Known ->
-  (ID = Other -> false) -> mem (Other, C) KRest.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(509);" id="toggleproof509">[Show Proof]</a>
+  remove_all Known ID KRest -&gt; mem (Other, C) Known -&gt;
+  (ID = Other -&gt; false) -&gt; mem (Other, C) KRest.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(509);" id="toggleproof509">[Show Proof]</a>
 <div class="proof" id="proof509" style="display: none;">
 <a class="tactic" href="lrat-details.html#509">induction on 1.</a> <a class="tactic" href="lrat-details.html#510">intros RA M NEq.</a> <a class="tactic" href="lrat-details.html#511">RA: case RA.</a>
   <span class="comment">%RA-Nil</span>
@@ -1136,7 +1136,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
       <a class="tactic" href="lrat-details.html#519">apply IH to RA1 M NEq.</a> <a class="tactic" href="lrat-details.html#520">search.</a></div>
 
 <a class="command" href="lrat-details.html#521">Theorem remove_all_mem_after : forall Known ID KRest Other C,
-  remove_all Known ID KRest -> mem (Other, C) KRest ->
+  remove_all Known ID KRest -&gt; mem (Other, C) KRest -&gt;
   mem (Other, C) Known.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(522);" id="toggleproof522">[Show Proof]</a>
 <div class="proof" id="proof522" style="display: none;">
 <a class="tactic" href="lrat-details.html#522">induction on 1.</a>  <a class="tactic" href="lrat-details.html#523">intros RA M.</a> <a class="tactic" href="lrat-details.html#524">RA: case RA.</a>
@@ -1152,14 +1152,14 @@ remove_all (A, C)::IRest I (A, C)::Rest
       <a class="tactic" href="lrat-details.html#530">apply IH to RA1 M.</a> <a class="tactic" href="lrat-details.html#531">search.</a></div>
 
 <a class="command" href="lrat-details.html#532">Theorem remove_all_lookup_after : forall Known KRest ID Other C,
-  remove_all Known ID KRest -> lookup KRest Other C ->
+  remove_all Known ID KRest -&gt; lookup KRest Other C -&gt;
   lookup Known Other C.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(533);" id="toggleproof533">[Show Proof]</a>
 <div class="proof" id="proof533" style="display: none;">
 <a class="tactic" href="lrat-details.html#533">induction on 1.</a> <a class="tactic" href="lrat-details.html#534">intros RA Lkp.</a> <a class="tactic" href="lrat-details.html#535">RA: case RA.</a>
   <span class="comment">%RA-Nil</span>
    <a class="tactic" href="lrat-details.html#536">search.</a>
   <span class="comment">%RA-Remove</span>
-   <a class="tactic" href="lrat-details.html#537">assert ID = Other -> false.</a>
+   <a class="tactic" href="lrat-details.html#537">assert ID = Other -&gt; false.</a>
      <a class="tactic" href="lrat-details.html#538">intros E.</a> <a class="tactic" href="lrat-details.html#539">case E.</a> <a class="tactic" href="lrat-details.html#540">M: apply lookup_mem to Lkp.</a>
      <a class="tactic" href="lrat-details.html#541">backchain remove_all_no_mem.</a>
    <a class="tactic" href="lrat-details.html#542">apply IH to RA Lkp.</a> <a class="tactic" href="lrat-details.html#543">search.</a>
@@ -1171,8 +1171,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
       <a class="tactic" href="lrat-details.html#546">apply IH to RA1 Lkp1.</a> <a class="tactic" href="lrat-details.html#547">search.</a></div>
 
 <a class="command" href="lrat-details.html#548">Theorem remove_all_is : forall Known ID KRest,
-  is_list (is_pair is_integer is_clause) Known ->
-  remove_all Known ID KRest ->
+  is_list (is_pair is_integer is_clause) Known -&gt;
+  remove_all Known ID KRest -&gt;
   is_list (is_pair is_integer is_clause) KRest.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(549);" id="toggleproof549">[Show Proof]</a>
 <div class="proof" id="proof549" style="display: none;">
 <a class="tactic" href="lrat-details.html#549">induction on 2.</a> <a class="tactic" href="lrat-details.html#550">intros Is RA.</a> <a class="tactic" href="lrat-details.html#551">RA: case RA.</a>
@@ -1184,7 +1184,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
    <a class="tactic" href="lrat-details.html#556">Is: case Is.</a> <a class="tactic" href="lrat-details.html#557">apply IH to Is1 RA1.</a> <a class="tactic" href="lrat-details.html#558">search.</a></div>
 
 <a class="command" href="lrat-details.html#559">Theorem is_remove_all_exists : forall Known ID,
-  is_list (is_pair is_integer is_clause) Known -> is_integer ID ->
+  is_list (is_pair is_integer is_clause) Known -&gt; is_integer ID -&gt;
   exists KRest, remove_all Known ID KRest.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(560);" id="toggleproof560">[Show Proof]</a>
 <div class="proof" id="proof560" style="display: none;">
 <a class="tactic" href="lrat-details.html#560">induction on 1.</a> <a class="tactic" href="lrat-details.html#561">intros IsKnown IsID.</a> <a class="tactic" href="lrat-details.html#562">Is: case IsKnown.</a>
@@ -1199,8 +1199,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
       <a class="tactic" href="lrat-details.html#569">search.</a></div>
 
 <a class="command" href="lrat-details.html#570">Theorem remove_all_counts : forall Known ID KRest IDC N,
-  remove_all Known ID KRest -> count IDC Known N ->
-  ((exists C, IDC = (ID, C)) -> false) -> count IDC KRest N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(571);" id="toggleproof571">[Show Proof]</a>
+  remove_all Known ID KRest -&gt; count IDC Known N -&gt;
+  ((exists C, IDC = (ID, C)) -&gt; false) -&gt; count IDC KRest N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(571);" id="toggleproof571">[Show Proof]</a>
 <div class="proof" id="proof571" style="display: none;">
 <a class="tactic" href="lrat-details.html#571">induction on 1.</a> <a class="tactic" href="lrat-details.html#572">intros RA C NEq.</a> <a class="tactic" href="lrat-details.html#573">RA: case RA.</a>
   <span class="comment">%RA-Nil</span>
@@ -1219,8 +1219,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
       <a class="tactic" href="lrat-details.html#583">apply IH to RA1 C1 _.</a> <a class="tactic" href="lrat-details.html#584">search.</a></div>
 
 <a class="command" href="lrat-details.html#585">Theorem remove_all_permutation : forall Known ID KRest P,
-  is_list (is_pair is_integer is_clause) Known -> is_integer ID ->
-  remove_all Known ID KRest -> permutation Known P ->
+  is_list (is_pair is_integer is_clause) Known -&gt; is_integer ID -&gt;
+  remove_all Known ID KRest -&gt; permutation Known P -&gt;
   exists P', remove_all P ID P' /\ permutation KRest P'.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(586);" id="toggleproof586">[Show Proof]</a>
 <div class="proof" id="proof586" style="display: none;">
 <a class="tactic" href="lrat-details.html#586">intros IsKnown IsID RA Prm.</a> <a class="tactic" href="lrat-details.html#587">Prm': apply permutation_symmetric to Prm.</a>
@@ -1229,26 +1229,26 @@ remove_all (A, C)::IRest I (A, C)::Rest
 <a class="tactic" href="lrat-details.html#590">IsKRest: apply remove_all_is to IsKnown RA.</a>
 <a class="tactic" href="lrat-details.html#591">IsKRest1: apply remove_all_is to IsP RAP.</a>
 <a class="tactic" href="lrat-details.html#592">assert  forall X NL NP,
-          is_pair is_integer is_clause X ->
-          count X KRest NL -> count X KRest1 NP -> NL = NP.</a>
+          is_pair is_integer is_clause X -&gt;
+          count X KRest NL -&gt; count X KRest1 NP -&gt; NL = NP.</a>
   <a class="tactic" href="lrat-details.html#593">intros IsX CKRest CKRest1.</a> <a class="tactic" href="lrat-details.html#594">Is: case IsX (keep).</a>
   <a class="tactic" href="lrat-details.html#595">Or: apply is_integer_eq_or_not to Is IsID.</a> <a class="tactic" href="lrat-details.html#596">E: case Or.</a>
     <span class="comment">%A = ID</span>
      <a class="tactic" href="lrat-details.html#597">GEq: apply count_geq_0 to CKRest.</a>
      <a class="tactic" href="lrat-details.html#598">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="lrat-details.html#599">L: case Or.</a>
-       <span class="comment">%NL > 0</span>
+       <span class="comment">%NL &gt; 0</span>
         <a class="tactic" href="lrat-details.html#600">M: apply count_mem to CKRest L.</a>
         <a class="tactic" href="lrat-details.html#601">apply remove_all_no_mem to RA M.</a>
        <span class="comment">%NL = 0</span>
         <a class="tactic" href="lrat-details.html#602">clear GEq.</a> <a class="tactic" href="lrat-details.html#603">GEq: apply count_geq_0 to CKRest1.</a>
         <a class="tactic" href="lrat-details.html#604">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="lrat-details.html#605">L: case Or.</a>
-          <span class="comment">%NP > 0</span>
+          <span class="comment">%NP &gt; 0</span>
            <a class="tactic" href="lrat-details.html#606">M: apply count_mem to CKRest1 L.</a>
            <a class="tactic" href="lrat-details.html#607">apply remove_all_no_mem to RAP M.</a>
           <span class="comment">%NP = 0</span>
            <a class="tactic" href="lrat-details.html#608">search.</a>
     <span class="comment">%A != ID</span>
-     <a class="tactic" href="lrat-details.html#609">assert (exists C, (A, B) = (ID, C)) -> false.</a>
+     <a class="tactic" href="lrat-details.html#609">assert (exists C, (A, B) = (ID, C)) -&gt; false.</a>
        <a class="tactic" href="lrat-details.html#610">intros Ex.</a> <a class="tactic" href="lrat-details.html#611">case Ex.</a> <a class="tactic" href="lrat-details.html#612">backchain E.</a>
      <a class="tactic" href="lrat-details.html#613">CKnown: apply is_count_exists to IsKnown IsX.</a>
      <a class="tactic" href="lrat-details.html#614">CKRest': apply remove_all_counts to RA CKnown _.</a>
@@ -1261,21 +1261,21 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <span class="comment">%a good clause list contains at most one binding for each ID</span>
-<a class="command" href="lrat-details.html#623">Define good_clause_list : list (pair integer clause) -> prop by
+<a class="command" href="lrat-details.html#623">Define good_clause_list : list (pair integer clause) -&gt; prop by
   good_clause_list Known :=
     forall ID C1 KRest C2,
-       select (ID, C1) KRest Known -> mem (ID, C2) KRest -> false.</a>
+       select (ID, C1) KRest Known -&gt; mem (ID, C2) KRest -&gt; false.</a>
 
 
 <a class="command" href="lrat-details.html#624">Theorem good_clause_list_drop : forall L IDC,
-  good_clause_list ((IDC)::L) -> good_clause_list L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(625);" id="toggleproof625">[Show Proof]</a>
+  good_clause_list ((IDC)::L) -&gt; good_clause_list L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(625);" id="toggleproof625">[Show Proof]</a>
 <div class="proof" id="proof625" style="display: none;">
 <a class="tactic" href="lrat-details.html#625">intros GCL.</a> <a class="tactic" href="lrat-details.html#626">GCL: case GCL.</a> <a class="tactic" href="lrat-details.html#627">unfold.</a> <a class="tactic" href="lrat-details.html#628">intros S M.</a>
 <a class="tactic" href="lrat-details.html#629">backchain GCL with ID = ID, C1 = C1.</a></div>
 
 
 <a class="command" href="lrat-details.html#630">Theorem good_clause_list_select : forall L Rest ID C,
-  good_clause_list L -> select (ID, C) Rest L ->
+  good_clause_list L -&gt; select (ID, C) Rest L -&gt;
   good_clause_list Rest.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(631);" id="toggleproof631">[Show Proof]</a>
 <div class="proof" id="proof631" style="display: none;">
 <a class="tactic" href="lrat-details.html#631">induction on 2.</a> <a class="tactic" href="lrat-details.html#632">intros GCL S.</a> <a class="tactic" href="lrat-details.html#633">S: case S.</a>
@@ -1298,7 +1298,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#651">Theorem good_clause_list_remove_all : forall Known ID KRest,
-  good_clause_list Known -> remove_all Known ID KRest ->
+  good_clause_list Known -&gt; remove_all Known ID KRest -&gt;
   good_clause_list KRest.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(652);" id="toggleproof652">[Show Proof]</a>
 <div class="proof" id="proof652" style="display: none;">
 <a class="tactic" href="lrat-details.html#652">induction on 2.</a> <a class="tactic" href="lrat-details.html#653">intros GCL RA.</a> <a class="tactic" href="lrat-details.html#654">RA: case RA.</a>
@@ -1323,8 +1323,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#674">Theorem good_clause_list_add : forall Known ID C,
-  good_clause_list Known ->
-  ((exists C', mem (ID, C') Known) -> false) ->
+  good_clause_list Known -&gt;
+  ((exists C', mem (ID, C') Known) -&gt; false) -&gt;
   good_clause_list ((ID, C)::Known).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(675);" id="toggleproof675">[Show Proof]</a>
 <div class="proof" id="proof675" style="display: none;">
 <a class="tactic" href="lrat-details.html#675">intros GCL NMem.</a> <a class="tactic" href="lrat-details.html#676">unfold.</a> <a class="tactic" href="lrat-details.html#677">intros S M.</a> <a class="tactic" href="lrat-details.html#678">S: case S.</a>
@@ -1339,7 +1339,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#685">Theorem good_clause_list_remove_all_add : forall Known ID KRest C,
-  good_clause_list Known -> remove_all Known ID KRest ->
+  good_clause_list Known -&gt; remove_all Known ID KRest -&gt;
   good_clause_list ((ID, C)::KRest).</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(686);" id="toggleproof686">[Show Proof]</a>
 <div class="proof" id="proof686" style="display: none;">
 <a class="tactic" href="lrat-details.html#686">intros GCL RA.</a> <a class="tactic" href="lrat-details.html#687">apply good_clause_list_remove_all to GCL RA.</a>
@@ -1348,8 +1348,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#692">Theorem permutation_good_clause_list : forall L P,
-  is_list (is_pair is_integer is_clause) P ->
-  permutation L P -> good_clause_list L -> good_clause_list P.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(693);" id="toggleproof693">[Show Proof]</a>
+  is_list (is_pair is_integer is_clause) P -&gt;
+  permutation L P -&gt; good_clause_list L -&gt; good_clause_list P.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(693);" id="toggleproof693">[Show Proof]</a>
 <div class="proof" id="proof693" style="display: none;">
 <a class="tactic" href="lrat-details.html#693">intros IsP Prm GCL.</a> <a class="tactic" href="lrat-details.html#694">unfold.</a> <a class="tactic" href="lrat-details.html#695">intros S MK.</a> <a class="tactic" href="lrat-details.html#696">MS: apply select_mem to S.</a>
 <a class="tactic" href="lrat-details.html#697">Prm': apply permutation_symmetric to Prm.</a>
@@ -1360,7 +1360,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#705">Theorem good_clause_list_mems : forall L X CA CB,
-  good_clause_list L -> mem (X, CA) L -> mem (X, CB) L -> CA = CB.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(706);" id="toggleproof706">[Show Proof]</a>
+  good_clause_list L -&gt; mem (X, CA) L -&gt; mem (X, CB) L -&gt; CA = CB.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(706);" id="toggleproof706">[Show Proof]</a>
 <div class="proof" id="proof706" style="display: none;">
 <a class="tactic" href="lrat-details.html#706">induction on 2.</a> <a class="tactic" href="lrat-details.html#707">intros GCL MA MB.</a> <a class="tactic" href="lrat-details.html#708">MA: case MA.</a>
   <span class="comment">%MA by Mem-Here</span>
@@ -1379,7 +1379,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#719">Theorem rupProof_help_all_mem : forall Known A Proof ID,
-  rupProof_help Known A Proof -> mem ID Proof ->
+  rupProof_help Known A Proof -&gt; mem ID Proof -&gt;
   exists C, lookup Known ID C.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(720);" id="toggleproof720">[Show Proof]</a>
 <div class="proof" id="proof720" style="display: none;">
 <a class="tactic" href="lrat-details.html#720">induction on 1.</a> <a class="tactic" href="lrat-details.html#721">intros RUP Mem.</a> <a class="tactic" href="lrat-details.html#722">RUP: case RUP.</a>
@@ -1394,8 +1394,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#730">Theorem rupProof_help_is : forall Known A Proof,
-  rupProof_help Known A Proof ->
-  is_list (is_pair is_integer is_clause) Known ->
+  rupProof_help Known A Proof -&gt;
+  is_list (is_pair is_integer is_clause) Known -&gt;
   is_list is_integer Proof.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(731);" id="toggleproof731">[Show Proof]</a>
 <div class="proof" id="proof731" style="display: none;">
 <a class="tactic" href="lrat-details.html#731">induction on 1.</a> <a class="tactic" href="lrat-details.html#732">intros RUP IsK.</a> <a class="tactic" href="lrat-details.html#733">RUP: case RUP.</a>
@@ -1406,16 +1406,16 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#739">Theorem rupProof_help_unsat : forall Known A Sat Proof,
-  is_list (is_pair is_integer is_clause) Known ->
-  is_list is_lit A -> is_list is_lit Sat ->
+  is_list (is_pair is_integer is_clause) Known -&gt;
+  is_list is_lit A -&gt; is_list is_lit Sat -&gt;
   <span class="comment">%Having both rup_help (a successful proof line)</span>
-  rupProof_help Known A Proof ->
+  rupProof_help Known A Proof -&gt;
   <span class="comment">%and a superset satisfying assignment</span>
-  (forall (L : lit), mem L A -> mem L Sat) ->
+  (forall (L : lit), mem L A -&gt; mem L Sat) -&gt;
   (forall (InID : integer) (InC : clause),
-      lookup Known InID InC -> sat_clause Sat InC) ->
+      lookup Known InID InC -&gt; sat_clause Sat InC) -&gt;
   <span class="comment">%that is a good assignment</span>
-  good_assignment A -> good_assignment Sat ->
+  good_assignment A -&gt; good_assignment Sat -&gt;
   <span class="comment">%is impossible</span>
   false.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(740);" id="toggleproof740">[Show Proof]</a>
 <div class="proof" id="proof740" style="display: none;">
@@ -1430,7 +1430,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
    <a class="tactic" href="lrat-details.html#748">Sat: apply Sat to RUP.</a> <a class="tactic" href="lrat-details.html#749">M: apply lookup_mem to RUP.</a>
    <a class="tactic" href="lrat-details.html#750">Is: apply mem_is to _ M.</a>
    <a class="tactic" href="lrat-details.html#751">MemL: apply unit_clause_expand to _ _ _ RUP1 _ GA_A GA_Sat Expand.</a>
-   <a class="tactic" href="lrat-details.html#752">MemImp: assert (forall (X : lit), mem X (L::A) -> mem X Sat).</a>
+   <a class="tactic" href="lrat-details.html#752">MemImp: assert (forall (X : lit), mem X (L::A) -&gt; mem X Sat).</a>
      <a class="tactic" href="lrat-details.html#753">intros Mem.</a> <a class="tactic" href="lrat-details.html#754">Mem: case Mem.</a>
        <span class="comment">%Mem-Here</span>
         <a class="tactic" href="lrat-details.html#755">search.</a>
@@ -1457,10 +1457,10 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#771">Theorem rupProof_help_orderless : forall K1 K2 A Prf,
-  is_list (is_pair is_integer is_clause) K1 ->
-  is_list (is_pair is_integer is_clause) K2 -> good_clause_list K2 ->
-  rupProof_help K1 A Prf ->
-  (forall ID C, mem (ID, C) K1 -> mem (ID, C) K2) ->
+  is_list (is_pair is_integer is_clause) K1 -&gt;
+  is_list (is_pair is_integer is_clause) K2 -&gt; good_clause_list K2 -&gt;
+  rupProof_help K1 A Prf -&gt;
+  (forall ID C, mem (ID, C) K1 -&gt; mem (ID, C) K2) -&gt;
   rupProof_help K2 A Prf.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(772);" id="toggleproof772">[Show Proof]</a>
 <div class="proof" id="proof772" style="display: none;">
 <a class="tactic" href="lrat-details.html#772">induction on 4.</a> <a class="tactic" href="lrat-details.html#773">intros IsK1 IsK2 GCL2 RUPPH MemK1K2.</a>
@@ -1479,8 +1479,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#790">Extensible_Theorem
   gatherLits_is : forall C L,
-    IsC : is_clause C ->
-    GL : gatherLits C L ->
+    IsC : is_clause C -&gt;
+    GL : gatherLits C L -&gt;
     is_list is_lit L
   on GL.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(791);" id="toggleproof791">[Show Proof]</a>
 <div class="proof" id="proof791" style="display: none;">
@@ -1492,7 +1492,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#795">Extensible_Theorem
   gatherLits_exists : forall C,
-    IsC : is_clause C ->
+    IsC : is_clause C -&gt;
     exists L, gatherLits C L
   on IsC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(796);" id="toggleproof796">[Show Proof]</a>
 <div class="proof" id="proof796" style="display: none;">
@@ -1504,9 +1504,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#799">Extensible_Theorem
   gatherLits_permutation : forall C L1 L2,
-    IsC : is_clause C ->
-    GL1 : gatherLits C L1 ->
-    GL2 : gatherLits C L2 ->
+    IsC : is_clause C -&gt;
+    GL1 : gatherLits C L1 -&gt;
+    GL2 : gatherLits C L2 -&gt;
     permutation L1 L2
   on GL1.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(800);" id="toggleproof800">[Show Proof]</a>
 <div class="proof" id="proof800" style="display: none;">
@@ -1517,22 +1517,22 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="tactic" href="lrat-details.html#806">Projection_Constraint proj_gatherLits : forall C C' L,
-  |{clause}- C ~~> C' -> is_clause C -> gatherLits C L ->
+  |{clause}- C ~~&gt; C' -&gt; is_clause C -&gt; gatherLits C L -&gt;
   exists L', gatherLits C' L'.</a>
 
 
 <a class="tactic" href="lrat-details.html#807">Projection_Constraint proj_gatherLits_permutation :
   forall C C' L L',
-    |{clause}- C ~~> C' -> is_clause C -> gatherLits C L ->
-    gatherLits C' L' -> permutation L L'.</a></div>
+    |{clause}- C ~~&gt; C' -&gt; is_clause C -&gt; gatherLits C L -&gt;
+    gatherLits C' L' -&gt; permutation L L'.</a></div>
 
 
 <a class="command" href="lrat-details.html#808">Extensible_Theorem
   gatherLits_sat : forall C Lits Sat,
-    IsC : is_clause C ->
-    IsSat : is_list is_lit Sat ->
-    GL : gatherLits C Lits ->
-    Sat : sat_clause Sat C ->
+    IsC : is_clause C -&gt;
+    IsSat : is_list is_lit Sat -&gt;
+    GL : gatherLits C Lits -&gt;
+    Sat : sat_clause Sat C -&gt;
     exists L, mem L Lits /\ mem L Sat
   on Sat.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(809);" id="toggleproof809">[Show Proof]</a>
 <div class="proof" id="proof809" style="display: none;">
@@ -1544,11 +1544,11 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#815">Extensible_Theorem
   gatherLits_mem_sat : forall C Lits Sat L,
-    IsC : is_clause C ->
-    IsSat : is_list is_lit Sat ->
-    GL : gatherLits C Lits ->
-    MemLits : mem L Lits ->
-    MemSat : mem L Sat ->
+    IsC : is_clause C -&gt;
+    IsSat : is_list is_lit Sat -&gt;
+    GL : gatherLits C Lits -&gt;
+    MemLits : mem L Lits -&gt;
+    MemSat : mem L Sat -&gt;
     sat_clause Sat C
   on GL.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(816);" id="toggleproof816">[Show Proof]</a>
 <div class="proof" id="proof816" style="display: none;">
@@ -1564,13 +1564,13 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#822">Extensible_Theorem
   gatherLits_unsat : forall C Lits Unsat L,
-    GA : good_assignment Unsat ->
-    IsC : is_clause C ->
-    IsUnsat : is_list is_lit Unsat ->
-    GL : gatherLits C Lits ->
-    Unsat : unsat_clause Unsat C ->
-    MemLits : mem L Lits ->
-    MemUnsat : mem L Unsat ->
+    GA : good_assignment Unsat -&gt;
+    IsC : is_clause C -&gt;
+    IsUnsat : is_list is_lit Unsat -&gt;
+    GL : gatherLits C Lits -&gt;
+    Unsat : unsat_clause Unsat C -&gt;
+    MemLits : mem L Lits -&gt;
+    MemUnsat : mem L Unsat -&gt;
     false
   on Unsat.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(823);" id="toggleproof823">[Show Proof]</a>
 <div class="proof" id="proof823" style="display: none;">
@@ -1585,7 +1585,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#831">Theorem negateLitList_is : forall L NL,
-  is_list is_lit L -> negateLitList L NL -> is_list is_lit NL.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(832);" id="toggleproof832">[Show Proof]</a>
+  is_list is_lit L -&gt; negateLitList L NL -&gt; is_list is_lit NL.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(832);" id="toggleproof832">[Show Proof]</a>
 <div class="proof" id="proof832" style="display: none;">
 <a class="tactic" href="lrat-details.html#832">induction on 2.</a> <a class="tactic" href="lrat-details.html#833">intros IsL NLL.</a> <a class="tactic" href="lrat-details.html#834">NLL: case NLL.</a>
   <span class="comment">%NLL-Nil</span>
@@ -1596,7 +1596,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#840">Theorem negateLitList_exists : forall L,
-  is_list is_lit L -> exists NL, negateLitList L NL.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(841);" id="toggleproof841">[Show Proof]</a>
+  is_list is_lit L -&gt; exists NL, negateLitList L NL.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(841);" id="toggleproof841">[Show Proof]</a>
 <div class="proof" id="proof841" style="display: none;">
 <a class="tactic" href="lrat-details.html#841">induction on 1.</a> <a class="tactic" href="lrat-details.html#842">intros IsL.</a> <a class="tactic" href="lrat-details.html#843">Is: case IsL.</a>
   <span class="comment">%NLL-Nil</span>
@@ -1606,8 +1606,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#848">Theorem negateLitList_mem_negate_before : forall X NL L NX,
-   is_list is_lit NL -> mem X NL -> negateLitList L NL ->
-   negate_lit X NX -> mem NX L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(849);" id="toggleproof849">[Show Proof]</a>
+   is_list is_lit NL -&gt; mem X NL -&gt; negateLitList L NL -&gt;
+   negate_lit X NX -&gt; mem NX L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(849);" id="toggleproof849">[Show Proof]</a>
 <div class="proof" id="proof849" style="display: none;">
 <a class="tactic" href="lrat-details.html#849">induction on 2.</a> <a class="tactic" href="lrat-details.html#850">intros IsNL Mem NLL Neg.</a> <a class="tactic" href="lrat-details.html#851">Mem: case Mem.</a>
   <span class="comment">%Mem-Here</span>
@@ -1621,9 +1621,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#862">Extensible_Theorem
   negate_lits_unsat : forall C L NL,
-    IsC : is_clause C ->
-    GL : gatherLits C L ->
-    NLL : negateLitList L NL ->
+    IsC : is_clause C -&gt;
+    GL : gatherLits C L -&gt;
+    NLL : negateLitList L NL -&gt;
     unsat_clause NL C
   on GL.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(863);" id="toggleproof863">[Show Proof]</a>
 <div class="proof" id="proof863" style="display: none;">
@@ -1637,7 +1637,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#872">Theorem rupProof_all_mem : forall Known C Proof ID,
-  rupProof Known C Proof -> mem ID Proof ->
+  rupProof Known C Proof -&gt; mem ID Proof -&gt;
   exists C', lookup Known ID C'.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(873);" id="toggleproof873">[Show Proof]</a>
 <div class="proof" id="proof873" style="display: none;">
 <a class="tactic" href="lrat-details.html#873">intros RUP Mem.</a> <a class="tactic" href="lrat-details.html#874">RUP: case RUP.</a>
@@ -1645,8 +1645,8 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#877">Theorem rupProof_is : forall Known C Proof,
-  rupProof Known C Proof ->
-  is_list (is_pair is_integer is_clause) Known ->
+  rupProof Known C Proof -&gt;
+  is_list (is_pair is_integer is_clause) Known -&gt;
   is_list is_integer Proof.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(878);" id="toggleproof878">[Show Proof]</a>
 <div class="proof" id="proof878" style="display: none;">
 <a class="tactic" href="lrat-details.html#878">intros RUP IsK.</a> <a class="tactic" href="lrat-details.html#879">RUP: case RUP.</a> <a class="tactic" href="lrat-details.html#880">apply rupProof_help_is to RUP2 IsK.</a>
@@ -1654,22 +1654,22 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#882">Theorem rupProof_maintains_sat : forall Known C Prf Sat,
-  is_list (is_pair is_integer is_clause) Known ->
-  is_list is_lit Sat ->
-  rupProof Known C Prf ->
-  (forall ID InC, lookup Known ID InC -> sat_clause Sat InC) ->
-  is_clause C -> is_list is_lit Sat -> good_assignment Sat ->
+  is_list (is_pair is_integer is_clause) Known -&gt;
+  is_list is_lit Sat -&gt;
+  rupProof Known C Prf -&gt;
+  (forall ID InC, lookup Known ID InC -&gt; sat_clause Sat InC) -&gt;
+  is_clause C -&gt; is_list is_lit Sat -&gt; good_assignment Sat -&gt;
   exists S, is_list is_lit S /\ good_assignment S /\
-            (forall L, mem L Sat -> mem L S) /\ sat_clause S C.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(883);" id="toggleproof883">[Show Proof]</a>
+            (forall L, mem L Sat -&gt; mem L S) /\ sat_clause S C.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(883);" id="toggleproof883">[Show Proof]</a>
 <div class="proof" id="proof883" style="display: none;">
 <a class="tactic" href="lrat-details.html#883">intros IsKnown IsSat RUP Sat IsC IsSat GA_Sat.</a> <a class="tactic" href="lrat-details.html#884">RUP: case RUP.</a>
 <a class="tactic" href="lrat-details.html#885">IsLits: apply gatherLits_is to IsC RUP.</a>
 <a class="tactic" href="lrat-details.html#886">IsA: apply negateLitList_is to IsLits RUP1.</a>
 <a class="tactic" href="lrat-details.html#887">Or: apply is_list_lit_subset_or_not to IsA IsSat.</a> <a class="tactic" href="lrat-details.html#888">Sub: case Or.</a>
-  <span class="comment">%forall X, mem X A -> mem X Sat</span>
+  <span class="comment">%forall X, mem X A -&gt; mem X Sat</span>
    <a class="tactic" href="lrat-details.html#889">apply good_assignment_sub to GA_Sat Sub.</a>
    <a class="tactic" href="lrat-details.html#890">apply rupProof_help_unsat to _ _ _ RUP2 Sub Sat _ GA_Sat.</a>
-  <span class="comment">%exists X, mem X A /\ (mem X Sat -> false)</span>
+  <span class="comment">%exists X, mem X A /\ (mem X Sat -&gt; false)</span>
    <a class="tactic" href="lrat-details.html#891">IsX: apply mem_is_lit to _ Sub.</a>
    <a class="tactic" href="lrat-details.html#892">Neg: apply negate_lit_exists to IsX.</a>
    <a class="tactic" href="lrat-details.html#893">IsNX: apply negate_lit_is_lit to IsX Neg.</a>
@@ -1680,13 +1680,13 @@ remove_all (A, C)::IRest I (A, C)::Rest
          <a class="tactic" href="lrat-details.html#898">search.</a>
         <span class="comment">%good_assignment Sat</span>
          <a class="tactic" href="lrat-details.html#899">search.</a>
-        <span class="comment">%forall L, mem L Sat -> mem L Sat</span>
+        <span class="comment">%forall L, mem L Sat -&gt; mem L Sat</span>
          <a class="tactic" href="lrat-details.html#900">search.</a>
         <span class="comment">%sat_clause Sat C</span>
          <a class="tactic" href="lrat-details.html#901">NegNLX: apply negate_lit_reverse to _ Neg.</a>
          <a class="tactic" href="lrat-details.html#902">apply negateLitList_mem_negate_before to _ Sub RUP1 _.</a>
          <a class="tactic" href="lrat-details.html#903">apply gatherLits_mem_sat to _ _ RUP _ MemNXSat.</a> <a class="tactic" href="lrat-details.html#904">search.</a>
-     <span class="comment">%mem NX Sat -> false</span>
+     <span class="comment">%mem NX Sat -&gt; false</span>
       <a class="tactic" href="lrat-details.html#905">exists NL::Sat.</a> <a class="tactic" href="lrat-details.html#906">split.</a>
         <span class="comment">%is_list is_lit (NX::Sat)</span>
          <a class="tactic" href="lrat-details.html#907">search.</a>
@@ -1709,7 +1709,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
                <a class="tactic" href="lrat-details.html#921">apply Sub1 to ML.</a>
               <span class="comment">%mem NL Sat</span>
                <a class="tactic" href="lrat-details.html#922">GA: case GA_Sat.</a> <a class="tactic" href="lrat-details.html#923">apply GA to ML NegL MNL.</a>
-        <span class="comment">%forall L, mem L Sat -> mem L (NX::Sat)</span>
+        <span class="comment">%forall L, mem L Sat -&gt; mem L (NX::Sat)</span>
          <a class="tactic" href="lrat-details.html#924">search.</a>
         <span class="comment">%sat_clause (NX::Sat) C</span>
          <a class="tactic" href="lrat-details.html#925">apply negateLitList_mem_negate_before to _ Sub RUP1 _.</a>
@@ -1718,10 +1718,10 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#928">Theorem rupProof_orderless : forall K1 K2 C Prf,
-  is_list (is_pair is_integer is_clause) K1 ->
-  is_list (is_pair is_integer is_clause) K2 ->
-  good_clause_list K2 -> rupProof K1 C Prf ->
-  (forall ID C', mem (ID, C') K1 -> mem (ID, C') K2) ->
+  is_list (is_pair is_integer is_clause) K1 -&gt;
+  is_list (is_pair is_integer is_clause) K2 -&gt;
+  good_clause_list K2 -&gt; rupProof K1 C Prf -&gt;
+  (forall ID C', mem (ID, C') K1 -&gt; mem (ID, C') K2) -&gt;
   rupProof K2 C Prf.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(929);" id="toggleproof929">[Show Proof]</a>
 <div class="proof" id="proof929" style="display: none;">
 <a class="tactic" href="lrat-details.html#929">intros IsK1 IsK2 GCL RUP MemK1K2.</a> <a class="tactic" href="lrat-details.html#930">RUP: case RUP.</a>
@@ -1729,13 +1729,13 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#933">Theorem rupProof_permutation : forall K1 K2 C Prf,
-  is_list (is_pair is_integer is_clause) K1 ->
-  is_list (is_pair is_integer is_clause) K2 ->
-  good_clause_list K2 -> rupProof K1 C Prf -> permutation K1 K2 ->
+  is_list (is_pair is_integer is_clause) K1 -&gt;
+  is_list (is_pair is_integer is_clause) K2 -&gt;
+  good_clause_list K2 -&gt; rupProof K1 C Prf -&gt; permutation K1 K2 -&gt;
   rupProof K2 C Prf.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(934);" id="toggleproof934">[Show Proof]</a>
 <div class="proof" id="proof934" style="display: none;">
 <a class="tactic" href="lrat-details.html#934">intros IsK1 IsK2 GCL RUP Prm.</a>
-<a class="tactic" href="lrat-details.html#935">MemBoth: assert forall ID C', mem (ID, C') K1 -> mem (ID, C') K2.</a>
+<a class="tactic" href="lrat-details.html#935">MemBoth: assert forall ID C', mem (ID, C') K1 -&gt; mem (ID, C') K2.</a>
   <a class="tactic" href="lrat-details.html#936">intros M.</a> <a class="tactic" href="lrat-details.html#937">apply permutation_mem to Prm M.</a> <a class="tactic" href="lrat-details.html#938">search.</a>
 <a class="tactic" href="lrat-details.html#939">apply rupProof_orderless to IsK1 IsK2 GCL RUP MemBoth.</a> <a class="tactic" href="lrat-details.html#940">search.</a>
 
@@ -1752,17 +1752,17 @@ remove_all (A, C)::IRest I (A, C)::Rest
  hint needs to be the same
 */</span>
 <a class="tactic" href="lrat-details.html#941">Projection_Constraint proj_proof_is : forall Known P PT,
-  Proj : Known |{proof}- P ~~> PT ->
-  IsP : is_proof P ->
-  IsKnown : is_list (is_pair is_integer is_clause) Known ->
+  Proj : Known |{proof}- P ~~&gt; PT -&gt;
+  IsP : is_proof P -&gt;
+  IsKnown : is_list (is_pair is_integer is_clause) Known -&gt;
   is_proof PT.</a></div>
 
 
 <span class="comment">%lemma for the next theorem</span>
 <a class="command" href="lrat-details.html#942">Theorem sat_lemma : forall ID C Known KRest S,
-  (forall CID InC, lookup ((ID, C)::Known) CID InC -> sat_clause S InC) ->
-  remove_all Known ID KRest ->
-  forall CID InC, lookup ((ID, C)::KRest) CID InC -> sat_clause S InC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(943);" id="toggleproof943">[Show Proof]</a>
+  (forall CID InC, lookup ((ID, C)::Known) CID InC -&gt; sat_clause S InC) -&gt;
+  remove_all Known ID KRest -&gt;
+  forall CID InC, lookup ((ID, C)::KRest) CID InC -&gt; sat_clause S InC.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(943);" id="toggleproof943">[Show Proof]</a>
 <div class="proof" id="proof943" style="display: none;">
 <a class="tactic" href="lrat-details.html#943">intros AllSat RA Lkp.</a> <a class="tactic" href="lrat-details.html#944">Lkp: case Lkp.</a>
   <span class="comment">%Lkp-Here</span>
@@ -1773,30 +1773,30 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#948">Extensible_Theorem
   check_proof_correct : forall Known P Sat,
-    IsP : is_proof P ->
-    IsSat : is_list is_lit Sat ->
-    GA_Sat : good_assignment Sat ->
-    GCL : good_clause_list Known ->
-    IsKnown : is_list (is_pair is_integer is_clause) Known ->
+    IsP : is_proof P -&gt;
+    IsSat : is_list is_lit Sat -&gt;
+    GA_Sat : good_assignment Sat -&gt;
+    GCL : good_clause_list Known -&gt;
+    IsKnown : is_list (is_pair is_integer is_clause) Known -&gt;
     <span class="comment">%The unsat proof checks out</span>
-    CP : checkProof Known P ->
+    CP : checkProof Known P -&gt;
     <span class="comment">%and there is a satisfying assignment for the existing clauses---</span>
-    Sat : (forall CID C, lookup Known CID C -> sat_clause Sat C) ->
+    Sat : (forall CID C, lookup Known CID C -&gt; sat_clause Sat C) -&gt;
     <span class="comment">%this is impossible</span>
     false
   on CP.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(949);" id="toggleproof949">[Show Proof]</a>
 <div class="proof" id="proof949" style="display: none;">
 <span class="comment">%CP-EmptyLrat</span>
  <a class="tactic" href="lrat-details.html#949">assert good_assignment [].</a> <a class="tactic" href="lrat-details.html#950">unfold.</a> <a class="tactic" href="lrat-details.html#951">intros M.</a> <a class="tactic" href="lrat-details.html#952">case M.</a>
- <a class="tactic" href="lrat-details.html#953">assert forall L, mem L [] -> mem L Sat.</a> <a class="tactic" href="lrat-details.html#954">intros M.</a> <a class="tactic" href="lrat-details.html#955">case M.</a>
+ <a class="tactic" href="lrat-details.html#953">assert forall L, mem L [] -&gt; mem L Sat.</a> <a class="tactic" href="lrat-details.html#954">intros M.</a> <a class="tactic" href="lrat-details.html#955">case M.</a>
  <a class="tactic" href="lrat-details.html#956">S: apply rupProof_maintains_sat to _ _ CP1 Sat _ IsSat GA_Sat.</a>
  <a class="tactic" href="lrat-details.html#957">case S3.</a>
 <span class="comment">%CP-AddLrup</span>
  <a class="tactic" href="lrat-details.html#958">GA_Empty: assert good_assignment [].</a> <a class="tactic" href="lrat-details.html#959">unfold.</a> <a class="tactic" href="lrat-details.html#960">intros M.</a> <a class="tactic" href="lrat-details.html#961">case M.</a>
- <a class="tactic" href="lrat-details.html#962">ExpandEmpty: assert forall L, mem L [] -> mem L Sat.</a> <a class="tactic" href="lrat-details.html#963">intros M.</a> <a class="tactic" href="lrat-details.html#964">case M.</a>
+ <a class="tactic" href="lrat-details.html#962">ExpandEmpty: assert forall L, mem L [] -&gt; mem L Sat.</a> <a class="tactic" href="lrat-details.html#963">intros M.</a> <a class="tactic" href="lrat-details.html#964">case M.</a>
  <a class="tactic" href="lrat-details.html#965">Is: case IsP.</a>
  <a class="tactic" href="lrat-details.html#966">S: apply rupProof_maintains_sat to _ _ CP2 Sat _ IsSat GA_Sat.</a>
- <a class="tactic" href="lrat-details.html#967">NewSat: assert forall CID InC, lookup ((ID, C)::Known) CID InC ->
+ <a class="tactic" href="lrat-details.html#967">NewSat: assert forall CID InC, lookup ((ID, C)::Known) CID InC -&gt;
                                 sat_clause S InC.</a>
    <a class="tactic" href="lrat-details.html#968">intros Lkp.</a> <a class="tactic" href="lrat-details.html#969">Lkp: case Lkp.</a>
      <span class="comment">%CID = ID, InC = C</span>
@@ -1810,9 +1810,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
  <a class="tactic" href="lrat-details.html#978">apply IH to Is3 S S1 GCL_New _ CP3 _.</a> <a class="tactic" href="lrat-details.html#979">backchain sat_lemma.</a>
 <span class="comment">%CP-DeleteLrat</span>
  <a class="tactic" href="lrat-details.html#980">Is: case IsP.</a>
- <a class="tactic" href="lrat-details.html#981">SatKRest: assert forall CID C, lookup KRest CID C -> sat_clause Sat C.</a>
+ <a class="tactic" href="lrat-details.html#981">SatKRest: assert forall CID C, lookup KRest CID C -&gt; sat_clause Sat C.</a>
    <a class="tactic" href="lrat-details.html#982">assert forall I C1 C2,
-            mem (I, C1) Known -> mem (I, C2) Known -> C1 = C2.</a>
+            mem (I, C1) Known -&gt; mem (I, C2) Known -&gt; C1 = C2.</a>
      <a class="tactic" href="lrat-details.html#983">intros MA MB.</a> <a class="tactic" href="lrat-details.html#984">apply good_clause_list_mems to _ MA MB.</a> <a class="tactic" href="lrat-details.html#985">search.</a>
    <a class="tactic" href="lrat-details.html#986">intros Lkp.</a> <a class="tactic" href="lrat-details.html#987">MemKRest: apply lookup_mem to Lkp.</a>
    <a class="tactic" href="lrat-details.html#988">MemKnown: apply mem_after_select_before to CP1 MemKRest.</a>
@@ -1825,12 +1825,12 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#995">Extensible_Theorem
   checkProof_orderless : forall K1 K2 Prf,
-    IsP : is_proof Prf ->
-    IsK1 : is_list (is_pair is_integer is_clause) K1 ->
-    IsK2 : is_list (is_pair is_integer is_clause) K2 ->
-    GCL : good_clause_list K2 ->
-    CP : checkProof K1 Prf ->
-    Prm : permutation K1 K2 ->
+    IsP : is_proof Prf -&gt;
+    IsK1 : is_list (is_pair is_integer is_clause) K1 -&gt;
+    IsK2 : is_list (is_pair is_integer is_clause) K2 -&gt;
+    GCL : good_clause_list K2 -&gt;
+    CP : checkProof K1 Prf -&gt;
+    Prm : permutation K1 K2 -&gt;
     checkProof K2 Prf
   on CP.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(996);" id="toggleproof996">[Show Proof]</a>
 <div class="proof" id="proof996" style="display: none;">
@@ -1872,9 +1872,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <span class="comment">%Projected proof still checks out</span>
 <a class="tactic" href="lrat-details.html#1029">Projection_Constraint proj_checkProof : forall Known P P',
-  Known |{proof}- P ~~> P' -> checkProof Known P ->
-  is_list (is_pair is_integer is_clause) Known ->
-  good_clause_list Known ->
+  Known |{proof}- P ~~&gt; P' -&gt; checkProof Known P -&gt;
+  is_list (is_pair is_integer is_clause) Known -&gt;
+  good_clause_list Known -&gt;
   checkProof Known P'.</a></div>
 
 
@@ -1886,10 +1886,10 @@ remove_all (A, C)::IRest I (A, C)::Rest
  ********************************************************************/</span>
 <a class="command" href="lrat-details.html#1030">Extensible_Theorem
   formulaToKnown_all_greater : forall F ID K CID C,
-    FTK : formulaToKnown ID F K ->
-    Mem : mem (CID, C) K ->
-    IsID : is_integer ID ->
-    CID >= ID
+    FTK : formulaToKnown ID F K -&gt;
+    Mem : mem (CID, C) K -&gt;
+    IsID : is_integer ID -&gt;
+    CID &gt;= ID
   on FTK.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1031);" id="toggleproof1031">[Show Proof]</a>
 <div class="proof" id="proof1031" style="display: none;">
 <span class="comment">%FTK-Empty</span>
@@ -1908,10 +1908,10 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#1040">Extensible_Theorem
   formulaToKnown_all_unique : forall F ID K CID CA KRest CB,
-    FTK : formulaToKnown ID F K ->
-    IsID : is_integer ID ->
-    Slct : select (CID, CA) KRest K ->
-    Mem : mem (CID, CB) KRest ->
+    FTK : formulaToKnown ID F K -&gt;
+    IsID : is_integer ID -&gt;
+    Slct : select (CID, CA) KRest K -&gt;
+    Mem : mem (CID, CB) KRest -&gt;
     false
   on FTK.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1041);" id="toggleproof1041">[Show Proof]</a>
 <div class="proof" id="proof1041" style="display: none;">
@@ -1924,7 +1924,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
    <span class="comment">%Slct-First</span>
     <a class="tactic" href="lrat-details.html#1045">GEq: apply formulaToKnown_all_greater to FTK2 Mem IsNewID.</a>
     <a class="tactic" href="lrat-details.html#1046">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="lrat-details.html#1047">Or: case Or.</a>
-      <span class="comment">%ID > NewID</span>
+      <span class="comment">%ID &gt; NewID</span>
        <a class="tactic" href="lrat-details.html#1048">L: apply greater_integer_flip_less to Or.</a>
        <a class="tactic" href="lrat-details.html#1049">apply greater_less_impossible to G L.</a>
       <span class="comment">%ID = NewID</span>
@@ -1935,7 +1935,7 @@ remove_all (A, C)::IRest I (A, C)::Rest
        <a class="tactic" href="lrat-details.html#1052">MS: apply select_mem to Slct.</a>
        <a class="tactic" href="lrat-details.html#1053">GEq: apply formulaToKnown_all_greater to FTK2 MS IsNewID.</a>
        <a class="tactic" href="lrat-details.html#1054">Or: apply greatereq_integer_greater_or_eq to GEq.</a> <a class="tactic" href="lrat-details.html#1055">Or: case Or.</a>
-         <span class="comment">%ID > NewID</span>
+         <span class="comment">%ID &gt; NewID</span>
           <a class="tactic" href="lrat-details.html#1056">L: apply greater_integer_flip_less to Or.</a>
           <a class="tactic" href="lrat-details.html#1057">apply greater_less_impossible to G L.</a>
          <span class="comment">%ID = NewID</span>
@@ -1946,9 +1946,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#1060">Extensible_Theorem
   formulaToKnown_sat_formula : forall F ID K A CID C,
-    FTK : formulaToKnown ID F K ->
-    Sat : sat_formula A F ->
-    Mem : mem (CID, C) K ->
+    FTK : formulaToKnown ID F K -&gt;
+    Sat : sat_formula A F -&gt;
+    Mem : mem (CID, C) K -&gt;
     sat_clause A C
   on FTK.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1061);" id="toggleproof1061">[Show Proof]</a>
 <div class="proof" id="proof1061" style="display: none;">
@@ -1964,9 +1964,9 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 <a class="command" href="lrat-details.html#1067">Extensible_Theorem
   formulaToKnown_is : forall F ID K,
-    IsF : is_formula F ->
-    IsID : is_integer ID ->
-    FTK : formulaToKnown ID F K ->
+    IsF : is_formula F -&gt;
+    IsID : is_integer ID -&gt;
+    FTK : formulaToKnown ID F K -&gt;
     is_list (is_pair is_integer is_clause) K
   on FTK.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1068);" id="toggleproof1068">[Show Proof]</a>
 <div class="proof" id="proof1068" style="display: none;">
@@ -1978,17 +1978,17 @@ remove_all (A, C)::IRest I (A, C)::Rest
 
 
 <a class="command" href="lrat-details.html#1073">Theorem proveFormula_correct : forall F Prf Sat,
-  is_formula F -> is_proof Prf -> is_list is_lit Sat ->
-  good_assignment Sat ->
+  is_formula F -&gt; is_proof Prf -&gt; is_list is_lit Sat -&gt;
+  good_assignment Sat -&gt;
   <span class="comment">%proof checking out  and  formula satisfiable</span>
-  proveFormula F Prf -> sat_formula Sat F ->
+  proveFormula F Prf -&gt; sat_formula Sat F -&gt;
   <span class="comment">%is impossible</span>
   false.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1074);" id="toggleproof1074">[Show Proof]</a>
 <div class="proof" id="proof1074" style="display: none;">
 <a class="tactic" href="lrat-details.html#1074">intros IsF IsP IsSat GA_Sat PF Sat.</a> <a class="tactic" href="lrat-details.html#1075">PF: case PF.</a>
 <a class="tactic" href="lrat-details.html#1076">GCL: assert good_clause_list KnownClauses.</a>
   <a class="tactic" href="lrat-details.html#1077">unfold.</a> <a class="tactic" href="lrat-details.html#1078">intros S M.</a> <a class="tactic" href="lrat-details.html#1079">backchain formulaToKnown_all_unique.</a>
-<a class="tactic" href="lrat-details.html#1080">SatC: assert forall CID C, lookup KnownClauses CID C ->
+<a class="tactic" href="lrat-details.html#1080">SatC: assert forall CID C, lookup KnownClauses CID C -&gt;
                            sat_clause Sat C.</a>
   <a class="tactic" href="lrat-details.html#1081">intros Lkp.</a> <a class="tactic" href="lrat-details.html#1082">M: apply lookup_mem to Lkp.</a>
   <a class="tactic" href="lrat-details.html#1083">apply formulaToKnown_sat_formula to PF Sat M.</a> <a class="tactic" href="lrat-details.html#1084">search.</a>
