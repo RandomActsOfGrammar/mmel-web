@@ -261,7 +261,7 @@
           &lt;conclusion&gt; on &lt;hyp name&gt;.</code></td>
     </tr>
     <tr>
-      <td><blockquote>Declares an extensible to be proven, using
+      <td><blockquote>Declares an extensible theorem to be proven, using
           induction and case analysis on the premise given in
           the <code>on</code> clause, which must be an atomic formula
           built by an extensible relation with a variable for the
@@ -284,10 +284,23 @@
           after it</blockquote></td>
     </tr>
     <tr>
-      <td><blockquote>The inductive hypothesis may be given a
+      <td><blockquote>The induction hypothesis may be given a
           descriptive name by adding <code>as &lt;IH name&gt;</code>
           after the <code>on</code> clause of a theorem
           declaration</blockquote></td>
+    </tr>
+    <tr>
+      <td><blockquote>Multiple inductions may be declared by
+          repeating the <code>on</code> clause, with or without a
+          name for the induction hypothesis.  All theorems declared
+          together must have the same number of inductions.  If
+          multiple are given, the key relation for the top-level case
+          analysis must be marked by <code>*</code> (e.g. <code>on A,
+          on B *, on C</code> to analyze <code>B</code>); note there
+          must be a space separating <code>*</code> from the name
+          as <code>*</code> can be part of names (<code>B*</code> is
+          interpreted as a single name rather than as <code>B</code>
+          plus a mark)</blockquote></td>
     </tr>
 
     <tr>
@@ -617,7 +630,7 @@
           <ul>
             <li><code>display_width</code>
               <ul>
-                <li>Set the maximum width for lines in the proof
+                <li>Set the attempted maximum width for lines in the proof
                   state display (default value is <code>80</code>)
                 <li>Values:  any positive integer
               </ul>
