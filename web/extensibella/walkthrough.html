@@ -363,6 +363,7 @@ Projection_Constraint proj_type_same : forall G T Ty T_T,
 
 
 Ext_Size typeOf G T Ty.
+Proj_Rel typeOf G T Ty.
 
 Ext_Ind forall G T Ty, typeOf G T Ty.<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(6);" id="toggleproof6">[Show Proof]</a>
 <div class="proof" id="proof6" style="display: none;">
@@ -747,7 +748,9 @@ Proof completed. </pre>
 
   <h4>Extension Induction</h4>
   <p>
-    The final two declarations are for <code class="extensibella">Ext_Size</code>
+    The final three declarations are
+    for <code class="extensibella">Ext_Size</code>,
+    <code class="extensibella">Proj_Rel</code>,
     and <code class="extensibella">Ext_Ind</code> for
     the <code>typeOf</code> relation.  The name <code class="extensibella">Ext_Ind</code> stands
     for <em>ext</em>ension <em>ind</em>uction.  When an extension
@@ -779,11 +782,13 @@ Extensibella_Stand_In {
   <p>
     This declaration also creates an obligation that must be proven by
     the host language and each extension, that this rule is a valid
-    way of looking at the rules introduced by extensions.
+    way of looking at the rules introduced by extensions, embodied in
+    the projection version of the <code>typeOf</code> relation
+    declared by the <code class="extensibella">Proj_Rel</code> declaration.
     The <code class="extensibella">Ext_Size</code> declaration
     introduces a new version of the <code>typeOf</code> relation that
     will be useful for proving this.
-    What the new version of the relation is and what this proof requires is discussed more
+    The details of this are discussed more
     in the context of the <a href="#let">let extension</a> below.  We
     leave the proof for the <code class="extenibella">Ext_Ind</code>
     in the host language as an exercise, recommending returning to it
@@ -822,7 +827,9 @@ $ <b>extensibella --check --compile host.xthm</b></pre>
     property's proof is present and valid; when we add the proof
     checking flag, it verifies this before compiling it.  This
     prevents mistakes from sneaking into the compiled form and
-    affecting extensions.
+    affecting extensions.  Checking is not a default part of
+    compilation because it is much slower than the compilation alone,
+    and is not needed if the file is already known to be valid.
   </p>
   </div>
 
@@ -965,6 +972,7 @@ Prove_Constraint walkthrough:host:proj_type_same.<span> </span><a class="fold-li
 
 
 Add_Ext_Size walkthrough:host:typeOf.
+Add_Proj_Rel walkthrough:host:typeOf.
 
 
 Prove_Ext_Ind walkthrough:host:typeOf.<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(12);" id="toggleproof12">[Show Proof]</a>
@@ -1153,7 +1161,7 @@ H2 : typeOf ((X, Ty2)::G) T2 Ty
 Proof completed.</pre>
 
 
-  <h4>Adding Ext_Size and Proving Ext_Ind</h4>
+  <h4>Adding Ext_Size and Proj_Rel and Proving Ext_Ind</h4>
   <p>
     For <code class="extensibella">Ext_Ind</code>,
     each extension has an obligation to show the rules they introduce
@@ -1170,7 +1178,10 @@ Extensibella_Stand_In {
     compatibility for a relation <code class="extensibella">rel</code>
     is defined by a relation <code class="extensibella">&lt;rel
     {P}&gt;</code>, called the projection version
-    of <code class="extensibella">rel</code>.  In our case, this is
+    of <code class="extensibella">rel</code>.  This relation is
+    declared by the <code class="extensibella">Proj_Rel</code> and
+    <code class="extensibella">Add_Proj_Rel</code> commands.
+    In our case, this relation is
     <code class="extensibella">&lt;typeOf {P}&gt;</code>.  Each rule
     for this relation corresponds to one for the underlying relation,
     with those introduced by extensions having the stand-in rule
@@ -1210,7 +1221,7 @@ Ctx |{tm}- let(X, T1, T2) ~~&gt; T_T
     derivation of the projection version of a relation whenever we
     have a derivation of the relation itself.  When we have declared
     the extension size version of the relation
-    using <code>Ext_Size</code>, as we have for <code>typeOf</code>
+    using <code>Ext_Size</code>, as we have for <code>typeOf</code>,
     Extensibella has us start from a derivation of the extension size
     version of the relation rather than the relation itself.  Thus
     what we need to prove here is
@@ -1942,6 +1953,7 @@ Prove_Constraint walkthrough:host:proj_type_same.
 
 
 Add_Ext_Size walkthrough:host:typeOf.
+Add_Proj_Rel walkthrough:host:typeOf.
 
 
 Prove_Ext_Ind walkthrough:host:typeOf.
@@ -2260,6 +2272,7 @@ Prove_Constraint walkthrough:host:proj_type_same.
 
 
 Add_Ext_Size walkthrough:host:typeOf.
+Add_Proj_Rel walkthrough:host:typeOf.
 
 
 Prove_Ext_Ind walkthrough:host:typeOf.
@@ -3622,6 +3635,21 @@ induction on 1. rename IH to IH0.
         N1 = $posInt ($succ $zero). search.</div>
 
 <span class="comment">/*End Ext_Size for walkthrough:host:typeOf*/</span>
+
+
+<span class="comment">/*Start Proj_Rel for walkthrough:host:typeOf*/</span>
+Theorem walkthrough-$-host-$-drop_proj_rel_typeOf : forall G T Ty,
+  ($projRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
+  $ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1200);" id="toggleproof1200">[Show Proof]</a>
+<div class="proof" id="proof1200" style="display: none;">
+induction on 1.
+intros R. R: case R (keep).
+  search.
+  apply IH to R1. search.
+  apply IH to R1. apply IH to R2. search.
+  apply IH to R1. apply IH to R2. search.</div>
+
+<span class="comment">/*End Proj_Rel for walkthrough:host:typeOf*/</span>
 
 
 <span class="comment">/*Start Ext_Ind for walkthrough:host:typeOf*/</span>

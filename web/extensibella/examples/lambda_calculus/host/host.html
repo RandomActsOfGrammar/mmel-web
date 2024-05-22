@@ -88,85 +88,86 @@ subst X R app(E1, E2) app(S1, S2)
 <div class="proof" id="proof1" style="display: none;">
 
 <a class="tactic" href="host-details.html#1">Projection_Constraint proj_is : forall E E',
-  |{e}- E ~~&gt; E' -&gt; is_e E -&gt; is_e E'.</a></div>
+  |{e}- E ~~&gt; E' -&gt; is_e E -&gt; is_e E'.</a>
 
 
 <span class="comment">%Generally a good idea to include this so extensions can prove things</span>
 <span class="comment">%based on the structure of a term</span>
-<a class="command" href="host-details.html#2">Ext_Ind forall E, is_e E.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(3);" id="toggleproof3">[Show Proof]</a>
-<div class="proof" id="proof3" style="display: none;">
+<a class="tactic" href="host-details.html#2">Proj_Rel is_e E.</a></div>
+<a class="command" href="host-details.html#3">Ext_Ind forall E, is_e E.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(4);" id="toggleproof4">[Show Proof]</a>
+<div class="proof" id="proof4" style="display: none;">
 <span class="comment">%var</span>
- <a class="tactic" href="host-details.html#3">search.</a>
+ <a class="tactic" href="host-details.html#4">search.</a>
 <span class="comment">%abs</span>
- <a class="tactic" href="host-details.html#4">apply IH to R2.</a> <a class="tactic" href="host-details.html#5">search.</a>
+ <a class="tactic" href="host-details.html#5">apply IH to R2.</a> <a class="tactic" href="host-details.html#6">search.</a>
 <span class="comment">%app</span>
- <a class="tactic" href="host-details.html#6">apply IH to R1.</a> <a class="tactic" href="host-details.html#7">apply IH to R2.</a> <a class="tactic" href="host-details.html#8">search.</a>
+ <a class="tactic" href="host-details.html#7">apply IH to R1.</a> <a class="tactic" href="host-details.html#8">apply IH to R2.</a> <a class="tactic" href="host-details.html#9">search.</a>
 
 
-<a class="tactic" href="host-details.html#9">Projection_Constraint proj_same : forall E E1 E2,
+<a class="tactic" href="host-details.html#10">Projection_Constraint proj_same : forall E E1 E2,
   |{e}- E ~~&gt; E1 -&gt; |{e}- E ~~&gt; E2 -&gt; E1 = E2.</a></div>
 
 
-<a class="command" href="host-details.html#10">Extensible_Theorem
+<a class="command" href="host-details.html#11">Extensible_Theorem
   subst_exists : forall X R E,
     IsE : is_e E -&gt;
     IsX : is_string X -&gt;
     IsR : is_e R -&gt;
     exists S, subst X R E S
-  on IsE.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(11);" id="toggleproof11">[Show Proof]</a>
-<div class="proof" id="proof11" style="display: none;">
+  on IsE.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(12);" id="toggleproof12">[Show Proof]</a>
+<div class="proof" id="proof12" style="display: none;">
 <span class="comment">%var</span>
- <a class="tactic" href="host-details.html#11">Or: apply is_string_eq_or_not to IsX IsE1.</a> <a class="tactic" href="host-details.html#12">Eq: case Or.</a>
+ <a class="tactic" href="host-details.html#12">Or: apply is_string_eq_or_not to IsX IsE1.</a> <a class="tactic" href="host-details.html#13">Eq: case Or.</a>
    <span class="comment">%X = S</span>
-    <a class="tactic" href="host-details.html#13">search.</a>
-   <span class="comment">%X != S</span>
     <a class="tactic" href="host-details.html#14">search.</a>
-<span class="comment">%abs</span>
- <a class="tactic" href="host-details.html#15">Or: apply is_string_eq_or_not to IsX IsE1.</a> <a class="tactic" href="host-details.html#16">Eq: case Or.</a>
-   <span class="comment">%X = S</span>
-    <a class="tactic" href="host-details.html#17">search.</a>
    <span class="comment">%X != S</span>
-    <a class="tactic" href="host-details.html#18">apply IH to IsE2 IsX IsR.</a> <a class="tactic" href="host-details.html#19">search.</a>
+    <a class="tactic" href="host-details.html#15">search.</a>
+<span class="comment">%abs</span>
+ <a class="tactic" href="host-details.html#16">Or: apply is_string_eq_or_not to IsX IsE1.</a> <a class="tactic" href="host-details.html#17">Eq: case Or.</a>
+   <span class="comment">%X = S</span>
+    <a class="tactic" href="host-details.html#18">search.</a>
+   <span class="comment">%X != S</span>
+    <a class="tactic" href="host-details.html#19">apply IH to IsE2 IsX IsR.</a> <a class="tactic" href="host-details.html#20">search.</a>
 <span class="comment">%app</span>
- <a class="tactic" href="host-details.html#20">apply IH to IsE1 IsX IsR.</a> <a class="tactic" href="host-details.html#21">apply IH to IsE2 IsX IsR.</a> <a class="tactic" href="host-details.html#22">search.</a></div>
+ <a class="tactic" href="host-details.html#21">apply IH to IsE1 IsX IsR.</a> <a class="tactic" href="host-details.html#22">apply IH to IsE2 IsX IsR.</a> <a class="tactic" href="host-details.html#23">search.</a></div>
 
 
-<a class="command" href="host-details.html#23">Extensible_Theorem
+<a class="command" href="host-details.html#24">Extensible_Theorem
   subst_is : forall X R E S,
     IsE : is_e E -&gt;
     IsX : is_string X -&gt;
     IsR : is_e R -&gt;
     S : subst X R E S -&gt;
     is_e S
-  on S.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(24);" id="toggleproof24">[Show Proof]</a>
-<div class="proof" id="proof24" style="display: none;">
+  on S.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(25);" id="toggleproof25">[Show Proof]</a>
+<div class="proof" id="proof25" style="display: none;">
 <span class="comment">%S-Var-Eq</span>
- <a class="tactic" href="host-details.html#24">search.</a>
-<span class="comment">%S-Var-NEq</span>
  <a class="tactic" href="host-details.html#25">search.</a>
-<span class="comment">%S-Abs-Eq</span>
+<span class="comment">%S-Var-NEq</span>
  <a class="tactic" href="host-details.html#26">search.</a>
+<span class="comment">%S-Abs-Eq</span>
+ <a class="tactic" href="host-details.html#27">search.</a>
 <span class="comment">%S-Abs-NEq</span>
- <a class="tactic" href="host-details.html#27">Is: case IsE.</a> <a class="tactic" href="host-details.html#28">apply IH to _ _ _ S2.</a> <a class="tactic" href="host-details.html#29">search.</a>
+ <a class="tactic" href="host-details.html#28">Is: case IsE.</a> <a class="tactic" href="host-details.html#29">apply IH to _ _ _ S2.</a> <a class="tactic" href="host-details.html#30">search.</a>
 <span class="comment">%S-App</span>
- <a class="tactic" href="host-details.html#30">Is: case IsE.</a> <a class="tactic" href="host-details.html#31">apply IH to _ _ _ S1.</a> <a class="tactic" href="host-details.html#32">apply IH to _ _ _ S2.</a> <a class="tactic" href="host-details.html#33">search.</a></div>
+ <a class="tactic" href="host-details.html#31">Is: case IsE.</a> <a class="tactic" href="host-details.html#32">apply IH to _ _ _ S1.</a> <a class="tactic" href="host-details.html#33">apply IH to _ _ _ S2.</a> <a class="tactic" href="host-details.html#34">search.</a></div>
 
 
-<a class="command" href="host-details.html#34">Extensible_Theorem
+<a class="command" href="host-details.html#35">Extensible_Theorem
   eval_is : forall E V,
     IsE : is_e E -&gt;
     Ev : eval E V -&gt;
     is_e V
-  on Ev.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(35);" id="toggleproof35">[Show Proof]</a>
-<div class="proof" id="proof35" style="display: none;">
+  on Ev.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(36);" id="toggleproof36">[Show Proof]</a>
+<div class="proof" id="proof36" style="display: none;">
 <span class="comment">%E-Abs</span>
- <a class="tactic" href="host-details.html#35">search.</a>
+ <a class="tactic" href="host-details.html#36">search.</a>
 <span class="comment">%E-App</span>
- <a class="tactic" href="host-details.html#36">Is: case IsE.</a> <a class="tactic" href="host-details.html#37">IsAbs: apply IH to _ Ev1.</a> <a class="tactic" href="host-details.html#38">apply IH to _ Ev2.</a>
- <a class="tactic" href="host-details.html#39">case IsAbs.</a> <a class="tactic" href="host-details.html#40">apply subst_is to _ _ _ Ev3.</a> <a class="tactic" href="host-details.html#41">apply IH to _ Ev4.</a> <a class="tactic" href="host-details.html#42">search.</a></div>
+ <a class="tactic" href="host-details.html#37">Is: case IsE.</a> <a class="tactic" href="host-details.html#38">IsAbs: apply IH to _ Ev1.</a> <a class="tactic" href="host-details.html#39">apply IH to _ Ev2.</a>
+ <a class="tactic" href="host-details.html#40">case IsAbs.</a> <a class="tactic" href="host-details.html#41">apply subst_is to _ _ _ Ev3.</a> <a class="tactic" href="host-details.html#42">apply IH to _ Ev4.</a> <a class="tactic" href="host-details.html#43">search.</a></div>
 
 
-<a class="command" href="host-details.html#43">Extensible_Theorem
+<a class="command" href="host-details.html#44">Extensible_Theorem
   subst_unique : forall X R E SA SB,
     IsE : is_e E -&gt;
     IsX : is_string X -&gt;
@@ -174,64 +175,64 @@ subst X R app(E1, E2) app(S1, S2)
     SA : subst X R E SA -&gt;
     SB : subst X R E SB -&gt;
     SA = SB
-  on SA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(44);" id="toggleproof44">[Show Proof]</a>
-<div class="proof" id="proof44" style="display: none;">
+  on SA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(45);" id="toggleproof45">[Show Proof]</a>
+<div class="proof" id="proof45" style="display: none;">
 <span class="comment">%S-Var-Eq</span>
- <a class="tactic" href="host-details.html#44">SB: case SB.</a>
+ <a class="tactic" href="host-details.html#45">SB: case SB.</a>
    <span class="comment">%S-Var-Eq</span>
-    <a class="tactic" href="host-details.html#45">search.</a>
+    <a class="tactic" href="host-details.html#46">search.</a>
    <span class="comment">%S-Var-NEq</span>
-    <a class="tactic" href="host-details.html#46">apply SB to _.</a>
+    <a class="tactic" href="host-details.html#47">apply SB to _.</a>
 <span class="comment">%S-Var-NEq</span>
- <a class="tactic" href="host-details.html#47">SB: case SB.</a>
+ <a class="tactic" href="host-details.html#48">SB: case SB.</a>
    <span class="comment">%S-Var-Eq</span>
-    <a class="tactic" href="host-details.html#48">apply SA1 to _.</a>
+    <a class="tactic" href="host-details.html#49">apply SA1 to _.</a>
    <span class="comment">%S-Var-NEq</span>
-    <a class="tactic" href="host-details.html#49">search.</a>
+    <a class="tactic" href="host-details.html#50">search.</a>
 <span class="comment">%S-Abs-Eq</span>
- <a class="tactic" href="host-details.html#50">SB: case SB.</a>
+ <a class="tactic" href="host-details.html#51">SB: case SB.</a>
    <span class="comment">%S-Abs-Eq</span>
-    <a class="tactic" href="host-details.html#51">search.</a>
+    <a class="tactic" href="host-details.html#52">search.</a>
    <span class="comment">%S-Abs-NEq</span>
-    <a class="tactic" href="host-details.html#52">apply SB to _.</a>
+    <a class="tactic" href="host-details.html#53">apply SB to _.</a>
 <span class="comment">%S-Abs-NEq</span>
- <a class="tactic" href="host-details.html#53">SB: case SB.</a>
+ <a class="tactic" href="host-details.html#54">SB: case SB.</a>
    <span class="comment">%S-Abs-Eq</span>
-    <a class="tactic" href="host-details.html#54">apply SA1 to _.</a>
+    <a class="tactic" href="host-details.html#55">apply SA1 to _.</a>
    <span class="comment">%S-Abs-NEq</span>
-    <a class="tactic" href="host-details.html#55">Is: case IsE.</a> <a class="tactic" href="host-details.html#56">apply IH to _ _ _ SA2 SB1.</a> <a class="tactic" href="host-details.html#57">search.</a>
+    <a class="tactic" href="host-details.html#56">Is: case IsE.</a> <a class="tactic" href="host-details.html#57">apply IH to _ _ _ SA2 SB1.</a> <a class="tactic" href="host-details.html#58">search.</a>
 <span class="comment">%S-App</span>
- <a class="tactic" href="host-details.html#58">Is: case IsE.</a> <a class="tactic" href="host-details.html#59">SB: case SB.</a> <a class="tactic" href="host-details.html#60">apply IH to _ _ _ SA1 SB.</a>
- <a class="tactic" href="host-details.html#61">apply IH to _ _ _ SA2 SB1.</a> <a class="tactic" href="host-details.html#62">search.</a></div>
+ <a class="tactic" href="host-details.html#59">Is: case IsE.</a> <a class="tactic" href="host-details.html#60">SB: case SB.</a> <a class="tactic" href="host-details.html#61">apply IH to _ _ _ SA1 SB.</a>
+ <a class="tactic" href="host-details.html#62">apply IH to _ _ _ SA2 SB1.</a> <a class="tactic" href="host-details.html#63">search.</a></div>
 
 
-<a class="command" href="host-details.html#63">Extensible_Theorem
+<a class="command" href="host-details.html#64">Extensible_Theorem
   eval_unique : forall E VA VB,
     IsE : is_e E -&gt;
     EvA : eval E VA -&gt;
     EvB : eval E VB -&gt;
     VA = VB
-  on EvA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(64);" id="toggleproof64">[Show Proof]</a>
-<div class="proof" id="proof64" style="display: none;">
+  on EvA.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(65);" id="toggleproof65">[Show Proof]</a>
+<div class="proof" id="proof65" style="display: none;">
 <span class="comment">%E-Abs</span>
- <a class="tactic" href="host-details.html#64">EvB: case EvB.</a> <a class="tactic" href="host-details.html#65">search.</a>
+ <a class="tactic" href="host-details.html#65">EvB: case EvB.</a> <a class="tactic" href="host-details.html#66">search.</a>
 <span class="comment">%E-App</span>
- <a class="tactic" href="host-details.html#66">Is: case IsE.</a> <a class="tactic" href="host-details.html#67">EvB: case EvB.</a> <a class="tactic" href="host-details.html#68">apply IH to _ EvA1 EvB.</a>
- <a class="tactic" href="host-details.html#69">apply IH to _ EvA2 EvB1.</a> <a class="tactic" href="host-details.html#70">IsAbs: apply eval_is to _ EvA1.</a> <a class="tactic" href="host-details.html#71">case IsAbs.</a>
- <a class="tactic" href="host-details.html#72">apply eval_is to _ EvA2.</a> <a class="tactic" href="host-details.html#73">apply subst_is to _ _ _ EvA3.</a>
- <a class="tactic" href="host-details.html#74">apply subst_unique to _ _ _ EvA3 EvB2.</a> <a class="tactic" href="host-details.html#75">apply IH to _ EvA4 EvB3.</a>
- <a class="tactic" href="host-details.html#76">search.</a>
+ <a class="tactic" href="host-details.html#67">Is: case IsE.</a> <a class="tactic" href="host-details.html#68">EvB: case EvB.</a> <a class="tactic" href="host-details.html#69">apply IH to _ EvA1 EvB.</a>
+ <a class="tactic" href="host-details.html#70">apply IH to _ EvA2 EvB1.</a> <a class="tactic" href="host-details.html#71">IsAbs: apply eval_is to _ EvA1.</a> <a class="tactic" href="host-details.html#72">case IsAbs.</a>
+ <a class="tactic" href="host-details.html#73">apply eval_is to _ EvA2.</a> <a class="tactic" href="host-details.html#74">apply subst_is to _ _ _ EvA3.</a>
+ <a class="tactic" href="host-details.html#75">apply subst_unique to _ _ _ EvA3 EvB2.</a> <a class="tactic" href="host-details.html#76">apply IH to _ EvA4 EvB3.</a>
+ <a class="tactic" href="host-details.html#77">search.</a>
 
 
 <span class="comment">%anything evaluation-related must be the same across projection</span>
-<a class="tactic" href="host-details.html#77">Projection_Constraint proj_subst : forall X R E S E',
+<a class="tactic" href="host-details.html#78">Projection_Constraint proj_subst : forall X R E S E',
   Proj : |{e}- E ~~&gt; E' -&gt;
   IsE : is_e E -&gt;
   IsX : is_string X -&gt;
   IsR : is_e R -&gt;
   S : subst X R E S -&gt;
   exists S', subst X R E' S'.</a>
-<a class="tactic" href="host-details.html#78">Projection_Constraint proj_subst_same : forall X R E S E' S',
+<a class="tactic" href="host-details.html#79">Projection_Constraint proj_subst_same : forall X R E S E' S',
   Proj : |{e}- E ~~&gt; E' -&gt;
   IsE : is_e E -&gt;
   isX : is_string X -&gt;
@@ -240,12 +241,12 @@ subst X R app(E1, E2) app(S1, S2)
   S' : subst X R E' S' -&gt;
   S = S'.</a>
 
-<a class="tactic" href="host-details.html#79">Projection_Constraint proj_eval : forall E E' V,
+<a class="tactic" href="host-details.html#80">Projection_Constraint proj_eval : forall E E' V,
   Proj : |{e}- E ~~&gt; E' -&gt;
   IsE : is_e E -&gt;
   Ev : eval E V -&gt;
   exists V', eval E' V'.</a>
-<a class="tactic" href="host-details.html#80">Projection_Constraint proj_eval_same : forall E E' V V',
+<a class="tactic" href="host-details.html#81">Projection_Constraint proj_eval_same : forall E E' V V',
   Proj : |{e}- E ~~&gt; E' -&gt;
   IsE : is_e E -&gt;
   Ev : eval E V -&gt;
@@ -253,76 +254,77 @@ subst X R app(E1, E2) app(S1, S2)
   V = V'.</a>
 
 
-<a class="tactic" href="host-details.html#81">Ext_Size eval E V.</a></div>
+<a class="tactic" href="host-details.html#82">Ext_Size eval E V.</a>
+<a class="tactic" href="host-details.html#83">Proj_Rel eval E V.</a></div>
 
-<a class="command" href="host-details.html#82">Ext_Ind forall E V, eval E V.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(83);" id="toggleproof83">[Show Proof]</a>
-<div class="proof" id="proof83" style="display: none;">
+<a class="command" href="host-details.html#84">Ext_Ind forall E V, eval E V.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(85);" id="toggleproof85">[Show Proof]</a>
+<div class="proof" id="proof85" style="display: none;">
 <span class="comment">%E-Abs</span>
- <a class="tactic" href="host-details.html#83">search.</a>
+ <a class="tactic" href="host-details.html#85">search.</a>
 <span class="comment">%E-App</span>
- <a class="tactic" href="host-details.html#84">apply ext_size_is_int_eval to R3.</a> <a class="tactic" href="host-details.html#85">apply ext_size_is_int_eval to R4.</a>
- <a class="tactic" href="host-details.html#86">apply ext_size_is_int_eval to R6.</a> <a class="tactic" href="host-details.html#87">apply ext_size_pos_eval to R3.</a>
- <a class="tactic" href="host-details.html#88">apply ext_size_pos_eval to R4.</a> <a class="tactic" href="host-details.html#89">apply ext_size_pos_eval to R6.</a>
- <a class="tactic" href="host-details.html#90">Or2: apply lt_left to R2 _ _.</a> <a class="tactic" href="host-details.html#91">Or4: apply lt_right to R2 _ _ _.</a>
- <a class="tactic" href="host-details.html#92">apply lesseq_integer__add_positive to _ _ R2.</a>
- <a class="tactic" href="host-details.html#93">Or3: apply lt_left to R1 _ _.</a> <a class="tactic" href="host-details.html#94">apply plus_integer_is_integer to _ _ R2.</a>
- <a class="tactic" href="host-details.html#95">LeN5: apply lte_right to R1 _ _ _.</a> <a class="tactic" href="host-details.html#96">A: case Acc (keep).</a> <a class="tactic" href="host-details.html#97">Or2: case Or2.</a>
+ <a class="tactic" href="host-details.html#86">apply ext_size_is_int_eval to R3.</a> <a class="tactic" href="host-details.html#87">apply ext_size_is_int_eval to R4.</a>
+ <a class="tactic" href="host-details.html#88">apply ext_size_is_int_eval to R6.</a> <a class="tactic" href="host-details.html#89">apply ext_size_pos_eval to R3.</a>
+ <a class="tactic" href="host-details.html#90">apply ext_size_pos_eval to R4.</a> <a class="tactic" href="host-details.html#91">apply ext_size_pos_eval to R6.</a>
+ <a class="tactic" href="host-details.html#92">Or2: apply lt_left to R2 _ _.</a> <a class="tactic" href="host-details.html#93">Or4: apply lt_right to R2 _ _ _.</a>
+ <a class="tactic" href="host-details.html#94">apply lesseq_integer__add_positive to _ _ R2.</a>
+ <a class="tactic" href="host-details.html#95">Or3: apply lt_left to R1 _ _.</a> <a class="tactic" href="host-details.html#96">apply plus_integer_is_integer to _ _ R2.</a>
+ <a class="tactic" href="host-details.html#97">LeN5: apply lte_right to R1 _ _ _.</a> <a class="tactic" href="host-details.html#98">A: case Acc (keep).</a> <a class="tactic" href="host-details.html#99">Or2: case Or2.</a>
    <span class="comment">%N2 &lt; N5</span>
-    <a class="tactic" href="host-details.html#98">LN2: apply less_lesseq_integer_transitive to Or2 LeN5.</a>
-    <a class="tactic" href="host-details.html#99">AN2: apply A to _ LN2.</a> <a class="tactic" href="host-details.html#100">apply IH to R4 AN2.</a> <a class="tactic" href="host-details.html#101">Or4: case Or4.</a>
+    <a class="tactic" href="host-details.html#100">LN2: apply less_lesseq_integer_transitive to Or2 LeN5.</a>
+    <a class="tactic" href="host-details.html#101">AN2: apply A to _ LN2.</a> <a class="tactic" href="host-details.html#102">apply IH to R4 AN2.</a> <a class="tactic" href="host-details.html#103">Or4: case Or4.</a>
       <span class="comment">%N4 &lt; N5</span>
-       <a class="tactic" href="host-details.html#102">LN4: apply less_lesseq_integer_transitive to Or4 LeN5.</a>
-       <a class="tactic" href="host-details.html#103">AN4: apply A to _ LN4.</a> <a class="tactic" href="host-details.html#104">apply IH to R6 AN4.</a> <a class="tactic" href="host-details.html#105">Or3: case Or3.</a>
+       <a class="tactic" href="host-details.html#104">LN4: apply less_lesseq_integer_transitive to Or4 LeN5.</a>
+       <a class="tactic" href="host-details.html#105">AN4: apply A to _ LN4.</a> <a class="tactic" href="host-details.html#106">apply IH to R6 AN4.</a> <a class="tactic" href="host-details.html#107">Or3: case Or3.</a>
          <span class="comment">%N3 &lt; N</span>
-          <a class="tactic" href="host-details.html#106">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#107">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#108">search.</a>
+          <a class="tactic" href="host-details.html#108">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#109">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#110">search.</a>
          <span class="comment">%N3 = N</span>
-          <a class="tactic" href="host-details.html#109">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#110">search.</a>
+          <a class="tactic" href="host-details.html#111">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#112">search.</a>
       <span class="comment">%N4 = N5</span>
-       <a class="tactic" href="host-details.html#111">Or5: apply lesseq_integer_less_or_eq to LeN5.</a> <a class="tactic" href="host-details.html#112">Or5: case Or5.</a>
+       <a class="tactic" href="host-details.html#113">Or5: apply lesseq_integer_less_or_eq to LeN5.</a> <a class="tactic" href="host-details.html#114">Or5: case Or5.</a>
          <span class="comment">%N5 &lt; N</span>
-          <a class="tactic" href="host-details.html#113">AN5: apply A to _ Or5.</a> <a class="tactic" href="host-details.html#114">apply IH to R6 AN5.</a> <a class="tactic" href="host-details.html#115">Or3: case Or3.</a>
+          <a class="tactic" href="host-details.html#115">AN5: apply A to _ Or5.</a> <a class="tactic" href="host-details.html#116">apply IH to R6 AN5.</a> <a class="tactic" href="host-details.html#117">Or3: case Or3.</a>
             <span class="comment">%N3 &lt; N</span>
-             <a class="tactic" href="host-details.html#116">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#117">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#118">search.</a>
+             <a class="tactic" href="host-details.html#118">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#119">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#120">search.</a>
             <span class="comment">%N3 = N</span>
-             <a class="tactic" href="host-details.html#119">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#120">search.</a>
+             <a class="tactic" href="host-details.html#121">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#122">search.</a>
          <span class="comment">%N5 = N</span>
-          <a class="tactic" href="host-details.html#121">apply IH1 to R6 Acc.</a> <a class="tactic" href="host-details.html#122">Or3: case Or3.</a>
+          <a class="tactic" href="host-details.html#123">apply IH1 to R6 Acc.</a> <a class="tactic" href="host-details.html#124">Or3: case Or3.</a>
             <span class="comment">%N3 &lt; N</span>
-             <a class="tactic" href="host-details.html#123">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#124">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#125">search.</a>
+             <a class="tactic" href="host-details.html#125">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#126">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#127">search.</a>
             <span class="comment">%N3 = N</span>
-             <a class="tactic" href="host-details.html#126">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#127">search.</a>
+             <a class="tactic" href="host-details.html#128">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#129">search.</a>
    <span class="comment">%N2 = N5</span>
-    <a class="tactic" href="host-details.html#128">Or5: apply lesseq_integer_less_or_eq to LeN5.</a> <a class="tactic" href="host-details.html#129">Or5: case Or5.</a>
+    <a class="tactic" href="host-details.html#130">Or5: apply lesseq_integer_less_or_eq to LeN5.</a> <a class="tactic" href="host-details.html#131">Or5: case Or5.</a>
       <span class="comment">%N5 &lt; N</span>
-       <a class="tactic" href="host-details.html#130">AN5: apply A to _ Or5.</a> <a class="tactic" href="host-details.html#131">apply IH1 to R4 AN5.</a> <a class="tactic" href="host-details.html#132">Or4: case Or4.</a>
+       <a class="tactic" href="host-details.html#132">AN5: apply A to _ Or5.</a> <a class="tactic" href="host-details.html#133">apply IH1 to R4 AN5.</a> <a class="tactic" href="host-details.html#134">Or4: case Or4.</a>
          <span class="comment">%N4 &lt; N5</span>
-          <a class="tactic" href="host-details.html#133">LN4: apply less_integer_transitive to Or4 Or5.</a>
-          <a class="tactic" href="host-details.html#134">AN4: apply A to _ LN4.</a> <a class="tactic" href="host-details.html#135">apply IH to R6 AN4.</a> <a class="tactic" href="host-details.html#136">Or3: case Or3.</a>
+          <a class="tactic" href="host-details.html#135">LN4: apply less_integer_transitive to Or4 Or5.</a>
+          <a class="tactic" href="host-details.html#136">AN4: apply A to _ LN4.</a> <a class="tactic" href="host-details.html#137">apply IH to R6 AN4.</a> <a class="tactic" href="host-details.html#138">Or3: case Or3.</a>
             <span class="comment">%N3 &lt; N</span>
-             <a class="tactic" href="host-details.html#137">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#138">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#139">search.</a>
+             <a class="tactic" href="host-details.html#139">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#140">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#141">search.</a>
             <span class="comment">%N3 = N</span>
-             <a class="tactic" href="host-details.html#140">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#141">search.</a>
+             <a class="tactic" href="host-details.html#142">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#143">search.</a>
          <span class="comment">%N4 = N5</span>
-          <a class="tactic" href="host-details.html#142">apply IH to R6 AN5.</a> <a class="tactic" href="host-details.html#143">Or3: case Or3.</a>
+          <a class="tactic" href="host-details.html#144">apply IH to R6 AN5.</a> <a class="tactic" href="host-details.html#145">Or3: case Or3.</a>
             <span class="comment">%N3 &lt; N</span>
-             <a class="tactic" href="host-details.html#144">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#145">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#146">search.</a>
+             <a class="tactic" href="host-details.html#146">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#147">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#148">search.</a>
             <span class="comment">%N3 = N</span>
-             <a class="tactic" href="host-details.html#147">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#148">search.</a>
+             <a class="tactic" href="host-details.html#149">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#150">search.</a>
       <span class="comment">%N5 = N</span>
-       <a class="tactic" href="host-details.html#149">apply IH1 to R4 Acc.</a> <a class="tactic" href="host-details.html#150">Or4: case Or4.</a>
+       <a class="tactic" href="host-details.html#151">apply IH1 to R4 Acc.</a> <a class="tactic" href="host-details.html#152">Or4: case Or4.</a>
          <span class="comment">%N4 &lt; N</span>
-          <a class="tactic" href="host-details.html#151">AN4: apply A to _ Or4.</a> <a class="tactic" href="host-details.html#152">apply IH to R6 AN4.</a> <a class="tactic" href="host-details.html#153">Or3: case Or3.</a>
+          <a class="tactic" href="host-details.html#153">AN4: apply A to _ Or4.</a> <a class="tactic" href="host-details.html#154">apply IH to R6 AN4.</a> <a class="tactic" href="host-details.html#155">Or3: case Or3.</a>
             <span class="comment">%N3 &lt; N</span>
-             <a class="tactic" href="host-details.html#154">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#155">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#156">search.</a>
+             <a class="tactic" href="host-details.html#156">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#157">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#158">search.</a>
             <span class="comment">%N3 = N</span>
-             <a class="tactic" href="host-details.html#157">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#158">search.</a>
+             <a class="tactic" href="host-details.html#159">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#160">search.</a>
          <span class="comment">%N4 = N</span>
-          <a class="tactic" href="host-details.html#159">apply IH1 to R6 Acc.</a> <a class="tactic" href="host-details.html#160">Or3: case Or3.</a>
+          <a class="tactic" href="host-details.html#161">apply IH1 to R6 Acc.</a> <a class="tactic" href="host-details.html#162">Or3: case Or3.</a>
             <span class="comment">%N3 &lt; N</span>
-             <a class="tactic" href="host-details.html#161">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#162">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#163">search.</a>
+             <a class="tactic" href="host-details.html#163">AN3: apply A to _ Or3.</a> <a class="tactic" href="host-details.html#164">apply IH to R3 AN3.</a> <a class="tactic" href="host-details.html#165">search.</a>
             <span class="comment">%N3 = N</span>
-             <a class="tactic" href="host-details.html#164">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#165">search.</a></div>
-<a class="command" href="host-details.html#166"></a>
+             <a class="tactic" href="host-details.html#166">apply IH1 to R3 Acc.</a> <a class="tactic" href="host-details.html#167">search.</a></div>
+<a class="command" href="host-details.html#168"></a>
 </pre>
 </div>
 <div class="section">

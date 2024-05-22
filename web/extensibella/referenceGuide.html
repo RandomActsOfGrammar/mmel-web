@@ -249,6 +249,7 @@
   </table>
 
   <h3>Extensible Declarations</h3>
+  <p>
   Extensibella has top-level commands for declaring extensible proof
   objects:
   <table>
@@ -326,6 +327,12 @@
           used in the derivation</blockquote></td>
     </tr>
     <tr>
+      <td><blockquote>Multiple relations can have their extension size
+          versions declared together by repeating
+          the <code>&lt;rel&gt; &lt;args&gt;</code> part, comma
+          separating each relation</blockquote></td>
+    </tr>
+    <tr>
       <td><blockquote>This also introduces three lemmas the user does
           not need to prove but can use.  For a
           relation <code>rel</code>, we have
@@ -336,10 +343,36 @@
             <li><code>ext_size_pos_rel</code>, that the extension size
               is greater than or equal to zero
             <li><code>drop_ext_size_rel</code>, that the extension
-              size version of the relation is equivalent to the
+              size version of the relation implies the
               relation itself
-            <li><code>add_ext_size_rel</code>, that the relation is
-              equivalent to the extension size version of itself
+            <li><code>add_ext_size_rel</code>, that the relation
+              implies the extension size version of itself
+          </ul>
+      </blockquote></td>
+    </tr>
+
+    <tr>
+      <td><code>Proj_Rel &lt;rel&gt; &lt;args&gt;.</code></td>
+    </tr>
+    <tr>
+      <td><blockquote>Declares the projection version
+          of <code>&lt;rel&gt;</code>, which adds the premises of the
+          stand-in rule to rules introduced by extension
+          modules</blockquote></td>
+    </tr>
+    <tr>
+      <td><blockquote>Multiple relations can have their projection
+          versions declared together by repeating
+          the <code>&lt;rel&gt; &lt;args&gt;</code> part, comma
+          separating each relation</blockquote></td>
+    </tr>
+    <tr>
+      <td><blockquote>This also introduces a lemma the user does not
+          need to prove but can use.  For a relation <code>R</code>,
+          we have
+          <ul>
+            <li><code>drop_proj_rel_R</code>, that the projection
+              version of the relation implies the relation itself
           </ul>
       </blockquote></td>
     </tr>
@@ -351,10 +384,19 @@
           &lt;hyp name&gt; : &lt;formula&gt;.</code></td>
     </tr>
     <tr>
-      <td><blockquote>Declares a requirement for modules to show
-          extensions can build arguments for new properties using the
+      <td><blockquote>Declares a requirement for modules to show the
+          projection version of the relation follows from the
+          relation itself; this allows
+          extension to build arguments for new properties using the
           extensible relation <code>&lt;rel&gt;</code> for
-          induction</blockquote></td>
+          induction.  Because this uses the projection version of the
+          relation, that must be declared before this.</blockquote></td>
+    </tr>
+    <tr>
+      <td><blockquote>Multiple relations can be proven together by
+          repeating the bindings, relation, and extra premises
+          (everything after <code>Ext_Ind</code>), semicolon
+          separating each relation</blockquote></td>
     </tr>
     <tr>
       <td><blockquote>Uses the extension size version
@@ -367,17 +409,62 @@
           assumptions to be used in the proof; if there are none,
           the <code>with</code> keyword is dropped</blockquote></td>
     </tr>
+    <tr>
+      <td><blockquote>This also introduces a lemma based on what the
+          user has proven.  For a relation <code>R</code> declared
+          with extra premise formulas <code>A</code>
+          and <code>B</code>, we have
+          <ul>
+            <li><code>add_proj_rel_R</code>, that the projection
+              version of the relation implies the relation itself:<br>
+              <code>forall &lt;args&gt;, R &lt;args&gt; -&gt; A -&gt; B -&gt; &lt;R {P}&gt; &lt;args&gt; </code>
+          </ul>
+      </blockquote></td>
+    </tr>
   </table>
   Each of these extensible top-level commands also has
   a <code>Prove</code> version, used for adding to its proof in
   modules that build on the module introducing it.  They
   are <code>Prove_Theorem</code>, <code>Prove_Constraint</code>,
-  <code>Add_Ext_Size</code>,
+  <code>Add_Ext_Size</code>, <code>Add_Proj_Rel</code>,
   and <code>Prove_Ext_Ind</code>, respectively.  Each of these takes a
   list of qualified names (<i>not</i> short names) for the
   theorems or relations to which
   it is adding, and presents the user with the new cases to prove in
   the current module, if any exist.
+  </p>
+
+  <p>
+    Some of these allow new additions in their <code>Prove</code>
+    versions:
+    <ul>
+      <li><code>Prove &lt;existing thm names&gt; with &lt;new thm
+          statements&gt; also &lt;new also thm statements&gt;.</code>
+        <p>
+          Adds new mutually-inductive theorems to the set to prove
+        </p>
+      <li><code>Add_Ext_Size &lt;existing rels&gt; with &lt;new
+          rels&gt;.</code>
+        <p>
+          Adds new relations, which must be introduced by the current
+          module, to the set of relations defined together for the
+          extension size
+        </p>
+      <li><code>Add_Proj_Rel &lt;existing rels&gt; with &lt;new
+          rels&gt;.</code>
+        <p>
+          Adds new relations, which must be introduced by the current
+          module, to the set of relations defined together for the
+          projection versions of all
+        </p>
+      <li><code>Prove_Ext_Ind &lt;existing rels&gt; with &lt;new
+          rels and premises&gt;.</code>
+        <p>
+          Adds new relations to the set for which we are proving the
+          projection version follows from the basic relations
+        </p>
+    </ul>
+  </p>
 </div>
 
 <div class="section" id="tactics">
