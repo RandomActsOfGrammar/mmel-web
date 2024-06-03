@@ -280,7 +280,7 @@
           purposes of mutual induction, after all extensible theorems
           in a group with the <code>also</code> keyword, repeating
           the theorem declaration part after the <code>also</code>
-          keyword.  The <code>also</code> keyword needs only be given
+          keyword.  The <code>also</code> keyword needs to be given only
           once, with each non-extensible theorem comma-separated
           after it</blockquote></td>
     </tr>
@@ -381,7 +381,8 @@
       <td><code>Ext_Ind forall &lt;bindings&gt;,
           &lt;rel&gt; &lt;rel args&gt; with
           &lt;hyp name&gt; : &lt;formula&gt;, ...,
-          &lt;hyp name&gt; : &lt;formula&gt;.</code></td>
+          &lt;hyp name&gt; : &lt;formula&gt;
+          as &lt;IH name&gt;, &lt;IH name&gt;.</code></td>
     </tr>
     <tr>
       <td><blockquote>Declares a requirement for modules to show the
@@ -408,6 +409,21 @@
       <td><blockquote>The <code>with</code> clause adds extra
           assumptions to be used in the proof; if there are none,
           the <code>with</code> keyword is dropped</blockquote></td>
+    </tr>
+    <tr>
+      <td><blockquote>The <code>as</code> clause gives names for the
+          induction hypotheses; if no names are given,
+          the <code>as</code> keyword is dropped and the induction
+          hypotheses have automatically-generated
+          names</blockquote></td>
+    </tr>
+    <tr>
+      <td><blockquote>Arbitrary theorems can be proven mutually by
+          adding <code>and &lt;theorem statement&gt;</code> for
+          extensible theorems and <code>also &lt;theorem
+            statement&gt;</code> for non-extensible theorems, where
+          the theorem statements take the form expected
+          for <code>Extensible_Theorem</code></blockquote></td>
     </tr>
     <tr>
       <td><blockquote>This also introduces a lemma based on what the
@@ -457,11 +473,14 @@
           module, to the set of relations defined together for the
           projection versions of all
         </p>
-      <li><code>Prove_Ext_Ind &lt;existing rels&gt; with &lt;new
-          rels and premises&gt;.</code>
+      <li><code>Prove_Ext_Ind &lt;existing rels&gt;
+          and_thms &lt;existing mutual theorem names&rt;
+          with &lt;new rels and premises&gt;.</code>
         <p>
           Adds new relations to the set for which we are proving the
-          projection version follows from the basic relations
+          projection version follows from the basic relations; can add
+          new theorems by adding <code>and</code>
+          and <code>also</code> as with <code>Ext_Ind</code>
         </p>
     </ul>
   </p>
@@ -660,6 +679,16 @@
       <td><blockquote>
           Skips the current subgoal, moving to the next one.  This
           treats the subgoal as if it were truly solved.
+      </blockquote></td>
+    </tr>
+
+    <tr>
+      <td><code>admit.</code><td>
+    </tr>
+    <tr>
+      <td><blockquote>
+          Skip all remaining subgoals, completing the current theorem.
+          This treats the theorem as if it were truly solved.
       </blockquote></td>
     </tr>
 
