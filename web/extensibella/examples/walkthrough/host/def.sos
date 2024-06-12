@@ -34,6 +34,14 @@ subst X T2 Body V
 eval app(abs(X, Ty, Body), T2) V
 
 
+Extensibella_Stand_In {
+  Ctx |{tm}- T ~~> T_T
+  eval T_T T2
+  -------------------- [E-Q]
+  eval T T1
+}
+
+
 
 X != Y
 ----------------------- [S-Var-NEq]
@@ -82,11 +90,3 @@ typeOf Ctx T1 arrowTy(Ty1, Ty2)
 typeOf Ctx T2 Ty1
 ------------------------------- [T-App]
 typeOf Ctx app(T1, T2) Ty2
-
-
-Extensibella_Stand_In {
-  Ctx |{tm}- T ~~> T_T
-  typeOf Ctx T_T Ty
-  -------------------- [T-Q]
-  typeOf Ctx T Ty
-}

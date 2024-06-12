@@ -758,863 +758,313 @@ H2 : typeOf ((X, Ty2)::G) T2 Ty
 Proof completed.
 </pre>
 <pre class="code extensibella"id="48">
- &lt; <b>Add_Ext_Size walkthrough:host:typeOf.</b>
+ &lt; <b>Add_Ext_Size walkthrough:host:eval.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="49">
- &lt; <b>Add_Proj_Rel walkthrough:host:typeOf.</b>
+ &lt; <b>Add_Proj_Rel walkthrough:host:eval.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="50">
- &lt; <b>Prove_Ext_Ind walkthrough:host:typeOf.</b>
+ &lt; <b>Prove_Ext_Ind walkthrough:host:eval.</b>
 
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Variables: N G Ty N2 T2 T11 X T1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
 Acc : acc N @
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Ty : typeOf G (let X T1 T2) Ty
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
 ============================
- &lt;typeOf {P}&gt; G (let X T1 T2) Ty
+ &lt;eval {P}&gt; (let X T1 T2) (let X T11 T2)
 </pre>
 <pre class="code extensibella"id="51">
  &lt; <b>Acc: case Acc.</b>
 
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Variables: N G Ty N2 T2 T11 X T1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+Ty : typeOf G (let X T1 T2) Ty
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 ============================
- &lt;typeOf {P}&gt; G (let X T1 T2) Ty
+ &lt;eval {P}&gt; (let X T1 T2) (let X T11 T2)
 </pre>
 <pre class="code extensibella"id="52">
  &lt; <b>unfold .</b>
 
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Variables: N G Ty N2 T2 T11 X T1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+Ty : typeOf G (let X T1 T2) Ty
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
 </pre>
 <pre class="code extensibella"id="53">
- &lt; <b>apply drop_ext_size_typeOf to R3.</b>
+ &lt; <b>Ty: case Ty.</b>
 
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
 </pre>
 <pre class="code extensibella"id="54">
  &lt; <b>assert G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1.</b>
 
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
 </pre>
 <pre class="code extensibella"id="55">
- &lt; <b>IsN2: apply ext_size_is_int_typeOf to R3.</b>
+ &lt; <b>IsN2: apply ext_size_is_int_eval to R2.</b>
 
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
 IsN2 : is_integer N2
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
 </pre>
 <pre class="code extensibella"id="56">
- &lt; <b>IsN3: apply ext_size_is_int_typeOf to R4.</b>
-
-Subgoal 4:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
-</pre>
-<pre class="code extensibella"id="57">
- &lt; <b>IsN4: apply plus_integer_is_integer to _ _ R2.</b>
-
-Subgoal 4:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
-</pre>
-<pre class="code extensibella"id="58">
  &lt; <b>L: apply lt_plus_one to R1 _.</b>
 
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
 IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
+L : N2 &lt; N
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
+</pre>
+<pre class="code extensibella"id="57">
+ &lt; <b>PosN2: apply ext_size_pos_eval to R2.</b>
+
+Subgoal 4:
+
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+L : N2 &lt; N
+PosN2 : 0 &lt;= N2
+============================
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
+</pre>
+<pre class="code extensibella"id="58">
+ &lt; <b>A: apply Acc to PosN2 L.</b>
+
+Subgoal 4:
+
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
+IsN2 : is_integer N2
+L : N2 &lt; N
+PosN2 : 0 &lt;= N2
+A : acc N2 *
+============================
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
 </pre>
 <pre class="code extensibella"id="59">
- &lt; <b>PosN2: apply ext_size_pos_typeOf to R3.</b>
+ &lt; <b>apply IH to R2 A Ty.</b>
 
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
 Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
 IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
+L : N2 &lt; N
 PosN2 : 0 &lt;= N2
+A : acc N2 *
+H2 : &lt;eval {P}&gt; T1 T11
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
 </pre>
 <pre class="code extensibella"id="60">
- &lt; <b>PosN3: apply ext_size_pos_typeOf to R4.</b>
+ &lt; <b>search.</b>
 
-Subgoal 4:
+Subgoal 5:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
+Variables: G T' Ty T2 T1 X
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) T' 1 @@
+Acc : acc 1 @
+Ty : typeOf G (let X T1 T2) Ty
+R1 : value T1
+R2 : subst X T1 T2 T'
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
+ &lt;eval {P}&gt; (let X T1 T2) T'
 </pre>
 <pre class="code extensibella"id="61">
- &lt; <b>assert &lt;typeOf {P}&gt; G T1 Ty1.</b>
+ &lt; <b>unfold .</b>
 
-Subgoal 4.1:
+Subgoal 5:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
+Variables: G T' Ty T2 T1 X
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) T' 1 @@
+Acc : acc 1 @
+Ty : typeOf G (let X T1 T2) Ty
+R1 : value T1
+R2 : subst X T1 T2 T'
 ============================
- &lt;typeOf {P}&gt; G T1 Ty1
+ exists Ctx T_T T3,
+   (value T1 /\ subst X T1 T2 T') /\
+   (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
 </pre>
 <pre class="code extensibella"id="62">
- &lt; <b>Or: apply lt_left to R2 _ _.</b>
+ &lt; <b>Ty: case Ty.</b>
 
-Subgoal 4.1:
+Subgoal 5:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-Or : N2 &lt; N4 \/ N2 = N4
+Variables: G T' Ty T2 T1 X Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) T' 1 @@
+Acc : acc 1 @
+R1 : value T1
+R2 : subst X T1 T2 T'
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
 ============================
- &lt;typeOf {P}&gt; G T1 Ty1
+ exists Ctx T_T T3,
+   (value T1 /\ subst X T1 T2 T') /\
+   (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
 </pre>
 <pre class="code extensibella"id="63">
- &lt; <b>L': case Or.</b>
+ &lt; <b>assert G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1.</b>
 
-Subgoal 4.1.1:
+Subgoal 5:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-L' : N2 &lt; N4
+Variables: G T' Ty T2 T1 X Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) T' 1 @@
+Acc : acc 1 @
+R1 : value T1
+R2 : subst X T1 T2 T'
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
 ============================
- &lt;typeOf {P}&gt; G T1 Ty1
+ exists Ctx T_T T3,
+   (value T1 /\ subst X T1 T2 T') /\
+   (Ctx |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;eval {P}&gt; T_T T3)
 </pre>
 <pre class="code extensibella"id="64">
- &lt; <b>L'': apply less_integer_transitive to L' L.</b>
-
-Subgoal 4.1.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-L' : N2 &lt; N4
-L'' : N2 &lt; N
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-</pre>
-<pre class="code extensibella"id="65">
- &lt; <b>A: apply Acc to _ L''.</b>
-
-Subgoal 4.1.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-L' : N2 &lt; N4
-L'' : N2 &lt; N
-A : acc N2 *
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-</pre>
-<pre class="code extensibella"id="66">
- &lt; <b>apply IH to R3 A.</b>
-
-Subgoal 4.1.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-L' : N2 &lt; N4
-L'' : N2 &lt; N
-A : acc N2 *
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-</pre>
-<pre class="code extensibella"id="67">
- &lt; <b>search.</b>
-
-Subgoal 4.1.2:
-
-Variables: N G Ty N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N4 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N4 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N4
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N4
-PosN3 : 0 &lt;= N3
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-</pre>
-<pre class="code extensibella"id="68">
- &lt; <b>A: apply Acc to _ L.</b>
-
-Subgoal 4.1.2:
-
-Variables: N G Ty N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N4 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N4 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N4
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N4
-PosN3 : 0 &lt;= N3
-A : acc N4 *
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-</pre>
-<pre class="code extensibella"id="69">
- &lt; <b>apply IH to R3 A.</b>
-
-Subgoal 4.1.2:
-
-Variables: N G Ty N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N4 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N4 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N4
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N4
-PosN3 : 0 &lt;= N3
-A : acc N4 *
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-</pre>
-<pre class="code extensibella"id="70">
- &lt; <b>search.</b>
-
-Subgoal 4:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
-</pre>
-<pre class="code extensibella"id="71">
- &lt; <b>assert &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty.</b>
-
-Subgoal 4.2:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-============================
- &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-</pre>
-<pre class="code extensibella"id="72">
- &lt; <b>Or: apply lt_right to R2 _ _ _.</b>
-
-Subgoal 4.2:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-Or : N3 &lt; N4 \/ N3 = N4
-============================
- &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-</pre>
-<pre class="code extensibella"id="73">
- &lt; <b>L': case Or.</b>
-
-Subgoal 4.2.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-L' : N3 &lt; N4
-============================
- &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-</pre>
-<pre class="code extensibella"id="74">
- &lt; <b>L'': apply less_integer_transitive to L' L.</b>
-
-Subgoal 4.2.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-L' : N3 &lt; N4
-L'' : N3 &lt; N
-============================
- &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-</pre>
-<pre class="code extensibella"id="75">
- &lt; <b>A: apply Acc to _ L''.</b>
-
-Subgoal 4.2.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-L' : N3 &lt; N4
-L'' : N3 &lt; N
-A : acc N3 *
-============================
- &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-</pre>
-<pre class="code extensibella"id="76">
- &lt; <b>apply IH to R4 A.</b>
-
-Subgoal 4.2.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-L' : N3 &lt; N4
-L'' : N3 &lt; N
-A : acc N3 *
-H4 : &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-============================
- &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-</pre>
-<pre class="code extensibella"id="77">
- &lt; <b>search.</b>
-
-Subgoal 4.2.2:
-
-Variables: N G Ty N2 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N4 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N4 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N4
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N4
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-============================
- &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-</pre>
-<pre class="code extensibella"id="78">
- &lt; <b>A: apply Acc to _ L.</b>
-
-Subgoal 4.2.2:
-
-Variables: N G Ty N2 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N4 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N4 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N4
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N4
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-A : acc N4 *
-============================
- &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-</pre>
-<pre class="code extensibella"id="79">
- &lt; <b>apply IH to R4 A.</b>
-
-Subgoal 4.2.2:
-
-Variables: N G Ty N2 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N4 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N4 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N4
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N4
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-A : acc N4 *
-H4 : &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-============================
- &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-</pre>
-<pre class="code extensibella"id="80">
- &lt; <b>search.</b>
-
-Subgoal 4:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-H4 : &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~&gt; T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
-</pre>
-<pre class="code extensibella"id="81">
- &lt; <b>exists app (abs X Ty1 T2) T1,
-   Ty1.</b>
-
-Subgoal 4:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 &lt;= N2
-PosN3 : 0 &lt;= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-H4 : &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
-============================
- (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
- (G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1 /\
- &lt;typeOf {P}&gt; G (app (abs X Ty1 T2) T1) Ty)
-</pre>
-<pre class="code extensibella"id="82">
  &lt; <b>search.</b>
 
 Proof completed.

@@ -106,29 +106,14 @@ Projection_Constraint proj_type_same : forall G T Ty T_T,
   G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.
 
 
-Ext_Size typeOf G T Ty.
+Ext_Size eval T T'.
 
-Proj_Rel typeOf G T Ty.
+Proj_Rel eval T T'.
 
-Ext_Ind forall G T Ty, typeOf G T Ty.
-%T-Var
+Ext_Ind forall G T T' Ty, eval T T' with Ty : typeOf G T Ty.
+%E-App-Step1
+ Ty: case Ty. apply IH1 to R1 Acc Ty. search.
+%E-App-Step2
+ Ty: case Ty. apply IH1 to R2 Acc Ty1. search.
+%E-App-Subst
  search.
-%T-Abs
- apply IH1 to R1 Acc. search.
-%T-App
- apply ext_size_is_int_typeOf to R2. apply ext_size_is_int_typeOf to R3.
- apply ext_size_pos_typeOf to R2. apply ext_size_pos_typeOf to R3.
- Or2: apply lt_left to R1 _ _. Or3: apply lt_right to R1 _ _ _.
- A: case Acc (keep). Or2: case Or2.
-   %N2 < N
-    AN2: apply A to _ Or2. apply IH to R2 AN2. Or3: case Or3.
-      %N3 < N
-       AN3: apply A to _ Or3. apply IH to R3 AN3. search.
-      %N3 = N
-       apply IH1 to R3 Acc. search.
-   %N2 = N
-    apply IH1 to R2 Acc. Or3: case Or3.
-      %N3 < N
-       AN3: apply A to _ Or3. apply IH to R3 AN3. search.
-      %N3 = N
-       apply IH1 to R3 Acc. search.

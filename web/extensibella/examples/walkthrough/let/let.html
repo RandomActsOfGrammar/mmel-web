@@ -130,39 +130,24 @@ typeOf Ctx let(X, T1, T2) Ty2
  <a class="tactic" href="let-details.html#45">case Hyp1.</a> <a class="tactic" href="let-details.html#46">apply typeOf_unique to Hyp2 H1.</a> <a class="tactic" href="let-details.html#47">search.</a>
 
 
-<a class="tactic" href="let-details.html#48">Add_Ext_Size walkthrough:host:typeOf.</a>
+<a class="tactic" href="let-details.html#48">Add_Ext_Size walkthrough:host:eval.</a>
 
 
-<a class="tactic" href="let-details.html#49">Add_Proj_Rel walkthrough:host:typeOf.</a></div>
+<a class="tactic" href="let-details.html#49">Add_Proj_Rel walkthrough:host:eval.</a></div>
 
 
-<a class="command" href="let-details.html#50">Prove_Ext_Ind walkthrough:host:typeOf.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(51);" id="toggleproof51">[Show Proof]</a>
+<a class="command" href="let-details.html#50">Prove_Ext_Ind walkthrough:host:eval.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(51);" id="toggleproof51">[Show Proof]</a>
 <div class="proof" id="proof51" style="display: none;">
-<span class="comment">%T-Let</span>
- <a class="tactic" href="let-details.html#51">Acc: case Acc.</a> <a class="tactic" href="let-details.html#52">unfold.</a> <a class="tactic" href="let-details.html#53">apply drop_ext_size_typeOf to R3.</a>
+<span class="comment">%E-Let-Step</span>
+ <a class="tactic" href="let-details.html#51">Acc: case Acc.</a> <a class="tactic" href="let-details.html#52">unfold.</a> <a class="tactic" href="let-details.html#53">Ty: case Ty.</a>
  <a class="tactic" href="let-details.html#54">assert G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1.</a>
- <a class="tactic" href="let-details.html#55">IsN2: apply ext_size_is_int_typeOf to R3.</a>
- <a class="tactic" href="let-details.html#56">IsN3: apply ext_size_is_int_typeOf to R4.</a>
- <a class="tactic" href="let-details.html#57">IsN4: apply plus_integer_is_integer to _ _ R2.</a>
- <a class="tactic" href="let-details.html#58">L: apply lt_plus_one to R1 _.</a>
- <a class="tactic" href="let-details.html#59">PosN2: apply ext_size_pos_typeOf to R3.</a>
- <a class="tactic" href="let-details.html#60">PosN3: apply ext_size_pos_typeOf to R4.</a>
- <a class="tactic" href="let-details.html#61">assert &lt;typeOf {P}&gt; G T1 Ty1.</a>
-   <a class="tactic" href="let-details.html#62">Or: apply lt_left to R2 _ _.</a> <a class="tactic" href="let-details.html#63">L': case Or.</a>
-     <span class="comment">%N2 &lt; N4</span>
-      <a class="tactic" href="let-details.html#64">L'': apply less_integer_transitive to L' L.</a>
-      <a class="tactic" href="let-details.html#65">A: apply Acc to _ L''.</a> <a class="tactic" href="let-details.html#66">apply IH to R3 A.</a> <a class="tactic" href="let-details.html#67">search.</a>
-     <span class="comment">%N2 = N4</span>
-      <a class="tactic" href="let-details.html#68">A: apply Acc to _ L.</a> <a class="tactic" href="let-details.html#69">apply IH to R3 A.</a> <a class="tactic" href="let-details.html#70">search.</a>
- <a class="tactic" href="let-details.html#71">assert &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty.</a>
-   <a class="tactic" href="let-details.html#72">Or: apply lt_right to R2 _ _ _.</a> <a class="tactic" href="let-details.html#73">L': case Or.</a>
-     <span class="comment">%N3 &lt; N4</span>
-      <a class="tactic" href="let-details.html#74">L'': apply less_integer_transitive to L' L.</a>
-      <a class="tactic" href="let-details.html#75">A: apply Acc to _ L''.</a> <a class="tactic" href="let-details.html#76">apply IH to R4 A.</a> <a class="tactic" href="let-details.html#77">search.</a>
-     <span class="comment">%N3 = N4</span>
-      <a class="tactic" href="let-details.html#78">A: apply Acc to _ L.</a> <a class="tactic" href="let-details.html#79">apply IH to R4 A.</a> <a class="tactic" href="let-details.html#80">search.</a>
- <a class="tactic" href="let-details.html#81">exists app (abs X Ty1 T2) T1, Ty1.</a> <a class="tactic" href="let-details.html#82">search.</a></div>
-<a class="command" href="let-details.html#83"></a>
+ <a class="tactic" href="let-details.html#55">IsN2: apply ext_size_is_int_eval to R2.</a>
+ <a class="tactic" href="let-details.html#56">L: apply lt_plus_one to R1 _.</a> <a class="tactic" href="let-details.html#57">PosN2: apply ext_size_pos_eval to R2.</a>
+ <a class="tactic" href="let-details.html#58">A: apply Acc to PosN2 L.</a> <a class="tactic" href="let-details.html#59">apply IH to R2 A Ty.</a> <a class="tactic" href="let-details.html#60">search.</a>
+<span class="comment">%E-Let-Subst</span>
+ <a class="tactic" href="let-details.html#61">unfold.</a> <a class="tactic" href="let-details.html#62">Ty: case Ty.</a>
+ <a class="tactic" href="let-details.html#63">assert G |{tm}- let X T1 T2 ~~&gt; app (abs X Ty1 T2) T1.</a> <a class="tactic" href="let-details.html#64">search.</a></div>
+<a class="command" href="let-details.html#65"></a>
 </pre>
 </div>
 <div class="section">

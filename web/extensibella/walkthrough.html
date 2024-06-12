@@ -169,6 +169,14 @@ subst X T2 Body V
 eval app(abs(X, Ty, Body), T2) V
 
 
+Extensibella_Stand_In {
+  Ctx |{tm}- T ~~> T_T
+  eval T_T T2
+  -------------------- [E-Q]
+  eval T T1
+}
+
+
 
 X != Y
 ----------------------- [S-Var-NEq]
@@ -217,14 +225,6 @@ typeOf Ctx T1 arrowTy(Ty1, Ty2)
 typeOf Ctx T2 Ty1
 ------------------------------- [T-App]
 typeOf Ctx app(T1, T2) Ty2
-
-
-Extensibella_Stand_In {
-  Ctx |{tm}- T ~~> T_T
-  typeOf Ctx T_T Ty
-  -------------------- [T-Q]
-  typeOf Ctx T Ty
-}
 </pre>
 
   <p>
@@ -362,32 +362,18 @@ Projection_Constraint proj_type_same : forall G T Ty T_T,
   G |{tm}- T ~~> T_T -> typeOf G T Ty -> typeOf G T_T Ty.
 
 
-Ext_Size typeOf G T Ty.
-Proj_Rel typeOf G T Ty.
+Ext_Size eval T T'.
 
-Ext_Ind forall G T Ty, typeOf G T Ty.<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(6);" id="toggleproof6">[Show Proof]</a>
+Proj_Rel eval T T'.
+
+Ext_Ind forall G T T' Ty, eval T T' with Ty : typeOf G T Ty.<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(6);" id="toggleproof6">[Show Proof]</a>
 <div class="proof" id="proof6" style="display: none;">
-<span class="comment">%T-Var</span>
- search.
-<span class="comment">%T-Abs</span>
- apply IH1 to R1 Acc. search.
-<span class="comment">%T-App</span>
- apply ext_size_is_int_typeOf to R2. apply ext_size_is_int_typeOf to R3.
- apply ext_size_pos_typeOf to R2. apply ext_size_pos_typeOf to R3.
- Or2: apply lt_left to R1 _ _. Or3: apply lt_right to R1 _ _ _.
- A: case Acc (keep). Or2: case Or2.
-   <span class="comment">%N2 &lt; N</span>
-    AN2: apply A to _ Or2. apply IH to R2 AN2. Or3: case Or3.
-      <span class="comment">%N3 &lt; N</span>
-       AN3: apply A to _ Or3. apply IH to R3 AN3. search.
-      <span class="comment">%N3 = N</span>
-       apply IH1 to R3 Acc. search.
-   <span class="comment">%N2 = N</span>
-    apply IH1 to R2 Acc. Or3: case Or3.
-      <span class="comment">%N3 &lt; N</span>
-       AN3: apply A to _ Or3. apply IH to R3 AN3. search.
-      <span class="comment">%N3 = N</span>
-       apply IH1 to R3 Acc. search.</div></pre>
+<span class="comment">%E-App-Step1</span>
+ Ty: case Ty. apply IH1 to R1 Acc Ty. search.
+<span class="comment">%E-App-Step2</span>
+ Ty: case Ty. apply IH1 to R2 Acc Ty1. search.
+<span class="comment">%E-App-Subst</span>
+ search.</div></pre>
 
   <p>
     We will look at each top-level declaration here in turn.
@@ -752,7 +738,7 @@ Proof completed. </pre>
     for <code class="extensibella">Ext_Size</code>,
     <code class="extensibella">Proj_Rel</code>,
     and <code class="extensibella">Ext_Ind</code> for
-    the <code>typeOf</code> relation.  The name <code class="extensibella">Ext_Ind</code> stands
+    the <code>eval</code> relation.  The name <code class="extensibella">Ext_Ind</code> stands
     for <em>ext</em>ension <em>ind</em>uction.  When an extension
     wants to prove a property using a relation introduced by the host
     language as its key relation, there is a possibility other
@@ -769,24 +755,24 @@ Proof completed. </pre>
   <p>
     The generic case the extension proves for its property is when the
     key relation is derived using the stand-in rule given
-    above, <code>T-Q</code>:
+    above, <code>X-Q</code>:
   </p>
     <pre class="code sterling">
 Extensibella_Stand_In {
   Ctx |{tm}- T ~~> T_T
-  typeOf Ctx T_T Ty
-  -------------------- [T-Q]
-  typeOf Ctx T Ty
+  eval T_T T2
+  -------------------- [E-Q]
+  eval T T1
 }</pre>
 
   <p>
     This declaration also creates an obligation that must be proven by
     the host language and each extension, that this rule is a valid
     way of looking at the rules introduced by extensions, embodied in
-    the projection version of the <code>typeOf</code> relation
+    the projection version of the <code>eval</code> relation
     declared by the <code class="extensibella">Proj_Rel</code> declaration.
     The <code class="extensibella">Ext_Size</code> declaration
-    introduces a new version of the <code>typeOf</code> relation that
+    introduces a new version of the <code>eval</code> relation that
     will be useful for proving this.
     The details of this are discussed more
     in the context of the <a href="#let">let extension</a> below.  We
@@ -971,38 +957,21 @@ Prove_Constraint walkthrough:host:proj_type_same.<span> </span><a class="fold-li
  case Hyp1. apply typeOf_unique to Hyp2 H1. search.</div>
 
 
-Add_Ext_Size walkthrough:host:typeOf.
-Add_Proj_Rel walkthrough:host:typeOf.
+Add_Ext_Size walkthrough:host:eval.
+Add_Proj_Rel walkthrough:host:eval.
 
 
-Prove_Ext_Ind walkthrough:host:typeOf.<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(12);" id="toggleproof12">[Show Proof]</a>
+Prove_Ext_Ind walkthrough:host:eval.<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(12);" id="toggleproof12">[Show Proof]</a>
 <div class="proof" id="proof12" style="display: none;">
-<span class="comment">%T-Let</span>
- Acc: case Acc. unfold. apply drop_ext_size_typeOf to R3.
+<span class="comment">%E-Let-Step</span>
+ unfold. Ty: case Ty.
  assert G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1.
- IsN2: apply ext_size_is_int_typeOf to R3.
- IsN3: apply ext_size_is_int_typeOf to R4.
- IsN4: apply plus_integer_is_integer to _ _ R2.
- L: apply lt_plus_one to R1 _.
- PosN2: apply ext_size_pos_typeOf to R3.
- PosN3: apply ext_size_pos_typeOf to R4.
- Or2: apply lt_left to R2 _ _. Or3: apply lt_right to R2 _ _ _.
- Or2: case Or2.
-   <span class="comment">%N2 &lt; N4</span>
-    LN2: apply less_integer_transitive to Or2 L.
-    AN2: apply Acc to _ LN2. apply IH1 to R3 AN2. Or3: case Or3.
-      <span class="comment">%N3 &lt; N4</span>
-       LN3: apply less_integer_transitive to Or3 L.
-       AN3: apply Acc to _ LN3. apply IH1 to R4 AN3. search.
-      <span class="comment">%N3 = N4</span>
-       AN4: apply Acc to _ L. apply IH1 to R4 AN4. search.
-   <span class="comment">%N2 = N4</span>
-    AN4: apply Acc to _ L. apply IH1 to R3 AN4. Or3: case Or3.
-      <span class="comment">%N3 &lt; N4</span>
-       LN3: apply less_integer_transitive to Or3 L.
-       AN3: apply Acc to _ LN3. apply IH1 to R4 AN3. search.
-      <span class="comment">%N3 = N4</span>
-       apply IH1 to R4 AN4. search.</div></pre>
+ IsN2: apply ext_size_is_int_eval to R2.
+ L: apply lt_plus_one to R1 _. PosN2: apply ext_size_pos_eval to R2.
+ Acc: case Acc. A: apply Acc to _ L. apply IH to R2 A Ty. search.
+<span class="comment">%E-Let-Subst</span>
+ unfold. Ty: case Ty.
+ assert G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1. search.</div></pre>
 
   <p>
     The proofs the let extension writes are all for new cases of
@@ -1164,15 +1133,15 @@ Proof completed.</pre>
   <h4>Adding Ext_Size and Proj_Rel and Proving Ext_Ind</h4>
   <p>
     For <code class="extensibella">Ext_Ind</code>,
-    each extension has an obligation to show the rules they introduce
+    each extension has an obligation to show the rules it introduces
     are compatible with the stand-in rule defined by the host language.
-    For the <code>typeOf</code> relation, this is
+    For the <code>eval</code> relation, this is
     <pre class="code sterling">
 Extensibella_Stand_In {
-  Ctx |{tm}- T ~~&gt; T_T
-  typeOf Ctx T_T Ty
-  -------------------- [T-Q]
-  typeOf Ctx T Ty
+  Ctx |{tm}- T ~~> T_T
+  eval T_T T2
+  -------------------- [E-Q]
+  eval T T1
 }</pre>
     This
     compatibility for a relation <code class="extensibella">rel</code>
@@ -1182,32 +1151,31 @@ Extensibella_Stand_In {
     declared by the <code class="extensibella">Proj_Rel</code> and
     <code class="extensibella">Add_Proj_Rel</code> commands.
     In our case, this relation is
-    <code class="extensibella">&lt;typeOf {P}&gt;</code>.  Each rule
+    <code class="extensibella">&lt;eval {P}&gt;</code>.  Each rule
     for this relation corresponds to one for the underlying relation,
     with those introduced by extensions having the stand-in rule
     incorporated.  For example, the rule for the projection version
-    of <code>typeOf</code> corresponding to <code>T-Let</code> is
+    of <code>eval</code> corresponding to <code>E-Let-Step</code> is
     <pre class="code">
-&lt;typeOf {P}&gt; Ctx T1 Ty1
-&lt;typeOf {P}&gt; (X, Ty1)::Ctx T2 Ty2
+&lt;eval {P}&gt; T1 T11
 Ctx |{tm}- let(X, T1, T2) ~~&gt; T_T
-&lt;typeOf {P}&gt; Ctx T_T Ty2
------------------------------------ [T-Let {P}]
-&lt;typeOf {P}&gt; Ctx let(X, T1, T2) Ty2</pre>
+&lt;eval {P}&gt; T_T T3
+----------------------------------------- [E-Let-Step {P}]
+&lt;eval {P}&gt; let(X, T1, T2) let(X, T11, T2)</pre>
     This rule incorporates both the standard premises of
-    the <code>T-Let</code> rule and the premises of the stand-in rule
-    instantiated for the conclusion of <code>T-Let</code>.
+    the <code>E-Let-Step</code> rule and the premises of the stand-in rule
+    instantiated for the conclusion of <code>E-Let-Step</code>.
   </p>
 
   <p>
     In order to prove the projection version of
-    the <code>typeOf</code> relation follows from the relation itself,
-    we need a way to show we will have <code>&lt;typeOf {P}&gt;</code>
+    the <code>eval</code> relation follows from the relation itself,
+    we need a way to show we will have <code>&lt;eval {P}&gt;</code>
     hold for the projection of the primary component of any
     extension-introduced rule even though we do not have a derivation
-    of the basic <code>typeOf</code> relation for it.  The extension
-    size version of the <code>typeOf</code> relation,
-    written <code>&lt;typeOf {ES}&gt;</code>, will give us a way to do
+    of the basic <code>eval</code> relation for it.  The extension
+    size version of the <code>eval</code> relation,
+    written <code>&lt;eval {ES}&gt;</code>, will give us a way to do
     this.  The extension size version of a relation incorporates a
     count of the number of extension-introduced rules in a derivation.
     Both of these versions of relations, and how the extension size
@@ -1219,19 +1187,21 @@ Ctx |{tm}- let(X, T1, T2) ~~&gt; T_T
   <p>
     What <code>Ext_Ind</code> shows is that we have a
     derivation of the projection version of a relation whenever we
-    have a derivation of the relation itself.  When we have declared
+    have a derivation of the relation itself, as well as a derivation
+    of typing for the original term.  Because projection can rely on
+    typing, this extra premise is useful in the proof.  When we have declared
     the extension size version of the relation
-    using <code>Ext_Size</code>, as we have for <code>typeOf</code>,
+    using <code>Ext_Size</code>, as we have for <code>eval</code>,
     Extensibella has us start from a derivation of the extension size
     version of the relation rather than the relation itself.  Thus
     what we need to prove here is
     <pre class="code extensibella">
-forall G T Ty n, &lt;typeOf {ES}&gt; G T Ty n -> &lt;typeOf {P}&gt; G T Ty</pre>
+forall G T T' Ty n, &lt;eval {ES}&gt; T T' n -> typeOf G T Ty -> &lt;eval {P}&gt; T T'</pre>
     where <code>n</code> is the extension size of the original
     derivation, that is, the number of extension-introduced rules used
     in the derivation.  We will prove this by induction on the extension
     size <code>n</code> and the derivation
-    of <code class="extensibella">&lt;typeOf {ES}&gt; G T Ty n</code>.
+    of <code class="extensibella">&lt;eval {ES}&gt; T T' n</code>.
     The induction on <code>n</code> also requires a second premise,
     <code class="extensibella">acc n</code>.  The
     <code class="extensibella">acc</code> predicate essentially
@@ -1245,26 +1215,26 @@ forall G T Ty n, &lt;typeOf {ES}&gt; G T Ty n -> &lt;typeOf {P}&gt; G T Ty</pre>
     for the <code>Ext_Ind</code> for the <code>typeOf</code> relation:
   </p>
   <pre class="code extensibella">
- &lt; <b>Prove_Ext_Ind walkthrough:host:typeOf.</b>
+ &lt; <b>Prove_Ext_Ind walkthrough:host:eval.</b>
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
+Variables: N G Ty N2 T2 T11 X T1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
 Acc : acc N @
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
+Ty : typeOf G (let X T1 T2) Ty
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
 ============================
- &lt;typeOf {P}&gt; G (let X T1 T2) Ty</pre>
+ &lt;eval {P}&gt; (let X T1 T2) (let X T11 T2)</pre>
 
   <p>
-    This puts us into the proof case for when <code>&lt;typeOf
+    This puts us into the proof case for when <code>&lt;eval
     {ES}&gt;</code> is derived using the rule corresponding to
-    the <code>T-Let</code> rule.
+    the <code>T-Let-Step</code> rule.
     We then analyze <code class="extensibella">acc n</code> to unfold
     its definition:
   </p>
@@ -1272,18 +1242,18 @@ R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
  &lt; <b>Acc: case Acc.</b>
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
+Variables: N G Ty N2 T2 T11 X T1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+Ty : typeOf G (let X T1 T2) Ty
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 &lt;= M -> M < N -> acc M *
 ============================
- &lt;typeOf {P}&gt; G (let X T1 T2) Ty</pre>
+ &lt;eval {P}&gt; (let X T1 T2) (let X T11 T2)</pre>
 
   <p>
     This gives us a way to build a derivation
@@ -1291,585 +1261,310 @@ Acc : forall M, 0 <= M -> M &lt; N -> acc M *
     inductive hypothesis, as seen by the <code>*</code> annotation on
     its unfolded conclusion. We can use
     the <code class="extensibella">unfold</code> tactic to see the
-    definition of <code class="extensibella">&lt;typeOf {P}&gt; G (let
-      X T1 T2) Ty</code>, and thus what we need to prove:
+    definition of <code class="extensibella">&lt;eval {P}&gt; (let X
+    T1 T2) (let X T11 T2)</code>, and thus what we need to prove:
   </p>
   <pre class="code extensibella">
  &lt; <b>unfold.</b>
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
+Variables: N G Ty N2 T2 T11 X T1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+Ty : typeOf G (let X T1 T2) Ty
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~> T_T /\ &lt;typeOf {P}&gt; G T_T Ty)</pre>
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)</pre>
 
   <p>
-    We see the first two conjuncts in the conclusion are those for the
-    premises of the <code>T-Let</code> typing rule and the others are
+    We see the first conjunct in the conclusion are those for the
+    premises of the <code>E-Let-Step</code> evaluation rule and the others are
     for the stand-in rule, but now using the projection
     version of the relation.  Then we need to show the
-    original <code>let</code> projects, that its projection has the
-    same type, and that each of the premises can be turned into its
+    original <code>let</code> projects, that its projection evaluates,
+    and that each of the premises can be turned into its
     projection version.
   </p>
 
   <p>
     We start with showing the projection exists.  This requires a
     typing derivation for <code>T1</code>, which we can get by
-    applying the <code class="extensibella">drop_ext_size_typeOf</code>
-    property introduced by <code class="extensibella">Ext_Size</code>:
+    breaking down the typing derivation:
   </p>
   <pre class="code extensibella">
- &lt; <b>apply drop_ext_size_typeOf to Rel3.</b>
+ &lt; <b>Ty: case Ty.</b>
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~> T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)
 
  &lt; <b>assert G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1.</b>
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~> T_T /\ &lt;typeOf {P}&gt; G T_T Ty)</pre>
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)</pre>
 
   <p>
-    The other portions of the conclusion are related, as typing the
+    The other portions of the conclusion are related, as evaluating the
     projection ultimately requires the same premises as
-    the <code>T-Let</code> rule.  These will require using the
-    inductive hypothesis, which will in turn require derivations of
-    <code class="extensibella">acc</code> for <code>N2</code>
-    and <code>N3</code>.  We start by building derivations
-    of <code>is_integer</code> for the relevant numbers.  We can use
-    the <code class="extensibella">ext_size_is_int_typeOf</code>
+    the <code>E-Let-Step</code> rule.  These will require using the
+    inductive hypothesis, which will in turn require a derivation of
+    <code class="extensibella">acc</code> for <code>N2</code>.
+    We start by building a derivation
+    of <code>is_integer</code> for <code>N2</code>.  We can use
+    the <code class="extensibella">ext_size_is_int_eval</code>
     property, also introduced by
     the <code class="extensibella">Ext_Size</code> declaration but
     which the user does not need to prove, as it can be proven
     automatically.
   </p>
   <pre class="code extensibella">
- &lt; <b>IsN2: apply ext_size_is_int_typeOf to R3.</b>
+ &lt; <b>IsN2: apply ext_size_is_int_typeOf to R2.</b>
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
 IsN2 : is_integer N2
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~> T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
-
- &lt; <b> IsN3: apply ext_size_is_int_typeOf to R4.</b>
-Subgoal 4:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~> T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
-
- &lt; <b>IsN4: apply plus_integer_is_integer to _ _ R2.</b>
-Subgoal 4:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~> T_T /\ &lt;typeOf {P}&gt; G T_T Ty)</pre>
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)</pre>
 
   <p>
     We can now use an Extensibella standard library property to
-    show <code>N4 &lt; N</code>:
+    show <code>N2 &lt; N</code>:
   </p>
   <pre class="code extensibella">
  &lt; <b>L: apply lt_plus_one to R1 _.</b>
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
 IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
+L : N2 < N
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~> T_T /\ &lt;typeOf {P}&gt; G T_T Ty)</pre>
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)</pre>
 
   <p>
-    To show both <code>N2</code> and <code>N3</code> are at least
+    To show <code>N2</code> is at least
     zero, a requirement for <code class="extensibella">acc</code>, we
     can use another property declared and automatically proven by
     <code class="extensibella">Ext_Size</code>:
   </p>
   <pre class="code extensibella">
- &lt; <b>PosN2: apply ext_size_pos_typeOf to R3.</b>
+ &lt; <b>PosN2: apply ext_size_pos_typeOf to R2.</b>
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
 IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
+L : N2 < N
 PosN2 : 0 <= N2
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~> T_T /\ &lt;typeOf {P}&gt; G T_T Ty)
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)</pre>
 
- &lt; <b>PosN3: apply ext_size_pos_typeOf to R4.</b>
+  <p>
+    We can now build a derivation of <code>acc N2</code>:
+  </p>
+  <pre class="code extensibella">
+ &lt; <b>A: apply Acc to PosN2 L.</b>
 Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
 IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
+L : N2 < N
 PosN2 : 0 <= N2
-PosN3 : 0 <= N3
-============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~> T_T /\ &lt;typeOf {P}&gt; G T_T Ty)</pre>
-
-  <p>
-    We can now build derivations
-    of <code class="extensibella">&lt;typeOf {P}&gt;</code> for
-    both <code>T1</code> and <code>T2</code>.  We can use a theorem
-    from the Extensibella standard library to show <code>N2</code> is
-    either less than <code>N4</code> or equal to it, then split it
-    into the two cases:
-  </p>
-  <pre class="code extensibella">
- &lt; <b>assert &lt;typeOf {P}&gt; G T1 Ty1.</b>
-Subgoal 4.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 <= N2
-PosN3 : 0 <= N3
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-
- &lt; <b>Or: apply lt_left to R2 _ _.</b>
-Subgoal 4.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 <= N2
-PosN3 : 0 <= N3
-Or : N2 &lt; N4 \/ N2 = N4
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-
- &lt; <b>L': case Or.</b>
-Subgoal 4.1.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 <= N2
-PosN3 : 0 <= N3
-L' : N2 &lt; N4
-============================
- &lt;typeOf {P}&gt; G T1 Ty1</pre>
-
-  <p>
-    If <code>N2</code> is less than <code>N4</code>, we know by
-    transitivity that it is also less than <code>N</code>.  Then we
-    have the premises required for using the <code>Acc</code>
-    hypothesis to get a derivation of
-    the <code class="extensibella">acc</code> relation
-    for <code>N3</code>, and we can apply the inductive hypothesis,
-    finishing the case.
-  </p>
-  <pre class="code extensibella">
- &lt; <b>L'': apply less_integer_transitive to L' L.</b>
-Subgoal 4.1.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 <= N2
-PosN3 : 0 <= N3
-L' : N2 &lt; N4
-L'' : N2 &lt; N
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-
- &lt; <b>A: apply Acc to _ L''.</b>
-Subgoal 4.1.1:
-
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 <= N2
-PosN3 : 0 <= N3
-L' : N2 &lt; N4
-L'' : N2 &lt; N
 A : acc N2 *
 ============================
- &lt;typeOf {P}&gt; G T1 Ty1
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)</pre>
 
- &lt; <b>apply IH to R3 A.</b>
-Subgoal 4.1.1:
+  <p>
+    Using this, we can use the induction hypothesis to get a
+    derivation of <code>&lt;eval {P}&gt;</code> for <code>T1</code>:
+  </p>
+  <pre class="code extensibella">
+ &lt; <b>apply IH to R2 A Ty.</b>
+Subgoal 4:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+Variables: N G Ty N2 T2 T11 X T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) (let X T11 T2) N @@
+R1 : 1 + N2 = N
+R2 : &lt;eval {ES}&gt; T1 T11 N2 **
+Acc : forall M, 0 <= M -> M < N -> acc M *
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
 IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
+L : N2 < N
 PosN2 : 0 <= N2
-PosN3 : 0 <= N3
-L' : N2 &lt; N4
-L'' : N2 &lt; N
 A : acc N2 *
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
+H2 : &lt;eval {P}&gt; T1 T11
 ============================
- &lt;typeOf {P}&gt; G T1 Ty1
-
- &lt; <b>search.</b>
-Subgoal 4.1.2:
-
-Variables: N G Ty N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N4 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N4 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N4
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 <= N4
-PosN3 : 0 <= N3
-============================
- &lt;typeOf {P}&gt; G T1 Ty1</pre>
+ exists Ctx T_T T3,
+   &lt;eval {P}&gt; T1 T11 /\ (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)</pre>
 
   <p>
-    The other case, where <code>N2</code> is equal to <code>N4</code>,
-    is similar, only we don't need to use transitivity to
-    show <code>N2</code> is less than <code>N</code>:
+    This new assumption is what we need to complete the derivations,
+    so we can finish the proof case:
   </p>
   <pre class="code extensibella">
- &lt; <b>A: apply Acc to _ L.</b>
-Subgoal 4.1.2:
-
-Variables: N G Ty N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N4 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N4 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N4
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 <= N4
-PosN3 : 0 <= N3
-A : acc N4 *
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-
- &lt; <b>apply IH to R3 A.</b>
-Subgoal 4.1.2:
-
-Variables: N G Ty N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N4 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N4 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N4
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 <= N4
-PosN3 : 0 <= N3
-A : acc N4 *
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-============================
- &lt;typeOf {P}&gt; G T1 Ty1
-
  &lt; <b>search.</b>
-Subgoal 4:
+Subgoal 5:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 <= N2
-PosN3 : 0 <= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
+Variables: G T' Ty T2 T1 X
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) T' 1 @@
+Acc : acc 1 @
+Ty : typeOf G (let X T1 T2) Ty
+R1 : value T1
+R2 : subst X T1 T2 T'
 ============================
- exists T_T Ty1,
-   (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
-   (G |{tm}- let X T1 T2 ~~> T_T /\ &lt;typeOf {P}&gt; G T_T Ty)</pre>
+ &lt;eval {P}&gt; (let X T1 T2) T'</pre>
 
   <p>
-    We can apply similar reasoning to get a derivation
-    of <code class="extensibella">&lt;typeOf {P}&gt;</code>
-    for <code>T2</code>:
-  </p>
-<pre class="code extensibella">
-<b>assert &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty.
-Or: apply lt_right to R2 _ _ _.
-L': case Or.
-L'': apply less_integer_transitive to L' L.
-A: apply Acc to _ L''.
-apply IH to R4 A.
-search.
-A: apply Acc to _ L.
-apply IH to R4 A.
-search.</b>
-</pre>
-
-  <p>
-    At this point, we have all we need to prove our conclusion, so we
-    give witnesses for the conclusion's existentially-quantified
-    variables and finish the proof.
+    This leaves us with the case for the <code>E-Let-Subst</code>
+    case.  Because this rule does not have any evaluation premises,
+    only <code>value</code> and <code>subst</code>, its proof is
+    similar but simpler:
   </p>
   <pre class="code extensibella">
- &lt; <b>exists app (abs X Ty1 T2) T1, Ty1.</b>
-Subgoal 4:
+ &lt; <b>unfold.</b>
+Subgoal 5:
 
-Variables: N G Ty N2 N3 N4 Ty1 T2 T1 X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -> acc N * -> &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -> acc N @ -> &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (let X T1 T2) Ty N @@
-R1 : 1 + N4 = N
-R2 : N2 + N3 = N4
-R3 : &lt;typeOf {ES}&gt; G T1 Ty1 N2 **
-R4 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) T2 Ty N3 **
-Acc : forall M, 0 <= M -> M &lt; N -> acc M *
-H1 : typeOf G T1 Ty1
-H2 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
-IsN2 : is_integer N2
-IsN3 : is_integer N3
-IsN4 : is_integer N4
-L : N4 &lt; N
-PosN2 : 0 <= N2
-PosN3 : 0 <= N3
-H3 : &lt;typeOf {P}&gt; G T1 Ty1
-H4 : &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty
+Variables: G T' Ty T2 T1 X
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) T' 1 @@
+Acc : acc 1 @
+Ty : typeOf G (let X T1 T2) Ty
+R1 : value T1
+R2 : subst X T1 T2 T'
 ============================
- (&lt;typeOf {P}&gt; G T1 Ty1 /\ &lt;typeOf {P}&gt; ((X, Ty1)::G) T2 Ty) /\
- (G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1 /\
- &lt;typeOf {P}&gt; G (app (abs X Ty1 T2) T1) Ty)
+ exists Ctx T_T T3,
+   (value T1 /\ subst X T1 T2 T') /\
+   (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)
+
+ &lt; <b>Ty: case Ty.</b>
+Subgoal 5:
+
+Variables: G T' Ty T2 T1 X Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) T' 1 @@
+Acc : acc 1 @
+R1 : value T1
+R2 : subst X T1 T2 T'
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+============================
+ exists Ctx T_T T3,
+   (value T1 /\ subst X T1 T2 T') /\
+   (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)
+
+ &lt; <b>assert G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1.</b>
+Subgoal 5:
+
+Variables: G T' Ty T2 T1 X Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -> acc N * -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -> acc N @ -> typeOf G T Ty -> &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (let X T1 T2) T' 1 @@
+Acc : acc 1 @
+R1 : value T1
+R2 : subst X T1 T2 T'
+Ty : typeOf G T1 Ty1
+Ty1 : typeOf ((X, Ty1)::G) T2 Ty
+H1 : G |{tm}- let X T1 T2 ~~> app (abs X Ty1 T2) T1
+============================
+ exists Ctx T_T T3,
+   (value T1 /\ subst X T1 T2 T') /\
+   (Ctx |{tm}- let X T1 T2 ~~> T_T /\ &lt;eval {P}&gt; T_T T3)
 
  &lt; <b>search.</b>
 Proof completed.</pre>
@@ -1952,11 +1647,11 @@ Prove walkthrough:host:type_preservation.
 Prove_Constraint walkthrough:host:proj_type_same.
 
 
-Add_Ext_Size walkthrough:host:typeOf.
-Add_Proj_Rel walkthrough:host:typeOf.
+Add_Ext_Size walkthrough:host:eval.
+Add_Proj_Rel walkthrough:host:eval.
 
 
-Prove_Ext_Ind walkthrough:host:typeOf.
+Prove_Ext_Ind walkthrough:host:eval.
 
 
 Extensible_Theorem
@@ -2271,11 +1966,11 @@ Prove walkthrough:host:type_preservation.
 Prove_Constraint walkthrough:host:proj_type_same.
 
 
-Add_Ext_Size walkthrough:host:typeOf.
-Add_Proj_Rel walkthrough:host:typeOf.
+Add_Ext_Size walkthrough:host:eval.
+Add_Proj_Rel walkthrough:host:eval.
 
 
-Prove_Ext_Ind walkthrough:host:typeOf.
+Prove_Ext_Ind walkthrough:host:eval.
 
 
 Prove walkthrough:big_step:big_step_type_preservation.</pre>
@@ -2559,46 +2254,58 @@ $stand-in_rule__$ext__0__walkthrough-$-host-$-value (A1).
 <span class="comment">/********************************************************************
  Proof-Level Definitions
  ********************************************************************/</span>
-Define $extSize__walkthrough-$-host-$-typeOf :
-          (list ($lib__pair (list $char) $ty__walkthrough-$-host-$-ty)) ->
-          $ty__walkthrough-$-host-$-tm -> $ty__walkthrough-$-host-$-ty -> $lib__integer -> prop by
-$extSize__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-var) (X)) (Ty)
-                                      (($posInt) ($zero)) :=
-    $fix__sterling-$-stdLib-$-lookup (Ctx) (X) (Ty);
-$extSize__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-abs) (X) (Ty1) (Body))
-                                      ((walkthrough-$-host-$-arrowTy) (Ty1) (Ty2)) (N) :=
-    exists N1, (N1 = N) /\ ($extSize__walkthrough-$-host-$-typeOf
-                               ((($pair_c) (X) (Ty1))::(Ctx)) (Body) (Ty2) (N1));
-$extSize__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-app) (T1) (T2)) (Ty2) (N) :=
-    exists N2 N1 Ty1, ($plus_integer (N2) (N1) (N) ) /\
-                      (($extSize__walkthrough-$-host-$-typeOf (Ctx) (T1)
-                            ((walkthrough-$-host-$-arrowTy) (Ty1) (Ty2)) (N2) ) /\
-                      ($extSize__walkthrough-$-host-$-typeOf (Ctx) (T2) (Ty1) (N1) ));
-$extSize__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-let-$-let) (X) (T1) (T2)) (Ty2) (N) :=
-    exists N2 N1 N3 Ty1, ($plus_integer (($posInt) (($succ) ($zero))) (N3) (N) ) /\
-                         (($plus_integer (N2) (N1) (N3) ) /\
-                         (($extSize__walkthrough-$-host-$-typeOf (Ctx) (T1) (Ty1) (N2) ) /\
-                         ($extSize__walkthrough-$-host-$-typeOf
-                             ((($pair_c) (X) (Ty1))::(Ctx)) (T2) (Ty2) (N1) ))).
+Define $extSize__walkthrough-$-host-$-eval :
+           $ty__walkthrough-$-host-$-tm -> $ty__walkthrough-$-host-$-tm ->
+           $lib__integer -> prop by
+$extSize__walkthrough-$-host-$-eval ((walkthrough-$-host-$-app) (T1) (T2))
+                                    ((walkthrough-$-host-$-app) (T11) (T2)) (N) :=
+    exists N1, (N1 = N) /\ ($extSize__walkthrough-$-host-$-eval (T1) (T11) (N1) );
+$extSize__walkthrough-$-host-$-eval ((walkthrough-$-host-$-app) (T1) (T2))
+                                    ((walkthrough-$-host-$-app) (T1) (T21)) (N) :=
+    exists N1, (N1 = N) /\ (($ext__0__walkthrough-$-host-$-value (T1)) /\
+               ($extSize__walkthrough-$-host-$-eval (T2) (T21) (N1) ));
+$extSize__walkthrough-$-host-$-eval
+          ((walkthrough-$-host-$-app) ((walkthrough-$-host-$-abs) (X) (Ty) (Body)) (T2))
+          (V) (($posInt) ($zero)) :=
+    ($ext__0__walkthrough-$-host-$-value (T2)) /\
+    ($ext__2__walkthrough-$-host-$-subst (X) (T2) (Body) (V));
+$extSize__walkthrough-$-host-$-eval ((walkthrough-$-let-$-let) (X) (T1) (T2))
+                                    ((walkthrough-$-let-$-let) (X) (T11) (T2)) (N) :=
+    exists N1, ($plus_integer (($posInt) (($succ) ($zero))) (N1) (N) ) /\
+    ($extSize__walkthrough-$-host-$-eval (T1) (T11) (N1) );
+$extSize__walkthrough-$-host-$-eval ((walkthrough-$-let-$-let) (X) (T1) (T2))
+                                    (V) (($posInt) (($succ) ($zero))) :=
+    ($ext__0__walkthrough-$-host-$-value (T1)) /\
+    ($ext__2__walkthrough-$-host-$-subst (X) (T1) (T2) (V)).
 
-Define $projRel__walkthrough-$-host-$-typeOf :
-          (list ($lib__pair (list $char) $ty__walkthrough-$-host-$-ty)) ->
-          $ty__walkthrough-$-host-$-tm -> $ty__walkthrough-$-host-$-ty -> prop by
-$projRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-var) (X)) (Ty) :=
-    $fix__sterling-$-stdLib-$-lookup (Ctx) (X) (Ty);
-$projRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-abs) (X) (Ty1) (Body))
-                                      ((walkthrough-$-host-$-arrowTy) (Ty1) (Ty2)) :=
-    $projRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (Body) (Ty2);
-$projRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-host-$-app) (T1) (T2)) (Ty2) :=
-    exists Ty1, ($projRel__walkthrough-$-host-$-typeOf (Ctx) (T1)
-                    ((walkthrough-$-host-$-arrowTy) (Ty1) (Ty2))) /\
-                ($projRel__walkthrough-$-host-$-typeOf (Ctx) (T2) (Ty1));
-$projRel__walkthrough-$-host-$-typeOf (Ctx) ((walkthrough-$-let-$-let) (X) (T1) (T2)) (Ty2) :=
-    exists T_T Ty1,
-       (($projRel__walkthrough-$-host-$-typeOf (Ctx) (T1) (Ty1)) /\
-       ($projRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(Ctx)) (T2) (Ty2))) /\
-       (($proj__walkthrough-$-host-$-tm (Ctx) ((walkthrough-$-let-$-let) (X) (T1) (T2)) (T_T)) /\
-       ($projRel__walkthrough-$-host-$-typeOf (Ctx) (T_T) (Ty2))).
+Define $projRel__walkthrough-$-host-$-eval :
+           $ty__walkthrough-$-host-$-tm -> $ty__walkthrough-$-host-$-tm -> prop by
+$projRel__walkthrough-$-host-$-eval ((walkthrough-$-host-$-app) (T1) (T2))
+                                    ((walkthrough-$-host-$-app) (T11) (T2)) :=
+    $projRel__walkthrough-$-host-$-eval (T1) (T11);
+$projRel__walkthrough-$-host-$-eval ((walkthrough-$-host-$-app) (T1) (T2))
+                                    ((walkthrough-$-host-$-app) (T1) (T21)) :=
+    ($ext__0__walkthrough-$-host-$-value (T1)) /\
+    ($projRel__walkthrough-$-host-$-eval (T2) (T21));
+$projRel__walkthrough-$-host-$-eval
+          ((walkthrough-$-host-$-app) 
+              ((walkthrough-$-host-$-abs) (X) (Ty) (Body)) (T2)) (V) :=
+    ($ext__0__walkthrough-$-host-$-value (T2)) /\
+    ($ext__2__walkthrough-$-host-$-subst (X) (T2) (Body) (V));
+$projRel__walkthrough-$-host-$-eval ((walkthrough-$-let-$-let) (X) (T1) (T2))
+                                    ((walkthrough-$-let-$-let) (X) (T11) (T2)) :=
+    exists Ctx T_T T3,
+      ($projRel__walkthrough-$-host-$-eval (T1) (T11)) /\
+      (($proj__walkthrough-$-host-$-tm (Ctx)
+            ((walkthrough-$-let-$-let) (X) (T1) (T2)) (T_T)) /\
+      ($projRel__walkthrough-$-host-$-eval (T_T) (T3)));
+$projRel__walkthrough-$-host-$-eval ((walkthrough-$-let-$-let) (X) (T1) (T2)) (V) :=
+    exists Ctx T_T T3,
+       (($ext__0__walkthrough-$-host-$-value (T1)) /\
+       ($ext__2__walkthrough-$-host-$-subst (X) (T1) (T2) (V))) /\
+       (($proj__walkthrough-$-host-$-tm (Ctx)
+             ((walkthrough-$-let-$-let) (X) (T1) (T2)) (T_T)) /\
+       ($projRel__walkthrough-$-host-$-eval (T_T) (T3))).
 
 
 
@@ -3574,158 +3281,115 @@ apply walkthrough-$-host-$-typeOf_unique to Hyp2 H1. search.</div>
 <span class="comment">/*End walkthrough:host:proj_type_same*/</span>
 
 
-<span class="comment">/*Start Ext_Size for walkthrough:host:typeOf*/</span>
-Theorem walkthrough-$-host-$-ext_size_pos_typeOf : forall G T Ty N,
-  ($extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) ) ->
+<span class="comment">/*Start Ext_Size for walkthrough:host:eval*/</span>
+Theorem walkthrough-$-host-$-ext_size_pos_eval : forall T T' N,
+  ($extSize__walkthrough-$-host-$-eval (T) (T') (N) ) ->
   $lesseq_integer (($posInt) ($zero)) (N).<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(999);" id="toggleproof999">[Show Proof]</a>
 <div class="proof" id="proof999" style="display: none;">
 induction on 1.
 intros ES. ES1: case ES.
- search.
  apply IH to ES1. search.
- apply IH to ES2. apply IH to ES3.
-    apply extensibella-$-stdLib-$-lesseq_integer__add_positive to _ _ ES1. search.
- apply IH to ES3. apply IH to ES4.
-    apply extensibella-$-stdLib-$-lesseq_integer__add_positive to _ _ ES2.
-    apply extensibella-$-stdLib-$-lesseq_integer__add_positive to _ _ ES1. search.</div>
+ apply IH to ES2. search.
+ search.
+ apply IH to ES2. apply extensibella-$-stdLib-$-lesseq_integer__add_positive to _ _ ES1. search.
+ search.</div>
 
-Theorem walkthrough-$-host-$-ext_size_is_int_typeOf : forall G T Ty N,
-  ($extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) ) -> is_integer (N) .<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1015);" id="toggleproof1015">[Show Proof]</a>
+Theorem walkthrough-$-host-$-ext_size_is_int_eval : forall T T' N,
+  ($extSize__walkthrough-$-host-$-eval (T) (T') (N) ) ->
+  extensibella-$-stdLib-$-is_integer (N).<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1015);" id="toggleproof1015">[Show Proof]</a>
 <div class="proof" id="proof1015" style="display: none;">
 induction on 1.
 intros ES. ES1: case ES.
- search.
  apply IH to ES1. search.
- apply IH to ES2. apply IH to ES3.
-    apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ ES1. search.
- apply IH to ES3. apply IH to ES4.
-    apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ ES2.
-    apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ ES1. search.</div>
+ apply IH to ES2. search.
+ search.
+ apply IH to ES2. apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ ES1. search.
+ search.</div>
 
-Theorem walkthrough-$-host-$-drop_ext_size_typeOf : forall G T Ty N,
-  ($extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) ) ->
-  $ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1031);" id="toggleproof1031">[Show Proof]</a>
+Theorem walkthrough-$-host-$-drop_ext_size_eval : forall T T' N,
+  ($extSize__walkthrough-$-host-$-eval (T) (T') (N) ) ->
+  $ext__0__walkthrough-$-host-$-eval (T) (T').<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1031);" id="toggleproof1031">[Show Proof]</a>
 <div class="proof" id="proof1031" style="display: none;">
 induction on 1.
 intros ES. ES1: case ES.
- search.
  apply IH to ES1. search.
- apply IH to ES2. apply IH to ES3. search.
- apply IH to ES3. apply IH to ES4. search.</div>
+ apply IH to ES2. search.
+ search.
+ apply IH to ES2. search.
+ search.</div>
 
-Theorem walkthrough-$-host-$-add_ext_size_typeOf : forall G T Ty,
-  ($ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
-  exists N, $extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) .<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1044);" id="toggleproof1044">[Show Proof]</a>
+Theorem walkthrough-$-host-$-add_ext_size_eval : forall T T',
+  ($ext__0__walkthrough-$-host-$-eval (T) (T') ) ->
+  exists N, $extSize__walkthrough-$-host-$-eval (T) (T') (N).<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1044);" id="toggleproof1044">[Show Proof]</a>
 <div class="proof" id="proof1044" style="display: none;">
 induction on 1. rename IH to IH0.
  intros R. R1: case R.
+  ES44: apply IH0 to R1. Is45: apply walkthrough-$-host-$-ext_size_is_int_eval to ES44.  search.
+  ES46: apply IH0 to R2. Is47: apply walkthrough-$-host-$-ext_size_is_int_eval to ES46.  search.
   search.
-  ES43: apply IH0 to R1. Is44: apply walkthrough-$-host-$-ext_size_is_int_typeOf to ES43. search.
-  ES45: apply IH0 to R1. ES46: apply IH0 to R2.
-     Is47: apply walkthrough-$-host-$-ext_size_is_int_typeOf to ES45.
-     Is48: apply walkthrough-$-host-$-ext_size_is_int_typeOf to ES46.
-     Plus49: apply extensibella-$-stdLib-$-plus_integer_total to Is47 Is48.
-     Is50: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Plus49. search.
-  ES51: apply IH0 to R1. ES52: apply IH0 to R2.
-     Is53: apply walkthrough-$-host-$-ext_size_is_int_typeOf to ES51.
-     Is54: apply walkthrough-$-host-$-ext_size_is_int_typeOf to ES52.
-     Plus55: apply extensibella-$-stdLib-$-plus_integer_total to Is53 Is54.
-     Is56: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ Plus55.
-     apply extensibella-$-stdLib-$-plus_integer_total to _ Is56 with
-        N1 = $posInt ($succ $zero). search.</div>
+  ES48: apply IH0 to R1. Is49: apply walkthrough-$-host-$-ext_size_is_int_eval to ES48.  apply extensibella-$-stdLib-$-plus_integer_total to _ Is49 with N1 = $posInt ($succ $zero). search.
+  search.</div>
 
-<span class="comment">/*End Ext_Size for walkthrough:host:typeOf*/</span>
+<span class="comment">/*End Ext_Size for walkthrough:host:eval*/</span>
 
 
-<span class="comment">/*Start Proj_Rel for walkthrough:host:typeOf*/</span>
-Theorem walkthrough-$-host-$-drop_proj_rel_typeOf : forall G T Ty,
-  ($projRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
-  $ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1200);" id="toggleproof1200">[Show Proof]</a>
+<span class="comment">/*Start Proj_Rel for walkthrough:host:eval*/</span>
+Theorem walkthrough-$-host-$-drop_proj_rel_eval : forall T T',
+  ($projRel__walkthrough-$-host-$-eval (T) (T') ) ->
+  $ext__0__walkthrough-$-host-$-eval (T) (T').<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1200);" id="toggleproof1200">[Show Proof]</a>
 <div class="proof" id="proof1200" style="display: none;">
 induction on 1.
 intros R. R: case R (keep).
+  apply IH to R1. search.
+  apply IH to R2. search.
   search.
   apply IH to R1. search.
-  apply IH to R1. apply IH to R2. search.
-  apply IH to R1. apply IH to R2. search.</div>
+  search.</div>
 
-<span class="comment">/*End Proj_Rel for walkthrough:host:typeOf*/</span>
+<span class="comment">/*End Proj_Rel for walkthrough:host:eval*/</span>
 
 
-<span class="comment">/*Start Ext_Ind for walkthrough:host:typeOf*/</span>
-Theorem $dropP_$ext__1__walkthrough-$-host-$-typeOf : forall G T Ty,
-  ($projRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
-  $ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1068);" id="toggleproof1068">[Show Proof]</a>
+<span class="comment">/*Start Ext_Ind for walkthrough:host:eval*/</span>
+Theorem $toProjRel__$ext__0__walkthrough-$-host-$-eval : forall N G T T' Ty,
+  ($extSize__walkthrough-$-host-$-eval (T) (T') (N) ) ->
+  (extensibella-$-stdLib-$-acc (N) ) ->
+  ($ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty)) ->
+  $projRel__walkthrough-$-host-$-eval (T) (T') .<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1068);" id="toggleproof1068">[Show Proof]</a>
 <div class="proof" id="proof1068" style="display: none;">
-induction on 1.
-intros R. R: case R (keep).
-  search.
-  apply IH to R1. search.
-  apply IH to R1. apply IH to R2. search.
-  apply IH to R1. apply IH to R2. search.</div>
-
-
-Theorem $toProjRel__$ext__1__walkthrough-$-host-$-typeOf : forall N G T Ty,
-  ($extSize__walkthrough-$-host-$-typeOf (G) (T) (Ty) (N) ) -> (acc (N) ) ->
-  $projRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1081);" id="toggleproof1081">[Show Proof]</a>
-<div class="proof" id="proof1081" style="display: none;">
 induction on 2. induction on 1.
-intros R Acc. R: case R (keep).
-  search. 
-  apply IH1 to R1 Acc. apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H1. search. 
-  apply walkthrough-$-host-$-ext_size_is_int_typeOf to R2.
-     apply walkthrough-$-host-$-ext_size_is_int_typeOf to R3.
-     apply walkthrough-$-host-$-ext_size_pos_typeOf to R2.
-     apply walkthrough-$-host-$-ext_size_pos_typeOf to R3.
-     Or2: apply extensibella-$-stdLib-$-lt_left to R1 _ _.
-     Or3: apply extensibella-$-stdLib-$-lt_right to R1 _ _ _. A: case Acc (keep).
-     Or2: case Or2. AN2: apply A to _ Or2. apply IH to R2 AN2. Or3: case Or3. AN3: apply A to _ Or3.
-     apply IH to R3 AN3. apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H5.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H6. search. apply IH1 to R3 Acc.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H5.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H6. search. apply IH1 to R2 Acc.
-     Or3: case Or3. AN3: apply A to _ Or3. apply IH to R3 AN3.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H5.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H6. search. apply IH1 to R3 Acc.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H5.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H6. search. 
-  Acc: case Acc. unfold .
- apply walkthrough-$-host-$-drop_ext_size_typeOf to R3.
-     assert $proj__walkthrough-$-host-$-tm (G) ((walkthrough-$-let-$-let) (X) (T1) (T2))
-                     ((walkthrough-$-host-$-app) ((walkthrough-$-host-$-abs) (X) (Ty1) (T2)) (T1)).
-     IsN2: apply walkthrough-$-host-$-ext_size_is_int_typeOf to R3.
-     IsN3: apply walkthrough-$-host-$-ext_size_is_int_typeOf to R4.
-     IsN4: apply extensibella-$-stdLib-$-plus_integer_is_integer to _ _ R2.
-     L: apply extensibella-$-stdLib-$-lt_plus_one to R1 _.
-     PosN2: apply walkthrough-$-host-$-ext_size_pos_typeOf to R3.
-     PosN3: apply walkthrough-$-host-$-ext_size_pos_typeOf to R4.
-     assert $projRel__walkthrough-$-host-$-typeOf (G) (T1) (Ty1).
-     Or: apply extensibella-$-stdLib-$-lt_left to R2 _ _. L': case Or.
-     L'': apply extensibella-$-stdLib-$-less_integer_transitive to L' L. A: apply Acc to _ L''.
-     apply IH to R3 A. apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H3. search.
-     A: apply Acc to _ L. apply IH to R3 A. apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H3.
-     search. apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H3.
-     assert $projRel__walkthrough-$-host-$-typeOf ((($pair_c) (X) (Ty1))::(G)) (T2) (Ty).
-     Or: apply extensibella-$-stdLib-$-lt_right to R2 _ _ _. L': case Or.
-     L'': apply extensibella-$-stdLib-$-less_integer_transitive to L' L. A: apply Acc to _ L''.
-     apply IH to R4 A. apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H3.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H5. search. A: apply Acc to _ L.
-     apply IH to R4 A. apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H3.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H5. search.
-     exists (walkthrough-$-host-$-app) ((walkthrough-$-host-$-abs) (X) (Ty1) (T2)) (T1), Ty1.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H3.
-     apply $dropP_$ext__1__walkthrough-$-host-$-typeOf to H5. search.</div>  
+intros R Acc Ty. R: case R (keep).
+  Ty: case Ty. apply IH1 to R1 Acc Ty.
+     apply walkthrough-$-host-$-drop_proj_rel_eval to H1. search.
+  Ty: case Ty. apply IH1 to R2 Acc Ty1.
+     apply walkthrough-$-host-$-drop_proj_rel_eval to H1. search.
+  search.
+  Acc: case Acc. unfold.
+ Ty: case Ty. assert $proj__walkthrough-$-host-$-tm (G)
+                         ((walkthrough-$-let-$-let) (X) (T1) (T2))
+                         ((walkthrough-$-host-$-app)
+                             ((walkthrough-$-host-$-abs) (X) (Ty1) (T2)) (T1)).
+ IsN2: apply walkthrough-$-host-$-ext_size_is_int_eval to R2.
+    L: apply extensibella-$-stdLib-$-lt_plus_one to R1 _.
+    PosN2: apply walkthrough-$-host-$-ext_size_pos_eval to R2. A: apply Acc to PosN2 L.
+    apply IH to R2 A Ty. apply walkthrough-$-host-$-drop_proj_rel_eval to H2. search.
+  unfold.
+ Ty: case Ty. assert $proj__walkthrough-$-host-$-tm (G)
+                         ((walkthrough-$-let-$-let) (X) (T1) (T2))
+                         ((walkthrough-$-host-$-app)
+                             ((walkthrough-$-host-$-abs) (X) (Ty1) (T2)) (T1)).
+    search.</div>
 
-Theorem $extInd_$ext__1__walkthrough-$-host-$-typeOf : forall G T Ty,
-  ($ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty) ) ->
-  $projRel__walkthrough-$-host-$-typeOf (G) (T) (Ty) .<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1162);" id="toggleproof1162">[Show Proof]</a>
+Theorem walkthrough-$-host-$-add_proj_rel_eval : forall G T T' Ty,
+  ($ext__0__walkthrough-$-host-$-eval (T) (T') ) ->
+  ($ext__1__walkthrough-$-host-$-typeOf (G) (T) (Ty)) ->
+  $projRel__walkthrough-$-host-$-eval (T) (T') .<span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1162);" id="toggleproof1162">[Show Proof]</a>
 <div class="proof" id="proof1162" style="display: none;">
- intros R . ES: apply walkthrough-$-host-$-add_ext_size_typeOf to R.
-P: apply walkthrough-$-host-$-ext_size_pos_typeOf to ES.
-   Is: apply walkthrough-$-host-$-ext_size_is_int_typeOf to ES.
-   Acc: apply extensibella-$-stdLib-$-all_acc to Is P.
-apply $toProjRel__$ext__1__walkthrough-$-host-$-typeOf to ES Acc. search.</div>
-<span class="comment">/*End Ext_Ind for walkthrough:host:typeOf*/</span>
+intros R A1. ES: apply walkthrough-$-host-$-add_ext_size_eval to R.
+P: apply walkthrough-$-host-$-ext_size_pos_eval to ES.
+    Is: apply walkthrough-$-host-$-ext_size_is_int_eval to ES.
+    Acc: apply extensibella-$-stdLib-$-all_acc to Is P.
+apply $toProjRel__$ext__0__walkthrough-$-host-$-eval to ES Acc A1. search.</div>
+<span class="comment">/*End Ext_Ind for walkthrough:host:eval*/</span>
 
 
 <span class="comment">/*Start Extensible_Theorem walkthrough:big_step:big_step_type_preservation*/</span>

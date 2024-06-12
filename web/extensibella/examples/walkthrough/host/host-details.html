@@ -1076,602 +1076,145 @@ Proof completed.
 Proof completed.
 </pre>
 <pre class="code extensibella"id="74">
- &lt; <b>Ext_Size typeOf G T Ty.</b>
+ &lt; <b>Ext_Size eval T T'.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="75">
- &lt; <b>Proj_Rel typeOf G T Ty.</b>
+ &lt; <b>Proj_Rel eval T T'.</b>
 
 Proof completed.
 </pre>
 <pre class="code extensibella"id="76">
- &lt; <b>Ext_Ind forall G T Ty, typeOf G T Ty.</b>
+ &lt; <b>Ext_Ind forall G T T' Ty, eval T T' with Ty : typeOf G T Ty.</b>
 
 Subgoal 1:
 
-Variables: G Ty X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (var X) Ty 0 @@
-Acc : acc 0 @
-R1 : lookup G X Ty
+Variables: N G Ty T2 T11 T1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (app T1 T2) (app T11 T2) N @@
+Acc : acc N @
+Ty : typeOf G (app T1 T2) Ty
+R1 : &lt;eval {ES}&gt; T1 T11 N **
 ============================
- &lt;typeOf {P}&gt; G (var X) Ty
+ &lt;eval {P}&gt; (app T1 T2) (app T11 T2)
 </pre>
 <pre class="code extensibella"id="77">
- &lt; <b>search.</b>
+ &lt; <b>Ty: case Ty.</b>
 
-Subgoal 2:
+Subgoal 1:
 
-Variables: N G Ty2 Ty1 Body X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (abs X Ty1 Body) (arrowTy Ty1 Ty2) N @@
+Variables: N G Ty T2 T11 T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (app T1 T2) (app T11 T2) N @@
 Acc : acc N @
-R1 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) Body Ty2 N **
+R1 : &lt;eval {ES}&gt; T1 T11 N **
+Ty : typeOf G T1 (arrowTy Ty1 Ty)
+Ty1 : typeOf G T2 Ty1
 ============================
- &lt;typeOf {P}&gt; G (abs X Ty1 Body) (arrowTy Ty1 Ty2)
+ &lt;eval {P}&gt; (app T1 T2) (app T11 T2)
 </pre>
 <pre class="code extensibella"id="78">
- &lt; <b>apply IH1 to R1 Acc.</b>
+ &lt; <b>apply IH1 to R1 Acc Ty.</b>
 
-Subgoal 2:
+Subgoal 1:
 
-Variables: N G Ty2 Ty1 Body X
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (abs X Ty1 Body) (arrowTy Ty1 Ty2) N @@
+Variables: N G Ty T2 T11 T1 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (app T1 T2) (app T11 T2) N @@
 Acc : acc N @
-R1 : &lt;typeOf {ES}&gt; ((X, Ty1)::G) Body Ty2 N **
-H1 : &lt;typeOf {P}&gt; ((X, Ty1)::G) Body Ty2
+R1 : &lt;eval {ES}&gt; T1 T11 N **
+Ty : typeOf G T1 (arrowTy Ty1 Ty)
+Ty1 : typeOf G T2 Ty1
+H1 : &lt;eval {P}&gt; T1 T11
 ============================
- &lt;typeOf {P}&gt; G (abs X Ty1 Body) (arrowTy Ty1 Ty2)
+ &lt;eval {P}&gt; (app T1 T2) (app T11 T2)
 </pre>
 <pre class="code extensibella"id="79">
  &lt; <b>search.</b>
 
-Subgoal 3:
+Subgoal 2:
 
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
+Variables: N G Ty T21 T1 T2
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (app T1 T2) (app T1 T21) N @@
 Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
+Ty : typeOf G (app T1 T2) Ty
+R1 : value T1
+R2 : &lt;eval {ES}&gt; T2 T21 N **
 ============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
+ &lt;eval {P}&gt; (app T1 T2) (app T1 T21)
 </pre>
 <pre class="code extensibella"id="80">
- &lt; <b>apply ext_size_is_int_typeOf to R2.</b>
+ &lt; <b>Ty: case Ty.</b>
 
-Subgoal 3:
+Subgoal 2:
 
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
+Variables: N G Ty T21 T1 T2 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (app T1 T2) (app T1 T21) N @@
 Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
+R1 : value T1
+R2 : &lt;eval {ES}&gt; T2 T21 N **
+Ty : typeOf G T1 (arrowTy Ty1 Ty)
+Ty1 : typeOf G T2 Ty1
 ============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
+ &lt;eval {P}&gt; (app T1 T2) (app T1 T21)
 </pre>
 <pre class="code extensibella"id="81">
- &lt; <b>apply ext_size_is_int_typeOf to R3.</b>
+ &lt; <b>apply IH1 to R2 Acc Ty1.</b>
 
-Subgoal 3:
+Subgoal 2:
 
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
+Variables: N G Ty T21 T1 T2 Ty1
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (app T1 T2) (app T1 T21) N @@
 Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
+R1 : value T1
+R2 : &lt;eval {ES}&gt; T2 T21 N **
+Ty : typeOf G T1 (arrowTy Ty1 Ty)
+Ty1 : typeOf G T2 Ty1
+H1 : &lt;eval {P}&gt; T2 T21
 ============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
+ &lt;eval {P}&gt; (app T1 T2) (app T1 T21)
 </pre>
 <pre class="code extensibella"id="82">
- &lt; <b>apply ext_size_pos_typeOf to R2.</b>
+ &lt; <b>search.</b>
 
 Subgoal 3:
 
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
+Variables: G T' Ty T2 Body Ty1 X
+IH : forall N G T T' Ty,
+       &lt;eval {ES}&gt; T T' N -&gt; acc N * -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+IH1 : forall N G T T' Ty,
+        &lt;eval {ES}&gt; T T' N ** -&gt; acc N @ -&gt; typeOf G T Ty -&gt; &lt;eval {P}&gt; T T'
+R : &lt;eval {ES}&gt; (app (abs X Ty1 Body) T2) T' 0 @@
+Acc : acc 0 @
+Ty : typeOf G (app (abs X Ty1 Body) T2) Ty
+R1 : value T2
+R2 : subst X T2 Body T'
 ============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
+ &lt;eval {P}&gt; (app (abs X Ty1 Body) T2) T'
 </pre>
 <pre class="code extensibella"id="83">
- &lt; <b>apply ext_size_pos_typeOf to R3.</b>
-
-Subgoal 3:
-
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N3
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="84">
- &lt; <b>Or2: apply lt_left to R1 _ _.</b>
-
-Subgoal 3:
-
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N3
-Or2 : N2 &lt; N \/ N2 = N
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="85">
- &lt; <b>Or3: apply lt_right to R1 _ _ _.</b>
-
-Subgoal 3:
-
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N3
-Or2 : N2 &lt; N \/ N2 = N
-Or3 : N3 &lt; N \/ N3 = N
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="86">
- &lt; <b>A: case Acc (keep).</b>
-
-Subgoal 3:
-
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N3
-Or2 : N2 &lt; N \/ N2 = N
-Or3 : N3 &lt; N \/ N3 = N
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="87">
- &lt; <b>Or2: case Or2.</b>
-
-Subgoal 3.1:
-
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N3
-Or3 : N3 &lt; N \/ N3 = N
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-Or2 : N2 &lt; N
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="88">
- &lt; <b>AN2: apply A to _ Or2.</b>
-
-Subgoal 3.1:
-
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N3
-Or3 : N3 &lt; N \/ N3 = N
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-Or2 : N2 &lt; N
-AN2 : acc N2 *
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="89">
- &lt; <b>apply IH to R2 AN2.</b>
-
-Subgoal 3.1:
-
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N3
-Or3 : N3 &lt; N \/ N3 = N
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-Or2 : N2 &lt; N
-AN2 : acc N2 *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="90">
- &lt; <b>Or3: case Or3.</b>
-
-Subgoal 3.1.1:
-
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N3
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-Or2 : N2 &lt; N
-AN2 : acc N2 *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-Or3 : N3 &lt; N
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="91">
- &lt; <b>AN3: apply A to _ Or3.</b>
-
-Subgoal 3.1.1:
-
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N3
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-Or2 : N2 &lt; N
-AN2 : acc N2 *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-Or3 : N3 &lt; N
-AN3 : acc N3 *
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="92">
- &lt; <b>apply IH to R3 AN3.</b>
-
-Subgoal 3.1.1:
-
-Variables: N G Ty N2 N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N2
-H2 : is_integer N3
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N3
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-Or2 : N2 &lt; N
-AN2 : acc N2 *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-Or3 : N3 &lt; N
-AN3 : acc N3 *
-H6 : &lt;typeOf {P}&gt; G T2 Ty1
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="93">
- &lt; <b>search.</b>
-
-Subgoal 3.1.2:
-
-Variables: N G Ty N2 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N **
-H1 : is_integer N2
-H2 : is_integer N
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-Or2 : N2 &lt; N
-AN2 : acc N2 *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="94">
- &lt; <b>apply IH1 to R3 Acc.</b>
-
-Subgoal 3.1.2:
-
-Variables: N G Ty N2 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N2 + N = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N2 **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N **
-H1 : is_integer N2
-H2 : is_integer N
-H3 : 0 &lt;= N2
-H4 : 0 &lt;= N
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-Or2 : N2 &lt; N
-AN2 : acc N2 *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-H6 : &lt;typeOf {P}&gt; G T2 Ty1
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="95">
- &lt; <b>search.</b>
-
-Subgoal 3.2:
-
-Variables: N G Ty N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N
-H2 : is_integer N3
-H3 : 0 &lt;= N
-H4 : 0 &lt;= N3
-Or3 : N3 &lt; N \/ N3 = N
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="96">
- &lt; <b>apply IH1 to R2 Acc.</b>
-
-Subgoal 3.2:
-
-Variables: N G Ty N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N
-H2 : is_integer N3
-H3 : 0 &lt;= N
-H4 : 0 &lt;= N3
-Or3 : N3 &lt; N \/ N3 = N
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="97">
- &lt; <b>Or3: case Or3.</b>
-
-Subgoal 3.2.1:
-
-Variables: N G Ty N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N
-H2 : is_integer N3
-H3 : 0 &lt;= N
-H4 : 0 &lt;= N3
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-Or3 : N3 &lt; N
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="98">
- &lt; <b>AN3: apply A to _ Or3.</b>
-
-Subgoal 3.2.1:
-
-Variables: N G Ty N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N
-H2 : is_integer N3
-H3 : 0 &lt;= N
-H4 : 0 &lt;= N3
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-Or3 : N3 &lt; N
-AN3 : acc N3 *
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="99">
- &lt; <b>apply IH to R3 AN3.</b>
-
-Subgoal 3.2.1:
-
-Variables: N G Ty N3 Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N + N3 = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N3 **
-H1 : is_integer N
-H2 : is_integer N3
-H3 : 0 &lt;= N
-H4 : 0 &lt;= N3
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-Or3 : N3 &lt; N
-AN3 : acc N3 *
-H6 : &lt;typeOf {P}&gt; G T2 Ty1
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="100">
- &lt; <b>search.</b>
-
-Subgoal 3.2.2:
-
-Variables: N G Ty Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N + N = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N **
-H1 : is_integer N
-H2 : is_integer N
-H3 : 0 &lt;= N
-H4 : 0 &lt;= N
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="101">
- &lt; <b>apply IH1 to R3 Acc.</b>
-
-Subgoal 3.2.2:
-
-Variables: N G Ty Ty1 T2 T1
-IH : forall N G T Ty, &lt;typeOf {ES}&gt; G T Ty N -&gt; acc N * -&gt; &lt;typeOf {P}&gt; G T Ty
-IH1 : forall N G T Ty,
-        &lt;typeOf {ES}&gt; G T Ty N ** -&gt; acc N @ -&gt; &lt;typeOf {P}&gt; G T Ty
-R : &lt;typeOf {ES}&gt; G (app T1 T2) Ty N @@
-Acc : acc N @
-R1 : N + N = N
-R2 : &lt;typeOf {ES}&gt; G T1 (arrowTy Ty1 Ty) N **
-R3 : &lt;typeOf {ES}&gt; G T2 Ty1 N **
-H1 : is_integer N
-H2 : is_integer N
-H3 : 0 &lt;= N
-H4 : 0 &lt;= N
-A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
-H5 : &lt;typeOf {P}&gt; G T1 (arrowTy Ty1 Ty)
-H6 : &lt;typeOf {P}&gt; G T2 Ty1
-============================
- &lt;typeOf {P}&gt; G (app T1 T2) Ty
-</pre>
-<pre class="code extensibella"id="102">
  &lt; <b>search.</b>
 
 Proof completed.
