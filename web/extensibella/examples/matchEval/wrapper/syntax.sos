@@ -1,0 +1,68 @@
+Module matchEval:wrapper
+
+Builds on matchEval:host
+
+/*
+  This extension seems somewhat useless, but it stands in for any
+  extension that might want to mark certain values as being special in
+  some way.
+*/
+
+value ::= ... | wrapVal(value)
+
+-------------------------- [Proj-WrapVal]
+|{value}- wrapVal(V) ~~> V
+
+
+expr ::= ... | wrap(expr)
+
+---------------------- [Proj-Wrap]
+|{expr}- wrap(E) ~~> E
+
+
+
+vars E V
+-------------- [V-Wrap]
+vars wrap(E) V
+
+
+
+typeOf FC TC E Ty
+----------------------- [T-Wrap]
+typeOf FC TC wrap(E) Ty
+
+
+valueType V Ty
+----------------------- [VT-WrapVal]
+valueType wrapVal(V) Ty
+
+
+
+evalExpr FE EE E V O
+----------------------------------- [E-Wrap]
+evalExpr FE EE wrap(E) wrapVal(V) O
+
+
+matchInt V I
+--------------------- [MI-Wrap]
+matchInt wrapVal(V) I
+
+
+matchTrue V
+-------------------- [MT-Wrap]
+matchTrue wrapVal(V)
+
+
+matchFalse V
+--------------------- [MF-Wrap]
+matchFalse wrapVal(V)
+
+
+matchString V S
+------------------------ [MS-Wrap]
+matchString wrapVal(V) S
+
+
+matchRec V Fs
+---------------------- [MR-Wrap]
+matchRec wrapVal(V) Fs

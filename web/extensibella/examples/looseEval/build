@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+cd host
+sterling --extensibella -I ../../ looseEval:host
+../../../../../buildTools/main_to_html_extensibella.py 3 host "Extensibella Example:  looseEval:host" host.xthm syntax.sos vars.sos scopes.sos typing.sos eval.sos
+extensibella --compile host.xthm
+cd ..
+
+cd ascription
+sterling --extensibella -I ../../ looseEval:ascription
+../../../../../buildTools/main_to_html_extensibella.py 3 ascription "Extensibella Example:  looseEval:ascription" ascription.xthm ascription.sos
+cd ..
+
+cd assert
+sterling --extensibella -I ../../ looseEval:assert
+../../../../../buildTools/main_to_html_extensibella.py 3 assert "Extensibella Example:  looseEval:assert" assert.xthm defs.sos
+cd ..
+
+cd condExpr
+sterling --extensibella -I ../../ looseEval:condExpr
+../../../../../buildTools/main_to_html_extensibella.py 3 condExpr "Extensibella Example:  looseEval:condExpr" condExpr.xthm syntax.sos
+cd ..
+
+cd list
+sterling --extensibella -I ../../ looseEval:list
+../../../../../buildTools/main_to_html_extensibella.py 3 list "Extensibella Example:  looseEval:list" list.xthm syntax.sos vars.sos typing.sos eval.sos
+cd ..
+
+cd security
+sterling --extensibella -I ../../ looseEval:security
+../../../../../buildTools/main_to_html_extensibella.py 3 security "Extensibella Example:  looseEval:security" security.xthm syntax.sos analysis.sos
+cd ..
+
+cd translation
+sterling --extensibella -I ../../ looseEval:translation
+../../../../../buildTools/main_to_html_extensibella.py 3 translation "Extensibella Example:  looseEval:translation" translation.xthm translation.sos
+cd ..

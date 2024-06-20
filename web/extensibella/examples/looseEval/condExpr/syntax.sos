@@ -1,0 +1,48 @@
+Module looseEval:condExpr
+
+Builds on looseEval:host
+
+expr ::= ...
+       | condExpr(expr, expr, expr) /*condExpr(C, T, F):  C ? T : F*/
+
+
+------------------------------------------------------ [Proj-CondExpr]
+|{expr}- condExpr(C, T, F) ~~>
+         or(and(eq(C, true), or(eq(T, num(0)), true)),
+            eq(F, num(0)))
+
+
+
+
+vars C V1
+vars T V2
+vars F V3
+V1 ++ V2 = V4
+V4 ++ V3 = V
+------------------------ [V-CondExpr]
+vars condExpr(C, T, F) V
+
+
+
+
+typeOf FT ET C boolTy
+typeOf FT ET T Ty
+typeOf FT ET F Ty
+--------------------------------- [T-CondExpr]
+typeOf FT ET condExpr(C, T, F) Ty
+
+
+
+
+evalExpr FE EE C trueVal O1
+evalExpr FE EE T V O2
+O1 ++ O2 = O
+------------------------------------ [E-CondExpr-True]
+evalExpr FE EE condExpr(C, T, F) V O
+
+
+evalExpr FE EE C falseVal O1
+evalExpr FE EE F V O2
+O1 ++ O2 = O
+------------------------------------ [E-CondExpr-False]
+evalExpr FE EE condExpr(C, T, F) V O

@@ -1,0 +1,508 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  exactEval:assert</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  exactEval:assert</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  defs.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggledefs.sos" onclick="toggleFile('defs.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="defs.sos">[Raw File]</a>
+<pre class="code sterling" id="defs.sos">
+Module exactEval:assert
+
+Builds on exactEval:host
+
+stmt ::= ...
+       | assert(expr, expr)
+
+
+-------------------------------------------- [Proj-Assert]
+Names |{stmt}- assert(E, Msg) ~~>
+         ifThenElse(E, noop,
+            <span class="comment">/*printVal(error) never succeeds*/</span>
+            printVal(errorExpr(Msg, intTy)))
+
+
+
+typeOf FC TC E boolTy
+typeOf FC TC Msg stringTy
+------------------------------ [T-Assert]
+stmtOK FC TC assert(E, Msg) TC
+
+
+
+exprNames Ctx E NE
+exprNames Ctx Msg NM
+NE ++ NM = N
+---------------------------------- [SN-Assert]
+stmtNames Ctx assert(E, Msg) N Ctx
+
+
+
+evalExpr FE EE E trueVal EE2 O
+----------------------------------- [E-Assert]
+evalStmt FE EE assert(E, Msg) EE2 O
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="assert.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="assert-details.html#0">Module exactEval:assert.</a>
+
+<span class="comment">/********************************************************************
+ Basic Projection Constraints
+ ********************************************************************/</span>
+<a class="command" href="assert-details.html#1">Prove_Constraint exactEval:host:proj_expr_unique.</a>
+<a class="command" href="assert-details.html#2">Prove_Constraint exactEval:host:proj_expr_is.</a>
+<a class="command" href="assert-details.html#3">Prove_Constraint exactEval:host:proj_expr_other.</a>
+
+<a class="command" href="assert-details.html#4">Prove_Constraint exactEval:host:proj_stmt_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(5);" id="toggleproof5">[Show Proof]</a>
+<div class="proof" id="proof5" style="display: none;">
+ <span class="comment">%Proj-Assert</span>
+  <a class="tactic" href="assert-details.html#5">case PrB.</a> <a class="tactic" href="assert-details.html#6">search.</a></div>
+<a class="command" href="assert-details.html#7">Prove_Constraint exactEval:host:proj_stmt_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(8);" id="toggleproof8">[Show Proof]</a>
+<div class="proof" id="proof8" style="display: none;">
+ <span class="comment">%Proj-Assert</span>
+  <a class="tactic" href="assert-details.html#8">case IsS.</a> <a class="tactic" href="assert-details.html#9">search.</a></div>
+<a class="command" href="assert-details.html#10">Prove_Constraint exactEval:host:proj_stmt_other.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(11);" id="toggleproof11">[Show Proof]</a>
+<div class="proof" id="proof11" style="display: none;">
+ <span class="comment">%Proj-Assert</span>
+  <a class="tactic" href="assert-details.html#11">search.</a></div>
+
+<a class="command" href="assert-details.html#12">Prove_Constraint exactEval:host:proj_fun_unique.</a>
+<a class="command" href="assert-details.html#13">Prove_Constraint exactEval:host:proj_fun_is.</a>
+
+<a class="command" href="assert-details.html#14">Prove_Constraint exactEval:host:proj_param_unique.</a>
+<a class="command" href="assert-details.html#15">Prove_Constraint exactEval:host:proj_param_is.</a>
+
+<a class="command" href="assert-details.html#16">Prove_Constraint exactEval:host:proj_program_unique.</a>
+<a class="command" href="assert-details.html#17">Prove_Constraint exactEval:host:proj_program_is.</a>
+
+<a class="command" href="assert-details.html#18">Prove_Constraint exactEval:host:proj_typ_unique.</a>
+<a class="command" href="assert-details.html#19">Prove_Constraint exactEval:host:proj_typ_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(20);" id="toggleproof20">[Show Proof]</a>
+<div class="proof" id="proof20" style="display: none;">
+
+
+
+
+<span class="comment">/********************************************************************
+ Decidable Equality
+ ********************************************************************/</span>
+<a class="tactic" href="assert-details.html#20">Add_Proj_Rel exactEval:host:is_expr, exactEval:host:is_args,
+             exactEval:host:is_recFieldExprs, exactEval:host:is_stmt.</a></div>
+<a class="command" href="assert-details.html#21">Prove_Ext_Ind exactEval:host:is_expr, exactEval:host:is_args,
+              exactEval:host:is_recFieldExprs, exactEval:host:is_stmt.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(22);" id="toggleproof22">[Show Proof]</a>
+<div class="proof" id="proof22" style="display: none;">
+<a class="tactic" href="assert-details.html#22">apply IH to R1.</a> <a class="tactic" href="assert-details.html#23">apply IH to R2.</a> <a class="tactic" href="assert-details.html#24">search.</a></div>
+
+<a class="command" href="assert-details.html#25">Prove exactEval:host:is_args_nilArgs_or_consArgs.</a>
+<a class="command" href="assert-details.html#26">Prove exactEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Variables
+ ********************************************************************/</span>
+<a class="command" href="assert-details.html#27">Prove exactEval:host:vars_unique.</a>
+
+<a class="command" href="assert-details.html#28">Prove exactEval:host:vars_is.</a>
+
+<a class="command" href="assert-details.html#29">Prove exactEval:host:vars_exist,
+      exactEval:host:varsArgs_exist,
+      exactEval:host:varsRecFields_exist.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Statement Names
+ ********************************************************************/</span>
+<a class="command" href="assert-details.html#30">Prove exactEval:host:stmtNames_is,
+      exactEval:host:stmtNames_isCtx,
+      exactEval:host:exprNames_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(31);" id="toggleproof31">[Show Proof]</a>
+<div class="proof" id="proof31" style="display: none;">
+<span class="comment">%stmtNames_is</span>
+ <a class="tactic" href="assert-details.html#31">case IsS.</a> <a class="tactic" href="assert-details.html#32">apply IH_E to _ _ SN1.</a> <a class="tactic" href="assert-details.html#33">apply IH_E to _ _ SN2.</a>
+ <a class="tactic" href="assert-details.html#34">apply append_list_string_is to _ _ SN3.</a> <a class="tactic" href="assert-details.html#35">search.</a>
+<span class="comment">%stmtNames_isCtx</span>
+ <a class="tactic" href="assert-details.html#36">search.</a></div>
+
+<a class="command" href="assert-details.html#37">Prove exactEval:host:stmtNames_unique,
+      exactEval:host:exprNames_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(38);" id="toggleproof38">[Show Proof]</a>
+<div class="proof" id="proof38" style="display: none;">
+<a class="tactic" href="assert-details.html#38">case IsS.</a> <a class="tactic" href="assert-details.html#39">SNB: case SNB.</a> <a class="tactic" href="assert-details.html#40">apply IH_E to _ _ SNA1 SNB.</a>
+<a class="tactic" href="assert-details.html#41">apply IH_E to _ _ SNA2 SNB1.</a> <a class="tactic" href="assert-details.html#42">apply append_unique to SNA3 SNB2.</a> <a class="tactic" href="assert-details.html#43">search.</a></div>
+
+<a class="command" href="assert-details.html#44">Prove exactEval:host:stmtNames_keep_older.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(45);" id="toggleproof45">[Show Proof]</a>
+<div class="proof" id="proof45" style="display: none;">
+<a class="tactic" href="assert-details.html#45">search.</a></div>
+
+<a class="command" href="assert-details.html#46">Prove exactEval:host:stmtNames_exists,
+      exactEval:host:exprNames_exists,
+      exactEval:host:argsNames_exists,
+      exactEval:host:recFieldNames_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(47);" id="toggleproof47">[Show Proof]</a>
+<div class="proof" id="proof47" style="display: none;">
+<a class="tactic" href="assert-details.html#47">ENE: apply IH_E to IsS1 IsCtx.</a> <a class="tactic" href="assert-details.html#48">ENM: apply IH_E to IsS2 IsCtx.</a>
+<a class="tactic" href="assert-details.html#49">Is1: apply exprNames_is to _ _ ENE.</a>
+<a class="tactic" href="assert-details.html#50">Is2: apply exprNames_is to _ _ ENM.</a>
+<a class="tactic" href="assert-details.html#51">apply append_list_string_total to Is1 Is2.</a> <a class="tactic" href="assert-details.html#52">search.</a></div>
+
+<a class="command" href="assert-details.html#53">Prove exactEval:host:stmtNames_not_in_ctx,
+      exactEval:host:exprNames_not_in_ctx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(54);" id="toggleproof54">[Show Proof]</a>
+<div class="proof" id="proof54" style="display: none;">
+<a class="tactic" href="assert-details.html#54">case IsS.</a>  <a class="tactic" href="assert-details.html#55">Or: apply mem_append to MemN SN3.</a> <a class="tactic" href="assert-details.html#56">M: case Or.</a>
+  <span class="comment">%mem X NE</span>
+   <a class="tactic" href="assert-details.html#57">apply IH_E to _ _ SN1 M MemsCtx.</a>
+  <span class="comment">%mem X NM</span>
+   <a class="tactic" href="assert-details.html#58">apply IH_E to _ _ SN2 M MemsCtx.</a></div>
+
+
+<a class="command" href="assert-details.html#59">Prove exactEval:host:stmtNames_relatedCtxs,
+      exactEval:host:stmtNames_relatedCtxs_ctx_fwd,
+      exactEval:host:stmtNames_relatedCtxs_ctx_back,
+      exactEval:host:exprNames_relatedCtxs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(60);" id="toggleproof60">[Show Proof]</a>
+<div class="proof" id="proof60" style="display: none;">
+<span class="comment">%stmtNames_relatedCtxs</span>
+ <a class="tactic" href="assert-details.html#60">case IsS.</a> <a class="tactic" href="assert-details.html#61">apply IH_E to _ _ _ RelAB RelBA SN1.</a>
+ <a class="tactic" href="assert-details.html#62">apply IH_E to _ _ _ RelAB RelBA SN2.</a> <a class="tactic" href="assert-details.html#63">search.</a>
+<span class="comment">%stmtNames_relatedCtxs_ctx_fwd</span>
+ <a class="tactic" href="assert-details.html#64">case IsS.</a> <a class="tactic" href="assert-details.html#65">SNB: case SNB.</a> <a class="tactic" href="assert-details.html#66">backchain RelAB.</a>
+<span class="comment">%stmtNames_relatedCtxs_ctx_back</span>
+ <a class="tactic" href="assert-details.html#67">SNB: case SNB.</a> <a class="tactic" href="assert-details.html#68">backchain RelBA.</a></div>
+
+
+<a class="command" href="assert-details.html#69">Prove exactEval:host:stmtNames_increaseCtxs,
+      exactEval:host:stmtNames_increaseCtxs_ctxs,
+      exactEval:host:exprNames_increaseCtxs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(70);" id="toggleproof70">[Show Proof]</a>
+<div class="proof" id="proof70" style="display: none;">
+<span class="comment">%stmtNames_increaseCtxs</span>
+ <a class="tactic" href="assert-details.html#70">case IsS.</a> <a class="tactic" href="assert-details.html#71">SNB: case SNB.</a> <a class="tactic" href="assert-details.html#72">Or: apply mem_append to M SNB2.</a>
+ <a class="tactic" href="assert-details.html#73">M': case Or.</a>
+   <span class="comment">%mem X NE1</span>
+    <a class="tactic" href="assert-details.html#74">ME: apply IH_E to _ _ _ _ SNA1 SNB M'.</a>
+    <a class="tactic" href="assert-details.html#75">apply mem_append_left to ME SNA3.</a> <a class="tactic" href="assert-details.html#76">search.</a>
+   <span class="comment">%mem X NM1</span>
+    <a class="tactic" href="assert-details.html#77">MM: apply IH_E to _ _ _ _ SNA2 SNB1 M'.</a>
+    <a class="tactic" href="assert-details.html#78">apply mem_append_right to MM SNA3.</a> <a class="tactic" href="assert-details.html#79">search.</a>
+<span class="comment">%stmtNames_increaseCtxs_ctxs</span>
+ <a class="tactic" href="assert-details.html#80">case SNB.</a> <a class="tactic" href="assert-details.html#81">apply RelAB to M.</a> <a class="tactic" href="assert-details.html#82">search.</a></div>
+
+
+<a class="command" href="assert-details.html#83">Prove_Constraint exactEval:host:proj_exprNames.</a>
+<a class="command" href="assert-details.html#84">Prove_Constraint exactEval:host:proj_stmtNames.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(85);" id="toggleproof85">[Show Proof]</a>
+<div class="proof" id="proof85" style="display: none;">
+<a class="tactic" href="assert-details.html#85">case IsS.</a> <a class="tactic" href="assert-details.html#86">SN: case SN.</a> <a class="tactic" href="assert-details.html#87">SN_P: case SN_P.</a> <a class="tactic" href="assert-details.html#88">case SN_P1.</a> <a class="tactic" href="assert-details.html#89">SN_P: case SN_P2.</a>
+<a class="tactic" href="assert-details.html#90">SN_P: case SN_P1.</a> <a class="tactic" href="assert-details.html#91">apply exprNames_unique to _ _ SN SN_P.</a>
+<a class="tactic" href="assert-details.html#92">apply append_nil_right to SN_P3.</a> <a class="tactic" href="assert-details.html#93">clear SN_P3.</a>
+<a class="tactic" href="assert-details.html#94">SN': apply exprNames_relatedCtxs to _ _ _ _ _ SN_P1 with
+        CtxB = Scope::Ctx.</a>
+  <span class="comment">%mems -&gt;</span>
+   <a class="tactic" href="assert-details.html#95">intros M'.</a> <a class="tactic" href="assert-details.html#96">M': case M'.</a> <a class="tactic" href="assert-details.html#97">case M'.</a> <a class="tactic" href="assert-details.html#98">search.</a>
+<a class="tactic" href="assert-details.html#99">apply exprNames_unique to _ _ SN1 SN'.</a>
+<a class="tactic" href="assert-details.html#100">apply append_unique to SN2 SN_P4.</a> <a class="tactic" href="assert-details.html#101">search.</a></div>
+<a class="command" href="assert-details.html#102">Prove_Constraint exactEval:host:proj_stmtNames_names_forward.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(103);" id="toggleproof103">[Show Proof]</a>
+<div class="proof" id="proof103" style="display: none;">
+<a class="tactic" href="assert-details.html#103">case IsS.</a> <a class="tactic" href="assert-details.html#104">SN: case SN.</a> <a class="tactic" href="assert-details.html#105">SN_P: case SN_P.</a> <a class="tactic" href="assert-details.html#106">search.</a></div>
+<a class="command" href="assert-details.html#107">Prove_Constraint exactEval:host:proj_stmtNames_names_backward.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(108);" id="toggleproof108">[Show Proof]</a>
+<div class="proof" id="proof108" style="display: none;">
+<a class="tactic" href="assert-details.html#108">case IsS.</a> <a class="tactic" href="assert-details.html#109">SN: case SN.</a> <a class="tactic" href="assert-details.html#110">SN_P: case SN_P.</a> <a class="tactic" href="assert-details.html#111">search.</a></div>
+
+
+
+
+<span class="comment">/********************************************************************
+ Typing
+ ********************************************************************/</span>
+<a class="command" href="assert-details.html#112">Prove exactEval:host:typeOf_isTy,
+      exactEval:host:stmtOK_isCtx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(113);" id="toggleproof113">[Show Proof]</a>
+<div class="proof" id="proof113" style="display: none;">
+<span class="comment">%stmtOK_isCtx</span>
+ <span class="comment">%T-Assert</span>
+  <a class="tactic" href="assert-details.html#113">search.</a></div>
+
+
+<a class="command" href="assert-details.html#114">Prove exactEval:host:stmtOK_keep_scopes.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(115);" id="toggleproof115">[Show Proof]</a>
+<div class="proof" id="proof115" style="display: none;">
+<span class="comment">%T-Assert</span>
+ <a class="tactic" href="assert-details.html#115">search.</a></div>
+
+
+<a class="command" href="assert-details.html#116">Prove exactEval:host:stmtOK_older_scopes_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(117);" id="toggleproof117">[Show Proof]</a>
+<div class="proof" id="proof117" style="display: none;">
+<span class="comment">%T-Assert</span>
+ <a class="tactic" href="assert-details.html#117">search.</a></div>
+
+
+<a class="command" href="assert-details.html#118">Prove exactEval:host:stmtOK_first_scope_lookup_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(119);" id="toggleproof119">[Show Proof]</a>
+<div class="proof" id="proof119" style="display: none;">
+<span class="comment">%T-Assert</span>
+ <a class="tactic" href="assert-details.html#119">search.</a></div>
+
+
+<a class="command" href="assert-details.html#120">Prove exactEval:host:typeOf_unique,
+      exactEval:host:stmtOK_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(121);" id="toggleproof121">[Show Proof]</a>
+<div class="proof" id="proof121" style="display: none;">
+<span class="comment">%stmtOK_unique</span>
+ <a class="tactic" href="assert-details.html#121">case TyB.</a> <a class="tactic" href="assert-details.html#122">search.</a></div>
+
+
+<a class="command" href="assert-details.html#123">Prove exactEval:host:paramTy_is.</a>
+<a class="command" href="assert-details.html#124">Prove exactEval:host:getFunInfo_is.</a>
+
+
+<a class="command" href="assert-details.html#125">Prove exactEval:host:paramTy_exists.</a>
+<a class="command" href="assert-details.html#126">Prove exactEval:host:getFunInfo_exists.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Evaluation
+ ********************************************************************/</span>
+<a class="command" href="assert-details.html#127">Prove exactEval:host:evalExpr_isCtx,
+      exactEval:host:evalExpr_isValue,
+      exactEval:host:evalStmt_isCtx,
+      exactEval:host:evalArgs_isCtx,
+      exactEval:host:evalArgs_isValue,
+      exactEval:host:evalRecFields_isCtx,
+      exactEval:host:evalRecFields_isValue.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(128);" id="toggleproof128">[Show Proof]</a>
+<div class="proof" id="proof128" style="display: none;">
+<span class="comment">%evalStmt_isCtx</span>
+ <span class="comment">%E-Assert</span>
+  <a class="tactic" href="assert-details.html#128">case IsS.</a> <a class="tactic" href="assert-details.html#129">apply IH_C_E to _ _ _ Ev1.</a> <a class="tactic" href="assert-details.html#130">search.</a></div>
+
+
+<a class="command" href="assert-details.html#131">Prove exactEval:host:evalExpr_isOutput,
+      exactEval:host:evalStmt_isOutput,
+      exactEval:host:evalArgs_isOutput,
+      exactEval:host:evalRecFields_isOutput.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(132);" id="toggleproof132">[Show Proof]</a>
+<div class="proof" id="proof132" style="display: none;">
+<span class="comment">%evalStmt_isOutput</span>
+ <span class="comment">%E-Assert</span>
+  <a class="tactic" href="assert-details.html#132">case IsS.</a> <a class="tactic" href="assert-details.html#133">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="assert-details.html#134">search.</a></div>
+
+
+<a class="command" href="assert-details.html#135">Prove exactEval:host:paramName_is.</a>
+<a class="command" href="assert-details.html#136">Prove exactEval:host:getFunEvalInfo_is.</a>
+
+<a class="command" href="assert-details.html#137">Prove exactEval:host:evalProgram_isOutput.</a>
+
+
+<a class="command" href="assert-details.html#138">Prove exactEval:host:evalExpr_names_same,
+      exactEval:host:evalStmt_names_same,
+      exactEval:host:evalArgs_names_same,
+      exactEval:host:evalRecFields_names_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(139);" id="toggleproof139">[Show Proof]</a>
+<div class="proof" id="proof139" style="display: none;">
+<span class="comment">%evalStmt_names_same</span>
+ <span class="comment">%E-Assert</span>
+  <a class="tactic" href="assert-details.html#139">case IsS.</a> <a class="tactic" href="assert-details.html#140">NS: apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="assert-details.html#141">case NS.</a> <a class="tactic" href="assert-details.html#142">search.</a></div>
+
+
+<a class="command" href="assert-details.html#143">Prove exactEval:host:evalExpr_newNameScopes,
+      exactEval:host:evalExpr_newNameScopes_output,
+      exactEval:host:evalExpr_newNameScopes_ctx,
+      exactEval:host:evalStmt_newNameScopes_output,
+      exactEval:host:evalStmt_newNameScopes,
+      exactEval:host:evalArgs_newNameScopes,
+      exactEval:host:evalArgs_newNameScopes_output,
+      exactEval:host:evalArgs_newNameScopes_ctx,
+      exactEval:host:evalRecFields_newNameScopes,
+      exactEval:host:evalRecFields_newNameScopes_output,
+      exactEval:host:evalRecFields_newNameScopes_ctx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(144);" id="toggleproof144">[Show Proof]</a>
+<div class="proof" id="proof144" style="display: none;">
+<span class="comment">%evalStmt_newNameScopes_output</span>
+ <a class="tactic" href="assert-details.html#144">case IsS.</a> <a class="tactic" href="assert-details.html#145">EvB: case EvB.</a> <a class="tactic" href="assert-details.html#146">apply IH_O_E to _ _ _ _ EvA1 EvB _.</a> <a class="tactic" href="assert-details.html#147">search.</a>
+<span class="comment">%evalStmt_newNameScopes</span>
+ <a class="tactic" href="assert-details.html#148">case IsS.</a> <a class="tactic" href="assert-details.html#149">EvB: case EvB.</a> <a class="tactic" href="assert-details.html#150">apply IH_C_E to _ _ _ _ EvA1 EvB _.</a> <a class="tactic" href="assert-details.html#151">search.</a>
+
+
+<a class="tactic" href="assert-details.html#152">Add_Ext_Size exactEval:host:evalExpr,
+             exactEval:host:evalArgs,
+             exactEval:host:evalRecFields,
+             exactEval:host:evalStmt.</a>
+<a class="tactic" href="assert-details.html#153">Add_Proj_Rel exactEval:host:evalExpr,
+             exactEval:host:evalArgs,
+             exactEval:host:evalRecFields,
+             exactEval:host:evalStmt.</a></div>
+
+
+<a class="command" href="assert-details.html#154">Prove exactEval:host:evalExpr_newNameScopes_exists_ES,
+      exactEval:host:evalStmt_newNameScopes_exists_ES,
+      exactEval:host:evalArgs_newNameScopes_exists_ES,
+      exactEval:host:evalRecFields_newNameScopes_exists_ES.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(155);" id="toggleproof155">[Show Proof]</a>
+<div class="proof" id="proof155" style="display: none;">
+<a class="tactic" href="assert-details.html#155">case IsS.</a> <a class="tactic" href="assert-details.html#156">apply ext_size_is_int_evalExpr to EvB2.</a>
+<a class="tactic" href="assert-details.html#157">apply IH_E to _ _ _ _ EvB2 _.</a> <a class="tactic" href="assert-details.html#158">search.</a></div>
+
+
+<a class="command" href="assert-details.html#159">Prove exactEval:host:evalExpr_ctx_names,
+      exactEval:host:evalStmt_ctx_names,
+      exactEval:host:evalArgs_ctx_names,
+      exactEval:host:evalRecFields_ctx_names.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(160);" id="toggleproof160">[Show Proof]</a>
+<div class="proof" id="proof160" style="display: none;">
+<a class="tactic" href="assert-details.html#160">case IsS.</a> <a class="tactic" href="assert-details.html#161">SN: case SN.</a> <a class="tactic" href="assert-details.html#162">apply IH_E to _ _ _ _ Ctxs SN Ev1.</a> <a class="tactic" href="assert-details.html#163">search.</a></div>
+
+
+<a class="command" href="assert-details.html#164">Prove exactEval:host:evalExpr_newNameScopes_exists_back,
+      exactEval:host:evalStmt_newNameScopes_exists_back,
+      exactEval:host:evalArgs_newNameScopes_exists_back,
+      exactEval:host:evalRecFields_newNameScopes_exists_back.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(165);" id="toggleproof165">[Show Proof]</a>
+<div class="proof" id="proof165" style="display: none;">
+<a class="tactic" href="assert-details.html#165">case IsS.</a> <a class="tactic" href="assert-details.html#166">SN: case SN.</a> <a class="tactic" href="assert-details.html#167">case SN2.</a>
+<a class="tactic" href="assert-details.html#168">apply IH_E to _ _ _ _ _ Ctxs SN EvA1 _.</a> <a class="tactic" href="assert-details.html#169">search.</a></div>
+
+
+<a class="command" href="assert-details.html#170">Prove exactEval:host:evalExpr_scopes_same,
+      exactEval:host:evalExpr_scopes_same_ctx,
+      exactEval:host:evalStmt_scopes_same,
+      exactEval:host:evalStmt_scopes_same_ctx,
+      exactEval:host:evalArgs_scopes_same,
+      exactEval:host:evalArgs_scopes_same_ctx,
+      exactEval:host:evalRecFields_scopes_same,
+      exactEval:host:evalRecFields_scopes_same_ctx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(171);" id="toggleproof171">[Show Proof]</a>
+<div class="proof" id="proof171" style="display: none;">
+<span class="comment">%evalStmt_scopes_same</span>
+ <a class="tactic" href="assert-details.html#171">case IsS.</a> <a class="tactic" href="assert-details.html#172">EvB: case EvB.</a> <a class="tactic" href="assert-details.html#173">apply IH_E to _ _ _ _ SS EvA1 EvB.</a> <a class="tactic" href="assert-details.html#174">search.</a>
+<span class="comment">%evalStmt_scopes_same_ctx</span>
+ <a class="tactic" href="assert-details.html#175">case IsS.</a> <a class="tactic" href="assert-details.html#176">EvB: case EvB.</a> <a class="tactic" href="assert-details.html#177">apply IH_E_C to _ _ _ _ _ EvA1 EvB.</a> <a class="tactic" href="assert-details.html#178">search.</a></div>
+
+<a class="command" href="assert-details.html#179">Prove exactEval:host:evalExpr_scopes_same_exists,
+      exactEval:host:evalStmt_scopes_same_exists,
+      exactEval:host:evalArgs_scopes_same_exists,
+      exactEval:host:evalRecFields_scopes_same_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(180);" id="toggleproof180">[Show Proof]</a>
+<div class="proof" id="proof180" style="display: none;">
+<a class="tactic" href="assert-details.html#180">case IsS.</a> <a class="tactic" href="assert-details.html#181">apply IH_E to _ _ _ _ SS EvA1.</a> <a class="tactic" href="assert-details.html#182">search.</a></div>
+
+
+<a class="command" href="assert-details.html#183">Prove_Constraint exactEval:host:proj_evalExpr_forward.</a>
+<a class="command" href="assert-details.html#184">Prove_Constraint exactEval:host:proj_evalExpr_backward.</a>
+
+<a class="command" href="assert-details.html#185">Theorem is_list_values_append_nil : forall L,
+  is_list is_value L -&gt; L ++ [] = L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(186);" id="toggleproof186">[Show Proof]</a>
+<div class="proof" id="proof186" style="display: none;">
+<a class="tactic" href="assert-details.html#186">induction on 1.</a> <a class="tactic" href="assert-details.html#187">intros IsL.</a> <a class="tactic" href="assert-details.html#188">Is: case IsL.</a>
+  <span class="comment">%nil</span>
+   <a class="tactic" href="assert-details.html#189">search.</a>
+  <span class="comment">%cons</span>
+   <a class="tactic" href="assert-details.html#190">apply IH to Is1.</a> <a class="tactic" href="assert-details.html#191">search.</a></div>
+
+<a class="command" href="assert-details.html#192">Prove_Constraint exactEval:host:proj_evalStmt_forward.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(193);" id="toggleproof193">[Show Proof]</a>
+<div class="proof" id="proof193" style="display: none;">
+<a class="tactic" href="assert-details.html#193">case IsS.</a> <a class="tactic" href="assert-details.html#194">Ev: case Ev.</a> <a class="tactic" href="assert-details.html#195">IsEE': apply evalExpr_isCtx to _ _ _ Ev.</a>
+<a class="tactic" href="assert-details.html#196">apply scopes_same_reflexive to IsEE'.</a> <a class="tactic" href="assert-details.html#197">exists EE'.</a> <a class="tactic" href="assert-details.html#198">split.</a>
+  <span class="comment">%eval</span>
+   <a class="tactic" href="assert-details.html#199">unfold.</a> <a class="tactic" href="assert-details.html#200">exists EE', O, [], [].</a> <a class="tactic" href="assert-details.html#201">split.</a>
+     <span class="comment">%eval E</span>
+      <a class="tactic" href="assert-details.html#202">search.</a>
+     <span class="comment">%eval noop</span>
+      <a class="tactic" href="assert-details.html#203">search.</a>
+     <span class="comment">%append</span>
+      <a class="tactic" href="assert-details.html#204">IsO: apply evalExpr_isOutput to _ _ _ Ev.</a>
+      <a class="tactic" href="assert-details.html#205">backchain is_list_values_append_nil.</a>
+  <span class="comment">%scopes_same</span>
+   <a class="tactic" href="assert-details.html#206">search.</a></div>
+
+<a class="command" href="assert-details.html#207">Prove_Constraint exactEval:host:proj_evalStmt_backward.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(208);" id="toggleproof208">[Show Proof]</a>
+<div class="proof" id="proof208" style="display: none;">
+<a class="tactic" href="assert-details.html#208">case IsS.</a> <a class="tactic" href="assert-details.html#209">Ev: case Ev.</a>
+  <span class="comment">%E-If-True</span>
+   <a class="tactic" href="assert-details.html#210">case Ev1.</a> <a class="tactic" href="assert-details.html#211">apply append_nil_right to Ev2.</a>
+   <a class="tactic" href="assert-details.html#212">IsEE': apply evalExpr_isCtx to _ _ _ Ev.</a>
+   <a class="tactic" href="assert-details.html#213">apply scopes_same_reflexive to IsEE'.</a> <a class="tactic" href="assert-details.html#214">search.</a>
+  <span class="comment">%E-If-False</span>
+   <a class="tactic" href="assert-details.html#215">Ev': case Ev1.</a> <a class="tactic" href="assert-details.html#216">case Ev'.</a> <a class="tactic" href="assert-details.html#217">case Ev'.</a> <a class="tactic" href="assert-details.html#218">case Ev'.</a> <a class="tactic" href="assert-details.html#219">case Ev'.</a></div>
+
+
+<a class="command" href="assert-details.html#220">Prove_Ext_Ind exactEval:host:evalExpr,
+              exactEval:host:evalArgs,
+              exactEval:host:evalRecFields,
+              exactEval:host:evalStmt.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(221);" id="toggleproof221">[Show Proof]</a>
+<div class="proof" id="proof221" style="display: none;">
+<a class="tactic" href="assert-details.html#221">case IsS.</a> <a class="tactic" href="assert-details.html#222">apply ext_size_is_int_evalExpr to R2.</a> <a class="tactic" href="assert-details.html#223">Acc: case Acc.</a>
+<a class="tactic" href="assert-details.html#224">L: apply lt_plus_one to R1 _.</a> <a class="tactic" href="assert-details.html#225">apply ext_size_pos_evalExpr to R2.</a>
+<a class="tactic" href="assert-details.html#226">A: apply Acc to _ L.</a> <a class="tactic" href="assert-details.html#227">apply IH to R2 A _ _ _.</a>
+<a class="tactic" href="assert-details.html#228">Names: apply names_exists to IsEE.</a> <a class="tactic" href="assert-details.html#229">unfold.</a>
+<a class="tactic" href="assert-details.html#230">exists N1, ifThenElse E noop (printVal (errorExpr Msg intTy)), EE', O.</a>
+<a class="tactic" href="assert-details.html#231">split.</a>
+  <span class="comment">%eval E</span>
+   <a class="tactic" href="assert-details.html#232">search.</a>
+  <span class="comment">%names</span>
+   <a class="tactic" href="assert-details.html#233">search.</a>
+  <span class="comment">%proj</span>
+   <a class="tactic" href="assert-details.html#234">search.</a>
+  <span class="comment">%eval proj</span>
+   <a class="tactic" href="assert-details.html#235">unfold.</a> <a class="tactic" href="assert-details.html#236">exists EE', O, [], [].</a> <a class="tactic" href="assert-details.html#237">split.</a>
+     <span class="comment">%eval E</span>
+      <a class="tactic" href="assert-details.html#238">search.</a>
+     <span class="comment">%eval noop</span>
+      <a class="tactic" href="assert-details.html#239">search.</a>
+     <span class="comment">%append output</span>
+      <a class="tactic" href="assert-details.html#240">Ev: apply drop_ext_size_evalExpr to R2.</a>
+      <a class="tactic" href="assert-details.html#241">apply evalExpr_isOutput to _ _ _ Ev.</a>
+      <a class="tactic" href="assert-details.html#242">backchain is_list_values_append_nil.</a></div>
+
+
+<a class="command" href="assert-details.html#243">Prove exactEval:host:paramName_unique.</a>
+<a class="command" href="assert-details.html#244">Prove_Constraint exactEval:host:proj_paramName_forward.</a>
+<a class="command" href="assert-details.html#245">Prove_Constraint exactEval:host:proj_paramName_back.</a>
+<a class="command" href="assert-details.html#246">Prove exactEval:host:getFunEvalInfo_unique.</a>
+<a class="command" href="assert-details.html#247">Prove_Constraint exactEval:host:proj_getFunEvalInfo_forward.</a>
+<a class="command" href="assert-details.html#248">Prove_Constraint exactEval:host:proj_getFunEvalInfo_back.</a>
+
+<a class="command" href="assert-details.html#249">Prove exactEval:host:evalProgram_unique.</a>
+<a class="command" href="assert-details.html#250">Prove_Constraint exactEval:host:proj_evalProgram_forward.</a>
+<a class="command" href="assert-details.html#251">Prove_Constraint exactEval:host:proj_evalProgram_back.</a>
+
+
+<a class="command" href="assert-details.html#252">Prove exactEval:host:evalExpr_typePres_ctx,
+      exactEval:host:evalExpr_typePres,
+      exactEval:host:evalStmt_typePres,
+      exactEval:host:evalArgs_typePres_Ctx,
+      exactEval:host:evalArgs_typePres,
+      exactEval:host:evalRecFields_typePres_Ctx,
+      exactEval:host:evalRecFields_typePres.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(253);" id="toggleproof253">[Show Proof]</a>
+<div class="proof" id="proof253" style="display: none;">
+<span class="comment">%evalStmt_typePres</span>
+ <span class="comment">%E-Assert</span>
+  <a class="tactic" href="assert-details.html#253">case IsS.</a> <a class="tactic" href="assert-details.html#254">Ty: case Ty.</a> <a class="tactic" href="assert-details.html#255">apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _.</a> <a class="tactic" href="assert-details.html#256">search.</a></div>
+
+
+<a class="command" href="assert-details.html#257">Prove exactEval:host:paramTy_paramName_same.</a>
+<a class="command" href="assert-details.html#258">Prove exactEval:host:funOK_getFunEvalInfo_related.</a>
+
+
+<a class="command" href="assert-details.html#259">Prove exactEval:host:evalExpr_output_forms,
+      exactEval:host:evalStmt_output_forms,
+      exactEval:host:evalArgs_output_forms,
+      exactEval:host:evalRecFields_output_forms.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(260);" id="toggleproof260">[Show Proof]</a>
+<div class="proof" id="proof260" style="display: none;">
+<span class="comment">%evalStmt_output_forms</span>
+ <span class="comment">%E-Assert</span>
+  <a class="tactic" href="assert-details.html#260">case IsS.</a> <a class="tactic" href="assert-details.html#261">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="assert-details.html#262">search.</a></div>
+
+
+<a class="command" href="assert-details.html#263">Prove exactEval:host:evalProgram_output_forms.</a>
+
+
+<a class="command" href="assert-details.html#264">Prove exactEval:host:paramName_exists.</a>
+<a class="command" href="assert-details.html#265">Prove exactEval:host:getFunEvalInfo_exists.</a>
+
+<a class="command" href="assert-details.html#266"></a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

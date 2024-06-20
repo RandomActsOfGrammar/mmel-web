@@ -1,0 +1,293 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  looseEval:ascription</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  looseEval:ascription</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  ascription.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggleascription.sos" onclick="toggleFile('ascription.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="ascription.sos">[Raw File]</a>
+<pre class="code sterling" id="ascription.sos">
+Module looseEval:ascription
+
+Builds on looseEval:host
+
+<span class="comment">/*Simple type ascriptions for expressions*/</span>
+expr ::= ...
+       | ascribe(expr, typ)
+
+
+----------------------------- [Proj-Ascribe]
+|{expr}- ascribe(E, Ty) ~~> E
+
+
+
+vars E V
+--------------------- [V-Ascribe]
+vars ascribe(E, Ty) V
+
+
+
+typeOf FC TC E Ty
+------------------------------ [T-Ascribe]
+typeOf FC TC ascribe(E, Ty) Ty
+
+
+
+evalExpr FE EE E V O
+--------------------------------- [E-Ascribe]
+evalExpr FE EE ascribe(E, Ty) V O
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="ascription.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="ascription-details.html#0">Module looseEval:ascription.</a>
+
+
+<a class="command" href="ascription-details.html#1">Prove_Constraint looseEval:host:proj_expr_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<a class="tactic" href="ascription-details.html#2">case PrB.</a> <a class="tactic" href="ascription-details.html#3">search.</a></div>
+<a class="command" href="ascription-details.html#4">Prove_Constraint looseEval:host:proj_expr_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(5);" id="toggleproof5">[Show Proof]</a>
+<div class="proof" id="proof5" style="display: none;">
+<a class="tactic" href="ascription-details.html#5">case IsE.</a> <a class="tactic" href="ascription-details.html#6">search.</a></div>
+
+<a class="command" href="ascription-details.html#7">Prove_Constraint looseEval:host:proj_stmt_unique.</a>
+<a class="command" href="ascription-details.html#8">Prove_Constraint looseEval:host:proj_stmt_is.</a>
+<a class="command" href="ascription-details.html#9">Prove_Constraint looseEval:host:proj_stmt_other.</a>
+
+<a class="command" href="ascription-details.html#10">Prove_Constraint looseEval:host:proj_fun_unique.</a>
+<a class="command" href="ascription-details.html#11">Prove_Constraint looseEval:host:proj_fun_is.</a>
+
+<a class="command" href="ascription-details.html#12">Prove_Constraint looseEval:host:proj_param_unique.</a>
+<a class="command" href="ascription-details.html#13">Prove_Constraint looseEval:host:proj_param_is.</a>
+
+<a class="command" href="ascription-details.html#14">Prove_Constraint looseEval:host:proj_program_unique.</a>
+<a class="command" href="ascription-details.html#15">Prove_Constraint looseEval:host:proj_program_is.</a>
+
+<a class="command" href="ascription-details.html#16">Prove_Constraint looseEval:host:proj_typ_unique.</a>
+<a class="command" href="ascription-details.html#17">Prove_Constraint looseEval:host:proj_typ_is.</a>
+
+<a class="command" href="ascription-details.html#18">Prove_Constraint looseEval:host:proj_value_unique.</a>
+<a class="command" href="ascription-details.html#19">Prove_Constraint looseEval:host:proj_value_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(20);" id="toggleproof20">[Show Proof]</a>
+<div class="proof" id="proof20" style="display: none;">
+
+
+
+<span class="comment">/********************************************************************
+ Decidable Equality
+ ********************************************************************/</span>
+<a class="tactic" href="ascription-details.html#20">Add_Proj_Rel looseEval:host:is_expr,
+             looseEval:host:is_args,
+             looseEval:host:is_recFieldExprs.</a></div>
+<a class="command" href="ascription-details.html#21">Prove_Ext_Ind looseEval:host:is_expr,
+              looseEval:host:is_args,
+              looseEval:host:is_recFieldExprs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(22);" id="toggleproof22">[Show Proof]</a>
+<div class="proof" id="proof22" style="display: none;">
+<a class="tactic" href="ascription-details.html#22">apply IH to R1.</a> <a class="tactic" href="ascription-details.html#23">search.</a>
+
+<a class="tactic" href="ascription-details.html#24">Add_Proj_Rel looseEval:host:is_stmt.</a></div>
+<a class="command" href="ascription-details.html#25">Prove_Ext_Ind looseEval:host:is_stmt.</a>
+
+<a class="command" href="ascription-details.html#26">Prove looseEval:host:is_args_nilArgs_or_consArgs.</a>
+<a class="command" href="ascription-details.html#27">Prove looseEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(28);" id="toggleproof28">[Show Proof]</a>
+<div class="proof" id="proof28" style="display: none;">
+
+<a class="tactic" href="ascription-details.html#28">Add_Proj_Rel looseEval:host:is_value, looseEval:host:is_recFieldVals.</a></div>
+<a class="command" href="ascription-details.html#29">Prove_Ext_Ind looseEval:host:is_value, looseEval:host:is_recFieldVals.</a>
+<a class="command" href="ascription-details.html#30">Prove looseEval:host:is_value_intVal_or_not.</a>
+<a class="command" href="ascription-details.html#31">Prove looseEval:host:is_value_trueVal_or_not.</a>
+<a class="command" href="ascription-details.html#32">Prove looseEval:host:is_value_falseVal_or_not.</a>
+<a class="command" href="ascription-details.html#33">Prove looseEval:host:is_value_stringVal_or_not.</a>
+<a class="command" href="ascription-details.html#34">Prove looseEval:host:is_value_recVal_or_not.</a>
+
+<a class="command" href="ascription-details.html#35">Prove looseEval:host:is_recFieldVals_nil_or_cons.</a>
+
+<a class="command" href="ascription-details.html#36">Prove looseEval:host:is_value_eq_or_not,
+      looseEval:host:is_recFieldVals_eq_or_not.</a>
+
+
+
+<span class="comment">/********************************************************************
+ Variables
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#37">Prove looseEval:host:vars_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(38);" id="toggleproof38">[Show Proof]</a>
+<div class="proof" id="proof38" style="display: none;">
+<a class="tactic" href="ascription-details.html#38">case IsE.</a> <a class="tactic" href="ascription-details.html#39">VarsB: case VarsB.</a> <a class="tactic" href="ascription-details.html#40">apply IH to _ VarsA1 VarsB.</a> <a class="tactic" href="ascription-details.html#41">search.</a></div>
+
+<a class="command" href="ascription-details.html#42">Prove looseEval:host:vars_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(43);" id="toggleproof43">[Show Proof]</a>
+<div class="proof" id="proof43" style="display: none;">
+<a class="tactic" href="ascription-details.html#43">case IsE.</a> <a class="tactic" href="ascription-details.html#44">apply IH to _ V1.</a> <a class="tactic" href="ascription-details.html#45">search.</a></div>
+
+<a class="command" href="ascription-details.html#46">Prove looseEval:host:vars_exist,
+      looseEval:host:varsArgs_exist,
+      looseEval:host:varsRecFields_exist.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(47);" id="toggleproof47">[Show Proof]</a>
+<div class="proof" id="proof47" style="display: none;">
+<a class="tactic" href="ascription-details.html#47">apply IH to IsE1.</a> <a class="tactic" href="ascription-details.html#48">search.</a></div>
+
+<a class="command" href="ascription-details.html#49">Prove_Constraint looseEval:host:proj_vars.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(50);" id="toggleproof50">[Show Proof]</a>
+<div class="proof" id="proof50" style="display: none;">
+<a class="tactic" href="ascription-details.html#50">case IsE.</a> <a class="tactic" href="ascription-details.html#51">V: case V.</a> <a class="tactic" href="ascription-details.html#52">apply vars_unique to _ V V_P.</a> <a class="tactic" href="ascription-details.html#53">search.</a></div>
+
+
+
+<span class="comment">/********************************************************************
+ Typing
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#54">Prove looseEval:host:typeOf_isTy.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(55);" id="toggleproof55">[Show Proof]</a>
+<div class="proof" id="proof55" style="display: none;">
+<a class="tactic" href="ascription-details.html#55">case IsE.</a> <a class="tactic" href="ascription-details.html#56">search.</a></div>
+
+<a class="command" href="ascription-details.html#57">Prove looseEval:host:stmtOK_isCtx.</a>
+<a class="command" href="ascription-details.html#58">Prove looseEval:host:stmtOK_keep_scopes.</a>
+<a class="command" href="ascription-details.html#59">Prove looseEval:host:stmtOK_older_scopes_same.</a>
+<a class="command" href="ascription-details.html#60">Prove looseEval:host:stmtOK_first_scope_lookup_same.</a>
+
+<a class="command" href="ascription-details.html#61">Prove looseEval:host:typeOf_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(62);" id="toggleproof62">[Show Proof]</a>
+<div class="proof" id="proof62" style="display: none;">
+<a class="tactic" href="ascription-details.html#62">case TyB.</a> <a class="tactic" href="ascription-details.html#63">search.</a></div>
+
+<a class="command" href="ascription-details.html#64">Prove looseEval:host:stmtOK_unique.</a>
+
+<a class="command" href="ascription-details.html#65">Prove looseEval:host:paramTy_is.</a>
+<a class="command" href="ascription-details.html#66">Prove looseEval:host:getFunInfo_is.</a>
+<a class="command" href="ascription-details.html#67">Prove looseEval:host:paramTy_exists.</a>
+<a class="command" href="ascription-details.html#68">Prove looseEval:host:getFunInfo_exists.</a>
+
+
+
+<span class="comment">/********************************************************************
+ Evaluation
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#69">Prove looseEval:host:evalExpr_isValue,
+      looseEval:host:evalStmt_isCtx,
+      looseEval:host:evalArgs_isValue,
+      looseEval:host:evalRecFields_isValue.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(70);" id="toggleproof70">[Show Proof]</a>
+<div class="proof" id="proof70" style="display: none;">
+<a class="tactic" href="ascription-details.html#70">case IsE.</a> <a class="tactic" href="ascription-details.html#71">apply IH_V_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#72">search.</a></div>
+
+<a class="command" href="ascription-details.html#73">Prove looseEval:host:evalExpr_isOutput,
+      looseEval:host:evalStmt_isOutput,
+      looseEval:host:evalArgs_isOutput,
+      looseEval:host:evalRecFields_isOutput.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(74);" id="toggleproof74">[Show Proof]</a>
+<div class="proof" id="proof74" style="display: none;">
+<a class="tactic" href="ascription-details.html#74">case IsE.</a> <a class="tactic" href="ascription-details.html#75">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#76">search.</a></div>
+
+<a class="command" href="ascription-details.html#77">Prove looseEval:host:paramName_is.</a>
+<a class="command" href="ascription-details.html#78">Prove looseEval:host:getFunEvalInfo_is.</a>
+<a class="command" href="ascription-details.html#79">Prove looseEval:host:evalProgram_isOutput.</a>
+
+<a class="command" href="ascription-details.html#80">Prove looseEval:host:evalStmt_names_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(81);" id="toggleproof81">[Show Proof]</a>
+<div class="proof" id="proof81" style="display: none;">
+
+<a class="tactic" href="ascription-details.html#81">Add_Ext_Size looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.</a>
+<a class="tactic" href="ascription-details.html#82">Add_Proj_Rel looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.</a></div>
+
+<a class="command" href="ascription-details.html#83">Prove looseEval:host:evalExpr_rel,
+      looseEval:host:evalStmt_newNameScopes_output,
+      looseEval:host:evalStmt_newNameScopes,
+      looseEval:host:evalArgs_rel,
+      looseEval:host:evalRecFields_rel.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(84);" id="toggleproof84">[Show Proof]</a>
+<div class="proof" id="proof84" style="display: none;">
+<a class="tactic" href="ascription-details.html#84">case IsE.</a> <a class="tactic" href="ascription-details.html#85">Vars: case Vars.</a> <a class="tactic" href="ascription-details.html#86">EvB: case EvB.</a>
+<a class="tactic" href="ascription-details.html#87">apply IH_E to _ _ _ _ EvA1 EvB Vars Rel.</a> <a class="tactic" href="ascription-details.html#88">search.</a></div>
+
+<a class="command" href="ascription-details.html#89">Prove looseEval:host:evalExpr_rel_exists_ES,
+      looseEval:host:evalStmt_newNameScopes_exists_ES,
+      looseEval:host:evalArgs_rel_exists_ES,
+      looseEval:host:evalRecFields_rel_exists_ES.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(90);" id="toggleproof90">[Show Proof]</a>
+<div class="proof" id="proof90" style="display: none;">
+<a class="tactic" href="ascription-details.html#90">case IsE.</a> <a class="tactic" href="ascription-details.html#91">Vars: case Vars.</a> <a class="tactic" href="ascription-details.html#92">apply IH_E to _ _ _ _ EvB2 Vars Rel.</a>
+<a class="tactic" href="ascription-details.html#93">search.</a></div>
+
+<a class="command" href="ascription-details.html#94">Prove looseEval:host:evalExpr_scopes_same,
+      looseEval:host:evalStmt_scopes_same,
+      looseEval:host:evalStmt_scopes_same_ctx,
+      looseEval:host:evalArgs_scopes_same,
+      looseEval:host:evalRecFields_scopes_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(95);" id="toggleproof95">[Show Proof]</a>
+<div class="proof" id="proof95" style="display: none;">
+<a class="tactic" href="ascription-details.html#95">case IsE.</a> <a class="tactic" href="ascription-details.html#96">EvB: case EvB.</a> <a class="tactic" href="ascription-details.html#97">apply IH_E to _ _ _ _ _ EvA1 EvB.</a> <a class="tactic" href="ascription-details.html#98">search.</a></div>
+
+<a class="command" href="ascription-details.html#99">Prove looseEval:host:evalExpr_scopes_same_exists,
+      looseEval:host:evalStmt_scopes_same_exists,
+      looseEval:host:evalArgs_scopes_same_exists,
+      looseEval:host:evalRecFields_scopes_same_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(100);" id="toggleproof100">[Show Proof]</a>
+<div class="proof" id="proof100" style="display: none;">
+<a class="tactic" href="ascription-details.html#100">case IsE.</a> <a class="tactic" href="ascription-details.html#101">apply IH_E to _ _ _ _ SS EvA1.</a> <a class="tactic" href="ascription-details.html#102">search.</a></div>
+
+<a class="command" href="ascription-details.html#103">Prove_Constraint looseEval:host:proj_evalExpr_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(104);" id="toggleproof104">[Show Proof]</a>
+<div class="proof" id="proof104" style="display: none;">
+<a class="tactic" href="ascription-details.html#104">case Ev.</a> <a class="tactic" href="ascription-details.html#105">search.</a></div>
+
+<a class="command" href="ascription-details.html#106">Prove_Constraint looseEval:host:proj_evalStmt_exists.</a>
+<a class="command" href="ascription-details.html#107">Prove_Constraint looseEval:host:proj_evalStmt_rel.</a>
+
+
+<a class="command" href="ascription-details.html#108">Prove_Ext_Ind looseEval:host:evalExpr,
+              looseEval:host:evalArgs,
+              looseEval:host:evalRecFields,
+              looseEval:host:evalStmt.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(109);" id="toggleproof109">[Show Proof]</a>
+<div class="proof" id="proof109" style="display: none;">
+<a class="tactic" href="ascription-details.html#109">case IsE.</a> <a class="tactic" href="ascription-details.html#110">apply ext_size_is_int_evalExpr to R2.</a>
+<a class="tactic" href="ascription-details.html#111">L: apply lt_plus_one to R1 _.</a> <a class="tactic" href="ascription-details.html#112">apply ext_size_pos_evalExpr to R2.</a>
+<a class="tactic" href="ascription-details.html#113">Acc: case Acc.</a> <a class="tactic" href="ascription-details.html#114">A: apply Acc to _ L.</a> <a class="tactic" href="ascription-details.html#115">apply IH to R2 A _ _ _.</a> <a class="tactic" href="ascription-details.html#116">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#117">Prove looseEval:host:paramName_unique.</a>
+<a class="command" href="ascription-details.html#118">Prove_Constraint looseEval:host:proj_paramName_forward.</a>
+<a class="command" href="ascription-details.html#119">Prove_Constraint looseEval:host:proj_paramName_back.</a>
+<a class="command" href="ascription-details.html#120">Prove looseEval:host:getFunEvalInfo_unique.</a>
+<a class="command" href="ascription-details.html#121">Prove_Constraint looseEval:host:proj_getFunEvalInfo_forward.</a>
+<a class="command" href="ascription-details.html#122">Prove_Constraint looseEval:host:proj_getFunEvalInfo_back.</a>
+<a class="command" href="ascription-details.html#123">Prove looseEval:host:evalProgram_unique.</a>
+<a class="command" href="ascription-details.html#124">Prove_Constraint looseEval:host:proj_evalProgram.</a>
+<a class="command" href="ascription-details.html#125">Prove_Constraint looseEval:host:proj_evalProgram_back.</a>
+
+
+<a class="command" href="ascription-details.html#126">Prove looseEval:host:evalExpr_typePres,
+      looseEval:host:evalStmt_typePres,
+      looseEval:host:evalArgs_typePres,
+      looseEval:host:evalRecFields_typePres.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(127);" id="toggleproof127">[Show Proof]</a>
+<div class="proof" id="proof127" style="display: none;">
+<a class="tactic" href="ascription-details.html#127">case IsE.</a> <a class="tactic" href="ascription-details.html#128">Ty: case Ty.</a> <a class="tactic" href="ascription-details.html#129">apply IH_E to _ _ _ _ _ Ty Ev1 _ _.</a> <a class="tactic" href="ascription-details.html#130">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#131">Prove looseEval:host:paramTy_paramName_same.</a>
+<a class="command" href="ascription-details.html#132">Prove looseEval:host:funOK_getFunEvalInfo_related.</a>
+
+
+<a class="command" href="ascription-details.html#133">Prove looseEval:host:evalExpr_output_forms,
+      looseEval:host:evalStmt_output_forms,
+      looseEval:host:evalArgs_output_forms,
+      looseEval:host:evalRecFields_output_forms.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(134);" id="toggleproof134">[Show Proof]</a>
+<div class="proof" id="proof134" style="display: none;">
+<a class="tactic" href="ascription-details.html#134">case IsE.</a> <a class="tactic" href="ascription-details.html#135">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#136">search.</a></div>
+
+<a class="command" href="ascription-details.html#137">Prove looseEval:host:evalProgram_output_forms.</a>
+
+
+<a class="command" href="ascription-details.html#138">Prove looseEval:host:paramName_exists.</a>
+<a class="command" href="ascription-details.html#139">Prove looseEval:host:getFunEvalInfo_exists.</a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

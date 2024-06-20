@@ -1,0 +1,370 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  matchEval:ascription</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  matchEval:ascription</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  ascription.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggleascription.sos" onclick="toggleFile('ascription.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="ascription.sos">[Raw File]</a>
+<pre class="code sterling" id="ascription.sos">
+Module matchEval:ascription
+
+Builds on matchEval:host
+
+<span class="comment">/*Simple type ascriptions for expressions*/</span>
+expr ::= ...
+       | ascribe(expr, typ)
+
+
+----------------------------- [Proj-Ascribe]
+|{expr}- ascribe(E, Ty) ~~> E
+
+
+
+vars E V
+--------------------- [V-Ascribe]
+vars ascribe(E, Ty) V
+
+
+
+typeOf FC TC E Ty
+------------------------------ [T-Ascribe]
+typeOf FC TC ascribe(E, Ty) Ty
+
+
+
+evalExpr FE EE E V O
+--------------------------------- [E-Ascribe]
+evalExpr FE EE ascribe(E, Ty) V O
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="ascription.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="ascription-details.html#0">Module matchEval:ascription.</a>
+
+<span class="comment">/********************************************************************
+ Basic Projection Constraints
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#1">Prove_Constraint matchEval:host:proj_expr_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<span class="comment">%ascribe</span>
+ <a class="tactic" href="ascription-details.html#2">case PrB.</a> <a class="tactic" href="ascription-details.html#3">search.</a></div>
+<a class="command" href="ascription-details.html#4">Prove_Constraint matchEval:host:proj_expr_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(5);" id="toggleproof5">[Show Proof]</a>
+<div class="proof" id="proof5" style="display: none;">
+<span class="comment">%ascribe</span>
+ <a class="tactic" href="ascription-details.html#5">case IsE.</a> <a class="tactic" href="ascription-details.html#6">search.</a></div>
+
+<a class="command" href="ascription-details.html#7">Prove_Constraint matchEval:host:proj_stmt_unique.</a>
+<a class="command" href="ascription-details.html#8">Prove_Constraint matchEval:host:proj_stmt_is.</a>
+<a class="command" href="ascription-details.html#9">Prove_Constraint matchEval:host:proj_stmt_other.</a>
+
+<a class="command" href="ascription-details.html#10">Prove_Constraint matchEval:host:proj_fun_unique.</a>
+<a class="command" href="ascription-details.html#11">Prove_Constraint matchEval:host:proj_fun_is.</a>
+
+<a class="command" href="ascription-details.html#12">Prove_Constraint matchEval:host:proj_param_unique.</a>
+<a class="command" href="ascription-details.html#13">Prove_Constraint matchEval:host:proj_param_is.</a>
+
+<a class="command" href="ascription-details.html#14">Prove_Constraint matchEval:host:proj_program_unique.</a>
+<a class="command" href="ascription-details.html#15">Prove_Constraint matchEval:host:proj_program_is.</a>
+
+<a class="command" href="ascription-details.html#16">Prove_Constraint matchEval:host:proj_typ_unique.</a>
+<a class="command" href="ascription-details.html#17">Prove_Constraint matchEval:host:proj_typ_is.</a>
+
+<a class="command" href="ascription-details.html#18">Prove_Constraint matchEval:host:proj_value_unique.</a>
+<a class="command" href="ascription-details.html#19">Prove_Constraint matchEval:host:proj_value_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(20);" id="toggleproof20">[Show Proof]</a>
+<div class="proof" id="proof20" style="display: none;">
+
+
+
+
+<span class="comment">/********************************************************************
+ Decidable Equality
+ ********************************************************************/</span>
+<a class="tactic" href="ascription-details.html#20">Add_Proj_Rel matchEval:host:is_expr, matchEval:host:is_args,
+             matchEval:host:is_recFieldExprs.</a></div>
+<a class="command" href="ascription-details.html#21">Prove_Ext_Ind matchEval:host:is_expr, matchEval:host:is_args,
+   matchEval:host:is_recFieldExprs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(22);" id="toggleproof22">[Show Proof]</a>
+<div class="proof" id="proof22" style="display: none;">
+<a class="tactic" href="ascription-details.html#22">apply IH to R1.</a> <a class="tactic" href="ascription-details.html#23">search.</a>
+<a class="tactic" href="ascription-details.html#24">Add_Proj_Rel matchEval:host:is_stmt.</a></div>
+<a class="command" href="ascription-details.html#25">Prove_Ext_Ind matchEval:host:is_stmt.</a>
+
+
+<a class="command" href="ascription-details.html#26">Prove matchEval:host:is_args_nilArgs_or_consArgs.</a>
+<a class="command" href="ascription-details.html#27">Prove matchEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Variables
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#28">Prove matchEval:host:vars_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(29);" id="toggleproof29">[Show Proof]</a>
+<div class="proof" id="proof29" style="display: none;">
+<span class="comment">%V-Ascribe</span>
+ <a class="tactic" href="ascription-details.html#29">case IsE.</a> <a class="tactic" href="ascription-details.html#30">VarsB: case VarsB.</a> <a class="tactic" href="ascription-details.html#31">apply IH to _ VarsA1 VarsB.</a> <a class="tactic" href="ascription-details.html#32">search.</a></div>
+
+<a class="command" href="ascription-details.html#33">Prove matchEval:host:vars_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(34);" id="toggleproof34">[Show Proof]</a>
+<div class="proof" id="proof34" style="display: none;">
+<span class="comment">%V-Ascribe</span>
+ <a class="tactic" href="ascription-details.html#34">case IsE.</a> <a class="tactic" href="ascription-details.html#35">apply IH to _ V1.</a> <a class="tactic" href="ascription-details.html#36">search.</a></div>
+
+<a class="command" href="ascription-details.html#37">Prove matchEval:host:vars_exist,
+      matchEval:host:varsArgs_exist,
+      matchEval:host:varsRecFields_exist.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(38);" id="toggleproof38">[Show Proof]</a>
+<div class="proof" id="proof38" style="display: none;">
+<span class="comment">%vars_exist</span>
+ <span class="comment">%ascribe</span>
+  <a class="tactic" href="ascription-details.html#38">apply IH to IsE1.</a> <a class="tactic" href="ascription-details.html#39">search.</a></div>
+
+<a class="command" href="ascription-details.html#40">Prove_Constraint matchEval:host:proj_expr_vars.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(41);" id="toggleproof41">[Show Proof]</a>
+<div class="proof" id="proof41" style="display: none;">
+<a class="tactic" href="ascription-details.html#41">V: case V.</a> <a class="tactic" href="ascription-details.html#42">case IsE.</a> <a class="tactic" href="ascription-details.html#43">apply vars_unique to _ V V_P.</a> <a class="tactic" href="ascription-details.html#44">search.</a></div>
+
+
+
+
+<span class="comment">/********************************************************************
+ Typing
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#45">Prove matchEval:host:typeOf_isTy.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(46);" id="toggleproof46">[Show Proof]</a>
+<div class="proof" id="proof46" style="display: none;">
+<span class="comment">%typeOf_isTy</span>
+ <span class="comment">%T-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#46">case IsE.</a> <a class="tactic" href="ascription-details.html#47">apply IH to _ _ _ Ty1.</a> <a class="tactic" href="ascription-details.html#48">search.</a></div>
+<a class="command" href="ascription-details.html#49">Prove matchEval:host:stmtOK_isCtx.</a>
+
+<a class="command" href="ascription-details.html#50">Prove matchEval:host:stmtOK_keep_scopes.</a>
+<a class="command" href="ascription-details.html#51">Prove matchEval:host:stmtOK_older_scopes_same.</a>
+<a class="command" href="ascription-details.html#52">Prove matchEval:host:stmtOK_first_scope_lookup_same.</a>
+
+<a class="command" href="ascription-details.html#53">Prove matchEval:host:typeOf_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(54);" id="toggleproof54">[Show Proof]</a>
+<div class="proof" id="proof54" style="display: none;">
+<span class="comment">%typeOf_unique</span>
+ <span class="comment">%T-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#54">case IsE.</a> <a class="tactic" href="ascription-details.html#55">TyB: case TyB.</a> <a class="tactic" href="ascription-details.html#56">apply IH_E to _ _ _ _ TyA1 TyB _.</a> <a class="tactic" href="ascription-details.html#57">search.</a></div>
+<a class="command" href="ascription-details.html#58">Prove matchEval:host:stmtOK_unique.</a>
+
+<a class="command" href="ascription-details.html#59">Prove matchEval:host:paramTy_is.</a>
+<a class="command" href="ascription-details.html#60">Prove matchEval:host:getFunInfo_is.</a>
+<a class="command" href="ascription-details.html#61">Prove matchEval:host:paramTy_exists.</a>
+<a class="command" href="ascription-details.html#62">Prove matchEval:host:getFunInfo_exists.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Evaluation
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#63">Prove matchEval:host:matchInt_is.</a>
+<a class="command" href="ascription-details.html#64">Prove matchEval:host:matchString_is.</a>
+<a class="command" href="ascription-details.html#65">Prove matchEval:host:matchRec_is.</a>
+
+<a class="command" href="ascription-details.html#66">Prove matchEval:host:evalExpr_isValue,
+      matchEval:host:evalStmt_isCtx,
+      matchEval:host:evalArgs_isValue,
+      matchEval:host:evalRecFields_isValue.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(67);" id="toggleproof67">[Show Proof]</a>
+<div class="proof" id="proof67" style="display: none;">
+<span class="comment">%evalExpr_isValue</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#67">case IsE.</a> <a class="tactic" href="ascription-details.html#68">apply IH_V_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#69">search.</a></div>
+
+<a class="command" href="ascription-details.html#70">Prove matchEval:host:evalExpr_isOutput,
+      matchEval:host:evalStmt_isOutput,
+      matchEval:host:evalArgs_isOutput,
+      matchEval:host:evalRecFields_isOutput.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(71);" id="toggleproof71">[Show Proof]</a>
+<div class="proof" id="proof71" style="display: none;">
+<span class="comment">%evalExpr_isOutput</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#71">case IsE.</a> <a class="tactic" href="ascription-details.html#72">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#73">search.</a></div>
+
+<a class="command" href="ascription-details.html#74">Prove matchEval:host:paramName_is.</a>
+<a class="command" href="ascription-details.html#75">Prove matchEval:host:getFunEvalInfo_is.</a>
+
+<a class="command" href="ascription-details.html#76">Prove matchEval:host:evalProgram_isOutput.</a>
+
+
+<a class="command" href="ascription-details.html#77">Prove matchEval:host:evalStmt_names_same.</a>
+
+
+<a class="command" href="ascription-details.html#78">Prove matchEval:host:matchInt_unique.</a>
+<a class="command" href="ascription-details.html#79">Prove matchEval:host:matchTrue_matchFalse_exclusive.</a>
+<a class="command" href="ascription-details.html#80">Prove matchEval:host:matchString_unique.</a>
+<a class="command" href="ascription-details.html#81">Prove matchEval:host:matchRec_unique.</a>
+<a class="command" href="ascription-details.html#82">Prove matchEval:host:matchInt_matchTrue_exclusive.</a>
+<a class="command" href="ascription-details.html#83">Prove matchEval:host:matchInt_matchFalse_exclusive.</a>
+<a class="command" href="ascription-details.html#84">Prove matchEval:host:matchInt_matchString_exclusive.</a>
+<a class="command" href="ascription-details.html#85">Prove matchEval:host:matchInt_matchRec_exclusive.</a>
+<a class="command" href="ascription-details.html#86">Prove matchEval:host:matchString_matchTrue_exclusive.</a>
+<a class="command" href="ascription-details.html#87">Prove matchEval:host:matchString_matchFalse_exclusive.</a>
+<a class="command" href="ascription-details.html#88">Prove matchEval:host:matchString_matchRec_exclusive.</a>
+<a class="command" href="ascription-details.html#89">Prove matchEval:host:matchRec_matchTrue_exclusive.</a>
+<a class="command" href="ascription-details.html#90">Prove matchEval:host:matchRec_matchFalse_exclusive.</a>
+
+
+<a class="command" href="ascription-details.html#91">Prove matchEval:host:evalExpr_rel,
+      matchEval:host:evalExpr_rel_output,
+      matchEval:host:evalStmt_newNameScopes_output,
+      matchEval:host:evalStmt_newNameScopes,
+      matchEval:host:evalArgs_rel,
+      matchEval:host:evalArgs_rel_output,
+      matchEval:host:evalRecFields_rel,
+      matchEval:host:evalRecFields_rel_output.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(92);" id="toggleproof92">[Show Proof]</a>
+<div class="proof" id="proof92" style="display: none;">
+<span class="comment">%evalExpr_rel</span>
+ <a class="tactic" href="ascription-details.html#92">Is: case IsE.</a> <a class="tactic" href="ascription-details.html#93">EvB: case EvB.</a> <a class="tactic" href="ascription-details.html#94">Vars: case Vars.</a>
+ <a class="tactic" href="ascription-details.html#95">apply IH_V_E to _ _ _ _ EvA1 EvB _ _.</a> <a class="tactic" href="ascription-details.html#96">search.</a>
+<span class="comment">%evalExpr_rel_output</span>
+ <a class="tactic" href="ascription-details.html#97">case IsE.</a> <a class="tactic" href="ascription-details.html#98">EvB: case EvB.</a> <a class="tactic" href="ascription-details.html#99">Vars: case Vars.</a>
+ <a class="tactic" href="ascription-details.html#100">apply IH_O_E to _ _ _ _ EvA1 EvB _ _.</a> <a class="tactic" href="ascription-details.html#101">search.</a>
+
+
+<a class="tactic" href="ascription-details.html#102">Add_Ext_Size matchEval:host:evalExpr, matchEval:host:evalStmt,
+             matchEval:host:evalArgs, matchEval:host:evalRecFields.</a>
+<a class="tactic" href="ascription-details.html#103">Add_Proj_Rel matchEval:host:evalExpr, matchEval:host:evalStmt,
+             matchEval:host:evalArgs, matchEval:host:evalRecFields.</a></div>
+
+
+<a class="command" href="ascription-details.html#104">Prove matchEval:host:evalExpr_rel_exists_ES,
+      matchEval:host:evalStmt_newNameScopes_exists_ES,
+      matchEval:host:evalArgs_rel_exists_ES,
+      matchEval:host:evalRecFields_rel_exists_ES.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(105);" id="toggleproof105">[Show Proof]</a>
+<div class="proof" id="proof105" style="display: none;">
+<span class="comment">%E-Ascribe</span>
+ <a class="tactic" href="ascription-details.html#105">Is: case IsE.</a> <a class="tactic" href="ascription-details.html#106">Vars: case Vars.</a>
+ <a class="tactic" href="ascription-details.html#107">apply IH_E to _ _ _ _ EvB2 Vars _ with EE_A = EE_A.</a> <a class="tactic" href="ascription-details.html#108">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#109">Prove matchEval:host:evalExpr_scopes_same,
+      matchEval:host:evalStmt_scopes_same,
+      matchEval:host:evalStmt_scopes_same_ctx,
+      matchEval:host:evalArgs_scopes_same,
+      matchEval:host:evalRecFields_scopes_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(110);" id="toggleproof110">[Show Proof]</a>
+<div class="proof" id="proof110" style="display: none;">
+<span class="comment">%evalExpr_scopes_same</span>
+ <a class="tactic" href="ascription-details.html#110">case IsE.</a> <a class="tactic" href="ascription-details.html#111">EvB: case EvB.</a> <a class="tactic" href="ascription-details.html#112">apply IH_E to _ _ _ _ SS EvA1 EvB.</a> <a class="tactic" href="ascription-details.html#113">search.</a></div>
+
+<a class="command" href="ascription-details.html#114">Prove matchEval:host:evalExpr_scopes_same_exists,
+      matchEval:host:evalStmt_scopes_same_exists,
+      matchEval:host:evalArgs_scopes_same_exists,
+      matchEval:host:evalRecFields_scopes_same_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(115);" id="toggleproof115">[Show Proof]</a>
+<div class="proof" id="proof115" style="display: none;">
+<a class="tactic" href="ascription-details.html#115">case IsE.</a> <a class="tactic" href="ascription-details.html#116">apply IH_E to _ _ _ _ SS EvA1.</a> <a class="tactic" href="ascription-details.html#117">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#118">Prove_Constraint matchEval:host:proj_matchInt.</a>
+<a class="command" href="ascription-details.html#119">Prove_Constraint matchEval:host:proj_matchTrue.</a>
+<a class="command" href="ascription-details.html#120">Prove_Constraint matchEval:host:proj_matchFalse.</a>
+<a class="command" href="ascription-details.html#121">Prove_Constraint matchEval:host:proj_matchString.</a>
+<a class="command" href="ascription-details.html#122">Prove_Constraint matchEval:host:proj_matchRec.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(123);" id="toggleproof123">[Show Proof]</a>
+<div class="proof" id="proof123" style="display: none;">
+<a class="tactic" href="ascription-details.html#123">Add_Proj_Rel matchEval:host:matchInt.</a></div>
+<a class="command" href="ascription-details.html#124">Prove_Ext_Ind matchEval:host:matchInt.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(125);" id="toggleproof125">[Show Proof]</a>
+<div class="proof" id="proof125" style="display: none;">
+<a class="tactic" href="ascription-details.html#125">Add_Proj_Rel matchEval:host:matchTrue.</a></div>
+<a class="command" href="ascription-details.html#126">Prove_Ext_Ind matchEval:host:matchTrue.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(127);" id="toggleproof127">[Show Proof]</a>
+<div class="proof" id="proof127" style="display: none;">
+<a class="tactic" href="ascription-details.html#127">Add_Proj_Rel matchEval:host:matchFalse.</a></div>
+<a class="command" href="ascription-details.html#128">Prove_Ext_Ind matchEval:host:matchFalse.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(129);" id="toggleproof129">[Show Proof]</a>
+<div class="proof" id="proof129" style="display: none;">
+<a class="tactic" href="ascription-details.html#129">Add_Proj_Rel matchEval:host:matchRec.</a></div>
+<a class="command" href="ascription-details.html#130">Prove_Ext_Ind matchEval:host:matchRec.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(131);" id="toggleproof131">[Show Proof]</a>
+<div class="proof" id="proof131" style="display: none;">
+<a class="tactic" href="ascription-details.html#131">Add_Proj_Rel matchEval:host:matchString.</a></div>
+<a class="command" href="ascription-details.html#132">Prove_Ext_Ind matchEval:host:matchString.</a>
+<a class="command" href="ascription-details.html#133">Prove matchEval:host:projedVal_is.</a>
+<a class="command" href="ascription-details.html#134">Prove matchEval:host:projedVal_matchInt.</a>
+<a class="command" href="ascription-details.html#135">Prove matchEval:host:projedVal_matchString.</a>
+<a class="command" href="ascription-details.html#136">Prove matchEval:host:projedVal_matchTrue.</a>
+<a class="command" href="ascription-details.html#137">Prove matchEval:host:projedVal_matchFalse.</a>
+<a class="command" href="ascription-details.html#138">Prove matchEval:host:projedVal_matchRec.</a>
+
+<a class="command" href="ascription-details.html#139">Prove_Constraint matchEval:host:matchInt_proj.</a>
+<a class="command" href="ascription-details.html#140">Prove_Constraint matchEval:host:matchTrue_proj.</a>
+<a class="command" href="ascription-details.html#141">Prove_Constraint matchEval:host:matchFalse_proj.</a>
+<a class="command" href="ascription-details.html#142">Prove_Constraint matchEval:host:matchString_proj.</a>
+<a class="command" href="ascription-details.html#143">Prove_Constraint matchEval:host:matchRec_proj.</a>
+<a class="command" href="ascription-details.html#144">Prove matchEval:host:matchInt_projedVal.</a>
+<a class="command" href="ascription-details.html#145">Prove matchEval:host:matchTrue_projedVal.</a>
+<a class="command" href="ascription-details.html#146">Prove matchEval:host:matchFalse_projedVal.</a>
+<a class="command" href="ascription-details.html#147">Prove matchEval:host:matchString_projedVal.</a>
+<a class="command" href="ascription-details.html#148">Prove matchEval:host:matchRec_projedVal.</a>
+
+<a class="command" href="ascription-details.html#149">Prove_Constraint matchEval:host:proj_evalExpr_forward.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(150);" id="toggleproof150">[Show Proof]</a>
+<div class="proof" id="proof150" style="display: none;">
+<a class="tactic" href="ascription-details.html#150">case IsE.</a> <a class="tactic" href="ascription-details.html#151">Ev: case Ev.</a> <a class="tactic" href="ascription-details.html#152">exists V.</a> <a class="tactic" href="ascription-details.html#153">split.</a>
+  <span class="comment">%eval</span>
+   <a class="tactic" href="ascription-details.html#154">search.</a>
+  <span class="comment">%projedVal</span>
+   <a class="tactic" href="ascription-details.html#155">apply evalExpr_isValue to _ _ _ Ev.</a> <a class="tactic" href="ascription-details.html#156">search.</a></div>
+
+<a class="command" href="ascription-details.html#157">Prove_Constraint matchEval:host:proj_evalStmt_forward.</a>
+
+
+<a class="command" href="ascription-details.html#158">Prove_Ext_Ind matchEval:host:evalExpr,
+              matchEval:host:evalArgs,
+              matchEval:host:evalRecFields,
+              matchEval:host:evalStmt.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(159);" id="toggleproof159">[Show Proof]</a>
+<div class="proof" id="proof159" style="display: none;">
+<a class="tactic" href="ascription-details.html#159">case IsE.</a> <a class="tactic" href="ascription-details.html#160">apply ext_size_is_int_evalExpr to R2.</a>
+<a class="tactic" href="ascription-details.html#161">L: apply lt_plus_one to R1 _.</a> <a class="tactic" href="ascription-details.html#162">Acc: case Acc.</a>
+<a class="tactic" href="ascription-details.html#163">apply ext_size_pos_evalExpr to R2.</a> <a class="tactic" href="ascription-details.html#164">A: apply Acc to _ L.</a>
+<a class="tactic" href="ascription-details.html#165">apply IH to R2 A _ _ _.</a> <a class="tactic" href="ascription-details.html#166">Names: apply names_exists to IsEE.</a> <a class="tactic" href="ascription-details.html#167">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#168">Prove matchEval:host:paramName_unique.</a>
+<a class="command" href="ascription-details.html#169">Prove_Constraint matchEval:host:proj_paramName_forward.</a>
+<a class="command" href="ascription-details.html#170">Prove_Constraint matchEval:host:proj_paramName_back.</a>
+<a class="command" href="ascription-details.html#171">Prove matchEval:host:getFunEvalInfo_unique.</a>
+<a class="command" href="ascription-details.html#172">Prove_Constraint matchEval:host:proj_getFunEvalInfo_forward.</a>
+<a class="command" href="ascription-details.html#173">Prove_Constraint matchEval:host:proj_getFunEvalInfo_back.</a>
+
+<a class="command" href="ascription-details.html#174">Prove matchEval:host:evalProgram_unique.</a>
+<a class="command" href="ascription-details.html#175">Prove_Constraint matchEval:host:proj_evalProgram_forward.</a>
+<a class="command" href="ascription-details.html#176">Prove_Constraint matchEval:host:proj_evalProgram_back.</a>
+
+
+<a class="command" href="ascription-details.html#177">Prove matchEval:host:matchRec_typePres.</a>
+<a class="command" href="ascription-details.html#178">Prove matchEval:host:evalExpr_typePres,
+      matchEval:host:evalStmt_typePres,
+      matchEval:host:evalArgs_typePres,
+      matchEval:host:evalRecFields_typePres.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(179);" id="toggleproof179">[Show Proof]</a>
+<div class="proof" id="proof179" style="display: none;">
+<span class="comment">%evalExpr_typePres</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#179">case IsE.</a> <a class="tactic" href="ascription-details.html#180">Ty: case Ty.</a> <a class="tactic" href="ascription-details.html#181">apply IH_E to _ _ _ _ _ Ty Ev1 _ _.</a> <a class="tactic" href="ascription-details.html#182">search.</a></div>
+
+<a class="command" href="ascription-details.html#183">Prove matchEval:host:paramTy_paramName_same.</a>
+<a class="command" href="ascription-details.html#184">Prove matchEval:host:funOK_getFunEvalInfo_related.</a>
+
+<a class="command" href="ascription-details.html#185">Prove matchEval:host:evalExpr_output_forms,
+      matchEval:host:evalStmt_output_forms,
+      matchEval:host:evalArgs_output_forms,
+      matchEval:host:evalRecFields_output_forms.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(186);" id="toggleproof186">[Show Proof]</a>
+<div class="proof" id="proof186" style="display: none;">
+<span class="comment">%evalExpr_output_forms</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#186">case IsE.</a> <a class="tactic" href="ascription-details.html#187">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#188">search.</a></div>
+
+<a class="command" href="ascription-details.html#189">Prove matchEval:host:evalProgram_output_forms.</a>
+<a class="command" href="ascription-details.html#190">Prove matchEval:host:paramName_exists.</a>
+<a class="command" href="ascription-details.html#191">Prove matchEval:host:getFunEvalInfo_exists.</a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

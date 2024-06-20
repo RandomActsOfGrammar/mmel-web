@@ -1,0 +1,418 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  exactEval:ascription</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  exactEval:ascription</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  ascription.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggleascription.sos" onclick="toggleFile('ascription.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="ascription.sos">[Raw File]</a>
+<pre class="code sterling" id="ascription.sos">
+Module exactEval:ascription
+
+Builds on exactEval:host
+
+<span class="comment">/*Simple type ascriptions for expressions*/</span>
+expr ::= ...
+       | ascribe(expr, typ)
+
+
+----------------------------------- [Proj-Ascribe]
+Names |{expr}- ascribe(E, Ty) ~~> E
+
+
+
+vars E V
+--------------------- [V-Ascribe]
+vars ascribe(E, Ty) V
+
+
+
+exprNames Ctx E N
+------------------------------ [EN-Ascribe]
+exprNames Ctx ascribe(E, Ty) N
+
+
+
+typeOf FC TC E Ty
+------------------------------ [T-Ascribe]
+typeOf FC TC ascribe(E, Ty) Ty
+
+
+
+evalExpr FE EE E V EE1 O
+------------------------------------- [E-Ascribe]
+evalExpr FE EE ascribe(E, Ty) V EE1 O
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="ascription.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="ascription-details.html#0">Module exactEval:ascription.</a>
+
+<span class="comment">/********************************************************************
+ Basic Projection Constraints
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#1">Prove_Constraint exactEval:host:proj_expr_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<span class="comment">%ascribe</span>
+ <a class="tactic" href="ascription-details.html#2">case PrB.</a> <a class="tactic" href="ascription-details.html#3">search.</a></div>
+<a class="command" href="ascription-details.html#4">Prove_Constraint exactEval:host:proj_expr_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(5);" id="toggleproof5">[Show Proof]</a>
+<div class="proof" id="proof5" style="display: none;">
+<span class="comment">%ascribe</span>
+ <a class="tactic" href="ascription-details.html#5">case IsE.</a> <a class="tactic" href="ascription-details.html#6">search.</a></div>
+<a class="command" href="ascription-details.html#7">Prove_Constraint exactEval:host:proj_expr_other.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(8);" id="toggleproof8">[Show Proof]</a>
+<div class="proof" id="proof8" style="display: none;">
+<span class="comment">%ascribe</span>
+ <a class="tactic" href="ascription-details.html#8">search.</a></div>
+
+<a class="command" href="ascription-details.html#9">Prove_Constraint exactEval:host:proj_stmt_unique.</a>
+<a class="command" href="ascription-details.html#10">Prove_Constraint exactEval:host:proj_stmt_is.</a>
+<a class="command" href="ascription-details.html#11">Prove_Constraint exactEval:host:proj_stmt_other.</a>
+
+<a class="command" href="ascription-details.html#12">Prove_Constraint exactEval:host:proj_fun_unique.</a>
+<a class="command" href="ascription-details.html#13">Prove_Constraint exactEval:host:proj_fun_is.</a>
+
+<a class="command" href="ascription-details.html#14">Prove_Constraint exactEval:host:proj_param_unique.</a>
+<a class="command" href="ascription-details.html#15">Prove_Constraint exactEval:host:proj_param_is.</a>
+
+<a class="command" href="ascription-details.html#16">Prove_Constraint exactEval:host:proj_program_unique.</a>
+<a class="command" href="ascription-details.html#17">Prove_Constraint exactEval:host:proj_program_is.</a>
+
+<a class="command" href="ascription-details.html#18">Prove_Constraint exactEval:host:proj_typ_unique.</a>
+<a class="command" href="ascription-details.html#19">Prove_Constraint exactEval:host:proj_typ_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(20);" id="toggleproof20">[Show Proof]</a>
+<div class="proof" id="proof20" style="display: none;">
+
+
+
+
+<span class="comment">/********************************************************************
+ Decidable Equality
+ ********************************************************************/</span>
+<a class="tactic" href="ascription-details.html#20">Add_Proj_Rel exactEval:host:is_expr, exactEval:host:is_args,
+   exactEval:host:is_recFieldExprs, exactEval:host:is_stmt.</a></div>
+<a class="command" href="ascription-details.html#21">Prove_Ext_Ind exactEval:host:is_expr, exactEval:host:is_args,
+   exactEval:host:is_recFieldExprs, exactEval:host:is_stmt.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(22);" id="toggleproof22">[Show Proof]</a>
+<div class="proof" id="proof22" style="display: none;">
+<a class="tactic" href="ascription-details.html#22">apply IH to R1.</a> <a class="tactic" href="ascription-details.html#23">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#24">Prove exactEval:host:is_args_nilArgs_or_consArgs.</a>
+<a class="command" href="ascription-details.html#25">Prove exactEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Variables
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#26">Prove exactEval:host:vars_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(27);" id="toggleproof27">[Show Proof]</a>
+<div class="proof" id="proof27" style="display: none;">
+<span class="comment">%V-Ascribe</span>
+ <a class="tactic" href="ascription-details.html#27">case IsE.</a> <a class="tactic" href="ascription-details.html#28">VarsB: case VarsB.</a> <a class="tactic" href="ascription-details.html#29">apply IH to _ VarsA1 VarsB.</a> <a class="tactic" href="ascription-details.html#30">search.</a></div>
+
+<a class="command" href="ascription-details.html#31">Prove exactEval:host:vars_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(32);" id="toggleproof32">[Show Proof]</a>
+<div class="proof" id="proof32" style="display: none;">
+<span class="comment">%V-Ascribe</span>
+ <a class="tactic" href="ascription-details.html#32">case IsE.</a> <a class="tactic" href="ascription-details.html#33">apply IH to _ V1.</a> <a class="tactic" href="ascription-details.html#34">search.</a></div>
+
+<a class="command" href="ascription-details.html#35">Prove exactEval:host:vars_exist,
+      exactEval:host:varsArgs_exist,
+      exactEval:host:varsRecFields_exist.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(36);" id="toggleproof36">[Show Proof]</a>
+<div class="proof" id="proof36" style="display: none;">
+<span class="comment">%vars_exist</span>
+ <span class="comment">%ascribe</span>
+  <a class="tactic" href="ascription-details.html#36">apply IH to IsE1.</a> <a class="tactic" href="ascription-details.html#37">search.</a></div>
+
+
+
+
+<span class="comment">/********************************************************************
+ Statement Names
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#38">Prove exactEval:host:stmtNames_is,
+      exactEval:host:stmtNames_isCtx,
+      exactEval:host:exprNames_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(39);" id="toggleproof39">[Show Proof]</a>
+<div class="proof" id="proof39" style="display: none;">
+<a class="tactic" href="ascription-details.html#39">case IsE.</a> <a class="tactic" href="ascription-details.html#40">apply IH_E to _ _ EN1.</a> <a class="tactic" href="ascription-details.html#41">search.</a></div>
+
+<a class="command" href="ascription-details.html#42">Prove exactEval:host:stmtNames_unique,
+      exactEval:host:exprNames_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(43);" id="toggleproof43">[Show Proof]</a>
+<div class="proof" id="proof43" style="display: none;">
+<a class="tactic" href="ascription-details.html#43">case IsE.</a> <a class="tactic" href="ascription-details.html#44">ENB: case ENB.</a> <a class="tactic" href="ascription-details.html#45">apply IH_E to _ _ ENA1 ENB.</a> <a class="tactic" href="ascription-details.html#46">search.</a></div>
+
+<a class="command" href="ascription-details.html#47">Prove exactEval:host:stmtNames_keep_older.</a>
+
+<a class="command" href="ascription-details.html#48">Prove exactEval:host:stmtNames_exists,
+      exactEval:host:exprNames_exists,
+      exactEval:host:argsNames_exists,
+      exactEval:host:recFieldNames_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(49);" id="toggleproof49">[Show Proof]</a>
+<div class="proof" id="proof49" style="display: none;">
+<a class="tactic" href="ascription-details.html#49">apply IH_E to IsE1 IsCtx.</a> <a class="tactic" href="ascription-details.html#50">search.</a></div>
+
+<a class="command" href="ascription-details.html#51">Prove exactEval:host:stmtNames_not_in_ctx,
+      exactEval:host:exprNames_not_in_ctx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(52);" id="toggleproof52">[Show Proof]</a>
+<div class="proof" id="proof52" style="display: none;">
+<a class="tactic" href="ascription-details.html#52">case IsE.</a> <a class="tactic" href="ascription-details.html#53">apply IH_E to _ _ EN1 MemN MemsCtx.</a></div>
+
+
+<a class="command" href="ascription-details.html#54">Prove exactEval:host:stmtNames_relatedCtxs,
+      exactEval:host:stmtNames_relatedCtxs_ctx_fwd,
+      exactEval:host:stmtNames_relatedCtxs_ctx_back,
+      exactEval:host:exprNames_relatedCtxs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(55);" id="toggleproof55">[Show Proof]</a>
+<div class="proof" id="proof55" style="display: none;">
+<a class="tactic" href="ascription-details.html#55">case IsE.</a> <a class="tactic" href="ascription-details.html#56">apply IH_E to _ _ _ _ _ EN1.</a> <a class="tactic" href="ascription-details.html#57">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#58">Prove exactEval:host:stmtNames_increaseCtxs,
+      exactEval:host:stmtNames_increaseCtxs_ctxs,
+      exactEval:host:exprNames_increaseCtxs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(59);" id="toggleproof59">[Show Proof]</a>
+<div class="proof" id="proof59" style="display: none;">
+<a class="tactic" href="ascription-details.html#59">case IsE.</a> <a class="tactic" href="ascription-details.html#60">ENB: case ENB.</a> <a class="tactic" href="ascription-details.html#61">apply IH_E to _ _ _ _ ENA1 ENB M.</a> <a class="tactic" href="ascription-details.html#62">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#63">Prove_Constraint exactEval:host:proj_exprNames.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(64);" id="toggleproof64">[Show Proof]</a>
+<div class="proof" id="proof64" style="display: none;">
+<a class="tactic" href="ascription-details.html#64">EN: case EN.</a> <a class="tactic" href="ascription-details.html#65">case IsE.</a> <a class="tactic" href="ascription-details.html#66">apply exprNames_unique to _ _ EN_P EN.</a> <a class="tactic" href="ascription-details.html#67">search.</a></div>
+<a class="command" href="ascription-details.html#68">Prove_Constraint exactEval:host:proj_stmtNames.</a>
+<a class="command" href="ascription-details.html#69">Prove_Constraint exactEval:host:proj_stmtNames_names_forward.</a>
+<a class="command" href="ascription-details.html#70">Prove_Constraint exactEval:host:proj_stmtNames_names_backward.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Typing
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#71">Prove exactEval:host:typeOf_isTy,
+      exactEval:host:stmtOK_isCtx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(72);" id="toggleproof72">[Show Proof]</a>
+<div class="proof" id="proof72" style="display: none;">
+<span class="comment">%typeOf_isTy</span>
+ <span class="comment">%T-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#72">case IsE.</a> <a class="tactic" href="ascription-details.html#73">apply IH to _ _ _ Ty1.</a> <a class="tactic" href="ascription-details.html#74">search.</a></div>
+
+<a class="command" href="ascription-details.html#75">Prove exactEval:host:stmtOK_keep_scopes.</a>
+<a class="command" href="ascription-details.html#76">Prove exactEval:host:stmtOK_older_scopes_same.</a>
+<a class="command" href="ascription-details.html#77">Prove exactEval:host:stmtOK_first_scope_lookup_same.</a>
+
+<a class="command" href="ascription-details.html#78">Prove exactEval:host:typeOf_unique,
+      exactEval:host:stmtOK_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(79);" id="toggleproof79">[Show Proof]</a>
+<div class="proof" id="proof79" style="display: none;">
+<span class="comment">%typeOf_unique</span>
+ <span class="comment">%T-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#79">case IsE.</a> <a class="tactic" href="ascription-details.html#80">TyB: case TyB.</a> <a class="tactic" href="ascription-details.html#81">apply IH_E to _ _ _ _ TyA1 TyB _.</a> <a class="tactic" href="ascription-details.html#82">search.</a></div>
+
+<a class="command" href="ascription-details.html#83">Prove exactEval:host:paramTy_is.</a>
+<a class="command" href="ascription-details.html#84">Prove exactEval:host:getFunInfo_is.</a>
+<a class="command" href="ascription-details.html#85">Prove exactEval:host:paramTy_exists.</a>
+<a class="command" href="ascription-details.html#86">Prove exactEval:host:getFunInfo_exists.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Evaluation
+ ********************************************************************/</span>
+<a class="command" href="ascription-details.html#87">Prove exactEval:host:evalExpr_isCtx,
+      exactEval:host:evalExpr_isValue,
+      exactEval:host:evalStmt_isCtx,
+      exactEval:host:evalArgs_isCtx,
+      exactEval:host:evalArgs_isValue,
+      exactEval:host:evalRecFields_isCtx,
+      exactEval:host:evalRecFields_isValue.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(88);" id="toggleproof88">[Show Proof]</a>
+<div class="proof" id="proof88" style="display: none;">
+<span class="comment">%evalExpr_isCtx</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#88">case IsE.</a> <a class="tactic" href="ascription-details.html#89">apply IH_C_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#90">search.</a>
+<span class="comment">%evalExpr_isValue</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#91">case IsE.</a> <a class="tactic" href="ascription-details.html#92">apply IH_V_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#93">search.</a></div>
+
+<a class="command" href="ascription-details.html#94">Prove exactEval:host:evalExpr_isOutput,
+      exactEval:host:evalStmt_isOutput,
+      exactEval:host:evalArgs_isOutput,
+      exactEval:host:evalRecFields_isOutput.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(95);" id="toggleproof95">[Show Proof]</a>
+<div class="proof" id="proof95" style="display: none;">
+<span class="comment">%evalExpr_isOutput</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#95">case IsE.</a> <a class="tactic" href="ascription-details.html#96">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#97">search.</a></div>
+
+<a class="command" href="ascription-details.html#98">Prove exactEval:host:paramName_is.</a>
+<a class="command" href="ascription-details.html#99">Prove exactEval:host:getFunEvalInfo_is.</a>
+
+<a class="command" href="ascription-details.html#100">Prove exactEval:host:evalProgram_isOutput.</a>
+
+
+<a class="command" href="ascription-details.html#101">Prove exactEval:host:evalExpr_names_same,
+      exactEval:host:evalStmt_names_same,
+      exactEval:host:evalArgs_names_same,
+      exactEval:host:evalRecFields_names_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(102);" id="toggleproof102">[Show Proof]</a>
+<div class="proof" id="proof102" style="display: none;">
+<span class="comment">%evalExpr_names_same</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#102">case IsE.</a> <a class="tactic" href="ascription-details.html#103">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#104">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#105">Prove exactEval:host:evalExpr_newNameScopes,
+      exactEval:host:evalExpr_newNameScopes_output,
+      exactEval:host:evalExpr_newNameScopes_ctx,
+      exactEval:host:evalStmt_newNameScopes_output,
+      exactEval:host:evalStmt_newNameScopes,
+      exactEval:host:evalArgs_newNameScopes,
+      exactEval:host:evalArgs_newNameScopes_output,
+      exactEval:host:evalArgs_newNameScopes_ctx,
+      exactEval:host:evalRecFields_newNameScopes,
+      exactEval:host:evalRecFields_newNameScopes_output,
+      exactEval:host:evalRecFields_newNameScopes_ctx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(106);" id="toggleproof106">[Show Proof]</a>
+<div class="proof" id="proof106" style="display: none;">
+<span class="comment">%evalExpr_newNameScopes</span>
+ <a class="tactic" href="ascription-details.html#106">case IsE.</a> <a class="tactic" href="ascription-details.html#107">EvB: case EvB.</a> <a class="tactic" href="ascription-details.html#108">apply IH_V_E to _ _ _ _ EvA1 EvB _.</a> <a class="tactic" href="ascription-details.html#109">search.</a>
+<span class="comment">%evalExpr_newNameScopes_output</span>
+ <a class="tactic" href="ascription-details.html#110">case IsE.</a> <a class="tactic" href="ascription-details.html#111">EvB: case EvB.</a> <a class="tactic" href="ascription-details.html#112">apply IH_O_E to _ _ _ _ EvA1 EvB _.</a> <a class="tactic" href="ascription-details.html#113">search.</a>
+<span class="comment">%evalExpr_newNameScopes_ctx</span>
+ <a class="tactic" href="ascription-details.html#114">case IsE.</a> <a class="tactic" href="ascription-details.html#115">EvB: case EvB.</a> <a class="tactic" href="ascription-details.html#116">apply IH_C_E to _ _ _ _ EvA1 EvB _.</a> <a class="tactic" href="ascription-details.html#117">search.</a>
+
+
+<a class="tactic" href="ascription-details.html#118">Add_Ext_Size exactEval:host:evalExpr, exactEval:host:evalStmt,
+             exactEval:host:evalArgs, exactEval:host:evalRecFields.</a>
+<a class="tactic" href="ascription-details.html#119">Add_Proj_Rel exactEval:host:evalExpr, exactEval:host:evalStmt,
+             exactEval:host:evalArgs, exactEval:host:evalRecFields.</a></div>
+
+
+<a class="command" href="ascription-details.html#120">Prove exactEval:host:evalExpr_newNameScopes_exists_ES,
+      exactEval:host:evalStmt_newNameScopes_exists_ES,
+      exactEval:host:evalArgs_newNameScopes_exists_ES,
+      exactEval:host:evalRecFields_newNameScopes_exists_ES.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(121);" id="toggleproof121">[Show Proof]</a>
+<div class="proof" id="proof121" style="display: none;">
+<span class="comment">%E-Ascribe</span>
+ <a class="tactic" href="ascription-details.html#121">case IsE.</a> <a class="tactic" href="ascription-details.html#122">apply IH_E to _ _ _ _ EvB2 NNS.</a> <a class="tactic" href="ascription-details.html#123">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#124">Prove exactEval:host:evalExpr_ctx_names,
+      exactEval:host:evalStmt_ctx_names,
+      exactEval:host:evalArgs_ctx_names,
+      exactEval:host:evalRecFields_ctx_names.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(125);" id="toggleproof125">[Show Proof]</a>
+<div class="proof" id="proof125" style="display: none;">
+<a class="tactic" href="ascription-details.html#125">case IsE.</a> <a class="tactic" href="ascription-details.html#126">EN: case EN.</a> <a class="tactic" href="ascription-details.html#127">apply IH_E to _ _ _ _ Ctxs EN Ev1.</a> <a class="tactic" href="ascription-details.html#128">search.</a></div>
+
+<a class="command" href="ascription-details.html#129">Prove exactEval:host:evalExpr_newNameScopes_exists_back,
+      exactEval:host:evalStmt_newNameScopes_exists_back,
+      exactEval:host:evalArgs_newNameScopes_exists_back,
+      exactEval:host:evalRecFields_newNameScopes_exists_back.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(130);" id="toggleproof130">[Show Proof]</a>
+<div class="proof" id="proof130" style="display: none;">
+<a class="tactic" href="ascription-details.html#130">case IsE.</a> <a class="tactic" href="ascription-details.html#131">EN: case EN.</a> <a class="tactic" href="ascription-details.html#132">apply IH_E to _ _ _ _ _ Ctxs EN EvA1 NNS.</a>
+<a class="tactic" href="ascription-details.html#133">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#134">Prove exactEval:host:evalExpr_scopes_same,
+      exactEval:host:evalExpr_scopes_same_ctx,
+      exactEval:host:evalStmt_scopes_same,
+      exactEval:host:evalStmt_scopes_same_ctx,
+      exactEval:host:evalArgs_scopes_same,
+      exactEval:host:evalArgs_scopes_same_ctx,
+      exactEval:host:evalRecFields_scopes_same,
+      exactEval:host:evalRecFields_scopes_same_ctx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(135);" id="toggleproof135">[Show Proof]</a>
+<div class="proof" id="proof135" style="display: none;">
+<span class="comment">%evalExpr_scopes_same</span>
+ <a class="tactic" href="ascription-details.html#135">case IsE.</a> <a class="tactic" href="ascription-details.html#136">EvB: case EvB.</a> <a class="tactic" href="ascription-details.html#137">apply IH_E to _ _ _ _ SS EvA1 EvB.</a> <a class="tactic" href="ascription-details.html#138">search.</a>
+<span class="comment">%evalExpr_scopes_same_ctx</span>
+ <a class="tactic" href="ascription-details.html#139">case IsE.</a> <a class="tactic" href="ascription-details.html#140">EvB: case EvB.</a> <a class="tactic" href="ascription-details.html#141">apply IH_E_C to _ _ _ _ SS EvA1 EvB.</a> <a class="tactic" href="ascription-details.html#142">search.</a></div>
+
+<a class="command" href="ascription-details.html#143">Prove exactEval:host:evalExpr_scopes_same_exists,
+      exactEval:host:evalStmt_scopes_same_exists,
+      exactEval:host:evalArgs_scopes_same_exists,
+      exactEval:host:evalRecFields_scopes_same_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(144);" id="toggleproof144">[Show Proof]</a>
+<div class="proof" id="proof144" style="display: none;">
+<a class="tactic" href="ascription-details.html#144">case IsE.</a> <a class="tactic" href="ascription-details.html#145">apply IH_E to _ _ _ _ SS EvA1.</a> <a class="tactic" href="ascription-details.html#146">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#147">Prove_Constraint exactEval:host:proj_evalExpr_forward.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(148);" id="toggleproof148">[Show Proof]</a>
+<div class="proof" id="proof148" style="display: none;">
+<a class="tactic" href="ascription-details.html#148">case IsE.</a> <a class="tactic" href="ascription-details.html#149">Ev: case Ev.</a> <a class="tactic" href="ascription-details.html#150">exists EE'.</a> <a class="tactic" href="ascription-details.html#151">split.</a>
+  <span class="comment">%eval</span>
+   <a class="tactic" href="ascription-details.html#152">search.</a>
+  <span class="comment">%scopes_same</span>
+   <a class="tactic" href="ascription-details.html#153">apply evalExpr_isCtx to _ _ _ Ev.</a> <a class="tactic" href="ascription-details.html#154">backchain scopes_same_reflexive.</a></div>
+
+<a class="command" href="ascription-details.html#155">Prove_Constraint exactEval:host:proj_evalExpr_backward.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(156);" id="toggleproof156">[Show Proof]</a>
+<div class="proof" id="proof156" style="display: none;">
+<a class="tactic" href="ascription-details.html#156">case IsE.</a> <a class="tactic" href="ascription-details.html#157">exists EE'.</a> <a class="tactic" href="ascription-details.html#158">split.</a>
+  <span class="comment">%eval</span>
+   <a class="tactic" href="ascription-details.html#159">search.</a>
+  <span class="comment">%scopes_same</span>
+   <a class="tactic" href="ascription-details.html#160">apply evalExpr_isCtx to _ _ _ Ev.</a> <a class="tactic" href="ascription-details.html#161">backchain scopes_same_reflexive.</a></div>
+
+<a class="command" href="ascription-details.html#162">Prove_Constraint exactEval:host:proj_evalStmt_forward.</a>
+<a class="command" href="ascription-details.html#163">Prove_Constraint exactEval:host:proj_evalStmt_backward.</a>
+
+
+<a class="command" href="ascription-details.html#164">Prove_Ext_Ind exactEval:host:evalExpr,
+              exactEval:host:evalArgs,
+              exactEval:host:evalRecFields,
+              exactEval:host:evalStmt.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(165);" id="toggleproof165">[Show Proof]</a>
+<div class="proof" id="proof165" style="display: none;">
+<a class="tactic" href="ascription-details.html#165">case IsE.</a> <a class="tactic" href="ascription-details.html#166">apply ext_size_is_int_evalExpr to R2.</a>
+<a class="tactic" href="ascription-details.html#167">L: apply lt_plus_one to R1 _.</a> <a class="tactic" href="ascription-details.html#168">Acc: case Acc.</a>
+<a class="tactic" href="ascription-details.html#169">apply ext_size_pos_evalExpr to R2.</a> <a class="tactic" href="ascription-details.html#170">A: apply Acc to _ L.</a>
+<a class="tactic" href="ascription-details.html#171">apply IH to R2 A _ _ _.</a> <a class="tactic" href="ascription-details.html#172">Names: apply names_exists to IsEE.</a> <a class="tactic" href="ascription-details.html#173">search.</a></div>
+
+
+<a class="command" href="ascription-details.html#174">Prove exactEval:host:paramName_unique.</a>
+<a class="command" href="ascription-details.html#175">Prove_Constraint exactEval:host:proj_paramName_forward.</a>
+<a class="command" href="ascription-details.html#176">Prove_Constraint exactEval:host:proj_paramName_back.</a>
+<a class="command" href="ascription-details.html#177">Prove exactEval:host:getFunEvalInfo_unique.</a>
+<a class="command" href="ascription-details.html#178">Prove_Constraint exactEval:host:proj_getFunEvalInfo_forward.</a>
+<a class="command" href="ascription-details.html#179">Prove_Constraint exactEval:host:proj_getFunEvalInfo_back.</a>
+
+<a class="command" href="ascription-details.html#180">Prove exactEval:host:evalProgram_unique.</a>
+<a class="command" href="ascription-details.html#181">Prove_Constraint exactEval:host:proj_evalProgram_forward.</a>
+<a class="command" href="ascription-details.html#182">Prove_Constraint exactEval:host:proj_evalProgram_back.</a>
+
+
+<a class="command" href="ascription-details.html#183">Prove exactEval:host:evalExpr_typePres_ctx,
+      exactEval:host:evalExpr_typePres,
+      exactEval:host:evalStmt_typePres,
+      exactEval:host:evalArgs_typePres_Ctx,
+      exactEval:host:evalArgs_typePres,
+      exactEval:host:evalRecFields_typePres_Ctx,
+      exactEval:host:evalRecFields_typePres.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(184);" id="toggleproof184">[Show Proof]</a>
+<div class="proof" id="proof184" style="display: none;">
+<span class="comment">%evalExpr_typePres_ctx</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#184">case IsE.</a> <a class="tactic" href="ascription-details.html#185">Ty: case Ty.</a> <a class="tactic" href="ascription-details.html#186">apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _.</a> <a class="tactic" href="ascription-details.html#187">search.</a>
+<span class="comment">%evalExpr_typePres</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#188">case IsE.</a> <a class="tactic" href="ascription-details.html#189">Ty: case Ty.</a> <a class="tactic" href="ascription-details.html#190">apply IH_T_E to _ _ _ _ _ Ty Ev1 _ _.</a> <a class="tactic" href="ascription-details.html#191">search.</a></div>
+
+<a class="command" href="ascription-details.html#192">Prove exactEval:host:paramTy_paramName_same.</a>
+<a class="command" href="ascription-details.html#193">Prove exactEval:host:funOK_getFunEvalInfo_related.</a>
+
+<a class="command" href="ascription-details.html#194">Prove exactEval:host:evalExpr_output_forms,
+      exactEval:host:evalStmt_output_forms,
+      exactEval:host:evalArgs_output_forms,
+      exactEval:host:evalRecFields_output_forms.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(195);" id="toggleproof195">[Show Proof]</a>
+<div class="proof" id="proof195" style="display: none;">
+<span class="comment">%evalExpr_output_forms</span>
+ <span class="comment">%E-Ascribe</span>
+  <a class="tactic" href="ascription-details.html#195">case IsE.</a> <a class="tactic" href="ascription-details.html#196">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="ascription-details.html#197">search.</a></div>
+
+<a class="command" href="ascription-details.html#198">Prove exactEval:host:evalProgram_output_forms.</a>
+<a class="command" href="ascription-details.html#199">Prove exactEval:host:paramName_exists.</a>
+<a class="command" href="ascription-details.html#200">Prove exactEval:host:getFunEvalInfo_exists.</a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

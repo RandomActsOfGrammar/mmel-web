@@ -1,0 +1,64 @@
+Module exactEval:condExpr
+
+Builds on exactEval:host
+
+expr ::= ...
+       | condExpr(expr, expr, expr) /*condExpr(C, T, F):  C ? T : F*/
+
+
+fresh_name "X" Names X
+------------------------------------------------ [Proj-ConditionalExpr]
+Names |{expr}- condExpr(C, T, F) ~~>
+               stmtExpr(
+                  seq(declare(intTy, X, num(0)),
+                      ifThenElse(C,
+                         assign(X, T),
+                         assign(X, F))),
+                  name(X))
+
+
+
+
+vars C V1
+vars T V2
+vars F V3
+V1 ++ V2 = V4
+V4 ++ V3 = V
+------------------------ [V-ConditionalExpr]
+vars condExpr(C, T, F) V
+
+
+
+
+exprNames Ctx C CN
+exprNames Ctx T TN
+exprNames Ctx F FN
+CN ++ TN = N1
+N1 ++ FN = N
+--------------------------------- [EN-ConditionalExpr]
+exprNames Ctx condExpr(C, T, F) N
+
+
+
+
+typeOf FT ET C boolTy
+typeOf FT ET T Ty
+typeOf FT ET F Ty
+--------------------------------- [T-ConditionalExpr]
+typeOf FT ET condExpr(C, T, F) Ty
+
+
+
+
+evalExpr FE EE C trueVal EE1 O1
+evalExpr FE EE1 T V EE2 O2
+O1 ++ O2 = O
+---------------------------------------- [E-ConditionalExpr-True]
+evalExpr FE EE condExpr(C, T, F) V EE2 O
+
+
+evalExpr FE EE C falseVal EE1 O1
+evalExpr FE EE1 F V EE2 O2
+O1 ++ O2 = O
+---------------------------------------- [E-ConditionalExpr-False]
+evalExpr FE EE condExpr(C, T, F) V EE2 O

@@ -1,0 +1,614 @@
+Module matchEval:host
+
+/*
+  The type [(string, (string, value, [string], stmt))] is the function
+  environment, listing the known functions with their return vars,
+  initial return var values, parameter names, and body
+
+  The type [[(string, value)]] is a set of scopes for evaluation.  The
+  most recent scope is the first one in the list.
+*/
+
+                     /*fun env,  val env,  expr,  value,  printed output*/
+Judgment evalExpr : {[(string, (string, value, [string], stmt))] [[(string, value)]]
+                      expr* value [value]}
+Judgment evalArgs : {[(string, (string, value, [string], stmt))] [[(string, value)]]
+                     args* [value] [value]}
+Judgment evalRecFields : {
+           [(string, (string, value, [string], stmt))] [[(string, value)]]
+           recFieldExprs* [(string, value)] [value]}
+
+/*match value forms through projection*/
+Judgment matchInt : value* int
+Judgment matchTrue : value*
+Judgment matchFalse : value*
+Judgment matchString : value* string
+Judgment matchRec : value* [(string, value)]
+
+
+                    /*fun env,  val envin, stmt,  val env out,  printed output*/
+Judgment evalStmt : {[(string, (string, value, [string], stmt))] [[(string, value)]]
+                     stmt* [[(string, value)]] [value]}
+       /*fields,  new val,  original field vals,  updated field vals*/
+Fixed Judgment updateRecFields : {
+                  [string] value [(string, value)] [(string, value)]}
+                /*field to replace, new value, original list, output list*/
+Fixed Judgment replaceRecVal : string value [(string, value)] [(string, value)]
+
+
+Fixed Judgment paramNames : [param] [string]
+Judgment paramName : param* string
+Fixed Judgment getFunEvalCtx : [fun] [(string, (string, value, [string], stmt))]
+            /*fun, fun name, ret var, ret var init val, param names, body*/
+Judgment getFunEvalInfo : fun* string string value [string] stmt
+
+/*Given arguments to main, run program*/
+Judgment evalProgram : [value] program* [value]
+
+
+/********************************************************************
+ Expression Evaluation
+ ********************************************************************/
+
+---------------------------------- [E-Num]
+evalExpr FE EE num(I) intVal(I) []
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchInt V1 I1
+matchInt V2 I2
+I1 + I2 = I
+O1 ++ O2 = O
+--------------------------------------- [E-Plus]
+evalExpr FE EE plus(E1, E2) intVal(I) O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchInt V1 I1
+matchInt V2 I2
+I1 - I2 = I
+O1 ++ O2 = O
+---------------------------------------- [E-Minus]
+evalExpr FE EE minus(E1, E2) intVal(I) O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchInt V1 I1
+matchInt V2 I2
+I1 * I2 = I
+O1 ++ O2 = O
+--------------------------------------- [E-Mult]
+evalExpr FE EE mult(E1, E2) intVal(I) O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchInt V1 I1
+matchInt V2 I2
+I1 / I2 = I
+O1 ++ O2 = O
+-------------------------------------- [E-Div]
+evalExpr FE EE div(E1, E2) intVal(I) O
+
+
+------------------------------ [E-True]
+evalExpr FE EE true trueVal []
+
+
+-------------------------------- [E-False]
+evalExpr FE EE false falseVal []
+
+
+evalExpr FE EE E1 V1 O1
+matchTrue V1
+evalExpr FE EE E2 V2 O2
+matchTrue V2
+O1 ++ O2 = O
+------------------------------------ [E-And-True]
+evalExpr FE EE and(E1, E2) trueVal O
+
+
+evalExpr FE EE E1 V O
+matchFalse V
+------------------------------------- [E-And-False1]
+evalExpr FE EE and(E1, E2) falseVal O
+
+
+evalExpr FE EE E1 V1 O1
+matchTrue V1
+evalExpr FE EE E2 V2 O2
+matchFalse V2
+O1 ++ O2 = O
+------------------------------------- [E-And-False2]
+evalExpr FE EE and(E1, E2) falseVal O
+
+
+evalExpr FE EE E1 V O
+matchTrue V
+----------------------------------- [E-Or-True1]
+evalExpr FE EE or(E1, E2) trueVal O
+
+
+evalExpr FE EE E1 V1 O1
+matchFalse V1
+evalExpr FE EE E2 V2 O2
+matchTrue V2
+O1 ++ O2 = O
+----------------------------------- [E-Or-True2]
+evalExpr FE EE or(E1, E2) trueVal O
+
+
+evalExpr FE EE E1 V1 O1
+matchFalse V1
+evalExpr FE EE E2 V2 O2
+matchFalse V2
+O1 ++ O2 = O
+------------------------------------ [E-Or-False]
+evalExpr FE EE or(E1, E2) falseVal O
+
+
+evalExpr FE EE E V O
+matchFalse V
+------------------------------- [E-Not-True]
+evalExpr FE EE not(E) trueVal O
+
+
+evalExpr FE EE E V O
+matchTrue V
+-------------------------------- [E-Not-False]
+evalExpr FE EE not(E) falseVal O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchInt V1 I1
+matchInt V2 I2
+I1 > I2
+O1 ++ O2 = O
+---------------------------------------- [E-Greater-True]
+evalExpr FE EE greater(E1, E2) trueVal O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchInt V1 I1
+matchInt V2 I2
+I1 <= I2
+O1 ++ O2 = O
+----------------------------------------- [E-Greater-False]
+evalExpr FE EE greater(E1, E2) falseVal O
+
+
+/*
+  We need to define equality evaluation like this to make it be the
+  same across projected values.  Unfortunately, this means matching
+  down to the simplest values and checking those for equality.  This
+  is less general than the other versions of the language, but
+  anything that would check less primitive values would seem to pose a
+  problem when things start projecting, as they might project to more
+  primitive values that no longer match each other.
+*/
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchInt V1 I
+matchInt V2 I
+O1 ++ O2 = O
+----------------------------------- [E-Eq-Int-True]
+evalExpr FE EE eq(E1, E2) trueVal O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchInt V1 I1
+matchInt V2 I2
+I1 != I2
+O1 ++ O2 = O
+------------------------------------ [E-Eq-Int-False]
+evalExpr FE EE eq(E1, E2) falseVal O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchTrue V1
+matchTrue V2
+O1 ++ O2 = O
+----------------------------------- [E-Eq-Bool-TrueT]
+evalExpr FE EE eq(E1, E2) trueVal O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchFalse V1
+matchFalse V2
+O1 ++ O2 = O
+----------------------------------- [E-Eq-Bool-TrueF]
+evalExpr FE EE eq(E1, E2) trueVal O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchTrue V1
+matchFalse V2
+O1 ++ O2 = O
+------------------------------------ [E-Eq-Bool-False1]
+evalExpr FE EE eq(E1, E2) falseVal O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchFalse V1
+matchTrue V2
+O1 ++ O2 = O
+------------------------------------ [E-Eq-Bool-False2]
+evalExpr FE EE eq(E1, E2) falseVal O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchString V1 S
+matchString V2 S
+O1 ++ O2 = O
+----------------------------------- [E-Eq-String-True]
+evalExpr FE EE eq(E1, E2) trueVal O
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchString V1 S1
+matchString V2 S2
+S1 != S2
+O1 ++ O2 = O
+------------------------------------ [E-Eq-String-False]
+evalExpr FE EE eq(E1, E2) falseVal O
+
+
+------------------------------------------- [E-String]
+evalExpr FE EE stringLit(S) stringVal(S) []
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+matchString V1 S1
+matchString V2 S2
+S1 ++ S2 = S
+O1 ++ O2 = O
+----------------------------------------------- [E-AppString]
+evalExpr FE EE appString(E1, E2) stringVal(S) O
+
+
+lookupScopes X EE V
+--------------------------- [E-Name]
+evalExpr FE EE name(X) V []
+
+
+lookup FE Fun (RetVar, RVVal, ArgNames, Body)
+evalArgs FE EE Args ArgVals O1
+zip ArgNames ArgVals InitEnv
+evalStmt FE [(RetVar, RVVal)::InitEnv] Body EE2 O2
+O1 ++ O2 = O
+lookupScopes RetVar EE2 V
+-------------------------------------------------- [E-Call]
+evalExpr FE EE call(Fun, Args) V O
+
+
+evalRecFields FE EE RF VF O
+---------------------------------------- [E-RecBuild]
+evalExpr FE EE recBuild(RF) recVal(VF) O
+
+
+evalExpr FE EE Rec VR O
+matchRec VR Fields
+lookup Fields F V
+----------------------------------------- [E-RecAccess]
+evalExpr FE EE recFieldAccess(Rec, F) V O
+
+
+Extensibella_Stand_In {
+  |{expr}- E ~~> E_P
+  evalExpr FE EE E_P V_P O_P
+  -------------------------- [E-Expr-Q]
+  evalExpr FE EE E V O
+}
+
+
+
+/*Arguments*/
+
+---------------------------- [EA-Nil]
+evalArgs FE EE nilArgs [] []
+
+
+evalExpr FE EE E V O1
+evalArgs FE EE Rest VRest O2
+O1 ++ O2 = O
+------------------------------------------- [EA-Cons]
+evalArgs FE EE consArgs(E, Rest) V::VRest O
+
+
+/*No Extensibella stand-in rule because the args type isn't intended
+  to be extended*/
+
+
+
+/*Record Fields*/
+
+------------------------------------------ [ERF-Nil]
+evalRecFields FE EE nilRecFieldExprs [] []
+
+
+evalExpr FE EE E V O1
+evalRecFields FE EE Rest VRest O2
+O1 ++ O2 = O
+-------------------------------------------------- [ERF-Cons]
+{evalRecFields FE EE consRecFieldExprs(F, E, Rest)
+                     (F, V)::VRest O}
+
+/*recFields isn't intended to be extended either*/
+
+
+
+
+
+/********************************************************************
+ Statement Evaluation
+ ********************************************************************/
+
+-------------------- [MI-IntVal]
+matchInt intVal(I) I
+
+Extensibella_Stand_In {
+  |{value}- V ~~> V_P
+  matchInt V_P I
+  ------------------- [MI-Q]
+  matchInt V I
+}
+
+
+----------------- [MT-True]
+matchTrue trueVal
+
+Extensibella_Stand_In {
+  |{value}- V ~~> V_P
+  matchTrue V_P
+  ------------------- [MT-Q]
+  matchTrue V
+}
+
+
+------------------- [MF-False]
+matchFalse falseVal
+
+Extensibella_Stand_In {
+  |{value}- V ~~> V_P
+  matchFalse V_P
+  ------------------- [MF-Q]
+  matchFalse V
+}
+
+
+-------------------------- [MS-String]
+matchString stringVal(S) S
+
+Extensibella_Stand_In {
+  |{value}- V ~~> V_P
+  matchString V_P S
+  ------------------- [MS-Q]
+  matchString V S
+}
+
+
+------------------------------ [MR-Rec]
+matchRec recVal(Fields) Fields
+
+Extensibella_Stand_In {
+  |{value}- V ~~> V_P
+  matchRec V_P Fs
+  ------------------- [MR-Q]
+  matchRec V Fs
+}
+
+
+
+
+
+/********************************************************************
+ Statement Evaluation
+ ********************************************************************/
+
+------------------------- [E-Noop]
+evalStmt FE EE noop EE []
+
+
+evalStmt FE EE S1 EE1 O1
+evalStmt FE EE1 S2 EE2 O2
+O1 ++ O2 = O
+--------------------------------- [E-Seq]
+evalStmt FE EE seq(S1, S2) EE2 O
+
+
+evalExpr FE Scope::EE E V O
+------------------------------------------------------- [E-Declare]
+{evalStmt FE Scope::EE declare(Ty, X, E)
+             ((X, V)::Scope)::EE O}
+
+
+evalExpr FE EE E V O
+replaceScopes X V EE EE1 /*find and replace value*/
+--------------------------------- [E-Assign]
+evalStmt FE EE assign(X, E) EE1 O
+
+
+evalExpr FE EE E V O
+lookupScopes Rec EE RV
+matchRec RV FieldVals
+updateRecFields Fields V FieldVals NewVals
+replaceScopes Rec recVal(NewVals) EE EE1 /*find and replace value*/
+---------------------------------------------- [E-RecUpdate]
+evalStmt FE EE recUpdate(Rec, Fields, E) EE1 O
+
+
+evalExpr FE EE Cond V O1
+matchTrue V
+evalStmt FE []::EE Th Scope::EE1 O2
+O1 ++ O2 = O
+--------------------------------------------- [E-If-True]
+evalStmt FE EE ifThenElse(Cond, Th, El) EE1 O
+
+
+evalExpr FE EE Cond V O1
+matchFalse V
+evalStmt FE []::EE El Scope::EE1 O2
+O1 ++ O2 = O
+--------------------------------------------- [E-If-False]
+evalStmt FE EE ifThenElse(Cond, Th, El) EE1 O
+
+
+evalExpr FE EE Cond V O1
+matchTrue V
+evalStmt FE []::EE Body Scope::EE1 O2
+evalStmt FE EE1 while(Cond, Body) EE2 O3
+O1 ++ O2 = O12
+O12 ++ O3 = O
+---------------------------------------- [E-While-True]
+evalStmt FE EE while(Cond, Body) EE2 O
+
+
+evalExpr FE EE Cond V O
+matchFalse V
+------------------------------------- [E-While-False]
+evalStmt FE EE while(Cond, Body) EE O
+
+
+evalStmt FE []::EE S Scope::EE1 O
+--------------------------------- [E-ScopeStmt]
+evalStmt FE EE scopeStmt(S) EE1 O
+
+
+evalExpr FE EE E intVal(I) O1
+O1 ++ [intVal(I)] = O
+-------------------------------- [E-Print-Int]
+evalStmt FE EE printVal(E) EE O
+
+
+evalExpr FE EE E trueVal O1
+O1 ++ [trueVal] = O
+------------------------------- [E-Print-True]
+evalStmt FE EE printVal(E) EE O
+
+
+evalExpr FE EE E falseVal O1
+O1 ++ [falseVal] = O
+------------------------------- [E-Print-False]
+evalStmt FE EE printVal(E) EE O
+
+
+evalExpr FE EE E stringVal(S) O1
+O1 ++ [stringVal(S)] = O
+-------------------------------- [E-Print-String]
+evalStmt FE EE printVal(E) EE O
+
+
+Extensibella_Stand_In {
+  names EE Names
+  Names |{stmt}- S ~~> S_P
+  evalStmt FE EE S_P EE_P O_P
+  --------------------------- [E-Stmt-Q]
+  evalStmt FE EE S EE1 O
+}
+
+
+
+/*Update Record Fields*/
+
+replaceRecVal F V L Replaced
+================================ [URF-One]
+updateRecFields [F] V L Replaced
+
+
+lookup L F RV                          /*find field value*/
+matchRec RV Fields                     /*make it a record*/
+updateRecFields FRest V Fields Updated /*update that record*/
+replaceRecVal F recVal(Updated) L Rest /*put that one back in*/
+====================================== [URF-Step]
+updateRecFields F::FRest V L Rest
+
+
+
+==================================================== [RRV-Here]
+replaceRecVal F VNew (F, VOld)::Rest (F, VNew)::Rest
+
+
+F != O
+replaceRecVal F VNew Rest RRest
+================================================= [RRV-Later]
+replaceRecVal F VNew (O, VO)::Rest (O, VO)::RRest
+
+
+
+
+
+/********************************************************************
+ Build Function Evaluation Context
+ ********************************************************************/
+
+/*Evaluation-relevant information for a single function*/
+paramNames Params PNames
+---------------------------------------------------- [GFEI-Fun]
+{getFunEvalInfo
+    fun(FunName, RetTy, RetVar, RVVal, Params, Body)
+    FunName RetVar RVVal PNames Body}
+
+
+
+/*Evaluation-relevant information for a list of functions*/
+
+=================== [GFEC-Empty]
+getFunEvalCtx [] []
+
+
+getFunEvalInfo F FName RetVar RVVal PNames Body
+getFunEvalCtx FRest CRest
+================================================== [GFEC-Cons]
+{getFunEvalCtx F::FRest
+    (FName, (RetVar, RVVal, PNames, Body))::CRest}
+
+
+
+/*Name for a single parameter*/
+
+------------------------------ [PN-Param]
+paramName param(Name, Ty) Name
+
+
+
+/*Gather names*/
+
+================ [PNs-Empty]
+paramNames [] []
+
+
+paramName P N
+paramNames PRest NRest
+============================ [PNs-Cons]
+paramNames P::PRest N::NRest
+
+
+
+
+
+/********************************************************************
+ Program Evaluation
+ ********************************************************************/
+
+/*Build fun ctx*/
+getFunEvalCtx Funs FCtx
+getFunEvalInfo Main MainName RetVar RetVal PNames Body
+/*Run main*/
+zip PNames Args InitEnv
+{evalStmt (MainName, (RetVar, RetVal, PNames, Body))::FCtx
+     [(RetVar, RetVal)::InitEnv] Body EE O}
+---------------------------------------------------------- [E-Program]
+evalProgram Args program(Funs, Main) O

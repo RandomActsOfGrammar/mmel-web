@@ -1,0 +1,34 @@
+Module exactEval:assert
+
+Builds on exactEval:host
+
+stmt ::= ...
+       | assert(expr, expr)
+
+
+-------------------------------------------- [Proj-Assert]
+Names |{stmt}- assert(E, Msg) ~~>
+         ifThenElse(E, noop,
+            /*printVal(error) never succeeds*/
+            printVal(errorExpr(Msg, intTy)))
+
+
+
+typeOf FC TC E boolTy
+typeOf FC TC Msg stringTy
+------------------------------ [T-Assert]
+stmtOK FC TC assert(E, Msg) TC
+
+
+
+exprNames Ctx E NE
+exprNames Ctx Msg NM
+NE ++ NM = N
+---------------------------------- [SN-Assert]
+stmtNames Ctx assert(E, Msg) N Ctx
+
+
+
+evalExpr FE EE E trueVal EE2 O
+----------------------------------- [E-Assert]
+evalStmt FE EE assert(E, Msg) EE2 O

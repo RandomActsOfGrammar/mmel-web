@@ -1,0 +1,118 @@
+Module matchEval:list
+
+/********************************************************************
+ Expression Evaluation
+ ********************************************************************/
+
+-------------------------------- [E-Nil]
+evalExpr FE EE nil(Ty) nilVal []
+
+
+evalExpr FE EE E1 V1 O1
+evalExpr FE EE E2 V2 O2
+O1 ++ O2 = O
+--------------------------------------------- [E-Cons]
+evalExpr FE EE cons(E1, E2) consVal(V1, V2) O
+
+
+evalExpr FE EE E consVal(Hd, Tl) O
+---------------------------------- [E-Head]
+evalExpr FE EE head(E) Hd O
+
+
+evalExpr FE EE E consVal(Hd, Tl) O
+---------------------------------- [E-Tail]
+evalExpr FE EE tail(E) Tl O
+
+
+evalExpr FE EE E nilVal O
+-------------------------------- [E-Null-True]
+evalExpr FE EE null(E) trueVal O
+
+
+evalExpr FE EE E consVal(Hd, Tl) O
+---------------------------------- [E-Null-False]
+evalExpr FE EE null(E) falseVal O
+
+
+
+----------------------------------- [MR-Nil]
+matchRec nilVal [("null", trueVal)]
+
+
+----------------------------------------------------------- [MR-Cons]
+{matchRec consVal(V1, V2)
+          [("null", falseVal), ("head", V1), ("tail", V2)]}
+
+
+
+/********************************************************************
+ Statement Evaluation
+ ********************************************************************/
+
+lookupScopes L EE LV
+evalExpr FE EE I VI  O1
+matchInt VI N
+evalExpr FE EE E V O2
+updateListIndex LV N V LV2 /*make the new list*/
+replaceScopes L LV2 EE EE1 /*put it in its place*/
+O1 ++ O2 = O
+---------------------------------------- [E-ListUpdate]
+evalStmt FE EE listUpdate(L, I, E) EE1 O
+
+
+evalExpr FE EE L LV O1
+iterateList FE EE LV X Body EE1 O2
+O1 ++ O2 = O
+-------------------------------------------- [E-ListForeach]
+evalStmt FE EE listForeach(X, L, Body) EE1 O
+
+
+
+                  /*original list, index, new value, new list*/
+Fixed Judgment updateListIndex : value int value value
+
+========================================================== [ULI-0]
+updateListIndex consVal(VOld, Tl) 0 VNew consVal(VNew, Tl)
+
+
+N - 1 = I
+updateListIndex Tl I V TlNew
+==================================================== [ULI-Step]
+updateListIndex consVal(X, Tl) N V consVal(X, TlNew)
+
+
+
+/*execute the body once for each element of the list:
+     iterateList (fun ctx) (init eval ctx) (list val) (name for list elements)
+                 (loop body) (final eval ctx) (printed output)*/
+Judgment iterateList : {[(string, (string, value, [string], stmt))] [[(string, value)]]
+                        value* string stmt [[(string, value)]] [value]}
+
+------------------------------------- [IL-Nil]
+iterateList FE EE nilVal X Body EE []
+
+
+evalStmt FE [(X, Hd)]::EE Body Scope::EE1 O1
+iterateList FE EE1 Tl X Body EE2 O2
+O1 ++ O2 = O
+---------------------------------------------- [IL-Cons]
+iterateList FE EE consVal(Hd, Tl) X Body EE2 O
+
+
+/*
+  Why don't we have an actual rule, perhaps projecting V and iterating
+  over that?  That doesn't work because the use of null in the
+  condition of the while loop to which listForeach projects does not
+  look through the projection, and thus we cannot prove what we need
+  for Ext_Ind for listForeach.
+
+  If we defined iteration through matching, we wouldn't *need* a
+  default rule, as IL-Nil and IL-Cons would use matchNil and matchCons
+  in their definitions, which would catch any value constructs from
+  other extensions through the default rules for matchNil and
+  matchCons.  Thus, in either case, this is the default rule we have.
+*/
+1 = 0
+-------------------------------- [IL-Default]*
+iterateList FE EE V X Body EE1 O

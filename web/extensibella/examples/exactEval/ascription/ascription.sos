@@ -1,0 +1,35 @@
+Module exactEval:ascription
+
+Builds on exactEval:host
+
+/*Simple type ascriptions for expressions*/
+expr ::= ...
+       | ascribe(expr, typ)
+
+
+----------------------------------- [Proj-Ascribe]
+Names |{expr}- ascribe(E, Ty) ~~> E
+
+
+
+vars E V
+--------------------- [V-Ascribe]
+vars ascribe(E, Ty) V
+
+
+
+exprNames Ctx E N
+------------------------------ [EN-Ascribe]
+exprNames Ctx ascribe(E, Ty) N
+
+
+
+typeOf FC TC E Ty
+------------------------------ [T-Ascribe]
+typeOf FC TC ascribe(E, Ty) Ty
+
+
+
+evalExpr FE EE E V EE1 O
+------------------------------------- [E-Ascribe]
+evalExpr FE EE ascribe(E, Ty) V EE1 O

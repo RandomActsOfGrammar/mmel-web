@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>Extensibella Examples:  Imperative Language with Evaluation through Matching</title>
+<link href="../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../actions.js"></script>
+<link rel="icon" href="../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../index.html">
+<img class="header-logo" src="../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<div class="section">
+  <h1>Imperative Language with Evaluation through Matching</h1>
+  <p>
+    This host language defines a large imperative language defining
+    programs as lists of functions, with one function being designated
+    as the main function.  It defines typing and evaluation, with the
+    latter defined as executing the main function, producing a list of
+    values as printed output.  Additionally, the host language's
+    evaluation for expressions is defined by matching values rather
+    than expecting exact forms, with matching happening through
+    projection.  For example, a list <code>cons</code> that projects
+    to a record can be used for record field accesses.
+  </p>
+  <p>
+    The reason it defines evaluation through matching is to support
+    its projection constraints for evaluation, which require an
+    expression's projection to evaluate whenever it does, and to a
+    related value.  This is a middle ground in strictness of
+    projection constraints between the examples
+    with <a href="../looseEval/description.html">loose constraints on
+    evaluation</a> and <a href="../exactEval/description.html">strict
+    constraints on evaluation</a>, which both implement roughly the
+    same underlying language with differing projection constraints.
+    Having three versions of very similar languages allows us to
+    explore how differences in projection constraints and constructs
+    included in the host language affect what we can introduce and
+    prove for extensions.
+  </p>
+  <p>
+    In this version of the language, we find we can introduce
+    constructs with natural definitions of their semantics, but not as
+    many as either of the other versions, due to stricter projection
+    constraints than the former and the lack of a way to nest
+    statements inside expressions on the other.  However, as a
+    tradeoff for fewer constructs extensions can introduce, we find we
+    can prove more about evaluation in extensions than the version
+    with loose constraints, as we see in
+    the <a href="translation/translation.html">translation
+      extension</a>, where we can prove the translation evaluates if
+    the original does.
+  </p>
+  <ul>
+    <li> <a href="host/host.html">Host language</a>:  Imperative
+      language with expressions, statements, and functions
+    <li> <a href="security/security.html">Security extension</a>:
+      Adds an analysis to determine if a program can leak private
+      information
+    <li> <a href="translation/translation.html">Translation
+        extension</a>:  Adds a relation translating programs to the
+      host language as a stand-in for translation to another language
+    <li> <a href="list/list.html">List extension</a>:  Adds syntax for
+      list statements and expressions
+    <li> <a href="assert/assert.html">Assertion statements</a>:  Adds
+      syntax for assertion statements that halt execution if the
+      assertion fails
+    <li> <a href="ascription/ascription.html">Ascription
+        expressions</a>:  Adds syntax for ascription expressions that
+      assert an expression has a particular type
+    <li> <a href="wrapper/wrapper.html">Wrapper expressions</a>:
+      Adds syntax for expressions that wrap values in a new value
+      constructor, demonstrating how evaluation through matching in
+      the host language but not the list extension could create
+      unexpected behavior in language compositions
+  </ul>
+</div>
+
+<div class="section">
+  <a href="matchEval.tar.gz">Download example tarball</a>
+</div>
+
+<div class="section">
+  <a class="navlink" href="../examples.html">Back to examples</a>
+</div>
+
+</body>
+</html>

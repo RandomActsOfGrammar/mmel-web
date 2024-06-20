@@ -1,0 +1,503 @@
+Module looseEval:security
+
+/*
+  The type [[(string, slev)]] is a set of scopes for security typing.
+  As with typing and evaluation, the most recent scope is first.
+
+  The type [(string, (slev, [slev]))] is the function context, listing
+  the known functions with their return security slevs and argument
+  security slevs.
+*/
+            /*fun ctx, level ctx, program counter, expression, level*/
+Judgment level : {[(string, (slev, [slev]))] [[(string, slev)]] slev
+                  expr* slev}
+Fixed Judgment levelArgs : {
+   [(string, (slev, [slev]))] [[(string, slev)]] slev args [slev]}
+Fixed Judgment levelRecFields : {
+   [(string, (slev, [slev]))] [[(string, slev)]] slev recFieldExprs slev}
+
+     /*fun ctx, level ctx, programm counter, stmt, updated level ctx*/
+Judgment secure : {[(string, (slev, [slev]))] [[(string, slev)]]
+                   slev stmt* [[(string, slev)]]}
+
+Judgment funSecure : [(string, (slev, [slev]))] fun*
+Fixed Judgment paramSecs : [param] [(string, slev)]
+Fixed Judgment allPublic : [slev]
+Judgment paramSec : param* string slev
+Fixed Judgment funsSecure : [(string, (slev, [slev]))] [fun]
+
+Judgment getFunSec : fun* string slev [slev]
+Fixed Judgment gatherFunSecCtx : [fun] [(string, (slev, [slev]))]
+
+                   /*program, security levels of arguments to main*/
+Judgment programSecure : program* [slev]
+
+
+
+
+
+/********************************************************************
+ Maximum of Security Levels
+ ********************************************************************/
+
+Judgment join : slev* slev slev
+
+------------------------- [J-Public]
+join public public public
+
+
+---------------------- [J-Private-L]
+join private L private
+
+
+---------------------- [J-Private-R]
+join L private private
+
+
+
+
+
+/********************************************************************
+ Expression, Argument, and Record Field Levels
+ ********************************************************************/
+
+---------------------------- [L-Num]
+level SF SG Sl num(I) public
+
+
+level SF SG Sl E1 L1
+level SF SG Sl E2 L2
+join L1 L2 L
+----------------------------- [L-Plus]
+level SF SG Sl plus(E1, E2) L
+
+
+level SF SG Sl E1 L1
+level SF SG Sl E2 L2
+join L1 L2 L
+------------------------------ [L-Minus]
+level SF SG Sl minus(E1, E2) L
+
+
+level SF SG Sl E1 L1
+level SF SG Sl E2 L2
+join L1 L2 L
+----------------------------- [L-Mult]
+level SF SG Sl mult(E1, E2) L
+
+
+level SF SG Sl E1 L1
+level SF SG Sl E2 L2
+join L1 L2 L
+---------------------------- [L-Div]
+level SF SG Sl div(E1, E2) L
+
+
+-------------------------- [L-True]
+level SF SG Sl true public
+
+
+--------------------------- [L-False]
+level SF SG Sl false public
+
+
+/*Because of short-circuiting evaluation, we need to treat and and or
+  like ifThenElse, incorportaing the level of E1 into the PC of E2*/
+level SF SG Sl E1 L1
+join L1 Sl Sl1
+level SF SG Sl1 E2 L2
+join L1 L2 L
+---------------------------- [L-And]
+level SF SG Sl and(E1, E2) L
+
+
+level SF SG Sl E1 L1
+join L1 Sl Sl1
+level SF SG Sl1 E2 L2
+join L1 L2 L
+--------------------------- [L-Or]
+level SF SG Sl or(E1, E2) L
+
+
+level SF SG Sl E L
+----------------------- [L-Not]
+level SF SG Sl not(E) L
+
+
+level SF SG Sl E1 L1
+level SF SG Sl E2 L2
+join L1 L2 L
+-------------------------------- [L-Greater]
+level SF SG Sl greater(E1, E2) L
+
+
+level SF SG Sl E1 L1
+level SF SG Sl E2 L2
+join L1 L2 L
+--------------------------- [L-Eq]
+level SF SG Sl eq(E1, E2) L
+
+
+---------------------------------- [L-String]
+level SF SG Sl stringLit(S) public
+
+
+level SF SG Sl E1 L1
+level SF SG Sl E2 L2
+join L1 L2 L
+---------------------------------- [L-AppString]
+level SF SG Sl appString(E1, E2) L
+
+
+lookupScopes X SG L
+------------------------ [L-Name]
+level SF SG Sl name(X) L
+
+
+/*in private contexts, only private functions so we don't leak where
+  we are by function output*/
+lookup SF Fun (private, ArgLevs)
+levelArgs SF SG private Args ArgLevs
+------------------------------------------- [L-Call-Private]
+level SF SG private call(Fun, Args) private
+
+
+lookup SF Fun (RetLev, ArgLevs)
+levelArgs SF SG public Args ArgLevs
+----------------------------------------- [L-Call-Public]
+level SF SG public call(Fun, Args) RetLev
+
+
+levelRecFields SF SG Sl Fields L
+--------------------------------- [L-RecBuild]
+level SF SG Sl recBuild(Fields) L
+
+
+level SF SG Sl E L
+----------------------------------------- [L-RecAccess]
+level SF SG Sl recFieldAccess(E, Field) L
+
+
+/*the idea here is Msg is displayed to the user and it crashes, so
+  the message had better be public*/
+level SF SG Sl Msg public
+---------------------------------------- [L-Error]
+level SF SG Sl errorExpr(Msg, Ty) public
+
+
+|{expr}- E ~~> E_P
+level SF SG Sl E_P L
+-------------------- [L-Default]*
+level SF SG Sl E L
+
+
+
+
+
+============================= [LA-Nil]
+levelArgs SF SG Sl nilArgs []
+
+
+level SF SG Sl E L
+levelArgs SF SG Sl A Rest
+========================================= [LA-Cons]
+levelArgs SF SG Sl consArgs(E, A) L::Rest
+
+
+
+
+
+=============================================== [LRF-Nil]
+levelRecFields SF SG Sl nilRecFieldExprs public
+
+
+level SF SG Sl E LE
+levelRecFields SF SG Sl RF LRF
+join LE LRF L
+===================================================== [LRF-Cons]
+levelRecFields SF SG Sl consRecFieldExprs(F, E, RF) L
+
+
+
+
+
+/********************************************************************
+ Statement Security
+ ********************************************************************/
+
+----------------------- [S-Noop]
+secure LF SG Sl noop SG
+
+
+secure SF SG Sl S1 SG1
+secure SF SG1 Sl S2 SG2
+------------------------------- [S-Seq]
+secure SF SG Sl seq(S1, S2) SG2
+
+
+level SF Scope::SG public E public
+no_lookup Scope X
+--------------------------------------------- [S-Declare]
+{secure SF Scope::SG public declare(Ty, X, E)
+        ((X, public)::Scope)::SG}
+
+
+level SF SG Sl E L
+lookupScopes X SG private
+------------------------------- [S-Assign-Private]
+secure SF SG Sl assign(X, E) SG
+
+
+level SF SG public E public
+lookupScopes X SG public
+----------------------------------- [S-Assign-Public]
+secure SF SG public assign(X, E) SG
+
+
+level SF SG Sl E L
+lookupScopes Rec SG private
+-------------------------------------------- [S-RecUpdate-Private]
+secure SF SG Sl recUpdate(Rec, Fields, E) SG
+
+
+level SF SG public E public
+lookupScopes Rec SG public
+------------------------------------------------ [S-RecUpdate-Public]
+secure SF SG public recUpdate(Rec, Fields, E) SG
+
+
+level SF SG Sl E L
+join L Sl Sl1
+secure SF []::SG Sl1 T SGT
+secure SF []::SG Sl1 F SGF
+-------------------------------------- [S-IfThenElse]
+secure SF SG Sl ifThenElse(E, T, F) SG
+
+
+/*
+  We need to split security for while loops into public and private
+  cases because our expressions can set variables.  If the condition
+  could set public variables (program counter public) but the level of
+  the condition be private, we could have two evalutaions of the loop,
+  one that immediately uses E-While-False and one that uses
+  E-While-True a few times.  This would set the public variable once
+  in the former case but multiple times in the latter, making the
+  values of the public variables differ.  Splitting it allows us to
+  ensure we do not set public variables multiple times in one run but
+  not another.
+*/
+level SF SG private E L /*safe to have any level here*/
+secure SF []::SG private S Scope::SG1
+------------------------------------- [S-While-Private]
+secure SF SG private while(E, S) SG
+
+
+level SF SG public E public
+secure SF []::SG public S Scope::SG1
+------------------------------------ [S-While-Public]
+secure SF SG public while(E, S) SG
+
+
+secure SF []::SG Sl S Scope::SG
+------------------------------- [S-ScopeStmt]
+secure SF SG Sl scopeStmt(S) SG
+
+
+/*only print public values in public situations*/
+level SF SG public E public
+---------------------------------- [S-Print]
+secure SF SG public printVal(E) SG
+
+
+level SF Scope::SG Sl E L
+no_lookup Scope X
+-------------------------------------------------- [S-Secdecl-Private]
+{secure SF Scope::SG Sl secdecl(private, Ty, X, E)
+        ((X, private)::Scope)::SG}
+
+
+level SF Scope::SG public E public
+no_lookup Scope X
+--------------------------------------- [S-Secdecl-Public]
+{secure SF Scope::SG public
+              secdecl(public, Ty, X, E)
+           ((X, public)::Scope)::SG}
+
+
+names SG Names
+Names |{stmt}- S ~~> S_P
+secure SF SG Sl S_P SG1
+------------------------ [S-Default]*
+secure SF SG Sl S SG1
+
+
+
+
+
+/********************************************************************
+ Function Security
+ ********************************************************************/
+
+/*
+  Note we check function bodies are secure with the program counter
+  starting at the level of the returned variable.  This ensures we can
+  set the return variable in the body of the function if it is
+  private.  A different approach might be useful for writing programs,
+  but this works for reasoning.
+
+  Note also that all arguments to public functions must be public.
+  This is necessary for reasoning and shouldn't affect what programs
+  can be written.  If a public value is returned by a function, a
+  private argument cannot affect its value, nor can a private argument
+  be used for printing something, so it is useless in the function.
+*/
+
+/*check the function is secure with given info*/
+paramSecs Params ParamSecs
+secure SF [(RetVar, public)::ParamSecs] public Body SG
+/*check the function ctx agrees with this information*/
+lookup SF FunName (public, PSecs)
+values ParamSecs PSecs
+allPublic PSecs
+------------------------------------------------------ [FS-Fun]
+funSecure SF fun(FunName, RetTy, RetVar, RVVal,
+                 Params, Body)
+
+
+/*check the function is secure with given info*/
+paramSecs Params ParamSecs
+secure SF [(RetVar, public)::ParamSecs] public Body SG
+/*check the function ctx agrees with this information*/
+lookup SF FunName (public, PSecs)
+values ParamSecs PSecs
+allPublic PSecs
+--------------------------------------------------- [FS-SecFun-Public]
+funSecure SF secfun(FunName, RetTy, public, RetVar,
+                    RVVal, Params, Body)
+
+
+/*check the function is secure with given info*/
+paramSecs Params ParamSecs
+secure SF [(RetVar, private)::ParamSecs] private Body SG
+/*check the function ctx agrees with this information*/
+lookup SF FunName (private, PSecs)
+values ParamSecs PSecs
+------------------------------------------------ [FS-SecFun-Private]
+funSecure SF secfun(FunName, RetTy, private,
+                    RetVar, RVVal, Params, Body)
+
+
+|{fun}- F ~~> F_P
+funSecure SF F_P
+----------------- [FS-Default]*
+funSecure SF F
+
+
+
+============ [AP-Nil]
+allPublic []
+
+
+allPublic Rest
+====================== [AP-Cons]
+allPublic public::Rest
+
+
+
+
+================ [FSs-Nil]
+funsSecure SF []
+
+
+funSecure SF F
+funsSecure SF Rest
+===================== [FSs-Cons]
+funsSecure SF F::Rest
+
+
+
+
+------------------------------------ [PS-Param]
+paramSec param(Name, Ty) Name public
+
+
+------------------------------------- [PS-SecParam]
+paramSec secparam(Name, Ty, L) Name L
+
+
+|{param}- P ~~> P_P
+paramSec P_P Name L
+------------------- [PS-Default]*
+paramSec P Name L
+
+
+
+
+=============== [PSs-Nil]
+paramSecs [] []
+
+
+paramSec P Name L
+paramSecs PRest SRest
+=================================== [PSs-Cons]
+paramSecs P::PRest (Name, L)::SRest
+
+
+
+
+
+/********************************************************************
+ Gather Function Information
+ ********************************************************************/
+
+paramSecs Params ParamSecs
+values ParamSecs PSecs
+--------------------------------------------- [GFS-Fun]
+getFunSec fun(Name, RetTy, RetVar, RVVal,
+              Params, Body) Name public PSecs
+
+
+paramSecs Params ParamSecs
+values ParamSecs PSecs
+---------------------------------------------------- [GFS-SecFun]
+getFunSec secfun(Name, RetTy, RetLev, RetVar, RVVal,
+                 Params, Body) Name RetLev PSecs
+
+
+|{fun}- F ~~> F_P
+getFunSec F_P Name Lev PSecs
+---------------------------- [GFS-Default]*
+getFunSec F Name Lev PSecs
+
+
+
+
+===================== [GFSC-Nil]
+gatherFunSecCtx [] []
+
+
+getFunSec F Name Lev PSecs
+gatherFunSecCtx FRest SRest
+==================================================== [GFSC-Cons]
+gatherFunSecCtx F::FRest (Name, (Lev, PSecs))::SRest
+
+
+
+
+
+/********************************************************************
+ Program Security
+ ********************************************************************/
+
+gatherFunSecCtx Funs SF
+getFunSec Main Name RetLev PSecs
+funsSecure (Name, (RetLev, PSecs))::SF Funs
+funSecure (Name, (RetLev, PSecs))::SF Main
+------------------------------------------- [SP-Program]
+programSecure program(Funs, Main) PSecs
+
+
+|{program}- P ~~> P_P
+programSecure P_P PSecs
+----------------------- [SP-Default]*
+programSecure P PSecs

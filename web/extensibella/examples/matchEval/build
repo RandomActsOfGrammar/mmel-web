@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+cd host
+sterling --extensibella -I ../../ matchEval:host
+../../../../../buildTools/main_to_html_extensibella.py 3 host "Extensibella Example:  matchEval:host" host.xthm syntax.sos vars.sos scopes.sos typing.sos eval.sos
+extensibella --compile host.xthm
+cd ..
+
+cd ascription
+sterling --extensibella -I ../../ matchEval:ascription
+../../../../../buildTools/main_to_html_extensibella.py 3 ascription "Extensibella Example:  matchEval:ascription" ascription.xthm ascription.sos
+cd ..
+
+cd assert
+sterling --extensibella -I ../../ matchEval:assert
+../../../../../buildTools/main_to_html_extensibella.py 3 assert "Extensibella Example:  matchEval:assert" assert.xthm defs.sos
+cd ..
+
+cd wrapper
+sterling --extensibella -I ../../ matchEval:wrapper
+../../../../../buildTools/main_to_html_extensibella.py 3 wrapper "Extensibella Example:  matchEval:wrapper" wrapper.xthm syntax.sos
+cd ..
+
+cd list
+sterling --extensibella -I ../../ matchEval:list
+../../../../../buildTools/main_to_html_extensibella.py 3 list "Extensibella Example:  matchEval:list" list.xthm syntax.sos vars.sos typing.sos eval.sos
+cd ..
+
+cd security
+sterling --extensibella -I ../../ matchEval:security
+../../../../../buildTools/main_to_html_extensibella.py 3 security "Extensibella Example:  matchEval:security" security.xthm syntax.sos analysis.sos
+cd ..
+
+cd translation
+sterling --extensibella -I ../../ matchEval:translation
+../../../../../buildTools/main_to_html_extensibella.py 3 translation "Extensibella Example:  matchEval:translation" translation.xthm translation.sos
+cd ..

@@ -1,0 +1,91 @@
+Module matchEval:security
+
+Builds on matchEval:host
+
+stmt ::= ...
+       | secdecl(slev, typ, string, expr)
+
+
+--------------------------------------- [Proj-Secdecl]
+Names |{stmt}- secdecl(L, Ty, X, E) ~~>
+               declare(Ty, X, E)
+
+
+
+fun ::= ...
+        /*secfun(name, ret ty, ret lev, ret var, init ret var val,
+                 params, body)*/
+      | secfun(string, typ, slev, string, value, [param], stmt)
+
+
+----------------------------------------------------- [Proj-SecFun]
+|{fun}- secfun(Name, RetTy, RetLev, RetVar, RVVal,
+               Params, Body) ~~>
+        fun(Name, RetTy, RetVar, RVVal, Params, Body)
+
+
+
+param ::= ...
+        | secparam(string, typ, slev)
+
+
+--------------------------------------------------- [Proj-SecParam]
+|{param}- secparam(Name, Ty, L) ~~> param(Name, Ty)
+
+
+
+slev ::= private
+       | public
+Projection slev :
+
+
+
+no_lookup Scope X /*can't redeclare in scope*/
+typeOf FC Scope::RestTC E Ty
+--------------------------------------------- [T-Secdecl]
+{stmtOK FC Scope::RestTC secdecl(L, Ty, X, E)
+           ((X, Ty)::Scope)::RestTC}
+
+
+/*check the function is well-typed with given types*/
+paramTys Params ParamTys
+stmtOK FC [(RetVar, RetTy)::ParamTys] Body FinalTC
+/*check the function ctx contains the given types for this function*/
+lookup FC FunName (RetTy, PTys)
+values ParamTys PTys
+/*no param with same name as return variable*/
+no_lookup ParamTys RetVar
+valueType RVVal RetTy
+------------------------------------------------------ [T-SecFun]
+funOK FC secfun(FunName, RetTy, RetLev, RetVar, RVVal,
+                Params, Body)
+
+
+paramTys Params NameTys
+values NameTys PTys
+--------------------------------------------------------- [GFI-SecFun]
+{getFunInfo secfun(FunName, RetTy, RetLev, RetVar, RVVal,
+                   Params, Body) FunName RetTy PTys}
+
+
+------------------------------------- [PT-SecParam]
+paramTy secparam(Name, Ty, L) Name Ty
+
+
+
+
+
+evalExpr FE Scope::EE E V O
+---------------------------------------------------------------- [E-Secdecl]
+evalStmt FE Scope::EE secdecl(L, Ty, X, E) ((X, V)::Scope)::EE O
+
+
+paramNames Params PNames
+-------------------------------------------------------- [GFEI-SecFun]
+{getFunEvalInfo secfun(FunName, RetTy, RetLev, RetVar,
+                       RVVal, Params, Body)
+    FunName RetVar RVVal PNames Body}
+
+
+------------------------------------ [PN-SecParam]
+paramName secparam(Name, Ty, L) Name

@@ -1,0 +1,97 @@
+Module exactEval:host
+
+/*Find a name in the closest scope*/
+Fixed Judgment lookupScopes : Key [[(Key, Item)]] Item
+
+lookup L Key Item
+============================= [LS-FirstScope]
+lookupScopes Key L::Rest Item
+
+
+no_lookup L Key
+lookupScopes Key Rest Item
+============================= [LS-Later]
+lookupScopes Key L::Rest Item
+
+
+
+
+/*Find a name in the closest scope and replace its associated item
+  Fails if name does not exist*/
+Fixed Judgment replaceScopes : Key Item [[(Key, Item)]] [[(Key, Item)]]
+
+/*We use remove_all here rather than something like select because we
+  want to make evaluation uniqueness not be dependent on typing.  If
+  we use select instead, we need to assume there is only one binding
+  so the selection of an element to remove is unique.  However, for a
+  declaration, we are only ensuring there is a single binding if it is
+  well-typed.  Thus evaluation uniqueness would depend on it being
+  well-typed.  This is simpler.*/
+mem (Key, I) L
+remove_all L Key LRemain
+============================================ [RS-FirstScope]
+{replaceScopes Key Item L::Rest
+               ((Key, Item)::LRemain)::Rest}
+
+
+no_lookup L Key
+replaceScopes Key Item Rest New
+===================================== [RS-Later]
+replaceScopes Key Item L::Rest L::New
+
+
+
+
+Fixed Judgment remove_all : [(Key, Item)] Key [(Key, Item)]
+
+==================== [RA-Nil]
+remove_all [] Key []
+
+
+remove_all Rest Key R
+================================== [RA-Remove]
+remove_all (Key, Item)::Rest Key R
+
+
+K != Key
+remove_all Rest Key R
+=========================================== [RA-Keep]
+remove_all (K, Item)::Rest Key (K, Item)::R
+
+
+
+
+/*get the names that occur in all scopes*/
+Fixed Judgment names : [[(Key, Item)]] [Key]
+
+=========== [Names-Nil]
+names [] []
+
+
+domain Scope NScope
+names Rest NRest
+NScope ++ NRest = Names
+======================= [Names-Cons]
+names Scope::Rest Names
+
+
+
+
+/*Create a name not in the list with the given base
+  fresh_name base existingNames freshName
+
+  We don't use fresh_name in the host at all; however, it will be
+  useful for extensions introducing new statement forms requiring new
+  variables.*/
+Fixed Judgment fresh_name : string [string] string
+
+not_mem Base Names
+========================== [FN-Final]
+fresh_name Base Names Base
+
+
+mem Base Names
+Base ++ "_" = NewBase
+fresh_name NewBase Names Fresh
+============================== [FN-Step]
+fresh_name Base Names Fresh

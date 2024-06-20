@@ -1,0 +1,210 @@
+Module looseEval:ascription.
+
+
+Prove_Constraint looseEval:host:proj_expr_unique.
+case PrB. search.
+Prove_Constraint looseEval:host:proj_expr_is.
+case IsE. search.
+
+Prove_Constraint looseEval:host:proj_stmt_unique.
+Prove_Constraint looseEval:host:proj_stmt_is.
+Prove_Constraint looseEval:host:proj_stmt_other.
+
+Prove_Constraint looseEval:host:proj_fun_unique.
+Prove_Constraint looseEval:host:proj_fun_is.
+
+Prove_Constraint looseEval:host:proj_param_unique.
+Prove_Constraint looseEval:host:proj_param_is.
+
+Prove_Constraint looseEval:host:proj_program_unique.
+Prove_Constraint looseEval:host:proj_program_is.
+
+Prove_Constraint looseEval:host:proj_typ_unique.
+Prove_Constraint looseEval:host:proj_typ_is.
+
+Prove_Constraint looseEval:host:proj_value_unique.
+Prove_Constraint looseEval:host:proj_value_is.
+
+
+
+/********************************************************************
+ Decidable Equality
+ ********************************************************************/
+Add_Proj_Rel looseEval:host:is_expr,
+             looseEval:host:is_args,
+             looseEval:host:is_recFieldExprs.
+Prove_Ext_Ind looseEval:host:is_expr,
+              looseEval:host:is_args,
+              looseEval:host:is_recFieldExprs.
+apply IH to R1. search.
+
+Add_Proj_Rel looseEval:host:is_stmt.
+Prove_Ext_Ind looseEval:host:is_stmt.
+
+Prove looseEval:host:is_args_nilArgs_or_consArgs.
+Prove looseEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.
+
+Add_Proj_Rel looseEval:host:is_value, looseEval:host:is_recFieldVals.
+Prove_Ext_Ind looseEval:host:is_value, looseEval:host:is_recFieldVals.
+Prove looseEval:host:is_value_intVal_or_not.
+Prove looseEval:host:is_value_trueVal_or_not.
+Prove looseEval:host:is_value_falseVal_or_not.
+Prove looseEval:host:is_value_stringVal_or_not.
+Prove looseEval:host:is_value_recVal_or_not.
+
+Prove looseEval:host:is_recFieldVals_nil_or_cons.
+
+Prove looseEval:host:is_value_eq_or_not,
+      looseEval:host:is_recFieldVals_eq_or_not.
+
+
+
+/********************************************************************
+ Variables
+ ********************************************************************/
+Prove looseEval:host:vars_unique.
+case IsE. VarsB: case VarsB. apply IH to _ VarsA1 VarsB. search.
+
+Prove looseEval:host:vars_is.
+case IsE. apply IH to _ V1. search.
+
+Prove looseEval:host:vars_exist,
+      looseEval:host:varsArgs_exist,
+      looseEval:host:varsRecFields_exist.
+apply IH to IsE1. search.
+
+Prove_Constraint looseEval:host:proj_vars.
+case IsE. V: case V. apply vars_unique to _ V V_P. search.
+
+
+
+/********************************************************************
+ Typing
+ ********************************************************************/
+Prove looseEval:host:typeOf_isTy.
+case IsE. search.
+
+Prove looseEval:host:stmtOK_isCtx.
+Prove looseEval:host:stmtOK_keep_scopes.
+Prove looseEval:host:stmtOK_older_scopes_same.
+Prove looseEval:host:stmtOK_first_scope_lookup_same.
+
+Prove looseEval:host:typeOf_unique.
+case TyB. search.
+
+Prove looseEval:host:stmtOK_unique.
+
+Prove looseEval:host:paramTy_is.
+Prove looseEval:host:getFunInfo_is.
+Prove looseEval:host:paramTy_exists.
+Prove looseEval:host:getFunInfo_exists.
+
+
+
+/********************************************************************
+ Evaluation
+ ********************************************************************/
+Prove looseEval:host:evalExpr_isValue,
+      looseEval:host:evalStmt_isCtx,
+      looseEval:host:evalArgs_isValue,
+      looseEval:host:evalRecFields_isValue.
+case IsE. apply IH_V_E to _ _ _ Ev1. search.
+
+Prove looseEval:host:evalExpr_isOutput,
+      looseEval:host:evalStmt_isOutput,
+      looseEval:host:evalArgs_isOutput,
+      looseEval:host:evalRecFields_isOutput.
+case IsE. apply IH_E to _ _ _ Ev1. search.
+
+Prove looseEval:host:paramName_is.
+Prove looseEval:host:getFunEvalInfo_is.
+Prove looseEval:host:evalProgram_isOutput.
+
+Prove looseEval:host:evalStmt_names_same.
+
+Add_Ext_Size looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.
+Add_Proj_Rel looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.
+
+Prove looseEval:host:evalExpr_rel,
+      looseEval:host:evalStmt_newNameScopes_output,
+      looseEval:host:evalStmt_newNameScopes,
+      looseEval:host:evalArgs_rel,
+      looseEval:host:evalRecFields_rel.
+case IsE. Vars: case Vars. EvB: case EvB.
+apply IH_E to _ _ _ _ EvA1 EvB Vars Rel. search.
+
+Prove looseEval:host:evalExpr_rel_exists_ES,
+      looseEval:host:evalStmt_newNameScopes_exists_ES,
+      looseEval:host:evalArgs_rel_exists_ES,
+      looseEval:host:evalRecFields_rel_exists_ES.
+case IsE. Vars: case Vars. apply IH_E to _ _ _ _ EvB2 Vars Rel.
+search.
+
+Prove looseEval:host:evalExpr_scopes_same,
+      looseEval:host:evalStmt_scopes_same,
+      looseEval:host:evalStmt_scopes_same_ctx,
+      looseEval:host:evalArgs_scopes_same,
+      looseEval:host:evalRecFields_scopes_same.
+case IsE. EvB: case EvB. apply IH_E to _ _ _ _ _ EvA1 EvB. search.
+
+Prove looseEval:host:evalExpr_scopes_same_exists,
+      looseEval:host:evalStmt_scopes_same_exists,
+      looseEval:host:evalArgs_scopes_same_exists,
+      looseEval:host:evalRecFields_scopes_same_exists.
+case IsE. apply IH_E to _ _ _ _ SS EvA1. search.
+
+Prove_Constraint looseEval:host:proj_evalExpr_exists.
+case Ev. search.
+
+Prove_Constraint looseEval:host:proj_evalStmt_exists.
+Prove_Constraint looseEval:host:proj_evalStmt_rel.
+
+
+Prove_Ext_Ind looseEval:host:evalExpr,
+              looseEval:host:evalArgs,
+              looseEval:host:evalRecFields,
+              looseEval:host:evalStmt.
+case IsE. apply ext_size_is_int_evalExpr to R2.
+L: apply lt_plus_one to R1 _. apply ext_size_pos_evalExpr to R2.
+Acc: case Acc. A: apply Acc to _ L. apply IH to R2 A _ _ _. search.
+
+
+Prove looseEval:host:paramName_unique.
+Prove_Constraint looseEval:host:proj_paramName_forward.
+Prove_Constraint looseEval:host:proj_paramName_back.
+Prove looseEval:host:getFunEvalInfo_unique.
+Prove_Constraint looseEval:host:proj_getFunEvalInfo_forward.
+Prove_Constraint looseEval:host:proj_getFunEvalInfo_back.
+Prove looseEval:host:evalProgram_unique.
+Prove_Constraint looseEval:host:proj_evalProgram.
+Prove_Constraint looseEval:host:proj_evalProgram_back.
+
+
+Prove looseEval:host:evalExpr_typePres,
+      looseEval:host:evalStmt_typePres,
+      looseEval:host:evalArgs_typePres,
+      looseEval:host:evalRecFields_typePres.
+case IsE. Ty: case Ty. apply IH_E to _ _ _ _ _ Ty Ev1 _ _. search.
+
+
+Prove looseEval:host:paramTy_paramName_same.
+Prove looseEval:host:funOK_getFunEvalInfo_related.
+
+
+Prove looseEval:host:evalExpr_output_forms,
+      looseEval:host:evalStmt_output_forms,
+      looseEval:host:evalArgs_output_forms,
+      looseEval:host:evalRecFields_output_forms.
+case IsE. apply IH_E to _ _ _ Ev1. search.
+
+Prove looseEval:host:evalProgram_output_forms.
+
+
+Prove looseEval:host:paramName_exists.
+Prove looseEval:host:getFunEvalInfo_exists.

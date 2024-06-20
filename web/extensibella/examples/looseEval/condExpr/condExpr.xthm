@@ -1,0 +1,382 @@
+Module looseEval:condExpr.
+
+
+Prove_Constraint looseEval:host:proj_expr_unique.
+case PrB. search.
+Prove_Constraint looseEval:host:proj_expr_is.
+case IsE. search 10.
+
+Prove_Constraint looseEval:host:proj_stmt_unique.
+Prove_Constraint looseEval:host:proj_stmt_is.
+Prove_Constraint looseEval:host:proj_stmt_other.
+
+Prove_Constraint looseEval:host:proj_fun_unique.
+Prove_Constraint looseEval:host:proj_fun_is.
+
+Prove_Constraint looseEval:host:proj_param_unique.
+Prove_Constraint looseEval:host:proj_param_is.
+
+Prove_Constraint looseEval:host:proj_program_unique.
+Prove_Constraint looseEval:host:proj_program_is.
+
+Prove_Constraint looseEval:host:proj_typ_unique.
+Prove_Constraint looseEval:host:proj_typ_is.
+
+Prove_Constraint looseEval:host:proj_value_unique.
+Prove_Constraint looseEval:host:proj_value_is.
+
+
+
+/********************************************************************
+ Decidable Equality
+ ********************************************************************/
+Add_Proj_Rel looseEval:host:is_expr,
+             looseEval:host:is_args,
+             looseEval:host:is_recFieldExprs.
+Prove_Ext_Ind looseEval:host:is_expr,
+              looseEval:host:is_args,
+              looseEval:host:is_recFieldExprs.
+apply IH to R1. apply IH to R2. apply IH to R3. search 20.
+
+Add_Proj_Rel looseEval:host:is_stmt.
+Prove_Ext_Ind looseEval:host:is_stmt.
+
+Prove looseEval:host:is_args_nilArgs_or_consArgs.
+Prove looseEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.
+
+Add_Proj_Rel looseEval:host:is_value, looseEval:host:is_recFieldVals.
+Prove_Ext_Ind looseEval:host:is_value, looseEval:host:is_recFieldVals.
+Prove looseEval:host:is_value_intVal_or_not.
+Prove looseEval:host:is_value_trueVal_or_not.
+Prove looseEval:host:is_value_falseVal_or_not.
+Prove looseEval:host:is_value_stringVal_or_not.
+Prove looseEval:host:is_value_recVal_or_not.
+
+Prove looseEval:host:is_recFieldVals_nil_or_cons.
+
+Prove looseEval:host:is_value_eq_or_not,
+      looseEval:host:is_recFieldVals_eq_or_not.
+
+
+
+/********************************************************************
+ Variables
+ ********************************************************************/
+Prove looseEval:host:vars_unique.
+case IsE. VarsB: case VarsB. apply IH to _ VarsA1 VarsB.
+apply IH to _ VarsA2 VarsB1. apply IH to _ VarsA3 VarsB2.
+apply append_unique to VarsA4 VarsB3.
+apply append_unique to VarsA5 VarsB4. search.
+
+Prove looseEval:host:vars_is.
+case IsE. apply IH to _ V1. apply IH to _ V2. apply IH to _ V3.
+apply append_list_string_is to _ _ V4.
+apply append_list_string_is to _ _ V5. search.
+
+Prove looseEval:host:vars_exist,
+      looseEval:host:varsArgs_exist,
+      looseEval:host:varsRecFields_exist.
+V1: apply IH to IsE1. V2: apply IH to IsE2. V3: apply IH to IsE3.
+Is1: apply vars_is to _ V1. Is2: apply vars_is to _ V2.
+Is3: apply vars_is to _ V3.
+A: apply append_list_string_total to Is1 Is2.
+IsA: apply append_list_string_is to _ _ A.
+apply append_list_string_total to IsA Is3. search.
+
+Prove_Constraint looseEval:host:proj_vars.
+V: case V. V_P: case V_P. V_P: case V_P1. case V_P3. V_P: case V_P.
+V_P: case V_P. case V_P6. V_P: case V_P3. case V_P6. V_P: case V_P3.
+case V_P6. apply append_nil_right to V_P9.
+apply append_nil_right to V_P8. apply append_nil_right to V_P7.
+apply append_nil_right to V_P4. clear V_P9 V_P8 V_P7 V_P4. case IsE.
+apply vars_unique to _ V_P V. apply vars_unique to _ V_P3 V1.
+apply vars_unique to _ V_P1 V2. apply append_unique to V3 V_P5.
+apply append_unique to V4 V_P2. search.
+
+
+
+/********************************************************************
+ Typing
+ ********************************************************************/
+Prove looseEval:host:typeOf_isTy.
+case IsE. apply IH_E to _ _ _ Ty2. search.
+
+Prove looseEval:host:stmtOK_isCtx.
+Prove looseEval:host:stmtOK_keep_scopes.
+Prove looseEval:host:stmtOK_older_scopes_same.
+Prove looseEval:host:stmtOK_first_scope_lookup_same.
+
+Prove looseEval:host:typeOf_unique.
+case IsE. TyB: case TyB. apply IH_E to _ _ _ _ TyA2 TyB1 _. search.
+
+Prove looseEval:host:stmtOK_unique.
+
+Prove looseEval:host:paramTy_is.
+Prove looseEval:host:getFunInfo_is.
+Prove looseEval:host:paramTy_exists.
+Prove looseEval:host:getFunInfo_exists.
+
+
+
+/********************************************************************
+ Evaluation
+ ********************************************************************/
+Prove looseEval:host:evalExpr_isValue,
+      looseEval:host:evalStmt_isCtx,
+      looseEval:host:evalArgs_isValue,
+      looseEval:host:evalRecFields_isValue.
+%E-CondExpr-True
+ case IsE. apply IH_V_E to _ _ _ Ev2. search.
+%E-CondExpr-False
+ case IsE. apply IH_V_E to _ _ _ Ev2. search.
+
+Prove looseEval:host:evalExpr_isOutput,
+      looseEval:host:evalStmt_isOutput,
+      looseEval:host:evalArgs_isOutput,
+      looseEval:host:evalRecFields_isOutput.
+%E-CondExpr-True
+ case IsE. apply IH_E to _ _ _ Ev1. apply IH_E to _ _ _ Ev2.
+ apply append_values_is to _ _ Ev3. search.
+%E-CondExpr-False
+ case IsE. apply IH_E to _ _ _ Ev1. apply IH_E to _ _ _ Ev2.
+ apply append_values_is to _ _ Ev3. search.
+
+Prove looseEval:host:paramName_is.
+Prove looseEval:host:getFunEvalInfo_is.
+Prove looseEval:host:evalProgram_isOutput.
+
+Prove looseEval:host:evalStmt_names_same.
+
+Add_Ext_Size looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.
+Add_Proj_Rel looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.
+
+Prove looseEval:host:evalExpr_rel,
+      looseEval:host:evalStmt_newNameScopes_output,
+      looseEval:host:evalStmt_newNameScopes,
+      looseEval:host:evalArgs_rel,
+      looseEval:host:evalRecFields_rel.
+%E-CondExpr-True
+ case IsE. Vars: case Vars. EvB: case EvB.
+   %E-CondExpr-True
+    apply IH_E to _ _ _ _ EvA1 EvB Vars _.
+      intros M L. M': apply mem_append_left to M Vars3.
+      M'': apply mem_append_left to M' Vars4. apply Rel to M'' L.
+      search.
+    apply IH_E to _ _ _ _ EvA2 EvB1 Vars1 _.
+      intros M L. M': apply mem_append_right to M Vars3.
+      M'': apply mem_append_left to M' Vars4. apply Rel to M'' L.
+      search.
+    apply append_unique to EvA3 EvB2. search.
+   %E-CondExpr-False
+    apply IH_E to _ _ _ _ EvA1 EvB Vars _.
+      intros M L. M': apply mem_append_left to M Vars3.
+      M'': apply mem_append_left to M' Vars4. apply Rel to M'' L.
+      search.
+%E-CondExpr-False
+ case IsE. Vars: case Vars. EvB: case EvB.
+   %E-CondExpr-True
+    apply IH_E to _ _ _ _ EvA1 EvB Vars _.
+      intros M L. M': apply mem_append_left to M Vars3.
+      M'': apply mem_append_left to M' Vars4. apply Rel to M'' L.
+      search.
+   %E-CondExpr-False
+    apply IH_E to _ _ _ _ EvA1 EvB Vars _.
+      intros M L. M': apply mem_append_left to M Vars3.
+      M'': apply mem_append_left to M' Vars4. apply Rel to M'' L.
+      search.
+    apply IH_E to _ _ _ _ EvA2 EvB1 Vars2 _.
+      intros M L. M': apply mem_append_right to M Vars4.
+      apply Rel to M' L. search.
+    apply append_unique to EvA3 EvB2. search.
+
+Prove looseEval:host:evalExpr_rel_exists_ES,
+      looseEval:host:evalStmt_newNameScopes_exists_ES,
+      looseEval:host:evalArgs_rel_exists_ES,
+      looseEval:host:evalRecFields_rel_exists_ES.
+%E-CondExpr-True
+ case IsE. Vars: case Vars.
+ apply IH_E to _ _ _ _ EvB3 Vars _ with EE_A = EE_A.
+   intros M L. M': apply mem_append_left to M Vars3.
+   M'': apply mem_append_left to M' Vars4. apply Rel to M'' L.
+   search.
+ apply IH_E to _ _ _ _ EvB4 Vars1 _ with EE_A = EE_A.
+   intros M L. M': apply mem_append_right to M Vars3.
+   M'': apply mem_append_left to M' Vars4. apply Rel to M'' L.
+   search.
+ search.
+%E-CondExpr-False
+ case IsE. Vars: case Vars.
+ apply IH_E to _ _ _ _ EvB3 Vars _ with EE_A = EE_A.
+   intros M L. M': apply mem_append_left to M Vars3.
+   M'': apply mem_append_left to M' Vars4. apply Rel to M'' L.
+   search.
+ apply IH_E to _ _ _ _ EvB4 Vars2 _ with EE_A = EE_A.
+   intros M L. M': apply mem_append_right to M Vars4.
+   apply Rel to M' L. search.
+ search.
+
+Prove looseEval:host:evalExpr_scopes_same,
+      looseEval:host:evalStmt_scopes_same,
+      looseEval:host:evalStmt_scopes_same_ctx,
+      looseEval:host:evalArgs_scopes_same,
+      looseEval:host:evalRecFields_scopes_same.
+%E-CondExpr-True
+ case IsE. EvB: case EvB.
+   %E-CondExpr-True
+    apply IH_E to _ _ _ _ SS EvA1 EvB.
+    apply IH_E to _ _ _ _ SS EvA2 EvB1.
+    apply append_unique to EvA3 EvB2. search.
+   %E-CondExpr-False
+    apply IH_E to _ _ _ _ SS EvA1 EvB.
+%E-CondExpr-False
+ case IsE. EvB: case EvB.
+   %E-CondExpr-True
+    apply IH_E to _ _ _ _ SS EvA1 EvB.
+   %E-CondExpr-False
+    apply IH_E to _ _ _ _ SS EvA1 EvB.
+    apply IH_E to _ _ _ _ SS EvA2 EvB1.
+    apply append_unique to EvA3 EvB2.
+    search.
+
+Prove looseEval:host:evalExpr_scopes_same_exists,
+      looseEval:host:evalStmt_scopes_same_exists,
+      looseEval:host:evalArgs_scopes_same_exists,
+      looseEval:host:evalRecFields_scopes_same_exists.
+%E-CondExpr-True
+ case IsE. apply IH_E to _ _ _ _ SS EvA1.
+ apply IH_E to _ _ _ _ SS EvA2. search.
+%E-CondExpr-False
+ case IsE. apply IH_E to _ _ _ _ SS EvA1.
+ apply IH_E to _ _ _ _ SS EvA2. search.
+
+Theorem append_nil_output : forall O,
+  is_list is_value O -> O ++ [] = O.
+induction on 1. intros Is. Is: case Is.
+  %nil
+   search.
+  %cons
+   apply IH to Is1. search.
+
+Prove_Constraint looseEval:host:proj_evalExpr_exists.
+case IsE. Ev: case Ev.
+  %E-CondExpr-True
+   IsV: apply evalExpr_isValue to _ _ _ Ev1.
+   IsO2: apply evalExpr_isOutput to _ _ _ Ev.
+   IsO3: apply evalExpr_isOutput to _ _ _ Ev1.
+   apply append_nil_output to IsO2. apply append_nil_output to IsO3.
+   Or: apply is_value_eq_or_not to IsV _ with V2 = intVal 0.
+   E: case Or.
+     %V = intVal 0
+      search.
+     %V != intVal 0
+      search.
+  %E-CondExpr-False
+   IsV: apply evalExpr_isValue to _ _ _ Ev1.
+   IsO2: apply evalExpr_isOutput to _ _ _ Ev.
+   IsO3: apply evalExpr_isOutput to _ _ _ Ev1.
+   apply append_nil_output to IsO2. apply append_nil_output to IsO3.
+   Or: apply is_value_eq_or_not to IsV _ with V2 = intVal 0.
+   E: case Or.
+     %V = intVal 0
+      search.
+     %V != intVal 0
+      search.
+
+Prove_Constraint looseEval:host:proj_evalStmt_exists.
+Prove_Constraint looseEval:host:proj_evalStmt_rel.
+
+Prove_Ext_Ind looseEval:host:evalExpr,
+              looseEval:host:evalArgs,
+              looseEval:host:evalRecFields,
+              looseEval:host:evalStmt.
+%E-CondExpr-True
+ case IsE. Acc: case Acc. IsN2: apply ext_size_is_int_evalExpr to R3.
+ IsN3: apply ext_size_is_int_evalExpr to R4.
+ IsN4: apply plus_integer_is_integer to _ _ R2.
+ L: apply lt_plus_one to R1 _. apply ext_size_pos_evalExpr to R3.
+ apply ext_size_pos_evalExpr to R4.
+ LEq2: apply lte_left to R2 _ _ _. LEq3: apply lte_right to R2 _ _ _.
+ LN2: apply lesseq_less_integer_transitive to LEq2 L.
+ LN3: apply lesseq_less_integer_transitive to LEq3 L.
+ A2: apply Acc to _ LN2. A3: apply Acc to _ LN3.
+ apply IH to R3 A2 _ _ _. apply IH to R4 A3 _ _ _.
+ Ev1: apply drop_ext_size_evalExpr to R3.
+ Ev2: apply drop_ext_size_evalExpr to R4.
+ IsO2: apply evalExpr_isOutput to _ _ _ Ev1.
+ IsO3: apply evalExpr_isOutput to _ _ _ Ev2.
+ apply append_nil_output to IsO2. apply append_nil_output to IsO3.
+ IsV: apply evalExpr_isValue to _ _ _ Ev2.
+ Or: apply is_value_eq_or_not to IsV _ with V2 = intVal 0. E: case Or.
+   %V = intVal 0
+    search 20.
+   %V != intVal 0
+    search 20.
+%E-CondExpr-False
+ case IsE. Acc: case Acc. IsN2: apply ext_size_is_int_evalExpr to R3.
+ IsN3: apply ext_size_is_int_evalExpr to R4.
+ IsN4: apply plus_integer_is_integer to _ _ R2.
+ L: apply lt_plus_one to R1 _. apply ext_size_pos_evalExpr to R3.
+ apply ext_size_pos_evalExpr to R4.
+ LEq2: apply lte_left to R2 _ _ _. LEq3: apply lte_right to R2 _ _ _.
+ LN2: apply lesseq_less_integer_transitive to LEq2 L.
+ LN3: apply lesseq_less_integer_transitive to LEq3 L.
+ A2: apply Acc to _ LN2. A3: apply Acc to _ LN3.
+ apply IH to R3 A2 _ _ _. apply IH to R4 A3 _ _ _.
+ Ev1: apply drop_ext_size_evalExpr to R3.
+ Ev2: apply drop_ext_size_evalExpr to R4.
+ IsO2: apply evalExpr_isOutput to _ _ _ Ev1.
+ IsO3: apply evalExpr_isOutput to _ _ _ Ev2.
+ apply append_nil_output to IsO2. apply append_nil_output to IsO3.
+ IsV: apply evalExpr_isValue to _ _ _ Ev2.
+ Or: apply is_value_eq_or_not to IsV _ with V2 = intVal 0. E: case Or.
+   %V = intVal 0
+    search 20.
+   %V != intVal 0
+    search 20.
+
+
+Prove looseEval:host:paramName_unique.
+Prove_Constraint looseEval:host:proj_paramName_forward.
+Prove_Constraint looseEval:host:proj_paramName_back.
+Prove looseEval:host:getFunEvalInfo_unique.
+Prove_Constraint looseEval:host:proj_getFunEvalInfo_forward.
+Prove_Constraint looseEval:host:proj_getFunEvalInfo_back.
+Prove looseEval:host:evalProgram_unique.
+Prove_Constraint looseEval:host:proj_evalProgram.
+Prove_Constraint looseEval:host:proj_evalProgram_back.
+
+
+Prove looseEval:host:evalExpr_typePres,
+      looseEval:host:evalStmt_typePres,
+      looseEval:host:evalArgs_typePres,
+      looseEval:host:evalRecFields_typePres.
+%E-CondExpr-True
+ case IsE. Ty: case Ty. apply IH_E to _ _ _ _ _ Ty1 Ev2 _ _. search.
+%E-CondExpr-False
+ case IsE. Ty: case Ty. apply IH_E to _ _ _ _ _ Ty2 Ev2 _ _. search.
+
+
+Prove looseEval:host:paramTy_paramName_same.
+Prove looseEval:host:funOK_getFunEvalInfo_related.
+
+
+Prove looseEval:host:evalExpr_output_forms,
+      looseEval:host:evalStmt_output_forms,
+      looseEval:host:evalArgs_output_forms,
+      looseEval:host:evalRecFields_output_forms.
+%E-CondExpr-True
+ case IsE. apply IH_E to _ _ _ Ev1. apply IH_E to _ _ _ Ev2.
+ apply output_forms_append to _ _ Ev3. search.
+%E-CondExpr-False
+ case IsE. apply IH_E to _ _ _ Ev1. apply IH_E to _ _ _ Ev2.
+ apply output_forms_append to _ _ Ev3. search.
+
+Prove looseEval:host:evalProgram_output_forms.
+Prove looseEval:host:paramName_exists.
+Prove looseEval:host:getFunEvalInfo_exists.

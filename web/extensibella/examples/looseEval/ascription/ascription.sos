@@ -1,0 +1,29 @@
+Module looseEval:ascription
+
+Builds on looseEval:host
+
+/*Simple type ascriptions for expressions*/
+expr ::= ...
+       | ascribe(expr, typ)
+
+
+----------------------------- [Proj-Ascribe]
+|{expr}- ascribe(E, Ty) ~~> E
+
+
+
+vars E V
+--------------------- [V-Ascribe]
+vars ascribe(E, Ty) V
+
+
+
+typeOf FC TC E Ty
+------------------------------ [T-Ascribe]
+typeOf FC TC ascribe(E, Ty) Ty
+
+
+
+evalExpr FE EE E V O
+--------------------------------- [E-Ascribe]
+evalExpr FE EE ascribe(E, Ty) V O

@@ -1,0 +1,3003 @@
+Module matchEval:translation.
+
+
+Prove_Constraint matchEval:host:proj_expr_unique.
+Prove_Constraint matchEval:host:proj_expr_is.
+Prove_Constraint matchEval:host:proj_stmt_unique.
+Prove_Constraint matchEval:host:proj_stmt_is.
+Prove_Constraint matchEval:host:proj_stmt_other.
+Prove_Constraint matchEval:host:proj_fun_unique.
+Prove_Constraint matchEval:host:proj_fun_is.
+Prove_Constraint matchEval:host:proj_param_unique.
+Prove_Constraint matchEval:host:proj_param_is.
+Prove_Constraint matchEval:host:proj_program_unique.
+Prove_Constraint matchEval:host:proj_program_is.
+Prove_Constraint matchEval:host:proj_typ_unique.
+Prove_Constraint matchEval:host:proj_typ_is.
+Prove_Constraint matchEval:host:proj_value_unique.
+Prove_Constraint matchEval:host:proj_value_is.
+
+
+Add_Proj_Rel matchEval:host:is_expr,
+             matchEval:host:is_args,
+             matchEval:host:is_recFieldExprs.
+Prove_Ext_Ind matchEval:host:is_expr,
+              matchEval:host:is_args,
+              matchEval:host:is_recFieldExprs.
+Add_Proj_Rel matchEval:host:is_stmt.
+Prove_Ext_Ind matchEval:host:is_stmt.
+
+Prove matchEval:host:is_args_nilArgs_or_consArgs.
+Prove matchEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.
+
+
+Prove matchEval:host:vars_unique.
+Prove matchEval:host:vars_is.
+Prove matchEval:host:vars_exist,
+      matchEval:host:varsArgs_exist,
+      matchEval:host:varsRecFields_exist.
+
+Prove_Constraint matchEval:host:proj_expr_vars.
+
+
+Prove matchEval:host:typeOf_isTy.
+Prove matchEval:host:stmtOK_isCtx.
+Prove matchEval:host:stmtOK_keep_scopes.
+Prove matchEval:host:stmtOK_older_scopes_same.
+Prove matchEval:host:stmtOK_first_scope_lookup_same.
+Prove matchEval:host:typeOf_unique.
+Prove matchEval:host:stmtOK_unique.
+
+Prove matchEval:host:paramTy_is.
+Prove matchEval:host:getFunInfo_is.
+Prove matchEval:host:paramTy_exists.
+Prove matchEval:host:getFunInfo_exists.
+
+
+Prove matchEval:host:matchInt_is.
+Prove matchEval:host:matchString_is.
+Prove matchEval:host:matchRec_is.
+
+Prove matchEval:host:evalExpr_isValue,
+      matchEval:host:evalStmt_isCtx,
+      matchEval:host:evalArgs_isValue,
+      matchEval:host:evalRecFields_isValue.
+Prove matchEval:host:evalExpr_isOutput,
+      matchEval:host:evalStmt_isOutput,
+      matchEval:host:evalArgs_isOutput,
+      matchEval:host:evalRecFields_isOutput.
+
+Prove matchEval:host:paramName_is.
+Prove matchEval:host:getFunEvalInfo_is.
+
+Prove matchEval:host:evalProgram_isOutput.
+
+Prove matchEval:host:evalStmt_names_same.
+
+Prove matchEval:host:matchInt_unique.
+Prove matchEval:host:matchTrue_matchFalse_exclusive.
+Prove matchEval:host:matchString_unique.
+Prove matchEval:host:matchRec_unique.
+Prove matchEval:host:matchInt_matchTrue_exclusive.
+Prove matchEval:host:matchInt_matchFalse_exclusive.
+Prove matchEval:host:matchInt_matchString_exclusive.
+Prove matchEval:host:matchInt_matchRec_exclusive.
+Prove matchEval:host:matchString_matchTrue_exclusive.
+Prove matchEval:host:matchString_matchFalse_exclusive.
+Prove matchEval:host:matchString_matchRec_exclusive.
+Prove matchEval:host:matchRec_matchTrue_exclusive.
+Prove matchEval:host:matchRec_matchFalse_exclusive.
+
+Prove matchEval:host:evalExpr_rel,
+      matchEval:host:evalExpr_rel_output,
+      matchEval:host:evalStmt_newNameScopes_output,
+      matchEval:host:evalStmt_newNameScopes,
+      matchEval:host:evalArgs_rel,
+      matchEval:host:evalArgs_rel_output,
+      matchEval:host:evalRecFields_rel,
+      matchEval:host:evalRecFields_rel_output.
+
+Add_Ext_Size matchEval:host:evalExpr,
+             matchEval:host:evalArgs,
+             matchEval:host:evalRecFields,
+             matchEval:host:evalStmt.
+Add_Proj_Rel matchEval:host:evalExpr,
+             matchEval:host:evalArgs,
+             matchEval:host:evalRecFields,
+             matchEval:host:evalStmt.
+
+Prove matchEval:host:evalExpr_rel_exists_ES,
+      matchEval:host:evalStmt_newNameScopes_exists_ES,
+      matchEval:host:evalArgs_rel_exists_ES,
+      matchEval:host:evalRecFields_rel_exists_ES.
+
+Prove matchEval:host:evalExpr_scopes_same,
+      matchEval:host:evalStmt_scopes_same,
+      matchEval:host:evalStmt_scopes_same_ctx,
+      matchEval:host:evalArgs_scopes_same,
+      matchEval:host:evalRecFields_scopes_same.
+Prove matchEval:host:evalExpr_scopes_same_exists,
+      matchEval:host:evalStmt_scopes_same_exists,
+      matchEval:host:evalArgs_scopes_same_exists,
+      matchEval:host:evalRecFields_scopes_same_exists.
+
+Prove_Constraint matchEval:host:proj_matchInt.
+Prove_Constraint matchEval:host:proj_matchTrue.
+Prove_Constraint matchEval:host:proj_matchFalse.
+Prove_Constraint matchEval:host:proj_matchString.
+Prove_Constraint matchEval:host:proj_matchRec.
+Add_Proj_Rel matchEval:host:matchInt.
+Prove_Ext_Ind matchEval:host:matchInt.
+Add_Proj_Rel matchEval:host:matchTrue.
+Prove_Ext_Ind matchEval:host:matchTrue.
+Add_Proj_Rel matchEval:host:matchFalse.
+Prove_Ext_Ind matchEval:host:matchFalse.
+Add_Proj_Rel matchEval:host:matchRec.
+Prove_Ext_Ind matchEval:host:matchRec.
+Add_Proj_Rel matchEval:host:matchString.
+Prove_Ext_Ind matchEval:host:matchString.
+Prove matchEval:host:projedVal_is.
+Prove matchEval:host:projedVal_matchInt.
+Prove matchEval:host:projedVal_matchString.
+Prove matchEval:host:projedVal_matchTrue.
+Prove matchEval:host:projedVal_matchFalse.
+Prove matchEval:host:projedVal_matchRec.
+
+Prove_Constraint matchEval:host:matchInt_proj.
+Prove_Constraint matchEval:host:matchTrue_proj.
+Prove_Constraint matchEval:host:matchFalse_proj.
+Prove_Constraint matchEval:host:matchString_proj.
+Prove_Constraint matchEval:host:matchRec_proj.
+Prove matchEval:host:matchInt_projedVal.
+Prove matchEval:host:matchTrue_projedVal.
+Prove matchEval:host:matchFalse_projedVal.
+Prove matchEval:host:matchString_projedVal.
+Prove matchEval:host:matchRec_projedVal.
+
+Prove_Constraint matchEval:host:proj_evalExpr_forward.
+Prove_Constraint matchEval:host:proj_evalStmt_forward.
+
+Prove_Ext_Ind matchEval:host:evalExpr,
+              matchEval:host:evalArgs,
+              matchEval:host:evalRecFields,
+              matchEval:host:evalStmt.
+
+Prove matchEval:host:paramName_unique.
+Prove_Constraint matchEval:host:proj_paramName_forward.
+Prove_Constraint matchEval:host:proj_paramName_back.
+Prove matchEval:host:getFunEvalInfo_unique.
+Prove_Constraint matchEval:host:proj_getFunEvalInfo_forward.
+Prove_Constraint matchEval:host:proj_getFunEvalInfo_back.
+
+Prove matchEval:host:evalProgram_unique.
+Prove_Constraint matchEval:host:proj_evalProgram_forward.
+Prove_Constraint matchEval:host:proj_evalProgram_back.
+
+Prove matchEval:host:matchRec_typePres.
+Prove matchEval:host:evalExpr_typePres,
+      matchEval:host:evalStmt_typePres,
+      matchEval:host:evalArgs_typePres,
+      matchEval:host:evalRecFields_typePres.
+
+Prove matchEval:host:paramTy_paramName_same.
+Prove matchEval:host:funOK_getFunEvalInfo_related.
+
+Prove matchEval:host:evalExpr_output_forms,
+      matchEval:host:evalStmt_output_forms,
+      matchEval:host:evalArgs_output_forms,
+      matchEval:host:evalRecFields_output_forms.
+
+Prove matchEval:host:evalProgram_output_forms.
+Prove matchEval:host:paramName_exists.
+Prove matchEval:host:getFunEvalInfo_exists.
+
+
+
+
+
+/********************************************************************
+  _______                  _       _   _
+ |__   __|                | |     | | (_)
+    | |_ __ __ _ _ __  ___| | __ _| |_ _  ___  _ __
+    | | '__/ _` | '_ \/ __| |/ _` | __| |/ _ \| '_ \
+    | | | | (_| | | | \__ \ | (_| | |_| | (_) | | | |
+    |_|_|  \__,_|_| |_|___/_|\__,_|\__|_|\___/|_| |_|
+   _____                         _
+  / ____|                       | |
+ | |     ___  _ __ _ __ ___  ___| |_ _ __   ___  ___ ___
+ | |    / _ \| '__| '__/ _ \/ __| __| '_ \ / _ \/ __/ __|
+ | |___| (_) | |  | | |  __/ (__| |_| | | |  __/\__ \__ \
+  \_____\___/|_|  |_|  \___|\___|\__|_| |_|\___||___/___/
+
+ Translation Correctness
+ ********************************************************************/
+
+/********************************************************************
+ Is relations for translation
+ ********************************************************************/
+Theorem join_is : forall L J,
+  is_list (is_list is_string) L -> join L J -> is_list is_string J.
+induction on 2. intros Is J. J: case J.
+  %Join-Nil
+   search.
+  %Join-Cons
+   case Is. apply IH to _ J. apply append_list_string_is to _ _ J1.
+   search.
+
+
+Extensible_Theorem
+  transE_is : forall E T,
+    IsE : is_expr E ->
+    Trans : transE E T ->
+    is_expr T
+  on Trans as IH_E
+also
+  transA_is : forall A T,
+    IsA : is_args A ->
+    Trans : transA A T ->
+    is_args T
+  on Trans as IH_A,
+  transRF_is : forall RF T,
+    IsRF : is_recFieldExprs RF ->
+    Trans : transRF RF T ->
+    is_recFieldExprs T
+  on Trans as IH_RF.
+%transE_is
+ %TE-Num
+  search.
+ %TE-Plus
+  case IsE. apply IH_E to _ Trans1. apply IH_E to _ Trans2.
+  search.
+ %TE-Minus
+  case IsE. apply IH_E to _ Trans1. apply IH_E to _ Trans2.
+  search.
+ %TE-Mult
+  case IsE. apply IH_E to _ Trans1. apply IH_E to _ Trans2.
+  search.
+ %TE-Div
+  case IsE. apply IH_E to _ Trans1. apply IH_E to _ Trans2.
+  search.
+ %TE-True
+  search.
+ %TE-False
+  search.
+ %TE-And
+  case IsE. apply IH_E to _ Trans1. apply IH_E to _ Trans2.
+  search.
+ %TE-Or
+  case IsE. apply IH_E to _ Trans1. apply IH_E to _ Trans2.
+  search.
+ %TE-Not
+  case IsE. apply IH_E to _ Trans1. search.
+ %TE-Greater
+  case IsE. apply IH_E to _ Trans1. apply IH_E to _ Trans2.
+  search.
+ %TE-Eq
+  case IsE. apply IH_E to _ Trans1. apply IH_E to _ Trans2.
+  search.
+ %TE-String
+  search.
+ %TE-StringApp
+  case IsE. apply IH_E to _ Trans1. apply IH_E to _ Trans2.
+  search.
+ %TE-Name
+  search.
+ %TE-Call
+  case IsE. apply IH_A to _ Trans1. search.
+ %TE-RecBuild
+  case IsE. apply IH_RF to _ Trans1. search.
+ %TE-RecFieldAccess
+  case IsE. apply IH_E to _ Trans1. search.
+ %TE-ErrorExpr
+  case IsE. apply IH_E to _ Trans1. search.
+ %TE-Default
+  apply proj_expr_is to Trans1 _. apply IH_E to _ Trans2. search.
+%transA_is
+ Trans: case Trans (keep).
+   %TA-Nil
+    search.
+   %TA-Cons
+    case IsA. apply IH_E to _ Trans1. apply IH_A to _ Trans2.
+    search.
+%transRF_is
+ Trans: case Trans (keep).
+   %TRF-Nil
+    search.
+   %TRF-Cons
+    case IsRF. apply IH_E to _ Trans1. apply IH_RF to _ Trans2.
+    search.
+
+
+Extensible_Theorem
+  transS_is : forall Names S T Names',
+    IsS : is_stmt S ->
+    IsNames : is_list (is_list is_string) Names ->
+    Trans : transS Names S T Names' ->
+    is_stmt T
+  on Trans as IH_S,
+  transS_isNames : forall Names S T Names',
+    IsS : is_stmt S ->
+    IsNames : is_list (is_list is_string) Names ->
+    Trans : transS Names S T Names' ->
+    is_list (is_list is_string) Names'
+  on Trans as IH_C.
+%transS_is
+ %TS-Noop
+  search.
+ %TS-Seq
+  case IsS. apply IH_S to _ _ Trans1. apply IH_C to _ _ Trans1.
+  apply IH_S to _ _ Trans2. search.
+ %TS-Declare
+  case IsS. apply transE_is to _ Trans1. search.
+ %TS-Assign
+  case IsS. apply transE_is to _ Trans1. search.
+ %TS-RecUpdate
+  case IsS. apply transE_is to _ Trans1. search.
+ %TS-If
+  case IsS. apply transE_is to _ Trans1. apply IH_S to _ _ Trans2.
+  apply IH_S to _ _ Trans3. search.
+ %TS-While
+  case IsS. apply transE_is to _ Trans1. apply IH_S to _ _ Trans2.
+  search.
+ %TS-ScopeStmt
+  case IsS. apply IH_S to _ _ Trans1. search.
+ %TS-Print
+  case IsS. apply transE_is to _ Trans1. search.
+ %TS-Default
+  apply join_is to _ Trans1. apply proj_stmt_is to Trans2 _ _.
+  apply IH_S to _ _ Trans3. search.
+%transS_isNames
+ %TS-Noop
+  search.
+ %TS-Seq
+  case IsS. apply IH_C to _ _ Trans1. apply IH_C to _ _ Trans2.
+  search.
+ %TS-Declare
+  case IsS. case IsNames. search.
+ %TS-Assign
+  search.
+ %TS-RecUpdate
+  search.
+ %TS-If
+  search.
+ %TS-While
+  search.
+ %TS-ScopeStmt
+  search.
+ %TS-Print
+  search.
+ %TS-Default
+  apply join_is to _ Trans1. apply proj_stmt_is to Trans2 _ _.
+  apply IH_C to _ _ Trans3. search.
+
+
+Theorem domain_is_tys : forall L D,
+  is_list (is_pair is_string is_typ) L -> domain L D ->
+  is_list is_string D.
+induction on 2. intros Is D. D: case D.
+  %Dmn-Nil
+   search.
+  %Dmn-Cons
+   Is: case Is. case Is. apply IH to _ D. search.
+
+Extensible_Theorem
+  transF_is : forall F T,
+    IsF : is_fun F ->
+    Trans : transF F T ->
+    is_fun T
+  on Trans.
+%TF-Fun
+ case IsF. apply paramTys_is to _ Trans1.
+ apply domain_is_tys to _ Trans2. apply transS_is to _ _ Trans3.
+ search.
+%TF-Default
+ apply proj_fun_is to Trans1 _. apply IH to _ Trans2. search.
+
+
+Theorem transFuns_is : forall Fs Ts,
+  is_list is_fun Fs -> transFuns Fs Ts -> is_list is_fun Ts.
+induction on 2. intros IsFs TF. TF: case TF.
+  %TFs-Nil
+   search.
+  %TFs-Cons
+   case IsFs. apply IH to _ TF1. apply transF_is to _ TF. search.
+
+
+Extensible_Theorem
+  transP_is : forall P T,
+    IsP : is_program P ->
+    Trans : transP P T ->
+    is_program T
+  on Trans.
+%TP-Program
+ case IsP. apply transFuns_is to _ Trans1.
+ apply transF_is to _ Trans2. search.
+%TP-Default
+ apply proj_program_is to Trans1 _. apply IH to _ Trans2. search.
+
+
+
+
+
+/********************************************************************
+ Older scopes in translation names are not changed
+ ********************************************************************/
+Extensible_Theorem
+  transS_old_scopes : forall Names Scope S S' Names',
+    IsS : is_stmt S ->
+    IsNames : is_list (is_list is_string) (Scope::Names) ->
+    Trans : transS (Scope::Names) S S' Names' ->
+    exists Scope', Names' = Scope'::Names
+  on Trans.
+%TS-Noop
+ search.
+%TS-Seq
+ case IsS. apply IH to _ _ Trans1. apply transS_isNames to _ _ Trans1.
+ apply IH to _ _ Trans2. search.
+%TS-Declare
+ search.
+%TS-Assign
+ search.
+%TS-RecUpdate
+ search.
+%TS-If
+ search.
+%TS-While
+ search.
+%TS-ScopeStmt
+ search.
+%TS-Print
+ search.
+%TS-Default
+ apply join_is to _ Trans1. apply proj_stmt_is to Trans2 _ _.
+ apply IH to _ _ Trans3. search.
+
+
+
+
+
+/********************************************************************
+ Projection is unique under ctx_names
+ ********************************************************************/
+Theorem mem_names[K, V] : forall (EE : list (list (pair K V))) N X,
+  names EE N -> mem X N -> exists V, mems (X, V) EE.
+induction on 1. intros Names M. Names: case Names.
+  %Names-Nil
+   case M.
+  %Names-Cons
+   Or: apply mem_append to M Names2. M': case Or.
+     %mem X NScope
+      apply mem_domain to Names M'. search.
+     %mem X NRest
+      apply IH to Names1 M'. search.
+
+
+Theorem mems_names[K, V] : forall EE N (X : K) (V : V),
+  names EE N -> mems (X, V) EE -> mem X N.
+induction on 2. intros N M. M: case M.
+  %Mems-Here
+   N: case N. MNS: apply domain_mem to M N.
+   apply mem_append_left to MNS N2. search.
+  %Mems-Later
+   N: case N. MNR: apply IH to N1 M. apply mem_append_right to MNR N2.
+   search.
+
+
+Theorem mem_join[A] : forall (L : list (list A)) J X,
+  join L J -> mem X J -> mems X L.
+induction on 1. intros J M. J: case J.
+  %Join-Nil
+   case M.
+  %Join-Cons
+   Or: apply mem_append to M J1. M': case Or.
+     %mem X S
+      search.
+     %mem X Rest
+      apply IH to J M'. search.
+
+
+Theorem mems_join[A] : forall L J (X : A),
+  join L J -> mems X L -> mem X J.
+induction on 2. intros J M. M: case M.
+  %Mems-Here
+   J: case J. apply mem_append_left to M J1. search.
+  %Mems-Later
+   J: case J. MR: apply IH to J M. apply mem_append_right to MR J1.
+   search.
+
+
+Define ctx_names : list (list (pair K I)) -> list (list K) -> prop by
+  ctx_names [] [];
+  ctx_names (A::ARest) (B::BRest) :=
+    (forall K I, mem (K, I) A -> mem K B) /\
+    (forall K, mem K B -> exists I, mem (K, I) A) /\
+    ctx_names ARest BRest.
+
+
+Theorem ctx_names_add[K, I] : forall A B AS BS (K : K) (I : I),
+  ctx_names (AS::A) (BS::B) ->
+  ctx_names (((K, I)::AS)::A) ((K::BS)::B).
+intros CN. CN: case CN. unfold.
+  %mem AS -> mem BS
+   intros M. M: case M.
+     %Mem-Here
+      search.
+     %Mem-Later
+      apply CN to M. search.
+  %mem BS -> mem AS
+   intros M. M: case M.
+     %Mem-Here
+      search.
+     %Mem-Later
+      apply CN1 to M. search.
+  %rest
+   search.
+
+
+Theorem ctx_names_add_scope[K, I] :
+  forall (A : list (list (pair K I))) B,
+    ctx_names A B -> ctx_names ([]::A) ([]::B).
+intros CN. unfold.
+  %mem A -> mem B
+   intros M. case M.
+  %mem B -> mem A
+   intros M. case M.
+  %rest
+   search.
+
+
+Theorem ctx_names_lookupScopes[K, I] : forall A B (K : K) (I : I),
+  ctx_names A B -> lookupScopes K A I -> mems K B.
+induction on 2. intros CN L. L: case L.
+  %Mems-Here
+   M: apply lookup_mem to L. CN: case CN. apply CN to M. search.
+  %Mems-Later
+   CN: case CN. apply IH to CN2 L1. search.
+
+
+Theorem ctx_names_replaceScopes : forall A B X V A',
+  is_list (is_list (is_pair is_string is_value)) A ->
+  is_list (is_list is_string) B ->
+  ctx_names A B -> replaceScopes X V A A' -> ctx_names A' B.
+induction on 4. intros IsA IsB CN RS. RS: case RS.
+  %RS-FirstScope
+   CN: case CN. unfold.
+     %mem A' -> mem B
+      intros M. M: case M.
+        %Mem-Here (K = X)
+         apply CN to RS. search.
+        %Mem-Later
+         M': apply mem_after_remove_all_before to RS1 M.
+         apply CN to M'. search.
+     %mem B -> mem A'
+      intros M. M': apply CN1 to M. case IsA.
+      IsKP: apply mem_is to _ M'. IsK: case IsKP.
+      IsXP: apply mem_is to _ RS. IsX: case IsXP.
+      Or: apply is_string_eq_or_not to IsK IsX. E: case Or.
+        %X = K
+         search.
+        %X != K
+         apply mem_before_remove_all_after to RS1 M' _. search.
+     %rest
+      search.
+  %RS-Later
+   CN: case CN. case IsA. case IsB. apply IH to _ _ CN2 RS1. search.
+
+
+Theorem ctx_names_mems_fwd[K, V] : forall EE N (X : K) (V : V),
+  ctx_names EE N -> mems (X, V) EE -> mems X N.
+induction on 2. intros Ctxs M. M: case M.
+  %Mems-Here
+   C: case Ctxs. apply C to M. search.
+  %Mems-Later
+   C: case Ctxs. apply IH to C2 M. search.
+
+
+Theorem ctx_names_mem_back[K, V] : forall EE N (X : K),
+  ctx_names EE N -> mems X N -> exists (V : V), mems (X, V) EE.
+induction on 2. intros Ctxs M. M: case M.
+  %Mems-Here
+   C: case Ctxs. apply C1 to M. search.
+  %Mems-Later
+   C: case Ctxs. apply IH to C2 M. search.
+
+
+Theorem proj_stmt_unique_ctx_names : forall S SA SB Names NA EE NB,
+  is_stmt S -> is_list (is_list is_string) Names ->
+  is_list (is_list (is_pair is_string is_value)) EE ->
+  ctx_names EE Names -> join Names NA -> names EE NB ->
+  NA |{stmt}- S ~~> SA -> NB |{stmt}- S ~~> SB -> SA = SB.
+intros IsS IsNames IsEE Ctxs J N PrA PrB. apply join_is to _ J.
+apply names_is to _ N. apply proj_stmt_unique to PrA PrB _ _ _ _ _.
+  %mem NB -> mem NA
+   intros MB. MEE: apply mem_names to N MB.
+   MN: apply ctx_names_mems_fwd to Ctxs MEE. apply mems_join to J MN.
+   search.
+  %mem NA -> mem NB
+   intros MA. MN: apply mem_join to J MA.
+   MEE: apply ctx_names_mem_back to Ctxs MN.
+   apply mems_names to N MEE. search.
+search.
+
+
+
+
+
+/********************************************************************
+ Evaluation and translation names are related
+ ********************************************************************/
+Theorem ctx_names_scopes_same : forall N EE_A EE_B,
+  is_list (is_list (is_pair is_string is_value)) EE_A ->
+  is_list (is_list (is_pair is_string is_value)) EE_B ->
+  ctx_names EE_B N -> scopes_same EE_A EE_B -> ctx_names EE_A N.
+induction on 3. intros IsA IsB CN SS. CN: case CN.
+  %nil
+   case SS. search.
+  %cons
+   SS: case SS. unfold.
+     %mem A1 -> mem B
+      intros MA1. IsA: case IsA. IsP: apply mem_is to _ MA1. case IsP.
+      L: apply mem_lookup to IsA MA1. LA: apply SS to L.
+      apply lookup_mem to LA. backchain CN.
+     %mem B -> mem A1
+      intros MB. MA: apply CN1 to MB. IsB: case IsB.
+      IsP: apply mem_is to _ MA. case IsP.
+      L: apply mem_lookup to _ MA. L': apply SS1 to L.
+      apply lookup_mem to L'. search.
+     %rest
+      case IsA. case IsB. apply IH to _ _ CN2 SS2. search.
+
+Extensible_Theorem
+  evalStmt_trans_ctx_names :
+    forall Names S T Names' FE Scope EE EE' O,
+      IsS : is_stmt S ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsEE : is_list (is_list (is_pair is_string is_value))
+                 (Scope::EE) ->
+      IsNames : is_list (is_list is_string) Names ->
+      Ctxs : ctx_names (Scope::EE) Names ->
+      Trans : transS Names S T Names' ->
+      Ev : evalStmt FE (Scope::EE) S EE' O ->
+      ctx_names EE' Names'
+  on Ev.
+%Ext_Ind use valid
+ search.
+%Actual property
+ %E-Noop
+  case Trans. search.
+ %E-Seq
+  case IsS. Trans: case Trans. apply evalStmt_isCtx to _ _ _ Ev1.
+  apply transS_isNames to _ _ Trans.
+  C: apply IH to _ _ _ _ _ Trans Ev1. case Ctxs (keep).
+  apply transS_old_scopes to _ _ Trans. case C (keep).
+  apply IH to _ _ _ _ _ Trans1 Ev2. search.
+ %E-Declare
+  case IsS. Trans: case Trans. C: case Ctxs. unfold.
+    %mem EE -> mem Names
+     intros M. M: case M.
+       %Mem-Here
+        search.
+       %Mem-Later
+        apply C to M. search.
+    %mem Names -> mem EE
+     intros M. M: case M.
+       %Mem-Here
+        search.
+       %Mem-Later
+        apply C1 to M. search.
+    %rest
+     search.
+ %E-Assign
+  case IsS. Trans: case Trans.
+  apply ctx_names_replaceScopes to _ _ Ctxs Ev2. search.
+ %E-RecUpdate
+  case IsS. Trans: case Trans.
+  apply ctx_names_replaceScopes to _ _ Ctxs Ev5. search.
+ %E-If-True
+  case IsS. Trans: case Trans. C+: apply ctx_names_add_scope to Ctxs.
+  C': apply IH to _ _ _ _ _ Trans1 Ev3.
+  apply transS_old_scopes to _ _ Trans1. case C'. search.
+ %E-If-False
+  case IsS. Trans: case Trans. C+: apply ctx_names_add_scope to Ctxs.
+  C': apply IH to _ _ _ _ _ Trans2 Ev3.
+  apply transS_old_scopes to _ _ Trans2. case C'. search.
+ %E-While-True
+  case IsS. Trans: case Trans (keep).
+  C+: apply ctx_names_add_scope to Ctxs.
+  C': apply IH to _ _ _ _ _ Trans2 Ev3. C'': case C'.
+  apply transS_old_scopes to _ _ Trans2.
+  IsEE4+: apply evalStmt_isCtx to _ _ _ Ev3. case IsEE4+.
+  case Ctxs. case C''2 (keep). apply IH to _ _ _ _ _ Trans Ev4.
+  search.
+ %E-While-False
+  case IsS. Trans: case Trans. search.
+ %E-ScopeStmt
+  case IsS. Trans: case Trans. apply transS_old_scopes to _ _ Trans.
+  apply ctx_names_add_scope to Ctxs.
+  C: apply IH to _ _ _ _ _ Trans Ev1. case C. search.
+ %E-Print-Int
+  case IsS. Trans: case Trans. search.
+ %E-Print-True
+  case IsS. Trans: case Trans. search.
+ %E-Print-False
+  case IsS. Trans: case Trans. search.
+ %E-Print-String
+  case IsS. Trans: case Trans. search.
+ %E-Stmt-Q
+  Trans: case Trans. apply join_is to _ Trans.
+  apply proj_stmt_is to Trans1 _ _.
+  apply proj_stmt_unique_ctx_names to _ _ _ _ Trans Ev1 Trans1 Ev2.
+  C: apply IH to _ _ _ _ _ Trans2 Ev3.
+  SS: apply proj_evalStmt_forward to Ev2 Ev1 _ _ _ Ev.
+  apply evalStmt_unique to _ _ _ SS Ev3.
+  apply evalStmt_isCtx to _ _ _ SS. apply evalStmt_isCtx to _ _ _ Ev.
+  apply ctx_names_scopes_same to _ _ C SS1. search.
+
+
+
+
+
+/********************************************************************
+ Evaluation of original and translated terms is related
+ ********************************************************************/
+Define rel_FE :
+     list (pair string (pair string (pair value
+                   (pair (list string) stmt)))) ->
+     list (pair string (pair string (pair value
+                   (pair (list string) stmt)))) -> prop by
+rel_FE FE FE_T :=
+   (forall F RetVar RVVal PNames Body,
+       lookup FE F (RetVar, RVVal, PNames, Body) ->
+       exists Body_T Names,
+          lookup FE_T F (RetVar, RVVal, PNames, Body_T) /\
+          transS [RetVar::PNames] Body Body_T Names) /\
+   (forall F RetVar RVVal PNames Body_T,
+       lookup FE_T F (RetVar, RVVal, PNames, Body_T) ->
+       exists Body Names,
+          lookup FE F (RetVar, RVVal, PNames, Body) /\
+          transS [RetVar::PNames] Body Body_T Names).
+
+
+Theorem zip_ctx_names[A, B] : forall A B (Z : list (pair A B)),
+  zip A B Z -> ctx_names [Z] [A].
+intros Z. unfold.
+  %mem Z -> mem A
+   intros M. apply zip_mem_after to Z M. search.
+  %mem A -> mem Z
+   intros M. apply zip_mem_before1 to Z M. search.
+  %rest
+   search.
+
+
+%all values in A are related to the values for corresponding names in
+%B by projedVal
+Define projedCtxs : list (list (pair string value)) ->
+                    list (list (pair string value)) -> prop by
+projedCtxs [] [];
+projedCtxs (A::ARest) (B::BRest) :=
+  (forall X VB, lookup B X VB -> exists VA, lookup A X VA) /\
+  (forall X VA, lookup A X VA -> exists VB, lookup B X VB) /\
+  (forall X VA VB,
+      lookup A X VA -> lookup B X VB -> projedVal VA VB) /\
+  projedCtxs ARest BRest.
+
+
+Theorem projedCtxs_add_scope : forall A B,
+  projedCtxs A B -> projedCtxs ([]::A) ([]::B).
+intros PC. unfold.
+  %lookup B -> lookup A
+   intros LB. case LB.
+  %lookup A -> lookup B
+   intros LA. case LA.
+  %related
+   intros LA. case LA.
+  %rest
+   search.
+
+
+Theorem projedCtxs_lookupScopes_exists : forall A B X VB,
+  is_list (is_list (is_pair is_string is_value)) A ->
+  is_list (is_list (is_pair is_string is_value)) B -> is_string X ->
+  projedCtxs A B -> lookupScopes X B VB ->
+  exists VA, lookupScopes X A VA /\ projedVal VA VB.
+induction on 5. intros IsA IsB IsX PC LS. LS: case LS.
+  %LS-FirstScope
+   PC: case PC. LA: apply PC to LS. apply PC2 to LA LS. search.
+  %LS-Later
+   PC: case PC. IsA: case IsA. IsB: case IsB.
+   apply IH to _ _ _ PC3 LS1.
+   Or: apply lookup_string_value_list_or_no to IsA IsX. LA: case Or.
+     %lookup A1 X V
+      LB: apply PC1 to LA. apply no_lookup to LS LB.
+     %no_lookup A1 X
+      search.
+
+
+Theorem projedCtxs_lookupScopes : forall A B X VA VB,
+  is_list (is_list (is_pair is_string is_value)) A ->
+  is_list (is_list (is_pair is_string is_value)) B -> is_string X ->
+  projedCtxs A B -> lookupScopes X A VA -> lookupScopes X B VB ->
+  projedVal VA VB.
+intros IsA IsB IsX PC LA LB.
+LA': apply projedCtxs_lookupScopes_exists to _ _ _ PC LB.
+apply lookupScopes_unique to LA LA'. search.
+
+
+Theorem projedCtxs_replaceScopes_exists : forall A B X VA VB RB,
+  is_list (is_list (is_pair is_string is_value)) A ->
+  is_list (is_list (is_pair is_string is_value)) B -> is_string X ->
+  projedCtxs A B -> projedVal VA VB -> replaceScopes X VB B RB ->
+  exists RA, replaceScopes X VA A RA /\ projedCtxs RA RB.
+induction on 6. intros IsA IsB IsX PC PV RB. RB: case RB.
+  %RS-FirstScope
+   case IsB. PC: case PC. LB: apply mem_lookup to _ RB.
+   LA: apply PC to LB. MA: apply lookup_mem to LA. IsA: case IsA.
+   RAA: apply remove_all_exists to IsA IsX.
+   exists ((X, VA)::EE')::ARest. split.
+     %replaceScopes
+      search.
+     %projedCtxs
+      unfold.
+        %lookup B -> lookup A
+         intros LB'. LB': case LB'.
+           %Lkp-Here
+            search.
+           %Lkp-Later
+            LB'': apply remove_all_lookup_other to RB1 LB'1 _.
+            LA'': apply PC to LB''.
+            LA': apply remove_all_lookup_other_back to RAA LA'' _.
+            search.
+        %lookup A -> lookup B
+         intros LA'. LA': case LA'.
+           %Lkp-Here
+            search.
+           %Lkp-Later
+            LA'': apply remove_all_lookup_other to RAA LA'1 _.
+            LB'': apply PC1 to LA''.
+            LB': apply remove_all_lookup_other_back to RB1 LB'' _.
+            search.
+        %rel
+         intros LA' LB'. LA': case LA'.
+           %Lkp-Here
+            LB': case LB'.
+              %Lkp-Here
+               search.
+              %Lkp-Later
+               apply LB' to _.
+           %Lkp-Later
+            LB': case LB'.
+              %Lkp-Here
+               apply LA' to _.
+              %Lkp-Later
+               LA'': apply remove_all_lookup_other to RAA LA'1 _.
+               LB'': apply remove_all_lookup_other to RB1 LB'1 _.
+               apply PC2 to LA'' LB''. search.
+        %rest
+         search.
+  %RS-Later
+   PC: case PC. IsA: case IsA. IsB: case IsB.
+   RA: apply IH to _ _ _ PC3 _ RB1.
+   Or: apply lookup_string_value_list_or_no to IsA IsX. LA: case Or.
+     %lookup A1 X V
+      LB: apply PC1 to LA. apply no_lookup to RB LB.
+     %no_lookup A1 X
+      search.
+
+
+Theorem projedCtxs_replaceScopes : forall A B X VA VB RA RB,
+  is_list (is_list (is_pair is_string is_value)) A ->
+  is_list (is_list (is_pair is_string is_value)) B -> is_string X ->
+  projedCtxs A B -> projedVal VA VB -> replaceScopes X VA A RA ->
+  replaceScopes X VB B RB -> projedCtxs RA RB.
+intros IsA IsB IsX PC PV RA RB.
+RA': apply projedCtxs_replaceScopes_exists to _ _ _ PC PV RB.
+apply replaceScopes_unique to RA RA'. search.
+
+
+Theorem scopes_same_projedCtxs : forall A B C,
+  scopes_same A B -> projedCtxs B C -> projedCtxs A C.
+induction on 1. intros SS PC. SS: case SS.
+  %nil
+   case PC. search.
+  %cons
+   PC: case PC. unfold.
+     %lookup ->
+      intros LB2. LB1: apply PC to LB2. apply SS1 to LB1. search.
+     %lookup <-
+      intros LA. LB1: apply SS to LA. apply PC1 to LB1. search.
+     %lookup projedVal
+      intros LA LB2. LB1: apply SS to LA. apply PC2 to LB1 LB2.
+      search.
+     %rest
+      apply IH to SS2 PC3. search.
+
+
+Theorem projedCtxs_scopes_same : forall A B C,
+  projedCtxs A B -> scopes_same B C -> projedCtxs A C.
+induction on 1. intros PC SS. PC: case PC.
+  %nil
+   case SS. search.
+  %cons
+   SS: case SS. unfold.
+     %lookup ->
+      intros LB2. LB1: apply SS1 to LB2. apply PC to LB1. search.
+     %lookup <-
+      intros LA. LB1: apply PC1 to LA. apply SS to LB1. search.
+     %lookup projedVal
+      intros LA LB2. LB1: apply SS1 to LB2. apply PC2 to LA LB1.
+      search.
+     %rest
+      apply IH to PC3 SS2. search.
+
+
+Define projedArgs : list value -> list value -> prop by
+projedArgs [] [];
+projedArgs (VA::ARest) (VB::BRest) :=
+  projedVal VA VB /\ projedArgs ARest BRest.
+
+
+Theorem zip_projedArgs : forall N VA VB ZA ZB,
+  projedArgs VA VB -> zip N VA ZA -> zip N VB ZB ->
+  projedCtxs [ZA] [ZB].
+induction on 1. intros PA ZA ZB. PA: case PA.
+  %nil
+   case ZA. case ZB. unfold.
+     %lookup B -> lookup A
+      intros L. case L.
+     %lookup A -> lookup B
+      intros L. case L.
+     %rel
+      intros L. case L.
+     %rest
+      search.
+  %cons
+   ZA: case ZA. ZB: case ZB. PC: apply IH to PA1 ZA ZB. PC: case PC.
+   unfold.
+     %lookup B -> lookup A
+      intros LB. LB: case LB.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         apply PC to LB1. search.
+     %lookup A -> lookup B
+      intros LA. LA: case LA.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         apply PC1 to LA1. search.
+     %rel
+      intros LA LB. LA: case LA.
+        %Lkp-Here
+         LB: case LB.
+           %Lkp-Here
+            search.
+           %Lkp-Later
+            apply LB to _.
+        %Lkp-Later
+         LB: case LB.
+           %Lkp-Here
+            apply LA to _.
+           %Lkp-Later
+            apply PC2 to LA1 LB1. search.
+     %rest
+      search.
+
+
+Extensible_Theorem
+  trans_evalExpr_same :
+    forall E T EE EE_T FE FE_T V V_T O O_T,
+      IsE : is_expr E ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsFE_T : is_list
+                   (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE_T ->
+      IsEE : is_list (is_list (is_pair is_string is_value)) EE ->
+      IsEE_T : is_list (is_list (is_pair is_string is_value)) EE_T ->
+      RFE : rel_FE FE FE_T ->
+      PC : projedCtxs EE EE_T ->
+      Trans : transE E T ->
+      Ev : evalExpr FE EE E V O ->
+      EvT : evalExpr FE_T EE_T T V_T O_T ->
+      projedVal V V_T /\ O = O_T
+    on Ev as IH_E,
+  trans_evalStmt_same :
+    forall S T Names Names' Scope EE EE_T FE FE_T EE' EE_T' O O_T,
+      IsS : is_stmt S ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsFE_T : is_list
+                   (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE_T ->
+      IsEE : is_list (is_list (is_pair is_string is_value))
+                 (Scope::EE) ->
+      IsEE_T : is_list (is_list (is_pair is_string is_value)) EE_T ->
+      IsNames : is_list (is_list is_string) Names ->
+      RFE : rel_FE FE FE_T ->
+      PC : projedCtxs (Scope::EE) EE_T ->
+      Ctxs : ctx_names (Scope::EE) Names ->
+      Trans : transS Names S T Names' ->
+      Ev : evalStmt FE (Scope::EE) S EE' O ->
+      EvT : evalStmt FE_T EE_T T EE_T' O_T ->
+      O = O_T
+    on Ev as IH_S,
+  trans_evalStmt_relCtxs :
+    forall S T Names Names' Scope EE EE_T FE FE_T EE' EE_T' O O_T,
+      IsS : is_stmt S ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsFE_T : is_list
+                   (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE_T ->
+      IsEE : is_list (is_list (is_pair is_string is_value))
+                 (Scope::EE) ->
+      IsEE_T : is_list (is_list (is_pair is_string is_value)) EE_T ->
+      IsNames : is_list (is_list is_string) Names ->
+      RFE : rel_FE FE FE_T ->
+      PC : projedCtxs (Scope::EE) EE_T ->
+      Ctxs : ctx_names (Scope::EE) Names ->
+      Trans : transS Names S T Names' ->
+      Ev : evalStmt FE (Scope::EE) S EE' O ->
+      EvT : evalStmt FE_T EE_T T EE_T' O_T ->
+      projedCtxs EE' EE_T'
+    on Ev as IH_S_C,
+  trans_evalArgs_same :
+    forall A T EE EE_T FE FE_T V V_T O O_T,
+      IsA : is_args A ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsFE_T : is_list
+                   (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE_T ->
+      IsEE : is_list (is_list (is_pair is_string is_value)) EE ->
+      IsEE_T : is_list (is_list (is_pair is_string is_value)) EE_T ->
+      RFE : rel_FE FE FE_T ->
+      PC : projedCtxs EE EE_T ->
+      Trans : transA A T ->
+      Ev : evalArgs FE EE A V O ->
+      EvT : evalArgs FE_T EE_T T V_T O_T ->
+      projedArgs V V_T /\ O = O_T
+    on Ev as IH_A,
+  trans_evalRecFields_same :
+    forall RF T EE EE_T FE FE_T V V_T O O_T,
+      IsRF : is_recFieldExprs RF ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsFE_T : is_list
+                   (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE_T ->
+      IsEE : is_list (is_list (is_pair is_string is_value)) EE ->
+      IsEE_T : is_list (is_list (is_pair is_string is_value)) EE_T ->
+      RFE : rel_FE FE FE_T ->
+      PC : projedCtxs EE EE_T ->
+      Trans : transRF RF T ->
+      Ev : evalRecFields FE EE RF V O ->
+      EvT : evalRecFields FE_T EE_T T V_T O_T ->
+      projedFields V V_T /\ O = O_T
+    on Ev as IH_RF.
+%Ext_Ind use valid
+ %trans_evalExpr_same
+  search.
+ %trans_evalStmt_same
+  search.
+ %trans_evalStmt_relCtxs
+  search.
+ %trans_evalArgs_same
+  search.
+ %trans_evalRecFieldExprs_same
+  search.
+%actual properties
+ %trans_evalExpr_same
+  %E-Num
+   case Trans. case EvT. search.
+  %E-Plus
+   case IsE. Trans: case Trans. EvT: case EvT.
+   Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply transE_is to _ Trans.
+   Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+   apply append_unique to Ev6 EvT5.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply projedVal_matchInt to Pr1 _ EvT2.
+   M2: apply projedVal_matchInt to Pr2 _ EvT3.
+   apply matchInt_unique to _ M1 Ev3.
+   apply matchInt_unique to _ M2 Ev4.
+   apply plus_integer_unique to Ev5 EvT4. search.
+  %E-Minus
+   case IsE. Trans: case Trans. EvT: case EvT.
+   Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply transE_is to _ Trans.
+   Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+   apply append_unique to Ev6 EvT5.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply projedVal_matchInt to Pr1 _ EvT2.
+   M2: apply projedVal_matchInt to Pr2 _ EvT3.
+   apply matchInt_unique to _ M1 Ev3.
+   apply matchInt_unique to _ M2 Ev4.
+   apply minus_integer_unique to Ev5 EvT4. search.
+  %E-Mult
+   case IsE. Trans: case Trans. EvT: case EvT.
+   Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply transE_is to _ Trans.
+   Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+   apply append_unique to Ev6 EvT5.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply projedVal_matchInt to Pr1 _ EvT2.
+   M2: apply projedVal_matchInt to Pr2 _ EvT3.
+   apply matchInt_unique to _ M1 Ev3.
+   apply matchInt_unique to _ M2 Ev4.
+   apply multiply_integer_unique to Ev5 EvT4. search.
+  %E-Div
+   case IsE. Trans: case Trans. EvT: case EvT.
+   Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply transE_is to _ Trans.
+   Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+   apply append_unique to Ev6 EvT5.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply projedVal_matchInt to Pr1 _ EvT2.
+   M2: apply projedVal_matchInt to Pr2 _ EvT3.
+   apply matchInt_unique to _ M1 Ev3.
+   apply matchInt_unique to _ M2 Ev4.
+   apply divide_integer_unique to Ev5 EvT4. search.
+  %E-True
+   case Trans. case EvT. search.
+  %E-False
+   case Trans. case EvT. search.
+  %E-And-True
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-And-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply transE_is to _ Trans.
+      apply IH_E to _ _ _ _ _ _ _ Trans1 Ev3 EvT2.
+      apply append_unique to Ev5 EvT4. search.
+     %E-And-False1
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchFalse to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+     %E-And-False2
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev3 EvT2.
+      apply evalExpr_isValue to _ _ _ Ev3.
+      M: apply projedVal_matchFalse to Pr _ EvT3.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+  %E-And-False1
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-And-True
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchTrue to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-And-False1
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT. search.
+     %E-And-False2
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchTrue to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+  %E-And-False2
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-And-True
+      apply transE_is to _ Trans.
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev3 EvT2.
+      apply evalExpr_isValue to _ _ _ Ev3.
+      M: apply projedVal_matchTrue to Pr _ EvT3.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-And-False1
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchFalse to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+     %E-And-False2
+      apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply IH_E to _ _ _ _ _ _ _ Trans1 Ev3 EvT2.
+      apply append_unique to Ev5 EvT4. search.
+  %E-Or-True1
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Or-True1
+      apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT. search.
+     %E-Or-True2
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchFalse to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+     %E-Or-False
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchFalse to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+  %E-Or-True2
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Or-True1
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchTrue to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-Or-True2
+      apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply IH_E to _ _ _ _ _ _ _ Trans1 Ev3 EvT2.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Or-False
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev3 EvT2.
+      apply evalExpr_isValue to _ _ _ Ev3.
+      M: apply projedVal_matchFalse to Pr _ EvT3.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+  %E-Or-False
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Or-True1
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchTrue to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-Or-True2
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev3 EvT2.
+      apply evalExpr_isValue to _ _ _ Ev3.
+      M: apply projedVal_matchTrue to Pr _ EvT3.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-Or-False
+      apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply IH_E to _ _ _ _ _ _ _ Trans1 Ev3 EvT2.
+      apply append_unique to Ev5 EvT4. search.
+  %E-Not-True
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Not-True
+      apply IH_E to  _ _ _ _ _ _ _ Trans Ev1 EvT. search.
+     %E-Not-False
+      Pr: apply IH_E to  _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchTrue to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+  %E-Not-False
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Not-True
+      Pr: apply IH_E to  _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchFalse to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+     %E-Not-False
+      apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT. search.
+  %E-Greater-True
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Greater-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M1: apply projedVal_matchInt to Pr1 _ EvT2.
+      M2: apply projedVal_matchInt to Pr2 _ EvT3.
+      apply append_unique to Ev6 EvT5. search.
+     %E-Greater-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M1: apply projedVal_matchInt to Pr1 _ EvT2.
+      M2: apply projedVal_matchInt to Pr2 _ EvT3.
+      apply matchInt_unique to _ Ev3 M1.
+      apply matchInt_unique to _ Ev4 M2.
+      L: case Ev5. apply less_lesseq_flip_false to L EvT4.
+  %E-Greater-False
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Greater-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M1: apply projedVal_matchInt to Pr1 _ EvT2.
+      M2: apply projedVal_matchInt to Pr2 _ EvT3.
+      apply matchInt_unique to _ Ev3 M1.
+      apply matchInt_unique to _ Ev4 M2.
+      L: case EvT4. apply less_lesseq_flip_false to L Ev5.
+     %E-Greater-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      apply append_unique to Ev6 EvT5. search.
+  %E-Eq-Int-True
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Eq-Int-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Int-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M1: apply projedVal_matchInt to Pr1 _ EvT2.
+      M2: apply projedVal_matchInt to Pr2 _ EvT3.
+      apply matchInt_unique to _ Ev3 M1.
+      apply matchInt_unique to _ Ev4 M2. apply EvT4 to _.
+     %E-Eq-Bool-TrueT
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchTrue to Pr1 _ EvT2.
+      apply matchInt_matchTrue_exclusive to _ _ M.
+     %E-Eq-Bool-TrueF
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchFalse to Pr1 _ EvT2.
+      apply matchInt_matchFalse_exclusive to _ _ M.
+     %E-Eq-Bool-False1
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchTrue to Pr1 _ EvT2.
+      apply matchInt_matchTrue_exclusive to _ _ M.
+     %E-Eq-Bool-False2
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchFalse to Pr1 _ EvT2.
+      apply matchInt_matchFalse_exclusive to _ _ M.
+     %E-Eq-String-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchString to Pr1 _ EvT2.
+      apply matchInt_matchString_exclusive to _ _ M.
+     %E-Eq-String-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchString to Pr1 _ EvT2.
+      apply matchInt_matchString_exclusive to _ _ M.
+  %E-Eq-Int-False
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Eq-Int-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M1: apply projedVal_matchInt to Pr1 _ EvT2.
+      M2: apply projedVal_matchInt to Pr2 _ EvT3.
+      apply matchInt_unique to _ Ev3 M1.
+      apply matchInt_unique to _ Ev4 M2. apply Ev5 to _.
+     %E-Eq-Int-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev6 EvT5. search.
+     %E-Eq-Bool-TrueT
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchTrue to Pr1 _ EvT2.
+      apply matchInt_matchTrue_exclusive to _ _ M.
+     %E-Eq-Bool-TrueF
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchFalse to Pr1 _ EvT2.
+      apply matchInt_matchFalse_exclusive to _ _ M.
+     %E-Eq-Bool-False1
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchTrue to Pr1 _ EvT2.
+      apply matchInt_matchTrue_exclusive to _ _ M.
+     %E-Eq-Bool-False2
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchFalse to Pr1 _ EvT2.
+      apply matchInt_matchFalse_exclusive to _ _ M.
+     %E-Eq-String-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchString to Pr1 _ EvT2.
+      apply matchInt_matchString_exclusive to _ _ M.
+     %E-Eq-String-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchString to Pr1 _ EvT2.
+      apply matchInt_matchString_exclusive to _ _ M.
+  %E-Eq-Bool-TrueT
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Eq-Int-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchInt to Pr1 _ EvT2.
+      apply matchInt_matchTrue_exclusive to _ M _.
+     %E-Eq-Int-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchInt to Pr1 _ EvT2.
+      apply matchInt_matchTrue_exclusive to _ M _.
+     %E-Eq-Bool-TrueT
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Bool-TrueF
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Bool-False1
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchFalse to Pr2 _ EvT3.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+     %E-Eq-Bool-False2
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchFalse to Pr1 _ EvT2.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+     %E-Eq-String-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-String-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchString to Pr1 _ EvT2.
+      apply matchString_matchTrue_exclusive to _ M _.
+  %E-Eq-Bool-TrueF
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Eq-Int-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Int-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchInt to Pr1 _ EvT2.
+      apply matchInt_matchFalse_exclusive to _ M _.
+     %E-Eq-Bool-TrueT
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Bool-TrueF
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Bool-False1
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchTrue to Pr1 _ EvT2.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-Eq-Bool-False2
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchTrue to Pr2 _ EvT3.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-Eq-String-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-String-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchString to Pr1 _ EvT2.
+      apply matchString_matchFalse_exclusive to _ M _.
+  %E-Eq-Bool-False1
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Eq-Int-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchInt to Pr1 _ EvT2.
+      apply matchInt_matchTrue_exclusive to _ M _.
+     %E-Eq-Int-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT5. search.
+     %E-Eq-Bool-TrueT
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchTrue to Pr2 _ EvT3.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-Eq-Bool-TrueF
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchFalse to Pr1 _ EvT2.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+     %E-Eq-Bool-False1
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Bool-False2
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-String-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchString to Pr1 _ EvT2.
+      apply matchString_matchTrue_exclusive to _ M _.
+     %E-Eq-String-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT5. search.
+  %E-Eq-Bool-False2
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Eq-Int-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchInt to Pr1 _ EvT2.
+      apply matchInt_matchFalse_exclusive to _ M _.
+     %E-Eq-Int-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT5. search.
+     %E-Eq-Bool-TrueT
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchTrue to Pr1 _ EvT2.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-Eq-Bool-TrueF
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchFalse to Pr2 _ EvT3.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+     %E-Eq-Bool-False1
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Bool-False2
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-String-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchString to Pr1 _ EvT2.
+      apply matchString_matchFalse_exclusive to _ M _.
+     %E-Eq-String-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT5. search.
+  %E-Eq-String-True
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Eq-Int-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Int-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchInt to Pr1 _ EvT2.
+      apply matchInt_matchString_exclusive to _ M _.
+     %E-Eq-Bool-TrueT
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Bool-TrueF
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-Bool-False1
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchTrue to Pr1 _ EvT2.
+      apply matchString_matchTrue_exclusive to _ _ M.
+     %E-Eq-Bool-False2
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchFalse to Pr1 _ EvT2.
+      apply matchString_matchFalse_exclusive to _ _ M.
+     %E-Eq-String-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev5 EvT4. search.
+     %E-Eq-String-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M1: apply projedVal_matchString to Pr1 _ EvT2.
+      M2: apply projedVal_matchString to Pr2 _ EvT3.
+      apply matchString_unique to _ M1 Ev3.
+      apply matchString_unique to _ M2 Ev4. apply EvT4 to _.
+  %E-Eq-String-False
+   case IsE. Trans: case Trans. EvT: case EvT.
+     %E-Eq-Int-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchInt to Pr1 _ EvT2.
+      apply matchInt_matchString_exclusive to _ M _.
+     %E-Eq-Int-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev6 EvT5. search.
+     %E-Eq-Bool-TrueT
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchTrue to Pr1 _ EvT2.
+      apply matchString_matchTrue_exclusive to _ _ M.
+     %E-Eq-Bool-TrueF
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M: apply projedVal_matchFalse to Pr1 _ EvT2.
+      apply matchString_matchFalse_exclusive to _ _ M.
+     %E-Eq-Bool-False1
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev6 EvT4. search.
+     %E-Eq-Bool-False2
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev6 EvT4. search.
+     %E-Eq-String-True
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply evalExpr_isValue to _ _ _ Ev2.
+      M1: apply projedVal_matchString to Pr1 _ EvT2.
+      M2: apply projedVal_matchString to Pr2 _ EvT3.
+      apply matchString_unique to _ M1 Ev3.
+      apply matchString_unique to _ M2 Ev4. apply Ev5 to _.
+     %E-Eq-String-False
+      Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+      apply append_unique to Ev6 EvT5. search.
+  %E-String
+   case Trans. case EvT. search.
+  %E-AppString
+   case IsE. Trans: case Trans. EvT: case EvT.
+   Pr1: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   Pr2: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply projedVal_matchString to Pr1 _ EvT2.
+   M2: apply projedVal_matchString to Pr2 _ EvT3.
+   apply matchString_unique to _ Ev3 M1.
+   apply matchString_unique to _ Ev4 M2.
+   apply append_unique to Ev5 EvT4.
+   apply append_unique to Ev6 EvT5. search.
+  %E-Name
+   case IsE. case Trans. EvT: case EvT.
+   apply projedCtxs_lookupScopes to _ _ _ PC Ev1 EvT. search.
+  %E-Call
+   case IsE. Trans: case Trans. EvT: case EvT. R: case RFE (keep).
+   L_T: apply R to Ev1. apply lookup_unique to EvT L_T.
+   clear L_T R R1. apply IH_A to _ _ _ _ _ _ _ Trans Ev2 EvT1.
+   apply evalArgs_isValue to _ _ _ Ev2. apply transA_is to _ Trans.
+   apply evalArgs_isValue to _ _ _ EvT1.
+   IsP: apply lookup_is_value_funCtx to _ Ev1. IsP: case IsP.
+   IsP: case IsP1. IsP: case IsP2.
+   Z: assert zip (RetVar::ArgNames) (RVVal::ArgVals1)
+                 ((RetVar, RVVal)::InitEnv1).
+   Z': assert zip (RetVar::ArgNames) (RVVal::ArgVals)
+                  ((RetVar, RVVal)::InitEnv).
+   apply zip_ctx_names to Z. apply zip_ctx_names to Z'.
+   apply zip_projedArgs to _ Z' Z.
+   apply zip_is to _ _ Z. apply zip_is to _ _ Z'.
+   apply IH_S to _ _ _ _ _ _ _ _ _ L_T1 Ev4 EvT3.
+   PC': apply IH_S_C to _ _ _ _ _ _ _ _ _ L_T1 Ev4 EvT3.
+   apply append_unique to Ev5 EvT4. apply evalStmt_isCtx to _ _ _ Ev4.
+   apply transS_is to _ _ L_T1. apply evalStmt_isCtx to _ _ _ EvT3.
+   apply projedCtxs_lookupScopes to _ _ _ PC' Ev6 EvT5. search.
+  %E-RecBuild
+   case IsE. Trans: case Trans. EvT: case EvT.
+   apply IH_RF to _ _ _ _ _ _ _ Trans Ev1 EvT. search.
+  %E-RecAccess
+   case IsE. Trans: case Trans. EvT: case EvT.
+   Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   M: apply projedVal_matchRec to Pr _ EvT1.
+   apply matchRec_unique to _ M Ev2.
+   apply projedFields_lookup to M1 Ev3 EvT2. search.
+  %E-Expr-Q
+   Trans: case Trans. apply proj_expr_is to Ev1 _.
+   apply proj_expr_unique to Trans Ev1 _.
+   Pr: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev2 EvT.
+   Ev': apply proj_evalExpr_forward to Ev1 _ _ _ Ev.
+   apply evalExpr_unique to _ _ _ Ev' Ev2.
+   apply transE_is to _ Trans1. apply evalExpr_isValue to _ _ _ EvT.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   apply evalExpr_isValue to _ _ _ Ev. search.
+ %trans_evalStmt_same
+  %E-Noop
+   case Trans. case EvT. search.
+  %E-Seq
+   case IsS. Trans: case Trans. EvT: case EvT.
+   apply IH_S to _ _ _ _ _ _ _ _ _ Trans Ev1 EvT.
+   SS': apply IH_S_C to _ _ _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply evalStmt_isCtx to _ _ _ Ev1. apply transS_is to _ _ Trans.
+   apply transS_isNames to _ _ Trans.
+   apply evalStmt_isCtx to _ _ _ EvT.
+   C: apply evalStmt_trans_ctx_names to _ _ _ _ Ctxs Trans Ev1.
+   case Ctxs. apply transS_old_scopes to _ _ Trans. case C (keep).
+   apply IH_S to _ _ _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+   apply append_unique to Ev3 EvT2. search.
+  %E-Declare
+   case IsS. Trans: case Trans. EvT: case EvT.
+   apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT. search.
+  %E-Assign
+   case IsS. Trans: case Trans. EvT: case EvT.
+   apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT. search.
+  %E-RecUpdate
+   case IsS. Trans: case Trans. EvT: case EvT.
+   apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT. search.
+  %E-If-True
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-If-True
+      apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply transE_is to _ Trans.
+      apply ctx_names_add_scope to Ctxs.
+      apply projedCtxs_add_scope to PC.
+      apply IH_S to _ _ _ _ _ _ _ _ _ Trans1 Ev3 EvT2.
+      apply append_unique to Ev4 EvT3. search.
+     %E-If-False
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchFalse to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+  %E-If-False
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-If-True
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchTrue to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-If-False
+      apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply transE_is to _ Trans.
+      apply ctx_names_add_scope to Ctxs.
+      apply projedCtxs_add_scope to PC.
+      apply IH_S to _ _ _ _ _ _ _ _ _ Trans2 Ev3 EvT2.
+      apply append_unique to Ev4 EvT3. search.
+  %E-While-True
+   case IsS. Trans: case Trans (keep). EvT: case EvT.
+     %E-While-True
+      apply IH_E to _ _ _ _ _ _ _ Trans1 Ev1 EvT.
+      apply transE_is to _ Trans1.
+      apply ctx_names_add_scope to Ctxs.
+      apply projedCtxs_add_scope to PC.
+      apply IH_S to _ _ _ _ _ _ _ _ _ Trans2 Ev3 EvT2.
+      PC': apply IH_S_C to _ _ _ _ _ _ _ _ _ Trans2 Ev3 EvT2.
+      case PC'. IsEE4+: apply evalStmt_isCtx to _ _ _ Ev3.
+      case IsEE4+. apply transS_is to _ _ Trans2. case Ctxs.
+      IsEE3+: apply evalStmt_isCtx to _ _ _ EvT2. case IsEE3+.
+      apply transS_old_scopes to _ _ Trans2.
+      C'': apply evalStmt_trans_ctx_names to _ _ _ _ _ Trans2 Ev3.
+      C'': case C''. case C''2 (keep).
+      apply IH_S to _ _ _ _ _ _ _ _ _ Trans Ev4 EvT3.
+      apply append_unique to Ev5 EvT4.
+      apply append_unique to Ev6 EvT5. search.
+     %E-While-False
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchFalse to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+  %E-While-False
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-While-True
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchTrue to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-While-False
+      apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT. search.
+  %E-ScopeStmt
+   case IsS. Trans: case Trans. EvT: case EvT.
+   apply ctx_names_add_scope to Ctxs.
+   apply projedCtxs_add_scope to PC.
+   apply IH_S to _ _ _ _ _ _ _ _ _ Trans Ev1 EvT. search.
+  %E-Print-Int
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-Print-Int
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchInt to Pr _ _. M: case M.
+      apply append_unique to Ev2 EvT1. search.
+     %E-Print-True
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchInt_projedVal to Pr _ _. case M.
+     %E-Print-False
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchInt_projedVal to Pr _ _. case M.
+     %E-Print-String
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchInt_projedVal to Pr _ _. case M.
+  %E-Print-True
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-Print-Int
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchTrue_projedVal to Pr _ _. case M.
+     %E-Print-True
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply append_unique to Ev2 EvT1. search.
+     %E-Print-False
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchTrue_projedVal to Pr _ _. case M.
+     %E-Print-String
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchTrue_projedVal to Pr _ _. case M.
+  %E-Print-False
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-Print-Int
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchFalse_projedVal to Pr _ _. case M.
+     %E-Print-True
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchFalse_projedVal to Pr _ _. case M.
+     %E-Print-False
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      apply append_unique to Ev2 EvT1. search.
+     %E-Print-String
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchFalse_projedVal to Pr _ _. case M.
+  %E-Print-String
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-Print-Int
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchString_projedVal to Pr _ _. case M.
+     %E-Print-True
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchString_projedVal to Pr _ _. case M.
+     %E-Print-False
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply matchString_projedVal to Pr _ _. case M.
+     %E-Print-String
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchString to Pr _ _. M: case M.
+      apply append_unique to Ev2 EvT1. search.
+  %E-Stmt-Q
+   Trans: case Trans. apply names_is to _ Ev1.
+   apply proj_stmt_is to Ev2 _ _.
+   apply proj_stmt_unique_ctx_names to
+      _ _ _ Ctxs Trans Ev1 Trans1 Ev2.
+   apply IH_S to _ _ _ _ _ _ _ _ _ Trans2 Ev3 EvT.
+   Ev': apply proj_evalStmt_forward to Ev2 Ev1 _ _ _ Ev.
+   apply evalStmt_unique to _ _ _ Ev' Ev3. search.
+ %trans_evalStmt_relCtxs
+  %E-Noop
+   case Trans. case EvT. search.
+  %E-Seq
+   case IsS. Trans: case Trans. EvT: case EvT.
+   SS': apply IH_S_C to _ _ _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply evalStmt_isCtx to _ _ _ Ev1. apply transS_is to _ _ Trans.
+   apply transS_isNames to _ _ Trans.
+   apply evalStmt_isCtx to _ _ _ EvT.
+   C: apply evalStmt_trans_ctx_names to _ _ _ _ Ctxs Trans Ev1.
+   case Ctxs. apply transS_old_scopes to _ _ Trans. case C (keep).
+   apply IH_S_C to _ _ _ _ _ _ _ _ _ Trans1 Ev2 EvT1. search.
+  %E-Declare
+   case IsS. Trans: case Trans. EvT: case EvT.
+   Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   R: case PC. unfold.
+     %lookup ->
+      intros L. L: case L.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         apply R to L1. search.
+     %lookup <-
+      intros L. L: case L.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         apply R1 to L1. search.
+     %projed
+      intros LA LB. LA: case LA.
+        %Lkp-Here
+         LB: case LB.
+           %Lkp-Here
+            search.
+           %Lkp-Later
+            apply LB to _.
+        %Lkp-Later
+         LB: case LB.
+           %Lkp-Here
+            apply LA to _.
+           %Lkp-Later
+            apply R2 to LA1 LB1. search.
+     %rest
+      search.
+  %E-Assign
+   case IsS. Trans: case Trans. EvT: case EvT.
+   apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply transE_is to _ Trans.
+   apply projedCtxs_replaceScopes to _ _ _ _ _ Ev2 EvT1. search.
+  %E-RecUpdate
+   case IsS. Trans: case Trans. EvT: case EvT.
+   apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply transE_is to _ Trans. apply lookupScopes_is to _ Ev2.
+   Pr: apply projedCtxs_lookupScopes to _ _ _ _ Ev2 EvT1.
+   M: apply projedVal_matchRec to Pr _ EvT2.
+   apply matchRec_unique to _ Ev3 M.
+   apply matchRec_is to _ M. apply projedVal_is to _ Pr.
+   apply matchRec_is to _ EvT2.
+   apply projedFields_updateRecFields to _ _ M1 _ Ev4 EvT3.
+   apply projedCtxs_replaceScopes to _ _ _ _ _ Ev5 EvT4. search.
+  %E-If-True
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-If-True
+      apply transE_is to _ Trans. apply ctx_names_add_scope to Ctxs.
+      apply projedCtxs_add_scope to PC.
+      PC': apply IH_S_C to _ _ _ _ _ _ _ _ _ Trans1 Ev3 EvT2.
+      case PC'. search.
+     %E-If-False
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchFalse to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+  %E-If-False
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-If-True
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchTrue to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-If-False
+      apply transE_is to _ Trans. apply ctx_names_add_scope to Ctxs.
+      apply projedCtxs_add_scope to PC.
+      PC': apply IH_S_C to _ _ _ _ _ _ _ _ _ Trans2 Ev3 EvT2.
+      case PC'. search.
+  %E-While-True
+   case IsS. Trans: case Trans (keep). EvT: case EvT.
+     %E-While-True
+      apply transE_is to _ Trans1. apply ctx_names_add_scope to Ctxs.
+      PC+: apply projedCtxs_add_scope to PC.
+      PC': apply IH_S_C to _ _ _ _ _ _ _ _ _ Trans2 Ev3 EvT2.
+      PC'': case PC'. apply transS_is to _ _ Trans2.
+      IsEE3+: apply evalStmt_isCtx to _ _ _ Ev3. case IsEE3+.
+      IsEE1+: apply evalStmt_isCtx to _ _ _ EvT2. case IsEE1+.
+      PC+: case PC+. case PC+3.
+      NS: apply evalStmt_names_same to _ _ _ Ev3. case NS.
+      C: apply evalStmt_trans_ctx_names to _ _ _ _ _ Trans2 Ev3.
+      apply transS_old_scopes to _ _ Trans2.
+      case C. apply IH_S_C to _ _ _ _ _ _ _ _ _ Trans Ev4 EvT3.
+      search.
+     %E-While-False
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans1 Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchFalse to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ _ M.
+  %E-While-False
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-While-True
+      Pr: apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+      apply evalExpr_isValue to _ _ _ Ev1.
+      M: apply projedVal_matchTrue to Pr _ EvT1.
+      apply matchTrue_matchFalse_exclusive to _ M _.
+     %E-While-False
+      search.
+  %E-ScopeStmt
+   case IsS. Trans: case Trans. EvT: case EvT.
+   apply ctx_names_add_scope to Ctxs.
+   apply projedCtxs_add_scope to PC.
+   PC': apply IH_S_C to _ _ _ _ _ _ _ _ _ Trans Ev1 EvT.
+   case PC'. search.
+  %E-Print-Int
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-Print-Int
+      search.
+     %E-Print-True
+      search.
+     %E-Print-False
+      search.
+     %E-Print-String
+      search.
+  %E-Print-True
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-Print-Int
+      search.
+     %E-Print-True
+      search.
+     %E-Print-False
+      search.
+     %E-Print-String
+      search.
+  %E-Print-False
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-Print-Int
+      search.
+     %E-Print-True
+      search.
+     %E-Print-False
+      search.
+     %E-Print-String
+      search.
+  %E-Print-String
+   case IsS. Trans: case Trans. EvT: case EvT.
+     %E-Print-Int
+      search.
+     %E-Print-True
+      search.
+     %E-Print-False
+      search.
+     %E-Print-String
+      search.
+  %E-Stmt-Q
+   Trans: case Trans. apply names_is to _ Ev1.
+   apply proj_stmt_is to Ev2 _ _.
+   apply proj_stmt_unique_ctx_names to
+      _ _ _ Ctxs Trans Ev1 Trans1 Ev2.
+   PC': apply IH_S_C to _ _ _ _ _ _ _ _ _ Trans2 Ev3 EvT.
+   Ev': apply proj_evalStmt_forward to Ev2 Ev1 _ _ _ Ev.
+   apply evalStmt_unique to _ _ _ Ev' Ev3.
+   apply scopes_same_projedCtxs to Ev'1 PC'. search.
+ %trans_evalArgs_same
+  %EA-Nil
+   case Trans. case EvT. search.
+  %EA-Cons
+   case IsA. Trans: case Trans. EvT: case EvT.
+   apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply IH_A to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+   apply append_unique to Ev3 EvT2. search.
+  %unknown K evalArgs
+   Or: apply is_args_nilArgs_or_consArgs to IsA. case Or.
+ %trans_evalRecFields_same
+  %ERF-Nil
+   case Trans. case EvT. search.
+  %ERF-Cons
+   case IsRF. Trans: case Trans. EvT: case EvT.
+   apply IH_E to _ _ _ _ _ _ _ Trans Ev1 EvT.
+   apply IH_RF to _ _ _ _ _ _ _ Trans1 Ev2 EvT1.
+   apply append_unique to Ev3 EvT2. search.
+  %unknown K evalRecFields
+   Or: apply is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs to
+          IsRF. case Or.
+
+
+Theorem paramTys_paramNames : forall Ps PTys D PNs,
+  paramTys Ps PTys -> domain PTys D -> paramNames Ps PNs -> D = PNs.
+induction on 1. intros PT D PN. PT: case PT.
+  %PT-Nil
+   case D. case PN. search.
+  %PT-Cons
+   D: case D. PN: case PN. apply IH to PT1 D PN1.
+   apply paramTy_paramName_same to PT PN. search.
+
+
+Extensible_Theorem
+  trans_getFunEvalInfo_rel :
+    forall F Name RetVar RVVal PNames Body
+           F_T Name_T RetVar_T RVVal_T PNames_T Body_T,
+      IsF : is_fun F ->
+      Trans : transF F F_T ->
+      GFEI : getFunEvalInfo F Name RetVar RVVal PNames Body ->
+      GFEI_T : getFunEvalInfo F_T Name_T RetVar_T
+                              RVVal_T PNames_T Body_T ->
+      exists N,
+        Name = Name_T /\ RetVar = RetVar_T /\ RVVal = RVVal_T /\
+        PNames = PNames_T /\ transS [RetVar::PNames] Body Body_T N
+  on Trans.
+%TF-Fun
+ case IsF. G: case GFEI. GT: case GFEI_T.
+ apply paramNames_unique to _ G GT.
+ apply paramTys_paramNames to Trans1 Trans2 G. search.
+%TF-Default
+ G': apply proj_getFunEvalInfo_forward to Trans1 _ GFEI.
+ apply proj_fun_is to Trans1 _. apply IH to _ Trans2 G' GFEI_T.
+ search.
+
+
+Theorem trans_getFunEvalCtx_rel_FE : forall Fs Fs_T FE FE_T,
+  is_list is_fun Fs -> transFuns Fs Fs_T -> getFunEvalCtx Fs FE ->
+  getFunEvalCtx Fs_T FE_T -> rel_FE FE FE_T.
+induction on 2. intros IsFs Trans GFEI GFEI_T. Trans: case Trans.
+  %TFs-Nil
+   case GFEI. case GFEI_T. unfold.
+     %lookup forward
+      intros L. case L.
+     %lookup back
+      intros L. case L.
+  %TFs-Cons
+   G: case GFEI. GT: case GFEI_T. case IsFs.
+   apply trans_getFunEvalInfo_rel to _ Trans G GT.
+   R: apply IH to _ Trans1 G1 GT1. unfold.
+     %lookup forward
+      intros L. L: case L.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         R: case R. apply R to L1. search.
+     %lookup back
+      intros L. L: case L.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         R: case R. apply R1 to L1. search.
+
+
+
+
+
+/********************************************************************
+ If the original evaluates, so does the translation
+ ********************************************************************/
+Theorem projedCtxs_lookupScopes_exists_forward : forall A B X VA,
+  is_list (is_list (is_pair is_string is_value)) A ->
+  is_list (is_list (is_pair is_string is_value)) B ->
+  is_string X -> projedCtxs A B -> lookupScopes X A VA ->
+  exists VB, lookupScopes X B VB /\ projedVal VA VB.
+induction on 4. intros IsA IsB IsX PC L. LA: case L.
+  %LS-FirstScope
+   PC: case PC. LB: apply PC1 to LA. apply PC2 to LA LB. search.
+  %LS-Later
+   case IsA. PC: case PC. IsB: case IsB. apply IH to _ _ _ PC3 LA1.
+   Or: apply lookup_string_value_list_or_no to IsB IsX. LB: case Or.
+     %lookup B1 X V
+      LA': apply PC to LB. apply no_lookup to LA LA'.
+     %no_lookup B1 X
+      search.
+
+
+Theorem projedArgs_zip[N] : forall A B (N : list N) Z,
+  projedArgs A B -> zip N A Z -> exists Z', zip N B Z'.
+induction on 1. intros PA Z. PA: case PA.
+  %nil
+   case Z. search.
+  %cons
+   Z: case Z. apply IH to PA1 Z. search.
+
+
+Theorem projedFields_lookup_exists : forall FA FB X VA,
+  projedFields FA FB -> lookup FA X VA ->
+  exists VB, lookup FB X VB /\ projedVal VA VB.
+induction on 2. intros PF L. L: case L.
+  %Lkp-Here
+   case PF. search.
+  %Lkp-Later
+   PF: case PF. apply IH to PF1 L1. search.
+
+
+Theorem projedCtxs_replaceScopes_exists_forward:
+  forall A B X VA VB RA,
+    is_list (is_list (is_pair is_string is_value)) A ->
+    is_list (is_list (is_pair is_string is_value)) B ->
+    is_string X -> projedCtxs A B -> projedVal VA VB ->
+    replaceScopes X VA A RA ->
+    exists RB, replaceScopes X VB B RB /\ projedCtxs RA RB.
+induction on 6. intros IsA IsB IsX PC PV RA. RA: case RA.
+  %RS-FirstScope
+   case IsA. PC: case PC. LA: apply mem_lookup to _ RA.
+   LB: apply PC1 to LA. MB: apply lookup_mem to LB. IsB: case IsB.
+   RB: apply remove_all_exists to IsB IsX.
+   exists ((X, VB)::EE')::BRest. split.
+     %replaceScopes
+      search.
+     %projedCtxs
+      unfold.
+        %lookup B -> lookup A
+         intros LB'. LB': case LB'.
+           %Lkp-Here
+            search.
+           %Lkp-Later
+            LB'': apply remove_all_lookup_other to RB LB'1 LB'.
+            LA'': apply PC to LB''.
+            LA': apply remove_all_lookup_other_back to RA1 LA'' _.
+            search.
+        %lookup A -> lookup B
+         intros LA'. LA': case LA'.
+           %Lkp-Here
+            search.
+           %Lkp-Later
+            LA'': apply remove_all_lookup_other to RA1 LA'1 _.
+            LB'': apply PC1 to LA''.
+            LB': apply remove_all_lookup_other_back to RB LB'' _.
+            search.
+        %rel
+         intros LA' LB'. LA': case LA'.
+           %Lkp-Here
+            LB': case LB'.
+              %Lkp-Here
+               search.
+              %Lkp-Later
+               apply LB' to _.
+           %Lkp-Later
+            LB': case LB'.
+              %Lkp-Here
+               apply LA' to _.
+              %Lkp-Later
+               LA'': apply remove_all_lookup_other to RA1 LA'1 _.
+               LB'': apply remove_all_lookup_other to RB LB'1 _.
+               apply PC2 to LA'' LB''. search.
+        %rest
+         search.
+  %RS-Later
+   case IsA. PC: case PC. IsB: case IsB. apply IH to _ _ _ PC3 PV RA1.
+   Or: apply lookup_string_value_list_or_no to IsB IsX. LB: case Or.
+     %lookup B1 X V
+      LA: apply PC to LB. apply no_lookup to RA LA.
+     %no_lookup B1 X
+      search.
+
+
+Theorem projedFields_replaceRecVal_exists_forward :
+  forall F VA VB FA RA FB,
+    projedFields FA FB -> projedVal VA VB ->
+    replaceRecVal F VA FA RA ->
+    exists RB, replaceRecVal F VB FB RB /\ projedFields RA RB.
+induction on 3. intros PF PV RA. RA: case RA.
+  %RRV-Here
+   PF: case PF. search.
+  %RRV-Later
+   PF: case PF. apply IH to PF1 PV RA1. search.
+
+
+Theorem projedFields_updateRecFields_exists_forward :
+  forall FA FB Fs VA VB RA,
+    is_list (is_pair is_string is_value) FA ->
+    projedFields FA FB -> projedVal VA VB ->
+    updateRecFields Fs VA FA RA ->
+    exists RB, updateRecFields Fs VB FB RB /\ projedFields RA RB.
+induction on 4. intros IsA PF PV UA. UA: case UA.
+  %URF-One
+   apply projedFields_replaceRecVal_exists_forward to PF PV UA.
+   search.
+  %URF-Cons
+   L: apply projedFields_lookup_exists to PF UA.
+   apply lookup_is_value to _ UA.
+   M: apply matchRec_projedVal to L1 _ UA1.
+   apply matchRec_is to _ UA1. UB: apply IH to _ M1 PV UA2.
+   apply projedFields_replaceRecVal_exists_forward to _ _ UA3 with
+      VB = recVal RB. search.
+
+
+Theorem projedVal_recVal : forall Fs V,
+  projedVal (recVal Fs) V -> exists Fs', V = recVal Fs'.
+induction on 1. intros PV. PV: case PV.
+  %PR-Zero
+   search.
+  %PR-Proj
+   case PV.
+  %PR-Trans
+   apply IH to PV. apply IH to PV1. search.
+  %PR-Rec
+   search.
+
+Theorem projedVal_intVal : forall I V,
+  projedVal (intVal I) V -> V = intVal I.
+induction on 1. intros PV. PV: case PV.
+  %PR-Zero
+   search.
+  %PR-Proj
+   case PV.
+  %PR-Trans
+   apply IH to PV. apply IH to PV1. search.
+
+Theorem projedVal_stringVal : forall S V,
+  projedVal (stringVal S) V -> V = stringVal S.
+induction on 1. intros PV. PV: case PV.
+  %PR-Zero
+   search.
+  %PR-Proj
+   case PV.
+  %PR-Trans
+   apply IH to PV. apply IH to PV1. search.
+
+Theorem projedVal_trueVal : forall V,
+  projedVal trueVal V -> V = trueVal.
+induction on 1. intros PV. PV: case PV.
+  %PR-Zero
+   search.
+  %PR-Proj
+   case PV.
+  %PR-Trans
+   apply IH to PV. apply IH to PV1. search.
+
+Theorem projedVal_falseVal : forall V,
+  projedVal falseVal V -> V = falseVal.
+induction on 1. intros PV. PV: case PV.
+  %PR-Zero
+   search.
+  %PR-Proj
+   case PV.
+  %PR-Trans
+   apply IH to PV. apply IH to PV1. search.
+
+
+Extensible_Theorem
+  trans_evalExpr_forward : forall E T EE EE_T FE FE_T V O,
+    IsE : is_expr E ->
+    IsFE : is_list (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE ->
+    IsFE_T : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE_T ->
+    IsEE : is_list (is_list (is_pair is_string is_value)) EE ->
+    IsEE_T : is_list (is_list (is_pair is_string is_value)) EE_T ->
+    RFE : rel_FE FE FE_T ->
+    PC : projedCtxs EE EE_T ->
+    Trans : transE E T ->
+    Ev : evalExpr FE EE E V O ->
+    exists V_T, evalExpr FE_T EE_T T V_T O
+  on Ev as IH_E,
+  trans_evalStmt_forward :
+    forall S T Names Names' Scope EE EE_T FE FE_T EE' O,
+      IsS : is_stmt S ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsFE_T : is_list
+                  (is_pair is_string
+                  (is_pair is_string
+                  (is_pair is_value
+                  (is_pair (is_list is_string) is_stmt)))) FE_T ->
+      IsEE : is_list (is_list (is_pair is_string is_value))
+                (Scope::EE) ->
+      IsEE_T : is_list (is_list (is_pair is_string is_value)) EE_T ->
+      IsNames : is_list (is_list is_string) Names ->
+      RFE : rel_FE FE FE_T ->
+      PC : projedCtxs (Scope::EE) EE_T ->
+      Ctxs : ctx_names (Scope::EE) Names ->
+      Trans : transS Names S T Names' ->
+      Ev : evalStmt FE (Scope::EE) S EE' O ->
+      exists EE_T', evalStmt FE_T EE_T T EE_T' O
+  on Ev as IH_S,
+  trans_evalArgs_forward : forall A T EE EE_T FE FE_T V O,
+    IsA : is_args A ->
+    IsFE : is_list (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE ->
+    IsFE_T : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE_T ->
+    IsEE : is_list (is_list (is_pair is_string is_value)) EE ->
+    IsEE_T : is_list (is_list (is_pair is_string is_value)) EE_T ->
+    RFE : rel_FE FE FE_T ->
+    PC : projedCtxs EE EE_T ->
+    Trans : transA A T ->
+    Ev : evalArgs FE EE A V O ->
+    exists V_T, evalArgs FE_T EE_T T V_T O
+  on Ev as IH_A,
+  trans_evalRecFields_forward : forall RF T EE EE_T FE FE_T V O,
+    IsRF : is_recFieldExprs RF ->
+    IsFE : is_list (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE ->
+    IsFE_T : is_list
+                (is_pair is_string
+                (is_pair is_string
+                (is_pair is_value
+                (is_pair (is_list is_string) is_stmt)))) FE_T ->
+    IsEE : is_list (is_list (is_pair is_string is_value)) EE ->
+    IsEE_T : is_list (is_list (is_pair is_string is_value)) EE_T ->
+    RFE : rel_FE FE FE_T ->
+    PC : projedCtxs EE EE_T ->
+    Trans : transRF RF T ->
+    Ev : evalRecFields FE EE RF V O ->
+    exists V_T, evalRecFields FE_T EE_T T V_T O
+  on Ev as IH_RF.
+%ExtInd validity
+ %trans_evalExpr_forward
+  search.
+ %trans_evalStmt_forward
+  search.
+ %trans_evalArgs_forward
+  search.
+ %trans_evalRecFields_forward
+  search.
+%actual properties
+ %trans_evalExpr_forward
+  %E-Num
+   case Trans. search.
+  %E-Plus
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchInt_projedVal to Pr1 _ Ev3.
+   M2: apply matchInt_projedVal to Pr2 _ Ev4. search.
+  %E-Minus
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchInt_projedVal to Pr1 _ Ev3.
+   M2: apply matchInt_projedVal to Pr2 _ Ev4. search.
+  %E-Mult
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchInt_projedVal to Pr1 _ Ev3.
+   M2: apply matchInt_projedVal to Pr2 _ Ev4. search.
+  %E-Div
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchInt_projedVal to Pr1 _ Ev3.
+   M2: apply matchInt_projedVal to Pr2 _ Ev4. search.
+  %E-True
+   case Trans. search.
+  %E-False
+   case Trans. search.
+  %E-And-True
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev3.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev3 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev3.
+   M1: apply matchTrue_projedVal to Pr1 _ Ev2.
+   M2: apply matchTrue_projedVal to Pr2 _ Ev4. search.
+  %E-And-False1
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   M1: apply matchFalse_projedVal to Pr1 _ Ev2. search.
+  %E-And-False2
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev3.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev3 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev3.
+   M1: apply matchTrue_projedVal to Pr1 _ Ev2.
+   M2: apply matchFalse_projedVal to Pr2 _ Ev4. search.
+  %E-Or-True1
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   M1: apply matchTrue_projedVal to Pr1 _ Ev2. search.
+  %E-Or-True2
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev3.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev3 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev3.
+   M1: apply matchFalse_projedVal to Pr1 _ Ev2.
+   M2: apply matchTrue_projedVal to Pr2 _ Ev4. search.
+  %E-Or-False
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev3.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev3 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev3.
+   M1: apply matchFalse_projedVal to Pr1 _ Ev2.
+   M2: apply matchFalse_projedVal to Pr2 _ Ev4. search.
+  %E-Not-True
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   M1: apply matchFalse_projedVal to Pr1 _ Ev2. search.
+  %E-Not-False
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   M1: apply matchTrue_projedVal to Pr1 _ Ev2. search.
+  %E-Greater-True
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchInt_projedVal to Pr1 _ Ev3.
+   M2: apply matchInt_projedVal to Pr2 _ Ev4. search.
+  %E-Greater-False
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchInt_projedVal to Pr1 _ Ev3.
+   M2: apply matchInt_projedVal to Pr2 _ Ev4. search.
+  %E-Eq-Int-True
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchInt_projedVal to Pr1 _ Ev3.
+   M2: apply matchInt_projedVal to Pr2 _ Ev4. search.
+  %E-Eq-Int-False
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchInt_projedVal to Pr1 _ Ev3.
+   M2: apply matchInt_projedVal to Pr2 _ Ev4. search.
+  %E-Eq-Bool-TrueT
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchTrue_projedVal to Pr1 _ Ev3.
+   M2: apply matchTrue_projedVal to Pr2 _ Ev4. search.
+  %E-Eq-Bool-TrueF
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchFalse_projedVal to Pr1 _ Ev3.
+   M2: apply matchFalse_projedVal to Pr2 _ Ev4. search.
+  %E-Eq-Bool-False1
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchTrue_projedVal to Pr1 _ Ev3.
+   M2: apply matchFalse_projedVal to Pr2 _ Ev4. search.
+  %E-Eq-Bool-False2
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchFalse_projedVal to Pr1 _ Ev3.
+   M2: apply matchTrue_projedVal to Pr2 _ Ev4. search.
+  %E-Eq-String-True
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchString_projedVal to Pr1 _ Ev3.
+   M2: apply matchString_projedVal to Pr2 _ Ev4. search.
+  %E-Eq-String-False
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchString_projedVal to Pr1 _ Ev3.
+   M2: apply matchString_projedVal to Pr2 _ Ev4. search.
+  %E-String
+   case Trans. search.
+  %E-AppString
+   case IsE. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev2.
+   Pr1: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   Pr2: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev2 EvB2.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply evalExpr_isValue to _ _ _ Ev2.
+   M1: apply matchString_projedVal to Pr1 _ Ev3.
+   M2: apply matchString_projedVal to Pr2 _ Ev4. search.
+  %E-Name
+   case IsE. case Trans.
+   apply projedCtxs_lookupScopes_exists_forward to _ _ _ PC Ev1.
+   search.
+  %E-Call
+   case IsE. Trans: case Trans.
+   %lookup function in FE_T
+   R: case RFE (keep). LF: apply R to Ev1.
+   %evaluate arguments
+   EvB1: apply IH_A to _ _ _ _ _ _ PC Trans Ev2.
+   Pr: apply trans_evalArgs_same to _ _ _ _ _ _ _ _ Ev2 EvB1.
+   IsArgVals: apply evalArgs_isValue to _ _ _ Ev2.
+   apply transA_is to _ Trans.
+   IsV_T: apply evalArgs_isValue to _ _ _ EvB1.
+   %evaluate body
+   Z: assert zip (RetVar::ArgNames) (RVVal::ArgVals)
+                 ((RetVar, RVVal)::InitEnv).
+   apply projedArgs_zip to Pr Ev3.
+   ZB: assert zip (RetVar::ArgNames) (RVVal::V_T)
+                  ((RetVar, RVVal)::Z').
+   apply zip_ctx_names to Z. apply zip_ctx_names to ZB.
+   IsP: apply lookup_is_value_funCtx to _ Ev1. IsP: case IsP.
+   IsP: case IsP1. IsP: case IsP2. IsInitEnv: apply zip_is to _ _ Z.
+   IsZ'+: apply zip_is to _ _ ZB. PCZ: apply zip_projedArgs to _ Z ZB.
+   EvB2: apply IH_S to _ _ _ _ _ _ _ PCZ _ LF1 Ev4.
+   %lookup related values
+   PC': apply trans_evalStmt_relCtxs to _ _ _ _ _ _ _ _ _ _ Ev4 EvB2.
+   apply evalStmt_isCtx to _ _ _ Ev4. apply transS_is to _ _ LF1.
+   apply evalStmt_isCtx to _ _ _ EvB2.
+   apply projedCtxs_lookupScopes_exists_forward to _ _ _ PC' Ev6.
+   %done
+   search.
+  %E-RecBuild
+   case IsE. Trans: case Trans.
+   apply IH_RF to _ _ _ _ _ RFE PC Trans Ev1. search.
+  %E-RecAccess
+   case IsE. Trans: case Trans.
+   EvB: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   M: apply matchRec_projedVal to Pr _ Ev2.
+   apply projedFields_lookup_exists to M1 Ev3. search.
+  %E-Expr-Q
+   Trans: case Trans. apply proj_expr_unique to Trans Ev1 _.
+   apply proj_expr_is to Ev1 _.
+   EvB: apply IH_E to _ _ _ _ _ _ PC Trans1 Ev2.
+   EvP: apply proj_evalExpr_forward to Ev1 _ _ _ Ev.
+   apply evalExpr_unique to _ _ _ Ev2 EvP. search.
+ %trans_evalStmt_forward
+  %E-Noop
+   case Trans. search.
+  %E-Seq
+   case IsS. Trans: case Trans.
+   EvB1: apply IH_S to _ _ _ _ _ _ RFE PC _ Trans Ev1.
+   apply transS_is to _ _ Trans. apply transS_isNames to _ _ Trans.
+   apply evalStmt_isCtx to _ _ _ EvB1.
+   apply evalStmt_isCtx to _ _ _ Ev1.
+   C: apply evalStmt_trans_ctx_names to _ _ _ _ _ Trans Ev1.
+   case Ctxs. apply transS_old_scopes to _ _ Trans.
+   SS': apply trans_evalStmt_relCtxs to
+           _ _ _ _ _ _ _ _ _ Trans Ev1 EvB1. case C (keep).
+   EvB2: apply IH_S to _ _ _ _ _ _ RFE SS' _ Trans1 Ev2. search.
+  %E-Declare
+   case IsS. Trans: case Trans.
+   EvB: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1. case PC. search.
+  %E-Assign
+   case IsS. Trans: case Trans.
+   EvB: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   apply transE_is to _ Trans.
+   PV: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB.
+   apply projedCtxs_replaceScopes_exists_forward to _ _ _ PC PV Ev2.
+   search.
+  %E-RecUpdate
+   case IsS. Trans: case Trans.
+   EvB: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   apply transE_is to _ Trans.
+   Pr: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB.
+   LB: apply projedCtxs_lookupScopes_exists_forward to _ _ _ PC Ev2.
+   apply lookupScopes_is to _ Ev2. apply matchRec_is to _ Ev3.
+   M: apply matchRec_projedVal to LB1 _ Ev3.
+   apply projedFields_updateRecFields_exists_forward to _ M1 Pr Ev4.
+   apply projedCtxs_replaceScopes_exists_forward to _ _ _ PC _ Ev5
+      with VB = recVal RB. search.
+  %E-If-True
+   case IsS. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply matchTrue_projedVal to Pr _ Ev2.
+   apply ctx_names_add_scope to Ctxs.
+   apply projedCtxs_add_scope to PC.
+   EvB2: apply IH_S to _ _ _ _ _ _ RFE _ _ Trans1 Ev3.
+   PC+: apply trans_evalStmt_relCtxs to
+           _ _ _ _ _ _ _ _ _ Trans1 Ev3 EvB2. case PC+. search.
+  %E-If-False
+   case IsS. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply matchFalse_projedVal to Pr _ Ev2.
+   apply ctx_names_add_scope to Ctxs.
+   apply projedCtxs_add_scope to PC.
+   EvB2: apply IH_S to _ _ _ _ _ _ RFE _ _ Trans2 Ev3.
+   PC+: apply trans_evalStmt_relCtxs to
+           _ _ _ _ _ _ _ _ _ Trans2 Ev3 EvB2. case PC+. search.
+  %E-While-True
+   case IsS. Trans: case Trans (keep).
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans1 Ev1.
+   Pr: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB1.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply matchTrue_projedVal to Pr _ Ev2.
+   Ctxs+: apply ctx_names_add_scope to Ctxs.
+   PC+: apply projedCtxs_add_scope to PC.
+   EvB2: apply IH_S to _ _ _ _ _ _ RFE _ _ Trans2 Ev3.
+   PC+: apply trans_evalStmt_relCtxs to
+           _ _ _ _ _ _ _ _ _ Trans2 Ev3 EvB2. PC': case PC+.
+   IsEE3+: apply evalStmt_isCtx to _ _ _ Ev3. case IsEE3+.
+   apply transS_is to _ _ Trans2.
+   NS: apply evalStmt_names_same to _ _ _ Ev3. case NS.
+   CN: apply evalStmt_trans_ctx_names to _ _ _ _ _ Trans2 Ev3.
+   CN: case CN. case CN2. case PC.
+   NS: apply evalStmt_names_same to _ _ _ EvB2. case NS.
+   IsBR4+: apply evalStmt_isCtx to _ _ _ EvB2. case IsBR4+.
+   apply transS_old_scopes to _ _ Trans2. case PC+1.
+   apply IH_S to _ _ _ _ _ _ _ _ _ Trans Ev4 with
+     T = while Cond2 Body2, EE_T = B4::BRest4, FE_T = FE_T, O = O4.
+   search.
+  %E-While-False
+   case IsS. Trans: case Trans.
+   EvB: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB.
+   apply evalExpr_isValue to _ _ _ Ev1.
+   apply matchFalse_projedVal to Pr _ Ev2. search.
+  %E-ScopeStmt
+   case IsS. Trans: case Trans. PC': apply projedCtxs_add_scope to PC.
+   Ctxs': apply ctx_names_add_scope to Ctxs.
+   EvB: apply IH_S to _ _ _ _ _ _ RFE PC' Ctxs' Trans Ev1.
+   PC+: apply trans_evalStmt_relCtxs to
+           _ _ _ _ _ _ _ _ _ Trans Ev1 EvB. case PC+. search.
+  %E-Print-Int
+   case IsS. Trans: case Trans.
+   EvB: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB.
+   apply projedVal_intVal to Pr. search.
+  %E-Print-True
+   case IsS. Trans: case Trans.
+   EvB: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB.
+   apply projedVal_trueVal to Pr. search.
+  %E-Print-False
+   case IsS. Trans: case Trans.
+   EvB: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB.
+   apply projedVal_falseVal to Pr. search.
+  %E-Print-String
+   case IsS. Trans: case Trans.
+   EvB: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   Pr: apply trans_evalExpr_same to _ _ _ _ _ _ _ _ Ev1 EvB.
+   apply projedVal_stringVal to Pr. search.
+  %E-Stmt-Q
+   apply names_is to _ Ev1. apply proj_stmt_is to Ev2 _ _.
+   Trans: case Trans. apply proj_stmt_unique_ctx_names to
+                         _ _ _ Ctxs Trans Ev1 Trans1 Ev2.
+   apply IH_S to _ _ _ _ _ _ RFE PC _ Trans2 Ev3.
+   %projection result and original result are the same
+   Ev': apply proj_evalStmt_forward to Ev2 Ev1 _ _ _ Ev.
+   apply evalStmt_unique to _ _ _ Ev' Ev3. search.
+ %trans_evalArgs_forward
+  %EA-Nil
+   case Trans. search.
+  %EA-Cons
+   case IsA. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_A to _ _ _ _ _ RFE _ Trans1 Ev2. search.
+  %unknown K evalArgs
+   Or: apply is_args_nilArgs_or_consArgs to IsA. case Or.
+ %trans_evalRecFields_forward
+  %ERF-Nil
+   case Trans. search.
+  %ERF-Cons
+   case IsRF. Trans: case Trans.
+   EvB1: apply IH_E to _ _ _ _ _ RFE PC Trans Ev1.
+   EvB2: apply IH_RF to _ _ _ _ _ RFE _ Trans1 Ev2. search.
+  %unknown K evalRecFields
+   Or: apply is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs to
+          IsRF. case Or.
+
+
+Extensible_Theorem
+  trans_getFunEvalInfo_forward :
+    forall F F_T Name RetVar RVVal PNames Body,
+      IsF : is_fun F ->
+      Trans : transF F F_T ->
+      GFEI : getFunEvalInfo F Name RetVar RVVal PNames Body ->
+      exists Body_T,
+         getFunEvalInfo F_T Name RetVar RVVal PNames Body_T
+  on Trans.
+%TF-Fun
+ case IsF. Trans: case Trans. case GFEI. search.
+%TF-Default
+ G: apply proj_getFunEvalInfo_forward to Trans1 _ GFEI.
+ apply proj_fun_is to Trans1 _. apply IH to _ Trans2 G. search.
+
+
+Theorem trans_getFunEvalCtx_forward : forall Fs Fs_T FE,
+  is_list is_fun Fs -> transFuns Fs Fs_T -> getFunEvalCtx Fs FE ->
+  exists FE_T, getFunEvalCtx Fs_T FE_T.
+induction on 2. intros IsFs Trans GFEI. Trans: case Trans.
+  %TFs-Nil
+   case GFEI. search.
+  %TFs-Cons
+   case IsFs. G: case GFEI. apply IH to _ Trans1 G1.
+   apply trans_getFunEvalInfo_forward to _ Trans G. search.
+
+
+Theorem projedCtxs_reflexive : forall L,
+  is_list (is_list (is_pair is_string is_value)) L ->
+  projedCtxs L L.
+induction on 1. intros Is. Is: case Is.
+  %nil
+   search.
+  %cons
+   apply IH to Is1. unfold.
+     %lookup ->
+      search.
+     %lookup <-
+      search.
+     %lookup projedVal
+      intros LA LB. apply lookup_unique to LA LB. search.
+     %rest
+      search.
+
+
+/*Programs evaluate the same with the same arguments*/
+Extensible_Theorem
+  trans_evalProgram_forward : forall P P_T A O,
+    IsP : is_program P ->
+    IsA : is_list is_value A ->
+    Trans : transP P P_T ->
+    Ev : evalProgram A P O ->
+    evalProgram A P_T O
+  on Trans.
+%TP-Program
+ case IsP. Ev: case Ev.
+ G: apply trans_getFunEvalCtx_forward to _ Trans1 Ev.
+ GM: apply trans_getFunEvalInfo_forward to _ Trans2 Ev1.
+ RFE: apply trans_getFunEvalCtx_rel_FE to _ Trans1 Ev G.
+ Tr: apply trans_getFunEvalInfo_rel to _ Trans2 Ev1 GM.
+ RFE': assert rel_FE ((MainName, (RetVar,
+                       (RetVal, (PNames, Body))))::FCtx)
+                     ((MainName, (RetVar,
+                       (RetVal, (PNames, Body_T))))::FE_T).
+   unfold.
+     %lookup forward
+      intros L. L: case L.
+        %Lkp-Here (main)
+         search.
+        %Lkp-Later
+         R: case RFE. apply R to L1. search.
+     %lookup back
+      intros L. L: case L.
+        %Lkp-Here (main)
+         search.
+        %Lkp-Later
+         R: case RFE. apply R1 to L1. search.
+ Is: apply getFunEvalInfo_is to _ Ev1.
+ apply zip_is to _ _ Ev2.
+ IsIE: assert is_list (is_list (is_pair is_string is_value))
+                 [(RetVar, RetVal)::InitEnv].
+ PC: apply projedCtxs_reflexive to IsIE.
+ Z: assert zip (RetVar::PNames) (RetVal::A)
+                  ((RetVar, RetVal)::InitEnv).
+ apply zip_ctx_names to Z. apply getFunEvalCtx_is to _ Ev.
+ apply transFuns_is to _ Trans1. apply getFunEvalCtx_is to _ G.
+ apply transF_is to _ Trans2. apply getFunEvalInfo_is to _ GM.
+ apply trans_evalStmt_forward to _ _ _ _ _ _ RFE' PC _ Tr Ev3. search.
+%TP-Default
+ Ev': apply proj_evalProgram_forward to Trans1 _ _ Ev.
+ apply proj_program_is to Trans1 _. apply IH to _ _ Trans2 Ev'.
+ search.
+
+/*
+  We can't prove the backward direction as we don't know anything
+  about the evaluation of an original term based on its projection
+  evaluating.  Thus it could be we translate a program for the purpose
+  of running it, and that translation evaluates in situations where
+  the original would not.
+*/
+
+
+/*
+  Note something we might want to prove here but don't is that a term
+  translates under certain circumstances.  We can prove any term built
+  entirely by constructors introduced by the host language translates.
+  However, we cannot prove this generically for constructors that
+  might be introduced by other extensions.  Such constructors would
+  translate via projection, and the host language has not required a
+  projection exist for extension syntax in general under any
+  circumstances.  It does require expressions and statements project
+  if they evaluate, as part of the projection version of the
+  evaluation relations, and thus we know any expression or statement
+  that evaluates also translates.  However, we do not have this
+  knowledge for functions or programs, and thus cannot say their
+  translations exist.  Thus we must be satisfied with saying things
+  about the behavior of the translation and the original only when we
+  know the translation exists.
+*/

@@ -1,0 +1,173 @@
+Module matchEval:host
+
+Judgment vars : expr* [string]
+Fixed Judgment varsArgs : args [string]
+Fixed Judgment varsRecFields : recFieldExprs [string]
+
+
+/********************************************************************
+ Expression Variables
+ ********************************************************************/
+
+-------------- [V-Num]
+vars num(I) []
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------- [V-Plus]
+vars plus(E1, E2) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+-------------------- [V-Minus]
+vars minus(E1, E2) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------- [V-Mult]
+vars mult(E1, E2) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------ [V-Div]
+vars div(E1, E2) V
+
+
+------------ [V-True]
+vars true []
+
+
+------------- [V-False]
+vars false []
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------ [V-And]
+vars and(E1, E2) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+----------------- [V-Or]
+vars or(E1, E2) V
+
+
+vars E V
+------------- [V-Not]
+vars not(E) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+---------------------- [V-Greater]
+vars greater(E1, E2) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+----------------- [V-Eq]
+vars eq(E1, E2) V
+
+
+-------------------- [V-String]
+vars stringLit(S) []
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------------ [V-AppString]
+vars appString(E1, E2) V
+
+
+---------------- [V-Name]
+vars name(X) [X]
+
+
+varsArgs Args V
+---------------------- [V-Call]
+vars call(Fun, Args) V
+
+
+varsRecFields RF V
+------------------- [V-RecBuild]
+vars recBuild(RF) V
+
+
+vars Rec V
+--------------------------------- [V-RecAccess]
+vars recFieldAccess(Rec, Field) V
+
+
+vars Msg V
+------------------------- [V-Error]
+vars errorExpr(Msg, Ty) V
+
+
+
+/*Arguments*/
+
+=================== [VA-Nil]
+varsArgs nilArgs []
+
+
+vars E VE
+varsArgs Rest VRest
+VE ++ VRest = V
+============================ [VA-Cons]
+varsArgs consArgs(E, Rest) V
+
+
+
+/*Record Fields*/
+
+================================= [VRF-Nil]
+varsRecFields nilRecFieldExprs []
+
+
+vars E VE
+varsRecFields Rest VRest
+VE ++ VRest = V
+============================================= [VRF-Cons]
+varsRecFields consRecFieldExprs(F, E, Rest) V
+
+
+
+
+
+Fixed Judgment mems : A [[A]]
+Fixed Judgment not_mems : A [[A]]
+
+mem X S
+============== [Mems-Here]
+mems X S::Rest
+
+
+mems X Rest
+============== [Mems-Later]
+mems X S::Rest
+
+
+
+
+============= [NMems-Nil]
+not_mems X []
+
+
+not_mem X S
+not_mems X Rest
+================== [NMems-Cons]
+not_mems X S::Rest

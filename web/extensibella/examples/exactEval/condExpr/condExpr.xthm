@@ -1,0 +1,1253 @@
+Module exactEval:condExpr.
+
+/********************************************************************
+ Basic Projection Constraints
+ ********************************************************************/
+Prove_Constraint exactEval:host:proj_expr_unique.
+%condExpr
+ PrB: case PrB. apply fresh_name_unique_mems to PrA1 PrB _ _. search.
+Prove_Constraint exactEval:host:proj_expr_is.
+%condExpr
+ case IsE. apply fresh_name_is to _ Pr1. search.
+Prove_Constraint exactEval:host:proj_expr_other.
+%condExpr
+ apply fresh_name_exists to _ IsL' with Base = "X". search.
+
+Prove_Constraint exactEval:host:proj_stmt_unique.
+Prove_Constraint exactEval:host:proj_stmt_is.
+Prove_Constraint exactEval:host:proj_stmt_other.
+
+Prove_Constraint exactEval:host:proj_fun_unique.
+Prove_Constraint exactEval:host:proj_fun_is.
+
+Prove_Constraint exactEval:host:proj_param_unique.
+Prove_Constraint exactEval:host:proj_param_is.
+
+Prove_Constraint exactEval:host:proj_program_unique.
+Prove_Constraint exactEval:host:proj_program_is.
+
+Prove_Constraint exactEval:host:proj_typ_unique.
+Prove_Constraint exactEval:host:proj_typ_is.
+
+
+
+
+/********************************************************************
+ Decidable Equality
+ ********************************************************************/
+Add_Proj_Rel exactEval:host:is_expr, exactEval:host:is_args,
+             exactEval:host:is_recFieldExprs, exactEval:host:is_stmt.
+Prove_Ext_Ind exactEval:host:is_expr, exactEval:host:is_args,
+              exactEval:host:is_recFieldExprs, exactEval:host:is_stmt.
+apply IH to R1. apply IH to R2. apply IH to R3. unfold.
+F: assert fresh_name "X" [] "X". apply fresh_name_is to _ F.
+exists [],
+   stmtExpr (seq (declare intTy "X" (num 0))
+                 (ifThenElse Expr2
+                    (assign "X" Expr1) (assign "X" Expr))) (name "X").
+search.
+
+Prove exactEval:host:is_args_nilArgs_or_consArgs.
+Prove exactEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.
+
+
+
+
+/********************************************************************
+ Variables
+ ********************************************************************/
+Prove exactEval:host:vars_unique.
+%V-CondExpr
+ case IsE. VarsB: case VarsB. apply IH to _ VarsA1 VarsB.
+ apply IH to _ VarsA2 VarsB1. apply IH to _ VarsA3 VarsB2.
+ apply append_unique to VarsA4 VarsB3.
+ apply append_unique to VarsA5 VarsB4. search.
+
+Prove exactEval:host:vars_is.
+%V-CondExpr
+ case IsE. apply IH to _ V1. apply IH to _ V2. apply IH to _ V3.
+ apply append_list_string_is to _ _ V4.
+ apply append_list_string_is to _ _ V5. search.
+
+Prove exactEval:host:vars_exist,
+      exactEval:host:varsArgs_exist,
+      exactEval:host:varsRecFields_exist.
+%vars_exist
+ %V-CondExpr
+  VC: apply IH to IsE1. VT: apply IH to IsE2. VF: apply IH to IsE3.
+  IsVC: apply vars_is to _ VC. IsVT: apply vars_is to _ VT.
+  IsVF: apply vars_is to _ VF.
+  App: apply append_list_string_total to IsVC IsVT.
+  IsL3: apply append_list_string_is to _ _ App.
+  apply append_list_string_total to IsL3 IsVF. search.
+
+
+
+
+/********************************************************************
+ Statement Names
+ ********************************************************************/
+Prove exactEval:host:stmtNames_is,
+      exactEval:host:stmtNames_isCtx,
+      exactEval:host:exprNames_is.
+case IsE. apply IH_E to _ _ EN1. apply IH_E to _ _ EN2.
+apply IH_E to _ _ EN3. apply append_list_string_is to _ _ EN4.
+apply append_list_string_is to _ _ EN5. search.
+
+Prove exactEval:host:stmtNames_unique,
+      exactEval:host:exprNames_unique.
+case IsE. ENB: case ENB. apply IH_E to _ _ ENA1 ENB.
+apply IH_E to _ _ ENA2 ENB1. apply IH_E to _ _ ENA3 ENB2.
+apply append_unique to ENA4 ENB3. apply append_unique to ENA5 ENB4.
+search.
+
+Prove exactEval:host:stmtNames_keep_older.
+
+Prove exactEval:host:stmtNames_exists,
+      exactEval:host:exprNames_exists,
+      exactEval:host:argsNames_exists,
+      exactEval:host:recFieldNames_exists.
+ENC: apply IH_E to IsE1 _. ENT: apply IH_E to IsE2 _.
+ENF: apply IH_E to IsE3 _. IsC: apply exprNames_is to _ _ ENC.
+IsT: apply exprNames_is to _ _ ENT.
+IsF: apply exprNames_is to _ _ ENF.
+App: apply append_list_string_total to IsC IsT.
+IsL3: apply append_list_string_is to _ _ App.
+apply append_list_string_total to IsL3 IsF. search.
+
+Prove exactEval:host:stmtNames_not_in_ctx,
+      exactEval:host:exprNames_not_in_ctx.
+case IsE. Or: apply mem_append to MemN EN5. M: case Or.
+  %mem X N2
+   Or: apply mem_append to M EN4. M': case Or.
+     %mem X CN
+      apply IH_E to _ _ EN1 M' MemsCtx.
+     %mem X TN
+      apply IH_E to _ _ EN2 M' MemsCtx.
+  %mem X FN
+   apply IH_E to _ _ EN3 M MemsCtx.
+
+
+Prove exactEval:host:stmtNames_relatedCtxs,
+      exactEval:host:stmtNames_relatedCtxs_ctx_fwd,
+      exactEval:host:stmtNames_relatedCtxs_ctx_back,
+      exactEval:host:exprNames_relatedCtxs.
+case IsE. apply IH_E to _ _ _ RelAB RelBA EN1.
+apply IH_E to _ _ _ RelAB RelBA EN2.
+apply IH_E to _ _ _ RelAB RelBA EN3. search.
+
+
+Prove exactEval:host:stmtNames_increaseCtxs,
+      exactEval:host:stmtNames_increaseCtxs_ctxs,
+      exactEval:host:exprNames_increaseCtxs.
+case IsE. ENB: case ENB. Or: apply mem_append to M ENB4.
+M': case Or.
+  %mem X N2
+   Or: apply mem_append to M' ENB3. M'': case Or.
+     %mem X CN1
+      MC: apply IH_E to _ _ _ _ ENA1 ENB M''.
+      M1: apply mem_append_left to MC ENA4.
+      apply mem_append_left to M1 ENA5. search.
+     %mem X TN1
+      MT: apply IH_E to _ _ _ _ ENA2 ENB1 M''.
+      M1: apply mem_append_right to MT ENA4.
+      apply mem_append_left to M1 ENA5. search.
+  %mem X FN1
+   MF: apply IH_E to _ _ _ _ ENA3 ENB2 M'.
+   apply mem_append_right to MF ENA5. search.
+
+
+Prove_Constraint exactEval:host:proj_exprNames.
+case IsE. EN: case EN. EN_P: case EN_P. EN_P: case EN_P.
+EN_P: case EN_P. case EN_P. case EN_P4. EN_P: case EN_P3.
+Eq: assert NE = [].
+  M': case EN_P1. search. NM: case M'. N: case NM. apply N to _.
+clear EN_P1. case Eq. apply append_nil_right to EN_P2. clear EN_P2.
+apply fresh_name_is to _ Pr1. Or: apply mem_append to M EN_P6.
+M': case Or.
+  %mem X N4
+   Or: apply mem_append to M' EN_P5. M'': case Or.
+     %mem X CN1
+      MC: apply exprNames_increaseCtxs to _ _ _ _ EN EN_P M''.
+      M1: apply mem_append_left to MC EN3.
+      apply mem_append_left to M1 EN4. search.
+     %mem X TN1
+      AN: case EN_P3.
+        %SN-Assign-Ignore
+         MT: apply exprNames_increaseCtxs to _ _ _ _ EN1 AN1 M''.
+         M1: apply mem_append_right to MT EN3.
+         apply mem_append_left to M1 EN4. search.
+        %SN-Assign-Take
+         MN: case AN. MN: case MN1. N: case MN1. apply N to _.
+  %mem X FN1
+   AN: case EN_P4.
+     %SN-Assign-Ignore
+      MF: apply exprNames_increaseCtxs to _ _ _ _ EN2 AN1 M'.
+      apply mem_append_right to MF EN4. search.
+     %SN-Assign-Take
+      MN: case AN. MN: case MN1. N: case MN1. apply N to _.
+
+
+Prove_Constraint exactEval:host:proj_stmtNames.
+Prove_Constraint exactEval:host:proj_stmtNames_names_forward.
+Prove_Constraint exactEval:host:proj_stmtNames_names_backward.
+
+
+
+
+/********************************************************************
+ Typing
+ ********************************************************************/
+Prove exactEval:host:typeOf_isTy,
+      exactEval:host:stmtOK_isCtx.
+%typeOf_isTy
+ %T-CondExpr
+  case IsE. apply IH to _ _ _ Ty2. search.
+
+Prove exactEval:host:stmtOK_keep_scopes.
+Prove exactEval:host:stmtOK_older_scopes_same.
+Prove exactEval:host:stmtOK_first_scope_lookup_same.
+
+Prove exactEval:host:typeOf_unique,
+      exactEval:host:stmtOK_unique.
+%typeOf_unique
+ %T-CondExpr
+  case IsE. TyB: case TyB. apply IH_E to _ _ _ _ TyA2 TyB1 _. search.
+
+Prove exactEval:host:paramTy_is.
+Prove exactEval:host:getFunInfo_is.
+Prove exactEval:host:paramTy_exists.
+Prove exactEval:host:getFunInfo_exists.
+
+
+
+
+/********************************************************************
+ Evaluation
+ ********************************************************************/
+Prove exactEval:host:evalExpr_isCtx,
+      exactEval:host:evalExpr_isValue,
+      exactEval:host:evalStmt_isCtx,
+      exactEval:host:evalArgs_isCtx,
+      exactEval:host:evalArgs_isValue,
+      exactEval:host:evalRecFields_isCtx,
+      exactEval:host:evalRecFields_isValue.
+%evalExpr_isCtx
+ %E-CondExpr-True
+  case IsE. apply IH_C_E to _ _ _ Ev1. apply IH_C_E to _ _ _ Ev2.
+  search.
+ %E-CondExpr-False
+  case IsE. apply IH_C_E to _ _ _ Ev1. apply IH_C_E to _ _ _ Ev2.
+  search.
+%evalExpr_isValue
+ %E-CondExpr-True
+  case IsE. apply IH_C_E to _ _ _ Ev1. apply IH_V_E to _ _ _ Ev2.
+  search.
+ %E-CondExpr-False
+  case IsE. apply IH_C_E to _ _ _ Ev1. apply IH_V_E to _ _ _ Ev2.
+  search.
+
+Prove exactEval:host:evalExpr_isOutput,
+      exactEval:host:evalStmt_isOutput,
+      exactEval:host:evalArgs_isOutput,
+      exactEval:host:evalRecFields_isOutput.
+%evalExpr_isOutput
+ %E-CondExpr-True
+  case IsE. apply evalExpr_isCtx to _ _ _ Ev1.
+  apply IH_E to _ _ _ Ev1. apply IH_E to _ _ _ Ev2.
+  apply append_values_is to _ _ Ev3. search.
+ %E-CondExpr-False
+  case IsE. apply evalExpr_isCtx to _ _ _ Ev1.
+  apply IH_E to _ _ _ Ev1. apply IH_E to _ _ _ Ev2.
+  apply append_values_is to _ _ Ev3. search.
+
+Prove exactEval:host:paramName_is.
+Prove exactEval:host:getFunEvalInfo_is.
+
+Prove exactEval:host:evalProgram_isOutput.
+
+
+Prove exactEval:host:evalExpr_names_same,
+      exactEval:host:evalStmt_names_same,
+      exactEval:host:evalArgs_names_same,
+      exactEval:host:evalRecFields_names_same.
+%evalExpr_names_same
+ %E-CondExpr-True
+  case IsE. NS1: apply IH_E to _ _ _ Ev1.
+  apply evalExpr_isCtx to _ _ _ Ev1. NS2: apply IH_E to _ _ _ Ev2.
+  apply names_same_transitive to NS1 NS2. search.
+ %E-CondExpr-False
+  case IsE. NS1: apply IH_E to _ _ _ Ev1.
+  apply evalExpr_isCtx to _ _ _ Ev1. NS2: apply IH_E to _ _ _ Ev2.
+  apply names_same_transitive to NS1 NS2. search.
+
+
+Prove exactEval:host:evalExpr_newNameScopes,
+      exactEval:host:evalExpr_newNameScopes_output,
+      exactEval:host:evalExpr_newNameScopes_ctx,
+      exactEval:host:evalStmt_newNameScopes_output,
+      exactEval:host:evalStmt_newNameScopes,
+      exactEval:host:evalArgs_newNameScopes,
+      exactEval:host:evalArgs_newNameScopes_output,
+      exactEval:host:evalArgs_newNameScopes_ctx,
+      exactEval:host:evalRecFields_newNameScopes,
+      exactEval:host:evalRecFields_newNameScopes_output,
+      exactEval:host:evalRecFields_newNameScopes_ctx.
+%evalExpr_newNameScopes
+ %E-CondExpr-True
+  case IsE. EvB: case EvB.
+    %E-CondExpr-True
+     apply IH_C_E to _ _ _ _ EvA1 EvB _.
+     apply evalExpr_isCtx to _ _ _ EvA1.
+     apply evalExpr_isCtx to _ _ _ EvB.
+     apply IH_V_E to _ _ _ _ EvA2 EvB1 _. search.
+    %E-CondExpr-False
+     apply IH_V_E to _ _ _ _ EvA1 EvB _.
+ %E-CondExpr-False
+  case IsE. EvB: case EvB.
+    %E-CondExpr-True
+     apply IH_V_E to _ _ _ _ EvA1 EvB _.
+    %E-CondExpr-False
+     apply IH_C_E to _ _ _ _ EvA1 EvB _.
+     apply evalExpr_isCtx to _ _ _ EvA1.
+     apply evalExpr_isCtx to _ _ _ EvB.
+     apply IH_V_E to _ _ _ _ EvA2 EvB1 _. search.
+%evalExpr_newNameScopes_output
+ %E-CondExpr-True
+  case IsE. EvB: case EvB.
+    %E-CondExpr-True
+     apply IH_C_E to _ _ _ _ EvA1 EvB _.
+     apply evalExpr_isCtx to _ _ _ EvA1.
+     apply evalExpr_isCtx to _ _ _ EvB.
+     apply IH_O_E to _ _ _ _ EvA1 EvB _.
+     apply IH_O_E to _ _ _ _ EvA2 EvB1 _.
+     apply append_unique to EvA3 EvB2. search.
+    %E-CondExpr-False
+     apply IH_V_E to _ _ _ _ EvA1 EvB _.
+ %E-CondExpr-False
+  case IsE. EvB: case EvB.
+    %E-CondExpr-True
+     apply IH_V_E to _ _ _ _ EvA1 EvB _.
+    %E-CondExpr-False
+     apply IH_C_E to _ _ _ _ EvA1 EvB _.
+     apply evalExpr_isCtx to _ _ _ EvA1.
+     apply evalExpr_isCtx to _ _ _ EvB.
+     apply IH_O_E to _ _ _ _ EvA1 EvB _.
+     apply IH_O_E to _ _ _ _ EvA2 EvB1 _.
+     apply append_unique to EvA3 EvB2. search.
+%evalExpr_newNameScopes_ctx
+ %E-CondExpr-True
+  case IsE. EvB: case EvB.
+    %E-CondExpr-True
+     apply IH_C_E to _ _ _ _ EvA1 EvB _.
+     apply evalExpr_isCtx to _ _ _ EvA1.
+     apply evalExpr_isCtx to _ _ _ EvB.
+     apply IH_C_E to _ _ _ _ EvA2 EvB1 _. search.
+    %E-CondExpr-False
+     apply IH_V_E to _ _ _ _ EvA1 EvB _.
+ %E-CondExpr-False
+  case IsE. EvB: case EvB.
+    %E-CondExpr-True
+     apply IH_V_E to _ _ _ _ EvA1 EvB _.
+    %E-CondExpr-False
+     apply IH_C_E to _ _ _ _ EvA1 EvB _.
+     apply evalExpr_isCtx to _ _ _ EvA1.
+     apply evalExpr_isCtx to _ _ _ EvB.
+     apply IH_C_E to _ _ _ _ EvA2 EvB1 _. search.
+
+
+Add_Ext_Size exactEval:host:evalExpr,
+             exactEval:host:evalArgs,
+             exactEval:host:evalRecFields,
+             exactEval:host:evalStmt.
+Add_Proj_Rel exactEval:host:evalExpr,
+             exactEval:host:evalArgs,
+             exactEval:host:evalRecFields,
+             exactEval:host:evalStmt.
+
+
+Prove exactEval:host:evalExpr_newNameScopes_exists_ES,
+      exactEval:host:evalStmt_newNameScopes_exists_ES,
+      exactEval:host:evalArgs_newNameScopes_exists_ES,
+      exactEval:host:evalRecFields_newNameScopes_exists_ES.
+%E-CondExpr-True
+ case IsE. EvA1: apply IH_E to _ _ _ _ EvB3 NNS.
+ EvA1': apply drop_ext_size_evalExpr to EvA1.
+ EvB1': apply drop_ext_size_evalExpr to EvB3.
+ NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA1' EvB1' NNS.
+ apply evalExpr_isCtx to _ _ _ EvA1'.
+ apply evalExpr_isCtx to _ _ _ EvB1'.
+ apply IH_E to _ _ _ _ EvB4 NNS'. search.
+%E-CondExpr-False
+ case IsE. EvA1: apply IH_E to _ _ _ _ EvB3 NNS.
+ EvA1': apply drop_ext_size_evalExpr to EvA1.
+ EvB1': apply drop_ext_size_evalExpr to EvB3.
+ NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA1' EvB1' NNS.
+ apply evalExpr_isCtx to _ _ _ EvA1'.
+ apply evalExpr_isCtx to _ _ _ EvB1'.
+ apply IH_E to _ _ _ _ EvB4 NNS'. search.
+
+
+Prove exactEval:host:evalExpr_ctx_names,
+      exactEval:host:evalStmt_ctx_names,
+      exactEval:host:evalArgs_ctx_names,
+      exactEval:host:evalRecFields_ctx_names.
+%E-CondExpr-True
+ case IsE. EN: case EN. Ctxs': apply IH_E to _ _ _ _ Ctxs EN Ev1.
+ apply evalExpr_isCtx to _ _ _ Ev1.
+ apply IH_E to _ _ _ _ Ctxs' EN1 Ev2. search.
+%E-CondExpr-False
+ case IsE. EN: case EN. Ctxs': apply IH_E to _ _ _ _ Ctxs EN Ev1.
+ apply evalExpr_isCtx to _ _ _ Ev1.
+ apply IH_E to _ _ _ _ Ctxs' EN2 Ev2. search.
+
+
+Prove exactEval:host:evalExpr_newNameScopes_exists_back,
+      exactEval:host:evalStmt_newNameScopes_exists_back,
+      exactEval:host:evalArgs_newNameScopes_exists_back,
+      exactEval:host:evalRecFields_newNameScopes_exists_back.
+%E-CondExpr-True
+ case IsE. EN: case EN. case EN4. case EN3.
+ EvB1: apply IH_E to _ _ _ _ _ _ EN EvA1 NNS.
+ apply evalExpr_isCtx to _ _ _ EvA1.
+ apply evalExpr_isCtx to _ _ _ EvB1.
+ NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA1 EvB1 NNS.
+ apply evalExpr_ctx_names to _ _ _ _ Ctxs EN EvB1.
+ apply IH_E to _ _ _ _ _ _ EN1 EvA2 NNS'. search.
+%E-CondExpr-False
+ case IsE. EN: case EN. case EN4. case EN3.
+ EvB1: apply IH_E to _ _ _ _ _ _ EN EvA1 NNS.
+ apply evalExpr_isCtx to _ _ _ EvA1.
+ apply evalExpr_isCtx to _ _ _ EvB1.
+ NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA1 EvB1 NNS.
+ apply evalExpr_ctx_names to _ _ _ _ Ctxs EN EvB1.
+ apply IH_E to _ _ _ _ _ _ EN2 EvA2 NNS'. search.
+
+
+Theorem append_values_total : forall LA LB,
+  is_list is_value LA -> exists L, LA ++ LB = L.
+induction on 1. intros Is. Is: case Is.
+  %nil
+   search.
+  %cons
+   apply IH to Is1 with LB = LB. search.
+
+
+Prove exactEval:host:evalExpr_scopes_same,
+      exactEval:host:evalExpr_scopes_same_ctx,
+      exactEval:host:evalStmt_scopes_same,
+      exactEval:host:evalStmt_scopes_same_ctx,
+      exactEval:host:evalArgs_scopes_same,
+      exactEval:host:evalArgs_scopes_same_ctx,
+      exactEval:host:evalRecFields_scopes_same,
+      exactEval:host:evalRecFields_scopes_same_ctx.
+%evalExpr_scopes_same
+ %E-CondExpr-True
+  case IsE. EvB: case EvB.
+    %E-CondExpr-True
+     apply IH_E to _ _ _ _ _ EvA1 EvB.
+     apply evalExpr_isCtx to _ _ _ EvA1.
+     apply evalExpr_isCtx to _ _ _ EvB.
+     SS': apply IH_E_C to _ _ _ _ _ EvA1 EvB.
+     apply scopes_same_add_scope to SS'.
+     apply IH_E to _ _ _ _ _ EvA2 EvB1.
+     apply append_unique to EvA3 EvB2. search.
+    %E-CondExpr-False
+     apply IH_E to _ _ _ _ _ EvA1 EvB.
+ %E-CondExpr-False
+  case IsE. EvB: case EvB.
+    %E-CondExpr-True
+     apply IH_E to _ _ _ _ _ EvA1 EvB.
+    %E-CondExpr-False
+     apply IH_E to _ _ _ _ _ EvA1 EvB.
+     apply evalExpr_isCtx to _ _ _ EvA1.
+     apply evalExpr_isCtx to _ _ _ EvB.
+     SS': apply IH_E_C to _ _ _ _ _ EvA1 EvB.
+     apply scopes_same_add_scope to SS'.
+     apply IH_E to _ _ _ _ _ EvA2 EvB1.
+     apply append_unique to EvA3 EvB2. search.
+%evalExpr_scopes_same_ctx
+ %E-CondExpr-True
+  case IsE. EvB: case EvB.
+    %E-CondExpr-True
+     apply IH_E to _ _ _ _ _ EvA1 EvB.
+     apply evalExpr_isCtx to _ _ _ EvA1.
+     apply evalExpr_isCtx to _ _ _ EvB.
+     SS': apply IH_E_C to _ _ _ _ _ EvA1 EvB.
+     apply scopes_same_add_scope to SS'.
+     SS'': apply IH_E_C to _ _ _ _ _ EvA2 EvB1. search.
+    %E-CondExpr-False
+     apply IH_E to _ _ _ _ _ EvA1 EvB.
+ %E-CondExpr-False
+  case IsE. EvB: case EvB.
+    %E-CondExpr-True
+     apply IH_E to _ _ _ _ _ EvA1 EvB.
+    %E-CondExpr-False
+     apply IH_E to _ _ _ _ _ EvA1 EvB.
+     apply evalExpr_isCtx to _ _ _ EvA1.
+     apply evalExpr_isCtx to _ _ _ EvB.
+     SS': apply IH_E_C to _ _ _ _ _ EvA1 EvB.
+     apply scopes_same_add_scope to SS'.
+     SS'': apply IH_E_C to _ _ _ _ _ EvA2 EvB1. search.
+
+
+Prove exactEval:host:evalExpr_scopes_same_exists,
+      exactEval:host:evalStmt_scopes_same_exists,
+      exactEval:host:evalArgs_scopes_same_exists,
+      exactEval:host:evalRecFields_scopes_same_exists.
+%E-CondExpr-True
+ case IsE. EvB1: apply IH_E to _ _ _ _ SS EvA1.
+ SS': apply evalExpr_scopes_same_ctx to _ _ _ _ _ EvA1 EvB1.
+ apply evalExpr_isCtx to _ _ _ EvA1.
+ apply evalExpr_isCtx to _ _ _ EvB1.
+ apply IH_E to _ _ _ _ SS' EvA2. search.
+%E-CondExpr-False
+ case IsE. EvB1: apply IH_E to _ _ _ _ SS EvA1.
+ SS': apply evalExpr_scopes_same_ctx to _ _ _ _ _ EvA1 EvB1.
+ apply evalExpr_isCtx to _ _ _ EvA1.
+ apply evalExpr_isCtx to _ _ _ EvB1.
+ apply IH_E to _ _ _ _ SS' EvA2. search.
+
+
+Prove_Constraint exactEval:host:proj_evalExpr_forward.
+L: apply length_exists_list_pair_string_value to IsEE.
+EvD: assert evalStmt FE ([]::EE) (declare intTy X (num 0))
+                        ([(X, intVal 0)]::EE) [].
+NNS: assert newNameScopes [[(X, intVal 0)]] N
+               ([(X, intVal 0)]::EE) EE.
+  unfold. exists 1, [X], Names. split.
+    %length EE N
+     search.
+    %drop 1
+     search.
+    %take 1
+     search.
+    %names
+     search.
+    %names EE Names
+     search.
+    %not mem Names
+     intros MX MN. MX: case MX.
+       %X1 = X
+        apply fresh_name_not_mem to Pr1 MN.
+       %mem []
+        case MX.
+IsX: apply fresh_name_is to _ Pr1. Is: case IsE. Ev: case Ev.
+  %E-CondExpr-True
+   apply evalExpr_isCtx to _ _ _ Ev.
+   assert is_list (is_list (is_pair is_string is_value))
+             ([]::([(X, intVal 0)]::EE)). search 6.
+   EvA: apply evalExpr_newNameScopes_exists to _ _ _ _ Ev NNS.
+   NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA Ev _.
+   NNS': case NNS' (keep).
+     %last
+      Take: case NNS'3. case Take1. compute Take.
+      Eq: assert L = EE3.
+        Drop: case NNS'2. apply drop_is_integer to Drop1.
+        apply plus_integer_unique_addend to _ _ _ Take Drop.
+        Drop: case Drop1.
+          %0
+           search.
+          %-1
+           P: assert 1 + -1 = 0. apply drop_is_integer to Drop2.
+           apply plus_integer_unique_addend to _ _ _ Drop1 P.
+           GEq: apply drop_geq_0 to Drop2. LEq: case GEq. case LEq.
+      case Eq. apply evalExpr_isCtx to _ _ _ EvA.
+      NNS'': assert newNameScopes [[], [(X, intVal 0)]] N
+                       ([]::[(X, intVal 0)]::EE3) EE3.
+      EvA2: apply evalExpr_newNameScopes_exists to _ _ _ _ Ev1 NNS''.
+      NNS''': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA2 Ev1 _.
+      NNS''': case NNS'''.
+        %last
+         T: case NNS'''2. T: case T1. case T2. compute T1. compute T.
+         Eq: assert L2 = EE'.
+           Drop: case NNS'''1. apply drop_is_integer to Drop1.
+           apply plus_integer_unique_addend to _ _ _ T Drop.
+           Drop: case Drop1. apply drop_is_integer to Drop2.
+           apply plus_integer_unique_addend to _ _ _ T1 Drop1.
+           Drop: case Drop2.
+             %0
+              search.
+             %-1
+              P: assert 1 + -1 = 0. apply drop_is_integer to Drop3.
+              apply plus_integer_unique_addend to _ _ _ P Drop2.
+              GEq: apply drop_geq_0 to Drop3. LEq: case GEq. case LEq.
+         case Eq.
+         assert replaceScopes X V ([]::([(X, intVal 0)]::EE'))
+                              ([]::([(X, V)]::EE')).
+         EvA3: assert evalStmt FE ([]::([(X, intVal 0)]::EE3))
+                         (assign X T) ([]::([(X, V)]::EE')) O3.
+         exists EE'. split.
+           %eval
+            apply evalExpr_isOutput to _ _ _ EvA.
+            apply evalExpr_isOutput to _ _ _ EvA2.
+            IsO: apply append_values_is to _ _ Ev2.
+            App: apply append_values_total to IsO with LB = [].
+            apply append_nil_right to App. search.
+           %scopes_same
+            backchain scopes_same_reflexive.
+            Is': apply evalStmt_isCtx to _ _ _ EvA3. Is': case Is'.
+            Is': case Is'1. search.
+        %step
+         LenEE3: apply evalExpr_keep_scopes to _ _ _ Ev L.
+         LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev1 LenEE3.
+         LenBR: case LenSBR. apply length_is to LenBR.
+         LEq: apply newNameScopes_length to NNS''' LenBR.
+         Less: apply lt_plus_one to LenBR1 _.
+         apply less_lesseq_flip_false to Less LEq.
+     %step
+      LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev L.
+      LenBR: case LenSBR. apply length_is to LenBR.
+      LEq: apply newNameScopes_length to NNS'1 LenBR.
+      Less: apply lt_plus_one to LenBR1 _.
+      apply less_lesseq_flip_false to Less LEq.
+  %E-CondExpr-False
+   apply evalExpr_isCtx to _ _ _ Ev.
+   assert is_list (is_list (is_pair is_string is_value))
+             ([]::([(X, intVal 0)]::EE)). search 6.
+   EvA: apply evalExpr_newNameScopes_exists to _ _ _ _ Ev NNS.
+   NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA Ev _.
+   NNS': case NNS' (keep).
+     %last
+      Take: case NNS'3. case Take1. compute Take.
+      Eq: assert L = EE3.
+        Drop: case NNS'2. apply drop_is_integer to Drop1.
+        apply plus_integer_unique_addend to _ _ _ Take Drop.
+        Drop: case Drop1.
+          %0
+           search.
+          %-1
+           P: assert 1 + -1 = 0. apply drop_is_integer to Drop2.
+           apply plus_integer_unique_addend to _ _ _ Drop1 P.
+           GEq: apply drop_geq_0 to Drop2. LEq: case GEq. case LEq.
+      case Eq. apply evalExpr_isCtx to _ _ _ EvA.
+      NNS'': assert newNameScopes [[], [(X, intVal 0)]] N
+                       ([]::[(X, intVal 0)]::EE3) EE3.
+      EvA2: apply evalExpr_newNameScopes_exists to _ _ _ _ Ev1 NNS''.
+      NNS''': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA2 Ev1 _.
+      NNS''': case NNS'''.
+        %last
+         T: case NNS'''2. T: case T1. case T2. compute T1. compute T.
+         Eq: assert L2 = EE'.
+           Drop: case NNS'''1. apply drop_is_integer to Drop1.
+           apply plus_integer_unique_addend to _ _ _ T Drop.
+           Drop: case Drop1. apply drop_is_integer to Drop2.
+           apply plus_integer_unique_addend to _ _ _ T1 Drop1.
+           Drop: case Drop2.
+             %0
+              search.
+             %-1
+              P: assert 1 + -1 = 0. apply drop_is_integer to Drop3.
+              apply plus_integer_unique_addend to _ _ _ P Drop2.
+              GEq: apply drop_geq_0 to Drop3. LEq: case GEq. case LEq.
+         case Eq.
+         assert replaceScopes X V ([]::([(X, intVal 0)]::EE'))
+                              ([]::([(X, V)]::EE')).
+         EvA3: assert evalStmt FE ([]::([(X, intVal 0)]::EE3))
+                         (assign X F) ([]::([(X, V)]::EE')) O3.
+         exists EE'. split.
+           %eval
+            apply evalExpr_isOutput to _ _ _ EvA.
+            apply evalExpr_isOutput to _ _ _ EvA2.
+            IsO: apply append_values_is to _ _ Ev2.
+            App: apply append_values_total to IsO with LB = [].
+            apply append_nil_right to App. search.
+           %scopes_same
+            backchain scopes_same_reflexive.
+            Is': apply evalStmt_isCtx to _ _ _ EvA3. Is': case Is'.
+            Is': case Is'1. search.
+        %step
+         LenEE3: apply evalExpr_keep_scopes to _ _ _ Ev L.
+         LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev1 LenEE3.
+         LenBR: case LenSBR. apply length_is to LenBR.
+         LEq: apply newNameScopes_length to NNS''' LenBR.
+         Less: apply lt_plus_one to LenBR1 _.
+         apply less_lesseq_flip_false to Less LEq.
+     %step
+      LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev L.
+      LenBR: case LenSBR. apply length_is to LenBR.
+      LEq: apply newNameScopes_length to NNS'1 LenBR.
+      Less: apply lt_plus_one to LenBR1 _.
+      apply less_lesseq_flip_false to Less LEq.
+
+Prove_Constraint exactEval:host:proj_evalExpr_backward.
+case IsE. EN: case EN. case EN4. case EN3.
+L: apply length_exists_list_pair_string_value to IsEE.
+NNS: assert newNameScopes [[(X, intVal 0)]] N
+               ([(X, intVal 0)]::EE) EE.
+  unfold. exists 1, [X], Names. split.
+    %length EE N
+     search.
+    %drop 1
+     search.
+    %take 1
+     search.
+    %names
+     search.
+    %names EE Names
+     search.
+    %not mem Names
+     intros MX MN. MX: case MX.
+       %X1 = X
+        apply fresh_name_not_mem to Pr1 MN.
+       %mem []
+        case MX.
+IsX: apply fresh_name_is to _ Pr1. Ev: case Ev. Ev: case Ev.
+Ev: case Ev. case Ev. case Ev4. Ev: case Ev3.
+  %E-IfThenElse-True
+   EvC: apply evalExpr_newNameScopes_exists_back to
+           _ _ _ _ _ Ctxs EN Ev NNS.
+   apply evalExpr_isCtx to _ _ _ Ev.
+   apply evalExpr_isCtx to _ _ _ EvC.
+   NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev EvC NNS.
+   apply evalExpr_ctx_names to _ _ _ _ Ctxs EN EvC. Ev: case Ev3.
+   LenEE_B': apply evalExpr_keep_scopes to _ _ _ EvC L.
+   NNS2: assert newNameScopes [[], [(X, intVal 0)]] N ([]::EE2) EE_B'.
+     NNS': case NNS'.
+       %last
+        unfold. Take: case NNS'2. case Take1. compute Take.
+        Drop: case NNS'1. apply drop_is_integer to Drop1.
+        apply plus_integer_unique_addend to _ _ _ Take Drop.
+        Drop: case Drop1.
+          %Drop-0
+           exists 2, [X], BNames. split.
+             %length
+              search.
+             %drop
+              search.
+             %take
+              search.
+             %names new scopes
+              search.
+             %names EE_B'
+              search.
+             %mems
+              intros MX MB. MX: case MX.
+                %Mem-Here
+                 N: case NNS'3. case N1. D: case N. case D.
+                 compute N2. backchain NNS'5.
+                %Mem-Later
+                 case MX.
+         %Drop-Step
+          GEq: apply drop_geq_0 to Drop2. P: assert 1 + -1 = 0.
+          apply drop_is_integer to Drop2.
+          apply plus_integer_unique_addend to _ _ _ P Drop1.
+          LEq: case GEq. case LEq.
+       %step
+        LenBR: case LenEE_B'. apply length_is to LenBR.
+        LEq: apply newNameScopes_length to NNS' LenBR.
+        L': apply lt_plus_one to LenBR1 _.
+        apply less_lesseq_flip_false to L' LEq.
+   CN: apply evalExpr_ctx_names to _ _ _ _ _ EN EvC.
+   EvT: apply evalExpr_newNameScopes_exists_back to
+           _ _ _ _ _ _ EN1 Ev3 NNS2.
+   apply evalExpr_newNameScopes_output to _ _ _ _ Ev EvC _.
+   apply evalExpr_newNameScopes_output to _ _ _ _ Ev3 EvT _.
+   apply evalExpr_newNameScopes to _ _ _ _ Ev3 EvT _.
+   EvN: case Ev1. apply append_nil_right to Ev2. clear Ev2.
+   %show `replaceScopes X` then `lookupScopes X` gets the right value
+   Eq: assert V = V2.
+     NNS-: apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev3 EvT _.
+     NNS-: case NNS-.
+       %last
+        Take: case NNS-2. Take: case Take1. case Take2. compute Take1.
+        compute Take. RS: case Ev5.
+          %RS-FirstScope
+           case RS.
+          %RS-Later
+           RS: case RS1.
+             %RS-FirstScope
+              LS: case EvN.
+                %LS-FirstScope
+                 E: case LS. search. apply E to _.
+                %LS-Later
+                 E: case LS. apply E to _.
+             %RS-Later
+              E: case RS1. apply E to _.
+       %step
+        LenBR+: apply evalExpr_keep_scopes to _ _ _ EvT LenEE_B'.
+        LenBR: case LenBR+. apply length_is to LenBR.
+        L': apply lt_plus_one to LenBR1 _.
+        LEq: apply newNameScopes_length to NNS- LenBR.
+        apply less_lesseq_flip_false to L' LEq.
+   %put it all together
+   case Eq. exists EE_B'1. split.
+     %eval condExpr
+      search.
+     %scopes_same
+      NNS-: apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev3 EvT _.
+      NNS-: case NNS-.
+        %last
+         Take: case NNS-2. Take: case Take1. case Take2.
+         compute Take1. compute Take. Drop: case NNS-1.
+         Drop: case Drop1.
+           %Drop-0
+            apply plus_integer_unique to Take1 Drop.
+           %Drop-Step
+            apply drop_is_integer to Drop2.
+            apply plus_integer_is_integer to _ _ Drop1.
+            apply plus_integer_unique_addend to _ _ _ Drop Take.
+            P: assert 1 + 0 = 1.
+            apply plus_integer_unique_addend to _ _ _ P Drop1.
+            Drop: case Drop2 (keep).
+              %Drop-0
+               RS: case Ev5.
+                 %RS-FirstScope
+                  case RS.
+                 %RS-Later
+                  RS: case RS1.
+                    %RS-FirstScope
+                     apply evalExpr_isCtx to _ _ _ EvT.
+                     backchain scopes_same_reflexive.
+                    %RS-Later
+                     E: case RS1. apply E to _.
+              %Drop-Step
+               apply drop_is_integer to Drop4. P': assert 1 + -1 = 0.
+               apply plus_integer_unique_addend to _ _ _ P' Drop3.
+               GE: apply drop_geq_0 to Drop4. LE: case GE. case LE.
+        %step
+         LenBR+: apply evalExpr_keep_scopes to _ _ _ EvT LenEE_B'.
+         LenBR: case LenBR+. apply length_is to LenBR.
+         L': apply lt_plus_one to LenBR1 _.
+         LEq: apply newNameScopes_length to NNS- LenBR.
+         apply less_lesseq_flip_false to L' LEq.
+  %E-IfThenElse-False
+   EvC: apply evalExpr_newNameScopes_exists_back to
+           _ _ _ _ _ Ctxs EN Ev NNS.
+   apply evalExpr_isCtx to _ _ _ Ev.
+   apply evalExpr_isCtx to _ _ _ EvC.
+   NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev EvC NNS.
+   apply evalExpr_ctx_names to _ _ _ _ Ctxs EN EvC. Ev: case Ev3.
+   LenEE_B': apply evalExpr_keep_scopes to _ _ _ EvC L.
+   NNS2: assert newNameScopes [[], [(X, intVal 0)]] N ([]::EE2) EE_B'.
+     NNS': case NNS'.
+       %last
+        unfold. Take: case NNS'2. case Take1. compute Take.
+        Drop: case NNS'1. apply drop_is_integer to Drop1.
+        apply plus_integer_unique_addend to _ _ _ Take Drop.
+        Drop: case Drop1.
+          %Drop-0
+           exists 2, [X], BNames. split.
+             %length
+              search.
+             %drop
+              search.
+             %take
+              search.
+             %names new scopes
+              search.
+             %names EE_B'
+              search.
+             %mems
+              intros MX MB. MX: case MX.
+                %Mem-Here
+                 N: case NNS'3. case N1. D: case N. case D.
+                 compute N2. backchain NNS'5.
+                %Mem-Later
+                 case MX.
+         %Drop-Step
+          GEq: apply drop_geq_0 to Drop2. P: assert 1 + -1 = 0.
+          apply drop_is_integer to Drop2.
+          apply plus_integer_unique_addend to _ _ _ P Drop1.
+          LEq: case GEq. case LEq.
+       %step
+        LenBR: case LenEE_B'. apply length_is to LenBR.
+        LEq: apply newNameScopes_length to NNS' LenBR.
+        L': apply lt_plus_one to LenBR1 _.
+        apply less_lesseq_flip_false to L' LEq.
+   CN: apply evalExpr_ctx_names to _ _ _ _ _ EN EvC.
+   EvF: apply evalExpr_newNameScopes_exists_back to
+           _ _ _ _ _ _ EN2 Ev3 NNS2.
+   apply evalExpr_newNameScopes_output to _ _ _ _ Ev EvC _.
+   apply evalExpr_newNameScopes_output to _ _ _ _ Ev3 EvF _.
+   apply evalExpr_newNameScopes to _ _ _ _ Ev3 EvF _.
+   EvN: case Ev1. apply append_nil_right to Ev2. clear Ev2.
+   %show `replaceScopes X` then `lookupScopes X` gets the right value
+   Eq: assert V = V2.
+     NNS-: apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev3 EvF _.
+     NNS-: case NNS-.
+       %last
+        Take: case NNS-2. Take: case Take1. case Take2. compute Take1.
+        compute Take. RS: case Ev5.
+          %RS-FirstScope
+           case RS.
+          %RS-Later
+           RS: case RS1.
+             %RS-FirstScope
+              LS: case EvN.
+                %LS-FirstScope
+                 E: case LS. search. apply E to _.
+                %LS-Later
+                 E: case LS. apply E to _.
+             %RS-Later
+              E: case RS1. apply E to _.
+       %step
+        LenBR+: apply evalExpr_keep_scopes to _ _ _ EvF LenEE_B'.
+        LenBR: case LenBR+. apply length_is to LenBR.
+        L': apply lt_plus_one to LenBR1 _.
+        LEq: apply newNameScopes_length to NNS- LenBR.
+        apply less_lesseq_flip_false to L' LEq.
+   %put it all together
+   case Eq. exists EE_B'1. split.
+     %eval condExpr
+      search.
+     %scopes_same
+      NNS-: apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev3 EvF _.
+      NNS-: case NNS-.
+        %last
+         Take: case NNS-2. Take: case Take1. case Take2.
+         compute Take1. compute Take. Drop: case NNS-1.
+         Drop: case Drop1.
+           %Drop-0
+            apply plus_integer_unique to Take1 Drop.
+           %Drop-Step
+            apply drop_is_integer to Drop2.
+            apply plus_integer_is_integer to _ _ Drop1.
+            apply plus_integer_unique_addend to _ _ _ Drop Take.
+            P: assert 1 + 0 = 1.
+            apply plus_integer_unique_addend to _ _ _ P Drop1.
+            Drop: case Drop2 (keep).
+              %Drop-0
+               RS: case Ev5.
+                 %RS-FirstScope
+                  case RS.
+                 %RS-Later
+                  RS: case RS1.
+                    %RS-FirstScope
+                     apply evalExpr_isCtx to _ _ _ EvF.
+                     backchain scopes_same_reflexive.
+                    %RS-Later
+                     E: case RS1. apply E to _.
+              %Drop-Step
+               apply drop_is_integer to Drop4. P': assert 1 + -1 = 0.
+               apply plus_integer_unique_addend to _ _ _ P' Drop3.
+               GE: apply drop_geq_0 to Drop4. LE: case GE. case LE.
+        %step
+         LenBR+: apply evalExpr_keep_scopes to _ _ _ EvF LenEE_B'.
+         LenBR: case LenBR+. apply length_is to LenBR.
+         L': apply lt_plus_one to LenBR1 _.
+         LEq: apply newNameScopes_length to NNS- LenBR.
+         apply less_lesseq_flip_false to L' LEq.
+
+Prove_Constraint exactEval:host:proj_evalStmt_forward.
+Prove_Constraint exactEval:host:proj_evalStmt_backward.
+
+Prove_Ext_Ind exactEval:host:evalExpr,
+              exactEval:host:evalArgs,
+              exactEval:host:evalRecFields,
+              exactEval:host:evalStmt.
+%E-CondExpr-True
+ Names: apply names_exists to IsEE. rename N1 to Nmes.
+ IsNames: apply names_is to _ Names.
+ Fr: apply fresh_name_exists to _ IsNames with Base = "X".
+ rename F1 to X.
+ Proj: assert Nmes |{expr}- condExpr C T F ~~>
+                    stmtExpr
+                       (seq (declare intTy X (num 0))
+                            (ifThenElse C (assign X T) (assign X F)))
+                       (name X).
+ %build `acc N2` and `acc N3`, then clean up
+ IsN2: apply ext_size_is_int_evalExpr to R3.
+ IsN3: apply ext_size_is_int_evalExpr to R4.
+ PN2: apply ext_size_pos_evalExpr to R3.
+ PN3: apply ext_size_pos_evalExpr to R4.
+ LEq2: apply lte_left to R2 _ _ _. LEq3: apply lte_right to R2 _ _ _.
+ P: apply plus_integer_is_integer to _ _ R2.
+ LN4: apply lt_plus_one to R1 _.
+ LEqN2: apply lesseq_less_integer_transitive to LEq2 LN4.
+ LEqN3: apply lesseq_less_integer_transitive to LEq3 LN4.
+ Acc: case Acc. A2: apply Acc to _ LEqN2. A3: apply Acc to _ LEqN3.
+ clear Acc LEqN3 LEqN2 LN4 P LEq3 LEq2 PN3 PN2 IsN3 IsN2.
+ %build derivation
+ case IsE. unfold.
+ exists Nmes, stmtExpr (seq (declare intTy X (num 0))
+                          (ifThenElse C (assign X T) (assign X F)))
+                       (name X), V, EE', O, EE3, O2, O3. split.
+   %eval_P C
+    apply IH to R3 A2 _ _ _. search.
+   %eval_P T
+    Ev1: apply drop_ext_size_evalExpr to R3.
+    apply evalExpr_isCtx to _ _ _ Ev1. apply IH to R4 A3 _ _ _.
+    search.
+   %append output
+    search.
+   %names
+    search.
+   %proj
+    search.
+   %eval_P proj
+    L: apply length_exists_list_pair_string_value to IsEE.
+    rename N1 to Len.
+    EvD: assert evalStmt FE ([]::EE) (declare intTy X (num 0))
+                            ([(X, intVal 0)]::EE) [].
+    NNS: assert newNameScopes [[(X, intVal 0)]] Len
+                   ([(X, intVal 0)]::EE) EE.
+      unfold. exists 1, [X], Nmes. split.
+        %length EE Len
+         search.
+        %drop 1
+         search.
+        %take 1
+         search.
+        %names
+         search.
+        %names EE Nmes
+         search.
+        %not mem Nmes
+         intros MX MN. MX: case MX.
+           %X1 = X
+            apply fresh_name_not_mem to _ MN.
+           %mem []
+            case MX.
+    IsX: apply fresh_name_is to _ Fr.
+    Ev: apply drop_ext_size_evalExpr to R3.
+    Ev1: apply drop_ext_size_evalExpr to R4.
+    %build derivations for evaling cond and T for projection
+    apply evalExpr_isCtx to _ _ _ Ev.
+    assert is_list (is_list (is_pair is_string is_value))
+              ([]::[(X, intVal 0)]::EE). search 6.
+    EvA_ES: apply evalExpr_newNameScopes_exists_ES to _ _ _ _ R3 NNS.
+    EvA_P: apply IH to EvA_ES A2 _ _ _.
+    EvA: apply drop_ext_size_evalExpr to EvA_ES.
+    NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA Ev _.
+    NNS': case NNS' (keep).
+      %last
+       Take: case NNS'3. case Take1. compute Take.
+       Eq: assert L = EE3.
+         Drop: case NNS'2. apply drop_is_integer to Drop1.
+         apply plus_integer_unique_addend to _ _ _ Take Drop.
+         Drop: case Drop1.
+           %0
+            search.
+           %-1
+            P: assert 1 + -1 = 0. apply drop_is_integer to Drop2.
+            apply plus_integer_unique_addend to _ _ _ Drop1 P.
+            GEq: apply drop_geq_0 to Drop2. LEq: case GEq. case LEq.
+       case Eq. apply evalExpr_isCtx to _ _ _ EvA.
+       NNS'': assert newNameScopes [[], [(X, intVal 0)]] Len
+                        ([]::[(X, intVal 0)]::EE3) EE3.
+       EvA2_ES: apply evalExpr_newNameScopes_exists_ES to
+                   _ _ _ _ R4 NNS''.
+       EvA2_P: apply IH to EvA2_ES A3 _ _ _.
+       EvA2: apply drop_ext_size_evalExpr to EvA2_ES.
+       NNS''': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA2 Ev1 _.
+       NNS''': case NNS'''.
+         %last
+          T: case NNS'''2. T: case T1. case T2. compute T1. compute T.
+          Eq: assert L2 = EE'.
+            Drop: case NNS'''1. apply drop_is_integer to Drop1.
+            apply plus_integer_unique_addend to _ _ _ T Drop.
+            Drop: case Drop1. apply drop_is_integer to Drop2.
+            apply plus_integer_unique_addend to _ _ _ T1 Drop1.
+            Drop: case Drop2.
+              %0
+               search.
+              %-1
+               P: assert 1 + -1 = 0. apply drop_is_integer to Drop3.
+               apply plus_integer_unique_addend to _ _ _ P Drop2.
+               GEq: apply drop_geq_0 to Drop3. LEq: case GEq.
+               case LEq.
+          case Eq.
+          assert replaceScopes X V ([]::([(X, intVal 0)]::EE'))
+                               ([]::([(X, V)]::EE')).
+          EvA3_P: assert <evalStmt {P}> FE
+                            ([]::([(X, intVal 0)]::EE3))
+                             (assign X T) ([]::([(X, V)]::EE')) O3.
+          apply evalExpr_isOutput to _ _ _ EvA.
+          apply evalExpr_isOutput to _ _ _ EvA2.
+          IsO: apply append_values_is to _ _ R5.
+          App: apply append_values_total to IsO with LB = [].
+          apply append_nil_right to App. search.
+         %step:  impossible
+          LenEE3: apply evalExpr_keep_scopes to _ _ _ Ev L.
+          LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev1 LenEE3.
+          LenBR: case LenSBR. apply length_is to LenBR.
+          LEq: apply newNameScopes_length to NNS''' LenBR.
+          Less: apply lt_plus_one to LenBR1 _.
+          apply less_lesseq_flip_false to Less LEq.
+      %step:  impossible
+       LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev L.
+       LenBR: case LenSBR. apply length_is to LenBR.
+       LEq: apply newNameScopes_length to NNS'1 LenBR.
+       Less: apply lt_plus_one to LenBR1 _.
+       apply less_lesseq_flip_false to Less LEq.
+%E-CondExpr-False
+ Names: apply names_exists to IsEE. rename N1 to Nmes.
+ IsNames: apply names_is to _ Names.
+ Fr: apply fresh_name_exists to _ IsNames with Base = "X".
+ rename F1 to X.
+ Proj: assert Nmes |{expr}- condExpr C T F ~~>
+                    stmtExpr
+                       (seq (declare intTy X (num 0))
+                            (ifThenElse C (assign X T) (assign X F)))
+                       (name X).
+ %build `acc N2` and `acc N3`, then clean up
+ IsN2: apply ext_size_is_int_evalExpr to R3.
+ IsN3: apply ext_size_is_int_evalExpr to R4.
+ PN2: apply ext_size_pos_evalExpr to R3.
+ PN3: apply ext_size_pos_evalExpr to R4.
+ LEq2: apply lte_left to R2 _ _ _. LEq3: apply lte_right to R2 _ _ _.
+ P: apply plus_integer_is_integer to _ _ R2.
+ LN4: apply lt_plus_one to R1 _.
+ LEqN2: apply lesseq_less_integer_transitive to LEq2 LN4.
+ LEqN3: apply lesseq_less_integer_transitive to LEq3 LN4.
+ Acc: case Acc. A2: apply Acc to _ LEqN2. A3: apply Acc to _ LEqN3.
+ clear Acc LEqN3 LEqN2 LN4 P LEq3 LEq2 PN3 PN2 IsN3 IsN2.
+ %build derivation
+ case IsE.
+ %eval_P C and eval_P F
+ apply IH to R3 A2 _ _ _. Ev: apply drop_ext_size_evalExpr to R3.
+ Ev1: apply drop_ext_size_evalExpr to R4.
+ apply evalExpr_isCtx to _ _ _ Ev. apply IH to R4 A3 _ _ _.
+ %eval_P proj
+ L: apply length_exists_list_pair_string_value to IsEE.
+ rename N1 to Len.
+ EvD: assert evalStmt FE ([]::EE) (declare intTy X (num 0))
+                         ([(X, intVal 0)]::EE) [].
+ NNS: assert newNameScopes [[(X, intVal 0)]] Len
+                ([(X, intVal 0)]::EE) EE.
+   unfold. exists 1, [X], Nmes. split.
+     %length EE Len
+      search.
+     %drop 1
+      search.
+     %take 1
+      search.
+     %names
+      search.
+     %names EE Nmes
+      search.
+     %not mem Nmes
+      intros MX MN. MX: case MX.
+        %X1 = X
+         apply fresh_name_not_mem to _ MN.
+        %mem []
+         case MX.
+ IsX: apply fresh_name_is to _ Fr.
+ assert is_list (is_list (is_pair is_string is_value))
+           ([]::[(X, intVal 0)]::EE). search 6.
+ EvA_ES: apply evalExpr_newNameScopes_exists_ES to _ _ _ _ R3 NNS.
+ EvA_P: apply IH to EvA_ES A2 _ _ _.
+ EvA: apply drop_ext_size_evalExpr to EvA_ES.
+ NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA Ev _.
+ NNS': case NNS' (keep).
+   %last
+    Take: case NNS'3. case Take1. compute Take.
+    Eq: assert L = EE3.
+      Drop: case NNS'2. apply drop_is_integer to Drop1.
+      apply plus_integer_unique_addend to _ _ _ Take Drop.
+      Drop: case Drop1.
+        %0
+         search.
+        %-1
+         P: assert 1 + -1 = 0. apply drop_is_integer to Drop2.
+         apply plus_integer_unique_addend to _ _ _ Drop1 P.
+         GEq: apply drop_geq_0 to Drop2. LEq: case GEq. case LEq.
+    case Eq. apply evalExpr_isCtx to _ _ _ EvA.
+    NNS'': assert newNameScopes [[], [(X, intVal 0)]] Len
+                     ([]::[(X, intVal 0)]::EE3) EE3.
+    EvA2_ES: apply evalExpr_newNameScopes_exists_ES to
+                _ _ _ _ R4 NNS''.
+    EvA2_P: apply IH to EvA2_ES A3 _ _ _.
+    EvA2: apply drop_ext_size_evalExpr to EvA2_ES.
+    NNS''': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA2 Ev1 _.
+    NNS''': case NNS'''.
+      %last
+       T: case NNS'''2. T: case T1. case T2. compute T1. compute T.
+       Eq: assert L2 = EE'.
+         Drop: case NNS'''1. apply drop_is_integer to Drop1.
+         apply plus_integer_unique_addend to _ _ _ T Drop.
+         Drop: case Drop1. apply drop_is_integer to Drop2.
+         apply plus_integer_unique_addend to _ _ _ T1 Drop1.
+         Drop: case Drop2.
+           %0
+            search.
+           %-1
+            P: assert 1 + -1 = 0. apply drop_is_integer to Drop3.
+            apply plus_integer_unique_addend to _ _ _ P Drop2.
+            GEq: apply drop_geq_0 to Drop3. LEq: case GEq.
+            case LEq.
+       case Eq.
+       assert replaceScopes X V ([]::([(X, intVal 0)]::EE'))
+                            ([]::([(X, V)]::EE')).
+       EvA3_P: assert <evalStmt {P}> FE
+                         ([]::([(X, intVal 0)]::EE3))
+                          (assign X F) ([]::([(X, V)]::EE')) O3.
+       apply evalExpr_isOutput to _ _ _ EvA.
+       apply evalExpr_isOutput to _ _ _ EvA2.
+       IsO: apply append_values_is to _ _ R5.
+       App: apply append_values_total to IsO with LB = [].
+       apply append_nil_right to App. search.
+      %step:  impossible
+       LenEE3: apply evalExpr_keep_scopes to _ _ _ Ev L.
+       LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev1 LenEE3.
+       LenBR: case LenSBR. apply length_is to LenBR.
+       LEq: apply newNameScopes_length to NNS''' LenBR.
+       Less: apply lt_plus_one to LenBR1 _.
+       apply less_lesseq_flip_false to Less LEq.
+   %step:  impossible
+    LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev L.
+    LenBR: case LenSBR. apply length_is to LenBR.
+    LEq: apply newNameScopes_length to NNS'1 LenBR.
+    Less: apply lt_plus_one to LenBR1 _.
+    apply less_lesseq_flip_false to Less LEq.
+
+
+Prove exactEval:host:paramName_unique.
+Prove_Constraint exactEval:host:proj_paramName_forward.
+Prove_Constraint exactEval:host:proj_paramName_back.
+Prove exactEval:host:getFunEvalInfo_unique.
+Prove_Constraint exactEval:host:proj_getFunEvalInfo_forward.
+Prove_Constraint exactEval:host:proj_getFunEvalInfo_back.
+
+Prove exactEval:host:evalProgram_unique.
+Prove_Constraint exactEval:host:proj_evalProgram_forward.
+Prove_Constraint exactEval:host:proj_evalProgram_back.
+
+
+Prove exactEval:host:evalExpr_typePres_ctx,
+      exactEval:host:evalExpr_typePres,
+      exactEval:host:evalStmt_typePres,
+      exactEval:host:evalArgs_typePres_Ctx,
+      exactEval:host:evalArgs_typePres,
+      exactEval:host:evalRecFields_typePres_Ctx,
+      exactEval:host:evalRecFields_typePres.
+%evalExpr_typePres_ctx
+ %E-CondExpr-True
+  case IsE. Ty: case Ty. apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _.
+  apply evalExpr_isCtx to _ _ _ Ev1.
+  apply IH_C_E to _ _ _ _ _ Ty1 Ev2 _ _. search.
+ %E-CondExpr-False
+  case IsE. Ty: case Ty. apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _.
+  apply evalExpr_isCtx to _ _ _ Ev1.
+  apply IH_C_E to _ _ _ _ _ Ty2 Ev2 _ _. search.
+%evalExpr_typePres
+ %E-CondExpr-True
+  case IsE. Ty: case Ty. apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _.
+  apply evalExpr_isCtx to _ _ _ Ev1.
+  apply IH_T_E to _ _ _ _ _ Ty1 Ev2 _ _. search.
+ %E-CondExpr-False
+  case IsE. Ty: case Ty. apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _.
+  apply evalExpr_isCtx to _ _ _ Ev1.
+  apply IH_T_E to _ _ _ _ _ Ty2 Ev2 _ _. search.
+
+Prove exactEval:host:paramTy_paramName_same.
+Prove exactEval:host:funOK_getFunEvalInfo_related.
+
+Prove exactEval:host:evalExpr_output_forms,
+      exactEval:host:evalStmt_output_forms,
+      exactEval:host:evalArgs_output_forms,
+      exactEval:host:evalRecFields_output_forms.
+%evalExpr_output_forms
+ %E-CondExpr-True
+  case IsE. apply IH_E to _ _ _ Ev1.
+  apply evalExpr_isCtx to _ _ _ Ev1. apply IH_E to _ _ _ Ev2.
+  apply output_forms_append to _ _ Ev3. search.
+ %E-CondExpr-False
+  case IsE. apply IH_E to _ _ _ Ev1.
+  apply evalExpr_isCtx to _ _ _ Ev1. apply IH_E to _ _ _ Ev2.
+  apply output_forms_append to _ _ Ev3. search.
+
+Prove exactEval:host:evalProgram_output_forms.
+Prove exactEval:host:paramName_exists.
+Prove exactEval:host:getFunEvalInfo_exists.

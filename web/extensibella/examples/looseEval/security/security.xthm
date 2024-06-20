@@ -1,0 +1,3692 @@
+Module looseEval:security.
+
+
+Prove_Constraint looseEval:host:proj_expr_unique.
+Prove_Constraint looseEval:host:proj_expr_is.
+
+Prove_Constraint looseEval:host:proj_stmt_unique.
+case PrB. search.
+Prove_Constraint looseEval:host:proj_stmt_is.
+case IsS. search.
+Prove_Constraint looseEval:host:proj_stmt_other.
+search.
+
+Prove_Constraint looseEval:host:proj_fun_unique.
+case PrB. search.
+Prove_Constraint looseEval:host:proj_fun_is.
+case IsF. search.
+
+Prove_Constraint looseEval:host:proj_param_unique.
+case PrB. search.
+Prove_Constraint looseEval:host:proj_param_is.
+case IsP. search.
+
+Prove_Constraint looseEval:host:proj_program_unique.
+Prove_Constraint looseEval:host:proj_program_is.
+
+Prove_Constraint looseEval:host:proj_typ_unique.
+Prove_Constraint looseEval:host:proj_typ_is.
+
+Prove_Constraint looseEval:host:proj_value_unique.
+Prove_Constraint looseEval:host:proj_value_is.
+
+
+
+/********************************************************************
+ Decidable Equality
+ ********************************************************************/
+Add_Proj_Rel looseEval:host:is_expr,
+             looseEval:host:is_args,
+             looseEval:host:is_recFieldExprs.
+Prove_Ext_Ind looseEval:host:is_expr,
+              looseEval:host:is_args,
+              looseEval:host:is_recFieldExprs.
+Add_Proj_Rel looseEval:host:is_stmt.
+Prove_Ext_Ind looseEval:host:is_stmt.
+search.
+
+Extensible_Theorem
+  is_slev_public_or_not : forall L,
+    IsL : is_slev L ->
+    L = public \/ (L = public -> false)
+  on IsL.
+search. search.
+Extensible_Theorem
+  is_slev_private_or_not : forall L,
+    IsL : is_slev L ->
+    L = private \/ (L = private -> false)
+  on IsL.
+search. search.
+Extensible_Theorem
+  is_slev_eq_or_not : forall L1 L2,
+    IsL1 : is_slev L1 ->
+    IsL2 : is_slev L2 ->
+    L1 = L2 \/ (L1 = L2 -> false)
+  on IsL1.
+%private
+ Or: apply is_slev_private_or_not to IsL2. N: case Or.
+   %private
+    search.
+   %not private
+    right. intros E. case E. backchain N.
+%public
+ Or: apply is_slev_public_or_not to IsL2. N: case Or.
+   %public
+    search.
+   %not public
+    right. intros E. case E. backchain N.
+
+Prove looseEval:host:is_args_nilArgs_or_consArgs.
+Prove looseEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.
+
+Add_Proj_Rel looseEval:host:is_value,
+             looseEval:host:is_recFieldVals.
+Prove_Ext_Ind looseEval:host:is_value,
+              looseEval:host:is_recFieldVals.
+Prove looseEval:host:is_value_intVal_or_not.
+Prove looseEval:host:is_value_trueVal_or_not.
+Prove looseEval:host:is_value_falseVal_or_not.
+Prove looseEval:host:is_value_stringVal_or_not.
+Prove looseEval:host:is_value_recVal_or_not.
+Prove looseEval:host:is_recFieldVals_nil_or_cons.
+
+Prove looseEval:host:is_value_eq_or_not,
+      looseEval:host:is_recFieldVals_eq_or_not.
+
+
+
+/********************************************************************
+ Variables
+ ********************************************************************/
+Prove looseEval:host:vars_unique.
+Prove looseEval:host:vars_is.
+Prove looseEval:host:vars_exist,
+      looseEval:host:varsArgs_exist,
+      looseEval:host:varsRecFields_exist.
+Prove_Constraint looseEval:host:proj_vars.
+
+
+
+/********************************************************************
+ Typing
+ ********************************************************************/
+Prove looseEval:host:typeOf_isTy.
+
+Prove looseEval:host:stmtOK_isCtx.
+case IsS. apply typeOf_isTy to _ _ _ Ty2. case IsET. search.
+Prove looseEval:host:stmtOK_keep_scopes.
+case IsS. case L. search.
+Prove looseEval:host:stmtOK_older_scopes_same.
+search.
+Prove looseEval:host:stmtOK_first_scope_lookup_same.
+assert X1 = X -> false.
+  intros E. case E. apply no_lookup to Ty1 L.
+search.
+
+Prove looseEval:host:typeOf_unique.
+
+Prove looseEval:host:stmtOK_unique.
+case IsS. TyB: case TyB. apply typeOf_unique to _ _ _ _ TyA2 TyB1 _.
+R: case Lkp. unfold.
+  %lookup
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply R to L1. search.
+  %no_lookup
+   intros IsX1 NL. NL: case NL. apply R1 to _ NL1. search.
+  %rest
+   search.
+
+Prove looseEval:host:paramTy_is.
+case IsP. search.
+Prove looseEval:host:getFunInfo_is.
+Is: case IsF. IsPs: apply paramTys_is to _ GFI1.
+apply values_is_ty to _ GFI2. search.
+Prove looseEval:host:paramTy_exists.
+search.
+Prove looseEval:host:getFunInfo_exists.
+PT: apply paramTys_exists to IsF6. Is: apply paramTys_is to _ PT.
+apply values_exists_ty to Is. search.
+
+
+
+/********************************************************************
+ Evaluation
+ ********************************************************************/
+Prove looseEval:host:evalExpr_isValue,
+      looseEval:host:evalStmt_isCtx,
+      looseEval:host:evalArgs_isValue,
+      looseEval:host:evalRecFields_isValue.
+case IsS. apply IH_V_E to _ _ _ Ev1. case IsEE. search.
+
+Prove looseEval:host:evalExpr_isOutput,
+      looseEval:host:evalStmt_isOutput,
+      looseEval:host:evalArgs_isOutput,
+      looseEval:host:evalRecFields_isOutput.
+case IsS. apply IH_E to _ _ _ Ev1. search.
+
+Prove looseEval:host:paramName_is.
+case IsP. search.
+Prove looseEval:host:getFunEvalInfo_is.
+case IsF. apply paramNames_is to _ GEFI1. search.
+
+Prove looseEval:host:evalProgram_isOutput.
+
+Prove looseEval:host:evalStmt_names_same.
+case IsS. case IsEE. exists ((X, V)::Scope), EE. split. search.
+backchain names_same_reflexive.
+
+Add_Ext_Size looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.
+Add_Proj_Rel looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.
+
+Prove looseEval:host:evalExpr_rel,
+      looseEval:host:evalStmt_newNameScopes_output,
+      looseEval:host:evalStmt_newNameScopes,
+      looseEval:host:evalArgs_rel,
+      looseEval:host:evalRecFields_rel.
+%evalStmt_newNameScopes_output
+ NNS': assert newNameScopes N Len (Scope::EE_A) (Scope::EE_B).
+ Is: case IsS. Vars: apply vars_exist to Is3. EvB: case EvB.
+ apply IH_E to _ _ _ _ EvA1 EvB Vars _.
+   intros M L. apply vars_is to _ Vars. apply mem_is_string to _ M.
+   apply newNameScopes_lookupScopes to _ _ NNS' L. search.
+ search.
+%evalStmt_newNameScopes
+ NNS': assert newNameScopes N Len (Scope::EE_A) (Scope::EE_B).
+ Is: case IsS. Vars: apply vars_exist to Is3. EvB: case EvB.
+ apply IH_E to _ _ _ _ EvA1 EvB Vars _.
+   intros M L. apply vars_is to _ Vars. apply mem_is_string to _ M.
+   apply newNameScopes_lookupScopes to _ _ NNS' L. search.
+ search.
+
+Prove looseEval:host:evalExpr_rel_exists_ES,
+      looseEval:host:evalStmt_newNameScopes_exists_ES,
+      looseEval:host:evalArgs_rel_exists_ES,
+      looseEval:host:evalRecFields_rel_exists_ES.
+NNS': assert newNameScopes N Len (Scope::EE_A) (Scope::EE_B).
+Is: case IsS. Vars: apply vars_exist to Is3. EvB: case EvB.
+apply IH_E to _ _ _ _ EvB2 Vars _ with EE_A = Scope::EE_A.
+  intros M L. apply vars_is to _ Vars. apply mem_is_string to _ M.
+  apply newNameScopes_lookupScopes to _ _ NNS' L. search.
+search.
+
+Prove looseEval:host:evalExpr_scopes_same,
+      looseEval:host:evalStmt_scopes_same,
+      looseEval:host:evalStmt_scopes_same_ctx,
+      looseEval:host:evalArgs_scopes_same,
+      looseEval:host:evalRecFields_scopes_same.
+%evalStmt_scopes_same
+ case IsS. EvB: case EvB. apply IH_E to _ _ _ _ SS EvA1 EvB. search.
+%evalStmt_scopes_same_ctx
+ case IsS. EvB: case EvB. apply IH_E to _ _ _ _ SS EvA1 EvB.
+ R: case SS. unfold.
+   %lookup ->
+    intros L. L: case L.
+      %Lkp-Here
+       search.
+      %Lkp-Later
+       apply R to L1. search.
+   %lookup <-
+    intros L. L: case L.
+      %Lkp-Here
+       search.
+      %Lkp-Later
+       apply R1 to L1. search.
+   %rest
+    search.
+
+Prove looseEval:host:evalExpr_scopes_same_exists,
+      looseEval:host:evalStmt_scopes_same_exists,
+      looseEval:host:evalArgs_scopes_same_exists,
+      looseEval:host:evalRecFields_scopes_same_exists.
+case IsS. apply IH_E to _ _ _ _ SS EvA1. case SS. search.
+
+Prove_Constraint looseEval:host:proj_evalExpr_exists.
+
+Prove_Constraint looseEval:host:proj_evalStmt_exists.
+case Ev. search.
+Prove_Constraint looseEval:host:proj_evalStmt_rel.
+Ev: case Ev. Ev_P: case Ev_P. case IsS.
+apply evalExpr_unique to _ _ _ Ev_P Ev.
+apply evalExpr_isValue to _ _ _ Ev. case IsEE.
+backchain scopes_same_reflexive.
+
+Prove_Ext_Ind looseEval:host:evalExpr,
+              looseEval:host:evalArgs,
+              looseEval:host:evalRecFields,
+              looseEval:host:evalStmt.
+case IsS. apply ext_size_is_int_evalExpr to R2.
+L: apply lt_plus_one to R1 _. apply ext_size_pos_evalExpr to R2.
+Acc: case Acc. A: apply Acc to _ L. apply IH to R2 A _ _ _.
+apply names_exists to IsEE. search.
+
+Prove looseEval:host:paramName_unique.
+case PB. search.
+Prove_Constraint looseEval:host:proj_paramName_forward.
+case PN. search.
+Prove_Constraint looseEval:host:proj_paramName_back.
+case PN. search.
+
+Prove looseEval:host:getFunEvalInfo_unique.
+GFEIB: case GFEIB. case IsF.
+apply paramNames_unique to _ GFEIA1 GFEIB. search.
+Prove_Constraint looseEval:host:proj_getFunEvalInfo_forward.
+case GFEI. search.
+Prove_Constraint looseEval:host:proj_getFunEvalInfo_back.
+case GFEI. search.
+
+Prove looseEval:host:evalProgram_unique.
+Prove_Constraint looseEval:host:proj_evalProgram.
+Prove_Constraint looseEval:host:proj_evalProgram_back.
+
+
+Prove looseEval:host:evalExpr_typePres,
+      looseEval:host:evalStmt_typePres,
+      looseEval:host:evalArgs_typePres,
+      looseEval:host:evalRecFields_typePres.
+case IsS. Ty: case Ty. apply IH_E to _ _ _ _ _ Ty1 Ev1 _ _.
+R: case Ctxs. unfold.
+  %lookup
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply R to L1. search.
+  %no_lookup
+   intros NL. NL: case NL. apply R1 to NL1. search.
+  %rest
+   search.
+
+
+Prove looseEval:host:paramTy_paramName_same.
+case PN. search.
+Prove looseEval:host:funOK_getFunEvalInfo_related.
+GFEI: case GFEI.
+Z: apply paramTys_values_names_zip_same to FOK1 FOK4 GFEI.
+exists RetTy, PTys, ParamTys, FinalTC. search.
+
+
+Prove looseEval:host:evalExpr_output_forms,
+      looseEval:host:evalStmt_output_forms,
+      looseEval:host:evalArgs_output_forms,
+      looseEval:host:evalRecFields_output_forms.
+case IsS. apply IH_E to _ _ _ Ev1. search.
+
+
+Prove looseEval:host:evalProgram_output_forms.
+
+
+Prove looseEval:host:paramName_exists.
+search.
+Prove looseEval:host:getFunEvalInfo_exists.
+apply paramNames_exists to IsF6. search.
+
+
+
+
+
+/********************************************************************
+    _____                      _ _
+  / ____|                    (_) |
+ | (___   ___  ___ _   _ _ __ _| |_ _   _
+  \___ \ / _ \/ __| | | | '__| | __| | | |
+  ____) |  __/ (__| |_| | |  | | |_| |_| |
+ |_____/ \___|\___|\__,_|_|  |_|\__|\__, |
+                                     __/ |
+  _____                           _ |___/
+ |  __ \                         | | (_)
+ | |__) | __ ___  _ __   ___ _ __| |_ _  ___  ___
+ |  ___/ '__/ _ \| '_ \ / _ \ '__| __| |/ _ \/ __|
+ | |   | | | (_) | |_) |  __/ |  | |_| |  __/\__ \
+ |_|   |_|  \___/| .__/ \___|_|   \__|_|\___||___/
+                 | |
+                 |_|
+ Security Properties
+ ********************************************************************/
+
+/********************************************************************
+ Properties about join
+ ********************************************************************/
+Extensible_Theorem
+  join_is : forall L1 L2 R,
+    Is1 : is_slev L1 ->
+    Is2 : is_slev L2 ->
+    J : join L1 L2 R ->
+    is_slev R
+  on J.
+%J-Public
+ search.
+%J-Private-L
+ search.
+%J-Private-R
+ search.
+
+
+%need this because we can't analyze it due to restrictions
+Extensible_Theorem
+  join_private_right : forall L R,
+    Is : is_slev L ->
+    J : join L private R ->
+    R = private
+  on J.
+%J-Private-L
+ search.
+%J-Private-R
+ search.
+
+
+Extensible_Theorem
+  join_unique : forall L1 L2 LA LB,
+    Is1 : is_slev L1 ->
+    Is2 : is_slev L2 ->
+    JA : join L1 L2 LA ->
+    JB : join L1 L2 LB ->
+    LA = LB
+  on JA.
+%J-Public
+ JB: case JB. search.
+%J-Private-L
+ JB: case JB.
+   %J-Private-L
+    search.
+   %J-Private-R
+    search.
+%J-Private-R
+ apply join_private_right to _ JB. search.
+
+
+Extensible_Theorem
+  join_private : forall L1 L2,
+    Is1 : is_slev L1 ->
+    Is2 : is_slev L2 ->
+    J : join L1 L2 private ->
+    L1 = private \/ L2 = private
+  on J.
+%J-Private-L
+ search.
+%J-Private-R
+ search.
+
+
+Extensible_Theorem
+  join_public : forall L1 L2,
+    Is1 : is_slev L1 ->
+    Is2 : is_slev L2 ->
+    J : join L1 L2 public ->
+    L1 = public /\ L2 = public
+  on J.
+%J-Public
+ search.
+
+
+
+
+/********************************************************************
+ Security is
+ ********************************************************************/
+Theorem lookup_is_slev : forall L X Lev,
+  is_list (is_pair is_string is_slev) L -> lookup L X Lev ->
+  is_slev Lev.
+induction on 2. intros Is L. L: case L.
+  %Lkp-Here
+   Is: case Is. case Is. search.
+  %Lkp-Later
+   case Is. apply IH to _ L1. search.
+
+
+Theorem lookupScopes_is_slev : forall SG X Lev,
+  is_list (is_list (is_pair is_string is_slev)) SG ->
+  lookupScopes X SG Lev -> is_slev Lev.
+induction on 2. intros Is LS. LS: case LS.
+  %LS-FirstScope
+   case Is. apply lookup_is_slev to _ LS. search.
+  %LS-Later
+   case Is. apply IH to _ LS1. search.
+
+
+Theorem lookupSecFun_is : forall SF F Lev PLs,
+  is_list (is_pair is_string
+          (is_pair is_slev (is_list is_slev))) SF ->
+  lookup SF F (Lev, PLs) -> is_slev Lev /\ is_list is_slev PLs.
+induction on 2. intros Is L. L: case L.
+  %Lkp-Here
+   Is: case Is. Is: case Is. case Is2. search.
+  %Lkp-Later
+   case Is. apply IH to _ L1. search.
+
+
+Theorem domain_is_sec : forall L D,
+  is_list (is_pair is_string is_slev) L -> domain L D ->
+  is_list is_string D.
+induction on 2. intros Is D. D: case D.
+  %Dmn-Nil
+   search.
+  %Dmn-Cons
+   Is: case Is. case Is. apply IH to _ D. search.
+
+
+Theorem names_is_sec : forall SG Names,
+  is_list (is_list (is_pair is_string is_slev)) SG ->
+  names SG Names -> is_list is_string Names.
+induction on 2. intros Is N. N: case N.
+  %Names-Nil
+   search.
+  %Names-Cons
+   case Is. apply domain_is_sec to _ N. apply IH to _ N1.
+   apply append_list_string_is to _ _ N2. search.
+
+
+Theorem mem_is_sec : forall L IDS,
+  is_list (is_pair is_string is_slev) L -> mem IDS L ->
+  is_pair is_string is_slev IDS.
+induction on 2. intros Is M. M: case M.
+  %Mem-Here
+   case Is. search.
+  %Mem-Later
+   case Is. apply IH to _ M. search.
+
+
+Extensible_Theorem
+  level_is : forall SF SG PC E L,
+    IsE : is_expr E ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    Lev : level SF SG PC E L ->
+    is_slev L
+  on Lev as IH_E,
+  secure_is : forall SF SG PC S SG',
+    IsS : is_stmt S ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    Sec : secure SF SG PC S SG' ->
+    is_list (is_list (is_pair is_string is_slev)) SG'
+  on Sec as IH_S
+also
+  levelArgs_is : forall SF SG PC A L,
+    IsA : is_args A ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    Lev : levelArgs SF SG PC A L ->
+    is_list is_slev L
+  on Lev as IH_A,
+  levelRecFields_is : forall SF SG PC RF L,
+    IsRF : is_recFieldExprs RF ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    Lev : levelRecFields SF SG PC RF L ->
+    is_slev L
+  on Lev as IH_RF.
+%level_unique
+ %L-Num
+  search.
+ %L-Plus
+  case IsE. apply IH_E to _ _ _ Lev1. apply IH_E to _ _ _ Lev2.
+  apply join_is to _ _ Lev3. search.
+ %L-Minus
+  case IsE. apply IH_E to _ _ _ Lev1. apply IH_E to _ _ _ Lev2.
+  apply join_is to _ _ Lev3. search.
+ %L-Mult
+  case IsE. apply IH_E to _ _ _ Lev1. apply IH_E to _ _ _ Lev2.
+  apply join_is to _ _ Lev3. search.
+ %L-Div
+  case IsE. apply IH_E to _ _ _ Lev1. apply IH_E to _ _ _ Lev2.
+  apply join_is to _ _ Lev3. search.
+ %L-True
+  search.
+ %L-False
+  search.
+ %L-And
+  case IsE. apply IH_E to _ _ _ Lev1. apply IH_E to _ _ _ Lev3.
+  apply join_is to _ _ Lev4. search.
+ %L-Or
+  case IsE. apply IH_E to _ _ _ Lev1. apply IH_E to _ _ _ Lev3.
+  apply join_is to _ _ Lev4. search.
+ %L-Not
+  case IsE. apply IH_E to _ _ _ Lev1. search.
+ %L-Greater
+  case IsE. apply IH_E to _ _ _ Lev1. apply IH_E to _ _ _ Lev2.
+  apply join_is to _ _ Lev3. search.
+ %L-Eq
+  case IsE. apply IH_E to _ _ _ Lev1. apply IH_E to _ _ _ Lev2.
+  apply join_is to _ _ Lev3. search.
+ %L-String
+  search.
+ %L-AppString
+  case IsE. apply IH_E to _ _ _ Lev1. apply IH_E to _ _ _ Lev2.
+  apply join_is to _ _ Lev3. search.
+ %L-Name
+  apply lookupScopes_is_slev to _ Lev1. search.
+ %L-Call-Private
+  apply lookupSecFun_is to _ Lev1. search.
+ %L-Coll-Public
+  apply lookupSecFun_is to _ Lev1. search.
+ %L-RecBuild
+  case IsE. apply IH_RF to _ _ _ Lev1. search.
+ %L-RecAccess
+  case IsE. apply IH_E to _ _ _ Lev1. search.
+ %L-Error
+  case IsE. apply IH_E to _ _ _ Lev1. search.
+ %L-Default
+  apply proj_expr_is to Lev1 _. apply IH_E to _ _ _ Lev2. search.
+%secure_unique
+ %S-Noop
+  search.
+ %S-Seq
+  case IsS. apply IH_S to _ _ _ Sec1. apply IH_S to _ _ _ Sec2.
+  search.
+ %S-Declare
+  case IsS. case IsSG. search.
+ %S-Assign-Private
+  search.
+ %S-Assign-Public
+  search.
+ %S-RecUpdate-Private
+  search.
+ %S-RecUpdate-Public
+  search.
+ %S-IfThenElse
+  search.
+ %S-While-Private
+  search.
+ %S-While-Public
+  search.
+ %S-ScopeStmt
+  search.
+ %S-Print
+  search.
+ %S-Secdecl-Private
+  case IsS. case IsSG. search.
+ %S-Secdecl-Public
+  case IsS. case IsSG. search.
+ %S-Default
+  apply names_is_sec to _ Sec1. apply proj_stmt_is to Sec2 _ _.
+  apply IH_S to _ _ _ Sec3. search.
+%levelArgs_unique
+ Lev: case Lev (keep).
+   %LA-Nil
+    search.
+   %LA-Cons
+    case IsA. apply IH_E to _ _ _ Lev1. apply IH_A to _ _ _ Lev2.
+    search.
+%levelRecFields_unique
+ Lev: case Lev (keep).
+   %LRF-Nil
+    search.
+   %LRF-Cons
+    case IsRF. apply IH_E to _ _ _ Lev1. apply IH_RF to _ _ _ Lev2.
+    apply join_is to _ _ Lev3. search.
+
+
+
+
+/********************************************************************
+ Uniqueness of security
+ ********************************************************************/
+Extensible_Theorem
+  level_unique : forall SF SG PC E LA LB,
+    IsE : is_expr E ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    IsPC : is_slev PC ->
+    LevA : level SF SG PC E LA ->
+    LevB : level SF SG PC E LB ->
+    LA = LB
+  on LevA as IH_E,
+  secure_unique : forall SF SG PC S SGA SGB,
+    IsS : is_stmt S ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    IsPC : is_slev PC ->
+    SecA : secure SF SG PC S SGA ->
+    SecB : secure SF SG PC S SGB ->
+    SGA = SGB
+  on SecA as IH_S
+also
+  levelArgs_unique : forall SF SG PC A LA LB,
+    IsA : is_args A ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    IsPC : is_slev PC ->
+    LevA : levelArgs SF SG PC A LA ->
+    LevB : levelArgs SF SG PC A LB ->
+    LA = LB
+  on LevA as IH_A,
+  levelRecFields_unique : forall SF SG PC RF LA LB,
+    IsRF : is_recFieldExprs RF ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    IsPC : is_slev PC ->
+    LevA : levelRecFields SF SG PC RF LA ->
+    LevB : levelRecFields SF SG PC RF LB ->
+    LA = LB
+  on LevA as IH_RF.
+%level_unique
+ %L-Num
+  case LevB. search.
+ %L-Plus
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  apply IH_E to _ _ _ _ LevA2 LevB1. apply level_is to _ _ _ LevA1.
+  apply level_is to _ _ _ LevA2. apply join_unique to _ _ LevA3 LevB2.
+  search.
+ %L-Minus
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  apply IH_E to _ _ _ _ LevA2 LevB1. apply level_is to _ _ _ LevA1.
+  apply level_is to _ _ _ LevA2. apply join_unique to _ _ LevA3 LevB2.
+  search.
+ %L-Mult
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  apply IH_E to _ _ _ _ LevA2 LevB1. apply level_is to _ _ _ LevA1.
+  apply level_is to _ _ _ LevA2. apply join_unique to _ _ LevA3 LevB2.
+  search.
+ %L-Div
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  apply IH_E to _ _ _ _ LevA2 LevB1. apply level_is to _ _ _ LevA1.
+  apply level_is to _ _ _ LevA2. apply join_unique to _ _ LevA3 LevB2.
+  search.
+ %L-True
+  case LevB. search.
+ %L-False
+  case LevB. search.
+ %L-And
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  apply level_is to _ _ _ LevA1. apply level_is to _ _ _ LevB.
+  apply join_unique to _ _ LevA2 LevB1. apply join_is to _ _ LevA2.
+  apply IH_E to _ _ _ _ LevA3 LevB2. apply level_is to _ _ _ LevA1.
+  apply level_is to _ _ _ LevA3. apply join_unique to _ _ LevA4 LevB3.
+  search.
+ %L-Or
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  apply level_is to _ _ _ LevA1. apply level_is to _ _ _ LevB.
+  apply join_unique to _ _ LevA2 LevB1. apply join_is to _ _ LevA2.
+  apply IH_E to _ _ _ _ LevA3 LevB2. apply level_is to _ _ _ LevA1.
+  apply level_is to _ _ _ LevA3. apply join_unique to _ _ LevA4 LevB3.
+  search.
+ %L-Not
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB. search.
+ %L-Greater
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  apply IH_E to _ _ _ _ LevA2 LevB1. apply level_is to _ _ _ LevA1.
+  apply level_is to _ _ _ LevA2. apply join_unique to _ _ LevA3 LevB2.
+  search.
+ %L-Eq
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  apply IH_E to _ _ _ _ LevA2 LevB1. apply level_is to _ _ _ LevA1.
+  apply level_is to _ _ _ LevA2. apply join_unique to _ _ LevA3 LevB2.
+  search.
+ %L-String
+  case LevB. search.
+ %L-AppString
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  apply IH_E to _ _ _ _ LevA2 LevB1. apply level_is to _ _ _ LevA1.
+  apply level_is to _ _ _ LevA2. apply join_unique to _ _ LevA3 LevB2.
+  search.
+ %L-Name
+  case IsE. LevB: case LevB. apply lookupScopes_unique to LevA1 LevB.
+  search.
+ %L-Call-Private
+  case IsE. LevB: case LevB. apply lookup_unique to LevA1 LevB.
+  search.
+ %L-Call-Public
+  case IsE. LevB: case LevB. apply lookup_unique to LevA1 LevB.
+  search.
+ %L-RecBuild
+  case IsE. LevB: case LevB. apply IH_RF to _ _ _ _ LevA1 LevB.
+  search.
+ %L-RecAccess
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  search.
+ %L-Error
+  case IsE. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+  search.
+ %L-Default
+  apply proj_expr_is to LevA1 _. LevB: case LevB.
+  apply proj_expr_unique to LevA1 LevB _.
+  apply IH_E to _ _ _ _ LevA2 LevB1. search.
+%secure_unique
+ %S-Noop
+  case SecB. search.
+ %S-Seq
+  case IsS. SecB: case SecB. apply IH_S to _ _ _ _ SecA1 SecB.
+  apply secure_is to _ _ _ SecA1. apply secure_is to _ _ _ SecB.
+  apply IH_S to _ _ _ _ SecA2 SecB1. search.
+ %S-Declare
+  case IsS. SecB: case SecB. search.
+ %S-Assign-Private
+  case IsS. SecB: case SecB.
+    %S-Assign-Private
+     search.
+    %S-Assign-Public
+     search.
+ %S-Assign-Public
+  case SecB.
+    %S-Assign-Private
+     search.
+    %S-Assign-Public
+     search.
+ %S-RecUpdate-Private
+  case SecB.
+    %S-RecUpdate-Private
+     search.
+    %S-RecUpdate-Public
+     search.
+ %S-RecUpdate-Public
+  case SecB.
+    %S-RecUpdate-Private
+     search.
+    %S-RecUpdate-Public
+     search.
+ %S-IfThenElse
+  case SecB. search.
+ %S-While-Private
+  case SecB. search.
+ %S-While-Public
+  case SecB. search.
+ %S-ScopeStmt
+  case SecB. search.
+ %S-Print
+  case SecB. search.
+ %S-Secdecl-Private
+  case SecB. search.
+ %S-Secdecl-Public
+  case SecB. search.
+ %S-Default
+  SecB: case SecB. apply names_is_sec to _ SecA1.
+  apply proj_stmt_is to SecA2 _ _. apply names_unique to SecA1 SecB.
+  apply proj_stmt_unique to SecA2 SecB1 _ _ _ _ _.
+  apply IH_S to _ _ _ _ SecA3 SecB2. search.
+%levelArgs_unique
+ LevA: case LevA (keep).
+   %LA-Nil
+    case LevB. search.
+   %LA-Cons
+    case IsA. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+    apply IH_A to _ _ _ _ LevA2 LevB1. search.
+%levelRecFields_unique
+ LevA: case LevA (keep).
+   %LRF-Nil
+    case LevB. search.
+   %LRF-Cons
+    case IsRF. LevB: case LevB. apply IH_E to _ _ _ _ LevA1 LevB.
+    apply IH_RF to _ _ _ _ LevA2 LevB1. apply level_is to _ _ _ LevA1.
+    apply levelRecFields_is to _ _ _ LevA2.
+    apply join_unique to _ _ LevA3 LevB2. search.
+
+
+
+
+/********************************************************************
+ Uniqueness of security
+ ********************************************************************/
+Extensible_Theorem
+  secure_older_scopes : forall SF Scope SG PC S SG',
+    IsS : is_stmt S ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev))
+              (Scope::SG) ->
+    Sec : secure SF (Scope::SG) PC S SG' ->
+    exists Scope', SG' = Scope'::SG /\
+       (forall X L, lookup Scope X L -> lookup Scope' X L)
+  on Sec.
+%S-Noop
+ search.
+%S-Seq
+ case IsS. A: apply IH to _ _ _ Sec1. apply secure_is to _ _ _ Sec1.
+ B: apply IH to _ _ _ Sec2. exists Scope'1. split. search.
+ intros L. L': apply A to L. apply B to L'. search.
+%S-Declare
+ exists (X, public)::Scope. split. search. intros L.
+ assert X = X1 -> false.
+   intros E. case E. apply no_lookup to Sec2 L.
+ search.
+%S-Assign-Private
+ search.
+%S-Assign-Public
+ search.
+%S-RecUpdate-Private
+ search.
+%S-RecUpdate-Public
+ search.
+%S-IfThenElse
+ search.
+%S-While-Private
+ search.
+%S-While-Public
+ search.
+%S-ScopeStmt
+ search.
+%S-Print
+ search.
+%S-Secdecl-Private
+ exists (X, private)::Scope. split. search. intros L.
+ assert X = X1 -> false.
+   intros E. case E. apply no_lookup to Sec2 L.
+ search.
+%S-Secdecl-Public
+ exists (X, public)::Scope. split. search. intros L.
+ assert X = X1 -> false.
+   intros E. case E. apply no_lookup to Sec2 L.
+ search.
+%S-Default
+ apply names_is_sec to _ Sec1. apply proj_stmt_is to Sec2 _ _.
+ apply proj_stmt_is to Sec2 _ _. apply IH to _ _ _ Sec3. search.
+
+
+
+
+/********************************************************************
+ All variables in a public term are public
+ ********************************************************************/
+Define secFuns : list (pair string (pair slev (list slev))) -> prop by
+secFuns SF :=
+  forall F ArgLevs,
+    lookup SF F (public, ArgLevs) -> allPublic ArgLevs.
+
+Extensible_Theorem
+  public_vars : forall E SF SG PC V X,
+    IsE : is_expr E ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    IsPC : is_slev PC ->
+    SecFuns : secFuns SF ->
+    Lev : level SF SG PC E public ->
+    Vars : vars E V ->
+    Mem : mem X V ->
+    lookupScopes X SG public
+  on Lev as IH_E
+also
+  /*This is where all args to functions returning public must be
+    public themselves, as we need the vars in the args used in a
+    public expression to be public as well.*/
+  public_varsArgs : forall A SF SG PC Ls V X,
+    IsA : is_args A ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    IsPC : is_slev PC ->
+    SecFuns : secFuns SF ->
+    Lev : levelArgs SF SG PC A Ls ->
+    AP : allPublic Ls ->
+    Vars : varsArgs A V ->
+    Mem : mem X V ->
+    lookupScopes X SG public
+  on Lev as IH_A,
+  public_varsRecFields : forall RF SF SG PC V X,
+    IsRF : is_recFieldExprs RF ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    IsPC : is_slev PC ->
+    SecFuns : secFuns SF ->
+    Lev : levelRecFields SF SG PC RF public ->
+    Vars : varsRecFields RF V ->
+    Mem : mem X V ->
+    lookupScopes X SG public
+  on Lev as IH_RF.
+%public_vars
+ %L-Num
+  case Vars. case Mem.
+ %L-Plus
+  case IsE. Vars: case Vars. apply level_is to _ _ _ Lev1.
+  apply level_is to _ _ _ Lev2. apply join_public to _ _ Lev3.
+  Or: apply mem_append to Mem Vars2. M: case Or.
+    %mem X V2
+     apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+    %mem X V3
+     apply IH_E to _ _ _ _ _ Lev2 Vars1 M. search.
+ %L-Minus
+  case IsE. Vars: case Vars. apply level_is to _ _ _ Lev1.
+  apply level_is to _ _ _ Lev2. apply join_public to _ _ Lev3.
+  Or: apply mem_append to Mem Vars2. M: case Or.
+    %mem X V2
+     apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+    %mem X V3
+     apply IH_E to _ _ _ _ _ Lev2 Vars1 M. search.
+ %L-Mult
+  case IsE. Vars: case Vars. apply level_is to _ _ _ Lev1.
+  apply level_is to _ _ _ Lev2. apply join_public to _ _ Lev3.
+  Or: apply mem_append to Mem Vars2. M: case Or.
+    %mem X V2
+     apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+    %mem X V3
+     apply IH_E to _ _ _ _ _ Lev2 Vars1 M. search.
+ %L-Div
+  case IsE. Vars: case Vars. apply level_is to _ _ _ Lev1.
+  apply level_is to _ _ _ Lev2. apply join_public to _ _ Lev3.
+  Or: apply mem_append to Mem Vars2. M: case Or.
+    %mem X V2
+     apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+    %mem X V3
+     apply IH_E to _ _ _ _ _ Lev2 Vars1 M. search.
+ %L-True
+  case Vars. case Mem.
+ %L-False
+  case Vars. case Mem.
+ %L-And
+  case IsE. Vars: case Vars. apply level_is to _ _ _ Lev1.
+  apply join_is to _ _ Lev2. apply level_is to _ _ _ Lev3.
+  apply join_public to _ _ Lev4. Or: apply mem_append to Mem Vars2.
+  M: case Or.
+    %mem X V2
+     apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+    %mem X V3
+     apply IH_E to _ _ _ _ _ Lev3 Vars1 M. search.
+ %L-Or
+  case IsE. Vars: case Vars. apply level_is to _ _ _ Lev1.
+  apply join_is to _ _ Lev2. apply level_is to _ _ _ Lev3.
+  apply join_public to _ _ Lev4. Or: apply mem_append to Mem Vars2.
+  M: case Or.
+    %mem X V2
+     apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+    %mem X V3
+     apply IH_E to _ _ _ _ _ Lev3 Vars1 M. search.
+ %L-Not
+  case IsE. Vars: case Vars. apply IH_E to _ _ _ _ _ Lev1 Vars Mem.
+  search.
+ %L-Greater
+  case IsE. Vars: case Vars. apply level_is to _ _ _ Lev1.
+  apply level_is to _ _ _ Lev2. apply join_public to _ _ Lev3.
+  Or: apply mem_append to Mem Vars2. M: case Or.
+    %mem X V2
+     apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+    %mem X V3
+     apply IH_E to _ _ _ _ _ Lev2 Vars1 M. search.
+ %L-Eq
+  case IsE. Vars: case Vars. apply level_is to _ _ _ Lev1.
+  apply level_is to _ _ _ Lev2. apply join_public to _ _ Lev3.
+  Or: apply mem_append to Mem Vars2. M: case Or.
+    %mem X V2
+     apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+    %mem X V3
+     apply IH_E to _ _ _ _ _ Lev2 Vars1 M. search.
+ %L-String
+  case Vars. case Mem.
+ %L-AppString
+  case IsE. Vars: case Vars. apply level_is to _ _ _ Lev1.
+  apply level_is to _ _ _ Lev2. apply join_public to _ _ Lev3.
+  Or: apply mem_append to Mem Vars2. M: case Or.
+    %mem X V2
+     apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+    %mem X V3
+     apply IH_E to _ _ _ _ _ Lev2 Vars1 M. search.
+ %L-Name
+  case Vars. Mem: case Mem.
+    %Mem-Here
+     search.
+    %Mem-Later
+     case Mem.
+ %L-Call-Public
+  case IsE. RF: case SecFuns (keep). AP: apply RF to Lev1.
+  Vars: case Vars. apply IH_A to _ _ _ _ SecFuns Lev2 AP Vars Mem.
+  search.
+ %L-RecBuild
+  case IsE. Vars: case Vars. apply IH_RF to _ _ _ _ _ Lev1 Vars Mem.
+  search.
+ %L-RecAccess
+  case IsE. Vars: case Vars. apply IH_E to _ _ _ _ _ Lev1 Vars Mem.
+  search.
+ %L-Error
+  case IsE. Vars: case Vars. apply IH_E to _ _ _ _ _ Lev1 Vars Mem.
+  search.
+ %L-Default
+  IsE_P: apply proj_expr_is to Lev1 _.
+  Vars_P: apply vars_exist to IsE_P.
+  Mem_P: apply proj_vars to Lev1 _ Vars Vars_P Mem.
+  apply IH_E to _ _ _ _ _ Lev2 Vars_P Mem_P. search.
+%public_varsArgs
+ Lev: case Lev (keep).
+   %LA-Nil
+    case Vars. case Mem.
+   %LA-Cons
+    case IsA. Vars: case Vars. AP: case AP.
+    Or: apply mem_append to Mem Vars2. M: case Or.
+      %mem X VE
+       apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+      %mem X VRest
+       apply IH_A to _ _ _ _ _ Lev2 AP Vars1 M. search.
+%public_varsRecFields
+ Lev: case Lev (keep).
+   %LRF-Nil
+    case Vars. case Mem.
+   %LRF-Cons
+    case IsRF. Vars: case Vars. apply level_is to _ _ _ Lev1.
+    apply levelRecFields_is to _ _ _ Lev2.
+    apply join_public to _ _ Lev3. Or: apply mem_append to Mem Vars2.
+    M: case Or.
+      %mem X VE
+       apply IH_E to _ _ _ _ _ Lev1 Vars M. search.
+      %mem X VRest
+       apply IH_RF to _ _ _ _ _ Lev2 Vars1 M. search.
+
+
+
+
+/********************************************************************
+ Names in contexts related
+ ********************************************************************/
+Theorem names_same_scopes_same[V] :
+  forall A B (C : list (list (pair string V))),
+    is_list (is_list (is_pair is_string is_value)) A ->
+    is_list (is_list (is_pair is_string is_value)) B ->
+    names_same A C -> scopes_same A B -> names_same B C.
+induction on 3. intros IsA IsB NS SS. NS: case NS.
+  %nil
+   case SS. search.
+  %cons
+   SS: case SS. IsA: case IsA.  IsB: case IsB. unfold.
+     %mem B -> mem C
+      intros MB. IsP: apply mem_is to _ MB. IsX: case IsP.
+      LB: apply is_list_mem_lookup to _ MB _. LA: apply SS1 to LB.
+      MA: apply lookup_mem to LA. apply NS to MA. search.
+     %mem C -> mem B
+      intros MC. MA: apply NS1 to MC. IsP: apply mem_is to _ MA.
+      IsX: case IsP. LA: apply is_list_mem_lookup to _ MA _.
+      LB: apply SS to LA. MB: apply lookup_mem to LB. search.
+     %rest
+      apply IH to _ _ NS2 SS2. search.
+
+
+Theorem zip_names_same[A, B] :
+  forall (Names : list string) (A : list A) (B : list B) ZA ZB,
+    zip Names A ZA -> zip Names B ZB -> names_same [ZA] [ZB].
+induction on 1. intros ZA ZB. ZA: case ZA.
+  %Zip-Nil
+   case ZB. unfold. intros M. case M. intros M. case M. search.
+  %Zip-Cons
+   ZB: case ZB. NS: apply IH to ZA ZB. NS: case NS. unfold.
+     %mems ->
+      intros M. M: case M.
+        %Mem-Here
+         search.
+        %Mem-Later
+         apply NS to M. search.
+     %mems <-
+      intros M. M: case M.
+        %Mem-Here
+         search.
+        %Mem-Later
+         apply NS1 to M. search.
+     %rest
+      search.
+
+
+Extensible_Theorem
+  secure_eval_names_same : forall S SF SG PC SG' FE Scope EE EE' O,
+    IsS : is_stmt S ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    IsFE : is_list (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE ->
+    IsEE : is_list (is_list (is_pair is_string is_value))
+              (Scope::EE) ->
+    NS : names_same (Scope::EE) SG ->
+    Ev : evalStmt FE (Scope::EE) S EE' O ->
+    Sec : secure SF SG PC S SG' ->
+    names_same EE' SG'
+  on Ev.
+%ExtInd validity
+ search.
+%Actual property
+ %E-Noop
+  case Sec. search.
+ %E-Seq
+  case IsS. Sec: case Sec. NS': apply IH to _ _ _ _ _ _ Ev1 Sec.
+  apply evalStmt_isCtx to _ _ _ Ev1. apply secure_is to _ _ _ Sec.
+  case NS. apply secure_older_scopes to _ _ _ Sec. case NS' (keep).
+  apply IH to _ _ _ _ _ _ Ev2 Sec1. search.
+ %E-Declare
+  case IsS. Sec: case Sec. R: case NS. unfold.
+    %mem EE -> mem SG
+     intros M. M: case M.
+       %Mem-Here (X1 = X)
+        search.
+       %Mem-Later
+        apply R to M. search.
+    %mem SG -> mem EE
+     intros M. M: case M.
+       %Mem-Here (X1 = X)
+        search.
+       %Mem-Later
+        apply R1 to M. search.
+    %rest
+     search.
+ %E-Assign
+  case IsS. Sec: case Sec.
+    %S-Assign-Private
+     NS': apply replaceScopes_names_same to _ Ev2.
+     NS2: apply names_same_symmetric to NS'.
+     apply names_same_transitive to NS2 NS. search.
+    %S-Assign-Public
+     NS': apply replaceScopes_names_same to _ Ev2.
+     NS2: apply names_same_symmetric to NS'.
+     apply names_same_transitive to NS2 NS. search.
+ %E-RecUpdate
+  case IsS. Sec: case Sec.
+    %S-Assign-Private
+     NS': apply replaceScopes_names_same to _ Ev4.
+     NS2: apply names_same_symmetric to NS'.
+     apply names_same_transitive to NS2 NS. search.
+    %S-Assign-Public
+     NS': apply replaceScopes_names_same to _ Ev4.
+     NS2: apply names_same_symmetric to NS'.
+     apply names_same_transitive to NS2 NS. search.
+ %E-If-True
+  case IsS. Sec: case Sec. apply names_same_add_scope to NS.
+  NS': apply IH to _ _ _ _ _ _ Ev2 Sec2. case NS'.
+  apply secure_older_scopes to _ _ _ Sec2. search.
+ %E-If-False
+  case IsS. Sec: case Sec. apply names_same_add_scope to NS.
+  NS': apply IH to _ _ _ _ _ _ Ev2 Sec3. case NS'.
+  apply secure_older_scopes to _ _ _ Sec3. search.
+ %E-While-True
+  case IsS. Sec: case Sec (keep).
+    %S-While-Private
+     NS1: apply names_same_add_scope to NS.
+     NS': apply IH to _ _ _ _ _ _ Ev2 Sec2.
+     apply secure_older_scopes to _ _ _ Sec2. NS+: case NS'.
+     IsEE4+: apply evalStmt_isCtx to _ _ _ Ev2. case IsEE4+.
+     case NS. case NS+2. apply IH to _ _ _ _ _ _ Ev3 Sec. search.
+    %S-While-Public
+     NS1: apply names_same_add_scope to NS.
+     NS': apply IH to _ _ _ _ _ _ Ev2 Sec2.
+     apply secure_older_scopes to _ _ _ Sec2. NS+: case NS'.
+     IsEE4+: apply evalStmt_isCtx to _ _ _ Ev2. case IsEE4+.
+     case NS. case NS+2. apply IH to _ _ _ _ _ _ Ev3 Sec. search.
+ %E-While-False
+  case IsS. Sec: case Sec.
+    %S-While-Private
+     search.
+    %S-While-Public
+     search.
+ %E-ScopeStmt
+  case IsS. apply names_same_add_scope to NS. Sec: case Sec.
+  NS': apply IH to _ _ _ _ _ _ Ev1 Sec. case NS'.
+  apply secure_older_scopes to _ _ _ Sec. search.
+ %E-Print-Int
+  case IsS. Sec: case Sec. search.
+ %E-Print-True
+  case IsS. Sec: case Sec. search.
+ %E-Print-False
+  case IsS. Sec: case Sec. search.
+ %E-Print-String
+  case IsS. Sec: case Sec. search.
+ %E-Secdecl
+  case IsS. Sec: case Sec.
+    %S-Secdecl-Private
+      R: case NS. unfold.
+       %mem EE -> mem SG
+        intros M. M: case M.
+          %Mem-Here (X1 = X)
+           search.
+          %Mem-Later
+           apply R to M. search.
+       %mem SG -> mem EE
+        intros M. M: case M.
+          %Mem-Here (X1 = X)
+           search.
+          %Mem-Later
+           apply R1 to M. search.
+       %rest
+        search.
+    %S-Secdecl-Public
+     R: case NS. unfold.
+       %mem EE -> mem SG
+        intros M. M: case M.
+          %Mem-Here (X1 = X)
+           search.
+          %Mem-Later
+           apply R to M. search.
+       %mem SG -> mem EE
+        intros M. M: case M.
+          %Mem-Here (X1 = X)
+           search.
+          %Mem-Later
+           apply R1 to M. search.
+       %rest
+        search.
+ %E-Stmt-Q
+  Sec: case Sec. apply names_is to _ Ev1.
+  apply names_is_sec to _ Sec.
+  apply proj_stmt_unique to Sec1 Ev2 _ _ _ _ _.
+    %mem Names -> mem Names1
+     intros M. apply names_same_names to NS Ev1 Sec M. search.
+    %mem Names1 -> mem Names
+     intros M. apply names_same_names_back to NS Ev1 Sec M. search.
+  apply proj_stmt_is to Sec1 _ _.
+  NS': apply IH to _ _ _ _ _ _ Ev3 Sec2.
+  EvP: apply proj_evalStmt_exists to Ev2 Ev1 _ _ _ Ev.
+  SS: apply proj_evalStmt_rel to Ev2 Ev1 _ _ _ Ev EvP.
+  apply evalStmt_unique to _ _ _ EvP Ev3.
+  apply evalStmt_isCtx to _ _ _ Ev.
+  apply evalStmt_isCtx to _ _ _ EvP.
+  SS': apply scopes_same_symm to SS.
+  apply names_same_scopes_same to _ _ NS' SS'. search.
+
+
+
+
+/********************************************************************
+ Properties of public_equiv
+ ********************************************************************/
+Define public_equiv :
+  list (list (pair string slev)) -> list (list (pair string value)) ->
+  list (list (pair string value)) -> prop by
+public_equiv [] [] [];
+public_equiv (SScope::S) (Scope1::G1) (Scope2::G2) :=
+  %lookup same for public
+  (forall X V,
+      lookup SScope X public -> lookup Scope1 X V ->
+      lookup Scope2 X V) /\
+  (forall X V,
+      lookup SScope X public -> lookup Scope2 X V ->
+      lookup Scope1 X V) /\
+  %rest
+  public_equiv S G1 G2.
+
+
+Theorem no_lookup_names_same : forall A B X,
+  is_list (is_pair is_string is_value) B ->
+  (forall X IB, mem (X, IB) B ->
+      exists (IA : value), mem (X, IA) A) ->
+  no_lookup A X -> no_lookup B X.
+induction on 1. intros IsB MBA NA. IsB: case IsB.
+  %nil
+   search.
+  %cons
+   case IsB. MA: apply MBA to _ with X = A1.
+   assert A1 = X -> false.
+     intros E. case E. apply no_lookup_mem to NA MA.
+   apply IH to IsB1 _ NA.
+     intros M. MT: assert mem (X1, IB) ((A1, B1)::T). apply MBA to MT.
+     search.
+   search.
+
+
+Theorem public_equiv_lookupScopes : forall S G1 G2 X V,
+  public_equiv S G1 G2 -> names_same G1 S -> names_same G2 S ->
+  is_list (is_list (is_pair is_string is_value)) G2 ->
+  lookupScopes X S public ->
+  lookupScopes X G1 V -> lookupScopes X G2 V.
+induction on 5. intros PE NSA NSB IsB LSS LS. LSS: case LSS.
+  %LS-FirstScope
+   PE: case PE. LS: case LS.
+     %LS-FirstScope
+      apply PE to LSS LS. search.
+     %LS-Later
+      MS: apply lookup_mem to LSS. NSA: case NSA.
+      MA: apply NSA1 to MS. apply no_lookup_mem to LS MA.
+  %LS-Later
+   PE: case PE. LS: case LS.
+     %LS-FirstScope
+      MA: apply lookup_mem to LS. NSA: case NSA. MS: apply NSA to MA.
+      NSB: case NSB. MB: apply NSB1 to MS.
+      apply no_lookup_mem to LSS MS.
+     %LS-Later
+      NSA: case NSA. NSB: case NSB. IsB: case IsB.
+      apply IH to PE2 _ _ _ LSS1 LS1.
+      apply no_lookup_names_same to IsB _ LS.
+        intros MB. MS: apply NSB to MB. apply NSA1 to MS. search.
+      search.
+
+
+Theorem public_equiv_trans : forall SG GA GB GC,
+  public_equiv SG GA GB -> public_equiv SG GB GC ->
+  public_equiv SG GA GC.
+induction on 1. intros PAB PBC. PAB: case PAB.
+  %end
+   case PBC. search.
+  %step
+   PBC: case PBC. rename Scope1 to AS. rename Scope2 to BS.
+   rename Scope4 to CS. rename G1 to A. rename G2 to B.
+   rename G4 to C. unfold.
+     %lookup public ->
+      intros LS LA. LB: apply PAB to LS LA. apply PBC to LS LB.
+      search.
+     %lookup public <-
+      intros LS LC. LB: apply PBC1 to LS LC. apply PAB1 to LS LB.
+      search.
+     %rest
+      apply IH to PAB2 PBC2. search.
+
+
+Theorem public_equiv_refl : forall SG G,
+  names_same G SG -> public_equiv SG G G.
+induction on 1. intros NS. NS: case NS.
+  %end
+   search.
+  %step
+   unfold.
+     %lookup public ->
+      intros LPub L. search.
+     %lookup public <-
+      intros LPub L. search.
+     %rest
+      apply IH to NS2. search.
+
+
+Theorem public_equiv_symm : forall SG GA GB,
+  public_equiv SG GA GB -> public_equiv SG GB GA.
+induction on 1. intros PE. PE: case PE.
+  %end
+   search.
+  %step
+   unfold.
+     %lookup public ->
+      search.
+     %lookup public <-
+      search.
+     %rest
+      apply IH to PE2. search.
+
+
+Theorem public_equiv_scopes_same_snd : forall SG G GA GB,
+  public_equiv SG G GB -> scopes_same GA GB -> public_equiv SG G GA.
+induction on 1. intros PE SS. PE: case PE.
+  %last
+   case SS. search.
+  %step
+   SS: case SS. unfold.
+     %lookup public ->
+      intros LS L1. L2: apply PE to LS L1. apply SS1 to L2. search.
+     %lookup public <-
+      intros LS L2. LS2: apply SS to L2. apply PE1 to LS LS2. search.
+     %rest
+      apply IH to PE2 _. search.
+
+
+Theorem public_equiv_scopes_same_fst : forall SG G GA GB,
+  public_equiv SG GB G -> scopes_same GA GB -> public_equiv SG GA G.
+induction on 1. intros PE SS. PE: case PE.
+  %last
+   case SS. search.
+  %step
+   SS: case SS. unfold.
+     %lookup public ->
+      intros LS L1. L: apply SS to L1. apply PE to LS L. search.
+     %lookup public <-
+      intros LS L2. L1: apply PE1 to LS L2. apply SS1 to L1. search.
+     %rest
+      apply IH to PE2 _. search.
+
+
+Theorem public_equiv_add_scope : forall SG GA GB,
+  public_equiv SG GA GB -> public_equiv ([]::SG) ([]::GA) ([]::GB).
+intros PE. unfold.
+  %lookup public ->
+   intros L. case L.
+  %lookup public <-
+   intros L. case L.
+  %rest
+   search.
+
+
+Theorem public_equiv_add_public : forall SS SG AS GA BS GB X V,
+  public_equiv (SS::SG) (AS::GA) (BS::GB) ->
+  public_equiv (((X, public)::SS)::SG) (((X, V)::AS)::GA)
+                                       (((X, V)::BS)::GB).
+intros PE. PE: case PE. unfold.
+  %lookup public ->
+   intros LS LA. LS: case LS.
+     %LS-FirstScope
+      LA: case LA.
+        %LS-FirstScope
+         search.
+        %LS-Later
+         apply LA to _.
+     %LS-Later
+      LA: case LA.
+        %LS-FirstScope
+         apply LS to _.
+        %LS-Later
+         apply PE to LS1 LA1. search.
+  %lookup public <-
+   intros LS LB. LS: case LS.
+     %LS-FirstScope
+      LB: case LB.
+        %LS-FirstScope
+         search.
+        %LS-Later
+         apply LB to _.
+     %LS-Later
+      LB: case LB.
+        %LS-FirstScope
+         apply LS to _.
+        %LS-Later
+         apply PE1 to LS1 LB1. search.
+  %rest
+   search.
+
+
+Theorem public_equiv_add_other : forall SS SG AS GA BS GB X L VA VB,
+  public_equiv (SS::SG) (AS::GA) (BS::GB) -> (L = public -> false) ->
+  public_equiv (((X, L)::SS)::SG) (((X, VA)::AS)::GA)
+                                  (((X, VB)::BS)::GB).
+intros PE NEq. PE: case PE. unfold.
+  %lookup public ->
+   intros LS LA. LS: case LS.
+     %Lkp-Here
+      apply NEq to _.
+     %Lkp-Later
+      LA: case LA.
+        %Lkp-
+         apply LS to _.
+        %Lkp-Later
+         apply PE to LS1 LA1. search.
+  %lookup public <-
+   intros LS LB. LS: case LS.
+     %Lkp-Here
+      apply NEq to _.
+     %Lkp-Later
+      LB: case LB.
+        %Lkp-Here
+         apply LS to _.
+        %Lkp-Later
+         apply PE1 to LS1 LB1. search.
+  %rest
+   search.
+
+
+Theorem remove_all_eq_or_mem[Key, Item] :
+  forall L L' (X Y : Key) (V : Item),
+    remove_all L X L' -> mem (Y, V) L -> Y = X \/ mem (Y, V) L'.
+induction on 2. intros RA M. M: case M.
+  %Mem-Here
+   RA: case RA.
+     %RA-Remove
+      search.
+     %RA-Keep
+      search.
+  %Mem-Later
+   RA: case RA.
+     %RA-Remove
+      Or: apply IH to RA M. E: case Or.
+        %Y = X
+         search.
+        %mem (Y, V) L'
+         search.
+     %RA-Keep
+      Or: apply IH to RA1 M. E: case Or.
+        %Y = X
+         search.
+        %mem (Y, V) R
+         search.
+
+
+Theorem public_equiv_replaceScopes_public : forall SG GA GB X V RA RB,
+  public_equiv SG GA GB -> names_same GA SG -> names_same GB SG ->
+  lookupScopes X SG public ->
+  replaceScopes X V GA RA -> replaceScopes X V GB RB ->
+  public_equiv SG RA RB.
+induction on 4. intros PE NSA NSB LS RA RB. LS: case LS.
+  %LS-FirstScope
+   RA: case RA.
+     %RS-FirstScope
+      RB: case RB.
+        %RS-FirstScope
+         PE: case PE. unfold.
+           %lookup public ->
+            intros LS LA. LA: case LA.
+              %Lkp-Here
+               search.
+              %Lkp-Later
+               LA': apply remove_all_lookup_other to RA1 LA1 _.
+               LB': apply PE to _ LA'.
+               apply remove_all_lookup_other_back to RB1 LB' _.
+               search.
+           %lookup public <-
+            intros LS LB. LB: case LB.
+              %Lkp-Here
+               search.
+              %Lkp-Later
+               LB': apply remove_all_lookup_other to RB1 LB1 _.
+               LA': apply PE1 to _ LB'.
+               apply remove_all_lookup_other_back to RA1 LA' _.
+               search.
+           %rest
+            search.
+        %RS-Later
+         NSA: case NSA. NSB: case NSB. MS: apply NSA to RA.
+         MB: apply NSB1 to MS. apply no_lookup_mem to RB MB.
+     %RS-Later
+      NSA: case NSA. MS: apply lookup_mem to LS. MA: apply NSA1 to MS.
+      apply no_lookup_mem to RA MA.
+  %LS-Later
+   RA: case RA.
+     %RS-FirstScope
+      NSA: case NSA. MS: apply NSA to RA.
+      apply no_lookup_mem to LS MS.
+     %RS-Later
+      RB: case RB.
+        %RS-FirstScope
+         NSB: case NSB. MS: apply NSB to RB.
+         apply no_lookup_mem to LS MS.
+        %RS-Later
+         PE: case PE. case NSA. case NSB.
+         apply IH to PE2 _ _ LS1 RA1 RB1. search.
+
+
+Theorem public_equiv_replaceScopes_other :
+  forall SG GA GB X L VA VB RA RB,
+    public_equiv SG GA GB -> names_same GA SG -> names_same GB SG ->
+    lookupScopes X SG L -> (L = public -> false) ->
+    replaceScopes X VA GA RA -> replaceScopes X VB GB RB ->
+    public_equiv SG RA RB.
+induction on 4. intros PE NSA NSB LS NEq RA RB. LS: case LS.
+  %LS-FirstScope
+   RA: case RA.
+     %RS-FirstScope
+      RB: case RB.
+        %RS-FirstScope
+         PE: case PE. unfold.
+           %lookup public ->
+            intros LS' LA. LA: case LA.
+              %Lkp-Here
+               apply lookup_unique to LS' LS. apply NEq to _.
+              %Lkp-Later
+               LA': apply remove_all_lookup_other to RA1 LA1 _.
+               LB': apply PE to _ LA'.
+               apply remove_all_lookup_other_back to RB1 LB' _.
+               search.
+           %lookup public <-
+            intros LS' LB. LB: case LB.
+              %Lkp-Here
+               apply lookup_unique to LS' LS. apply NEq to _.
+              %Lkp-Later
+               LB': apply remove_all_lookup_other to RB1 LB1 _.
+               LA': apply PE1 to _ LB'.
+               apply remove_all_lookup_other_back to RA1 LA' _.
+               search.
+           %rest
+            search.
+        %RS-Later
+         NSB: case NSB. NSA: case NSA. MS: apply NSA to RA.
+         MB: apply NSB1 to MS. apply no_lookup_mem to RB MB.
+     %RS-Later
+      MS: apply lookup_mem to LS. NSA: case NSA. MA: apply NSA1 to MS.
+      apply no_lookup_mem to RA MA.
+  %LS-Later
+   RA: case RA.
+     %RS-FirstScope
+      NSA: case NSA. MS: apply NSA to RA.
+      apply no_lookup_mem to LS MS.
+     %RS-Later
+      RB: case RB.
+        %RS-FirstScope
+         NSB: case NSB. MS: apply NSB to RB.
+         apply no_lookup_mem to LS MS.
+        %RS-Later
+         PE: case PE. case NSA. case NSB.
+         apply IH to _ _ _ LS1 _ RA1 RB1. search.
+
+
+Theorem replaceScopes_public_equiv : forall SG L X V L' SL,
+  names_same L SG -> replaceScopes X V L L' -> lookupScopes X SG SL ->
+  (SL = public -> false) -> public_equiv SG L L'.
+induction on 2. intros NS RS LS NEq. RS: case RS.
+  %RS-FirstScope
+   LS: case LS.
+     %LS-FirstScope
+      NS: case NS. apply public_equiv_refl to NS2. unfold.
+        %lookup public ->
+         intros LP LL.
+         assert X = X1 -> false.
+           intros E. case E. apply lookup_unique to LS LP.
+           backchain NEq.
+         apply remove_all_lookup_other_back to RS1 LL _. search.
+        %lookup public <-
+         intros LP L+. L: case L+.
+           %Lkp-Here
+            apply lookup_unique to LS LP. apply NEq to _.
+           %Lkp-Later
+            apply remove_all_lookup_other to RS1 L1 _. search.
+        %rest
+         search.
+     %LS-Later
+      NS: case NS. MS: apply NS to RS. apply no_lookup_mem to LS MS.
+  %RS-Later
+   LS: case LS.
+     %LS-FirstScope
+      NS: case NS. MS: apply lookup_mem to LS. ML: apply NS1 to MS.
+      apply no_lookup_mem to RS ML.
+     %LS-Later
+      case NS. apply IH to _ RS1 LS1 _. search.
+
+
+
+
+/********************************************************************
+ No public changes in private contexts
+ ********************************************************************/
+Extensible_Theorem
+  stmt_not_public_no_public_change :
+    forall S SF SScope SG PC SG' FE Scope EE Scope' EE' O,
+      IsS : is_stmt S ->
+      IsSF : is_list (is_pair is_string
+                     (is_pair is_slev (is_list is_slev))) SF ->
+      IsSG : is_list (is_list (is_pair is_string is_slev))
+                (SScope::SG) ->
+      IsPC : is_slev PC ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsEE : is_list (is_list (is_pair is_string is_value))
+                (Scope::EE) ->
+      NS : names_same (Scope::EE) (SScope::SG) ->
+      Ev : evalStmt FE (Scope::EE) S (Scope'::EE') O ->
+      Sec : secure SF (SScope::SG) PC S SG' ->
+      NEq : (PC = public -> false) ->
+      /*only the end of the ctxs are related, not the first scope*/
+      public_equiv SG EE EE'
+  on Ev as IH_S.
+%ExtInd validity
+ search.
+%Actual property
+ %E-Noop
+  case Sec. case NS. backchain public_equiv_refl.
+ %E-Seq
+  case IsS. Sec: case Sec. apply secure_older_scopes to _ _ _ Sec.
+  NS': apply secure_eval_names_same to _ _ _ _ _ _ Ev1 Sec.
+  case NS' (keep). PE1: apply IH_S to _ _ _ _ _ _ _ Ev1 Sec _.
+  apply evalStmt_isCtx to _ _ _ Ev1. apply secure_is to _ _ _ Sec.
+  PE2: apply IH_S to _ _ _ _ _ _ _ Ev2 Sec1 _.
+  apply public_equiv_trans to PE1 PE2. search.
+ %E-Declare
+  case IsS. Sec: case Sec. apply NEq to _.
+ %E-Assign
+  case IsS. Sec: case Sec.
+    %S-Assign-Private
+     PE1: apply replaceScopes_public_equiv to _ Ev2 Sec1 _. case PE1.
+     search.
+    %S-Assign-Public
+     apply NEq to _.
+ %E-RecUpdate
+  case IsS. Sec: case Sec.
+    %S-RecUpdate-Private
+     PE1: apply replaceScopes_public_equiv to _ Ev4 Sec1 _. case PE1.
+     search.
+    %S-RecUpdate-Public
+     apply NEq to _.
+ %E-If-True
+  case IsS. Sec: case Sec. apply level_is to _ _ _ Sec.
+  assert Sl1 = public -> false.
+    intros E. case E. apply join_public to _ _ Sec1. backchain NEq.
+  apply names_same_add_scope to NS. apply join_is to _ _ Sec1.
+  PE2: apply IH_S to _ _ _ _ _ _ _ Ev2 Sec2 _. PE2': case PE2. search.
+ %E-If-False
+  case IsS. Sec: case Sec. apply level_is to _ _ _ Sec.
+  assert Sl1 = public -> false.
+    intros E. case E. apply join_public to _ _ Sec1. backchain NEq.
+  apply names_same_add_scope to NS. apply join_is to _ _ Sec1.
+  PE2: apply IH_S to _ _ _ _ _ _ _ Ev2 Sec3 _. PE2': case PE2. search.
+ %E-While-True
+  case IsS. Sec: case Sec (keep).
+    %S-While-Private
+     apply level_is to _ _ _ Sec1. apply names_same_add_scope to NS.
+     PE2: apply IH_S to _ _ _ _ _ _ _ Ev2 Sec2 _. PE2': case PE2.
+     NS+: apply secure_eval_names_same to _ _ _ _ _ _ Ev2 Sec2.
+     Is++: apply evalStmt_isCtx to _ _ _ Ev2. case Is++.
+     apply secure_older_scopes to _ _ _ Sec2. case NS+.
+     PE4: apply IH_S to _ _ _ _ _ _ _ Ev3 Sec _.
+     apply public_equiv_trans to PE2'2 PE4. search.
+    %S-While-Public
+     apply NEq to _.
+ %E-While-False
+  case IsS. Sec: case Sec (keep).
+    %S-While-Private
+     case NS. backchain public_equiv_refl.
+    %S-While-Public
+     apply NEq to _.
+ %E-ScopeStmt
+  case IsS. Sec: case Sec. apply names_same_add_scope to NS.
+  PE: apply IH_S to _ _ _ _ _ _ _ Ev1 Sec _. case PE. search.
+ %E-Print-Int
+  case Sec. apply NEq to _.
+ %E-Print-True
+  case Sec. apply NEq to _.
+ %E-Print-False
+  case Sec. apply NEq to _.
+ %E-Print-String
+  case Sec. apply NEq to _.
+ %E-Secdecl
+  case IsS. Sec: case Sec.
+    %S-Secdecl-Private
+     case NS. backchain public_equiv_refl.
+    %S-Secdecl-Public
+     case NS. backchain public_equiv_refl.
+ %E-Stmt-Q
+  Sec: case Sec. apply names_is to _ Ev1.
+  apply names_is_sec to _ Sec.
+  apply proj_stmt_unique to Sec1 Ev2 _ _ _ _ _.
+    %mem Names -> mem Names1
+     intros M. apply names_same_names to NS Ev1 Sec M. search.
+    %mem Names1 -> mem Names
+     intros M. apply names_same_names_back to NS Ev1 Sec M. search.
+  apply proj_stmt_is to Sec1 _ _.
+  NS': apply secure_eval_names_same to _ _ _ _ _ _ Ev3 Sec2.
+  apply secure_older_scopes to _ _ _ Sec2. case NS' (keep).
+  PE: apply IH_S to _ _ _ _ _ _ _ Ev3 Sec2 _.
+  EvP: apply proj_evalStmt_exists to Ev2 Ev1 _ _ _ Ev.
+  SS: apply proj_evalStmt_rel to Ev2 Ev1 _ _ _ Ev EvP.
+  apply evalStmt_unique to _ _ _ EvP Ev3. SS': case SS.
+  apply public_equiv_scopes_same_snd to PE SS'2. search.
+
+
+Theorem while_no_public_change :
+  forall SF SG PC SG' L Cond Body FE EE EE2 O,
+    is_expr Cond -> is_stmt Body ->
+    is_list (is_pair is_string
+            (is_pair is_slev (is_list is_slev))) SF ->
+    is_list (is_list (is_pair is_string is_slev)) SG ->
+    is_slev PC ->
+    is_list (is_pair is_string
+            (is_pair is_string
+            (is_pair is_value
+            (is_pair (is_list is_string) is_stmt)))) FE ->
+    is_list (is_list (is_pair is_string is_value)) EE ->
+    names_same EE SG ->
+    secure SF SG PC (while Cond Body) SG' ->
+    level SF SG PC Cond L -> (L = public -> false) ->
+    evalStmt FE EE (while Cond Body) EE2 O ->
+    public_equiv SG EE EE2.
+induction on 12. intros IsC IsB IsSF IsSG IsPC IsFE IsEE NS Sec Lev
+                        NEq Ev. Ev: case Ev.
+  %E-While-True
+   Sec: case Sec (keep).
+     %S-While-Private
+      apply level_unique to _ _ _ _ Sec1 Lev.
+      apply names_same_add_scope to NS.
+      PE2: apply stmt_not_public_no_public_change to
+              _ _ _ _ _ _ _ Ev1 Sec2 _.
+      NS'': apply secure_eval_names_same to _ _ _ _ _ _ Ev1 Sec2.
+      case NS''. apply secure_older_scopes to _ _ _ Sec2.
+      IsEE4+: apply evalStmt_isCtx to _ _ _ Ev1. case IsEE4+.
+      PE4: apply IH to _ _ _ _ _ _ _ _ Sec Lev _ Ev2.
+      apply public_equiv_trans to PE2 PE4. search.
+     %S-While-Public
+      apply level_unique to _ _ _ _ Sec1 Lev. apply NEq to _.
+  %E-While-False
+   Sec: case Sec (keep).
+     %S-While-Private
+      backchain public_equiv_refl.
+     %S-While-Public
+      apply level_unique to _ _ _ _ Sec1 Lev. apply NEq to _.
+
+
+
+
+/********************************************************************
+ Evaluation does not leak private information
+ ********************************************************************/
+%all public argument values are the same; private ones may differ
+Define level_arg_vals :
+       list slev -> list value -> list value -> prop by
+level_arg_vals [] [] [];
+level_arg_vals (public::SRest) (V::ARest) (V::BRest) :=
+   level_arg_vals SRest ARest BRest;
+level_arg_vals (L::SRest) (VA::ARest) (VB::BRest) :=
+   (L = public -> false) /\ level_arg_vals SRest ARest BRest.
+
+
+Theorem zip_level_arg_vals : forall S A B N ZA ZB ZS,
+  level_arg_vals S A B -> zip N A ZA -> zip N B ZB -> zip N S ZS ->
+  public_equiv [ZS] [ZA] [ZB].
+induction on 1. intros LAV ZA ZB ZS. LAV: case LAV.
+  %nil
+   case ZA. case ZB. case ZS. unfold. intros L. case L. intros L.
+   case L. search.
+  %cons public
+   ZA: case ZA. ZB: case ZB. ZS: case ZS. unfold.
+     %lookups ->
+      intros LS LA. LS: case LS.
+        %Lkp-Here
+         LA: case LA.
+           %Lkp-Here
+            search.
+           %Lkp-Later
+            apply LA to _.
+        %Lkp-Later
+         LA: case LA.
+           %Lkp-Here
+            apply LS to _.
+           %Lkp-Later
+            PE: apply IH to LAV ZA ZB ZS. PE: case PE.
+            apply PE to LS1 LA1. search.
+     %lookups <-
+      intros LS LB. LS: case LS.
+        %Lkp-Here
+         LB: case LB.
+           %Lkp-Here
+            search.
+           %Lkp-Later
+            apply LB to _.
+        %Lkp-Later
+         LB: case LB.
+           %Lkp-Here
+            apply LS to _.
+           %Lkp-Later
+            PE: apply IH to LAV ZA ZB ZS. PE: case PE.
+            apply PE1 to LS1 LB1. search.
+     %rest
+      search.
+  %cons private
+   ZA: case ZA. ZB: case ZB. ZS: case ZS. unfold.
+     %lookups ->
+      intros LS LA. LS: case LS.
+        %Lkp-Here
+         apply LAV to _.
+        %Lkp-Later
+         LA: case LA.
+           %Lkp-Here
+            apply LS to _.
+           %Lkp-Later
+            PE: apply IH to LAV1 ZA ZB ZS. PE: case PE.
+            apply PE to LS1 LA1. search.
+     %lookups <-
+      intros LS LB. LS: case LS.
+        %Lkp-Here
+         apply LAV to _.
+        %Lkp-Later
+         LB: case LB.
+           %Lkp-Here
+            apply LS to _.
+           %Lkp-Later
+            PE: apply IH to LAV1 ZA ZB ZS. PE: case PE.
+            apply PE1 to LS1 LB1. search.
+     %rest
+      search.
+
+
+Theorem zip_is_sec : forall A B Z,
+  is_list is_string A -> is_list is_slev B -> zip A B Z ->
+  is_list (is_pair is_string is_slev) Z.
+induction on 3. intros IsA IsB Z. Z: case Z.
+  %Zip-Nil
+   search.
+  %Zip-Cons
+   case IsA. case IsB. apply IH to _ _ Z. search.
+
+
+%security and evaluation fun ctxs are appropriately related
+Define secFunCtxs : list (pair string (pair slev (list slev))) ->
+       list (pair string (pair string (pair value
+            (pair (list string) stmt)))) -> prop by
+secFunCtxs SF FE :=
+  forall FName RetLev PSecs RetVar RVVal PNames Body,
+    lookup SF FName (RetLev, PSecs) ->
+    lookup FE FName (RetVar, RVVal, PNames, Body) ->
+    exists ZP SG, zip PNames PSecs ZP /\
+                  secure SF [(RetVar, RetLev)::ZP] RetLev Body SG.
+
+
+%public terms produce same values, output under public_equiv ctxs
+Theorem expr_level :
+  forall E SF SG PC FE EE_A VA OA EE_B VB OB,
+    is_expr E ->
+    is_list (is_pair is_string
+            (is_pair is_slev (is_list is_slev))) SF ->
+    is_list (is_list (is_pair is_string is_slev)) SG ->
+    is_slev PC ->
+    is_list (is_pair is_string
+            (is_pair is_string
+            (is_pair is_value
+            (is_pair (is_list is_string) is_stmt)))) FE ->
+    is_list (is_list (is_pair is_string is_value)) EE_A ->
+    is_list (is_list (is_pair is_string is_value)) EE_B ->
+    secFuns SF ->
+    secFunCtxs SF FE ->
+    names_same EE_A SG ->
+    names_same EE_B SG ->
+    public_equiv SG EE_A EE_B ->
+    level SF SG PC E public ->
+    evalExpr FE EE_A E VA OA ->
+    evalExpr FE EE_B E VB OB ->
+    VA = VB /\ OA = OB.
+intros IsE IsSF IsSG IsPC IsFE IsEE_A IsEE_B SF SFC NSA NSB PE
+       Lev EvA EvB. Vars: apply vars_exist to IsE.
+apply evalExpr_rel to _ _ _ _ EvA EvB Vars _.
+  intros M L. LP: apply public_vars to _ _ _ _ SF Lev Vars M.
+  PE': apply public_equiv_symm to PE.
+  apply public_equiv_lookupScopes to PE' _ _ _ LP L. search.
+search.
+Theorem args_level :
+  forall A SF SG PC Ls FE EE_A VA OA EE_B VB OB,
+    is_args A ->
+    is_list (is_pair is_string
+            (is_pair is_slev (is_list is_slev))) SF ->
+    is_list (is_list (is_pair is_string is_slev)) SG ->
+    is_slev PC ->
+    is_list (is_pair is_string
+            (is_pair is_string
+            (is_pair is_value
+            (is_pair (is_list is_string) is_stmt)))) FE ->
+    is_list (is_list (is_pair is_string is_value)) EE_A ->
+    is_list (is_list (is_pair is_string is_value)) EE_B ->
+    secFuns SF ->
+    secFunCtxs SF FE ->
+    names_same EE_A SG ->
+    names_same EE_B SG ->
+    public_equiv SG EE_A EE_B ->
+    levelArgs SF SG PC A Ls ->
+    allPublic Ls ->
+    evalArgs FE EE_A A VA OA ->
+    evalArgs FE EE_B A VB OB ->
+    VA = VB /\ OA = OB.
+intros IsA IsSF IsSG IsPC IsFE IsEE_A IsEE_B SF SFC NSA NSB PE
+       Lev AP EvA EvB. Vars: apply varsArgs_exist to IsA.
+apply evalArgs_rel to _ _ _ _ EvA EvB Vars _.
+  intros M L. LP: apply public_varsArgs to _ _ _ _ SF Lev AP Vars M.
+  PE': apply public_equiv_symm to PE.
+  apply public_equiv_lookupScopes to PE' _ _ _ LP L. search.
+search.
+Theorem recFields_level :
+  forall RF SF SG PC FE EE_A VA OA EE_B VB OB,
+    is_recFieldExprs RF ->
+    is_list (is_pair is_string
+            (is_pair is_slev (is_list is_slev))) SF ->
+    is_list (is_list (is_pair is_string is_slev)) SG ->
+    is_slev PC ->
+    is_list (is_pair is_string
+            (is_pair is_string
+            (is_pair is_value
+            (is_pair (is_list is_string) is_stmt)))) FE ->
+    is_list (is_list (is_pair is_string is_value)) EE_A ->
+    is_list (is_list (is_pair is_string is_value)) EE_B ->
+    secFuns SF ->
+    secFunCtxs SF FE ->
+    names_same EE_A SG ->
+    names_same EE_B SG ->
+    public_equiv SG EE_A EE_B ->
+    levelRecFields SF SG PC RF public ->
+    evalRecFields FE EE_A RF VA OA ->
+    evalRecFields FE EE_B RF VB OB ->
+    VA = VB /\ OA = OB.
+intros IsRF IsSF IsSG IsPC IsFE IsEE_A IsEE_B SF SFC NSA NSB PE
+       Lev EvA EvB. Vars: apply varsRecFields_exist to IsRF.
+apply evalRecFields_rel to _ _ _ _ EvA EvB Vars _.
+  intros M L. LP: apply public_varsRecFields to _ _ _ _ SF Lev Vars M.
+  PE': apply public_equiv_symm to PE.
+  apply public_equiv_lookupScopes to PE' _ _ _ LP L. search.
+search.
+
+
+%all public arguments have the same values, private ones may differ
+Extensible_Theorem
+  level_args_vals :
+    forall A SF SG PC Ls FE EE_A VA OA EE_B VB OB,
+      IsA : is_args A ->
+      IsSF : is_list (is_pair is_string
+                     (is_pair is_slev (is_list is_slev))) SF ->
+      IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+      IsPC : is_slev PC ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsEE_A : is_list (is_list (is_pair is_string is_value)) EE_A ->
+      IsEE_B : is_list (is_list (is_pair is_string is_value)) EE_B ->
+      SecFuns : secFuns SF ->
+      SFC : secFunCtxs SF FE ->
+      NSA : names_same EE_A SG ->
+      NSB : names_same EE_B SG ->
+      PE : public_equiv SG EE_A EE_B ->
+      Lev : levelArgs SF SG PC A Ls ->
+      EvA : evalArgs FE EE_A A VA OA ->
+      EvB : evalArgs FE EE_B A VB OB ->
+      level_arg_vals Ls VA VB
+  on EvA as IH_A_L.
+%ExtInd validity
+ search.
+%Actual property
+ %EA-Nil
+  case EvB. case Lev. search.
+ %EA-Cons
+  case IsA. EvB: case EvB. Lev: case Lev.
+  apply IH_A_L to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+  IsL: apply level_is to _ _ _ Lev.
+  Or: apply is_slev_public_or_not to IsL. N: case Or.
+    %public
+     apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ _ EvA1 EvB.
+     search.
+    %not public
+     search.
+ %unknown K
+  case Lev.
+
+
+Extensible_Theorem
+  %evaluation under public_equiv ctxs yields public_equiv ctxs
+  stmt_secure : forall S SF SG PC SG' FE ScopeA EE_A EE_A' OA
+                       ScopeB EE_B EE_B' OB,
+    IsS : is_stmt S ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    IsPC : is_slev PC ->
+    IsFE : is_list (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE ->
+    IsEE_A : is_list (is_list (is_pair is_string is_value))
+                (ScopeA::EE_A) ->
+    IsEE_B : is_list (is_list (is_pair is_string is_value))
+                (ScopeB::EE_B) ->
+    SecFuns : secFuns SF ->
+    SFC : secFunCtxs SF FE ->
+    NSA : names_same (ScopeA::EE_A) SG ->
+    NSB : names_same (ScopeB::EE_B) SG ->
+    PE : public_equiv SG (ScopeA::EE_A) (ScopeB::EE_B) ->
+    Sec : secure SF SG PC S SG' ->
+    EvA : evalStmt FE (ScopeA::EE_A) S EE_A' OA ->
+    EvB : evalStmt FE (ScopeB::EE_B) S EE_B' OB ->
+    public_equiv SG' EE_A' EE_B'
+  on EvA.
+%ExtInd validity
+ search.
+%Actual property
+ %E-Noop
+  case EvB. case Sec. search.
+ %E-Seq
+  case IsS. Sec: case Sec. EvB: case EvB.
+  PE1: apply IH to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+  apply evalStmt_isCtx to _ _ _ EvA1.
+  apply evalStmt_isCtx to _ _ _ EvB. apply secure_is to _ _ _ Sec.
+  NSA': apply secure_eval_names_same to _ _ _ _ _ _ EvA1 Sec.
+  NSB': apply secure_eval_names_same to _ _ _ _ _ _ EvB Sec.
+  case NSA. apply secure_older_scopes to _ _ _ Sec. case NSA' (keep).
+  case NSB. case NSB' (keep). case PE1 (keep).
+  apply IH to _ _ _ _ _ _ _ _ _ _ _ _ Sec1 EvA2 EvB1. search.
+ %E-Declare
+  case IsS. Sec: case Sec. EvB: case EvB.
+  apply expr_level to _ _ _ _ _ _ _ _ _ _ _ PE Sec EvA1 EvB.
+  backchain public_equiv_add_public.
+ %E-Assign
+  case IsS. EvB: case EvB. Sec: case Sec.
+    %S-Assign-Private
+     apply public_equiv_replaceScopes_other to
+        PE _ _ Sec1 _ EvA2 EvB1. search.
+    %S-Assign-Public
+     apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     apply public_equiv_replaceScopes_public to
+        PE _ _ Sec1 EvA2 EvB1. search.
+ %E-RecUpdate
+  case IsS. EvB: case EvB. Sec: case Sec.
+    %S-RecUpdate-Private
+     apply public_equiv_replaceScopes_other to
+        PE _ _ Sec1 _ EvA4 EvB3. search.
+    %S-RecUpdate-Public
+     apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     LB: apply public_equiv_lookupScopes to PE _ _ _ Sec1 EvA2.
+     apply lookupScopes_unique to LB EvB1.
+     apply updateRecFields_unique to EvA3 EvB2.
+     apply public_equiv_replaceScopes_public to
+        PE _ _ Sec1 EvA4 EvB3. search.
+ %E-If-True
+  case IsS. Sec: case Sec. EvB: case EvB.
+    %E-If-True
+     apply public_equiv_add_scope to PE.
+     apply names_same_add_scope to NSA.
+     apply names_same_add_scope to NSB. apply level_is to _ _ _ Sec.
+     apply join_is to _ _ Sec1.
+     PE2: apply IH to _ _ _ _ _ _ _ _ _ _ _ _ Sec2 EvA2 EvB1.
+     apply secure_older_scopes to _ _ _ Sec2. case PE2. search.
+    %E-If-False
+     apply names_same_add_scope to NSA.
+     apply names_same_add_scope to NSB. apply level_is to _ _ _ Sec.
+     apply join_is to _ _ Sec1.
+     assert Sl1 = public -> false.
+       intros E. case E. apply join_public to _ _ Sec1.
+       apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     PEA: apply stmt_not_public_no_public_change to
+             _ _ _ _ _ _ _ EvA2 Sec2 _.
+     PEB: apply stmt_not_public_no_public_change to
+             _ _ _ _ _ _ _ EvB1 Sec3 _.
+     PE': apply public_equiv_trans to PE PEB.
+     PEA': apply public_equiv_symm to PEA.
+     apply public_equiv_trans to PEA' PE'. search.
+ %E-If-False
+  case IsS. Sec: case Sec. EvB: case EvB.
+    %E-If-True
+     apply names_same_add_scope to NSA.
+     apply names_same_add_scope to NSB. apply level_is to _ _ _ Sec.
+     apply join_is to _ _ Sec1.
+     assert Sl1 = public -> false.
+       intros E. case E. apply join_public to _ _ Sec1.
+       apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     PEA: apply stmt_not_public_no_public_change to
+             _ _ _ _ _ _ _ EvA2 Sec3 _.
+     PEB: apply stmt_not_public_no_public_change to
+             _ _ _ _ _ _ _ EvB1 Sec2 _.
+     PE': apply public_equiv_trans to PE PEB.
+     PEA': apply public_equiv_symm to PEA.
+     apply public_equiv_trans to PEA' PE'. search.
+    %E-If-False
+     apply public_equiv_add_scope to PE.
+     apply names_same_add_scope to NSA.
+     apply names_same_add_scope to NSB. apply level_is to _ _ _ Sec.
+     apply join_is to _ _ Sec1.
+     PE2: apply IH to _ _ _ _ _ _ _ _ _ _ _ _ Sec3 EvA2 EvB1.
+     apply secure_older_scopes to _ _ _ Sec3. case PE2. search.
+ %E-While-True
+  case IsS. Sec: case Sec (keep).
+    %S-While-Private
+     EvB: case EvB.
+       %E-While-True
+        apply names_same_add_scope to NSA.
+        apply names_same_add_scope to NSB.
+        PE2: apply IH to _ _ _ _ _ _ _ _ _ _ _ _ Sec2 EvA2 EvB1.
+        apply secure_older_scopes to _ _ _ Sec2. case PE2.
+        IsEE2+: apply evalStmt_isCtx to _ _ _ EvA2. case IsEE2+.
+        IsEE4+: apply evalStmt_isCtx to _ _ _ EvB1. case IsEE4+.
+        NSA2: apply secure_eval_names_same to _ _ _ _ _ _ EvA2 Sec2.
+        NSB2: apply secure_eval_names_same to _ _ _ _ _ _ EvB1 Sec2.
+        NSA': case NSA2. NSB': case NSB2. case NSA.
+        case NSB'2. case NSA'2.
+        apply IH to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA3 EvB2. search.
+       %E-While-False
+        assert L = public -> false.
+          intros E. case E.
+          apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec1 EvA1 EvB.
+        PEA: apply while_no_public_change to
+                _ _ _ _ _ _ _ _ Sec Sec1 _ EvA.
+        PEA': apply public_equiv_symm to PEA.
+        apply public_equiv_trans to PEA' PE. search.
+    %S-While-Public
+     EvB: case EvB.
+       %E-While-True
+        apply public_equiv_add_scope to PE.
+        apply names_same_add_scope to NSA.
+        apply names_same_add_scope to NSB.
+        PE2: apply IH to _ _ _ _ _ _ _ _ _ _ _ _ Sec2 EvA2 EvB1.
+        apply secure_older_scopes to _ _ _ Sec2. case PE2.
+        IsEE2+: apply evalStmt_isCtx to _ _ _ EvA2. case IsEE2+.
+        IsEE4+: apply evalStmt_isCtx to _ _ _ EvB1. case IsEE4+.
+        NSA2: apply secure_eval_names_same to _ _ _ _ _ _ EvA2 Sec2.
+        NSB2: apply secure_eval_names_same to _ _ _ _ _ _ EvB1 Sec2.
+        NSA': case NSA2. NSB': case NSB2. case NSA.
+        case NSB'2. case NSA'2.
+        apply IH to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA3 EvB2. search.
+       %E-While-False
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec1 EvA1 EvB.
+ %E-While-False
+  case IsS. Sec: case Sec (keep).
+    %S-While-Private
+     EvB: case EvB (keep).
+       %E-While-True
+        assert L = public -> false.
+          intros E. case E.
+          apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec1 EvA1 EvB1.
+        PEB: apply while_no_public_change to
+                _ _ _ _ _ _ _ _ Sec Sec1 _ EvB.
+        apply public_equiv_trans to PE PEB. search.
+       %E-While-False
+        search.
+    %S-While-Public
+     EvB: case EvB.
+       %E-While-True
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec1 EvA1 EvB.
+       %E-While-False
+        search.
+ %E-ScopeStmt
+  case IsS. Sec: case Sec. EvB: case EvB.
+  apply public_equiv_add_scope to PE.
+  apply names_same_add_scope to NSA.
+  apply names_same_add_scope to NSB.
+  PE': apply IH to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB. case PE'.
+  search.
+ %E-Print-Int
+  case IsS. Sec: case Sec. EvB: case EvB.
+    %E-Print-Int
+     search.
+    %E-Print-True
+     search.
+    %E-Print-False
+     search.
+    %E-Print-String
+     search.
+ %E-Print-True
+  case IsS. Sec: case Sec. EvB: case EvB.
+    %E-Print-Int
+     search.
+    %E-Print-True
+     search.
+    %E-Print-False
+     search.
+    %E-Print-String
+     search.
+ %E-Print-False
+  case IsS. Sec: case Sec. EvB: case EvB.
+    %E-Print-Int
+     search.
+    %E-Print-True
+     search.
+    %E-Print-False
+     search.
+    %E-Print-String
+     search.
+ %E-Print-String
+  case IsS. Sec: case Sec. EvB: case EvB.
+    %E-Print-Int
+     search.
+    %E-Print-True
+     search.
+    %E-Print-False
+     search.
+    %E-Print-String
+     search.
+ %E-Secdecl
+  case IsS. EvB: case EvB. Sec: case Sec.
+    %S-Secdecl-Private
+     backchain public_equiv_add_other.
+    %S-Secdecl-Public
+     apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     backchain public_equiv_add_public.
+ %E-Stmt-Q
+  Sec: case Sec. apply names_is to _ EvA1.
+  apply names_is_sec to _ Sec.
+  apply proj_stmt_unique to Sec1 EvA2 _ _ _ _ _.
+    %mem Names -> mem Names1
+     intros M. apply names_same_names to NSA EvA1 Sec M. search.
+    %mem Names1 -> mem Names
+     intros M. apply names_same_names_back to NSA EvA1 Sec M. search.
+  apply proj_stmt_is to Sec1 _ _.
+  case NSA (keep). apply secure_older_scopes to _ _ _ Sec2.
+  %get a projection and evaluation using B
+  NSB-: apply names_same_symmetric to NSB.
+  NSAB: apply names_same_transitive to NSA NSB-.
+  NamesB: apply names_exists to IsEE_B.
+  apply names_is to _ EvA1. apply names_is to _ NamesB.
+  PrB: apply proj_stmt_other to EvA2 _ _ _ with L' = N.
+  apply proj_stmt_unique to EvA2 PrB _ _ _ _ _.
+    %mem N -> mem Names
+     intros M. NSBA: apply names_same_symmetric to NSAB.
+     apply names_same_names to NSBA NamesB EvA1 M. search.
+    %mem Names -> mem N
+     intros M. apply names_same_names to NSAB EvA1 NamesB M. search.
+  EvB': apply proj_evalStmt_exists to PrB NamesB _ _ _ EvB.
+  SSB: apply proj_evalStmt_rel to PrB NamesB _ _ _ EvB EvB'.
+  %get scopes_same for A
+  EvA': apply proj_evalStmt_exists to EvA2 EvA1 _ _ _ EvA.
+  SSA: apply proj_evalStmt_rel to EvA2 EvA1 _ _ _ EvA EvA'.
+  apply evalStmt_unique to _ _ _ EvA' EvA3.
+  %use IH to get public_equiv for projections
+  apply proj_stmt_is to PrB _ _.
+  PE_Pr: apply IH to _ _ _ _ _ _ _ _ _ _ _ _ Sec2 EvA3 EvB'.
+  %lift it back with scopes_same
+  PE': apply public_equiv_scopes_same_snd to PE_Pr SSB.
+  apply public_equiv_scopes_same_fst to PE' SSA. search.
+
+
+Extensible_Theorem
+  stmt_not_public_no_output :
+    forall S SF SG PC SG' FE Scope EE EE' O,
+      IsS : is_stmt S ->
+      IsSF : is_list (is_pair is_string
+                     (is_pair is_slev (is_list is_slev))) SF ->
+      IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+      IsPC : is_slev PC ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsEE : is_list (is_list (is_pair is_string is_value))
+                (Scope::EE) ->
+      SecFuns : secFuns SF ->
+      SFC : secFunCtxs SF FE ->
+      NS : names_same (Scope::EE) SG ->
+      Ev : evalStmt FE (Scope::EE) S EE' O ->
+      Sec : secure SF SG PC S SG' ->
+      NEq : (PC = public -> false) ->
+      O = []
+  on Ev as IH_S,
+  expr_not_public_no_output :
+    forall E SF SG PC L FE EE V O,
+      IsE : is_expr E ->
+      IsSF : is_list (is_pair is_string
+                     (is_pair is_slev (is_list is_slev))) SF ->
+      IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+      IsPC : is_slev PC ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsEE : is_list (is_list (is_pair is_string is_value)) EE ->
+      SecFuns : secFuns SF ->
+      SFC : secFunCtxs SF FE ->
+      NS : names_same EE SG ->
+      Ev : evalExpr FE EE E V O ->
+      Lev : level SF SG PC E L ->
+      NEq : (PC = public -> false) ->
+      O = []
+  on Ev as IH_E,
+  args_not_public_no_output :
+    forall A SF SG PC L FE EE V O,
+      IsA : is_args A ->
+      IsSF : is_list (is_pair is_string
+                     (is_pair is_slev (is_list is_slev))) SF ->
+      IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+      IsPC : is_slev PC ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsEE : is_list (is_list (is_pair is_string is_value)) EE ->
+      SecFuns : secFuns SF ->
+      SFC : secFunCtxs SF FE ->
+      NS : names_same EE SG ->
+      Ev : evalArgs FE EE A V O ->
+      Lev : levelArgs SF SG PC A L ->
+      NEq : (PC = public -> false) ->
+      O = []
+  on Ev as IH_A,
+  recFields_not_public_no_output :
+    forall RF SF SG PC L FE EE V O,
+      IsRF : is_recFieldExprs RF ->
+      IsSF : is_list (is_pair is_string
+                     (is_pair is_slev (is_list is_slev))) SF ->
+      IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+      IsPC : is_slev PC ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsEE : is_list (is_list (is_pair is_string is_value)) EE ->
+      SecFuns : secFuns SF ->
+      SFC : secFunCtxs SF FE ->
+      NS : names_same EE SG ->
+      Ev : evalRecFields FE EE RF V O ->
+      Lev : levelRecFields SF SG PC RF L ->
+      NEq : (PC = public -> false) ->
+      O = []
+  on Ev as IH_RF.
+%ExtInd validity
+ %stmt_not_public_no_output
+  search.
+ %expr_not_public_no_output
+  search.
+ %args_not_public_no_output
+  search.
+ %recFields_not_public_no_output
+  search.
+%Actual property
+ %stmt_not_public_no_output
+  %E-Noop
+   search.
+  %E-Seq
+   case IsS. Sec: case Sec.
+   apply IH_S to _ _ _ _ _ _ _ _ _ Ev1 Sec _. case Ev3.
+   apply evalStmt_isCtx to _ _ _ Ev1. apply secure_is to _ _ _ Sec.
+   NS': apply secure_eval_names_same to _ _ _ _ _ _ Ev1 Sec.
+   case NS. apply secure_older_scopes to _ _ _ Sec. case NS' (keep).
+   apply IH_S to _ _ _ _ _ _ _ _ _ Ev2 Sec1 _. search.
+  %E-Declare
+   case IsS. Sec: case Sec.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Sec _. search.
+  %E-Assign
+   case IsS. Sec: case Sec.
+     %S-Assign-Private
+      apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Sec _. search.
+     %S-Assign-Public
+      apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Sec _. search.
+  %E-RecUpdate
+   case IsS. Sec: case Sec.
+     %S-RecUpdate-Private
+      apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Sec _. search.
+     %S-RecUpdate-Public
+      apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Sec _. search.
+  %E-If-True
+   case IsS. Sec: case Sec.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Sec _. case Ev3.
+   apply level_is to _ _ _ Sec. apply join_is to _ _ Sec1.
+   apply names_same_add_scope to NS.
+   assert Sl1 = public -> false.
+     intros E. case E. apply join_public to _ _ Sec1. backchain NEq.
+   apply IH_S to _ _ _ _ _ _ _ _ _ Ev2 Sec2 _. search.
+  %E-If-False
+   case IsS. Sec: case Sec.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Sec _. case Ev3.
+   apply level_is to _ _ _ Sec. apply join_is to _ _ Sec1.
+   apply names_same_add_scope to NS.
+   assert Sl1 = public -> false.
+     intros E. case E. apply join_public to _ _ Sec1. backchain NEq.
+   apply IH_S to _ _ _ _ _ _ _ _ _ Ev2 Sec3 _. search.
+  %E-While-True
+   case IsS. Sec: case Sec (keep).
+     %S-While-Private
+      apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Sec1 _. case Ev4.
+      apply names_same_add_scope to NS.
+      apply IH_S to _ _ _ _ _ _ _ _ _ Ev2 Sec2 _. case Ev5.
+      IsEE4+: apply evalStmt_isCtx to _ _ _ Ev2. case IsEE4+.
+      NS+: apply secure_eval_names_same to _ _ _ _ _ _ Ev2 Sec2.
+      apply secure_older_scopes to _ _ _ Sec2. NS-: case NS+.
+      case NS. case NS-2 (keep).
+      apply IH_S to _ _ _ _ _ _ _ _ _ Ev3 Sec _. search.
+     %S-While-Public
+      apply NEq to _.
+  %E-While-False
+   case IsS. Sec: case Sec.
+     %S-While-Private
+      apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Sec _. search.
+     %S-While-Public
+      apply NEq to _.
+  %E-ScopeStmt
+   case IsS. Sec: case Sec. apply names_same_add_scope to NS.
+   apply IH_S to _ _ _ _ _ _ _ _ _ Ev1 Sec _. search.
+  %E-Print-Int
+   case Sec. apply NEq to _.
+  %E-Print-True
+   case Sec. apply NEq to _.
+  %E-Print-False
+   case Sec. apply NEq to _.
+  %E-Print-String
+   case Sec. apply NEq to _.
+  %E-Secdecl
+   case IsS. Sec: case Sec.
+     %S-Secdecl-Private
+      apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Sec _. search.
+     %S-Secdecl-Public
+      apply NEq to _.
+  %E-Stmt-Q
+   Sec: case Sec. apply names_is to _ Ev1.
+   apply names_is_sec to _ Sec.
+   apply proj_stmt_unique to Sec1 Ev2 _ _ _ _ _.
+     %mem Names -> mem Names1
+      intros M. apply names_same_names to NS Ev1 Sec M. search.
+     %mem Names1 -> mem Names
+      intros M. apply names_same_names_back to NS Ev1 Sec M. search.
+   apply proj_stmt_is to Sec1 _ _.
+   NS': apply secure_eval_names_same to _ _ _ _ _ _ Ev3 Sec2.
+   case NS. apply secure_older_scopes to _ _ _ Sec2. case NS' (keep).
+   apply IH_S to _ _ _ _ _ _ _ _ _ Ev3 Sec2 _.
+   Ev': apply proj_evalStmt_exists to Ev2 Ev1 _ _ _ Ev.
+   apply evalStmt_unique to _ _ _ Ev' Ev3. search.
+ %expr_not_public_no_output
+  %E-Num
+   search.
+  %E-Plus
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev4.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %E-Minus
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev4.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %E-Mult
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev4.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %E-Div
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev4.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %E-True
+   search.
+  %E-False
+   search.
+  %E-And-True
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev3.
+   apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+   assert Sl1 = public -> false.
+     intros E. case E. apply join_public to _ _ Lev1. backchain NEq.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev2 _. search.
+  %E-And-False1
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. search.
+  %E-And-False2
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev3.
+   apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+   assert Sl1 = public -> false.
+     intros E. case E. apply join_public to _ _ Lev1. backchain NEq.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev2 _. search.
+  %E-Or-True1
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. search.
+  %E-Or-True2
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev3.
+   apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+   assert Sl1 = public -> false.
+     intros E. case E. apply join_public to _ _ Lev1. backchain NEq.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev2 _. search.
+  %E-Or-False
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev3.
+   apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+   assert Sl1 = public -> false.
+     intros E. case E. apply join_public to _ _ Lev1. backchain NEq.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev2 _. search.
+  %E-Not-True
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. search.
+  %E-Not-False
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. search.
+  %E-Greater-True
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev4.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %E-Greater-False
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev4.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %E-Eq-True
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev3.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %E-Eq-False
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev4.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %E-String
+   search.
+  %E-AppString
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev4.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %E-Name
+   search.
+  %E-Call
+   case IsE. Lev: case Lev.
+     %L-Call-Private
+      apply IH_A to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. case Ev5.
+      apply evalArgs_isValue to _ _ _ Ev2. FR: case SFC (keep).
+      FS: apply FR to Lev Ev1.
+      IsFP: apply lookup_is_value_funCtx to _ Ev1. IsF: case IsFP.
+      IsF: case IsF1. IsF: case IsF2. apply zip_is to _ _ Ev3.
+      apply zip_names_same to _ _ with
+         ZA = (RetVar, RVVal)::InitEnv, ZB = (RetVar, private)::ZP.
+      apply levelArgs_is to _ _ _ Lev1.
+      apply zip_is_sec to _ _ _ with Z = (RetVar, private)::ZP.
+      apply IH_S to _ _ _ _ _ _ _ _ _ Ev4 FS1 _. search.
+     %L-Call-Public
+      apply NEq to _.
+  %E-RecBuild
+   case IsE. Lev: case Lev.
+   apply IH_RF to _ _ _ _ _ _ _ _ _ Ev1 Lev _. search.
+  %E-RecAccess
+   case IsE. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. search.
+  %E-Expr-Q
+   Lev: case Lev. apply proj_expr_unique to Lev Ev1 _.
+   apply proj_expr_is to Lev _.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _.
+   Ev': apply proj_evalExpr_exists to Ev1 _ _ _ Ev.
+   apply evalExpr_unique to _ _ _ Ev' Ev2. search.
+ %args_not_public_no_output
+  %EA-Nil
+   search.
+  %EA-Cons
+   case IsA. Lev: case Lev. apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _.
+   case Ev3. apply IH_A to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %unknown K
+   case Lev.
+ %recFields_not_public_no_output
+  %ERF-Nil
+   search.
+  %ERF-Cons
+   case IsRF. Lev: case Lev.
+   apply IH_E to _ _ _ _ _ _ _ _ _ Ev1 Lev _. case Ev3.
+   apply IH_RF to _ _ _ _ _ _ _ _ _ Ev2 Lev1 _. search.
+  %unknown K
+   case Lev.
+
+
+Extensible_Theorem
+  secure_output : forall S SF SG PC SG' FE ScopeA EE_A EE_A' OA
+                       ScopeB EE_B EE_B' OB,
+    IsS : is_stmt S ->
+    IsSF : is_list (is_pair is_string
+                   (is_pair is_slev (is_list is_slev))) SF ->
+    IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+    IsPC : is_slev PC ->
+    IsFE : is_list (is_pair is_string
+                   (is_pair is_string
+                   (is_pair is_value
+                   (is_pair (is_list is_string) is_stmt)))) FE ->
+    IsEE_A : is_list (is_list (is_pair is_string is_value))
+                (ScopeA::EE_A) ->
+    IsEE_B : is_list (is_list (is_pair is_string is_value))
+                (ScopeB::EE_B) ->
+    SecFuns : secFuns SF ->
+    SFC : secFunCtxs SF FE ->
+    NSA : names_same (ScopeA::EE_A) SG ->
+    NSB : names_same (ScopeB::EE_B) SG ->
+    PE : public_equiv SG (ScopeA::EE_A) (ScopeB::EE_B) ->
+    Sec : secure SF SG PC S SG' ->
+    EvA : evalStmt FE (ScopeA::EE_A) S EE_A' OA ->
+    EvB : evalStmt FE (ScopeB::EE_B) S EE_B' OB ->
+    OA = OB
+  on EvA as IH_S,
+  expr_secure_output :
+    forall E SF SG PC L FE EE_A VA OA EE_B VB OB,
+      IsE : is_expr E ->
+      IsSF : is_list (is_pair is_string
+                     (is_pair is_slev (is_list is_slev))) SF ->
+      IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+      IsPC : is_slev PC ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsEE_A : is_list (is_list (is_pair is_string is_value)) EE_A ->
+      IsEE_B : is_list (is_list (is_pair is_string is_value)) EE_B ->
+      SecFuns : secFuns SF ->
+      SFC : secFunCtxs SF FE ->
+      NSA : names_same EE_A SG ->
+      NSB : names_same EE_B SG ->
+      PE : public_equiv SG EE_A EE_B ->
+      Lev : level SF SG PC E L ->
+      EvA : evalExpr FE EE_A E VA OA ->
+      EvB : evalExpr FE EE_B E VB OB ->
+      OA = OB
+  on EvA as IH_E,
+  args_secure_output :
+    forall A SF SG PC L FE EE_A VA OA EE_B VB OB,
+      IsA : is_args A ->
+      IsSF : is_list (is_pair is_string
+                     (is_pair is_slev (is_list is_slev))) SF ->
+      IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+      IsPC : is_slev PC ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsEE_A : is_list (is_list (is_pair is_string is_value)) EE_A ->
+      IsEE_B : is_list (is_list (is_pair is_string is_value)) EE_B ->
+      SecFuns : secFuns SF ->
+      SFC : secFunCtxs SF FE ->
+      NSA : names_same EE_A SG ->
+      NSB : names_same EE_B SG ->
+      PE : public_equiv SG EE_A EE_B ->
+      Lev : levelArgs SF SG PC A L ->
+      EvA : evalArgs FE EE_A A VA OA ->
+      EvB : evalArgs FE EE_B A VB OB ->
+      OA = OB
+  on EvA as IH_A,
+  recFields_secure_output :
+    forall RF SF SG PC L FE EE_A VA OA EE_B VB OB,
+      IsRF : is_recFieldExprs RF ->
+      IsSF : is_list (is_pair is_string
+                     (is_pair is_slev (is_list is_slev))) SF ->
+      IsSG : is_list (is_list (is_pair is_string is_slev)) SG ->
+      IsPC : is_slev PC ->
+      IsFE : is_list (is_pair is_string
+                     (is_pair is_string
+                     (is_pair is_value
+                     (is_pair (is_list is_string) is_stmt)))) FE ->
+      IsEE_A : is_list (is_list (is_pair is_string is_value)) EE_A ->
+      IsEE_B : is_list (is_list (is_pair is_string is_value)) EE_B ->
+      SecFuns : secFuns SF ->
+      SFC : secFunCtxs SF FE ->
+      NSA : names_same EE_A SG ->
+      NSB : names_same EE_B SG ->
+      PE : public_equiv SG EE_A EE_B ->
+      Lev : levelRecFields SF SG PC RF L ->
+      EvA : evalRecFields FE EE_A RF VA OA ->
+      EvB : evalRecFields FE EE_B RF VB OB ->
+      OA = OB
+  on EvA as IH_RF.
+%ExtInd validity
+ %secure_output
+  search.
+ %expr_secure_output
+  search.
+ %args_secure_output
+  search.
+ %recFields_secure_output
+  search.
+%Actual property
+ %secure_output
+  %E-Noop
+   case EvB. search.
+  %E-Seq
+   case IsS. Sec: case Sec. EvB: case EvB.
+   apply IH_S to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+   apply stmt_secure to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+   apply evalStmt_isCtx to _ _ _ EvA1.
+   apply evalStmt_isCtx to _ _ _ EvB. apply secure_is to _ _ _ Sec.
+   NSA': apply secure_eval_names_same to _ _ _ _ _ _ EvA1 Sec.
+   NSB': apply secure_eval_names_same to _ _ _ _ _ _ EvB Sec.
+   case NSA. apply secure_older_scopes to _ _ _ Sec. case NSA' (keep).
+   case NSB' (keep).
+   apply IH_S to _ _ _ _ _ _ _ _ _ _ _ _ Sec1 EvA2 EvB1.
+   apply append_unique to EvA3 EvB2. search.
+  %E-Declare
+   case IsS. Sec: case Sec. EvB: case EvB.
+   apply expr_level to _ _ _ _ _ _ _ _ _ _ _ PE Sec EvA1 EvB. search.
+  %E-Assign
+   case IsS. Sec: case Sec.
+     %S-Assign-Private
+      EvB: case EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB. search.
+     %S-Assign-Public
+      EvB: case EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB. search.
+  %E-RecUpdate
+   case IsS. Sec: case Sec.
+     %S-RecUpdate-Private
+      EvB: case EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB. search.
+     %S-RecUpdate-Public
+      EvB: case EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB. search.
+  %E-If-True
+   case IsS. Sec: case Sec. EvB: case EvB.
+     %E-If-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply names_same_add_scope to NSA.
+      apply names_same_add_scope to NSB.
+      apply public_equiv_add_scope to PE.
+      apply level_is to _ _ _ Sec. apply join_is to _ _ Sec1.
+      apply IH_S to _ _ _ _ _ _ _ _ _ _ _ _ Sec2 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+     %E-If-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply level_is to _ _ _ Sec. apply join_is to _ _ Sec1.
+      assert Sl1 = public -> false.
+        intros E. case E. apply join_public to _ _ Sec1.
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      %A branch evaluation produces empty output
+      apply names_same_add_scope to NSA.
+      apply stmt_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvA2 Sec2 _.
+      apply append_nil_right to EvA3.
+      %B branch evaluation produces empty output
+      apply names_same_add_scope to NSB.
+      apply stmt_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvB1 Sec3 _.
+      apply append_nil_right to EvB2. search.
+  %E-If-False
+   case IsS. Sec: case Sec. EvB: case EvB.
+     %E-If-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply level_is to _ _ _ Sec. apply join_is to _ _ Sec1.
+      assert Sl1 = public -> false.
+        intros E. case E. apply join_public to _ _ Sec1.
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      %A branch evaluation produces empty output
+      apply names_same_add_scope to NSA.
+      apply stmt_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvA2 Sec3 _.
+      apply append_nil_right to EvA3.
+      %B branch evaluation produces empty output
+      apply names_same_add_scope to NSB.
+      apply stmt_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvB1 Sec2 _.
+      apply append_nil_right to EvB2. search.
+     %E-If-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply names_same_add_scope to NSA.
+      apply names_same_add_scope to NSB.
+      apply public_equiv_add_scope to PE.
+      apply level_is to _ _ _ Sec. apply join_is to _ _ Sec1.
+      apply IH_S to _ _ _ _ _ _ _ _ _ _ _ _ Sec3 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+  %E-While-True
+   case IsS. Sec: case Sec (keep).
+     %S-While-Private
+      apply stmt_not_public_no_output to _ _ _ _ _ _ _ _ _ EvA Sec _.
+      apply stmt_not_public_no_output to _ _ _ _ _ _ _ _ _ EvB Sec _.
+      search.
+     %S-While-Public
+      EvB: case EvB.
+        %E-While-True
+         apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec1 EvA1 EvB.
+         apply names_same_add_scope to NSA.
+         apply names_same_add_scope to NSB.
+         apply public_equiv_add_scope to PE.
+         apply IH_S to _ _ _ _ _ _ _ _ _ _ _ _ Sec2 EvA2 EvB1.
+         IsEE2+: apply evalStmt_isCtx to _ _ _ EvA2. case IsEE2+.
+         IsEE4+: apply evalStmt_isCtx to _ _ _ EvB1. case IsEE4+.
+         NSA'': apply secure_eval_names_same to _ _ _ _ _ _ EvA2 Sec2.
+         NSB'': apply secure_eval_names_same to _ _ _ _ _ _ EvB1 Sec2.
+         PE'': apply stmt_secure to
+                  _ _ _ _ _ _ _ _ _ _ _ _ Sec2 EvA2 EvB1.
+         NSA-: case NSA''. NSB-: case NSB''. PE-: case PE''.
+         case NSA. case NSB. apply secure_older_scopes to _ _ _ Sec2.
+         case NSA-2 (keep). case NSB-2 (keep).
+         apply IH_S to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA3 EvB2.
+         apply append_unique to EvA4 EvB3.
+         apply append_unique to EvA5 EvB4. search.
+        %E-While-False
+         apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec1 EvA1 EvB.
+  %E-While-False
+   case IsS. Sec: case Sec (keep).
+     %S-While-Private
+      apply stmt_not_public_no_output to _ _ _ _ _ _ _ _ _ EvA Sec _.
+      apply stmt_not_public_no_output to _ _ _ _ _ _ _ _ _ EvB Sec _.
+      search.
+     %S-While-Public
+      EvB: case EvB.
+        %E-While-True
+         apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec1 EvA1 EvB.
+        %E-While-False
+         apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec1 EvA1 EvB. search.
+  %E-ScopeStmt
+   case IsS. Sec: case Sec. EvB: case EvB.
+   apply names_same_add_scope to NSA.
+   apply names_same_add_scope to NSB.
+   apply public_equiv_add_scope to PE.
+   apply IH_S to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB. search.
+  %E-Print-Int
+   case IsS. Sec: case Sec. EvB: case EvB.
+     %E-Print-Int
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply append_unique to EvA2 EvB1. search.
+     %E-Print-True
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     %E-Print-False
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     %E-Print-String
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+  %E-Print-True
+   case IsS. Sec: case Sec. EvB: case EvB.
+     %E-Print-Int
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     %E-Print-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply append_unique to EvA2 EvB1. search.
+     %E-Print-False
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     %E-Print-String
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+  %E-Print-False
+   case IsS. Sec: case Sec. EvB: case EvB.
+     %E-Print-Int
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     %E-Print-True
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     %E-Print-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply append_unique to EvA2 EvB1. search.
+     %E-Print-String
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+  %E-Print-String
+   case IsS. Sec: case Sec. EvB: case EvB.
+     %E-Print-Int
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     %E-Print-True
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     %E-Print-False
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+     %E-Print-String
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB.
+      apply append_unique to EvA2 EvB1. search.
+  %E-Secdecl
+   case IsS. Sec: case Sec.
+     %S-Secdecl-Private
+      EvB: case EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB. search.
+     %S-Secdecl-Public
+      EvB: case EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Sec EvA1 EvB. search.
+  %E-Stmt-Q
+   Sec: case Sec. apply names_is to _ EvA1.
+   apply names_is_sec to _ Sec.
+   apply proj_stmt_unique to Sec1 EvA2 _ _ _ _ _.
+     %mem Names -> mem Names1
+      intros M. apply names_same_names to NSA EvA1 Sec M. search.
+     %mem Names1 -> mem Names
+      intros M. apply names_same_names_back to NSA EvA1 Sec M. search.
+   apply proj_stmt_is to Sec1 _ _.
+   case NSA (keep). apply secure_older_scopes to _ _ _ Sec2.
+   %get a projection and evaluation using B
+   NSB-: apply names_same_symmetric to NSB.
+   NSAB: apply names_same_transitive to NSA NSB-.
+   NamesB: apply names_exists to IsEE_B.
+   apply names_is to _ EvA1. apply names_is to _ NamesB.
+   PrB: apply proj_stmt_other to EvA2 _ _ _ with L' = N.
+   apply proj_stmt_unique to EvA2 PrB _ _ _ _ _.
+     %mem N -> mem Names
+      intros M. NSBA: apply names_same_symmetric to NSAB.
+      apply names_same_names to NSBA NamesB EvA1 M. search.
+     %mem Names -> mem N
+      intros M. apply names_same_names to NSAB EvA1 NamesB M. search.
+   EvB': apply proj_evalStmt_exists to PrB NamesB _ _ _ EvB.
+   %get same output for A
+   EvA': apply proj_evalStmt_exists to EvA2 EvA1 _ _ _ EvA.
+   apply evalStmt_unique to _ _ _ EvA' EvA3.
+   %use IH to get same output for projections
+   apply proj_stmt_is to PrB _ _.
+   PE_Pr: apply IH_S to _ _ _ _ _ _ _ _ _ _ _ _ Sec2 EvA3 EvB'.
+   search.
+ %expr_secure_output
+  %E-Num
+   case EvB. search.
+  %E-Plus
+   case IsE. Lev: case Lev. EvB: case EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+   apply append_unique to EvA4 EvB3. search.
+  %E-Minus
+   case IsE. Lev: case Lev. EvB: case EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+   apply append_unique to EvA4 EvB3. search.
+  %E-Mult
+   case IsE. Lev: case Lev. EvB: case EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+   apply append_unique to EvA4 EvB3. search.
+  %E-Div
+   case IsE. Lev: case Lev. EvB: case EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+   apply append_unique to EvA4 EvB3. search.
+  %E-True
+   case EvB. search.
+  %E-False
+   case EvB. search.
+  %E-And-True
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-And-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev2 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+     %E-And-False1
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      NEq: assert L2 = public -> false.
+        intros E. case E.
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      assert Sl1 = public -> false.
+        intros E. case E. apply join_public to _ _ Lev1.
+        backchain NEq.
+      apply expr_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvA2 Lev2 _.
+      apply append_nil_right to EvA3. search.
+     %E-And-False2
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev2 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+  %E-And-False1
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-And-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      NEq: assert L2 = public -> false.
+        intros E. case E.
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      assert Sl1 = public -> false.
+        intros E. case E. apply join_public to _ _ Lev1.
+        backchain NEq.
+      apply expr_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvB1 Lev2 _.
+      apply append_nil_right to EvB2. search.
+     %E-And-False1
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB. search.
+     %E-And-False2
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      NEq: assert L2 = public -> false.
+        intros E. case E.
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      assert Sl1 = public -> false.
+        intros E. case E. apply join_public to _ _ Lev1.
+        backchain NEq.
+      apply expr_not_public_no_output to
+          _ _ _ _ _ _ _ _ _ EvB1 Lev2 _.
+      apply append_nil_right to EvB2. search.
+  %E-And-False2
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-And-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev2 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+     %E-And-False1
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      NEq: assert L2 = public -> false.
+        intros E. case E.
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      assert Sl1 = public -> false.
+        intros E. case E. apply join_public to _ _ Lev1.
+        backchain NEq.
+      apply expr_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvA2 Lev2 _.
+      apply append_nil_right to EvA3. search.
+     %E-And-False2
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev2 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+  %E-Or-True1
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-Or-True1
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB. search.
+     %E-Or-True2
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      NEq: assert L2 = public -> false.
+        intros E. case E.
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      assert Sl1 = public -> false.
+        intros E. case E. apply join_public to _ _ Lev1.
+        backchain NEq.
+      apply expr_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvB1 Lev2 _.
+      apply append_nil_right to EvB2. search.
+     %E-Or-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      NEq: assert L2 = public -> false.
+        intros E. case E.
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      assert Sl1 = public -> false.
+        intros E. case E. apply join_public to _ _ Lev1.
+        backchain NEq.
+      apply expr_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvB1 Lev2 _.
+      apply append_nil_right to EvB2. search.
+  %E-Or-True2
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-Or-True1
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      NEq: assert L2 = public -> false.
+        intros E. case E.
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      assert Sl1 = public -> false.
+        intros E. case E. apply join_public to _ _ Lev1.
+        backchain NEq.
+      apply expr_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvA2 Lev2 _.
+      apply append_nil_right to EvA3. search.
+     %E-Or-True2
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev2 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+     %E-Or-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev2 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+  %E-Or-False
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-Or-True1
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      NEq: assert L2 = public -> false.
+        intros E. case E.
+        apply expr_level to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      assert Sl1 = public -> false.
+        intros E. case E. apply join_public to _ _ Lev1.
+        backchain NEq.
+      apply expr_not_public_no_output to
+            _ _ _ _ _ _ _ _ _ EvA2 Lev2 _.
+      apply append_nil_right to EvA3. search.
+     %E-Or-True2
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev2 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+     %E-Or-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply level_is to _ _ _ Lev. apply join_is to _ _ Lev1.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev2 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+  %E-Not-True
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-Not-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB. search.
+     %E-Not-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB. search.
+  %E-Not-False
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-Not-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB. search.
+     %E-Not-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB. search.
+  %E-Greater-True
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-Greater-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      apply append_unique to EvA4 EvB3. search.
+     %E-Greater-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      apply append_unique to EvA4 EvB3. search.
+  %E-Greater-False
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-Greater-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      apply append_unique to EvA4 EvB3. search.
+     %E-Greater-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      apply append_unique to EvA4 EvB3. search.
+  %E-Eq-True
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-Eq-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      apply append_unique to EvA3 EvB2. search.
+     %E-Eq-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      apply append_unique to EvA3 EvB3. search.
+  %E-Eq-False
+   case IsE. Lev: case Lev. EvB: case EvB.
+     %E-Eq-True
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      apply append_unique to EvA4 EvB2. search.
+     %E-Eq-False
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+      apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      apply append_unique to EvA4 EvB3. search.
+  %E-String
+   case EvB. search.
+  %E-AppString
+   case IsE. Lev: case Lev. EvB: case EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+   apply append_unique to EvA4 EvB3. search.
+  %E-Name
+   case EvB. search.
+  %E-Call
+   case IsE. EvB: case EvB. Lev: case Lev.
+     %L-Call-Private
+      apply IH_A to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      apply evalArgs_isValue to _ _ _ EvA2.
+      apply evalArgs_isValue to _ _ _ EvB1.
+      apply lookup_unique to EvB EvA1. FR: case SFC (keep).
+      FS: apply FR to Lev EvA1. SF: case SecFuns (keep).
+      LAV: apply level_args_vals to
+                 _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      PE': apply zip_level_arg_vals to LAV EvA3 EvB2 FS.
+      apply public_equiv_add_other to PE' _ with
+         X = RetVar, VA = RVVal, VB = RVVal, L = private.
+      IsFP: apply lookup_is_value_funCtx to _ EvA1. IsF: case IsFP.
+      IsF: case IsF1. IsF: case IsF2. apply zip_is to _ _ EvA3.
+      apply zip_is to _ _ EvB2. apply levelArgs_is to _ _ _ Lev1.
+      apply zip_names_same to _ _ with
+         ZA = (RetVar, RVVal)::InitEnv1, ZB = (RetVar, private)::ZP.
+      apply zip_names_same to _ _ with
+         ZA = (RetVar, RVVal)::InitEnv, ZB = (RetVar, private)::ZP.
+      apply zip_is_sec to _ _ _ with Z = (RetVar, private)::ZP.
+      apply IH_S to _ _ _ _ _ _ _ _ _ _ _ _ FS1 EvA4 EvB3.
+      apply append_unique to EvA5 EvB4. search.
+     %L-Call-Public
+      apply IH_A to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      apply evalArgs_isValue to _ _ _ EvA2.
+      apply evalArgs_isValue to _ _ _ EvB1.
+      apply lookup_unique to EvB EvA1. FR: case SFC (keep).
+      FS: apply FR to Lev EvA1.
+      LAV: apply level_args_vals to
+                 _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+      PE': apply zip_level_arg_vals to LAV EvA3 EvB2 FS.
+      apply lookupSecFun_is to _ Lev.
+      assert public_equiv [(RetVar, L)::ZP] [(RetVar, RVVal)::InitEnv]
+                          [(RetVar, RVVal)::InitEnv1].
+        Or: apply is_slev_public_or_not to _ with L = L. case Or.
+          %public
+           apply public_equiv_add_public to PE' with
+              X = RetVar, V = RVVal. search.
+          %not public
+           apply public_equiv_add_other to PE' _ with
+              X = RetVar, VA = RVVal, VB = RVVal, L = L. search.
+      IsFP: apply lookup_is_value_funCtx to _ EvA1. IsF: case IsFP.
+      IsF: case IsF1. IsF: case IsF2. apply zip_is to _ _ EvA3.
+      apply zip_is to _ _ EvB2. apply levelArgs_is to _ _ _ Lev1.
+      apply zip_names_same to _ _ with
+         ZA = (RetVar, RVVal)::InitEnv1, ZB = (RetVar, L)::ZP.
+      apply zip_names_same to _ _ with
+         ZA = (RetVar, RVVal)::InitEnv, ZB = (RetVar, L)::ZP.
+      apply zip_is_sec to _ _ _ with Z = (RetVar, L)::ZP.
+      apply IH_S to _ _ _ _ _ _ _ _ _ _ _ _ FS1 EvA4 EvB3.
+      apply append_unique to EvA5 EvB4. search.
+  %E-RecBuild
+   case IsE. Lev: case Lev. EvB: case EvB.
+   apply IH_RF to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB. search.
+  %E-RecAccess
+   case IsE. Lev: case Lev. EvB: case EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB. search.
+  %E-Expr-Q
+   Lev: case Lev. apply proj_expr_unique to Lev EvA1 _.
+   apply proj_expr_is to Lev _.
+   %get a projection and evaluation using B
+   NSB-: apply names_same_symmetric to NSB.
+   NSAB: apply names_same_transitive to NSA NSB-.
+   EvB': apply proj_evalExpr_exists to Lev _ _ _ EvB.
+   %get same output for A
+   EvA': apply proj_evalExpr_exists to EvA1 _ _ _ EvA.
+   apply evalExpr_unique to _ _ _ EvA' EvA2.
+   %use IH to get same output for projections
+   PE_Pr: apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB'.
+   search.
+ %args_secure_output
+  %EA-Nil
+   case EvB. search.
+  %EA-Cons
+   case IsA. Lev: case Lev. EvB: case EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+   apply IH_A to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+   apply append_unique to EvA3 EvB2. search.
+  %unknown K
+   case Lev.
+ %recFields_secure_output
+  %ERF-Nil
+   case EvB. search.
+  %ERF-Cons
+   case IsRF. Lev: case Lev. EvB: case EvB.
+   apply IH_E to _ _ _ _ _ _ _ _ _ _ _ _ Lev EvA1 EvB.
+   apply IH_RF to _ _ _ _ _ _ _ _ _ _ _ _ Lev1 EvA2 EvB1.
+   apply append_unique to EvA3 EvB2. search.
+  %unknown K
+   case Lev.
+
+
+
+
+/********************************************************************
+ Programs do not leak private information
+ ********************************************************************/
+%--------------------------------------------
+% Everything gathered has is relations
+%--------------------------------------------
+Extensible_Theorem
+  paramSec_is : forall P Name L,
+    IsP : is_param P ->
+    PS : paramSec P Name L ->
+    is_string Name /\ is_slev L
+  on PS.
+%PS-Param
+ case IsP. search.
+%PS-SecParam
+ case IsP. search.
+%PS-Default
+ apply proj_param_is to PS1 _. apply IH to _ PS2. search.
+
+Theorem paramSecs_is : forall Ps PSecs,
+  is_list is_param Ps -> paramSecs Ps PSecs ->
+  is_list (is_pair is_string is_slev) PSecs.
+induction on 2. intros IsPs PS. PS: case PS.
+  %PSs-Nil
+   search.
+  %PSs-Cons
+   case IsPs. apply paramSec_is to _ PS. apply IH to _ PS1. search.
+
+Theorem values_is_sec : forall L V,
+  is_list (is_pair is_string is_slev) L -> values L V ->
+  is_list is_slev V.
+induction on 2. intros IsL V. V: case V.
+  %V-Nil
+   search.
+  %V-Cons
+   Is: case IsL. case Is. apply IH to _ V. search.
+
+Extensible_Theorem
+  getFunSec_is : forall F Name RetLev PSecs,
+    IsF : is_fun F ->
+    GFS : getFunSec F Name RetLev PSecs ->
+    is_string Name /\ is_slev RetLev /\ is_list is_slev PSecs
+  on GFS.
+%GFS-Fun
+ case IsF. apply paramSecs_is to _ GFS1.
+ apply values_is_sec to _ GFS2. search.
+%GFS-SecFun
+ case IsF. apply paramSecs_is to _ GFS1.
+ apply values_is_sec to _ GFS2. search.
+%GFS-Default
+ apply proj_fun_is to GFS1 _. apply IH to _ GFS2. search.
+
+Theorem gatherFunSecCtx_is : forall Fs SF,
+  is_list is_fun Fs -> gatherFunSecCtx Fs SF ->
+  is_list (is_pair is_string (is_pair is_slev (is_list is_slev))) SF.
+induction on 2. intros IsFs GFSC. GFSC: case GFSC.
+  %GFSC-Nil
+   search.
+  %GFSC-Cons
+   case IsFs. apply getFunSec_is to _ GFSC. apply IH to _ GFSC1.
+   search.
+
+Extensible_Theorem
+  program_secure_is : forall P S,
+    IsP : is_program P ->
+    Sec : programSecure P S ->
+    is_list is_slev S
+  on Sec.
+%SP-Program
+ case IsP. apply getFunSec_is to _ Sec2. search.
+%SP-Default
+ apply proj_program_is to Sec1 _. apply IH to _ Sec2. search.
+
+
+%--------------------------------------------
+% Everything gathered is unique
+%--------------------------------------------
+Extensible_Theorem
+  paramSec_unique : forall P NameA LA NameB LB,
+    IsP : is_param P ->
+    PSA : paramSec P NameA LA ->
+    PSB : paramSec P NameB LB ->
+    NameA = NameB /\ LA = LB
+  on PSA.
+%PS-Param
+ case PSB. search.
+%PS-SecParam
+ case PSB. search.
+%PS-Default
+ PSB: case PSB. apply proj_param_unique to PSB PSA1 _.
+ apply proj_param_is to PSA1 _. apply IH to _ PSA2 PSB1. search.
+
+Theorem paramSecs_unique : forall Ps PSecsA PSecsB,
+  is_list is_param Ps -> paramSecs Ps PSecsA -> paramSecs Ps PSecsB ->
+  PSecsA = PSecsB.
+induction on 2. intros IsPs PSA PSB. PSA: case PSA.
+  %PSs-Nil
+   case PSB. search.
+  %PSs-Cons
+   case IsPs. PSB: case PSB. apply paramSec_unique to _ PSA PSB.
+   apply IH to _ PSA1 PSB1. search.
+
+Extensible_Theorem
+  getFunSec_unique : forall F NA LA PSA NB LB PSB,
+    IsF : is_fun F ->
+    GFSA : getFunSec F NA LA PSA ->
+    GFSB : getFunSec F NB LB PSB ->
+    NA = NB /\ LA = LB /\ PSA = PSB
+  on GFSA.
+%GFS-Fun
+ GFSB: case GFSB. case IsF. apply paramSecs_unique to _ GFSA1 GFSB.
+ apply values_unique to GFSB1 GFSA2. search.
+%GFS-SecFun
+ GFSB: case GFSB. case IsF. apply paramSecs_unique to _ GFSA1 GFSB.
+ apply values_unique to GFSB1 GFSA2. search.
+%GFS-Default
+ GFSB: case GFSB. apply proj_fun_unique to GFSB GFSA1 _.
+ apply proj_fun_is to GFSA1 _. apply IH to _ GFSA2 GFSB1. search.
+
+Theorem gatherFunSecCtx_unique : forall Fs SFA SFB,
+  is_list is_fun Fs -> gatherFunSecCtx Fs SFA ->
+  gatherFunSecCtx Fs SFB -> SFA = SFB.
+induction on 2. intros IsFs GA GB. GA: case GA.
+  %GFSC-Nil
+   case GB. search.
+  %GFSC-Cons
+   GB: case GB. case IsFs. apply getFunSec_unique to _ GA GB.
+   apply IH to _ GA1 GB1. search.
+
+Extensible_Theorem
+  program_secure_unique : forall P A B,
+    IsP : is_program P ->
+    SecA : programSecure P A ->
+    SecB : programSecure P B ->
+    A = B
+  on SecA.
+%SP-Program
+ SecB: case SecB. case IsP. apply getFunSec_unique to _ SecA2 SecB1.
+ search.
+%SP-Default
+ SecB: case SecB. apply proj_program_unique to SecB SecA1 _.
+ apply proj_program_is to SecA1 _. apply IH to _ SecA2 SecB1. search.
+
+
+%--------------------------------------------
+% Gathered security and eval info are related
+%--------------------------------------------
+Extensible_Theorem
+  paramName_paramSec : forall P N NS L,
+    IsP : is_param P ->
+    PN : paramName P N ->
+    PS : paramSec P NS L ->
+    N = NS
+  on PS.
+%PS-Param
+ case PN. search.
+%PS-SecParam
+ case PN. search.
+%PS-Default
+ PN': apply proj_paramName_forward to PS1 _ PN.
+ apply proj_param_is to PS1 _. apply IH to _ PN' PS2. search.
+
+Theorem paramNames_paramSecs : forall Ps PNs PSecs,
+  is_list is_param Ps -> paramNames Ps PNs -> paramSecs Ps PSecs ->
+  domain PSecs PNs.
+induction on 3. intros IsPs PNs PSecs. PSecs: case PSecs.
+  %PSs-Nil
+   case PNs. search.
+  %PSs-Cons
+   case IsPs. PNs: case PNs. apply paramName_paramSec to _ PNs PSecs.
+   apply IH to _ PNs1 PSecs1. search.
+
+Theorem domain_values_zip[A, B] : forall (L : list (pair A B)) D V,
+  domain L D -> values L V -> zip D V L.
+induction on 1. intros D V. D: case D.
+  %Dmn-Nil
+   case V. search.
+  %Dmn-Cons
+   V: case V. apply IH to D V. search.
+
+Extensible_Theorem
+  getFun_sec :
+    forall F FName RetVar RVVal PNames Body SName RetLev PSecs SF,
+      IsF : is_fun F ->
+      GFEI : getFunEvalInfo F FName RetVar RVVal PNames Body ->
+      GFS : getFunSec F SName RetLev PSecs ->
+      FS : funSecure SF F ->
+      exists ZP SG, FName = SName /\
+                    zip PNames PSecs ZP /\
+                    secure SF [(RetVar, RetLev)::ZP] RetLev Body SG
+  on GFS.
+%GFS-Fun
+ case IsF. GFEI: case GFEI. FS: case FS.
+ Dmn: apply paramNames_paramSecs to _ GFEI FS.
+ Z: apply domain_values_zip to Dmn FS3.
+ apply paramSecs_unique to _ FS GFS1. apply values_unique to FS3 GFS2.
+ search.
+%GFS-SecFun
+ case IsF. GFEI: case GFEI. FS: case FS.
+   %FS-SecFun-Public
+    Dmn: apply paramNames_paramSecs to _ GFEI FS.
+    Z: apply domain_values_zip to Dmn FS3.
+    apply paramSecs_unique to _ FS GFS1.
+    apply values_unique to FS3 GFS2. search.
+   %FS-SecFun-Private
+    Dmn: apply paramNames_paramSecs to _ GFEI FS.
+    Z: apply domain_values_zip to Dmn FS3.
+    apply paramSecs_unique to _ FS GFS1.
+    apply values_unique to FS3 GFS2. search.
+%GFS-Default
+ GFEI': apply proj_getFunEvalInfo_forward to GFS1 _ GFEI.
+ apply proj_fun_is to GFS1 _. FS: case FS.
+ apply proj_fun_unique to FS GFS1 _. apply IH to _ GFEI' GFS2 FS1.
+ search.
+
+%can't do secFunCtxs directly due to need to use SF_Full,
+%   but this lets us build it
+Theorem gatherCtxs_secFunCtxs :
+  forall Fs SF FE SF_Full FName RetLev PSecs RetVar RVVal PNames Body,
+    is_list is_fun Fs -> gatherFunSecCtx Fs SF ->
+    getFunEvalCtx Fs FE -> funsSecure SF_Full Fs ->
+    lookup SF FName (RetLev, PSecs) ->
+    lookup FE FName (RetVar, RVVal, PNames, Body) ->
+    exists ZP SG, zip PNames PSecs ZP /\
+       secure SF_Full [(RetVar, RetLev)::ZP] RetLev Body SG.
+induction on 5. intros IsFs GFSC GFEC FS LS LE. LS: case LS.
+  %Lkp-Here
+   GFSC: case GFSC. GFEC: case GFEC. FS: case FS. case IsFs.
+   apply getFun_sec to _ GFEC GFSC FS. LE: case LE.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply LE to _.
+  %Lkp-Later
+   GFSC: case GFSC. GFEC: case GFEC. FS: case FS. case IsFs.
+   apply getFun_sec to _ GFEC GFSC FS. LE: case LE.
+     %Lkp-Here
+      apply LS to _.
+     %Lkp-Later
+      apply IH to _ GFSC1 GFEC1 FS1 LS1 LE1. search.
+
+
+%--------------------------------------------
+% Gathered functions have secFuns
+%--------------------------------------------
+Extensible_Theorem
+  getFunSec_allPublic : forall F SF Name PSecs,
+    IsF : is_fun F ->
+    FS : funSecure SF F ->
+    GFS : getFunSec F Name public PSecs ->
+    allPublic PSecs
+  on FS.
+%FS-Fun
+ case IsF. GFS: case GFS. apply paramSecs_unique to _ GFS FS1.
+ apply values_unique to FS4 GFS1. search.
+%FS-SecFun-Public
+ case IsF. GFS: case GFS. apply paramSecs_unique to _ GFS FS1.
+ apply values_unique to FS4 GFS1. search.
+%FS-SecFun-Private
+ case GFS.
+%FS-Default
+ apply proj_fun_is to FS1 _. GFS: case GFS.
+ apply proj_fun_unique to GFS FS1 _. apply IH to _ FS2 GFS1. search.
+
+
+Theorem gatherFunSecCtx_secFuns : forall Fs SF L,
+  is_list is_fun Fs -> funsSecure SF Fs -> gatherFunSecCtx Fs L ->
+  secFuns L.
+induction on 2. intros IsFs FSs GFSC. FSs: case FSs.
+  %FSs-Nil
+   case GFSC. unfold. intros L. case L.
+  %FSs-Cons
+   case IsFs. G: case GFSC. SF: apply IH to _ FSs1 G1. R: case SF.
+   unfold. intros L. L: case L.
+     %Lkp-Here
+      apply getFunSec_allPublic to _ FSs G. search.
+     %Lkp-Later
+      apply R to L1. search.
+
+
+%--------------------------------------------
+% Secure programs do not leak in output
+%--------------------------------------------
+Extensible_Theorem
+  program_secure : forall P A_S A_A A_B O_A O_B,
+    IsP : is_program P ->
+    IsA_A : is_list is_value A_A ->
+    IsA_B : is_list is_value A_B ->
+    Sec : programSecure P A_S ->
+    %different sets of arguments to main have the same public args,
+    %   but may differ in private args
+    Rel : level_arg_vals A_S A_A A_B ->
+    EvA : evalProgram A_A P O_A ->
+    EvB : evalProgram A_B P O_B ->
+    O_A = O_B
+  on Sec.
+%SP-Program
+ case IsP. EvA: case EvA. EvB: case EvB.
+ apply getFunEvalCtx_unique to _ EvB EvA.
+ apply getFunEvalInfo_unique to _ EvB1 EvA1.
+ apply gatherFunSecCtx_is to _ Sec1. apply getFunSec_is to _ Sec2.
+ MainS: apply getFun_sec to _ EvA1 Sec2 Sec4.
+ assert secFunCtxs ((Name, (RetLev, A_S))::SF)
+          ((Name, (RetVar, RetVal, PNames, Body))::FCtx).
+   unfold. intros LS LE. LS: case LS.
+     %Lkp-Here
+      LE: case LE.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         apply LE to _.
+     %Lkp-Later
+      LE: case LE.
+        %Lkp-Here
+         apply LS to _.
+        %Lkp-Later
+         apply gatherCtxs_secFunCtxs to _ Sec1 EvA Sec3 LS1 LE1.
+         search.
+ assert secFuns ((Name, (RetLev, A_S))::SF).
+   unfold. intros L. L: case L.
+     %Lkp-Here
+      apply getFunSec_allPublic to _ Sec4 Sec2. search.
+     %Lkp-Later
+      SF: apply gatherFunSecCtx_secFuns to _ Sec3 Sec1. R: case SF.
+      apply R to L1. search.
+ ZA: assert zip (RetVar::PNames) (RetVal::A_A)
+                ((RetVar, RetVal)::InitEnv).
+ ZB: assert zip (RetVar::PNames) (RetVal::A_B)
+                ((RetVar, RetVal)::InitEnv1).
+ ZM: assert zip (RetVar::PNames) (RetLev::A_S)
+                ((RetVar, RetLev)::ZP).
+ assert level_arg_vals (RetLev::A_S) (RetVal::A_A) (RetVal::A_B).
+   Or: apply is_slev_public_or_not to _ with L = RetLev. case Or.
+   search. search.
+ PE: apply zip_level_arg_vals to _ ZA ZB ZM.
+ apply zip_names_same to ZA ZM. apply zip_names_same to ZB ZM.
+ apply getFunEvalInfo_is to _ EvA1. apply getFunSec_is to _ Sec2.
+ apply zip_is to _ _ ZA. apply zip_is to _ _ ZB.
+ apply zip_is_sec to _ _ ZM. apply getFunEvalCtx_is to _ EvA.
+ apply secure_output to _ _ _ _ _ _ _ _ _ _ _ _ MainS1 EvA3 EvB3.
+ search.
+%SP-Default
+ EvA': apply proj_evalProgram to Sec1 _ _ EvA.
+ EvB': apply proj_evalProgram to Sec1 _ _ EvB.
+ apply proj_program_is to Sec1 _. apply IH to _ _ _ Sec2 _ EvA' EvB'.
+ search.
+
+
+/*
+  We frame program security as having the same output if the public
+  arguments to main are the same.  The concept of non-public arguments
+  to main sounds a bit strange; isn't the user, the person from whom
+  we are hiding private information, giving all the arguments?  We can
+  think of private arguments as standing in for the contents of files
+  and such, so a private argument might be an encryption key for the
+  program read from the file.  Therefore it does make sense to have
+  non-public arguments to main.
+*/
+
+/*
+  The security extension as written isn't very useful.  Suppose we
+  want to write a password checker, a good use for information flow
+  security, using it.  We take the true password and a user's attempt
+  as arguments to main, compare them, and find we cannot output
+  whether they matched because the true password is private, and thus
+  the result of comparing them is also private and cannot be printed.
+
+  A "real" version of this extension, intended to be used for writing
+  real programs, would need a declassify construct to lower
+  information to a public level.  Such a construct is unsound for
+  security, which is why we don't include it here where we are
+  concerned with proving soundness, not writing actual programs.
+  However, it allows a programmer to decide explicitly what private
+  information may escape and in what circumstances, so it is
+  effectively good enough.  For example, telling the user the
+  passwords matched or didn't leaks a little bit of information to the
+  user about the true password, but the programmer decides this is
+  still secure enough and necessary for the job the program is doing.
+*/

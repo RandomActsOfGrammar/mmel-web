@@ -1,0 +1,84 @@
+Module matchEval:host
+
+/*Expressions*/
+expr ::= num(int)
+       | plus(expr, expr)
+       | minus(expr, expr)
+       | mult(expr, expr)
+       | div(expr, expr)
+       | true
+       | false
+       | and(expr, expr)
+       | or(expr, expr)
+       | not(expr)
+       | greater(expr, expr)
+       | eq(expr, expr)
+       | stringLit(string)
+       | appString(expr, expr)
+       | name(string)
+       | call(string, args)
+       | recBuild(recFieldExprs)
+       | recFieldAccess(expr, string)
+       | errorExpr(expr, typ)
+        /*errorExpr represents a failure case
+          expr:  string-typed error message expression
+          typ:  for proving typing properties*/
+Projection expr :
+
+recFieldExprs ::= nilRecFieldExprs
+                | consRecFieldExprs(string, expr, recFieldExprs)
+Projection recFieldExprs :
+
+args ::= nilArgs
+       | consArgs(expr, args)
+Projection args :
+
+
+/*Statements*/
+stmt ::= noop
+       | seq(stmt, stmt)
+       | declare(typ, string, expr)
+       | assign(string, expr)
+       | recUpdate(string, [string], expr)
+       | ifThenElse(expr, stmt, stmt)
+       | while(expr, stmt)
+       | scopeStmt(stmt)
+       | printVal(expr)
+/*[string] is list of names used in the program thus far;
+  lets us generate fresh names for extension constructs*/
+Projection stmt : [string]
+
+
+/*Functions*/
+fun ::= fun(string, typ, string, value, [param], stmt)
+     /*name, ret ty, ret var, init ret var val, params, body*/
+Projection fun :
+
+param ::= param(string, typ)
+Projection param :
+
+
+/*Full Program*/
+program ::= program([fun], fun)
+              /*list of auxiliary functions, main function*/
+Projection program :
+
+
+/*Types (cannot name it "type" because of Extensibella keyword*/
+typ ::= intTy
+      | boolTy
+      | stringTy
+      | recTy(recFieldTys)
+recFieldTys ::= nilRecFieldTys
+              | consRecFieldTys(string, typ, recFieldTys)
+Projection typ :
+Projection recFieldTys :
+
+
+/*Values*/
+value ::= intVal(int)
+        | trueVal
+        | falseVal
+        | stringVal(string)
+        | recVal([(string, value)])
+Projection value :

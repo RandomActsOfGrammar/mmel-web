@@ -1,0 +1,406 @@
+Module exactEval:assert.
+
+/********************************************************************
+ Basic Projection Constraints
+ ********************************************************************/
+Prove_Constraint exactEval:host:proj_expr_unique.
+Prove_Constraint exactEval:host:proj_expr_is.
+Prove_Constraint exactEval:host:proj_expr_other.
+
+Prove_Constraint exactEval:host:proj_stmt_unique.
+ %Proj-Assert
+  case PrB. search.
+Prove_Constraint exactEval:host:proj_stmt_is.
+ %Proj-Assert
+  case IsS. search.
+Prove_Constraint exactEval:host:proj_stmt_other.
+ %Proj-Assert
+  search.
+
+Prove_Constraint exactEval:host:proj_fun_unique.
+Prove_Constraint exactEval:host:proj_fun_is.
+
+Prove_Constraint exactEval:host:proj_param_unique.
+Prove_Constraint exactEval:host:proj_param_is.
+
+Prove_Constraint exactEval:host:proj_program_unique.
+Prove_Constraint exactEval:host:proj_program_is.
+
+Prove_Constraint exactEval:host:proj_typ_unique.
+Prove_Constraint exactEval:host:proj_typ_is.
+
+
+
+
+/********************************************************************
+ Decidable Equality
+ ********************************************************************/
+Add_Proj_Rel exactEval:host:is_expr, exactEval:host:is_args,
+             exactEval:host:is_recFieldExprs, exactEval:host:is_stmt.
+Prove_Ext_Ind exactEval:host:is_expr, exactEval:host:is_args,
+              exactEval:host:is_recFieldExprs, exactEval:host:is_stmt.
+apply IH to R1. apply IH to R2. search.
+
+Prove exactEval:host:is_args_nilArgs_or_consArgs.
+Prove exactEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.
+
+
+
+
+/********************************************************************
+ Variables
+ ********************************************************************/
+Prove exactEval:host:vars_unique.
+
+Prove exactEval:host:vars_is.
+
+Prove exactEval:host:vars_exist,
+      exactEval:host:varsArgs_exist,
+      exactEval:host:varsRecFields_exist.
+
+
+
+
+/********************************************************************
+ Statement Names
+ ********************************************************************/
+Prove exactEval:host:stmtNames_is,
+      exactEval:host:stmtNames_isCtx,
+      exactEval:host:exprNames_is.
+%stmtNames_is
+ case IsS. apply IH_E to _ _ SN1. apply IH_E to _ _ SN2.
+ apply append_list_string_is to _ _ SN3. search.
+%stmtNames_isCtx
+ search.
+
+Prove exactEval:host:stmtNames_unique,
+      exactEval:host:exprNames_unique.
+case IsS. SNB: case SNB. apply IH_E to _ _ SNA1 SNB.
+apply IH_E to _ _ SNA2 SNB1. apply append_unique to SNA3 SNB2. search.
+
+Prove exactEval:host:stmtNames_keep_older.
+search.
+
+Prove exactEval:host:stmtNames_exists,
+      exactEval:host:exprNames_exists,
+      exactEval:host:argsNames_exists,
+      exactEval:host:recFieldNames_exists.
+ENE: apply IH_E to IsS1 IsCtx. ENM: apply IH_E to IsS2 IsCtx.
+Is1: apply exprNames_is to _ _ ENE.
+Is2: apply exprNames_is to _ _ ENM.
+apply append_list_string_total to Is1 Is2. search.
+
+Prove exactEval:host:stmtNames_not_in_ctx,
+      exactEval:host:exprNames_not_in_ctx.
+case IsS.  Or: apply mem_append to MemN SN3. M: case Or.
+  %mem X NE
+   apply IH_E to _ _ SN1 M MemsCtx.
+  %mem X NM
+   apply IH_E to _ _ SN2 M MemsCtx.
+
+
+Prove exactEval:host:stmtNames_relatedCtxs,
+      exactEval:host:stmtNames_relatedCtxs_ctx_fwd,
+      exactEval:host:stmtNames_relatedCtxs_ctx_back,
+      exactEval:host:exprNames_relatedCtxs.
+%stmtNames_relatedCtxs
+ case IsS. apply IH_E to _ _ _ RelAB RelBA SN1.
+ apply IH_E to _ _ _ RelAB RelBA SN2. search.
+%stmtNames_relatedCtxs_ctx_fwd
+ case IsS. SNB: case SNB. backchain RelAB.
+%stmtNames_relatedCtxs_ctx_back
+ SNB: case SNB. backchain RelBA.
+
+
+Prove exactEval:host:stmtNames_increaseCtxs,
+      exactEval:host:stmtNames_increaseCtxs_ctxs,
+      exactEval:host:exprNames_increaseCtxs.
+%stmtNames_increaseCtxs
+ case IsS. SNB: case SNB. Or: apply mem_append to M SNB2.
+ M': case Or.
+   %mem X NE1
+    ME: apply IH_E to _ _ _ _ SNA1 SNB M'.
+    apply mem_append_left to ME SNA3. search.
+   %mem X NM1
+    MM: apply IH_E to _ _ _ _ SNA2 SNB1 M'.
+    apply mem_append_right to MM SNA3. search.
+%stmtNames_increaseCtxs_ctxs
+ case SNB. apply RelAB to M. search.
+
+
+Prove_Constraint exactEval:host:proj_exprNames.
+Prove_Constraint exactEval:host:proj_stmtNames.
+case IsS. SN: case SN. SN_P: case SN_P. case SN_P1. SN_P: case SN_P2.
+SN_P: case SN_P1. apply exprNames_unique to _ _ SN SN_P.
+apply append_nil_right to SN_P3. clear SN_P3.
+SN': apply exprNames_relatedCtxs to _ _ _ _ _ SN_P1 with
+        CtxB = Scope::Ctx.
+  %mems ->
+   intros M'. M': case M'. case M'. search.
+apply exprNames_unique to _ _ SN1 SN'.
+apply append_unique to SN2 SN_P4. search.
+Prove_Constraint exactEval:host:proj_stmtNames_names_forward.
+case IsS. SN: case SN. SN_P: case SN_P. search.
+Prove_Constraint exactEval:host:proj_stmtNames_names_backward.
+case IsS. SN: case SN. SN_P: case SN_P. search.
+
+
+
+
+/********************************************************************
+ Typing
+ ********************************************************************/
+Prove exactEval:host:typeOf_isTy,
+      exactEval:host:stmtOK_isCtx.
+%stmtOK_isCtx
+ %T-Assert
+  search.
+
+
+Prove exactEval:host:stmtOK_keep_scopes.
+%T-Assert
+ search.
+
+
+Prove exactEval:host:stmtOK_older_scopes_same.
+%T-Assert
+ search.
+
+
+Prove exactEval:host:stmtOK_first_scope_lookup_same.
+%T-Assert
+ search.
+
+
+Prove exactEval:host:typeOf_unique,
+      exactEval:host:stmtOK_unique.
+%stmtOK_unique
+ case TyB. search.
+
+
+Prove exactEval:host:paramTy_is.
+Prove exactEval:host:getFunInfo_is.
+
+
+Prove exactEval:host:paramTy_exists.
+Prove exactEval:host:getFunInfo_exists.
+
+
+
+
+/********************************************************************
+ Evaluation
+ ********************************************************************/
+Prove exactEval:host:evalExpr_isCtx,
+      exactEval:host:evalExpr_isValue,
+      exactEval:host:evalStmt_isCtx,
+      exactEval:host:evalArgs_isCtx,
+      exactEval:host:evalArgs_isValue,
+      exactEval:host:evalRecFields_isCtx,
+      exactEval:host:evalRecFields_isValue.
+%evalStmt_isCtx
+ %E-Assert
+  case IsS. apply IH_C_E to _ _ _ Ev1. search.
+
+
+Prove exactEval:host:evalExpr_isOutput,
+      exactEval:host:evalStmt_isOutput,
+      exactEval:host:evalArgs_isOutput,
+      exactEval:host:evalRecFields_isOutput.
+%evalStmt_isOutput
+ %E-Assert
+  case IsS. apply IH_E to _ _ _ Ev1. search.
+
+
+Prove exactEval:host:paramName_is.
+Prove exactEval:host:getFunEvalInfo_is.
+
+Prove exactEval:host:evalProgram_isOutput.
+
+
+Prove exactEval:host:evalExpr_names_same,
+      exactEval:host:evalStmt_names_same,
+      exactEval:host:evalArgs_names_same,
+      exactEval:host:evalRecFields_names_same.
+%evalStmt_names_same
+ %E-Assert
+  case IsS. NS: apply IH_E to _ _ _ Ev1. case NS. search.
+
+
+Prove exactEval:host:evalExpr_newNameScopes,
+      exactEval:host:evalExpr_newNameScopes_output,
+      exactEval:host:evalExpr_newNameScopes_ctx,
+      exactEval:host:evalStmt_newNameScopes_output,
+      exactEval:host:evalStmt_newNameScopes,
+      exactEval:host:evalArgs_newNameScopes,
+      exactEval:host:evalArgs_newNameScopes_output,
+      exactEval:host:evalArgs_newNameScopes_ctx,
+      exactEval:host:evalRecFields_newNameScopes,
+      exactEval:host:evalRecFields_newNameScopes_output,
+      exactEval:host:evalRecFields_newNameScopes_ctx.
+%evalStmt_newNameScopes_output
+ case IsS. EvB: case EvB. apply IH_O_E to _ _ _ _ EvA1 EvB _. search.
+%evalStmt_newNameScopes
+ case IsS. EvB: case EvB. apply IH_C_E to _ _ _ _ EvA1 EvB _. search.
+
+
+Add_Ext_Size exactEval:host:evalExpr,
+             exactEval:host:evalArgs,
+             exactEval:host:evalRecFields,
+             exactEval:host:evalStmt.
+Add_Proj_Rel exactEval:host:evalExpr,
+             exactEval:host:evalArgs,
+             exactEval:host:evalRecFields,
+             exactEval:host:evalStmt.
+
+
+Prove exactEval:host:evalExpr_newNameScopes_exists_ES,
+      exactEval:host:evalStmt_newNameScopes_exists_ES,
+      exactEval:host:evalArgs_newNameScopes_exists_ES,
+      exactEval:host:evalRecFields_newNameScopes_exists_ES.
+case IsS. apply ext_size_is_int_evalExpr to EvB2.
+apply IH_E to _ _ _ _ EvB2 _. search.
+
+
+Prove exactEval:host:evalExpr_ctx_names,
+      exactEval:host:evalStmt_ctx_names,
+      exactEval:host:evalArgs_ctx_names,
+      exactEval:host:evalRecFields_ctx_names.
+case IsS. SN: case SN. apply IH_E to _ _ _ _ Ctxs SN Ev1. search.
+
+
+Prove exactEval:host:evalExpr_newNameScopes_exists_back,
+      exactEval:host:evalStmt_newNameScopes_exists_back,
+      exactEval:host:evalArgs_newNameScopes_exists_back,
+      exactEval:host:evalRecFields_newNameScopes_exists_back.
+case IsS. SN: case SN. case SN2.
+apply IH_E to _ _ _ _ _ Ctxs SN EvA1 _. search.
+
+
+Prove exactEval:host:evalExpr_scopes_same,
+      exactEval:host:evalExpr_scopes_same_ctx,
+      exactEval:host:evalStmt_scopes_same,
+      exactEval:host:evalStmt_scopes_same_ctx,
+      exactEval:host:evalArgs_scopes_same,
+      exactEval:host:evalArgs_scopes_same_ctx,
+      exactEval:host:evalRecFields_scopes_same,
+      exactEval:host:evalRecFields_scopes_same_ctx.
+%evalStmt_scopes_same
+ case IsS. EvB: case EvB. apply IH_E to _ _ _ _ SS EvA1 EvB. search.
+%evalStmt_scopes_same_ctx
+ case IsS. EvB: case EvB. apply IH_E_C to _ _ _ _ _ EvA1 EvB. search.
+
+Prove exactEval:host:evalExpr_scopes_same_exists,
+      exactEval:host:evalStmt_scopes_same_exists,
+      exactEval:host:evalArgs_scopes_same_exists,
+      exactEval:host:evalRecFields_scopes_same_exists.
+case IsS. apply IH_E to _ _ _ _ SS EvA1. search.
+
+
+Prove_Constraint exactEval:host:proj_evalExpr_forward.
+Prove_Constraint exactEval:host:proj_evalExpr_backward.
+
+Theorem is_list_values_append_nil : forall L,
+  is_list is_value L -> L ++ [] = L.
+induction on 1. intros IsL. Is: case IsL.
+  %nil
+   search.
+  %cons
+   apply IH to Is1. search.
+
+Prove_Constraint exactEval:host:proj_evalStmt_forward.
+case IsS. Ev: case Ev. IsEE': apply evalExpr_isCtx to _ _ _ Ev.
+apply scopes_same_reflexive to IsEE'. exists EE'. split.
+  %eval
+   unfold. exists EE', O, [], []. split.
+     %eval E
+      search.
+     %eval noop
+      search.
+     %append
+      IsO: apply evalExpr_isOutput to _ _ _ Ev.
+      backchain is_list_values_append_nil.
+  %scopes_same
+   search.
+
+Prove_Constraint exactEval:host:proj_evalStmt_backward.
+case IsS. Ev: case Ev.
+  %E-If-True
+   case Ev1. apply append_nil_right to Ev2.
+   IsEE': apply evalExpr_isCtx to _ _ _ Ev.
+   apply scopes_same_reflexive to IsEE'. search.
+  %E-If-False
+   Ev': case Ev1. case Ev'. case Ev'. case Ev'. case Ev'.
+
+
+Prove_Ext_Ind exactEval:host:evalExpr,
+              exactEval:host:evalArgs,
+              exactEval:host:evalRecFields,
+              exactEval:host:evalStmt.
+case IsS. apply ext_size_is_int_evalExpr to R2. Acc: case Acc.
+L: apply lt_plus_one to R1 _. apply ext_size_pos_evalExpr to R2.
+A: apply Acc to _ L. apply IH to R2 A _ _ _.
+Names: apply names_exists to IsEE. unfold.
+exists N1, ifThenElse E noop (printVal (errorExpr Msg intTy)), EE', O.
+split.
+  %eval E
+   search.
+  %names
+   search.
+  %proj
+   search.
+  %eval proj
+   unfold. exists EE', O, [], []. split.
+     %eval E
+      search.
+     %eval noop
+      search.
+     %append output
+      Ev: apply drop_ext_size_evalExpr to R2.
+      apply evalExpr_isOutput to _ _ _ Ev.
+      backchain is_list_values_append_nil.
+
+
+Prove exactEval:host:paramName_unique.
+Prove_Constraint exactEval:host:proj_paramName_forward.
+Prove_Constraint exactEval:host:proj_paramName_back.
+Prove exactEval:host:getFunEvalInfo_unique.
+Prove_Constraint exactEval:host:proj_getFunEvalInfo_forward.
+Prove_Constraint exactEval:host:proj_getFunEvalInfo_back.
+
+Prove exactEval:host:evalProgram_unique.
+Prove_Constraint exactEval:host:proj_evalProgram_forward.
+Prove_Constraint exactEval:host:proj_evalProgram_back.
+
+
+Prove exactEval:host:evalExpr_typePres_ctx,
+      exactEval:host:evalExpr_typePres,
+      exactEval:host:evalStmt_typePres,
+      exactEval:host:evalArgs_typePres_Ctx,
+      exactEval:host:evalArgs_typePres,
+      exactEval:host:evalRecFields_typePres_Ctx,
+      exactEval:host:evalRecFields_typePres.
+%evalStmt_typePres
+ %E-Assert
+  case IsS. Ty: case Ty. apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _. search.
+
+
+Prove exactEval:host:paramTy_paramName_same.
+Prove exactEval:host:funOK_getFunEvalInfo_related.
+
+
+Prove exactEval:host:evalExpr_output_forms,
+      exactEval:host:evalStmt_output_forms,
+      exactEval:host:evalArgs_output_forms,
+      exactEval:host:evalRecFields_output_forms.
+%evalStmt_output_forms
+ %E-Assert
+  case IsS. apply IH_E to _ _ _ Ev1. search.
+
+
+Prove exactEval:host:evalProgram_output_forms.
+
+
+Prove exactEval:host:paramName_exists.
+Prove exactEval:host:getFunEvalInfo_exists.
+

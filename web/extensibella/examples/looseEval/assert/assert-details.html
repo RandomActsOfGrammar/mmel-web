@@ -1,0 +1,3343 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  looseEval:assert - Details</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h2>Reasoning Details</h2>
+<div class="section">
+<pre class="code extensibella">
+ < <b>Module looseEval:assert.</b>
+</pre>
+<pre class="code extensibella"id="1">
+ &lt; <b>Prove_Constraint looseEval:host:proj_expr_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="2">
+ &lt; <b>Prove_Constraint looseEval:host:proj_expr_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="3">
+ &lt; <b>Prove_Constraint looseEval:host:proj_stmt_unique.</b>
+
+Variables: L1 L2 S2 Msg E
+PrA : L1 |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+PrB : L2 |{stmt}- assert E Msg ~~&gt; S2
+IsS : is_stmt (assert E Msg)
+IsL1 : is_list is_string L1
+IsL2 : is_list is_string L2
+Rel12 : forall X, mem X L1 -&gt; mem X L2
+Rel21 : forall X, mem X L2 -&gt; mem X L1
+============================
+ ifThenElse E noop (printVal (errorExpr Msg intTy)) = S2
+</pre>
+<pre class="code extensibella"id="4">
+ &lt; <b>case PrB.</b>
+
+Variables: L1 L2 Msg E
+PrA : L1 |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+IsS : is_stmt (assert E Msg)
+IsL1 : is_list is_string L1
+IsL2 : is_list is_string L2
+Rel12 : forall X, mem X L1 -&gt; mem X L2
+Rel21 : forall X, mem X L2 -&gt; mem X L1
+============================
+ ifThenElse E noop (printVal (errorExpr Msg intTy)) = ifThenElse E noop (printVal (errorExpr Msg intTy))
+</pre>
+<pre class="code extensibella"id="5">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="6">
+ &lt; <b>Prove_Constraint looseEval:host:proj_stmt_is.</b>
+
+Variables: L Msg E
+Pr : L |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+IsS : is_stmt (assert E Msg)
+IsL : is_list is_string L
+============================
+ is_stmt (ifThenElse E noop (printVal (errorExpr Msg intTy)))
+</pre>
+<pre class="code extensibella"id="7">
+ &lt; <b>case IsS.</b>
+
+Variables: L Msg E
+Pr : L |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+IsL : is_list is_string L
+H1 : is_expr E
+H2 : is_expr Msg
+============================
+ is_stmt (ifThenElse E noop (printVal (errorExpr Msg intTy)))
+</pre>
+<pre class="code extensibella"id="8">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="9">
+ &lt; <b>Prove_Constraint looseEval:host:proj_stmt_other.</b>
+
+Variables: L L' Msg E
+Pr : L |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+IsS : is_stmt (assert E Msg)
+IsL : is_list is_string L
+IsL' : is_list is_string L'
+============================
+ exists S'', L' |{stmt}- assert E Msg ~~&gt; S''
+</pre>
+<pre class="code extensibella"id="10">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="11">
+ &lt; <b>Prove_Constraint looseEval:host:proj_fun_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="12">
+ &lt; <b>Prove_Constraint looseEval:host:proj_fun_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="13">
+ &lt; <b>Prove_Constraint looseEval:host:proj_param_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="14">
+ &lt; <b>Prove_Constraint looseEval:host:proj_param_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="15">
+ &lt; <b>Prove_Constraint looseEval:host:proj_program_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="16">
+ &lt; <b>Prove_Constraint looseEval:host:proj_program_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="17">
+ &lt; <b>Prove_Constraint looseEval:host:proj_typ_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="18">
+ &lt; <b>Prove_Constraint looseEval:host:proj_typ_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="19">
+ &lt; <b>Prove_Constraint looseEval:host:proj_value_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="20">
+ &lt; <b>Prove_Constraint looseEval:host:proj_value_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="21">
+ &lt; <b>Add_Proj_Rel looseEval:host:is_expr,
+   looseEval:host:is_args,
+   looseEval:host:is_recFieldExprs.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="22">
+ &lt; <b>Prove_Ext_Ind looseEval:host:is_expr,
+   looseEval:host:is_args,
+   looseEval:host:is_recFieldExprs.</b>
+
+Warning:  No definition of Ext Size for all relations in Ext Ind; defaulting to proving Ext Ind without Ext Size
+Proof completed.
+</pre>
+<pre class="code extensibella"id="23">
+ &lt; <b>Add_Proj_Rel looseEval:host:is_stmt.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="24">
+ &lt; <b>Prove_Ext_Ind looseEval:host:is_stmt.</b>
+
+Warning:  No definition of Ext Size for all relations in Ext Ind; defaulting to proving Ext Ind without Ext Size
+Subgoal 10:
+
+Variables: Expr Expr1
+IH : forall S, is_stmt S * -&gt; &lt;is_stmt {P}&gt; S
+R : is_stmt (assert Expr1 Expr) @
+R1 : is_expr Expr1
+R2 : is_expr Expr
+============================
+ &lt;is_stmt {P}&gt; (assert Expr1 Expr)
+</pre>
+<pre class="code extensibella"id="25">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="26">
+ &lt; <b>Prove looseEval:host:is_args_nilArgs_or_consArgs.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="27">
+ &lt; <b>Prove looseEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="28">
+ &lt; <b>Add_Proj_Rel looseEval:host:is_value,
+   looseEval:host:is_recFieldVals.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="29">
+ &lt; <b>Prove_Ext_Ind looseEval:host:is_value,
+   looseEval:host:is_recFieldVals.</b>
+
+Warning:  No definition of Ext Size for all relations in Ext Ind; defaulting to proving Ext Ind without Ext Size
+Proof completed.
+</pre>
+<pre class="code extensibella"id="30">
+ &lt; <b>Prove looseEval:host:is_value_intVal_or_not.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="31">
+ &lt; <b>Prove looseEval:host:is_value_trueVal_or_not.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="32">
+ &lt; <b>Prove looseEval:host:is_value_falseVal_or_not.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="33">
+ &lt; <b>Prove looseEval:host:is_value_stringVal_or_not.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="34">
+ &lt; <b>Prove looseEval:host:is_value_recVal_or_not.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="35">
+ &lt; <b>Prove looseEval:host:is_recFieldVals_nil_or_cons.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="36">
+ &lt; <b>Prove looseEval:host:is_value_eq_or_not,
+         looseEval:host:is_recFieldVals_eq_or_not.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="37">
+ &lt; <b>Prove looseEval:host:vars_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="38">
+ &lt; <b>Prove looseEval:host:vars_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="39">
+ &lt; <b>Prove looseEval:host:vars_exist,
+         looseEval:host:varsArgs_exist,
+         looseEval:host:varsRecFields_exist.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="40">
+ &lt; <b>Prove_Constraint looseEval:host:proj_vars.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="41">
+ &lt; <b>Prove looseEval:host:typeOf_isTy.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="42">
+ &lt; <b>Prove looseEval:host:stmtOK_isCtx.</b>
+
+Subgoal 12:
+
+Variables: FT ET' Msg E
+IH : forall S FT ET ET',
+       is_stmt S -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+       is_list (is_list (is_pair is_string is_typ)) ET -&gt; stmtOK FT ET S ET' * -&gt;
+       is_list (is_list (is_pair is_string is_typ)) ET'
+IsS : is_stmt (assert E Msg)
+IsFT : is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT
+IsET : is_list (is_list (is_pair is_string is_typ)) ET'
+Ty : stmtOK FT ET' (assert E Msg) ET' @
+Ty1 : typeOf FT ET' E boolTy
+Ty2 : typeOf FT ET' Msg stringTy
+============================
+ is_list (is_list (is_pair is_string is_typ)) ET'
+</pre>
+<pre class="code extensibella"id="43">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="44">
+ &lt; <b>Prove looseEval:host:stmtOK_keep_scopes.</b>
+
+Subgoal 12:
+
+Variables: FT ET' N Msg E
+IH : forall FT ET S ET' N,
+       is_stmt S -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+       is_list (is_list (is_pair is_string is_typ)) ET -&gt; stmtOK FT ET S ET' * -&gt;
+       length ET N -&gt; length ET' N
+IsS : is_stmt (assert E Msg)
+IsFT : is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT
+IsET : is_list (is_list (is_pair is_string is_typ)) ET'
+Ty : stmtOK FT ET' (assert E Msg) ET' @
+L : length ET' N
+Ty1 : typeOf FT ET' E boolTy
+Ty2 : typeOf FT ET' Msg stringTy
+============================
+ length ET' N
+</pre>
+<pre class="code extensibella"id="45">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="46">
+ &lt; <b>Prove looseEval:host:stmtOK_older_scopes_same.</b>
+
+Subgoal 12:
+
+Variables: FT ET Scope Msg E
+IH : forall FT ET S ET' Scope,
+       is_stmt S -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+       is_list (is_list (is_pair is_string is_typ)) (Scope::ET) -&gt; stmtOK FT (Scope::ET) S ET' * -&gt;
+       exists Scope', ET' = Scope'::ET
+IsS : is_stmt (assert E Msg)
+IsFT : is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT
+IsET : is_list (is_list (is_pair is_string is_typ)) (Scope::ET)
+Ty : stmtOK FT (Scope::ET) (assert E Msg) (Scope::ET) @
+Ty1 : typeOf FT (Scope::ET) E boolTy
+Ty2 : typeOf FT (Scope::ET) Msg stringTy
+============================
+ exists Scope', Scope::ET = Scope'::ET
+</pre>
+<pre class="code extensibella"id="47">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="48">
+ &lt; <b>Prove looseEval:host:stmtOK_first_scope_lookup_same.</b>
+
+Subgoal 12:
+
+Variables: FT ET Scope' X Ty Msg E
+IH : forall FT ET S Scope Scope' X Ty,
+       is_stmt S -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+       is_list (is_list (is_pair is_string is_typ)) (Scope::ET) -&gt; stmtOK FT (Scope::ET) S (Scope'::ET) * -&gt;
+       lookup Scope X Ty -&gt; lookup Scope' X Ty
+IsS : is_stmt (assert E Msg)
+IsFT : is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT
+IsET : is_list (is_list (is_pair is_string is_typ)) (Scope'::ET)
+Ty : stmtOK FT (Scope'::ET) (assert E Msg) (Scope'::ET) @
+L : lookup Scope' X Ty
+Ty1 : typeOf FT (Scope'::ET) E boolTy
+Ty2 : typeOf FT (Scope'::ET) Msg stringTy
+============================
+ lookup Scope' X Ty
+</pre>
+<pre class="code extensibella"id="49">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="50">
+ &lt; <b>Prove looseEval:host:typeOf_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="51">
+ &lt; <b>Prove looseEval:host:stmtOK_unique.</b>
+
+Subgoal 12:
+
+Variables: FT ET_B ET_A' ET_B' Msg E
+IH_S : forall FT ET_A ET_B S ET_A' ET_B',
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+         is_list (is_list (is_pair is_string is_typ)) ET_A -&gt; is_list (is_list (is_pair is_string is_typ)) ET_B -&gt;
+         stmtOK FT ET_A S ET_A' * -&gt; stmtOK FT ET_B S ET_B' -&gt; lookup_all_scopes ET_A ET_B -&gt;
+         lookup_all_scopes ET_A' ET_B'
+IsS : is_stmt (assert E Msg)
+IsFT : is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT
+IsA : is_list (is_list (is_pair is_string is_typ)) ET_A'
+IsB : is_list (is_list (is_pair is_string is_typ)) ET_B
+TyA : stmtOK FT ET_A' (assert E Msg) ET_A' @
+TyB : stmtOK FT ET_B (assert E Msg) ET_B'
+Lkp : lookup_all_scopes ET_A' ET_B
+TyA1 : typeOf FT ET_A' E boolTy
+TyA2 : typeOf FT ET_A' Msg stringTy
+============================
+ lookup_all_scopes ET_A' ET_B'
+</pre>
+<pre class="code extensibella"id="52">
+ &lt; <b>case TyB.</b>
+
+Subgoal 12:
+
+Variables: FT ET_A' ET_B' Msg E
+IH_S : forall FT ET_A ET_B S ET_A' ET_B',
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+         is_list (is_list (is_pair is_string is_typ)) ET_A -&gt; is_list (is_list (is_pair is_string is_typ)) ET_B -&gt;
+         stmtOK FT ET_A S ET_A' * -&gt; stmtOK FT ET_B S ET_B' -&gt; lookup_all_scopes ET_A ET_B -&gt;
+         lookup_all_scopes ET_A' ET_B'
+IsS : is_stmt (assert E Msg)
+IsFT : is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT
+IsA : is_list (is_list (is_pair is_string is_typ)) ET_A'
+IsB : is_list (is_list (is_pair is_string is_typ)) ET_B'
+TyA : stmtOK FT ET_A' (assert E Msg) ET_A' @
+Lkp : lookup_all_scopes ET_A' ET_B'
+TyA1 : typeOf FT ET_A' E boolTy
+TyA2 : typeOf FT ET_A' Msg stringTy
+H1 : typeOf FT ET_B' E boolTy
+H2 : typeOf FT ET_B' Msg stringTy
+============================
+ lookup_all_scopes ET_A' ET_B'
+</pre>
+<pre class="code extensibella"id="53">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="54">
+ &lt; <b>Prove looseEval:host:paramTy_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="55">
+ &lt; <b>Prove looseEval:host:getFunInfo_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="56">
+ &lt; <b>Prove looseEval:host:paramTy_exists.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="57">
+ &lt; <b>Prove looseEval:host:getFunInfo_exists.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="58">
+ &lt; <b>Prove looseEval:host:evalExpr_isValue,
+         looseEval:host:evalStmt_isCtx,
+         looseEval:host:evalArgs_isValue,
+         looseEval:host:evalRecFields_isValue.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE' O Msg E
+IH_V_E : forall FE EE E V O,
+           is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) EE -&gt; evalExpr FE EE E V O * -&gt;
+           is_value V
+IH_C_S : forall FE EE EE' S O,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) EE -&gt; evalStmt FE EE S EE' O * -&gt;
+           is_list (is_list (is_pair is_string is_value)) EE'
+IH_V_A : forall FE EE A V O,
+           is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) EE -&gt; evalArgs FE EE A V O * -&gt;
+           is_list is_value V
+IH_V_RF : forall FE EE RF V O,
+            is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+            is_list (is_list (is_pair is_string is_value)) EE -&gt; evalRecFields FE EE RF V O * -&gt;
+            is_recFieldVals V
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalStmt FE EE' (assert E Msg) EE' O @
+Ev1 : evalExpr FE EE' E trueVal O *
+============================
+ is_list (is_list (is_pair is_string is_value)) EE'
+</pre>
+<pre class="code extensibella"id="59">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="60">
+ &lt; <b>Prove looseEval:host:evalExpr_isOutput,
+         looseEval:host:evalStmt_isOutput,
+         looseEval:host:evalArgs_isOutput,
+         looseEval:host:evalRecFields_isOutput.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE' O Msg E
+IH_E : forall FE EE E V O,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalExpr FE EE E V O * -&gt;
+         is_list is_value O
+IH_S : forall FE EE EE' S O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalStmt FE EE S EE' O * -&gt;
+         is_list is_value O
+IH_A : forall FE EE A V O,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalArgs FE EE A V O * -&gt;
+         is_list is_value O
+IH_RF : forall FE EE RF V O,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE -&gt; evalRecFields FE EE RF V O * -&gt;
+          is_list is_value O
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalStmt FE EE' (assert E Msg) EE' O @
+Ev1 : evalExpr FE EE' E trueVal O *
+============================
+ is_list is_value O
+</pre>
+<pre class="code extensibella"id="61">
+ &lt; <b>case IsS.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE' O Msg E
+IH_E : forall FE EE E V O,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalExpr FE EE E V O * -&gt;
+         is_list is_value O
+IH_S : forall FE EE EE' S O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalStmt FE EE S EE' O * -&gt;
+         is_list is_value O
+IH_A : forall FE EE A V O,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalArgs FE EE A V O * -&gt;
+         is_list is_value O
+IH_RF : forall FE EE RF V O,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE -&gt; evalRecFields FE EE RF V O * -&gt;
+          is_list is_value O
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalStmt FE EE' (assert E Msg) EE' O @
+Ev1 : evalExpr FE EE' E trueVal O *
+H1 : is_expr E
+H2 : is_expr Msg
+============================
+ is_list is_value O
+</pre>
+<pre class="code extensibella"id="62">
+ &lt; <b>apply IH_E to _ _ _ Ev1.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE' O Msg E
+IH_E : forall FE EE E V O,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalExpr FE EE E V O * -&gt;
+         is_list is_value O
+IH_S : forall FE EE EE' S O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalStmt FE EE S EE' O * -&gt;
+         is_list is_value O
+IH_A : forall FE EE A V O,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalArgs FE EE A V O * -&gt;
+         is_list is_value O
+IH_RF : forall FE EE RF V O,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE -&gt; evalRecFields FE EE RF V O * -&gt;
+          is_list is_value O
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalStmt FE EE' (assert E Msg) EE' O @
+Ev1 : evalExpr FE EE' E trueVal O *
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_list is_value O
+============================
+ is_list is_value O
+</pre>
+<pre class="code extensibella"id="63">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="64">
+ &lt; <b>Prove looseEval:host:paramName_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="65">
+ &lt; <b>Prove looseEval:host:getFunEvalInfo_is.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="66">
+ &lt; <b>Prove looseEval:host:evalProgram_isOutput.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="67">
+ &lt; <b>Prove looseEval:host:evalStmt_names_same.</b>
+
+Subgoal 15:
+
+Variables: FE Scope EE O Msg E
+IH_S : forall S FE Scope EE EE' O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE) -&gt; evalStmt FE (Scope::EE) S EE' O * -&gt;
+         exists Scope' EE'', EE' = Scope'::EE'' /\ names_same EE EE''
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) (Scope::EE)
+Ev : evalStmt FE (Scope::EE) (assert E Msg) (Scope::EE) O @
+Ev1 : evalExpr FE (Scope::EE) E trueVal O *
+============================
+ exists Scope' EE'', Scope::EE = Scope'::EE'' /\ names_same EE EE''
+</pre>
+<pre class="code extensibella"id="68">
+ &lt; <b>IsEE: case IsEE.</b>
+
+Subgoal 15:
+
+Variables: FE Scope EE O Msg E
+IH_S : forall S FE Scope EE EE' O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE) -&gt; evalStmt FE (Scope::EE) S EE' O * -&gt;
+         exists Scope' EE'', EE' = Scope'::EE'' /\ names_same EE EE''
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+Ev : evalStmt FE (Scope::EE) (assert E Msg) (Scope::EE) O @
+Ev1 : evalExpr FE (Scope::EE) E trueVal O *
+IsEE : is_list (is_pair is_string is_value) Scope
+IsEE1 : is_list (is_list (is_pair is_string is_value)) EE
+============================
+ exists Scope' EE'', Scope::EE = Scope'::EE'' /\ names_same EE EE''
+</pre>
+<pre class="code extensibella"id="69">
+ &lt; <b>apply names_same_reflexive to IsEE1.</b>
+
+Subgoal 15:
+
+Variables: FE Scope EE O Msg E
+IH_S : forall S FE Scope EE EE' O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE) -&gt; evalStmt FE (Scope::EE) S EE' O * -&gt;
+         exists Scope' EE'', EE' = Scope'::EE'' /\ names_same EE EE''
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+Ev : evalStmt FE (Scope::EE) (assert E Msg) (Scope::EE) O @
+Ev1 : evalExpr FE (Scope::EE) E trueVal O *
+IsEE : is_list (is_pair is_string is_value) Scope
+IsEE1 : is_list (is_list (is_pair is_string is_value)) EE
+H1 : names_same EE EE
+============================
+ exists Scope' EE'', Scope::EE = Scope'::EE'' /\ names_same EE EE''
+</pre>
+<pre class="code extensibella"id="70">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="71">
+ &lt; <b>Add_Ext_Size looseEval:host:evalExpr,
+   looseEval:host:evalArgs,
+   looseEval:host:evalRecFields,
+   looseEval:host:evalStmt.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="72">
+ &lt; <b>Add_Proj_Rel looseEval:host:evalExpr,
+   looseEval:host:evalArgs,
+   looseEval:host:evalRecFields,
+   looseEval:host:evalStmt.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="73">
+ &lt; <b>Prove looseEval:host:evalExpr_rel,
+         looseEval:host:evalStmt_newNameScopes_output,
+         looseEval:host:evalStmt_newNameScopes,
+         looseEval:host:evalArgs_rel,
+         looseEval:host:evalRecFields_rel.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B EE_B' O_A O_B N Len Scope Msg E
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+EvB : evalStmt FE (Scope::EE_B) (assert E Msg) EE_B' O_B
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+============================
+ O_A = O_B
+</pre>
+<pre class="code extensibella"id="74">
+ &lt; <b>NNS': assert newNameScopes N Len (Scope::EE_A) (Scope::EE_B).</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B EE_B' O_A O_B N Len Scope Msg E
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+EvB : evalStmt FE (Scope::EE_B) (assert E Msg) EE_B' O_B
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+============================
+ O_A = O_B
+</pre>
+<pre class="code extensibella"id="75">
+ &lt; <b>Is: case IsS.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B EE_B' O_A O_B N Len Scope Msg E
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+EvB : evalStmt FE (Scope::EE_B) (assert E Msg) EE_B' O_B
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+============================
+ O_A = O_B
+</pre>
+<pre class="code extensibella"id="76">
+ &lt; <b>Vars: apply vars_exist to Is.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B EE_B' O_A O_B N Len Scope Msg E V
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+EvB : evalStmt FE (Scope::EE_B) (assert E Msg) EE_B' O_B
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+============================
+ O_A = O_B
+</pre>
+<pre class="code extensibella"id="77">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B O_A O_B N Len Scope Msg E V
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+EvB : evalExpr FE (Scope::EE_B) E trueVal O_B
+============================
+ O_A = O_B
+</pre>
+<pre class="code extensibella"id="78">
+ &lt; <b>apply IH_E to _ _ _ _ EvA1 EvB Vars _.</b>
+
+Subgoal 2.15.1:
+
+Variables: FE EE_A EE_B O_A O_B N Len Scope Msg E V
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+EvB : evalExpr FE (Scope::EE_B) E trueVal O_B
+============================
+ forall X V1,
+   mem X V -&gt; lookupScopes X (Scope::EE_B) V1 -&gt; lookupScopes X (Scope::EE_A) V1
+</pre>
+<pre class="code extensibella"id="79">
+ &lt; <b>intros M L.</b>
+
+Subgoal 2.15.1:
+
+Variables: FE EE_A EE_B O_A O_B N Len Scope Msg E V X V1
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+EvB : evalExpr FE (Scope::EE_B) E trueVal O_B
+M : mem X V
+L : lookupScopes X (Scope::EE_B) V1
+============================
+ lookupScopes X (Scope::EE_A) V1
+</pre>
+<pre class="code extensibella"id="80">
+ &lt; <b>apply vars_is to _ Vars.</b>
+
+Subgoal 2.15.1:
+
+Variables: FE EE_A EE_B O_A O_B N Len Scope Msg E V X V1
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+EvB : evalExpr FE (Scope::EE_B) E trueVal O_B
+M : mem X V
+L : lookupScopes X (Scope::EE_B) V1
+H1 : is_list is_string V
+============================
+ lookupScopes X (Scope::EE_A) V1
+</pre>
+<pre class="code extensibella"id="81">
+ &lt; <b>apply mem_is_string to _ M.</b>
+
+Subgoal 2.15.1:
+
+Variables: FE EE_A EE_B O_A O_B N Len Scope Msg E V X V1
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+EvB : evalExpr FE (Scope::EE_B) E trueVal O_B
+M : mem X V
+L : lookupScopes X (Scope::EE_B) V1
+H1 : is_list is_string V
+H2 : is_string X
+============================
+ lookupScopes X (Scope::EE_A) V1
+</pre>
+<pre class="code extensibella"id="82">
+ &lt; <b>apply newNameScopes_lookupScopes to _ _ NNS' L.</b>
+
+Subgoal 2.15.1:
+
+Variables: FE EE_A EE_B O_A O_B N Len Scope Msg E V X V1
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+EvB : evalExpr FE (Scope::EE_B) E trueVal O_B
+M : mem X V
+L : lookupScopes X (Scope::EE_B) V1
+H1 : is_list is_string V
+H2 : is_string X
+H3 : lookupScopes X (Scope::EE_A) V1
+============================
+ lookupScopes X (Scope::EE_A) V1
+</pre>
+<pre class="code extensibella"id="83">
+ &lt; <b>search.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B O_B N Len Scope Msg E V
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_B @
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_B *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+EvB : evalExpr FE (Scope::EE_B) E trueVal O_B
+============================
+ O_B = O_B
+</pre>
+<pre class="code extensibella"id="84">
+ &lt; <b>search.</b>
+
+Subgoal 3.15:
+
+Variables: FE EE_A EE_B EE_B' O_A O_B N Len Scope Msg E
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+EvB : evalStmt FE (Scope::EE_B) (assert E Msg) EE_B' O_B
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+============================
+ newNameScopes N Len (Scope::EE_A) EE_B'
+</pre>
+<pre class="code extensibella"id="85">
+ &lt; <b>case EvB.</b>
+
+Subgoal 3.15:
+
+Variables: FE EE_A EE_B O_A O_B N Len Scope Msg E
+IH_E : forall FE EE_A EE_B E VA VB O_A O_B Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalExpr FE EE_A E VA O_A * -&gt; evalExpr FE EE_B E VB O_B -&gt; vars E Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_O_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; O_A = O_B
+IH_C_S : forall FE EE_A EE_B S EE_A' EE_B' O_A O_B N Len Scope,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+           evalStmt FE (Scope::EE_A) S EE_A' O_A * -&gt; evalStmt FE (Scope::EE_B) S EE_B' O_B -&gt;
+           newNameScopes N Len EE_A EE_B -&gt; newNameScopes N Len EE_A' EE_B'
+IH_A : forall FE EE_A EE_B A VA VB O_A O_B Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         evalArgs FE EE_A A VA O_A * -&gt; evalArgs FE EE_B A VB O_B -&gt; varsArgs A Vars -&gt;
+         (forall X V,
+           mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+         O_A = O_B
+IH_RF : forall FE EE_A EE_B RF VA VB O_A O_B Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          evalRecFields FE EE_A RF VA O_A * -&gt; evalRecFields FE EE_B RF VB O_B -&gt;
+          varsRecFields RF Vars -&gt; (forall X V,
+            mem X Vars -&gt; lookupScopes X EE_B V -&gt; lookupScopes X EE_A V) -&gt; VA = VB /\
+          O_A = O_B
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvA : evalStmt FE (Scope::EE_A) (assert E Msg) (Scope::EE_A) O_A @
+NNS : newNameScopes N Len EE_A EE_B
+EvA1 : evalExpr FE (Scope::EE_A) E trueVal O_A *
+H1 : evalExpr FE (Scope::EE_B) E trueVal O_B
+============================
+ newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+</pre>
+<pre class="code extensibella"id="86">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="87">
+ &lt; <b>Prove looseEval:host:evalExpr_rel_exists_ES,
+         looseEval:host:evalStmt_newNameScopes_exists_ES,
+         looseEval:host:evalArgs_rel_exists_ES,
+         looseEval:host:evalRecFields_rel_exists_ES.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B O N Len Scope ES N2 Msg E
+IH_E : forall FE EE_A EE_B E V O ES Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalExpr {ES}&gt; FE EE_B E V O ES * -&gt; vars E Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalExpr {ES}&gt; FE EE_A E V O ES
+IH_S : forall FE EE_A EE_B S EE_B' O N Len Scope ES,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+         &lt;evalStmt {ES}&gt; FE (Scope::EE_B) S EE_B' O ES * -&gt; newNameScopes N Len EE_A EE_B -&gt;
+         exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) S EE_A' O ES
+IH_A : forall FE EE_A EE_B A V O ES Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalArgs {ES}&gt; FE EE_B A V O ES * -&gt; varsArgs A Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalArgs {ES}&gt; FE EE_A A V O ES
+IH_RF : forall FE EE_A EE_B RF V O ES Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          &lt;evalRecFields {ES}&gt; FE EE_B RF V O ES * -&gt; varsRecFields RF Vars -&gt; (forall X V1,
+            mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalRecFields {ES}&gt; FE EE_A RF V O ES
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvB : &lt;evalStmt {ES}&gt; FE (Scope::EE_B) (assert E Msg) (Scope::EE_B) O ES @
+NNS : newNameScopes N Len EE_A EE_B
+EvB1 : 1 + N2 = ES
+EvB2 : &lt;evalExpr {ES}&gt; FE (Scope::EE_B) E trueVal O N2 *
+============================
+ exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) (assert E Msg) EE_A' O ES
+</pre>
+<pre class="code extensibella"id="88">
+ &lt; <b>NNS': assert newNameScopes N Len (Scope::EE_A) (Scope::EE_B).</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B O N Len Scope ES N2 Msg E
+IH_E : forall FE EE_A EE_B E V O ES Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalExpr {ES}&gt; FE EE_B E V O ES * -&gt; vars E Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalExpr {ES}&gt; FE EE_A E V O ES
+IH_S : forall FE EE_A EE_B S EE_B' O N Len Scope ES,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+         &lt;evalStmt {ES}&gt; FE (Scope::EE_B) S EE_B' O ES * -&gt; newNameScopes N Len EE_A EE_B -&gt;
+         exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) S EE_A' O ES
+IH_A : forall FE EE_A EE_B A V O ES Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalArgs {ES}&gt; FE EE_B A V O ES * -&gt; varsArgs A Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalArgs {ES}&gt; FE EE_A A V O ES
+IH_RF : forall FE EE_A EE_B RF V O ES Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          &lt;evalRecFields {ES}&gt; FE EE_B RF V O ES * -&gt; varsRecFields RF Vars -&gt; (forall X V1,
+            mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalRecFields {ES}&gt; FE EE_A RF V O ES
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvB : &lt;evalStmt {ES}&gt; FE (Scope::EE_B) (assert E Msg) (Scope::EE_B) O ES @
+NNS : newNameScopes N Len EE_A EE_B
+EvB1 : 1 + N2 = ES
+EvB2 : &lt;evalExpr {ES}&gt; FE (Scope::EE_B) E trueVal O N2 *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+============================
+ exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) (assert E Msg) EE_A' O ES
+</pre>
+<pre class="code extensibella"id="89">
+ &lt; <b>Is: case IsS.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B O N Len Scope ES N2 Msg E
+IH_E : forall FE EE_A EE_B E V O ES Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalExpr {ES}&gt; FE EE_B E V O ES * -&gt; vars E Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalExpr {ES}&gt; FE EE_A E V O ES
+IH_S : forall FE EE_A EE_B S EE_B' O N Len Scope ES,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+         &lt;evalStmt {ES}&gt; FE (Scope::EE_B) S EE_B' O ES * -&gt; newNameScopes N Len EE_A EE_B -&gt;
+         exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) S EE_A' O ES
+IH_A : forall FE EE_A EE_B A V O ES Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalArgs {ES}&gt; FE EE_B A V O ES * -&gt; varsArgs A Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalArgs {ES}&gt; FE EE_A A V O ES
+IH_RF : forall FE EE_A EE_B RF V O ES Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          &lt;evalRecFields {ES}&gt; FE EE_B RF V O ES * -&gt; varsRecFields RF Vars -&gt; (forall X V1,
+            mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalRecFields {ES}&gt; FE EE_A RF V O ES
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvB : &lt;evalStmt {ES}&gt; FE (Scope::EE_B) (assert E Msg) (Scope::EE_B) O ES @
+NNS : newNameScopes N Len EE_A EE_B
+EvB1 : 1 + N2 = ES
+EvB2 : &lt;evalExpr {ES}&gt; FE (Scope::EE_B) E trueVal O N2 *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+============================
+ exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) (assert E Msg) EE_A' O ES
+</pre>
+<pre class="code extensibella"id="90">
+ &lt; <b>Vars: apply vars_exist to Is.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B O N Len Scope ES N2 Msg E V
+IH_E : forall FE EE_A EE_B E V O ES Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalExpr {ES}&gt; FE EE_B E V O ES * -&gt; vars E Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalExpr {ES}&gt; FE EE_A E V O ES
+IH_S : forall FE EE_A EE_B S EE_B' O N Len Scope ES,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+         &lt;evalStmt {ES}&gt; FE (Scope::EE_B) S EE_B' O ES * -&gt; newNameScopes N Len EE_A EE_B -&gt;
+         exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) S EE_A' O ES
+IH_A : forall FE EE_A EE_B A V O ES Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalArgs {ES}&gt; FE EE_B A V O ES * -&gt; varsArgs A Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalArgs {ES}&gt; FE EE_A A V O ES
+IH_RF : forall FE EE_A EE_B RF V O ES Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          &lt;evalRecFields {ES}&gt; FE EE_B RF V O ES * -&gt; varsRecFields RF Vars -&gt; (forall X V1,
+            mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalRecFields {ES}&gt; FE EE_A RF V O ES
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvB : &lt;evalStmt {ES}&gt; FE (Scope::EE_B) (assert E Msg) (Scope::EE_B) O ES @
+NNS : newNameScopes N Len EE_A EE_B
+EvB1 : 1 + N2 = ES
+EvB2 : &lt;evalExpr {ES}&gt; FE (Scope::EE_B) E trueVal O N2 *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+============================
+ exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) (assert E Msg) EE_A' O ES
+</pre>
+<pre class="code extensibella"id="91">
+ &lt; <b>apply IH_E to _ _ _ _ EvB2 Vars _ with
+     EE_A = Scope::EE_A.</b>
+
+Subgoal 2.15.1:
+
+Variables: FE EE_A EE_B O N Len Scope ES N2 Msg E V
+IH_E : forall FE EE_A EE_B E V O ES Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalExpr {ES}&gt; FE EE_B E V O ES * -&gt; vars E Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalExpr {ES}&gt; FE EE_A E V O ES
+IH_S : forall FE EE_A EE_B S EE_B' O N Len Scope ES,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+         &lt;evalStmt {ES}&gt; FE (Scope::EE_B) S EE_B' O ES * -&gt; newNameScopes N Len EE_A EE_B -&gt;
+         exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) S EE_A' O ES
+IH_A : forall FE EE_A EE_B A V O ES Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalArgs {ES}&gt; FE EE_B A V O ES * -&gt; varsArgs A Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalArgs {ES}&gt; FE EE_A A V O ES
+IH_RF : forall FE EE_A EE_B RF V O ES Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          &lt;evalRecFields {ES}&gt; FE EE_B RF V O ES * -&gt; varsRecFields RF Vars -&gt; (forall X V1,
+            mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalRecFields {ES}&gt; FE EE_A RF V O ES
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvB : &lt;evalStmt {ES}&gt; FE (Scope::EE_B) (assert E Msg) (Scope::EE_B) O ES @
+NNS : newNameScopes N Len EE_A EE_B
+EvB1 : 1 + N2 = ES
+EvB2 : &lt;evalExpr {ES}&gt; FE (Scope::EE_B) E trueVal O N2 *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+============================
+ forall X V1,
+   mem X V -&gt; lookupScopes X (Scope::EE_B) V1 -&gt; lookupScopes X (Scope::EE_A) V1
+</pre>
+<pre class="code extensibella"id="92">
+ &lt; <b>intros M L.</b>
+
+Subgoal 2.15.1:
+
+Variables: FE EE_A EE_B O N Len Scope ES N2 Msg E V X V1
+IH_E : forall FE EE_A EE_B E V O ES Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalExpr {ES}&gt; FE EE_B E V O ES * -&gt; vars E Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalExpr {ES}&gt; FE EE_A E V O ES
+IH_S : forall FE EE_A EE_B S EE_B' O N Len Scope ES,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+         &lt;evalStmt {ES}&gt; FE (Scope::EE_B) S EE_B' O ES * -&gt; newNameScopes N Len EE_A EE_B -&gt;
+         exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) S EE_A' O ES
+IH_A : forall FE EE_A EE_B A V O ES Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalArgs {ES}&gt; FE EE_B A V O ES * -&gt; varsArgs A Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalArgs {ES}&gt; FE EE_A A V O ES
+IH_RF : forall FE EE_A EE_B RF V O ES Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          &lt;evalRecFields {ES}&gt; FE EE_B RF V O ES * -&gt; varsRecFields RF Vars -&gt; (forall X V1,
+            mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalRecFields {ES}&gt; FE EE_A RF V O ES
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvB : &lt;evalStmt {ES}&gt; FE (Scope::EE_B) (assert E Msg) (Scope::EE_B) O ES @
+NNS : newNameScopes N Len EE_A EE_B
+EvB1 : 1 + N2 = ES
+EvB2 : &lt;evalExpr {ES}&gt; FE (Scope::EE_B) E trueVal O N2 *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+M : mem X V
+L : lookupScopes X (Scope::EE_B) V1
+============================
+ lookupScopes X (Scope::EE_A) V1
+</pre>
+<pre class="code extensibella"id="93">
+ &lt; <b>apply vars_is to _ Vars.</b>
+
+Subgoal 2.15.1:
+
+Variables: FE EE_A EE_B O N Len Scope ES N2 Msg E V X V1
+IH_E : forall FE EE_A EE_B E V O ES Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalExpr {ES}&gt; FE EE_B E V O ES * -&gt; vars E Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalExpr {ES}&gt; FE EE_A E V O ES
+IH_S : forall FE EE_A EE_B S EE_B' O N Len Scope ES,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+         &lt;evalStmt {ES}&gt; FE (Scope::EE_B) S EE_B' O ES * -&gt; newNameScopes N Len EE_A EE_B -&gt;
+         exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) S EE_A' O ES
+IH_A : forall FE EE_A EE_B A V O ES Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalArgs {ES}&gt; FE EE_B A V O ES * -&gt; varsArgs A Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalArgs {ES}&gt; FE EE_A A V O ES
+IH_RF : forall FE EE_A EE_B RF V O ES Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          &lt;evalRecFields {ES}&gt; FE EE_B RF V O ES * -&gt; varsRecFields RF Vars -&gt; (forall X V1,
+            mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalRecFields {ES}&gt; FE EE_A RF V O ES
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvB : &lt;evalStmt {ES}&gt; FE (Scope::EE_B) (assert E Msg) (Scope::EE_B) O ES @
+NNS : newNameScopes N Len EE_A EE_B
+EvB1 : 1 + N2 = ES
+EvB2 : &lt;evalExpr {ES}&gt; FE (Scope::EE_B) E trueVal O N2 *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+M : mem X V
+L : lookupScopes X (Scope::EE_B) V1
+H1 : is_list is_string V
+============================
+ lookupScopes X (Scope::EE_A) V1
+</pre>
+<pre class="code extensibella"id="94">
+ &lt; <b>apply mem_is_string to _ M.</b>
+
+Subgoal 2.15.1:
+
+Variables: FE EE_A EE_B O N Len Scope ES N2 Msg E V X V1
+IH_E : forall FE EE_A EE_B E V O ES Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalExpr {ES}&gt; FE EE_B E V O ES * -&gt; vars E Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalExpr {ES}&gt; FE EE_A E V O ES
+IH_S : forall FE EE_A EE_B S EE_B' O N Len Scope ES,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+         &lt;evalStmt {ES}&gt; FE (Scope::EE_B) S EE_B' O ES * -&gt; newNameScopes N Len EE_A EE_B -&gt;
+         exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) S EE_A' O ES
+IH_A : forall FE EE_A EE_B A V O ES Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalArgs {ES}&gt; FE EE_B A V O ES * -&gt; varsArgs A Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalArgs {ES}&gt; FE EE_A A V O ES
+IH_RF : forall FE EE_A EE_B RF V O ES Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          &lt;evalRecFields {ES}&gt; FE EE_B RF V O ES * -&gt; varsRecFields RF Vars -&gt; (forall X V1,
+            mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalRecFields {ES}&gt; FE EE_A RF V O ES
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvB : &lt;evalStmt {ES}&gt; FE (Scope::EE_B) (assert E Msg) (Scope::EE_B) O ES @
+NNS : newNameScopes N Len EE_A EE_B
+EvB1 : 1 + N2 = ES
+EvB2 : &lt;evalExpr {ES}&gt; FE (Scope::EE_B) E trueVal O N2 *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+M : mem X V
+L : lookupScopes X (Scope::EE_B) V1
+H1 : is_list is_string V
+H2 : is_string X
+============================
+ lookupScopes X (Scope::EE_A) V1
+</pre>
+<pre class="code extensibella"id="95">
+ &lt; <b>apply newNameScopes_lookupScopes to _ _ NNS' L.</b>
+
+Subgoal 2.15.1:
+
+Variables: FE EE_A EE_B O N Len Scope ES N2 Msg E V X V1
+IH_E : forall FE EE_A EE_B E V O ES Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalExpr {ES}&gt; FE EE_B E V O ES * -&gt; vars E Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalExpr {ES}&gt; FE EE_A E V O ES
+IH_S : forall FE EE_A EE_B S EE_B' O N Len Scope ES,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+         &lt;evalStmt {ES}&gt; FE (Scope::EE_B) S EE_B' O ES * -&gt; newNameScopes N Len EE_A EE_B -&gt;
+         exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) S EE_A' O ES
+IH_A : forall FE EE_A EE_B A V O ES Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalArgs {ES}&gt; FE EE_B A V O ES * -&gt; varsArgs A Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalArgs {ES}&gt; FE EE_A A V O ES
+IH_RF : forall FE EE_A EE_B RF V O ES Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          &lt;evalRecFields {ES}&gt; FE EE_B RF V O ES * -&gt; varsRecFields RF Vars -&gt; (forall X V1,
+            mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalRecFields {ES}&gt; FE EE_A RF V O ES
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvB : &lt;evalStmt {ES}&gt; FE (Scope::EE_B) (assert E Msg) (Scope::EE_B) O ES @
+NNS : newNameScopes N Len EE_A EE_B
+EvB1 : 1 + N2 = ES
+EvB2 : &lt;evalExpr {ES}&gt; FE (Scope::EE_B) E trueVal O N2 *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+M : mem X V
+L : lookupScopes X (Scope::EE_B) V1
+H1 : is_list is_string V
+H2 : is_string X
+H3 : lookupScopes X (Scope::EE_A) V1
+============================
+ lookupScopes X (Scope::EE_A) V1
+</pre>
+<pre class="code extensibella"id="96">
+ &lt; <b>search.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A EE_B O N Len Scope ES N2 Msg E V
+IH_E : forall FE EE_A EE_B E V O ES Vars,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalExpr {ES}&gt; FE EE_B E V O ES * -&gt; vars E Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalExpr {ES}&gt; FE EE_A E V O ES
+IH_S : forall FE EE_A EE_B S EE_B' O N Len Scope ES,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) (Scope::EE_A) -&gt; is_list (is_list (is_pair is_string is_value)) (Scope::EE_B) -&gt;
+         &lt;evalStmt {ES}&gt; FE (Scope::EE_B) S EE_B' O ES * -&gt; newNameScopes N Len EE_A EE_B -&gt;
+         exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) S EE_A' O ES
+IH_A : forall FE EE_A EE_B A V O ES Vars,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         &lt;evalArgs {ES}&gt; FE EE_B A V O ES * -&gt; varsArgs A Vars -&gt; (forall X V1,
+           mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalArgs {ES}&gt; FE EE_A A V O ES
+IH_RF : forall FE EE_A EE_B RF V O ES Vars,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          &lt;evalRecFields {ES}&gt; FE EE_B RF V O ES * -&gt; varsRecFields RF Vars -&gt; (forall X V1,
+            mem X Vars -&gt; lookupScopes X EE_B V1 -&gt; lookupScopes X EE_A V1) -&gt; &lt;evalRecFields {ES}&gt; FE EE_A RF V O ES
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) (Scope::EE_A)
+IsB : is_list (is_list (is_pair is_string is_value)) (Scope::EE_B)
+EvB : &lt;evalStmt {ES}&gt; FE (Scope::EE_B) (assert E Msg) (Scope::EE_B) O ES @
+NNS : newNameScopes N Len EE_A EE_B
+EvB1 : 1 + N2 = ES
+EvB2 : &lt;evalExpr {ES}&gt; FE (Scope::EE_B) E trueVal O N2 *
+NNS' : newNameScopes N Len (Scope::EE_A) (Scope::EE_B)
+Is : is_expr E
+Is1 : is_expr Msg
+Vars : vars E V
+H1 : &lt;evalExpr {ES}&gt; FE (Scope::EE_A) E trueVal O N2
+============================
+ exists EE_A', &lt;evalStmt {ES}&gt; FE (Scope::EE_A) (assert E Msg) EE_A' O ES
+</pre>
+<pre class="code extensibella"id="97">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="98">
+ &lt; <b>Prove looseEval:host:evalExpr_scopes_same,
+         looseEval:host:evalStmt_scopes_same,
+         looseEval:host:evalStmt_scopes_same_ctx,
+         looseEval:host:evalArgs_scopes_same,
+         looseEval:host:evalRecFields_scopes_same.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A' OA EE_B EE_B' OB Msg E
+IH_E : forall E FE EE_A VA OA EE_B VB OB,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalExpr FE EE_A E VA OA * -&gt; evalExpr FE EE_B E VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_S : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+         OA = OB
+IH_S_C : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+           scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+           scopes_same EE_A' EE_B'
+IH_A : forall A FE EE_A VA OA EE_B VB OB,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalArgs FE EE_A A VA OA * -&gt; evalArgs FE EE_B A VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_RF : forall RF FE EE_A VA OA EE_B VB OB,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          scopes_same EE_A EE_B -&gt; evalRecFields FE EE_A RF VA OA * -&gt; evalRecFields FE EE_B RF VB OB -&gt;
+          VA = VB /\ OA = OB
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) EE_A'
+IsB : is_list (is_list (is_pair is_string is_value)) EE_B
+SS : scopes_same EE_A' EE_B
+EvA : evalStmt FE EE_A' (assert E Msg) EE_A' OA @
+EvB : evalStmt FE EE_B (assert E Msg) EE_B' OB
+EvA1 : evalExpr FE EE_A' E trueVal OA *
+============================
+ OA = OB
+</pre>
+<pre class="code extensibella"id="99">
+ &lt; <b>case IsS.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A' OA EE_B EE_B' OB Msg E
+IH_E : forall E FE EE_A VA OA EE_B VB OB,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalExpr FE EE_A E VA OA * -&gt; evalExpr FE EE_B E VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_S : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+         OA = OB
+IH_S_C : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+           scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+           scopes_same EE_A' EE_B'
+IH_A : forall A FE EE_A VA OA EE_B VB OB,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalArgs FE EE_A A VA OA * -&gt; evalArgs FE EE_B A VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_RF : forall RF FE EE_A VA OA EE_B VB OB,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          scopes_same EE_A EE_B -&gt; evalRecFields FE EE_A RF VA OA * -&gt; evalRecFields FE EE_B RF VB OB -&gt;
+          VA = VB /\ OA = OB
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) EE_A'
+IsB : is_list (is_list (is_pair is_string is_value)) EE_B
+SS : scopes_same EE_A' EE_B
+EvA : evalStmt FE EE_A' (assert E Msg) EE_A' OA @
+EvB : evalStmt FE EE_B (assert E Msg) EE_B' OB
+EvA1 : evalExpr FE EE_A' E trueVal OA *
+H1 : is_expr E
+H2 : is_expr Msg
+============================
+ OA = OB
+</pre>
+<pre class="code extensibella"id="100">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A' OA EE_B' OB Msg E
+IH_E : forall E FE EE_A VA OA EE_B VB OB,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalExpr FE EE_A E VA OA * -&gt; evalExpr FE EE_B E VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_S : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+         OA = OB
+IH_S_C : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+           scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+           scopes_same EE_A' EE_B'
+IH_A : forall A FE EE_A VA OA EE_B VB OB,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalArgs FE EE_A A VA OA * -&gt; evalArgs FE EE_B A VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_RF : forall RF FE EE_A VA OA EE_B VB OB,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          scopes_same EE_A EE_B -&gt; evalRecFields FE EE_A RF VA OA * -&gt; evalRecFields FE EE_B RF VB OB -&gt;
+          VA = VB /\ OA = OB
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) EE_A'
+IsB : is_list (is_list (is_pair is_string is_value)) EE_B'
+SS : scopes_same EE_A' EE_B'
+EvA : evalStmt FE EE_A' (assert E Msg) EE_A' OA @
+EvA1 : evalExpr FE EE_A' E trueVal OA *
+H1 : is_expr E
+H2 : is_expr Msg
+EvB : evalExpr FE EE_B' E trueVal OB
+============================
+ OA = OB
+</pre>
+<pre class="code extensibella"id="101">
+ &lt; <b>apply IH_E to _ _ _ _ _ EvA1 EvB.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A' EE_B' OB Msg E
+IH_E : forall E FE EE_A VA OA EE_B VB OB,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalExpr FE EE_A E VA OA * -&gt; evalExpr FE EE_B E VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_S : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+         OA = OB
+IH_S_C : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+           scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+           scopes_same EE_A' EE_B'
+IH_A : forall A FE EE_A VA OA EE_B VB OB,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalArgs FE EE_A A VA OA * -&gt; evalArgs FE EE_B A VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_RF : forall RF FE EE_A VA OA EE_B VB OB,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          scopes_same EE_A EE_B -&gt; evalRecFields FE EE_A RF VA OA * -&gt; evalRecFields FE EE_B RF VB OB -&gt;
+          VA = VB /\ OA = OB
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) EE_A'
+IsB : is_list (is_list (is_pair is_string is_value)) EE_B'
+SS : scopes_same EE_A' EE_B'
+EvA : evalStmt FE EE_A' (assert E Msg) EE_A' OB @
+EvA1 : evalExpr FE EE_A' E trueVal OB *
+H1 : is_expr E
+H2 : is_expr Msg
+EvB : evalExpr FE EE_B' E trueVal OB
+============================
+ OB = OB
+</pre>
+<pre class="code extensibella"id="102">
+ &lt; <b>search.</b>
+
+Subgoal 3.15:
+
+Variables: FE EE_A' OA EE_B EE_B' OB Msg E
+IH_E : forall E FE EE_A VA OA EE_B VB OB,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalExpr FE EE_A E VA OA * -&gt; evalExpr FE EE_B E VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_S : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+         OA = OB
+IH_S_C : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+           scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+           scopes_same EE_A' EE_B'
+IH_A : forall A FE EE_A VA OA EE_B VB OB,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalArgs FE EE_A A VA OA * -&gt; evalArgs FE EE_B A VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_RF : forall RF FE EE_A VA OA EE_B VB OB,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          scopes_same EE_A EE_B -&gt; evalRecFields FE EE_A RF VA OA * -&gt; evalRecFields FE EE_B RF VB OB -&gt;
+          VA = VB /\ OA = OB
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) EE_A'
+IsB : is_list (is_list (is_pair is_string is_value)) EE_B
+SS : scopes_same EE_A' EE_B
+EvA : evalStmt FE EE_A' (assert E Msg) EE_A' OA @
+EvB : evalStmt FE EE_B (assert E Msg) EE_B' OB
+EvA1 : evalExpr FE EE_A' E trueVal OA *
+============================
+ scopes_same EE_A' EE_B'
+</pre>
+<pre class="code extensibella"id="103">
+ &lt; <b>case EvB.</b>
+
+Subgoal 3.15:
+
+Variables: FE EE_A' OA EE_B' OB Msg E
+IH_E : forall E FE EE_A VA OA EE_B VB OB,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalExpr FE EE_A E VA OA * -&gt; evalExpr FE EE_B E VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_S : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+         OA = OB
+IH_S_C : forall S FE EE_A EE_A' OA EE_B EE_B' OB,
+           is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+           is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+           scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' OA * -&gt; evalStmt FE EE_B S EE_B' OB -&gt;
+           scopes_same EE_A' EE_B'
+IH_A : forall A FE EE_A VA OA EE_B VB OB,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalArgs FE EE_A A VA OA * -&gt; evalArgs FE EE_B A VB OB -&gt;
+         VA = VB /\ OA = OB
+IH_RF : forall RF FE EE_A VA OA EE_B VB OB,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          scopes_same EE_A EE_B -&gt; evalRecFields FE EE_A RF VA OA * -&gt; evalRecFields FE EE_B RF VB OB -&gt;
+          VA = VB /\ OA = OB
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) EE_A'
+IsB : is_list (is_list (is_pair is_string is_value)) EE_B'
+SS : scopes_same EE_A' EE_B'
+EvA : evalStmt FE EE_A' (assert E Msg) EE_A' OA @
+EvA1 : evalExpr FE EE_A' E trueVal OA *
+H1 : evalExpr FE EE_B' E trueVal OB
+============================
+ scopes_same EE_A' EE_B'
+</pre>
+<pre class="code extensibella"id="104">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="105">
+ &lt; <b>Prove looseEval:host:evalExpr_scopes_same_exists,
+         looseEval:host:evalStmt_scopes_same_exists,
+         looseEval:host:evalArgs_scopes_same_exists,
+         looseEval:host:evalRecFields_scopes_same_exists.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A' O EE_B Msg E
+IH_E : forall E FE EE_A V O EE_B,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalExpr FE EE_A E V O * -&gt; evalExpr FE EE_B E V O
+IH_S : forall S FE EE_A EE_A' O EE_B,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' O * -&gt; exists EE_B',
+           evalStmt FE EE_B S EE_B' O
+IH_A : forall A FE EE_A V O EE_B,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalArgs FE EE_A A V O * -&gt; evalArgs FE EE_B A V O
+IH_RF : forall RF FE EE_A V O EE_B,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          scopes_same EE_A EE_B -&gt; evalRecFields FE EE_A RF V O * -&gt; evalRecFields FE EE_B RF V O
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) EE_A'
+IsB : is_list (is_list (is_pair is_string is_value)) EE_B
+SS : scopes_same EE_A' EE_B
+EvA : evalStmt FE EE_A' (assert E Msg) EE_A' O @
+EvA1 : evalExpr FE EE_A' E trueVal O *
+============================
+ exists EE_B', evalStmt FE EE_B (assert E Msg) EE_B' O
+</pre>
+<pre class="code extensibella"id="106">
+ &lt; <b>case IsS.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A' O EE_B Msg E
+IH_E : forall E FE EE_A V O EE_B,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalExpr FE EE_A E V O * -&gt; evalExpr FE EE_B E V O
+IH_S : forall S FE EE_A EE_A' O EE_B,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' O * -&gt; exists EE_B',
+           evalStmt FE EE_B S EE_B' O
+IH_A : forall A FE EE_A V O EE_B,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalArgs FE EE_A A V O * -&gt; evalArgs FE EE_B A V O
+IH_RF : forall RF FE EE_A V O EE_B,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          scopes_same EE_A EE_B -&gt; evalRecFields FE EE_A RF V O * -&gt; evalRecFields FE EE_B RF V O
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) EE_A'
+IsB : is_list (is_list (is_pair is_string is_value)) EE_B
+SS : scopes_same EE_A' EE_B
+EvA : evalStmt FE EE_A' (assert E Msg) EE_A' O @
+EvA1 : evalExpr FE EE_A' E trueVal O *
+H1 : is_expr E
+H2 : is_expr Msg
+============================
+ exists EE_B', evalStmt FE EE_B (assert E Msg) EE_B' O
+</pre>
+<pre class="code extensibella"id="107">
+ &lt; <b>apply IH_E to _ _ _ _ SS EvA1.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE_A' O EE_B Msg E
+IH_E : forall E FE EE_A V O EE_B,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalExpr FE EE_A E V O * -&gt; evalExpr FE EE_B E V O
+IH_S : forall S FE EE_A EE_A' O EE_B,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalStmt FE EE_A S EE_A' O * -&gt; exists EE_B',
+           evalStmt FE EE_B S EE_B' O
+IH_A : forall A FE EE_A V O EE_B,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+         scopes_same EE_A EE_B -&gt; evalArgs FE EE_A A V O * -&gt; evalArgs FE EE_B A V O
+IH_RF : forall RF FE EE_A V O EE_B,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE_A -&gt; is_list (is_list (is_pair is_string is_value)) EE_B -&gt;
+          scopes_same EE_A EE_B -&gt; evalRecFields FE EE_A RF V O * -&gt; evalRecFields FE EE_B RF V O
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsA : is_list (is_list (is_pair is_string is_value)) EE_A'
+IsB : is_list (is_list (is_pair is_string is_value)) EE_B
+SS : scopes_same EE_A' EE_B
+EvA : evalStmt FE EE_A' (assert E Msg) EE_A' O @
+EvA1 : evalExpr FE EE_A' E trueVal O *
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : evalExpr FE EE_B E trueVal O
+============================
+ exists EE_B', evalStmt FE EE_B (assert E Msg) EE_B' O
+</pre>
+<pre class="code extensibella"id="108">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="109">
+ &lt; <b>Prove_Constraint looseEval:host:proj_evalExpr_exists.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="110">
+ &lt; <b>Theorem append_nil_output :
+     forall O, is_list is_value O -&gt; O ++ [] = O.</b>
+
+============================
+ forall O, is_list is_value O -&gt; O ++ [] = O
+</pre>
+<pre class="code extensibella"id="111">
+ &lt; <b>induction on 1.</b>
+
+IH : forall O, is_list is_value O * -&gt; O ++ [] = O
+============================
+ forall O, is_list is_value O @ -&gt; O ++ [] = O
+</pre>
+<pre class="code extensibella"id="112">
+ &lt; <b>intros Is.</b>
+
+Variables: O
+IH : forall O, is_list is_value O * -&gt; O ++ [] = O
+Is : is_list is_value O @
+============================
+ O ++ [] = O
+</pre>
+<pre class="code extensibella"id="113">
+ &lt; <b>Is: case Is.</b>
+
+Subgoal 1:
+
+IH : forall O, is_list is_value O * -&gt; O ++ [] = O
+============================
+ [] ++ [] = []
+</pre>
+<pre class="code extensibella"id="114">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: T H
+IH : forall O, is_list is_value O * -&gt; O ++ [] = O
+Is : is_value H
+Is1 : is_list is_value T *
+============================
+ H::T ++ [] = H::T
+</pre>
+<pre class="code extensibella"id="115">
+ &lt; <b>apply IH to Is1.</b>
+
+Subgoal 2:
+
+Variables: T H
+IH : forall O, is_list is_value O * -&gt; O ++ [] = O
+Is : is_value H
+Is1 : is_list is_value T *
+H1 : T ++ [] = T
+============================
+ H::T ++ [] = H::T
+</pre>
+<pre class="code extensibella"id="116">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="117">
+ &lt; <b>Prove_Constraint looseEval:host:proj_evalStmt_exists.</b>
+
+Variables: Names FE EE EE' O Msg E
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE
+Ev : evalStmt FE EE (assert E Msg) EE' O
+============================
+ exists EE'',
+   evalStmt FE EE (ifThenElse E noop (printVal (errorExpr Msg intTy))) EE'' O
+</pre>
+<pre class="code extensibella"id="118">
+ &lt; <b>Ev: case Ev.</b>
+
+Variables: Names FE EE' O Msg E
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE' Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalExpr FE EE' E trueVal O
+============================
+ exists EE'',
+   evalStmt FE EE' (ifThenElse E noop (printVal (errorExpr Msg intTy))) EE'' O
+</pre>
+<pre class="code extensibella"id="119">
+ &lt; <b>case IsS.</b>
+
+Variables: Names FE EE' O Msg E
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE' Names
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalExpr FE EE' E trueVal O
+H1 : is_expr E
+H2 : is_expr Msg
+============================
+ exists EE'',
+   evalStmt FE EE' (ifThenElse E noop (printVal (errorExpr Msg intTy))) EE'' O
+</pre>
+<pre class="code extensibella"id="120">
+ &lt; <b>IsO: apply evalExpr_isOutput to _ _ _ Ev.</b>
+
+Variables: Names FE EE' O Msg E
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE' Names
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalExpr FE EE' E trueVal O
+H1 : is_expr E
+H2 : is_expr Msg
+IsO : is_list is_value O
+============================
+ exists EE'',
+   evalStmt FE EE' (ifThenElse E noop (printVal (errorExpr Msg intTy))) EE'' O
+</pre>
+<pre class="code extensibella"id="121">
+ &lt; <b>apply append_nil_output to IsO.</b>
+
+Variables: Names FE EE' O Msg E
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE' Names
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalExpr FE EE' E trueVal O
+H1 : is_expr E
+H2 : is_expr Msg
+IsO : is_list is_value O
+H3 : O ++ [] = O
+============================
+ exists EE'',
+   evalStmt FE EE' (ifThenElse E noop (printVal (errorExpr Msg intTy))) EE'' O
+</pre>
+<pre class="code extensibella"id="122">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="123">
+ &lt; <b>Prove_Constraint looseEval:host:proj_evalStmt_rel.</b>
+
+Variables: Names FE EE EE' O EE_P O_P Msg E
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE
+Ev : evalStmt FE EE (assert E Msg) EE' O
+Ev_P : evalStmt FE EE (ifThenElse E noop (printVal (errorExpr Msg intTy))) EE_P O_P
+============================
+ scopes_same EE' EE_P
+</pre>
+<pre class="code extensibella"id="124">
+ &lt; <b>case Ev.</b>
+
+Variables: Names FE EE' O EE_P O_P Msg E
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE' Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev_P : evalStmt FE EE' (ifThenElse E noop (printVal (errorExpr Msg intTy))) EE_P O_P
+H1 : evalExpr FE EE' E trueVal O
+============================
+ scopes_same EE' EE_P
+</pre>
+<pre class="code extensibella"id="125">
+ &lt; <b>Ev_P: case Ev_P.</b>
+
+Subgoal 1:
+
+Variables: Names FE EE' O EE_P O_P Msg E O2 Scope O3
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE' Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+H1 : evalExpr FE EE' E trueVal O
+Ev_P : evalExpr FE EE' E trueVal O2
+Ev_P1 : evalStmt FE ([]::EE') noop (Scope::EE_P) O3
+Ev_P2 : O2 ++ O3 = O_P
+============================
+ scopes_same EE' EE_P
+</pre>
+<pre class="code extensibella"id="126">
+ &lt; <b>Ev_P: case Ev_P1.</b>
+
+Subgoal 1:
+
+Variables: Names FE O EE_P O_P Msg E O2
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE_P Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE_P
+H1 : evalExpr FE EE_P E trueVal O
+Ev_P : evalExpr FE EE_P E trueVal O2
+Ev_P2 : O2 ++ [] = O_P
+============================
+ scopes_same EE_P EE_P
+</pre>
+<pre class="code extensibella"id="127">
+ &lt; <b>backchain scopes_same_reflexive.</b>
+
+Subgoal 2:
+
+Variables: Names FE EE' O EE_P O_P Msg E O2 Scope O3
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE' Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+H1 : evalExpr FE EE' E trueVal O
+Ev_P : evalExpr FE EE' E falseVal O2
+Ev_P1 : evalStmt FE ([]::EE') (printVal (errorExpr Msg intTy)) (Scope::EE_P) O3
+Ev_P2 : O2 ++ O3 = O_P
+============================
+ scopes_same EE' EE_P
+</pre>
+<pre class="code extensibella"id="128">
+ &lt; <b>Ev_P: case Ev_P1.</b>
+
+Subgoal 2.1:
+
+Variables: Names FE O EE_P O_P Msg E O2 O3 I O1
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE_P Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE_P
+H1 : evalExpr FE EE_P E trueVal O
+Ev_P : evalExpr FE EE_P E falseVal O2
+Ev_P2 : O2 ++ O3 = O_P
+Ev_P1 : evalExpr FE ([]::EE_P) (errorExpr Msg intTy) (intVal I) O1
+Ev_P3 : O1 ++ [intVal I] = O3
+============================
+ scopes_same EE_P EE_P
+</pre>
+<pre class="code extensibella"id="129">
+ &lt; <b>case Ev_P1.</b>
+
+Subgoal 2.2:
+
+Variables: Names FE O EE_P O_P Msg E O2 O3 O1
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE_P Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE_P
+H1 : evalExpr FE EE_P E trueVal O
+Ev_P : evalExpr FE EE_P E falseVal O2
+Ev_P2 : O2 ++ O3 = O_P
+Ev_P1 : evalExpr FE ([]::EE_P) (errorExpr Msg intTy) trueVal O1
+Ev_P3 : O1 ++ [trueVal] = O3
+============================
+ scopes_same EE_P EE_P
+</pre>
+<pre class="code extensibella"id="130">
+ &lt; <b>case Ev_P1.</b>
+
+Subgoal 2.3:
+
+Variables: Names FE O EE_P O_P Msg E O2 O3 O1
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE_P Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE_P
+H1 : evalExpr FE EE_P E trueVal O
+Ev_P : evalExpr FE EE_P E falseVal O2
+Ev_P2 : O2 ++ O3 = O_P
+Ev_P1 : evalExpr FE ([]::EE_P) (errorExpr Msg intTy) falseVal O1
+Ev_P3 : O1 ++ [falseVal] = O3
+============================
+ scopes_same EE_P EE_P
+</pre>
+<pre class="code extensibella"id="131">
+ &lt; <b>case Ev_P1.</b>
+
+Subgoal 2.4:
+
+Variables: Names FE O EE_P O_P Msg E O2 O3 S1 O1
+Pr : Names |{stmt}- assert E Msg ~~&gt; ifThenElse E noop (printVal (errorExpr Msg intTy))
+Names : names EE_P Names
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE_P
+H1 : evalExpr FE EE_P E trueVal O
+Ev_P : evalExpr FE EE_P E falseVal O2
+Ev_P2 : O2 ++ O3 = O_P
+Ev_P1 : evalExpr FE ([]::EE_P) (errorExpr Msg intTy) (stringVal S1) O1
+Ev_P3 : O1 ++ [stringVal S1] = O3
+============================
+ scopes_same EE_P EE_P
+</pre>
+<pre class="code extensibella"id="132">
+ &lt; <b>case Ev_P1.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="133">
+ &lt; <b>Prove_Ext_Ind looseEval:host:evalExpr,
+   looseEval:host:evalArgs,
+   looseEval:host:evalRecFields,
+   looseEval:host:evalStmt.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+Acc : acc N @
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+IsS : is_stmt (assert E Msg)
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="134">
+ &lt; <b>case IsS.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+Acc : acc N @
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="135">
+ &lt; <b>apply ext_size_is_int_evalExpr to R2.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+Acc : acc N @
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_integer N2
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="136">
+ &lt; <b>Acc: case Acc.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_integer N2
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="137">
+ &lt; <b>L: apply lt_plus_one to R1 _.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_integer N2
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L : N2 &lt; N
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="138">
+ &lt; <b>apply ext_size_pos_evalExpr to R2.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_integer N2
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L : N2 &lt; N
+H4 : 0 &lt;= N2
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="139">
+ &lt; <b>A: apply Acc to _ L.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_integer N2
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L : N2 &lt; N
+H4 : 0 &lt;= N2
+A : acc N2 *
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="140">
+ &lt; <b>apply IH to R2 A _ _ _.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_integer N2
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L : N2 &lt; N
+H4 : 0 &lt;= N2
+A : acc N2 *
+H5 : &lt;evalExpr {P}&gt; FE EE' E trueVal O
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="141">
+ &lt; <b>Ev: apply drop_ext_size_evalExpr to R2.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_integer N2
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L : N2 &lt; N
+H4 : 0 &lt;= N2
+A : acc N2 *
+H5 : &lt;evalExpr {P}&gt; FE EE' E trueVal O
+Ev : evalExpr FE EE' E trueVal O
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="142">
+ &lt; <b>IsO: apply evalExpr_isOutput to _ _ _ Ev.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_integer N2
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L : N2 &lt; N
+H4 : 0 &lt;= N2
+A : acc N2 *
+H5 : &lt;evalExpr {P}&gt; FE EE' E trueVal O
+Ev : evalExpr FE EE' E trueVal O
+IsO : is_list is_value O
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="143">
+ &lt; <b>apply names_exists to IsEE.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E N1
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_integer N2
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L : N2 &lt; N
+H4 : 0 &lt;= N2
+A : acc N2 *
+H5 : &lt;evalExpr {P}&gt; FE EE' E trueVal O
+Ev : evalExpr FE EE' E trueVal O
+IsO : is_list is_value O
+H6 : names EE' N1
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="144">
+ &lt; <b>apply append_nil_output to IsO.</b>
+
+Subgoal 4.15:
+
+Variables: N FE EE' O N2 Msg E N1
+IH : forall N FE EE E V O,
+       &lt;evalExpr {ES}&gt; FE EE E V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+       is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH1 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH2 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH3 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N -&gt; acc N * -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+IH4 : forall N FE EE E V O,
+        &lt;evalExpr {ES}&gt; FE EE E V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_expr E -&gt; &lt;evalExpr {P}&gt; FE EE E V O
+IH5 : forall N FE EE A V O,
+        &lt;evalArgs {ES}&gt; FE EE A V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_args A -&gt; &lt;evalArgs {P}&gt; FE EE A V O
+IH6 : forall N FE EE RF V O,
+        &lt;evalRecFields {ES}&gt; FE EE RF V O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_recFieldExprs RF -&gt;
+        &lt;evalRecFields {P}&gt; FE EE RF V O
+IH7 : forall N FE EE S EE' O,
+        &lt;evalStmt {ES}&gt; FE EE S EE' O N ** -&gt; acc N @ -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+        is_list (is_list (is_pair is_string is_value)) EE -&gt; is_stmt S -&gt; &lt;evalStmt {P}&gt; FE EE S EE' O
+R : &lt;evalStmt {ES}&gt; FE EE' (assert E Msg) EE' O N @@
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+R1 : 1 + N2 = N
+R2 : &lt;evalExpr {ES}&gt; FE EE' E trueVal O N2 **
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : is_integer N2
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L : N2 &lt; N
+H4 : 0 &lt;= N2
+A : acc N2 *
+H5 : &lt;evalExpr {P}&gt; FE EE' E trueVal O
+Ev : evalExpr FE EE' E trueVal O
+IsO : is_list is_value O
+H6 : names EE' N1
+H7 : O ++ [] = O
+============================
+ &lt;evalStmt {P}&gt; FE EE' (assert E Msg) EE' O
+</pre>
+<pre class="code extensibella"id="145">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="146">
+ &lt; <b>Prove looseEval:host:paramName_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="147">
+ &lt; <b>Prove_Constraint looseEval:host:proj_paramName_forward.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="148">
+ &lt; <b>Prove_Constraint looseEval:host:proj_paramName_back.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="149">
+ &lt; <b>Prove looseEval:host:getFunEvalInfo_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="150">
+ &lt; <b>Prove_Constraint looseEval:host:proj_getFunEvalInfo_forward.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="151">
+ &lt; <b>Prove_Constraint looseEval:host:proj_getFunEvalInfo_back.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="152">
+ &lt; <b>Prove looseEval:host:evalProgram_unique.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="153">
+ &lt; <b>Prove_Constraint looseEval:host:proj_evalProgram.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="154">
+ &lt; <b>Prove_Constraint looseEval:host:proj_evalProgram_back.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="155">
+ &lt; <b>Prove looseEval:host:evalExpr_typePres,
+         looseEval:host:evalStmt_typePres,
+         looseEval:host:evalArgs_typePres,
+         looseEval:host:evalRecFields_typePres.</b>
+
+Subgoal 2.15:
+
+Variables: FT ET ET' FE EE' O Msg E
+IH_E : forall E FT ET Ty FE EE O V,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+         is_list (is_list (is_pair is_string is_typ)) ET -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; typeOf FT ET E Ty -&gt;
+         evalExpr FE EE E V O * -&gt; (forall F RetTy ArgTys ArgNames Body RetVar RVVal,
+           lookup FT F (RetTy, ArgTys) -&gt; lookup FE F (RetVar, (RVVal, (ArgNames, Body))) -&gt;
+           exists Scope TyEnv',
+             (zip ArgNames ArgTys Scope /\ valueType RVVal RetTy) /\
+             stmtOK FT [(RetVar, RetTy)::Scope] Body TyEnv') -&gt; related_all_scopes ET EE -&gt;
+         valueType V Ty
+IH_S : forall S FT ET ET' FE EE EE' O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+         is_list (is_list (is_pair is_string is_typ)) ET -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; stmtOK FT ET S ET' -&gt;
+         evalStmt FE EE S EE' O * -&gt; (forall F RetTy ArgTys ArgNames Body RetVar RVVal,
+           lookup FT F (RetTy, ArgTys) -&gt; lookup FE F (RetVar, (RVVal, (ArgNames, Body))) -&gt;
+           exists Scope TyEnv',
+             (zip ArgNames ArgTys Scope /\ valueType RVVal RetTy) /\
+             stmtOK FT [(RetVar, RetTy)::Scope] Body TyEnv') -&gt; related_all_scopes ET EE -&gt;
+         related_all_scopes ET' EE'
+IH_A : forall A FT ET Tys FE EE O Vs,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+         is_list (is_list (is_pair is_string is_typ)) ET -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; typeOfArgs FT ET A Tys -&gt;
+         evalArgs FE EE A Vs O * -&gt; (forall F RetTy ArgTys ArgNames Body RetVar RVVal,
+           lookup FT F (RetTy, ArgTys) -&gt; lookup FE F (RetVar, (RVVal, (ArgNames, Body))) -&gt;
+           exists Scope TyEnv',
+             (zip ArgNames ArgTys Scope /\ valueType RVVal RetTy) /\
+             stmtOK FT [(RetVar, RetTy)::Scope] Body TyEnv') -&gt; related_all_scopes ET EE -&gt;
+         valueTypeList Vs Tys
+IH_RF : forall RF FT ET FTys FE EE O FVs,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+          is_list (is_list (is_pair is_string is_typ)) ET -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE -&gt; typeOfRecFields FT ET RF FTys -&gt;
+          evalRecFields FE EE RF FVs O * -&gt; (forall F RetTy ArgTys ArgNames Body RetVar RVVal,
+            lookup FT F (RetTy, ArgTys) -&gt; lookup FE F (RetVar, (RVVal, (ArgNames, Body))) -&gt;
+            exists Scope TyEnv',
+              (zip ArgNames ArgTys Scope /\ valueType RVVal RetTy) /\
+              stmtOK FT [(RetVar, RetTy)::Scope] Body TyEnv') -&gt; related_all_scopes ET EE -&gt;
+          valFieldTys FVs FTys
+IsS : is_stmt (assert E Msg)
+IsFT : is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT
+IsET : is_list (is_list (is_pair is_string is_typ)) ET
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ty : stmtOK FT ET (assert E Msg) ET'
+Ev : evalStmt FE EE' (assert E Msg) EE' O @
+Funs : forall F RetTy ArgTys ArgNames Body RetVar RVVal,
+         lookup FT F (RetTy, ArgTys) -&gt; lookup FE F (RetVar, (RVVal, (ArgNames, Body))) -&gt;
+         exists Scope TyEnv',
+           (zip ArgNames ArgTys Scope /\ valueType RVVal RetTy) /\
+           stmtOK FT [(RetVar, RetTy)::Scope] Body TyEnv'
+Ctxs : related_all_scopes ET EE'
+Ev1 : evalExpr FE EE' E trueVal O *
+============================
+ related_all_scopes ET' EE'
+</pre>
+<pre class="code extensibella"id="156">
+ &lt; <b>case Ty.</b>
+
+Subgoal 2.15:
+
+Variables: FT ET' FE EE' O Msg E
+IH_E : forall E FT ET Ty FE EE O V,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+         is_list (is_list (is_pair is_string is_typ)) ET -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; typeOf FT ET E Ty -&gt;
+         evalExpr FE EE E V O * -&gt; (forall F RetTy ArgTys ArgNames Body RetVar RVVal,
+           lookup FT F (RetTy, ArgTys) -&gt; lookup FE F (RetVar, (RVVal, (ArgNames, Body))) -&gt;
+           exists Scope TyEnv',
+             (zip ArgNames ArgTys Scope /\ valueType RVVal RetTy) /\
+             stmtOK FT [(RetVar, RetTy)::Scope] Body TyEnv') -&gt; related_all_scopes ET EE -&gt;
+         valueType V Ty
+IH_S : forall S FT ET ET' FE EE EE' O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+         is_list (is_list (is_pair is_string is_typ)) ET -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; stmtOK FT ET S ET' -&gt;
+         evalStmt FE EE S EE' O * -&gt; (forall F RetTy ArgTys ArgNames Body RetVar RVVal,
+           lookup FT F (RetTy, ArgTys) -&gt; lookup FE F (RetVar, (RVVal, (ArgNames, Body))) -&gt;
+           exists Scope TyEnv',
+             (zip ArgNames ArgTys Scope /\ valueType RVVal RetTy) /\
+             stmtOK FT [(RetVar, RetTy)::Scope] Body TyEnv') -&gt; related_all_scopes ET EE -&gt;
+         related_all_scopes ET' EE'
+IH_A : forall A FT ET Tys FE EE O Vs,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+         is_list (is_list (is_pair is_string is_typ)) ET -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; typeOfArgs FT ET A Tys -&gt;
+         evalArgs FE EE A Vs O * -&gt; (forall F RetTy ArgTys ArgNames Body RetVar RVVal,
+           lookup FT F (RetTy, ArgTys) -&gt; lookup FE F (RetVar, (RVVal, (ArgNames, Body))) -&gt;
+           exists Scope TyEnv',
+             (zip ArgNames ArgTys Scope /\ valueType RVVal RetTy) /\
+             stmtOK FT [(RetVar, RetTy)::Scope] Body TyEnv') -&gt; related_all_scopes ET EE -&gt;
+         valueTypeList Vs Tys
+IH_RF : forall RF FT ET FTys FE EE O FVs,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT -&gt;
+          is_list (is_list (is_pair is_string is_typ)) ET -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE -&gt; typeOfRecFields FT ET RF FTys -&gt;
+          evalRecFields FE EE RF FVs O * -&gt; (forall F RetTy ArgTys ArgNames Body RetVar RVVal,
+            lookup FT F (RetTy, ArgTys) -&gt; lookup FE F (RetVar, (RVVal, (ArgNames, Body))) -&gt;
+            exists Scope TyEnv',
+              (zip ArgNames ArgTys Scope /\ valueType RVVal RetTy) /\
+              stmtOK FT [(RetVar, RetTy)::Scope] Body TyEnv') -&gt; related_all_scopes ET EE -&gt;
+          valFieldTys FVs FTys
+IsS : is_stmt (assert E Msg)
+IsFT : is_list (is_pair is_string (is_pair is_typ (is_list is_typ))) FT
+IsET : is_list (is_list (is_pair is_string is_typ)) ET'
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalStmt FE EE' (assert E Msg) EE' O @
+Funs : forall F RetTy ArgTys ArgNames Body RetVar RVVal,
+         lookup FT F (RetTy, ArgTys) -&gt; lookup FE F (RetVar, (RVVal, (ArgNames, Body))) -&gt;
+         exists Scope TyEnv',
+           (zip ArgNames ArgTys Scope /\ valueType RVVal RetTy) /\
+           stmtOK FT [(RetVar, RetTy)::Scope] Body TyEnv'
+Ctxs : related_all_scopes ET' EE'
+Ev1 : evalExpr FE EE' E trueVal O *
+H1 : typeOf FT ET' E boolTy
+H2 : typeOf FT ET' Msg stringTy
+============================
+ related_all_scopes ET' EE'
+</pre>
+<pre class="code extensibella"id="157">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="158">
+ &lt; <b>Prove looseEval:host:paramTy_paramName_same.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="159">
+ &lt; <b>Prove looseEval:host:funOK_getFunEvalInfo_related.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="160">
+ &lt; <b>Prove looseEval:host:evalExpr_output_forms,
+         looseEval:host:evalStmt_output_forms,
+         looseEval:host:evalArgs_output_forms,
+         looseEval:host:evalRecFields_output_forms.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE' O Msg E
+IH_E : forall E FE EE V O,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalExpr FE EE E V O * -&gt;
+         output_forms O
+IH_S : forall S FE EE EE' O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalStmt FE EE S EE' O * -&gt;
+         output_forms O
+IH_A : forall A FE EE Vs O,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalArgs FE EE A Vs O * -&gt;
+         output_forms O
+IH_RF : forall RF FE EE Fields O,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE -&gt; evalRecFields FE EE RF Fields O * -&gt;
+          output_forms O
+IsS : is_stmt (assert E Msg)
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalStmt FE EE' (assert E Msg) EE' O @
+Ev1 : evalExpr FE EE' E trueVal O *
+============================
+ output_forms O
+</pre>
+<pre class="code extensibella"id="161">
+ &lt; <b>case IsS.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE' O Msg E
+IH_E : forall E FE EE V O,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalExpr FE EE E V O * -&gt;
+         output_forms O
+IH_S : forall S FE EE EE' O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalStmt FE EE S EE' O * -&gt;
+         output_forms O
+IH_A : forall A FE EE Vs O,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalArgs FE EE A Vs O * -&gt;
+         output_forms O
+IH_RF : forall RF FE EE Fields O,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE -&gt; evalRecFields FE EE RF Fields O * -&gt;
+          output_forms O
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalStmt FE EE' (assert E Msg) EE' O @
+Ev1 : evalExpr FE EE' E trueVal O *
+H1 : is_expr E
+H2 : is_expr Msg
+============================
+ output_forms O
+</pre>
+<pre class="code extensibella"id="162">
+ &lt; <b>apply IH_E to _ _ _ Ev1.</b>
+
+Subgoal 2.15:
+
+Variables: FE EE' O Msg E
+IH_E : forall E FE EE V O,
+         is_expr E -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalExpr FE EE E V O * -&gt;
+         output_forms O
+IH_S : forall S FE EE EE' O,
+         is_stmt S -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalStmt FE EE S EE' O * -&gt;
+         output_forms O
+IH_A : forall A FE EE Vs O,
+         is_args A -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+         is_list (is_list (is_pair is_string is_value)) EE -&gt; evalArgs FE EE A Vs O * -&gt;
+         output_forms O
+IH_RF : forall RF FE EE Fields O,
+          is_recFieldExprs RF -&gt; is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE -&gt;
+          is_list (is_list (is_pair is_string is_value)) EE -&gt; evalRecFields FE EE RF Fields O * -&gt;
+          output_forms O
+IsFE : is_list (is_pair is_string (is_pair is_string (is_pair is_value (is_pair (is_list is_string) is_stmt)))) FE
+IsEE : is_list (is_list (is_pair is_string is_value)) EE'
+Ev : evalStmt FE EE' (assert E Msg) EE' O @
+Ev1 : evalExpr FE EE' E trueVal O *
+H1 : is_expr E
+H2 : is_expr Msg
+H3 : output_forms O
+============================
+ output_forms O
+</pre>
+<pre class="code extensibella"id="163">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="164">
+ &lt; <b>Prove looseEval:host:evalProgram_output_forms.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="165">
+ &lt; <b>Prove looseEval:host:paramName_exists.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="166">
+ &lt; <b>Prove looseEval:host:getFunEvalInfo_exists.</b>
+
+Proof completed.
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+Module matchEval:host
+
+/*projedVal A B:  A is related to B by taking some (zero or more)
+  projection steps, either at the root or under constructors*/
+Judgment projedVal : value* value
+/*same, but for record fields*/
+Fixed Judgment projedFields : [(string, value)] [(string, value)]
+
+------------- [PR-Zero]
+projedVal V V
+
+
+/*Note this is not a default rule; it applies to anything*/
+|{value}- V1 ~~> V2
+------------------- [PR-Proj]
+projedVal V1 V2
+
+
+/*This allows us to take separate rules and put them together, like an
+  extension-introduced construct projecting to a record and values
+  within the fields also projecting*/
+projedVal V1 V2
+projedVal V2 V3
+--------------- [PR-Trans]
+projedVal V1 V3
+
+
+projedFields Fs1 Fs2
+--------------------------------- [PR-Rec]
+projedVal recVal(Fs1) recVal(Fs2)
+
+
+/*This rule requires extension-introduced rules to be equivalent to
+  PR-Proj above.  Basically, extensions can't introduced any new
+  rules, since they need to be equivalent to PR-Proj anyway.*/
+Extensibella_Stand_In{
+  |{value}- V1 ~~> V2
+  ------------------- [PR-Q]
+  projedVal V1 V2
+}
+
+
+
+================== [PF-Nil]
+projedFields [] []
+
+
+projedVal VA VB
+projedFields ARest BRest
+========================================== [PF-Cons]
+projedFields (F, VA)::ARest (F, VB)::BRest

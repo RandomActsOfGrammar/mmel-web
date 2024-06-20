@@ -1,0 +1,511 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  looseEval:translation</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  looseEval:translation</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  translation.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggletranslation.sos" onclick="toggleFile('translation.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="translation.sos">[Raw File]</a>
+<pre class="code sterling" id="translation.sos">
+Module looseEval:translation
+
+Builds on looseEval:host
+
+<span class="comment">/*
+  We define here a "translation" from the language to itself.  This
+  represents an extension translating to another language
+  (e.g. translating to assembly) and lets us explore what we can and
+  cannot prove about a translation, but without the overhead of
+  defining another language.
+*/</span>
+
+Judgment transE : expr* expr
+Judgment transRF : recFieldExprs* recFieldExprs
+Judgment transA : args* args
+<span class="comment">/*the [string] argument here needs to be passed down for translation
+  in the default rule*/</span>
+Judgment transS : [string] stmt* stmt [string] <span class="comment">/*updates known names*/</span>
+Judgment transF : fun* fun
+Fixed Judgment transFuns : [fun] [fun]
+Judgment transP : program* program
+
+
+-------------------- [TE-Num]
+transE num(I) num(I)
+
+
+transE E1 E11
+transE E2 E21
+---------------------------------- [TE-Plus]
+transE plus(E1, E2) plus(E11, E21)
+
+
+transE E1 E11
+transE E2 E21
+------------------------------------ [TE-Minus]
+transE minus(E1, E2) minus(E11, E21)
+
+
+transE E1 E11
+transE E2 E21
+---------------------------------- [TE-Mult]
+transE mult(E1, E2) mult(E11, E21)
+
+
+transE E1 E11
+transE E2 E21
+-------------------------------- [TE-Div]
+transE div(E1, E2) div(E11, E21)
+
+
+---------------- [TE-True]
+transE true true
+
+
+------------------ [TE-False]
+transE false false
+
+
+transE E1 E11
+transE E2 E21
+-------------------------------- [TE-And]
+transE and(E1, E2) and(E11, E21)
+
+
+transE E1 E11
+transE E2 E21
+------------------------------ [TE-Or]
+transE or(E1, E2) or(E11, E21)
+
+
+transE E E1
+--------------------- [TE-Not]
+transE not(E) not(E1)
+
+
+transE E1 E11
+transE E2 E21
+----------------------------------- [TE-Greater]
+transE greater(E1, E2) eq(E11, E21)
+
+
+transE E1 E11
+transE E2 E21
+------------------------------ [TE-Eq]
+transE eq(E1, E2) eq(E11, E21)
+
+
+-------------------------------- [TE-String]
+transE stringLit(S) stringLit(S)
+
+
+transE E1 E11
+transE E2 E21
+-------------------------------------------- [TE-StringApp]
+transE appString(E1, E2) appString(E11, E21)
+
+
+---------------------- [TE-Name]
+transE name(X) name(X)
+
+
+transA A A1
+----------------------------- [TE-Call]
+transE call(F, A) call(F, A1)
+
+
+transRF RF RF1
+--------------------------------- [TE-RecBuild]
+transE recBuild(RF) recBuild(RF1)
+
+
+transE E E1
+--------------------------------- [TE-RecFieldAccess]
+{transE recFieldAccess(E, F)
+           recFieldAccess(E1, F)}
+
+
+transE E E1
+----------------------------------------- [TE-ErrorExpr]
+transE errorExpr(E, Ty) errorExpr(E1, Ty)
+
+
+|{expr}- E ~~> E_T
+transE E_T E1
+------------------ [TE-Default]*
+transE E E1
+
+
+
+
+
+----------------------------------------- [TRF-Nil]
+transRF nilRecFieldExprs nilRecFieldExprs
+
+
+transE E E1
+transRF RF RF1
+--------------------------------------- [TRF-Cons]
+{transRF consRecFieldExprs(F, E, RF)
+         consRecFieldExprs(F, E1, RF1)}
+
+
+|{recFieldExprs}- RF ~~> RF_T
+transRF RF_T RF1
+----------------------------- [TRF-Default]*
+transRF RF RF1
+
+
+
+
+
+---------------------- [TA-Nil]
+transA nilArgs nilArgs
+
+
+transE E E1
+transA A A1
+-------------------------------------- [TA-Cons]
+transA consArgs(E, A) consArgs(E1, A1)
+
+
+|{args}- A ~~> A_T
+transA A_T A1
+------------------ [TRA-Default]*
+transA A A1
+
+
+
+
+
+---------------------------- [TS-Noop]
+transS Names noop noop Names
+
+
+transS Names S1 S11 Names1
+transS Names1 S2 S21 Names2
+--------------------------------------------- [TS-Seq]
+transS Names seq(S1, S2) seq(S11, S21) Names2
+
+
+transE E E1
+---------------------------------------------------------- [TS-Declare]
+transS Names declare(Ty, X, E) declare(Ty, X, E1) X::Names
+
+
+transE E E1
+--------------------------------------------- [TS-Assign]
+transS Names assign(X, E) assign(X, E1) Names
+
+
+transE E E1
+---------------------------------------------- [TS-RecUpdate]
+{transS Names recUpdate(Rec, Fs, E)
+                 recUpdate(Rec, Fs, E1) Names}
+
+
+transE Cond Cond1
+transS Names Th Th1 NamesTh
+transS Names El El1 NamesEl
+------------------------------------------------ [TS-If]
+{transS Names ifThenElse(Cond, Th, El)
+              ifThenElse(Cond1, Th1, El1) Names}
+
+
+transE Cond Cond1
+transS Names Body Body1 Names1
+-------------------------------------------------------- [TS-While]
+transS Names while(Cond, Body) while(Cond1, Body1) Names
+
+
+transS Names S S1 Names1
+--------------------------------------------- [TS-ScopeStmt]
+transS Names scopeStmt(S) scopeStmt(S1) Names
+
+
+transE E E1
+-------------------------------------------- [TS-Print]
+transS Names printVal(E) printVal(E1) Names1
+
+
+Names |{stmt}- S ~~> S_T
+transS Names S_T S1 Names1
+-------------------------- [TS-Default]*
+transS Names S S1 Names1
+
+
+
+
+
+paramTys Params PTys
+domain PTys Names
+transS RetVar::Names Body Body1 Names1
+--------------------------------------------------------- [TF-Fun]
+{transF fun(F, RetTy, RetVar, InitVal, Params, Body)
+           fun(F, RetTy, RetVar, InitVal, Params, Body1)}
+
+
+|{fun}- F ~~> F_T
+transF F_T F1
+----------------- [TF-Default]*
+transF F F1
+
+
+
+
+
+=============== [TFs-Nil]
+transFuns [] []
+
+
+transF F F1
+transFuns Rest Rest1
+=========================== [TFs-Cons]
+transFuns F::Rest F1::Rest1
+
+
+
+
+
+transFuns Funs Funs1
+------------------------------------------------ [TP-Program]
+transP program(Funs, Main) program(Funs1, Main1)
+
+
+|{program}- P ~~> P_T
+transP P_T P1
+--------------------- [TP-Default]*
+transP P P1
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="translation.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="translation-details.html#0">Module looseEval:translation.</a>
+
+
+<a class="command" href="translation-details.html#1">Prove_Constraint looseEval:host:proj_expr_unique.</a>
+<a class="command" href="translation-details.html#2">Prove_Constraint looseEval:host:proj_expr_is.</a>
+
+<a class="command" href="translation-details.html#3">Prove_Constraint looseEval:host:proj_stmt_unique.</a>
+<a class="command" href="translation-details.html#4">Prove_Constraint looseEval:host:proj_stmt_is.</a>
+<a class="command" href="translation-details.html#5">Prove_Constraint looseEval:host:proj_stmt_other.</a>
+
+<a class="command" href="translation-details.html#6">Prove_Constraint looseEval:host:proj_fun_unique.</a>
+<a class="command" href="translation-details.html#7">Prove_Constraint looseEval:host:proj_fun_is.</a>
+
+<a class="command" href="translation-details.html#8">Prove_Constraint looseEval:host:proj_param_unique.</a>
+<a class="command" href="translation-details.html#9">Prove_Constraint looseEval:host:proj_param_is.</a>
+
+<a class="command" href="translation-details.html#10">Prove_Constraint looseEval:host:proj_program_unique.</a>
+<a class="command" href="translation-details.html#11">Prove_Constraint looseEval:host:proj_program_is.</a>
+
+<a class="command" href="translation-details.html#12">Prove_Constraint looseEval:host:proj_typ_unique.</a>
+<a class="command" href="translation-details.html#13">Prove_Constraint looseEval:host:proj_typ_is.</a>
+
+<a class="command" href="translation-details.html#14">Prove_Constraint looseEval:host:proj_value_unique.</a>
+<a class="command" href="translation-details.html#15">Prove_Constraint looseEval:host:proj_value_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(16);" id="toggleproof16">[Show Proof]</a>
+<div class="proof" id="proof16" style="display: none;">
+
+
+
+<span class="comment">/********************************************************************
+ Decidable Equality
+ ********************************************************************/</span>
+<a class="tactic" href="translation-details.html#16">Add_Proj_Rel looseEval:host:is_expr,
+             looseEval:host:is_args,
+             looseEval:host:is_recFieldExprs.</a></div>
+<a class="command" href="translation-details.html#17">Prove_Ext_Ind looseEval:host:is_expr,
+              looseEval:host:is_args,
+              looseEval:host:is_recFieldExprs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(18);" id="toggleproof18">[Show Proof]</a>
+<div class="proof" id="proof18" style="display: none;">
+<a class="tactic" href="translation-details.html#18">Add_Proj_Rel looseEval:host:is_stmt.</a></div>
+<a class="command" href="translation-details.html#19">Prove_Ext_Ind looseEval:host:is_stmt.</a>
+
+<a class="command" href="translation-details.html#20">Prove looseEval:host:is_args_nilArgs_or_consArgs.</a>
+<a class="command" href="translation-details.html#21">Prove looseEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(22);" id="toggleproof22">[Show Proof]</a>
+<div class="proof" id="proof22" style="display: none;">
+
+<a class="tactic" href="translation-details.html#22">Add_Proj_Rel looseEval:host:is_value,
+             looseEval:host:is_recFieldVals.</a></div>
+<a class="command" href="translation-details.html#23">Prove_Ext_Ind looseEval:host:is_value,
+              looseEval:host:is_recFieldVals.</a>
+<a class="command" href="translation-details.html#24">Prove looseEval:host:is_value_intVal_or_not.</a>
+<a class="command" href="translation-details.html#25">Prove looseEval:host:is_value_trueVal_or_not.</a>
+<a class="command" href="translation-details.html#26">Prove looseEval:host:is_value_falseVal_or_not.</a>
+<a class="command" href="translation-details.html#27">Prove looseEval:host:is_value_stringVal_or_not.</a>
+<a class="command" href="translation-details.html#28">Prove looseEval:host:is_value_recVal_or_not.</a>
+<a class="command" href="translation-details.html#29">Prove looseEval:host:is_recFieldVals_nil_or_cons.</a>
+<a class="command" href="translation-details.html#30">Prove looseEval:host:is_value_eq_or_not,
+      looseEval:host:is_recFieldVals_eq_or_not.</a>
+
+
+
+<span class="comment">/********************************************************************
+ Variables
+ ********************************************************************/</span>
+<a class="command" href="translation-details.html#31">Prove looseEval:host:vars_unique.</a>
+<a class="command" href="translation-details.html#32">Prove looseEval:host:vars_is.</a>
+<a class="command" href="translation-details.html#33">Prove looseEval:host:vars_exist,
+      looseEval:host:varsArgs_exist,
+      looseEval:host:varsRecFields_exist.</a>
+<a class="command" href="translation-details.html#34">Prove_Constraint looseEval:host:proj_vars.</a>
+
+
+
+<span class="comment">/********************************************************************
+ Typing
+ ********************************************************************/</span>
+<a class="command" href="translation-details.html#35">Prove looseEval:host:typeOf_isTy.</a>
+
+<a class="command" href="translation-details.html#36">Prove looseEval:host:stmtOK_isCtx.</a>
+<a class="command" href="translation-details.html#37">Prove looseEval:host:stmtOK_keep_scopes.</a>
+<a class="command" href="translation-details.html#38">Prove looseEval:host:stmtOK_older_scopes_same.</a>
+<a class="command" href="translation-details.html#39">Prove looseEval:host:stmtOK_first_scope_lookup_same.</a>
+
+<a class="command" href="translation-details.html#40">Prove looseEval:host:typeOf_unique.</a>
+
+<a class="command" href="translation-details.html#41">Prove looseEval:host:stmtOK_unique.</a>
+
+<a class="command" href="translation-details.html#42">Prove looseEval:host:paramTy_is.</a>
+<a class="command" href="translation-details.html#43">Prove looseEval:host:getFunInfo_is.</a>
+<a class="command" href="translation-details.html#44">Prove looseEval:host:paramTy_exists.</a>
+<a class="command" href="translation-details.html#45">Prove looseEval:host:getFunInfo_exists.</a>
+
+
+
+<span class="comment">/********************************************************************
+ Evaluation
+ ********************************************************************/</span>
+<a class="command" href="translation-details.html#46">Prove looseEval:host:evalExpr_isValue,
+      looseEval:host:evalStmt_isCtx,
+      looseEval:host:evalArgs_isValue,
+      looseEval:host:evalRecFields_isValue.</a>
+
+<a class="command" href="translation-details.html#47">Prove looseEval:host:evalExpr_isOutput,
+      looseEval:host:evalStmt_isOutput,
+      looseEval:host:evalArgs_isOutput,
+      looseEval:host:evalRecFields_isOutput.</a>
+
+<a class="command" href="translation-details.html#48">Prove looseEval:host:paramName_is.</a>
+<a class="command" href="translation-details.html#49">Prove looseEval:host:getFunEvalInfo_is.</a>
+<a class="command" href="translation-details.html#50">Prove looseEval:host:evalProgram_isOutput.</a>
+
+<a class="command" href="translation-details.html#51">Prove looseEval:host:evalStmt_names_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(52);" id="toggleproof52">[Show Proof]</a>
+<div class="proof" id="proof52" style="display: none;">
+
+<a class="tactic" href="translation-details.html#52">Add_Ext_Size looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.</a>
+<a class="tactic" href="translation-details.html#53">Add_Proj_Rel looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.</a></div>
+
+<a class="command" href="translation-details.html#54">Prove looseEval:host:evalExpr_rel,
+      looseEval:host:evalStmt_newNameScopes_output,
+      looseEval:host:evalStmt_newNameScopes,
+      looseEval:host:evalArgs_rel,
+      looseEval:host:evalRecFields_rel.</a>
+<a class="command" href="translation-details.html#55">Prove looseEval:host:evalExpr_rel_exists_ES,
+      looseEval:host:evalStmt_newNameScopes_exists_ES,
+      looseEval:host:evalArgs_rel_exists_ES,
+      looseEval:host:evalRecFields_rel_exists_ES.</a>
+
+<a class="command" href="translation-details.html#56">Prove looseEval:host:evalExpr_scopes_same,
+      looseEval:host:evalStmt_scopes_same,
+      looseEval:host:evalStmt_scopes_same_ctx,
+      looseEval:host:evalArgs_scopes_same,
+      looseEval:host:evalRecFields_scopes_same.</a>
+<a class="command" href="translation-details.html#57">Prove looseEval:host:evalExpr_scopes_same_exists,
+      looseEval:host:evalStmt_scopes_same_exists,
+      looseEval:host:evalArgs_scopes_same_exists,
+      looseEval:host:evalRecFields_scopes_same_exists.</a>
+
+<a class="command" href="translation-details.html#58">Prove_Constraint looseEval:host:proj_evalExpr_exists.</a>
+<a class="command" href="translation-details.html#59">Prove_Constraint looseEval:host:proj_evalStmt_exists.</a>
+<a class="command" href="translation-details.html#60">Prove_Constraint looseEval:host:proj_evalStmt_rel.</a>
+
+<a class="command" href="translation-details.html#61">Prove_Ext_Ind looseEval:host:evalExpr,
+              looseEval:host:evalArgs,
+              looseEval:host:evalRecFields,
+              looseEval:host:evalStmt.</a>
+
+<a class="command" href="translation-details.html#62">Prove looseEval:host:paramName_unique.</a>
+<a class="command" href="translation-details.html#63">Prove_Constraint looseEval:host:proj_paramName_forward.</a>
+<a class="command" href="translation-details.html#64">Prove_Constraint looseEval:host:proj_paramName_back.</a>
+<a class="command" href="translation-details.html#65">Prove looseEval:host:getFunEvalInfo_unique.</a>
+<a class="command" href="translation-details.html#66">Prove_Constraint looseEval:host:proj_getFunEvalInfo_forward.</a>
+<a class="command" href="translation-details.html#67">Prove_Constraint looseEval:host:proj_getFunEvalInfo_back.</a>
+<a class="command" href="translation-details.html#68">Prove looseEval:host:evalProgram_unique.</a>
+<a class="command" href="translation-details.html#69">Prove_Constraint looseEval:host:proj_evalProgram.</a>
+<a class="command" href="translation-details.html#70">Prove_Constraint looseEval:host:proj_evalProgram_back.</a>
+
+
+<a class="command" href="translation-details.html#71">Prove looseEval:host:evalExpr_typePres,
+      looseEval:host:evalStmt_typePres,
+      looseEval:host:evalArgs_typePres,
+      looseEval:host:evalRecFields_typePres.</a>
+
+
+<a class="command" href="translation-details.html#72">Prove looseEval:host:paramTy_paramName_same.</a>
+<a class="command" href="translation-details.html#73">Prove looseEval:host:funOK_getFunEvalInfo_related.</a>
+
+
+<a class="command" href="translation-details.html#74">Prove looseEval:host:evalExpr_output_forms,
+      looseEval:host:evalStmt_output_forms,
+      looseEval:host:evalArgs_output_forms,
+      looseEval:host:evalRecFields_output_forms.</a>
+
+<a class="command" href="translation-details.html#75">Prove looseEval:host:evalProgram_output_forms.</a>
+
+
+<a class="command" href="translation-details.html#76">Prove looseEval:host:paramName_exists.</a>
+<a class="command" href="translation-details.html#77">Prove looseEval:host:getFunEvalInfo_exists.</a>
+
+<span class="comment">/*
+  We can't prove anything here about evaluation of the original and
+  the translation being related, or about the translation evaluating
+  if the original evaluates or vice versa.  Our projection constraints
+  are not constraining enough on evaluation to allow us to prove much
+  about it, since the values for an original and its projection do not
+  have to be related.
+
+  The fact that statement and evaluation projections are required to
+  have the same output seems like it might let us prove something like
+  the output of the translation is related to the output of the
+  original when both evaluate.  However, projection constraints hold
+  only for the initial projection, not also projecting sub-terms, as
+  the translation may do.  Since this can change the values in
+  evaluation, we cannot guarantee the same branches are taken in
+  evaluation, or even that the same output is given from any
+  particular print statement.
+
+  In this language, with these projection constraints, this extension
+  and its translation are nothing more than aspirations.  It seems
+  like something nice to do, translating it to another language for
+  implementation, but it doesn't mean anything.  Any implementation
+  translation in a language with constraints like this needs to be
+  part of the host language so each extension can write its own
+  portion.  It cannot be left to an extension.
+*/</span>
+<a class="command" href="translation-details.html#78"></a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

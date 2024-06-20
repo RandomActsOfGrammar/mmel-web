@@ -1,0 +1,27 @@
+Module matchEval:assert
+
+Builds on matchEval:host
+
+stmt ::= ...
+       | assert(expr, expr)
+
+
+-------------------------------------------- [Proj-Assert]
+Names |{stmt}- assert(E, Msg) ~~>
+         ifThenElse(E, noop,
+            /*printVal(error) never succeeds*/
+            printVal(errorExpr(Msg, intTy)))
+
+
+
+typeOf FC TC E boolTy
+typeOf FC TC Msg stringTy
+------------------------------ [T-Assert]
+stmtOK FC TC assert(E, Msg) TC
+
+
+
+evalExpr FE EE E V O
+matchTrue V
+---------------------------------- [E-Assert]
+evalStmt FE EE assert(E, Msg) EE O

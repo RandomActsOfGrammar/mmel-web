@@ -1,0 +1,83 @@
+<html>
+<head>
+<title>Extensibella Examples:  Imperative Language with Strict Constraints</title>
+<link href="../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../actions.js"></script>
+<link rel="icon" href="../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../index.html">
+<img class="header-logo" src="../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<div class="section">
+  <h1>Imperative Language with Strict Constraints</h1>
+  <p>
+    This host language defines a large imperative language defining
+    programs as lists of functions, with one function being designated
+    as the main function.  It defines typing and evaluation, with the
+    latter defined as executing the main function, producing a list of
+    values as printed output.
+  </p>
+  <p>
+    The host language here introduces very strict projection
+    constraints for evaluation, requiring extensions to define the
+    semantics of their new constructs exactly the same as their
+    projections, with expressions needing to evaluate to exactly the
+    same values as their projections do and extension constructs
+    evaluating if and only if their projections do.  Together with
+    the examples of <a href="../looseEval/description.html">loose
+    constraints on evaluation</a> and
+    <a href="../matchEval/description.html">evaluation through
+      matching</a>, which both implement roughly the same underlying
+    language with differing projection constraints, it allows us to
+    explore how differences in projection constraints and constructs
+    included in the host language affect what we can introduce and
+    prove for extensions.
+  </p>
+  <p>
+    In this version of the language, we find we can introduce a lot of
+    constructs despite the strictness of the projection constraints
+    because the host language includes a construct for nesting
+    statements in expressions, but their semantic definitions can be
+    more awkward than in the other languages.  In exchange for this
+    semantic awkwardness, however, we can prove a lot about evaluation
+    in extensions.  In particular, in
+    the <a href="translation/translation.html">translation
+      extension</a>, we find we can prove the translation evaluates if
+    and only if the original program evaluates, and with the same
+    evaluation results.
+  </p>
+  <ul>
+    <li> <a href="host/host.html">Host language</a>:  Imperative
+      language with expressions, statements, and functions
+    <li> <a href="security/security.html">Security extension</a>:
+      Adds an analysis to determine if a program can leak private
+      information
+    <li> <a href="translation/translation.html">Translation
+        extension</a>:  Adds a relation translating programs to the
+      host language
+    <li> <a href="list/list.html">List extension</a>:  Adds syntax for
+      list statements and expressions
+    <li> <a href="assert/assert.html">Assertion statements</a>:  Adds
+      syntax for assertion statements that halt execution if the
+      assertion fails
+    <li> <a href="ascription/ascription.html">Ascription
+        expressions</a>:  Adds syntax for ascription expressions that
+      assert an expression has a particular type
+    <li> <a href="condExpr/condExpr.html">Conditional expressions</a>:
+      Adds syntax for expressions with conditional evaluation
+  </ul>
+</div>
+
+<div class="section">
+  <a href="exactEval.tar.gz">Download example tarball</a>
+</div>
+
+<div class="section">
+  <a class="navlink" href="../examples.html">Back to examples</a>
+</div>
+
+</body>
+</html>

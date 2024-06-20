@@ -1,0 +1,412 @@
+Module exactEval:host
+
+Judgment vars : expr* [string]
+Fixed Judgment varsArgs : args [string]
+Fixed Judgment varsRecFields : recFieldExprs [string]
+
+
+/********************************************************************
+ Expression Variables
+ ********************************************************************/
+
+-------------- [V-Num]
+vars num(I) []
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------- [V-Plus]
+vars plus(E1, E2) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+-------------------- [V-Minus]
+vars minus(E1, E2) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------- [V-Mult]
+vars mult(E1, E2) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------ [V-Div]
+vars div(E1, E2) V
+
+
+------------ [V-True]
+vars true []
+
+
+------------- [V-False]
+vars false []
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------ [V-And]
+vars and(E1, E2) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+----------------- [V-Or]
+vars or(E1, E2) V
+
+
+vars E V
+------------- [V-Not]
+vars not(E) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+---------------------- [V-Greater]
+vars greater(E1, E2) V
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+----------------- [V-Eq]
+vars eq(E1, E2) V
+
+
+-------------------- [V-String]
+vars stringLit(S) []
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------------ [V-AppString]
+vars appString(E1, E2) V
+
+
+---------------- [V-Name]
+vars name(X) [X]
+
+
+varsArgs Args V
+---------------------- [V-Call]
+vars call(Fun, Args) V
+
+
+vars E V
+--------------------- [V-StmtExpr]
+vars stmtExpr(S, E) V
+
+
+varsRecFields RF V
+------------------- [V-RecBuild]
+vars recBuild(RF) V
+
+
+vars Rec V
+--------------------------------- [V-RecAccess]
+vars recFieldAccess(Rec, Field) V
+
+
+vars Msg V
+------------------------- [V-Error]
+vars errorExpr(Msg, Ty) V
+
+
+
+/*Arguments*/
+
+=================== [VA-Nil]
+varsArgs nilArgs []
+
+
+vars E VE
+varsArgs Rest VRest
+VE ++ VRest = V
+============================ [VA-Cons]
+varsArgs consArgs(E, Rest) V
+
+
+
+/*Record Fields*/
+
+================================= [VRF-Nil]
+varsRecFields nilRecFieldExprs []
+
+
+vars E VE
+varsRecFields Rest VRest
+VE ++ VRest = V
+============================================= [VRF-Cons]
+varsRecFields consRecFieldExprs(F, E, Rest) V
+
+
+
+
+
+/********************************************************************
+ Statement Names
+ ********************************************************************/
+         /*names to ignore, stmt, other names referenced, new ignore*/
+Judgment stmtNames : [[string]] stmt* [string] [[string]]
+/*
+  Find the set of non-local names referenced in a statement, meaning
+  the names declared outside it but used in it.  The first argument is
+  the scopes for names we want to ignore.  This is used to ignore
+  declarations within the statement.
+  This basically finds the free variables in a statement.
+*/
+Judgment exprNames : [[string]] expr* [string]
+Fixed Judgment argsNames : [[string]] args [string]
+Fixed Judgment recFieldNames : [[string]] recFieldExprs [string]
+
+Fixed Judgment mems : A [[A]]
+Fixed Judgment not_mems : A [[A]]
+
+------------------------- [SN-Noop]
+stmtNames Ctx noop [] Ctx
+
+
+stmtNames Ctx S1 N1 Ctx1
+stmtNames Ctx1 S2 N2 Ctx2
+N1 ++ N2 = N
+-------------------------------- [SN-Seq]
+stmtNames Ctx seq(S1, S2) N Ctx2
+
+
+exprNames (Scope::Ctx) E N
+------------------------------------------- [SN-Declare]
+{stmtNames (Scope::Ctx) declare(Ty, X, E) N
+           ((X::Scope)::Ctx)}
+
+
+mems X Ctx
+exprNames Ctx E N
+-------------------------------- [SN-Assign-Ignore]
+stmtNames Ctx assign(X, E) N Ctx
+
+
+not_mems X Ctx
+exprNames Ctx E N
+----------------------------------- [SN-Assign-Take]
+stmtNames Ctx assign(X, E) X::N Ctx /*assigning is use-ish*/
+
+
+mems R Ctx
+exprNames Ctx E N
+------------------------------------------- [SN-RecUpdate-Ignore]
+stmtNames Ctx recUpdate(R, Fields, E) N Ctx
+
+
+not_mems R Ctx
+exprNames Ctx E N
+---------------------------------------------- [SN-RecUpdate-Take]
+stmtNames Ctx recUpdate(R, Fields, E) R::N Ctx
+
+
+exprNames Ctx C CN
+stmtNames []::Ctx T TN CtxT
+stmtNames []::Ctx F FN CtxF
+CN ++ TN = N1
+N1 ++ FN = N
+--------------------------------------- [SN-IfThenElse]
+stmtNames Ctx ifThenElse(C, T, F) N Ctx
+
+
+exprNames Ctx Cond CN
+stmtNames []::Ctx Body BN CtxB
+CN ++ BN = N
+------------------------------------- [SN-While]
+stmtNames Ctx while(Cond, Body) N Ctx
+
+
+stmtNames []::Ctx S N Ctx1
+-------------------------------- [SN-ScopeStmt]
+stmtNames Ctx scopeStmt(S) N Ctx
+
+
+exprNames Ctx E N
+------------------------------- [SN-PrintVal]
+stmtNames Ctx printVal(E) N Ctx
+
+
+
+
+----------------------- [EN-Num]
+exprNames Ctx num(I) []
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+---------------------------- [EN-Plus]
+exprNames Ctx plus(E1, E2) N
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+----------------------------- [EN-Minus]
+exprNames Ctx minus(E1, E2) N
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+---------------------------- [EN-Mult]
+exprNames Ctx mult(E1, E2) N
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+--------------------------- [EN-Div]
+exprNames Ctx div(E1, E2) N
+
+
+--------------------- [EN-True]
+exprNames Ctx true []
+
+
+---------------------- [EN-False]
+exprNames Ctx false []
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+--------------------------- [EN-And]
+exprNames Ctx and(E1, E2) N
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+-------------------------- [EN-Or]
+exprNames Ctx or(E1, E2) N
+
+
+exprNames Ctx E N
+---------------------- [EN-Not]
+exprNames Ctx not(E) N
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+------------------------------- [EN-Greater]
+exprNames Ctx greater(E1, E2) N
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+-------------------------- [EN-Eq]
+exprNames Ctx eq(E1, E2) N
+
+
+----------------------------- [EN-String]
+exprNames Ctx stringLit(S) []
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+--------------------------------- [EN-AppString]
+exprNames Ctx appString(E1, E2) N
+
+
+mems X Ctx /*in Ctx, so declared in relevant stmt*/
+------------------------ [EN-Name-Ignore]
+exprNames Ctx name(X) []
+
+
+not_mems X Ctx /*not in Ctx, so declared outside*/
+------------------------- [EN-Name-Take]
+exprNames Ctx name(X) [X]
+
+
+argsNames Ctx Args N
+----------------------------- [EN-Call]
+exprNames Ctx call(F, Args) N
+
+
+stmtNames []::Ctx S NS CtxS
+exprNames CtxS E NE
+NS ++ NE = N
+------------------------------ [EN-StmtExpr]
+exprNames Ctx stmtExpr(S, E) N
+
+
+recFieldNames Ctx RF N
+---------------------------- [EN-RecBuild]
+exprNames Ctx recBuild(RF) N
+
+
+exprNames Ctx E N
+------------------------------------ [EN-RecFieldAccess]
+exprNames Ctx recFieldAccess(E, F) N
+
+
+exprNames Ctx E N
+-------------------------------- [EN-ErrorExpr]
+exprNames Ctx errorExpr(E, Ty) N
+
+
+
+
+======================== [AN-Nil]
+argsNames Ctx nilArgs []
+
+
+exprNames Ctx E EN
+argsNames Ctx A AN
+EN ++ AN = N
+============================== [AN-Cons]
+argsNames Ctx consArgs(E, A) N
+
+
+
+
+===================================== [RFN-Nil]
+recFieldNames Ctx nilRecFieldExprs []
+
+
+exprNames Ctx E EN
+recFieldNames Ctx RF RN
+EN ++ RN = N
+=============================================== [RFN-Cons]
+recFieldNames Ctx consRecFieldExprs(F, E, RF) N
+
+
+
+
+============= [NMems-Nil]
+not_mems X []
+
+
+not_mem X S
+not_mems X Rest
+================== [NMems-Cons]
+not_mems X S::Rest
+
+
+
+
+mem X S
+============== [Mems-Here]
+mems X S::Rest
+
+
+mems X Rest
+============== [Mems-Later]
+mems X S::Rest

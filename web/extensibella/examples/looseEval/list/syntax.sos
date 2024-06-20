@@ -1,0 +1,146 @@
+Module looseEval:list
+
+Builds on looseEval:host
+
+/*Expressions*/
+expr ::= ...
+       | nil(typ) /*need type for type uniqueness*/
+       | cons(expr, expr)
+       | head(expr)
+       | tail(expr)
+       | null(expr)
+       | index(expr, expr) /*lst[i]*/
+       | length(expr)
+
+
+--------------------------- [Proj-Nil]
+|{expr}- nil(Ty) ~~> num(0)
+
+
+------------------------------------ [Proj-Cons]
+|{expr}- cons(E1, E2) ~~> eq(E1, E2)
+
+
+---------------------- [Proj-Null]
+|{expr}- null(E) ~~> E
+
+
+---------------------- [Proj-Head]
+|{expr}- head(E) ~~> E
+
+
+---------------------- [Proj-Tail]
+|{expr}- tail(E) ~~> E
+
+
+--------------------------------------------- [Proj-Index]
+|{expr}- index(Lst, Index) ~~> eq(Lst, Index)
+
+
+------------------------ [Proj-Length]
+|{expr}- length(E) ~~> E
+
+
+
+
+/*Statements*/
+stmt ::= ...
+       | listUpdate(string, expr, expr) /*lst[i] = e*/
+       | listForeach(string, expr, stmt) /*foreach(x : l){ body }*/
+
+
+fresh_name "I" L::Names SaveI
+fresh_name "Hold" L::Names Hold
+fresh_name "E" L::Names SaveE
+---------------------------------------- [Proj-ListUpdate]
+Names |{stmt}- listUpdate(L, I, E) ~~>
+   scopeStmt(
+      /*compute value of I for use in computation*/
+      seq(declare(intTy, SaveI, I),
+      /*save value of E to put in list later*/
+      seq(declare(intTy, SaveE, E),
+      /*this is to get the ctx into the right order for eval;
+        after one run of the loop, SaveI will be before SaveE, and we
+        want the order to be consistent for proofs*/
+      seq(assign(SaveI, name(SaveI)),
+      /*create a list for holding the things before place I;
+        type does not matter, so long as it is declared*/
+      seq(declare(intTy, Hold, nil(intTy)),
+      /*pull I things off the front of L and hold them in stack Hold*/
+      seq(while(greater(name(SaveI), num(0)),
+                seq(assign(SaveI, minus(name(SaveI), num(1))),
+                seq(assign(Hold, cons(head(name(L)), name(Hold))),
+                    assign(L, tail(name(L)))))),
+      /*place the new value in position I, removing the old one*/
+      seq(assign(L, cons(name(SaveE), tail(name(L)))),
+      /*place the old things back on list L from stack Hold*/
+          while(not(null(name(Hold))),
+                seq(assign(L, cons(head(name(Hold)), name(L))),
+                    assign(Hold, tail(name(Hold))))))))))))
+/*{
+    int SaveI = I;
+    int SaveE = E;
+    SaveI = SaveI;
+    int Hold = [];
+    while SaveI > 0{
+      SaveI = SaveI - 1;
+      Hold = head(L)::Hold;
+      L = tail(L);
+    }
+    L = SaveE::tail(L);
+    while !null(Hold){
+      L = head(Hold)::L;
+      Hold = tail(Hold);
+    }
+  }*/
+
+
+fresh_name "L" X::Names SaveL
+----------------------------------------------- [Proj-ListForeach]
+Names |{stmt}- listForeach(X, L, Body) ~~>
+    scopeStmt(
+       /*compute list for use in computation;
+         as before, types don't matter*/
+       seq(declare(intTy, SaveL, L),
+           while(not(null(name(SaveL))),
+              seq(declare(intTy, X, head(name(SaveL))),
+              seq(assign(SaveL, tail(name(SaveL))),
+                  Body)))))
+/*{
+    int SaveL = l;
+    while !null(SaveL){
+      int X = head(SaveL);
+      SaveL = tail(SaveL);
+      Body
+    }
+  }*/
+
+
+
+
+/*Types*/
+typ ::= ...
+      | listTy(typ)
+
+
+----------------------- [Proj-ListTy]
+|{typ}- listTy(T) ~~> T
+
+
+
+
+/*Values*/
+value ::= ...
+        | nilVal
+        | consVal(value, value)
+
+
+------------------------------ [Proj-NilVal]
+|{value}- nilVal ~~> intVal(0)
+
+
+--------------------------------------------- [Proj-ConsVal]
+|{value}- consVal(Hd, Tl) ~~>
+          recVal(consRecFieldVals("head", Hd,
+                 consRecFieldVals("tail", Tl,
+                 nilRecFieldVals)))

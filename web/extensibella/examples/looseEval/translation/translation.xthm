@@ -1,0 +1,205 @@
+Module looseEval:translation.
+
+
+Prove_Constraint looseEval:host:proj_expr_unique.
+Prove_Constraint looseEval:host:proj_expr_is.
+
+Prove_Constraint looseEval:host:proj_stmt_unique.
+Prove_Constraint looseEval:host:proj_stmt_is.
+Prove_Constraint looseEval:host:proj_stmt_other.
+
+Prove_Constraint looseEval:host:proj_fun_unique.
+Prove_Constraint looseEval:host:proj_fun_is.
+
+Prove_Constraint looseEval:host:proj_param_unique.
+Prove_Constraint looseEval:host:proj_param_is.
+
+Prove_Constraint looseEval:host:proj_program_unique.
+Prove_Constraint looseEval:host:proj_program_is.
+
+Prove_Constraint looseEval:host:proj_typ_unique.
+Prove_Constraint looseEval:host:proj_typ_is.
+
+Prove_Constraint looseEval:host:proj_value_unique.
+Prove_Constraint looseEval:host:proj_value_is.
+
+
+
+/********************************************************************
+ Decidable Equality
+ ********************************************************************/
+Add_Proj_Rel looseEval:host:is_expr,
+             looseEval:host:is_args,
+             looseEval:host:is_recFieldExprs.
+Prove_Ext_Ind looseEval:host:is_expr,
+              looseEval:host:is_args,
+              looseEval:host:is_recFieldExprs.
+Add_Proj_Rel looseEval:host:is_stmt.
+Prove_Ext_Ind looseEval:host:is_stmt.
+
+Prove looseEval:host:is_args_nilArgs_or_consArgs.
+Prove looseEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.
+
+Add_Proj_Rel looseEval:host:is_value,
+             looseEval:host:is_recFieldVals.
+Prove_Ext_Ind looseEval:host:is_value,
+              looseEval:host:is_recFieldVals.
+Prove looseEval:host:is_value_intVal_or_not.
+Prove looseEval:host:is_value_trueVal_or_not.
+Prove looseEval:host:is_value_falseVal_or_not.
+Prove looseEval:host:is_value_stringVal_or_not.
+Prove looseEval:host:is_value_recVal_or_not.
+Prove looseEval:host:is_recFieldVals_nil_or_cons.
+Prove looseEval:host:is_value_eq_or_not,
+      looseEval:host:is_recFieldVals_eq_or_not.
+
+
+
+/********************************************************************
+ Variables
+ ********************************************************************/
+Prove looseEval:host:vars_unique.
+Prove looseEval:host:vars_is.
+Prove looseEval:host:vars_exist,
+      looseEval:host:varsArgs_exist,
+      looseEval:host:varsRecFields_exist.
+Prove_Constraint looseEval:host:proj_vars.
+
+
+
+/********************************************************************
+ Typing
+ ********************************************************************/
+Prove looseEval:host:typeOf_isTy.
+
+Prove looseEval:host:stmtOK_isCtx.
+Prove looseEval:host:stmtOK_keep_scopes.
+Prove looseEval:host:stmtOK_older_scopes_same.
+Prove looseEval:host:stmtOK_first_scope_lookup_same.
+
+Prove looseEval:host:typeOf_unique.
+
+Prove looseEval:host:stmtOK_unique.
+
+Prove looseEval:host:paramTy_is.
+Prove looseEval:host:getFunInfo_is.
+Prove looseEval:host:paramTy_exists.
+Prove looseEval:host:getFunInfo_exists.
+
+
+
+/********************************************************************
+ Evaluation
+ ********************************************************************/
+Prove looseEval:host:evalExpr_isValue,
+      looseEval:host:evalStmt_isCtx,
+      looseEval:host:evalArgs_isValue,
+      looseEval:host:evalRecFields_isValue.
+
+Prove looseEval:host:evalExpr_isOutput,
+      looseEval:host:evalStmt_isOutput,
+      looseEval:host:evalArgs_isOutput,
+      looseEval:host:evalRecFields_isOutput.
+
+Prove looseEval:host:paramName_is.
+Prove looseEval:host:getFunEvalInfo_is.
+Prove looseEval:host:evalProgram_isOutput.
+
+Prove looseEval:host:evalStmt_names_same.
+
+Add_Ext_Size looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.
+Add_Proj_Rel looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.
+
+Prove looseEval:host:evalExpr_rel,
+      looseEval:host:evalStmt_newNameScopes_output,
+      looseEval:host:evalStmt_newNameScopes,
+      looseEval:host:evalArgs_rel,
+      looseEval:host:evalRecFields_rel.
+Prove looseEval:host:evalExpr_rel_exists_ES,
+      looseEval:host:evalStmt_newNameScopes_exists_ES,
+      looseEval:host:evalArgs_rel_exists_ES,
+      looseEval:host:evalRecFields_rel_exists_ES.
+
+Prove looseEval:host:evalExpr_scopes_same,
+      looseEval:host:evalStmt_scopes_same,
+      looseEval:host:evalStmt_scopes_same_ctx,
+      looseEval:host:evalArgs_scopes_same,
+      looseEval:host:evalRecFields_scopes_same.
+Prove looseEval:host:evalExpr_scopes_same_exists,
+      looseEval:host:evalStmt_scopes_same_exists,
+      looseEval:host:evalArgs_scopes_same_exists,
+      looseEval:host:evalRecFields_scopes_same_exists.
+
+Prove_Constraint looseEval:host:proj_evalExpr_exists.
+Prove_Constraint looseEval:host:proj_evalStmt_exists.
+Prove_Constraint looseEval:host:proj_evalStmt_rel.
+
+Prove_Ext_Ind looseEval:host:evalExpr,
+              looseEval:host:evalArgs,
+              looseEval:host:evalRecFields,
+              looseEval:host:evalStmt.
+
+Prove looseEval:host:paramName_unique.
+Prove_Constraint looseEval:host:proj_paramName_forward.
+Prove_Constraint looseEval:host:proj_paramName_back.
+Prove looseEval:host:getFunEvalInfo_unique.
+Prove_Constraint looseEval:host:proj_getFunEvalInfo_forward.
+Prove_Constraint looseEval:host:proj_getFunEvalInfo_back.
+Prove looseEval:host:evalProgram_unique.
+Prove_Constraint looseEval:host:proj_evalProgram.
+Prove_Constraint looseEval:host:proj_evalProgram_back.
+
+
+Prove looseEval:host:evalExpr_typePres,
+      looseEval:host:evalStmt_typePres,
+      looseEval:host:evalArgs_typePres,
+      looseEval:host:evalRecFields_typePres.
+
+
+Prove looseEval:host:paramTy_paramName_same.
+Prove looseEval:host:funOK_getFunEvalInfo_related.
+
+
+Prove looseEval:host:evalExpr_output_forms,
+      looseEval:host:evalStmt_output_forms,
+      looseEval:host:evalArgs_output_forms,
+      looseEval:host:evalRecFields_output_forms.
+
+Prove looseEval:host:evalProgram_output_forms.
+
+
+Prove looseEval:host:paramName_exists.
+Prove looseEval:host:getFunEvalInfo_exists.
+
+/*
+  We can't prove anything here about evaluation of the original and
+  the translation being related, or about the translation evaluating
+  if the original evaluates or vice versa.  Our projection constraints
+  are not constraining enough on evaluation to allow us to prove much
+  about it, since the values for an original and its projection do not
+  have to be related.
+
+  The fact that statement and evaluation projections are required to
+  have the same output seems like it might let us prove something like
+  the output of the translation is related to the output of the
+  original when both evaluate.  However, projection constraints hold
+  only for the initial projection, not also projecting sub-terms, as
+  the translation may do.  Since this can change the values in
+  evaluation, we cannot guarantee the same branches are taken in
+  evaluation, or even that the same output is given from any
+  particular print statement.
+
+  In this language, with these projection constraints, this extension
+  and its translation are nothing more than aspirations.  It seems
+  like something nice to do, translating it to another language for
+  implementation, but it doesn't mean anything.  Any implementation
+  translation in a language with constraints like this needs to be
+  part of the host language so each extension can write its own
+  portion.  It cannot be left to an extension.
+*/

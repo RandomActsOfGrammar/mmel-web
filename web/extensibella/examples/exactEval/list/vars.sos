@@ -1,0 +1,112 @@
+Module exactEval:list
+
+/********************************************************************
+ Expression Variables
+ ********************************************************************/
+
+--------------- [V-Nil]
+vars nil(Ty) []
+
+
+vars E1 V1
+vars E2 V2
+V1 ++ V2 = V
+------------------- [V-Cons]
+vars cons(E1, E2) V
+
+
+vars E V
+-------------- [V-Head]
+vars head(E) V
+
+
+vars E V
+-------------- [V-Tail]
+vars tail(E) V
+
+
+vars E V
+-------------- [V-Null]
+vars null(E) V
+
+
+vars L VL
+vars I VI
+VL ++ VI = V
+------------------ [V-Index]
+vars index(L, I) V
+
+
+vars E V
+---------------- [V-Length]
+vars length(E) V
+
+
+
+
+
+/********************************************************************
+ Statement Names
+ ********************************************************************/
+
+------------------------ [EN-Nil]
+exprNames Ctx nil(Ty) []
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+---------------------------- [EN-Cons]
+exprNames Ctx cons(E1, E2) N
+
+
+exprNames Ctx E N
+----------------------- [EN-Head]
+exprNames Ctx head(E) N
+
+
+exprNames Ctx E N
+----------------------- [EN-Tail]
+exprNames Ctx tail(E) N
+
+
+exprNames Ctx E N
+----------------------- [EN-Null]
+exprNames Ctx null(E) N
+
+
+exprNames Ctx E1 N1
+exprNames Ctx E2 N2
+N1 ++ N2 = N
+----------------------------- [EN-Index]
+exprNames Ctx index(E1, E2) N
+
+
+exprNames Ctx E N
+------------------------- [EN-Length]
+exprNames Ctx length(E) N
+
+
+
+
+mems L Ctx
+exprNames Ctx I NI
+exprNames Ctx E NE
+NI ++ NE = N
+--------------------------------------- [SN-ListUpdate-Ignore]
+stmtNames Ctx listUpdate(L, I, E) N Ctx
+
+
+not_mems L Ctx
+exprNames Ctx I NI
+exprNames Ctx E NE
+NI ++ NE = N
+------------------------------------------ [SN-ListUpdate-Take]
+stmtNames Ctx listUpdate(L, I, E) L::N Ctx
+
+
+exprNames Ctx L NL
+stmtNames [I]::Ctx Body NB Ctx1
+NL ++ NB = N
+------------------------------------------- [SN-ListForeach]
+stmtNames Ctx listForeach(I, L, Body) N Ctx

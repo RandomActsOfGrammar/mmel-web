@@ -1,0 +1,1381 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  exactEval:condExpr</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  exactEval:condExpr</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module exactEval:condExpr
+
+Builds on exactEval:host
+
+expr ::= ...
+       | condExpr(expr, expr, expr) <span class="comment">/*condExpr(C, T, F):  C ? T : F*/</span>
+
+
+fresh_name "X" Names X
+------------------------------------------------ [Proj-ConditionalExpr]
+Names |{expr}- condExpr(C, T, F) ~~>
+               stmtExpr(
+                  seq(declare(intTy, X, num(0)),
+                      ifThenElse(C,
+                         assign(X, T),
+                         assign(X, F))),
+                  name(X))
+
+
+
+
+vars C V1
+vars T V2
+vars F V3
+V1 ++ V2 = V4
+V4 ++ V3 = V
+------------------------ [V-ConditionalExpr]
+vars condExpr(C, T, F) V
+
+
+
+
+exprNames Ctx C CN
+exprNames Ctx T TN
+exprNames Ctx F FN
+CN ++ TN = N1
+N1 ++ FN = N
+--------------------------------- [EN-ConditionalExpr]
+exprNames Ctx condExpr(C, T, F) N
+
+
+
+
+typeOf FT ET C boolTy
+typeOf FT ET T Ty
+typeOf FT ET F Ty
+--------------------------------- [T-ConditionalExpr]
+typeOf FT ET condExpr(C, T, F) Ty
+
+
+
+
+evalExpr FE EE C trueVal EE1 O1
+evalExpr FE EE1 T V EE2 O2
+O1 ++ O2 = O
+---------------------------------------- [E-ConditionalExpr-True]
+evalExpr FE EE condExpr(C, T, F) V EE2 O
+
+
+evalExpr FE EE C falseVal EE1 O1
+evalExpr FE EE1 F V EE2 O2
+O1 ++ O2 = O
+---------------------------------------- [E-ConditionalExpr-False]
+evalExpr FE EE condExpr(C, T, F) V EE2 O
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="condExpr.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="condExpr-details.html#0">Module exactEval:condExpr.</a>
+
+<span class="comment">/********************************************************************
+ Basic Projection Constraints
+ ********************************************************************/</span>
+<a class="command" href="condExpr-details.html#1">Prove_Constraint exactEval:host:proj_expr_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<span class="comment">%condExpr</span>
+ <a class="tactic" href="condExpr-details.html#2">PrB: case PrB.</a> <a class="tactic" href="condExpr-details.html#3">apply fresh_name_unique_mems to PrA1 PrB _ _.</a> <a class="tactic" href="condExpr-details.html#4">search.</a></div>
+<a class="command" href="condExpr-details.html#5">Prove_Constraint exactEval:host:proj_expr_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(6);" id="toggleproof6">[Show Proof]</a>
+<div class="proof" id="proof6" style="display: none;">
+<span class="comment">%condExpr</span>
+ <a class="tactic" href="condExpr-details.html#6">case IsE.</a> <a class="tactic" href="condExpr-details.html#7">apply fresh_name_is to _ Pr1.</a> <a class="tactic" href="condExpr-details.html#8">search.</a></div>
+<a class="command" href="condExpr-details.html#9">Prove_Constraint exactEval:host:proj_expr_other.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(10);" id="toggleproof10">[Show Proof]</a>
+<div class="proof" id="proof10" style="display: none;">
+<span class="comment">%condExpr</span>
+ <a class="tactic" href="condExpr-details.html#10">apply fresh_name_exists to _ IsL' with Base = "X".</a> <a class="tactic" href="condExpr-details.html#11">search.</a></div>
+
+<a class="command" href="condExpr-details.html#12">Prove_Constraint exactEval:host:proj_stmt_unique.</a>
+<a class="command" href="condExpr-details.html#13">Prove_Constraint exactEval:host:proj_stmt_is.</a>
+<a class="command" href="condExpr-details.html#14">Prove_Constraint exactEval:host:proj_stmt_other.</a>
+
+<a class="command" href="condExpr-details.html#15">Prove_Constraint exactEval:host:proj_fun_unique.</a>
+<a class="command" href="condExpr-details.html#16">Prove_Constraint exactEval:host:proj_fun_is.</a>
+
+<a class="command" href="condExpr-details.html#17">Prove_Constraint exactEval:host:proj_param_unique.</a>
+<a class="command" href="condExpr-details.html#18">Prove_Constraint exactEval:host:proj_param_is.</a>
+
+<a class="command" href="condExpr-details.html#19">Prove_Constraint exactEval:host:proj_program_unique.</a>
+<a class="command" href="condExpr-details.html#20">Prove_Constraint exactEval:host:proj_program_is.</a>
+
+<a class="command" href="condExpr-details.html#21">Prove_Constraint exactEval:host:proj_typ_unique.</a>
+<a class="command" href="condExpr-details.html#22">Prove_Constraint exactEval:host:proj_typ_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(23);" id="toggleproof23">[Show Proof]</a>
+<div class="proof" id="proof23" style="display: none;">
+
+
+
+
+<span class="comment">/********************************************************************
+ Decidable Equality
+ ********************************************************************/</span>
+<a class="tactic" href="condExpr-details.html#23">Add_Proj_Rel exactEval:host:is_expr, exactEval:host:is_args,
+             exactEval:host:is_recFieldExprs, exactEval:host:is_stmt.</a></div>
+<a class="command" href="condExpr-details.html#24">Prove_Ext_Ind exactEval:host:is_expr, exactEval:host:is_args,
+              exactEval:host:is_recFieldExprs, exactEval:host:is_stmt.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(25);" id="toggleproof25">[Show Proof]</a>
+<div class="proof" id="proof25" style="display: none;">
+<a class="tactic" href="condExpr-details.html#25">apply IH to R1.</a> <a class="tactic" href="condExpr-details.html#26">apply IH to R2.</a> <a class="tactic" href="condExpr-details.html#27">apply IH to R3.</a> <a class="tactic" href="condExpr-details.html#28">unfold.</a>
+<a class="tactic" href="condExpr-details.html#29">F: assert fresh_name "X" [] "X".</a> <a class="tactic" href="condExpr-details.html#30">apply fresh_name_is to _ F.</a>
+<a class="tactic" href="condExpr-details.html#31">exists [],
+   stmtExpr (seq (declare intTy "X" (num 0))
+                 (ifThenElse Expr2
+                    (assign "X" Expr1) (assign "X" Expr))) (name "X").</a>
+<a class="tactic" href="condExpr-details.html#32">search.</a></div>
+
+<a class="command" href="condExpr-details.html#33">Prove exactEval:host:is_args_nilArgs_or_consArgs.</a>
+<a class="command" href="condExpr-details.html#34">Prove exactEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Variables
+ ********************************************************************/</span>
+<a class="command" href="condExpr-details.html#35">Prove exactEval:host:vars_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(36);" id="toggleproof36">[Show Proof]</a>
+<div class="proof" id="proof36" style="display: none;">
+<span class="comment">%V-CondExpr</span>
+ <a class="tactic" href="condExpr-details.html#36">case IsE.</a> <a class="tactic" href="condExpr-details.html#37">VarsB: case VarsB.</a> <a class="tactic" href="condExpr-details.html#38">apply IH to _ VarsA1 VarsB.</a>
+ <a class="tactic" href="condExpr-details.html#39">apply IH to _ VarsA2 VarsB1.</a> <a class="tactic" href="condExpr-details.html#40">apply IH to _ VarsA3 VarsB2.</a>
+ <a class="tactic" href="condExpr-details.html#41">apply append_unique to VarsA4 VarsB3.</a>
+ <a class="tactic" href="condExpr-details.html#42">apply append_unique to VarsA5 VarsB4.</a> <a class="tactic" href="condExpr-details.html#43">search.</a></div>
+
+<a class="command" href="condExpr-details.html#44">Prove exactEval:host:vars_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(45);" id="toggleproof45">[Show Proof]</a>
+<div class="proof" id="proof45" style="display: none;">
+<span class="comment">%V-CondExpr</span>
+ <a class="tactic" href="condExpr-details.html#45">case IsE.</a> <a class="tactic" href="condExpr-details.html#46">apply IH to _ V1.</a> <a class="tactic" href="condExpr-details.html#47">apply IH to _ V2.</a> <a class="tactic" href="condExpr-details.html#48">apply IH to _ V3.</a>
+ <a class="tactic" href="condExpr-details.html#49">apply append_list_string_is to _ _ V4.</a>
+ <a class="tactic" href="condExpr-details.html#50">apply append_list_string_is to _ _ V5.</a> <a class="tactic" href="condExpr-details.html#51">search.</a></div>
+
+<a class="command" href="condExpr-details.html#52">Prove exactEval:host:vars_exist,
+      exactEval:host:varsArgs_exist,
+      exactEval:host:varsRecFields_exist.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(53);" id="toggleproof53">[Show Proof]</a>
+<div class="proof" id="proof53" style="display: none;">
+<span class="comment">%vars_exist</span>
+ <span class="comment">%V-CondExpr</span>
+  <a class="tactic" href="condExpr-details.html#53">VC: apply IH to IsE1.</a> <a class="tactic" href="condExpr-details.html#54">VT: apply IH to IsE2.</a> <a class="tactic" href="condExpr-details.html#55">VF: apply IH to IsE3.</a>
+  <a class="tactic" href="condExpr-details.html#56">IsVC: apply vars_is to _ VC.</a> <a class="tactic" href="condExpr-details.html#57">IsVT: apply vars_is to _ VT.</a>
+  <a class="tactic" href="condExpr-details.html#58">IsVF: apply vars_is to _ VF.</a>
+  <a class="tactic" href="condExpr-details.html#59">App: apply append_list_string_total to IsVC IsVT.</a>
+  <a class="tactic" href="condExpr-details.html#60">IsL3: apply append_list_string_is to _ _ App.</a>
+  <a class="tactic" href="condExpr-details.html#61">apply append_list_string_total to IsL3 IsVF.</a> <a class="tactic" href="condExpr-details.html#62">search.</a></div>
+
+
+
+
+<span class="comment">/********************************************************************
+ Statement Names
+ ********************************************************************/</span>
+<a class="command" href="condExpr-details.html#63">Prove exactEval:host:stmtNames_is,
+      exactEval:host:stmtNames_isCtx,
+      exactEval:host:exprNames_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(64);" id="toggleproof64">[Show Proof]</a>
+<div class="proof" id="proof64" style="display: none;">
+<a class="tactic" href="condExpr-details.html#64">case IsE.</a> <a class="tactic" href="condExpr-details.html#65">apply IH_E to _ _ EN1.</a> <a class="tactic" href="condExpr-details.html#66">apply IH_E to _ _ EN2.</a>
+<a class="tactic" href="condExpr-details.html#67">apply IH_E to _ _ EN3.</a> <a class="tactic" href="condExpr-details.html#68">apply append_list_string_is to _ _ EN4.</a>
+<a class="tactic" href="condExpr-details.html#69">apply append_list_string_is to _ _ EN5.</a> <a class="tactic" href="condExpr-details.html#70">search.</a></div>
+
+<a class="command" href="condExpr-details.html#71">Prove exactEval:host:stmtNames_unique,
+      exactEval:host:exprNames_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(72);" id="toggleproof72">[Show Proof]</a>
+<div class="proof" id="proof72" style="display: none;">
+<a class="tactic" href="condExpr-details.html#72">case IsE.</a> <a class="tactic" href="condExpr-details.html#73">ENB: case ENB.</a> <a class="tactic" href="condExpr-details.html#74">apply IH_E to _ _ ENA1 ENB.</a>
+<a class="tactic" href="condExpr-details.html#75">apply IH_E to _ _ ENA2 ENB1.</a> <a class="tactic" href="condExpr-details.html#76">apply IH_E to _ _ ENA3 ENB2.</a>
+<a class="tactic" href="condExpr-details.html#77">apply append_unique to ENA4 ENB3.</a> <a class="tactic" href="condExpr-details.html#78">apply append_unique to ENA5 ENB4.</a>
+<a class="tactic" href="condExpr-details.html#79">search.</a></div>
+
+<a class="command" href="condExpr-details.html#80">Prove exactEval:host:stmtNames_keep_older.</a>
+
+<a class="command" href="condExpr-details.html#81">Prove exactEval:host:stmtNames_exists,
+      exactEval:host:exprNames_exists,
+      exactEval:host:argsNames_exists,
+      exactEval:host:recFieldNames_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(82);" id="toggleproof82">[Show Proof]</a>
+<div class="proof" id="proof82" style="display: none;">
+<a class="tactic" href="condExpr-details.html#82">ENC: apply IH_E to IsE1 _.</a> <a class="tactic" href="condExpr-details.html#83">ENT: apply IH_E to IsE2 _.</a>
+<a class="tactic" href="condExpr-details.html#84">ENF: apply IH_E to IsE3 _.</a> <a class="tactic" href="condExpr-details.html#85">IsC: apply exprNames_is to _ _ ENC.</a>
+<a class="tactic" href="condExpr-details.html#86">IsT: apply exprNames_is to _ _ ENT.</a>
+<a class="tactic" href="condExpr-details.html#87">IsF: apply exprNames_is to _ _ ENF.</a>
+<a class="tactic" href="condExpr-details.html#88">App: apply append_list_string_total to IsC IsT.</a>
+<a class="tactic" href="condExpr-details.html#89">IsL3: apply append_list_string_is to _ _ App.</a>
+<a class="tactic" href="condExpr-details.html#90">apply append_list_string_total to IsL3 IsF.</a> <a class="tactic" href="condExpr-details.html#91">search.</a></div>
+
+<a class="command" href="condExpr-details.html#92">Prove exactEval:host:stmtNames_not_in_ctx,
+      exactEval:host:exprNames_not_in_ctx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(93);" id="toggleproof93">[Show Proof]</a>
+<div class="proof" id="proof93" style="display: none;">
+<a class="tactic" href="condExpr-details.html#93">case IsE.</a> <a class="tactic" href="condExpr-details.html#94">Or: apply mem_append to MemN EN5.</a> <a class="tactic" href="condExpr-details.html#95">M: case Or.</a>
+  <span class="comment">%mem X N2</span>
+   <a class="tactic" href="condExpr-details.html#96">Or: apply mem_append to M EN4.</a> <a class="tactic" href="condExpr-details.html#97">M': case Or.</a>
+     <span class="comment">%mem X CN</span>
+      <a class="tactic" href="condExpr-details.html#98">apply IH_E to _ _ EN1 M' MemsCtx.</a>
+     <span class="comment">%mem X TN</span>
+      <a class="tactic" href="condExpr-details.html#99">apply IH_E to _ _ EN2 M' MemsCtx.</a>
+  <span class="comment">%mem X FN</span>
+   <a class="tactic" href="condExpr-details.html#100">apply IH_E to _ _ EN3 M MemsCtx.</a></div>
+
+
+<a class="command" href="condExpr-details.html#101">Prove exactEval:host:stmtNames_relatedCtxs,
+      exactEval:host:stmtNames_relatedCtxs_ctx_fwd,
+      exactEval:host:stmtNames_relatedCtxs_ctx_back,
+      exactEval:host:exprNames_relatedCtxs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(102);" id="toggleproof102">[Show Proof]</a>
+<div class="proof" id="proof102" style="display: none;">
+<a class="tactic" href="condExpr-details.html#102">case IsE.</a> <a class="tactic" href="condExpr-details.html#103">apply IH_E to _ _ _ RelAB RelBA EN1.</a>
+<a class="tactic" href="condExpr-details.html#104">apply IH_E to _ _ _ RelAB RelBA EN2.</a>
+<a class="tactic" href="condExpr-details.html#105">apply IH_E to _ _ _ RelAB RelBA EN3.</a> <a class="tactic" href="condExpr-details.html#106">search.</a></div>
+
+
+<a class="command" href="condExpr-details.html#107">Prove exactEval:host:stmtNames_increaseCtxs,
+      exactEval:host:stmtNames_increaseCtxs_ctxs,
+      exactEval:host:exprNames_increaseCtxs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(108);" id="toggleproof108">[Show Proof]</a>
+<div class="proof" id="proof108" style="display: none;">
+<a class="tactic" href="condExpr-details.html#108">case IsE.</a> <a class="tactic" href="condExpr-details.html#109">ENB: case ENB.</a> <a class="tactic" href="condExpr-details.html#110">Or: apply mem_append to M ENB4.</a>
+<a class="tactic" href="condExpr-details.html#111">M': case Or.</a>
+  <span class="comment">%mem X N2</span>
+   <a class="tactic" href="condExpr-details.html#112">Or: apply mem_append to M' ENB3.</a> <a class="tactic" href="condExpr-details.html#113">M'': case Or.</a>
+     <span class="comment">%mem X CN1</span>
+      <a class="tactic" href="condExpr-details.html#114">MC: apply IH_E to _ _ _ _ ENA1 ENB M''.</a>
+      <a class="tactic" href="condExpr-details.html#115">M1: apply mem_append_left to MC ENA4.</a>
+      <a class="tactic" href="condExpr-details.html#116">apply mem_append_left to M1 ENA5.</a> <a class="tactic" href="condExpr-details.html#117">search.</a>
+     <span class="comment">%mem X TN1</span>
+      <a class="tactic" href="condExpr-details.html#118">MT: apply IH_E to _ _ _ _ ENA2 ENB1 M''.</a>
+      <a class="tactic" href="condExpr-details.html#119">M1: apply mem_append_right to MT ENA4.</a>
+      <a class="tactic" href="condExpr-details.html#120">apply mem_append_left to M1 ENA5.</a> <a class="tactic" href="condExpr-details.html#121">search.</a>
+  <span class="comment">%mem X FN1</span>
+   <a class="tactic" href="condExpr-details.html#122">MF: apply IH_E to _ _ _ _ ENA3 ENB2 M'.</a>
+   <a class="tactic" href="condExpr-details.html#123">apply mem_append_right to MF ENA5.</a> <a class="tactic" href="condExpr-details.html#124">search.</a></div>
+
+
+<a class="command" href="condExpr-details.html#125">Prove_Constraint exactEval:host:proj_exprNames.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(126);" id="toggleproof126">[Show Proof]</a>
+<div class="proof" id="proof126" style="display: none;">
+<a class="tactic" href="condExpr-details.html#126">case IsE.</a> <a class="tactic" href="condExpr-details.html#127">EN: case EN.</a> <a class="tactic" href="condExpr-details.html#128">EN_P: case EN_P.</a> <a class="tactic" href="condExpr-details.html#129">EN_P: case EN_P.</a>
+<a class="tactic" href="condExpr-details.html#130">EN_P: case EN_P.</a> <a class="tactic" href="condExpr-details.html#131">case EN_P.</a> <a class="tactic" href="condExpr-details.html#132">case EN_P4.</a> <a class="tactic" href="condExpr-details.html#133">EN_P: case EN_P3.</a>
+<a class="tactic" href="condExpr-details.html#134">Eq: assert NE = [].</a>
+  <a class="tactic" href="condExpr-details.html#135">M': case EN_P1.</a> <a class="tactic" href="condExpr-details.html#136">search.</a> <a class="tactic" href="condExpr-details.html#137">NM: case M'.</a> <a class="tactic" href="condExpr-details.html#138">N: case NM.</a> <a class="tactic" href="condExpr-details.html#139">apply N to _.</a>
+<a class="tactic" href="condExpr-details.html#140">clear EN_P1.</a> <a class="tactic" href="condExpr-details.html#141">case Eq.</a> <a class="tactic" href="condExpr-details.html#142">apply append_nil_right to EN_P2.</a> <a class="tactic" href="condExpr-details.html#143">clear EN_P2.</a>
+<a class="tactic" href="condExpr-details.html#144">apply fresh_name_is to _ Pr1.</a> <a class="tactic" href="condExpr-details.html#145">Or: apply mem_append to M EN_P6.</a>
+<a class="tactic" href="condExpr-details.html#146">M': case Or.</a>
+  <span class="comment">%mem X N4</span>
+   <a class="tactic" href="condExpr-details.html#147">Or: apply mem_append to M' EN_P5.</a> <a class="tactic" href="condExpr-details.html#148">M'': case Or.</a>
+     <span class="comment">%mem X CN1</span>
+      <a class="tactic" href="condExpr-details.html#149">MC: apply exprNames_increaseCtxs to _ _ _ _ EN EN_P M''.</a>
+      <a class="tactic" href="condExpr-details.html#150">M1: apply mem_append_left to MC EN3.</a>
+      <a class="tactic" href="condExpr-details.html#151">apply mem_append_left to M1 EN4.</a> <a class="tactic" href="condExpr-details.html#152">search.</a>
+     <span class="comment">%mem X TN1</span>
+      <a class="tactic" href="condExpr-details.html#153">AN: case EN_P3.</a>
+        <span class="comment">%SN-Assign-Ignore</span>
+         <a class="tactic" href="condExpr-details.html#154">MT: apply exprNames_increaseCtxs to _ _ _ _ EN1 AN1 M''.</a>
+         <a class="tactic" href="condExpr-details.html#155">M1: apply mem_append_right to MT EN3.</a>
+         <a class="tactic" href="condExpr-details.html#156">apply mem_append_left to M1 EN4.</a> <a class="tactic" href="condExpr-details.html#157">search.</a>
+        <span class="comment">%SN-Assign-Take</span>
+         <a class="tactic" href="condExpr-details.html#158">MN: case AN.</a> <a class="tactic" href="condExpr-details.html#159">MN: case MN1.</a> <a class="tactic" href="condExpr-details.html#160">N: case MN1.</a> <a class="tactic" href="condExpr-details.html#161">apply N to _.</a>
+  <span class="comment">%mem X FN1</span>
+   <a class="tactic" href="condExpr-details.html#162">AN: case EN_P4.</a>
+     <span class="comment">%SN-Assign-Ignore</span>
+      <a class="tactic" href="condExpr-details.html#163">MF: apply exprNames_increaseCtxs to _ _ _ _ EN2 AN1 M'.</a>
+      <a class="tactic" href="condExpr-details.html#164">apply mem_append_right to MF EN4.</a> <a class="tactic" href="condExpr-details.html#165">search.</a>
+     <span class="comment">%SN-Assign-Take</span>
+      <a class="tactic" href="condExpr-details.html#166">MN: case AN.</a> <a class="tactic" href="condExpr-details.html#167">MN: case MN1.</a> <a class="tactic" href="condExpr-details.html#168">N: case MN1.</a> <a class="tactic" href="condExpr-details.html#169">apply N to _.</a></div>
+
+
+<a class="command" href="condExpr-details.html#170">Prove_Constraint exactEval:host:proj_stmtNames.</a>
+<a class="command" href="condExpr-details.html#171">Prove_Constraint exactEval:host:proj_stmtNames_names_forward.</a>
+<a class="command" href="condExpr-details.html#172">Prove_Constraint exactEval:host:proj_stmtNames_names_backward.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Typing
+ ********************************************************************/</span>
+<a class="command" href="condExpr-details.html#173">Prove exactEval:host:typeOf_isTy,
+      exactEval:host:stmtOK_isCtx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(174);" id="toggleproof174">[Show Proof]</a>
+<div class="proof" id="proof174" style="display: none;">
+<span class="comment">%typeOf_isTy</span>
+ <span class="comment">%T-CondExpr</span>
+  <a class="tactic" href="condExpr-details.html#174">case IsE.</a> <a class="tactic" href="condExpr-details.html#175">apply IH to _ _ _ Ty2.</a> <a class="tactic" href="condExpr-details.html#176">search.</a></div>
+
+<a class="command" href="condExpr-details.html#177">Prove exactEval:host:stmtOK_keep_scopes.</a>
+<a class="command" href="condExpr-details.html#178">Prove exactEval:host:stmtOK_older_scopes_same.</a>
+<a class="command" href="condExpr-details.html#179">Prove exactEval:host:stmtOK_first_scope_lookup_same.</a>
+
+<a class="command" href="condExpr-details.html#180">Prove exactEval:host:typeOf_unique,
+      exactEval:host:stmtOK_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(181);" id="toggleproof181">[Show Proof]</a>
+<div class="proof" id="proof181" style="display: none;">
+<span class="comment">%typeOf_unique</span>
+ <span class="comment">%T-CondExpr</span>
+  <a class="tactic" href="condExpr-details.html#181">case IsE.</a> <a class="tactic" href="condExpr-details.html#182">TyB: case TyB.</a> <a class="tactic" href="condExpr-details.html#183">apply IH_E to _ _ _ _ TyA2 TyB1 _.</a> <a class="tactic" href="condExpr-details.html#184">search.</a></div>
+
+<a class="command" href="condExpr-details.html#185">Prove exactEval:host:paramTy_is.</a>
+<a class="command" href="condExpr-details.html#186">Prove exactEval:host:getFunInfo_is.</a>
+<a class="command" href="condExpr-details.html#187">Prove exactEval:host:paramTy_exists.</a>
+<a class="command" href="condExpr-details.html#188">Prove exactEval:host:getFunInfo_exists.</a>
+
+
+
+
+<span class="comment">/********************************************************************
+ Evaluation
+ ********************************************************************/</span>
+<a class="command" href="condExpr-details.html#189">Prove exactEval:host:evalExpr_isCtx,
+      exactEval:host:evalExpr_isValue,
+      exactEval:host:evalStmt_isCtx,
+      exactEval:host:evalArgs_isCtx,
+      exactEval:host:evalArgs_isValue,
+      exactEval:host:evalRecFields_isCtx,
+      exactEval:host:evalRecFields_isValue.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(190);" id="toggleproof190">[Show Proof]</a>
+<div class="proof" id="proof190" style="display: none;">
+<span class="comment">%evalExpr_isCtx</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#190">case IsE.</a> <a class="tactic" href="condExpr-details.html#191">apply IH_C_E to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#192">apply IH_C_E to _ _ _ Ev2.</a>
+  <a class="tactic" href="condExpr-details.html#193">search.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#194">case IsE.</a> <a class="tactic" href="condExpr-details.html#195">apply IH_C_E to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#196">apply IH_C_E to _ _ _ Ev2.</a>
+  <a class="tactic" href="condExpr-details.html#197">search.</a>
+<span class="comment">%evalExpr_isValue</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#198">case IsE.</a> <a class="tactic" href="condExpr-details.html#199">apply IH_C_E to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#200">apply IH_V_E to _ _ _ Ev2.</a>
+  <a class="tactic" href="condExpr-details.html#201">search.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#202">case IsE.</a> <a class="tactic" href="condExpr-details.html#203">apply IH_C_E to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#204">apply IH_V_E to _ _ _ Ev2.</a>
+  <a class="tactic" href="condExpr-details.html#205">search.</a></div>
+
+<a class="command" href="condExpr-details.html#206">Prove exactEval:host:evalExpr_isOutput,
+      exactEval:host:evalStmt_isOutput,
+      exactEval:host:evalArgs_isOutput,
+      exactEval:host:evalRecFields_isOutput.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(207);" id="toggleproof207">[Show Proof]</a>
+<div class="proof" id="proof207" style="display: none;">
+<span class="comment">%evalExpr_isOutput</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#207">case IsE.</a> <a class="tactic" href="condExpr-details.html#208">apply evalExpr_isCtx to _ _ _ Ev1.</a>
+  <a class="tactic" href="condExpr-details.html#209">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#210">apply IH_E to _ _ _ Ev2.</a>
+  <a class="tactic" href="condExpr-details.html#211">apply append_values_is to _ _ Ev3.</a> <a class="tactic" href="condExpr-details.html#212">search.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#213">case IsE.</a> <a class="tactic" href="condExpr-details.html#214">apply evalExpr_isCtx to _ _ _ Ev1.</a>
+  <a class="tactic" href="condExpr-details.html#215">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#216">apply IH_E to _ _ _ Ev2.</a>
+  <a class="tactic" href="condExpr-details.html#217">apply append_values_is to _ _ Ev3.</a> <a class="tactic" href="condExpr-details.html#218">search.</a></div>
+
+<a class="command" href="condExpr-details.html#219">Prove exactEval:host:paramName_is.</a>
+<a class="command" href="condExpr-details.html#220">Prove exactEval:host:getFunEvalInfo_is.</a>
+
+<a class="command" href="condExpr-details.html#221">Prove exactEval:host:evalProgram_isOutput.</a>
+
+
+<a class="command" href="condExpr-details.html#222">Prove exactEval:host:evalExpr_names_same,
+      exactEval:host:evalStmt_names_same,
+      exactEval:host:evalArgs_names_same,
+      exactEval:host:evalRecFields_names_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(223);" id="toggleproof223">[Show Proof]</a>
+<div class="proof" id="proof223" style="display: none;">
+<span class="comment">%evalExpr_names_same</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#223">case IsE.</a> <a class="tactic" href="condExpr-details.html#224">NS1: apply IH_E to _ _ _ Ev1.</a>
+  <a class="tactic" href="condExpr-details.html#225">apply evalExpr_isCtx to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#226">NS2: apply IH_E to _ _ _ Ev2.</a>
+  <a class="tactic" href="condExpr-details.html#227">apply names_same_transitive to NS1 NS2.</a> <a class="tactic" href="condExpr-details.html#228">search.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#229">case IsE.</a> <a class="tactic" href="condExpr-details.html#230">NS1: apply IH_E to _ _ _ Ev1.</a>
+  <a class="tactic" href="condExpr-details.html#231">apply evalExpr_isCtx to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#232">NS2: apply IH_E to _ _ _ Ev2.</a>
+  <a class="tactic" href="condExpr-details.html#233">apply names_same_transitive to NS1 NS2.</a> <a class="tactic" href="condExpr-details.html#234">search.</a></div>
+
+
+<a class="command" href="condExpr-details.html#235">Prove exactEval:host:evalExpr_newNameScopes,
+      exactEval:host:evalExpr_newNameScopes_output,
+      exactEval:host:evalExpr_newNameScopes_ctx,
+      exactEval:host:evalStmt_newNameScopes_output,
+      exactEval:host:evalStmt_newNameScopes,
+      exactEval:host:evalArgs_newNameScopes,
+      exactEval:host:evalArgs_newNameScopes_output,
+      exactEval:host:evalArgs_newNameScopes_ctx,
+      exactEval:host:evalRecFields_newNameScopes,
+      exactEval:host:evalRecFields_newNameScopes_output,
+      exactEval:host:evalRecFields_newNameScopes_ctx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(236);" id="toggleproof236">[Show Proof]</a>
+<div class="proof" id="proof236" style="display: none;">
+<span class="comment">%evalExpr_newNameScopes</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#236">case IsE.</a> <a class="tactic" href="condExpr-details.html#237">EvB: case EvB.</a>
+    <span class="comment">%E-CondExpr-True</span>
+     <a class="tactic" href="condExpr-details.html#238">apply IH_C_E to _ _ _ _ EvA1 EvB _.</a>
+     <a class="tactic" href="condExpr-details.html#239">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+     <a class="tactic" href="condExpr-details.html#240">apply evalExpr_isCtx to _ _ _ EvB.</a>
+     <a class="tactic" href="condExpr-details.html#241">apply IH_V_E to _ _ _ _ EvA2 EvB1 _.</a> <a class="tactic" href="condExpr-details.html#242">search.</a>
+    <span class="comment">%E-CondExpr-False</span>
+     <a class="tactic" href="condExpr-details.html#243">apply IH_V_E to _ _ _ _ EvA1 EvB _.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#244">case IsE.</a> <a class="tactic" href="condExpr-details.html#245">EvB: case EvB.</a>
+    <span class="comment">%E-CondExpr-True</span>
+     <a class="tactic" href="condExpr-details.html#246">apply IH_V_E to _ _ _ _ EvA1 EvB _.</a>
+    <span class="comment">%E-CondExpr-False</span>
+     <a class="tactic" href="condExpr-details.html#247">apply IH_C_E to _ _ _ _ EvA1 EvB _.</a>
+     <a class="tactic" href="condExpr-details.html#248">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+     <a class="tactic" href="condExpr-details.html#249">apply evalExpr_isCtx to _ _ _ EvB.</a>
+     <a class="tactic" href="condExpr-details.html#250">apply IH_V_E to _ _ _ _ EvA2 EvB1 _.</a> <a class="tactic" href="condExpr-details.html#251">search.</a>
+<span class="comment">%evalExpr_newNameScopes_output</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#252">case IsE.</a> <a class="tactic" href="condExpr-details.html#253">EvB: case EvB.</a>
+    <span class="comment">%E-CondExpr-True</span>
+     <a class="tactic" href="condExpr-details.html#254">apply IH_C_E to _ _ _ _ EvA1 EvB _.</a>
+     <a class="tactic" href="condExpr-details.html#255">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+     <a class="tactic" href="condExpr-details.html#256">apply evalExpr_isCtx to _ _ _ EvB.</a>
+     <a class="tactic" href="condExpr-details.html#257">apply IH_O_E to _ _ _ _ EvA1 EvB _.</a>
+     <a class="tactic" href="condExpr-details.html#258">apply IH_O_E to _ _ _ _ EvA2 EvB1 _.</a>
+     <a class="tactic" href="condExpr-details.html#259">apply append_unique to EvA3 EvB2.</a> <a class="tactic" href="condExpr-details.html#260">search.</a>
+    <span class="comment">%E-CondExpr-False</span>
+     <a class="tactic" href="condExpr-details.html#261">apply IH_V_E to _ _ _ _ EvA1 EvB _.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#262">case IsE.</a> <a class="tactic" href="condExpr-details.html#263">EvB: case EvB.</a>
+    <span class="comment">%E-CondExpr-True</span>
+     <a class="tactic" href="condExpr-details.html#264">apply IH_V_E to _ _ _ _ EvA1 EvB _.</a>
+    <span class="comment">%E-CondExpr-False</span>
+     <a class="tactic" href="condExpr-details.html#265">apply IH_C_E to _ _ _ _ EvA1 EvB _.</a>
+     <a class="tactic" href="condExpr-details.html#266">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+     <a class="tactic" href="condExpr-details.html#267">apply evalExpr_isCtx to _ _ _ EvB.</a>
+     <a class="tactic" href="condExpr-details.html#268">apply IH_O_E to _ _ _ _ EvA1 EvB _.</a>
+     <a class="tactic" href="condExpr-details.html#269">apply IH_O_E to _ _ _ _ EvA2 EvB1 _.</a>
+     <a class="tactic" href="condExpr-details.html#270">apply append_unique to EvA3 EvB2.</a> <a class="tactic" href="condExpr-details.html#271">search.</a>
+<span class="comment">%evalExpr_newNameScopes_ctx</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#272">case IsE.</a> <a class="tactic" href="condExpr-details.html#273">EvB: case EvB.</a>
+    <span class="comment">%E-CondExpr-True</span>
+     <a class="tactic" href="condExpr-details.html#274">apply IH_C_E to _ _ _ _ EvA1 EvB _.</a>
+     <a class="tactic" href="condExpr-details.html#275">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+     <a class="tactic" href="condExpr-details.html#276">apply evalExpr_isCtx to _ _ _ EvB.</a>
+     <a class="tactic" href="condExpr-details.html#277">apply IH_C_E to _ _ _ _ EvA2 EvB1 _.</a> <a class="tactic" href="condExpr-details.html#278">search.</a>
+    <span class="comment">%E-CondExpr-False</span>
+     <a class="tactic" href="condExpr-details.html#279">apply IH_V_E to _ _ _ _ EvA1 EvB _.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#280">case IsE.</a> <a class="tactic" href="condExpr-details.html#281">EvB: case EvB.</a>
+    <span class="comment">%E-CondExpr-True</span>
+     <a class="tactic" href="condExpr-details.html#282">apply IH_V_E to _ _ _ _ EvA1 EvB _.</a>
+    <span class="comment">%E-CondExpr-False</span>
+     <a class="tactic" href="condExpr-details.html#283">apply IH_C_E to _ _ _ _ EvA1 EvB _.</a>
+     <a class="tactic" href="condExpr-details.html#284">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+     <a class="tactic" href="condExpr-details.html#285">apply evalExpr_isCtx to _ _ _ EvB.</a>
+     <a class="tactic" href="condExpr-details.html#286">apply IH_C_E to _ _ _ _ EvA2 EvB1 _.</a> <a class="tactic" href="condExpr-details.html#287">search.</a>
+
+
+<a class="tactic" href="condExpr-details.html#288">Add_Ext_Size exactEval:host:evalExpr,
+             exactEval:host:evalArgs,
+             exactEval:host:evalRecFields,
+             exactEval:host:evalStmt.</a>
+<a class="tactic" href="condExpr-details.html#289">Add_Proj_Rel exactEval:host:evalExpr,
+             exactEval:host:evalArgs,
+             exactEval:host:evalRecFields,
+             exactEval:host:evalStmt.</a></div>
+
+
+<a class="command" href="condExpr-details.html#290">Prove exactEval:host:evalExpr_newNameScopes_exists_ES,
+      exactEval:host:evalStmt_newNameScopes_exists_ES,
+      exactEval:host:evalArgs_newNameScopes_exists_ES,
+      exactEval:host:evalRecFields_newNameScopes_exists_ES.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(291);" id="toggleproof291">[Show Proof]</a>
+<div class="proof" id="proof291" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#291">case IsE.</a> <a class="tactic" href="condExpr-details.html#292">EvA1: apply IH_E to _ _ _ _ EvB3 NNS.</a>
+ <a class="tactic" href="condExpr-details.html#293">EvA1': apply drop_ext_size_evalExpr to EvA1.</a>
+ <a class="tactic" href="condExpr-details.html#294">EvB1': apply drop_ext_size_evalExpr to EvB3.</a>
+ <a class="tactic" href="condExpr-details.html#295">NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA1' EvB1' NNS.</a>
+ <a class="tactic" href="condExpr-details.html#296">apply evalExpr_isCtx to _ _ _ EvA1'.</a>
+ <a class="tactic" href="condExpr-details.html#297">apply evalExpr_isCtx to _ _ _ EvB1'.</a>
+ <a class="tactic" href="condExpr-details.html#298">apply IH_E to _ _ _ _ EvB4 NNS'.</a> <a class="tactic" href="condExpr-details.html#299">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#300">case IsE.</a> <a class="tactic" href="condExpr-details.html#301">EvA1: apply IH_E to _ _ _ _ EvB3 NNS.</a>
+ <a class="tactic" href="condExpr-details.html#302">EvA1': apply drop_ext_size_evalExpr to EvA1.</a>
+ <a class="tactic" href="condExpr-details.html#303">EvB1': apply drop_ext_size_evalExpr to EvB3.</a>
+ <a class="tactic" href="condExpr-details.html#304">NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA1' EvB1' NNS.</a>
+ <a class="tactic" href="condExpr-details.html#305">apply evalExpr_isCtx to _ _ _ EvA1'.</a>
+ <a class="tactic" href="condExpr-details.html#306">apply evalExpr_isCtx to _ _ _ EvB1'.</a>
+ <a class="tactic" href="condExpr-details.html#307">apply IH_E to _ _ _ _ EvB4 NNS'.</a> <a class="tactic" href="condExpr-details.html#308">search.</a></div>
+
+
+<a class="command" href="condExpr-details.html#309">Prove exactEval:host:evalExpr_ctx_names,
+      exactEval:host:evalStmt_ctx_names,
+      exactEval:host:evalArgs_ctx_names,
+      exactEval:host:evalRecFields_ctx_names.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(310);" id="toggleproof310">[Show Proof]</a>
+<div class="proof" id="proof310" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#310">case IsE.</a> <a class="tactic" href="condExpr-details.html#311">EN: case EN.</a> <a class="tactic" href="condExpr-details.html#312">Ctxs': apply IH_E to _ _ _ _ Ctxs EN Ev1.</a>
+ <a class="tactic" href="condExpr-details.html#313">apply evalExpr_isCtx to _ _ _ Ev1.</a>
+ <a class="tactic" href="condExpr-details.html#314">apply IH_E to _ _ _ _ Ctxs' EN1 Ev2.</a> <a class="tactic" href="condExpr-details.html#315">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#316">case IsE.</a> <a class="tactic" href="condExpr-details.html#317">EN: case EN.</a> <a class="tactic" href="condExpr-details.html#318">Ctxs': apply IH_E to _ _ _ _ Ctxs EN Ev1.</a>
+ <a class="tactic" href="condExpr-details.html#319">apply evalExpr_isCtx to _ _ _ Ev1.</a>
+ <a class="tactic" href="condExpr-details.html#320">apply IH_E to _ _ _ _ Ctxs' EN2 Ev2.</a> <a class="tactic" href="condExpr-details.html#321">search.</a></div>
+
+
+<a class="command" href="condExpr-details.html#322">Prove exactEval:host:evalExpr_newNameScopes_exists_back,
+      exactEval:host:evalStmt_newNameScopes_exists_back,
+      exactEval:host:evalArgs_newNameScopes_exists_back,
+      exactEval:host:evalRecFields_newNameScopes_exists_back.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(323);" id="toggleproof323">[Show Proof]</a>
+<div class="proof" id="proof323" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#323">case IsE.</a> <a class="tactic" href="condExpr-details.html#324">EN: case EN.</a> <a class="tactic" href="condExpr-details.html#325">case EN4.</a> <a class="tactic" href="condExpr-details.html#326">case EN3.</a>
+ <a class="tactic" href="condExpr-details.html#327">EvB1: apply IH_E to _ _ _ _ _ _ EN EvA1 NNS.</a>
+ <a class="tactic" href="condExpr-details.html#328">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+ <a class="tactic" href="condExpr-details.html#329">apply evalExpr_isCtx to _ _ _ EvB1.</a>
+ <a class="tactic" href="condExpr-details.html#330">NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA1 EvB1 NNS.</a>
+ <a class="tactic" href="condExpr-details.html#331">apply evalExpr_ctx_names to _ _ _ _ Ctxs EN EvB1.</a>
+ <a class="tactic" href="condExpr-details.html#332">apply IH_E to _ _ _ _ _ _ EN1 EvA2 NNS'.</a> <a class="tactic" href="condExpr-details.html#333">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#334">case IsE.</a> <a class="tactic" href="condExpr-details.html#335">EN: case EN.</a> <a class="tactic" href="condExpr-details.html#336">case EN4.</a> <a class="tactic" href="condExpr-details.html#337">case EN3.</a>
+ <a class="tactic" href="condExpr-details.html#338">EvB1: apply IH_E to _ _ _ _ _ _ EN EvA1 NNS.</a>
+ <a class="tactic" href="condExpr-details.html#339">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+ <a class="tactic" href="condExpr-details.html#340">apply evalExpr_isCtx to _ _ _ EvB1.</a>
+ <a class="tactic" href="condExpr-details.html#341">NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA1 EvB1 NNS.</a>
+ <a class="tactic" href="condExpr-details.html#342">apply evalExpr_ctx_names to _ _ _ _ Ctxs EN EvB1.</a>
+ <a class="tactic" href="condExpr-details.html#343">apply IH_E to _ _ _ _ _ _ EN2 EvA2 NNS'.</a> <a class="tactic" href="condExpr-details.html#344">search.</a></div>
+
+
+<a class="command" href="condExpr-details.html#345">Theorem append_values_total : forall LA LB,
+  is_list is_value LA -&gt; exists L, LA ++ LB = L.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(346);" id="toggleproof346">[Show Proof]</a>
+<div class="proof" id="proof346" style="display: none;">
+<a class="tactic" href="condExpr-details.html#346">induction on 1.</a> <a class="tactic" href="condExpr-details.html#347">intros Is.</a> <a class="tactic" href="condExpr-details.html#348">Is: case Is.</a>
+  <span class="comment">%nil</span>
+   <a class="tactic" href="condExpr-details.html#349">search.</a>
+  <span class="comment">%cons</span>
+   <a class="tactic" href="condExpr-details.html#350">apply IH to Is1 with LB = LB.</a> <a class="tactic" href="condExpr-details.html#351">search.</a></div>
+
+
+<a class="command" href="condExpr-details.html#352">Prove exactEval:host:evalExpr_scopes_same,
+      exactEval:host:evalExpr_scopes_same_ctx,
+      exactEval:host:evalStmt_scopes_same,
+      exactEval:host:evalStmt_scopes_same_ctx,
+      exactEval:host:evalArgs_scopes_same,
+      exactEval:host:evalArgs_scopes_same_ctx,
+      exactEval:host:evalRecFields_scopes_same,
+      exactEval:host:evalRecFields_scopes_same_ctx.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(353);" id="toggleproof353">[Show Proof]</a>
+<div class="proof" id="proof353" style="display: none;">
+<span class="comment">%evalExpr_scopes_same</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#353">case IsE.</a> <a class="tactic" href="condExpr-details.html#354">EvB: case EvB.</a>
+    <span class="comment">%E-CondExpr-True</span>
+     <a class="tactic" href="condExpr-details.html#355">apply IH_E to _ _ _ _ _ EvA1 EvB.</a>
+     <a class="tactic" href="condExpr-details.html#356">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+     <a class="tactic" href="condExpr-details.html#357">apply evalExpr_isCtx to _ _ _ EvB.</a>
+     <a class="tactic" href="condExpr-details.html#358">SS': apply IH_E_C to _ _ _ _ _ EvA1 EvB.</a>
+     <a class="tactic" href="condExpr-details.html#359">apply scopes_same_add_scope to SS'.</a>
+     <a class="tactic" href="condExpr-details.html#360">apply IH_E to _ _ _ _ _ EvA2 EvB1.</a>
+     <a class="tactic" href="condExpr-details.html#361">apply append_unique to EvA3 EvB2.</a> <a class="tactic" href="condExpr-details.html#362">search.</a>
+    <span class="comment">%E-CondExpr-False</span>
+     <a class="tactic" href="condExpr-details.html#363">apply IH_E to _ _ _ _ _ EvA1 EvB.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#364">case IsE.</a> <a class="tactic" href="condExpr-details.html#365">EvB: case EvB.</a>
+    <span class="comment">%E-CondExpr-True</span>
+     <a class="tactic" href="condExpr-details.html#366">apply IH_E to _ _ _ _ _ EvA1 EvB.</a>
+    <span class="comment">%E-CondExpr-False</span>
+     <a class="tactic" href="condExpr-details.html#367">apply IH_E to _ _ _ _ _ EvA1 EvB.</a>
+     <a class="tactic" href="condExpr-details.html#368">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+     <a class="tactic" href="condExpr-details.html#369">apply evalExpr_isCtx to _ _ _ EvB.</a>
+     <a class="tactic" href="condExpr-details.html#370">SS': apply IH_E_C to _ _ _ _ _ EvA1 EvB.</a>
+     <a class="tactic" href="condExpr-details.html#371">apply scopes_same_add_scope to SS'.</a>
+     <a class="tactic" href="condExpr-details.html#372">apply IH_E to _ _ _ _ _ EvA2 EvB1.</a>
+     <a class="tactic" href="condExpr-details.html#373">apply append_unique to EvA3 EvB2.</a> <a class="tactic" href="condExpr-details.html#374">search.</a>
+<span class="comment">%evalExpr_scopes_same_ctx</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#375">case IsE.</a> <a class="tactic" href="condExpr-details.html#376">EvB: case EvB.</a>
+    <span class="comment">%E-CondExpr-True</span>
+     <a class="tactic" href="condExpr-details.html#377">apply IH_E to _ _ _ _ _ EvA1 EvB.</a>
+     <a class="tactic" href="condExpr-details.html#378">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+     <a class="tactic" href="condExpr-details.html#379">apply evalExpr_isCtx to _ _ _ EvB.</a>
+     <a class="tactic" href="condExpr-details.html#380">SS': apply IH_E_C to _ _ _ _ _ EvA1 EvB.</a>
+     <a class="tactic" href="condExpr-details.html#381">apply scopes_same_add_scope to SS'.</a>
+     <a class="tactic" href="condExpr-details.html#382">SS'': apply IH_E_C to _ _ _ _ _ EvA2 EvB1.</a> <a class="tactic" href="condExpr-details.html#383">search.</a>
+    <span class="comment">%E-CondExpr-False</span>
+     <a class="tactic" href="condExpr-details.html#384">apply IH_E to _ _ _ _ _ EvA1 EvB.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#385">case IsE.</a> <a class="tactic" href="condExpr-details.html#386">EvB: case EvB.</a>
+    <span class="comment">%E-CondExpr-True</span>
+     <a class="tactic" href="condExpr-details.html#387">apply IH_E to _ _ _ _ _ EvA1 EvB.</a>
+    <span class="comment">%E-CondExpr-False</span>
+     <a class="tactic" href="condExpr-details.html#388">apply IH_E to _ _ _ _ _ EvA1 EvB.</a>
+     <a class="tactic" href="condExpr-details.html#389">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+     <a class="tactic" href="condExpr-details.html#390">apply evalExpr_isCtx to _ _ _ EvB.</a>
+     <a class="tactic" href="condExpr-details.html#391">SS': apply IH_E_C to _ _ _ _ _ EvA1 EvB.</a>
+     <a class="tactic" href="condExpr-details.html#392">apply scopes_same_add_scope to SS'.</a>
+     <a class="tactic" href="condExpr-details.html#393">SS'': apply IH_E_C to _ _ _ _ _ EvA2 EvB1.</a> <a class="tactic" href="condExpr-details.html#394">search.</a></div>
+
+
+<a class="command" href="condExpr-details.html#395">Prove exactEval:host:evalExpr_scopes_same_exists,
+      exactEval:host:evalStmt_scopes_same_exists,
+      exactEval:host:evalArgs_scopes_same_exists,
+      exactEval:host:evalRecFields_scopes_same_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(396);" id="toggleproof396">[Show Proof]</a>
+<div class="proof" id="proof396" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#396">case IsE.</a> <a class="tactic" href="condExpr-details.html#397">EvB1: apply IH_E to _ _ _ _ SS EvA1.</a>
+ <a class="tactic" href="condExpr-details.html#398">SS': apply evalExpr_scopes_same_ctx to _ _ _ _ _ EvA1 EvB1.</a>
+ <a class="tactic" href="condExpr-details.html#399">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+ <a class="tactic" href="condExpr-details.html#400">apply evalExpr_isCtx to _ _ _ EvB1.</a>
+ <a class="tactic" href="condExpr-details.html#401">apply IH_E to _ _ _ _ SS' EvA2.</a> <a class="tactic" href="condExpr-details.html#402">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#403">case IsE.</a> <a class="tactic" href="condExpr-details.html#404">EvB1: apply IH_E to _ _ _ _ SS EvA1.</a>
+ <a class="tactic" href="condExpr-details.html#405">SS': apply evalExpr_scopes_same_ctx to _ _ _ _ _ EvA1 EvB1.</a>
+ <a class="tactic" href="condExpr-details.html#406">apply evalExpr_isCtx to _ _ _ EvA1.</a>
+ <a class="tactic" href="condExpr-details.html#407">apply evalExpr_isCtx to _ _ _ EvB1.</a>
+ <a class="tactic" href="condExpr-details.html#408">apply IH_E to _ _ _ _ SS' EvA2.</a> <a class="tactic" href="condExpr-details.html#409">search.</a></div>
+
+
+<a class="command" href="condExpr-details.html#410">Prove_Constraint exactEval:host:proj_evalExpr_forward.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(411);" id="toggleproof411">[Show Proof]</a>
+<div class="proof" id="proof411" style="display: none;">
+<a class="tactic" href="condExpr-details.html#411">L: apply length_exists_list_pair_string_value to IsEE.</a>
+<a class="tactic" href="condExpr-details.html#412">EvD: assert evalStmt FE ([]::EE) (declare intTy X (num 0))
+                        ([(X, intVal 0)]::EE) [].</a>
+<a class="tactic" href="condExpr-details.html#413">NNS: assert newNameScopes [[(X, intVal 0)]] N
+               ([(X, intVal 0)]::EE) EE.</a>
+  <a class="tactic" href="condExpr-details.html#414">unfold.</a> <a class="tactic" href="condExpr-details.html#415">exists 1, [X], Names.</a> <a class="tactic" href="condExpr-details.html#416">split.</a>
+    <span class="comment">%length EE N</span>
+     <a class="tactic" href="condExpr-details.html#417">search.</a>
+    <span class="comment">%drop 1</span>
+     <a class="tactic" href="condExpr-details.html#418">search.</a>
+    <span class="comment">%take 1</span>
+     <a class="tactic" href="condExpr-details.html#419">search.</a>
+    <span class="comment">%names</span>
+     <a class="tactic" href="condExpr-details.html#420">search.</a>
+    <span class="comment">%names EE Names</span>
+     <a class="tactic" href="condExpr-details.html#421">search.</a>
+    <span class="comment">%not mem Names</span>
+     <a class="tactic" href="condExpr-details.html#422">intros MX MN.</a> <a class="tactic" href="condExpr-details.html#423">MX: case MX.</a>
+       <span class="comment">%X1 = X</span>
+        <a class="tactic" href="condExpr-details.html#424">apply fresh_name_not_mem to Pr1 MN.</a>
+       <span class="comment">%mem []</span>
+        <a class="tactic" href="condExpr-details.html#425">case MX.</a>
+<a class="tactic" href="condExpr-details.html#426">IsX: apply fresh_name_is to _ Pr1.</a> <a class="tactic" href="condExpr-details.html#427">Is: case IsE.</a> <a class="tactic" href="condExpr-details.html#428">Ev: case Ev.</a>
+  <span class="comment">%E-CondExpr-True</span>
+   <a class="tactic" href="condExpr-details.html#429">apply evalExpr_isCtx to _ _ _ Ev.</a>
+   <a class="tactic" href="condExpr-details.html#430">assert is_list (is_list (is_pair is_string is_value))
+             ([]::([(X, intVal 0)]::EE)).</a> <a class="tactic" href="condExpr-details.html#431">search 6.</a>
+   <a class="tactic" href="condExpr-details.html#432">EvA: apply evalExpr_newNameScopes_exists to _ _ _ _ Ev NNS.</a>
+   <a class="tactic" href="condExpr-details.html#433">NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA Ev _.</a>
+   <a class="tactic" href="condExpr-details.html#434">NNS': case NNS' (keep).</a>
+     <span class="comment">%last</span>
+      <a class="tactic" href="condExpr-details.html#435">Take: case NNS'3.</a> <a class="tactic" href="condExpr-details.html#436">case Take1.</a> <a class="tactic" href="condExpr-details.html#437">compute Take.</a>
+      <a class="tactic" href="condExpr-details.html#438">Eq: assert L = EE3.</a>
+        <a class="tactic" href="condExpr-details.html#439">Drop: case NNS'2.</a> <a class="tactic" href="condExpr-details.html#440">apply drop_is_integer to Drop1.</a>
+        <a class="tactic" href="condExpr-details.html#441">apply plus_integer_unique_addend to _ _ _ Take Drop.</a>
+        <a class="tactic" href="condExpr-details.html#442">Drop: case Drop1.</a>
+          <span class="comment">%0</span>
+           <a class="tactic" href="condExpr-details.html#443">search.</a>
+          <span class="comment">%-1</span>
+           <a class="tactic" href="condExpr-details.html#444">P: assert 1 + -1 = 0.</a> <a class="tactic" href="condExpr-details.html#445">apply drop_is_integer to Drop2.</a>
+           <a class="tactic" href="condExpr-details.html#446">apply plus_integer_unique_addend to _ _ _ Drop1 P.</a>
+           <a class="tactic" href="condExpr-details.html#447">GEq: apply drop_geq_0 to Drop2.</a> <a class="tactic" href="condExpr-details.html#448">LEq: case GEq.</a> <a class="tactic" href="condExpr-details.html#449">case LEq.</a>
+      <a class="tactic" href="condExpr-details.html#450">case Eq.</a> <a class="tactic" href="condExpr-details.html#451">apply evalExpr_isCtx to _ _ _ EvA.</a>
+      <a class="tactic" href="condExpr-details.html#452">NNS'': assert newNameScopes [[], [(X, intVal 0)]] N
+                       ([]::[(X, intVal 0)]::EE3) EE3.</a>
+      <a class="tactic" href="condExpr-details.html#453">EvA2: apply evalExpr_newNameScopes_exists to _ _ _ _ Ev1 NNS''.</a>
+      <a class="tactic" href="condExpr-details.html#454">NNS''': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA2 Ev1 _.</a>
+      <a class="tactic" href="condExpr-details.html#455">NNS''': case NNS'''.</a>
+        <span class="comment">%last</span>
+         <a class="tactic" href="condExpr-details.html#456">T: case NNS'''2.</a> <a class="tactic" href="condExpr-details.html#457">T: case T1.</a> <a class="tactic" href="condExpr-details.html#458">case T2.</a> <a class="tactic" href="condExpr-details.html#459">compute T1.</a> <a class="tactic" href="condExpr-details.html#460">compute T.</a>
+         <a class="tactic" href="condExpr-details.html#461">Eq: assert L2 = EE'.</a>
+           <a class="tactic" href="condExpr-details.html#462">Drop: case NNS'''1.</a> <a class="tactic" href="condExpr-details.html#463">apply drop_is_integer to Drop1.</a>
+           <a class="tactic" href="condExpr-details.html#464">apply plus_integer_unique_addend to _ _ _ T Drop.</a>
+           <a class="tactic" href="condExpr-details.html#465">Drop: case Drop1.</a> <a class="tactic" href="condExpr-details.html#466">apply drop_is_integer to Drop2.</a>
+           <a class="tactic" href="condExpr-details.html#467">apply plus_integer_unique_addend to _ _ _ T1 Drop1.</a>
+           <a class="tactic" href="condExpr-details.html#468">Drop: case Drop2.</a>
+             <span class="comment">%0</span>
+              <a class="tactic" href="condExpr-details.html#469">search.</a>
+             <span class="comment">%-1</span>
+              <a class="tactic" href="condExpr-details.html#470">P: assert 1 + -1 = 0.</a> <a class="tactic" href="condExpr-details.html#471">apply drop_is_integer to Drop3.</a>
+              <a class="tactic" href="condExpr-details.html#472">apply plus_integer_unique_addend to _ _ _ P Drop2.</a>
+              <a class="tactic" href="condExpr-details.html#473">GEq: apply drop_geq_0 to Drop3.</a> <a class="tactic" href="condExpr-details.html#474">LEq: case GEq.</a> <a class="tactic" href="condExpr-details.html#475">case LEq.</a>
+         <a class="tactic" href="condExpr-details.html#476">case Eq.</a>
+         <a class="tactic" href="condExpr-details.html#477">assert replaceScopes X V ([]::([(X, intVal 0)]::EE'))
+                              ([]::([(X, V)]::EE')).</a>
+         <a class="tactic" href="condExpr-details.html#478">EvA3: assert evalStmt FE ([]::([(X, intVal 0)]::EE3))
+                         (assign X T) ([]::([(X, V)]::EE')) O3.</a>
+         <a class="tactic" href="condExpr-details.html#479">exists EE'.</a> <a class="tactic" href="condExpr-details.html#480">split.</a>
+           <span class="comment">%eval</span>
+            <a class="tactic" href="condExpr-details.html#481">apply evalExpr_isOutput to _ _ _ EvA.</a>
+            <a class="tactic" href="condExpr-details.html#482">apply evalExpr_isOutput to _ _ _ EvA2.</a>
+            <a class="tactic" href="condExpr-details.html#483">IsO: apply append_values_is to _ _ Ev2.</a>
+            <a class="tactic" href="condExpr-details.html#484">App: apply append_values_total to IsO with LB = [].</a>
+            <a class="tactic" href="condExpr-details.html#485">apply append_nil_right to App.</a> <a class="tactic" href="condExpr-details.html#486">search.</a>
+           <span class="comment">%scopes_same</span>
+            <a class="tactic" href="condExpr-details.html#487">backchain scopes_same_reflexive.</a>
+            <a class="tactic" href="condExpr-details.html#488">Is': apply evalStmt_isCtx to _ _ _ EvA3.</a> <a class="tactic" href="condExpr-details.html#489">Is': case Is'.</a>
+            <a class="tactic" href="condExpr-details.html#490">Is': case Is'1.</a> <a class="tactic" href="condExpr-details.html#491">search.</a>
+        <span class="comment">%step</span>
+         <a class="tactic" href="condExpr-details.html#492">LenEE3: apply evalExpr_keep_scopes to _ _ _ Ev L.</a>
+         <a class="tactic" href="condExpr-details.html#493">LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev1 LenEE3.</a>
+         <a class="tactic" href="condExpr-details.html#494">LenBR: case LenSBR.</a> <a class="tactic" href="condExpr-details.html#495">apply length_is to LenBR.</a>
+         <a class="tactic" href="condExpr-details.html#496">LEq: apply newNameScopes_length to NNS''' LenBR.</a>
+         <a class="tactic" href="condExpr-details.html#497">Less: apply lt_plus_one to LenBR1 _.</a>
+         <a class="tactic" href="condExpr-details.html#498">apply less_lesseq_flip_false to Less LEq.</a>
+     <span class="comment">%step</span>
+      <a class="tactic" href="condExpr-details.html#499">LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev L.</a>
+      <a class="tactic" href="condExpr-details.html#500">LenBR: case LenSBR.</a> <a class="tactic" href="condExpr-details.html#501">apply length_is to LenBR.</a>
+      <a class="tactic" href="condExpr-details.html#502">LEq: apply newNameScopes_length to NNS'1 LenBR.</a>
+      <a class="tactic" href="condExpr-details.html#503">Less: apply lt_plus_one to LenBR1 _.</a>
+      <a class="tactic" href="condExpr-details.html#504">apply less_lesseq_flip_false to Less LEq.</a>
+  <span class="comment">%E-CondExpr-False</span>
+   <a class="tactic" href="condExpr-details.html#505">apply evalExpr_isCtx to _ _ _ Ev.</a>
+   <a class="tactic" href="condExpr-details.html#506">assert is_list (is_list (is_pair is_string is_value))
+             ([]::([(X, intVal 0)]::EE)).</a> <a class="tactic" href="condExpr-details.html#507">search 6.</a>
+   <a class="tactic" href="condExpr-details.html#508">EvA: apply evalExpr_newNameScopes_exists to _ _ _ _ Ev NNS.</a>
+   <a class="tactic" href="condExpr-details.html#509">NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA Ev _.</a>
+   <a class="tactic" href="condExpr-details.html#510">NNS': case NNS' (keep).</a>
+     <span class="comment">%last</span>
+      <a class="tactic" href="condExpr-details.html#511">Take: case NNS'3.</a> <a class="tactic" href="condExpr-details.html#512">case Take1.</a> <a class="tactic" href="condExpr-details.html#513">compute Take.</a>
+      <a class="tactic" href="condExpr-details.html#514">Eq: assert L = EE3.</a>
+        <a class="tactic" href="condExpr-details.html#515">Drop: case NNS'2.</a> <a class="tactic" href="condExpr-details.html#516">apply drop_is_integer to Drop1.</a>
+        <a class="tactic" href="condExpr-details.html#517">apply plus_integer_unique_addend to _ _ _ Take Drop.</a>
+        <a class="tactic" href="condExpr-details.html#518">Drop: case Drop1.</a>
+          <span class="comment">%0</span>
+           <a class="tactic" href="condExpr-details.html#519">search.</a>
+          <span class="comment">%-1</span>
+           <a class="tactic" href="condExpr-details.html#520">P: assert 1 + -1 = 0.</a> <a class="tactic" href="condExpr-details.html#521">apply drop_is_integer to Drop2.</a>
+           <a class="tactic" href="condExpr-details.html#522">apply plus_integer_unique_addend to _ _ _ Drop1 P.</a>
+           <a class="tactic" href="condExpr-details.html#523">GEq: apply drop_geq_0 to Drop2.</a> <a class="tactic" href="condExpr-details.html#524">LEq: case GEq.</a> <a class="tactic" href="condExpr-details.html#525">case LEq.</a>
+      <a class="tactic" href="condExpr-details.html#526">case Eq.</a> <a class="tactic" href="condExpr-details.html#527">apply evalExpr_isCtx to _ _ _ EvA.</a>
+      <a class="tactic" href="condExpr-details.html#528">NNS'': assert newNameScopes [[], [(X, intVal 0)]] N
+                       ([]::[(X, intVal 0)]::EE3) EE3.</a>
+      <a class="tactic" href="condExpr-details.html#529">EvA2: apply evalExpr_newNameScopes_exists to _ _ _ _ Ev1 NNS''.</a>
+      <a class="tactic" href="condExpr-details.html#530">NNS''': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA2 Ev1 _.</a>
+      <a class="tactic" href="condExpr-details.html#531">NNS''': case NNS'''.</a>
+        <span class="comment">%last</span>
+         <a class="tactic" href="condExpr-details.html#532">T: case NNS'''2.</a> <a class="tactic" href="condExpr-details.html#533">T: case T1.</a> <a class="tactic" href="condExpr-details.html#534">case T2.</a> <a class="tactic" href="condExpr-details.html#535">compute T1.</a> <a class="tactic" href="condExpr-details.html#536">compute T.</a>
+         <a class="tactic" href="condExpr-details.html#537">Eq: assert L2 = EE'.</a>
+           <a class="tactic" href="condExpr-details.html#538">Drop: case NNS'''1.</a> <a class="tactic" href="condExpr-details.html#539">apply drop_is_integer to Drop1.</a>
+           <a class="tactic" href="condExpr-details.html#540">apply plus_integer_unique_addend to _ _ _ T Drop.</a>
+           <a class="tactic" href="condExpr-details.html#541">Drop: case Drop1.</a> <a class="tactic" href="condExpr-details.html#542">apply drop_is_integer to Drop2.</a>
+           <a class="tactic" href="condExpr-details.html#543">apply plus_integer_unique_addend to _ _ _ T1 Drop1.</a>
+           <a class="tactic" href="condExpr-details.html#544">Drop: case Drop2.</a>
+             <span class="comment">%0</span>
+              <a class="tactic" href="condExpr-details.html#545">search.</a>
+             <span class="comment">%-1</span>
+              <a class="tactic" href="condExpr-details.html#546">P: assert 1 + -1 = 0.</a> <a class="tactic" href="condExpr-details.html#547">apply drop_is_integer to Drop3.</a>
+              <a class="tactic" href="condExpr-details.html#548">apply plus_integer_unique_addend to _ _ _ P Drop2.</a>
+              <a class="tactic" href="condExpr-details.html#549">GEq: apply drop_geq_0 to Drop3.</a> <a class="tactic" href="condExpr-details.html#550">LEq: case GEq.</a> <a class="tactic" href="condExpr-details.html#551">case LEq.</a>
+         <a class="tactic" href="condExpr-details.html#552">case Eq.</a>
+         <a class="tactic" href="condExpr-details.html#553">assert replaceScopes X V ([]::([(X, intVal 0)]::EE'))
+                              ([]::([(X, V)]::EE')).</a>
+         <a class="tactic" href="condExpr-details.html#554">EvA3: assert evalStmt FE ([]::([(X, intVal 0)]::EE3))
+                         (assign X F) ([]::([(X, V)]::EE')) O3.</a>
+         <a class="tactic" href="condExpr-details.html#555">exists EE'.</a> <a class="tactic" href="condExpr-details.html#556">split.</a>
+           <span class="comment">%eval</span>
+            <a class="tactic" href="condExpr-details.html#557">apply evalExpr_isOutput to _ _ _ EvA.</a>
+            <a class="tactic" href="condExpr-details.html#558">apply evalExpr_isOutput to _ _ _ EvA2.</a>
+            <a class="tactic" href="condExpr-details.html#559">IsO: apply append_values_is to _ _ Ev2.</a>
+            <a class="tactic" href="condExpr-details.html#560">App: apply append_values_total to IsO with LB = [].</a>
+            <a class="tactic" href="condExpr-details.html#561">apply append_nil_right to App.</a> <a class="tactic" href="condExpr-details.html#562">search.</a>
+           <span class="comment">%scopes_same</span>
+            <a class="tactic" href="condExpr-details.html#563">backchain scopes_same_reflexive.</a>
+            <a class="tactic" href="condExpr-details.html#564">Is': apply evalStmt_isCtx to _ _ _ EvA3.</a> <a class="tactic" href="condExpr-details.html#565">Is': case Is'.</a>
+            <a class="tactic" href="condExpr-details.html#566">Is': case Is'1.</a> <a class="tactic" href="condExpr-details.html#567">search.</a>
+        <span class="comment">%step</span>
+         <a class="tactic" href="condExpr-details.html#568">LenEE3: apply evalExpr_keep_scopes to _ _ _ Ev L.</a>
+         <a class="tactic" href="condExpr-details.html#569">LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev1 LenEE3.</a>
+         <a class="tactic" href="condExpr-details.html#570">LenBR: case LenSBR.</a> <a class="tactic" href="condExpr-details.html#571">apply length_is to LenBR.</a>
+         <a class="tactic" href="condExpr-details.html#572">LEq: apply newNameScopes_length to NNS''' LenBR.</a>
+         <a class="tactic" href="condExpr-details.html#573">Less: apply lt_plus_one to LenBR1 _.</a>
+         <a class="tactic" href="condExpr-details.html#574">apply less_lesseq_flip_false to Less LEq.</a>
+     <span class="comment">%step</span>
+      <a class="tactic" href="condExpr-details.html#575">LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev L.</a>
+      <a class="tactic" href="condExpr-details.html#576">LenBR: case LenSBR.</a> <a class="tactic" href="condExpr-details.html#577">apply length_is to LenBR.</a>
+      <a class="tactic" href="condExpr-details.html#578">LEq: apply newNameScopes_length to NNS'1 LenBR.</a>
+      <a class="tactic" href="condExpr-details.html#579">Less: apply lt_plus_one to LenBR1 _.</a>
+      <a class="tactic" href="condExpr-details.html#580">apply less_lesseq_flip_false to Less LEq.</a></div>
+
+<a class="command" href="condExpr-details.html#581">Prove_Constraint exactEval:host:proj_evalExpr_backward.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(582);" id="toggleproof582">[Show Proof]</a>
+<div class="proof" id="proof582" style="display: none;">
+<a class="tactic" href="condExpr-details.html#582">case IsE.</a> <a class="tactic" href="condExpr-details.html#583">EN: case EN.</a> <a class="tactic" href="condExpr-details.html#584">case EN4.</a> <a class="tactic" href="condExpr-details.html#585">case EN3.</a>
+<a class="tactic" href="condExpr-details.html#586">L: apply length_exists_list_pair_string_value to IsEE.</a>
+<a class="tactic" href="condExpr-details.html#587">NNS: assert newNameScopes [[(X, intVal 0)]] N
+               ([(X, intVal 0)]::EE) EE.</a>
+  <a class="tactic" href="condExpr-details.html#588">unfold.</a> <a class="tactic" href="condExpr-details.html#589">exists 1, [X], Names.</a> <a class="tactic" href="condExpr-details.html#590">split.</a>
+    <span class="comment">%length EE N</span>
+     <a class="tactic" href="condExpr-details.html#591">search.</a>
+    <span class="comment">%drop 1</span>
+     <a class="tactic" href="condExpr-details.html#592">search.</a>
+    <span class="comment">%take 1</span>
+     <a class="tactic" href="condExpr-details.html#593">search.</a>
+    <span class="comment">%names</span>
+     <a class="tactic" href="condExpr-details.html#594">search.</a>
+    <span class="comment">%names EE Names</span>
+     <a class="tactic" href="condExpr-details.html#595">search.</a>
+    <span class="comment">%not mem Names</span>
+     <a class="tactic" href="condExpr-details.html#596">intros MX MN.</a> <a class="tactic" href="condExpr-details.html#597">MX: case MX.</a>
+       <span class="comment">%X1 = X</span>
+        <a class="tactic" href="condExpr-details.html#598">apply fresh_name_not_mem to Pr1 MN.</a>
+       <span class="comment">%mem []</span>
+        <a class="tactic" href="condExpr-details.html#599">case MX.</a>
+<a class="tactic" href="condExpr-details.html#600">IsX: apply fresh_name_is to _ Pr1.</a> <a class="tactic" href="condExpr-details.html#601">Ev: case Ev.</a> <a class="tactic" href="condExpr-details.html#602">Ev: case Ev.</a>
+<a class="tactic" href="condExpr-details.html#603">Ev: case Ev.</a> <a class="tactic" href="condExpr-details.html#604">case Ev.</a> <a class="tactic" href="condExpr-details.html#605">case Ev4.</a> <a class="tactic" href="condExpr-details.html#606">Ev: case Ev3.</a>
+  <span class="comment">%E-IfThenElse-True</span>
+   <a class="tactic" href="condExpr-details.html#607">EvC: apply evalExpr_newNameScopes_exists_back to
+           _ _ _ _ _ Ctxs EN Ev NNS.</a>
+   <a class="tactic" href="condExpr-details.html#608">apply evalExpr_isCtx to _ _ _ Ev.</a>
+   <a class="tactic" href="condExpr-details.html#609">apply evalExpr_isCtx to _ _ _ EvC.</a>
+   <a class="tactic" href="condExpr-details.html#610">NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev EvC NNS.</a>
+   <a class="tactic" href="condExpr-details.html#611">apply evalExpr_ctx_names to _ _ _ _ Ctxs EN EvC.</a> <a class="tactic" href="condExpr-details.html#612">Ev: case Ev3.</a>
+   <a class="tactic" href="condExpr-details.html#613">LenEE_B': apply evalExpr_keep_scopes to _ _ _ EvC L.</a>
+   <a class="tactic" href="condExpr-details.html#614">NNS2: assert newNameScopes [[], [(X, intVal 0)]] N ([]::EE2) EE_B'.</a>
+     <a class="tactic" href="condExpr-details.html#615">NNS': case NNS'.</a>
+       <span class="comment">%last</span>
+        <a class="tactic" href="condExpr-details.html#616">unfold.</a> <a class="tactic" href="condExpr-details.html#617">Take: case NNS'2.</a> <a class="tactic" href="condExpr-details.html#618">case Take1.</a> <a class="tactic" href="condExpr-details.html#619">compute Take.</a>
+        <a class="tactic" href="condExpr-details.html#620">Drop: case NNS'1.</a> <a class="tactic" href="condExpr-details.html#621">apply drop_is_integer to Drop1.</a>
+        <a class="tactic" href="condExpr-details.html#622">apply plus_integer_unique_addend to _ _ _ Take Drop.</a>
+        <a class="tactic" href="condExpr-details.html#623">Drop: case Drop1.</a>
+          <span class="comment">%Drop-0</span>
+           <a class="tactic" href="condExpr-details.html#624">exists 2, [X], BNames.</a> <a class="tactic" href="condExpr-details.html#625">split.</a>
+             <span class="comment">%length</span>
+              <a class="tactic" href="condExpr-details.html#626">search.</a>
+             <span class="comment">%drop</span>
+              <a class="tactic" href="condExpr-details.html#627">search.</a>
+             <span class="comment">%take</span>
+              <a class="tactic" href="condExpr-details.html#628">search.</a>
+             <span class="comment">%names new scopes</span>
+              <a class="tactic" href="condExpr-details.html#629">search.</a>
+             <span class="comment">%names EE_B'</span>
+              <a class="tactic" href="condExpr-details.html#630">search.</a>
+             <span class="comment">%mems</span>
+              <a class="tactic" href="condExpr-details.html#631">intros MX MB.</a> <a class="tactic" href="condExpr-details.html#632">MX: case MX.</a>
+                <span class="comment">%Mem-Here</span>
+                 <a class="tactic" href="condExpr-details.html#633">N: case NNS'3.</a> <a class="tactic" href="condExpr-details.html#634">case N1.</a> <a class="tactic" href="condExpr-details.html#635">D: case N.</a> <a class="tactic" href="condExpr-details.html#636">case D.</a>
+                 <a class="tactic" href="condExpr-details.html#637">compute N2.</a> <a class="tactic" href="condExpr-details.html#638">backchain NNS'5.</a>
+                <span class="comment">%Mem-Later</span>
+                 <a class="tactic" href="condExpr-details.html#639">case MX.</a>
+         <span class="comment">%Drop-Step</span>
+          <a class="tactic" href="condExpr-details.html#640">GEq: apply drop_geq_0 to Drop2.</a> <a class="tactic" href="condExpr-details.html#641">P: assert 1 + -1 = 0.</a>
+          <a class="tactic" href="condExpr-details.html#642">apply drop_is_integer to Drop2.</a>
+          <a class="tactic" href="condExpr-details.html#643">apply plus_integer_unique_addend to _ _ _ P Drop1.</a>
+          <a class="tactic" href="condExpr-details.html#644">LEq: case GEq.</a> <a class="tactic" href="condExpr-details.html#645">case LEq.</a>
+       <span class="comment">%step</span>
+        <a class="tactic" href="condExpr-details.html#646">LenBR: case LenEE_B'.</a> <a class="tactic" href="condExpr-details.html#647">apply length_is to LenBR.</a>
+        <a class="tactic" href="condExpr-details.html#648">LEq: apply newNameScopes_length to NNS' LenBR.</a>
+        <a class="tactic" href="condExpr-details.html#649">L': apply lt_plus_one to LenBR1 _.</a>
+        <a class="tactic" href="condExpr-details.html#650">apply less_lesseq_flip_false to L' LEq.</a>
+   <a class="tactic" href="condExpr-details.html#651">CN: apply evalExpr_ctx_names to _ _ _ _ _ EN EvC.</a>
+   <a class="tactic" href="condExpr-details.html#652">EvT: apply evalExpr_newNameScopes_exists_back to
+           _ _ _ _ _ _ EN1 Ev3 NNS2.</a>
+   <a class="tactic" href="condExpr-details.html#653">apply evalExpr_newNameScopes_output to _ _ _ _ Ev EvC _.</a>
+   <a class="tactic" href="condExpr-details.html#654">apply evalExpr_newNameScopes_output to _ _ _ _ Ev3 EvT _.</a>
+   <a class="tactic" href="condExpr-details.html#655">apply evalExpr_newNameScopes to _ _ _ _ Ev3 EvT _.</a>
+   <a class="tactic" href="condExpr-details.html#656">EvN: case Ev1.</a> <a class="tactic" href="condExpr-details.html#657">apply append_nil_right to Ev2.</a> <a class="tactic" href="condExpr-details.html#658">clear Ev2.</a>
+   <span class="comment">%show `replaceScopes X` then `lookupScopes X` gets the right value</span>
+   <a class="tactic" href="condExpr-details.html#659">Eq: assert V = V2.</a>
+     <a class="tactic" href="condExpr-details.html#660">NNS-: apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev3 EvT _.</a>
+     <a class="tactic" href="condExpr-details.html#661">NNS-: case NNS-.</a>
+       <span class="comment">%last</span>
+        <a class="tactic" href="condExpr-details.html#662">Take: case NNS-2.</a> <a class="tactic" href="condExpr-details.html#663">Take: case Take1.</a> <a class="tactic" href="condExpr-details.html#664">case Take2.</a> <a class="tactic" href="condExpr-details.html#665">compute Take1.</a>
+        <a class="tactic" href="condExpr-details.html#666">compute Take.</a> <a class="tactic" href="condExpr-details.html#667">RS: case Ev5.</a>
+          <span class="comment">%RS-FirstScope</span>
+           <a class="tactic" href="condExpr-details.html#668">case RS.</a>
+          <span class="comment">%RS-Later</span>
+           <a class="tactic" href="condExpr-details.html#669">RS: case RS1.</a>
+             <span class="comment">%RS-FirstScope</span>
+              <a class="tactic" href="condExpr-details.html#670">LS: case EvN.</a>
+                <span class="comment">%LS-FirstScope</span>
+                 <a class="tactic" href="condExpr-details.html#671">E: case LS.</a> <a class="tactic" href="condExpr-details.html#672">search.</a> <a class="tactic" href="condExpr-details.html#673">apply E to _.</a>
+                <span class="comment">%LS-Later</span>
+                 <a class="tactic" href="condExpr-details.html#674">E: case LS.</a> <a class="tactic" href="condExpr-details.html#675">apply E to _.</a>
+             <span class="comment">%RS-Later</span>
+              <a class="tactic" href="condExpr-details.html#676">E: case RS1.</a> <a class="tactic" href="condExpr-details.html#677">apply E to _.</a>
+       <span class="comment">%step</span>
+        <a class="tactic" href="condExpr-details.html#678">LenBR+: apply evalExpr_keep_scopes to _ _ _ EvT LenEE_B'.</a>
+        <a class="tactic" href="condExpr-details.html#679">LenBR: case LenBR+.</a> <a class="tactic" href="condExpr-details.html#680">apply length_is to LenBR.</a>
+        <a class="tactic" href="condExpr-details.html#681">L': apply lt_plus_one to LenBR1 _.</a>
+        <a class="tactic" href="condExpr-details.html#682">LEq: apply newNameScopes_length to NNS- LenBR.</a>
+        <a class="tactic" href="condExpr-details.html#683">apply less_lesseq_flip_false to L' LEq.</a>
+   <span class="comment">%put it all together</span>
+   <a class="tactic" href="condExpr-details.html#684">case Eq.</a> <a class="tactic" href="condExpr-details.html#685">exists EE_B'1.</a> <a class="tactic" href="condExpr-details.html#686">split.</a>
+     <span class="comment">%eval condExpr</span>
+      <a class="tactic" href="condExpr-details.html#687">search.</a>
+     <span class="comment">%scopes_same</span>
+      <a class="tactic" href="condExpr-details.html#688">NNS-: apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev3 EvT _.</a>
+      <a class="tactic" href="condExpr-details.html#689">NNS-: case NNS-.</a>
+        <span class="comment">%last</span>
+         <a class="tactic" href="condExpr-details.html#690">Take: case NNS-2.</a> <a class="tactic" href="condExpr-details.html#691">Take: case Take1.</a> <a class="tactic" href="condExpr-details.html#692">case Take2.</a>
+         <a class="tactic" href="condExpr-details.html#693">compute Take1.</a> <a class="tactic" href="condExpr-details.html#694">compute Take.</a> <a class="tactic" href="condExpr-details.html#695">Drop: case NNS-1.</a>
+         <a class="tactic" href="condExpr-details.html#696">Drop: case Drop1.</a>
+           <span class="comment">%Drop-0</span>
+            <a class="tactic" href="condExpr-details.html#697">apply plus_integer_unique to Take1 Drop.</a>
+           <span class="comment">%Drop-Step</span>
+            <a class="tactic" href="condExpr-details.html#698">apply drop_is_integer to Drop2.</a>
+            <a class="tactic" href="condExpr-details.html#699">apply plus_integer_is_integer to _ _ Drop1.</a>
+            <a class="tactic" href="condExpr-details.html#700">apply plus_integer_unique_addend to _ _ _ Drop Take.</a>
+            <a class="tactic" href="condExpr-details.html#701">P: assert 1 + 0 = 1.</a>
+            <a class="tactic" href="condExpr-details.html#702">apply plus_integer_unique_addend to _ _ _ P Drop1.</a>
+            <a class="tactic" href="condExpr-details.html#703">Drop: case Drop2 (keep).</a>
+              <span class="comment">%Drop-0</span>
+               <a class="tactic" href="condExpr-details.html#704">RS: case Ev5.</a>
+                 <span class="comment">%RS-FirstScope</span>
+                  <a class="tactic" href="condExpr-details.html#705">case RS.</a>
+                 <span class="comment">%RS-Later</span>
+                  <a class="tactic" href="condExpr-details.html#706">RS: case RS1.</a>
+                    <span class="comment">%RS-FirstScope</span>
+                     <a class="tactic" href="condExpr-details.html#707">apply evalExpr_isCtx to _ _ _ EvT.</a>
+                     <a class="tactic" href="condExpr-details.html#708">backchain scopes_same_reflexive.</a>
+                    <span class="comment">%RS-Later</span>
+                     <a class="tactic" href="condExpr-details.html#709">E: case RS1.</a> <a class="tactic" href="condExpr-details.html#710">apply E to _.</a>
+              <span class="comment">%Drop-Step</span>
+               <a class="tactic" href="condExpr-details.html#711">apply drop_is_integer to Drop4.</a> <a class="tactic" href="condExpr-details.html#712">P': assert 1 + -1 = 0.</a>
+               <a class="tactic" href="condExpr-details.html#713">apply plus_integer_unique_addend to _ _ _ P' Drop3.</a>
+               <a class="tactic" href="condExpr-details.html#714">GE: apply drop_geq_0 to Drop4.</a> <a class="tactic" href="condExpr-details.html#715">LE: case GE.</a> <a class="tactic" href="condExpr-details.html#716">case LE.</a>
+        <span class="comment">%step</span>
+         <a class="tactic" href="condExpr-details.html#717">LenBR+: apply evalExpr_keep_scopes to _ _ _ EvT LenEE_B'.</a>
+         <a class="tactic" href="condExpr-details.html#718">LenBR: case LenBR+.</a> <a class="tactic" href="condExpr-details.html#719">apply length_is to LenBR.</a>
+         <a class="tactic" href="condExpr-details.html#720">L': apply lt_plus_one to LenBR1 _.</a>
+         <a class="tactic" href="condExpr-details.html#721">LEq: apply newNameScopes_length to NNS- LenBR.</a>
+         <a class="tactic" href="condExpr-details.html#722">apply less_lesseq_flip_false to L' LEq.</a>
+  <span class="comment">%E-IfThenElse-False</span>
+   <a class="tactic" href="condExpr-details.html#723">EvC: apply evalExpr_newNameScopes_exists_back to
+           _ _ _ _ _ Ctxs EN Ev NNS.</a>
+   <a class="tactic" href="condExpr-details.html#724">apply evalExpr_isCtx to _ _ _ Ev.</a>
+   <a class="tactic" href="condExpr-details.html#725">apply evalExpr_isCtx to _ _ _ EvC.</a>
+   <a class="tactic" href="condExpr-details.html#726">NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev EvC NNS.</a>
+   <a class="tactic" href="condExpr-details.html#727">apply evalExpr_ctx_names to _ _ _ _ Ctxs EN EvC.</a> <a class="tactic" href="condExpr-details.html#728">Ev: case Ev3.</a>
+   <a class="tactic" href="condExpr-details.html#729">LenEE_B': apply evalExpr_keep_scopes to _ _ _ EvC L.</a>
+   <a class="tactic" href="condExpr-details.html#730">NNS2: assert newNameScopes [[], [(X, intVal 0)]] N ([]::EE2) EE_B'.</a>
+     <a class="tactic" href="condExpr-details.html#731">NNS': case NNS'.</a>
+       <span class="comment">%last</span>
+        <a class="tactic" href="condExpr-details.html#732">unfold.</a> <a class="tactic" href="condExpr-details.html#733">Take: case NNS'2.</a> <a class="tactic" href="condExpr-details.html#734">case Take1.</a> <a class="tactic" href="condExpr-details.html#735">compute Take.</a>
+        <a class="tactic" href="condExpr-details.html#736">Drop: case NNS'1.</a> <a class="tactic" href="condExpr-details.html#737">apply drop_is_integer to Drop1.</a>
+        <a class="tactic" href="condExpr-details.html#738">apply plus_integer_unique_addend to _ _ _ Take Drop.</a>
+        <a class="tactic" href="condExpr-details.html#739">Drop: case Drop1.</a>
+          <span class="comment">%Drop-0</span>
+           <a class="tactic" href="condExpr-details.html#740">exists 2, [X], BNames.</a> <a class="tactic" href="condExpr-details.html#741">split.</a>
+             <span class="comment">%length</span>
+              <a class="tactic" href="condExpr-details.html#742">search.</a>
+             <span class="comment">%drop</span>
+              <a class="tactic" href="condExpr-details.html#743">search.</a>
+             <span class="comment">%take</span>
+              <a class="tactic" href="condExpr-details.html#744">search.</a>
+             <span class="comment">%names new scopes</span>
+              <a class="tactic" href="condExpr-details.html#745">search.</a>
+             <span class="comment">%names EE_B'</span>
+              <a class="tactic" href="condExpr-details.html#746">search.</a>
+             <span class="comment">%mems</span>
+              <a class="tactic" href="condExpr-details.html#747">intros MX MB.</a> <a class="tactic" href="condExpr-details.html#748">MX: case MX.</a>
+                <span class="comment">%Mem-Here</span>
+                 <a class="tactic" href="condExpr-details.html#749">N: case NNS'3.</a> <a class="tactic" href="condExpr-details.html#750">case N1.</a> <a class="tactic" href="condExpr-details.html#751">D: case N.</a> <a class="tactic" href="condExpr-details.html#752">case D.</a>
+                 <a class="tactic" href="condExpr-details.html#753">compute N2.</a> <a class="tactic" href="condExpr-details.html#754">backchain NNS'5.</a>
+                <span class="comment">%Mem-Later</span>
+                 <a class="tactic" href="condExpr-details.html#755">case MX.</a>
+         <span class="comment">%Drop-Step</span>
+          <a class="tactic" href="condExpr-details.html#756">GEq: apply drop_geq_0 to Drop2.</a> <a class="tactic" href="condExpr-details.html#757">P: assert 1 + -1 = 0.</a>
+          <a class="tactic" href="condExpr-details.html#758">apply drop_is_integer to Drop2.</a>
+          <a class="tactic" href="condExpr-details.html#759">apply plus_integer_unique_addend to _ _ _ P Drop1.</a>
+          <a class="tactic" href="condExpr-details.html#760">LEq: case GEq.</a> <a class="tactic" href="condExpr-details.html#761">case LEq.</a>
+       <span class="comment">%step</span>
+        <a class="tactic" href="condExpr-details.html#762">LenBR: case LenEE_B'.</a> <a class="tactic" href="condExpr-details.html#763">apply length_is to LenBR.</a>
+        <a class="tactic" href="condExpr-details.html#764">LEq: apply newNameScopes_length to NNS' LenBR.</a>
+        <a class="tactic" href="condExpr-details.html#765">L': apply lt_plus_one to LenBR1 _.</a>
+        <a class="tactic" href="condExpr-details.html#766">apply less_lesseq_flip_false to L' LEq.</a>
+   <a class="tactic" href="condExpr-details.html#767">CN: apply evalExpr_ctx_names to _ _ _ _ _ EN EvC.</a>
+   <a class="tactic" href="condExpr-details.html#768">EvF: apply evalExpr_newNameScopes_exists_back to
+           _ _ _ _ _ _ EN2 Ev3 NNS2.</a>
+   <a class="tactic" href="condExpr-details.html#769">apply evalExpr_newNameScopes_output to _ _ _ _ Ev EvC _.</a>
+   <a class="tactic" href="condExpr-details.html#770">apply evalExpr_newNameScopes_output to _ _ _ _ Ev3 EvF _.</a>
+   <a class="tactic" href="condExpr-details.html#771">apply evalExpr_newNameScopes to _ _ _ _ Ev3 EvF _.</a>
+   <a class="tactic" href="condExpr-details.html#772">EvN: case Ev1.</a> <a class="tactic" href="condExpr-details.html#773">apply append_nil_right to Ev2.</a> <a class="tactic" href="condExpr-details.html#774">clear Ev2.</a>
+   <span class="comment">%show `replaceScopes X` then `lookupScopes X` gets the right value</span>
+   <a class="tactic" href="condExpr-details.html#775">Eq: assert V = V2.</a>
+     <a class="tactic" href="condExpr-details.html#776">NNS-: apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev3 EvF _.</a>
+     <a class="tactic" href="condExpr-details.html#777">NNS-: case NNS-.</a>
+       <span class="comment">%last</span>
+        <a class="tactic" href="condExpr-details.html#778">Take: case NNS-2.</a> <a class="tactic" href="condExpr-details.html#779">Take: case Take1.</a> <a class="tactic" href="condExpr-details.html#780">case Take2.</a> <a class="tactic" href="condExpr-details.html#781">compute Take1.</a>
+        <a class="tactic" href="condExpr-details.html#782">compute Take.</a> <a class="tactic" href="condExpr-details.html#783">RS: case Ev5.</a>
+          <span class="comment">%RS-FirstScope</span>
+           <a class="tactic" href="condExpr-details.html#784">case RS.</a>
+          <span class="comment">%RS-Later</span>
+           <a class="tactic" href="condExpr-details.html#785">RS: case RS1.</a>
+             <span class="comment">%RS-FirstScope</span>
+              <a class="tactic" href="condExpr-details.html#786">LS: case EvN.</a>
+                <span class="comment">%LS-FirstScope</span>
+                 <a class="tactic" href="condExpr-details.html#787">E: case LS.</a> <a class="tactic" href="condExpr-details.html#788">search.</a> <a class="tactic" href="condExpr-details.html#789">apply E to _.</a>
+                <span class="comment">%LS-Later</span>
+                 <a class="tactic" href="condExpr-details.html#790">E: case LS.</a> <a class="tactic" href="condExpr-details.html#791">apply E to _.</a>
+             <span class="comment">%RS-Later</span>
+              <a class="tactic" href="condExpr-details.html#792">E: case RS1.</a> <a class="tactic" href="condExpr-details.html#793">apply E to _.</a>
+       <span class="comment">%step</span>
+        <a class="tactic" href="condExpr-details.html#794">LenBR+: apply evalExpr_keep_scopes to _ _ _ EvF LenEE_B'.</a>
+        <a class="tactic" href="condExpr-details.html#795">LenBR: case LenBR+.</a> <a class="tactic" href="condExpr-details.html#796">apply length_is to LenBR.</a>
+        <a class="tactic" href="condExpr-details.html#797">L': apply lt_plus_one to LenBR1 _.</a>
+        <a class="tactic" href="condExpr-details.html#798">LEq: apply newNameScopes_length to NNS- LenBR.</a>
+        <a class="tactic" href="condExpr-details.html#799">apply less_lesseq_flip_false to L' LEq.</a>
+   <span class="comment">%put it all together</span>
+   <a class="tactic" href="condExpr-details.html#800">case Eq.</a> <a class="tactic" href="condExpr-details.html#801">exists EE_B'1.</a> <a class="tactic" href="condExpr-details.html#802">split.</a>
+     <span class="comment">%eval condExpr</span>
+      <a class="tactic" href="condExpr-details.html#803">search.</a>
+     <span class="comment">%scopes_same</span>
+      <a class="tactic" href="condExpr-details.html#804">NNS-: apply evalExpr_newNameScopes_ctx to _ _ _ _ Ev3 EvF _.</a>
+      <a class="tactic" href="condExpr-details.html#805">NNS-: case NNS-.</a>
+        <span class="comment">%last</span>
+         <a class="tactic" href="condExpr-details.html#806">Take: case NNS-2.</a> <a class="tactic" href="condExpr-details.html#807">Take: case Take1.</a> <a class="tactic" href="condExpr-details.html#808">case Take2.</a>
+         <a class="tactic" href="condExpr-details.html#809">compute Take1.</a> <a class="tactic" href="condExpr-details.html#810">compute Take.</a> <a class="tactic" href="condExpr-details.html#811">Drop: case NNS-1.</a>
+         <a class="tactic" href="condExpr-details.html#812">Drop: case Drop1.</a>
+           <span class="comment">%Drop-0</span>
+            <a class="tactic" href="condExpr-details.html#813">apply plus_integer_unique to Take1 Drop.</a>
+           <span class="comment">%Drop-Step</span>
+            <a class="tactic" href="condExpr-details.html#814">apply drop_is_integer to Drop2.</a>
+            <a class="tactic" href="condExpr-details.html#815">apply plus_integer_is_integer to _ _ Drop1.</a>
+            <a class="tactic" href="condExpr-details.html#816">apply plus_integer_unique_addend to _ _ _ Drop Take.</a>
+            <a class="tactic" href="condExpr-details.html#817">P: assert 1 + 0 = 1.</a>
+            <a class="tactic" href="condExpr-details.html#818">apply plus_integer_unique_addend to _ _ _ P Drop1.</a>
+            <a class="tactic" href="condExpr-details.html#819">Drop: case Drop2 (keep).</a>
+              <span class="comment">%Drop-0</span>
+               <a class="tactic" href="condExpr-details.html#820">RS: case Ev5.</a>
+                 <span class="comment">%RS-FirstScope</span>
+                  <a class="tactic" href="condExpr-details.html#821">case RS.</a>
+                 <span class="comment">%RS-Later</span>
+                  <a class="tactic" href="condExpr-details.html#822">RS: case RS1.</a>
+                    <span class="comment">%RS-FirstScope</span>
+                     <a class="tactic" href="condExpr-details.html#823">apply evalExpr_isCtx to _ _ _ EvF.</a>
+                     <a class="tactic" href="condExpr-details.html#824">backchain scopes_same_reflexive.</a>
+                    <span class="comment">%RS-Later</span>
+                     <a class="tactic" href="condExpr-details.html#825">E: case RS1.</a> <a class="tactic" href="condExpr-details.html#826">apply E to _.</a>
+              <span class="comment">%Drop-Step</span>
+               <a class="tactic" href="condExpr-details.html#827">apply drop_is_integer to Drop4.</a> <a class="tactic" href="condExpr-details.html#828">P': assert 1 + -1 = 0.</a>
+               <a class="tactic" href="condExpr-details.html#829">apply plus_integer_unique_addend to _ _ _ P' Drop3.</a>
+               <a class="tactic" href="condExpr-details.html#830">GE: apply drop_geq_0 to Drop4.</a> <a class="tactic" href="condExpr-details.html#831">LE: case GE.</a> <a class="tactic" href="condExpr-details.html#832">case LE.</a>
+        <span class="comment">%step</span>
+         <a class="tactic" href="condExpr-details.html#833">LenBR+: apply evalExpr_keep_scopes to _ _ _ EvF LenEE_B'.</a>
+         <a class="tactic" href="condExpr-details.html#834">LenBR: case LenBR+.</a> <a class="tactic" href="condExpr-details.html#835">apply length_is to LenBR.</a>
+         <a class="tactic" href="condExpr-details.html#836">L': apply lt_plus_one to LenBR1 _.</a>
+         <a class="tactic" href="condExpr-details.html#837">LEq: apply newNameScopes_length to NNS- LenBR.</a>
+         <a class="tactic" href="condExpr-details.html#838">apply less_lesseq_flip_false to L' LEq.</a></div>
+
+<a class="command" href="condExpr-details.html#839">Prove_Constraint exactEval:host:proj_evalStmt_forward.</a>
+<a class="command" href="condExpr-details.html#840">Prove_Constraint exactEval:host:proj_evalStmt_backward.</a>
+
+<a class="command" href="condExpr-details.html#841">Prove_Ext_Ind exactEval:host:evalExpr,
+              exactEval:host:evalArgs,
+              exactEval:host:evalRecFields,
+              exactEval:host:evalStmt.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(842);" id="toggleproof842">[Show Proof]</a>
+<div class="proof" id="proof842" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#842">Names: apply names_exists to IsEE.</a> <a class="tactic" href="condExpr-details.html#843">rename N1 to Nmes.</a>
+ <a class="tactic" href="condExpr-details.html#844">IsNames: apply names_is to _ Names.</a>
+ <a class="tactic" href="condExpr-details.html#845">Fr: apply fresh_name_exists to _ IsNames with Base = "X".</a>
+ <a class="tactic" href="condExpr-details.html#846">rename F1 to X.</a>
+ <a class="tactic" href="condExpr-details.html#847">Proj: assert Nmes |{expr}- condExpr C T F ~~&gt;
+                    stmtExpr
+                       (seq (declare intTy X (num 0))
+                            (ifThenElse C (assign X T) (assign X F)))
+                       (name X).</a>
+ <span class="comment">%build `acc N2` and `acc N3`, then clean up</span>
+ <a class="tactic" href="condExpr-details.html#848">IsN2: apply ext_size_is_int_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#849">IsN3: apply ext_size_is_int_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#850">PN2: apply ext_size_pos_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#851">PN3: apply ext_size_pos_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#852">LEq2: apply lte_left to R2 _ _ _.</a> <a class="tactic" href="condExpr-details.html#853">LEq3: apply lte_right to R2 _ _ _.</a>
+ <a class="tactic" href="condExpr-details.html#854">P: apply plus_integer_is_integer to _ _ R2.</a>
+ <a class="tactic" href="condExpr-details.html#855">LN4: apply lt_plus_one to R1 _.</a>
+ <a class="tactic" href="condExpr-details.html#856">LEqN2: apply lesseq_less_integer_transitive to LEq2 LN4.</a>
+ <a class="tactic" href="condExpr-details.html#857">LEqN3: apply lesseq_less_integer_transitive to LEq3 LN4.</a>
+ <a class="tactic" href="condExpr-details.html#858">Acc: case Acc.</a> <a class="tactic" href="condExpr-details.html#859">A2: apply Acc to _ LEqN2.</a> <a class="tactic" href="condExpr-details.html#860">A3: apply Acc to _ LEqN3.</a>
+ <a class="tactic" href="condExpr-details.html#861">clear Acc LEqN3 LEqN2 LN4 P LEq3 LEq2 PN3 PN2 IsN3 IsN2.</a>
+ <span class="comment">%build derivation</span>
+ <a class="tactic" href="condExpr-details.html#862">case IsE.</a> <a class="tactic" href="condExpr-details.html#863">unfold.</a>
+ <a class="tactic" href="condExpr-details.html#864">exists Nmes, stmtExpr (seq (declare intTy X (num 0))
+                          (ifThenElse C (assign X T) (assign X F)))
+                       (name X), V, EE', O, EE3, O2, O3.</a> <a class="tactic" href="condExpr-details.html#865">split.</a>
+   <span class="comment">%eval_P C</span>
+    <a class="tactic" href="condExpr-details.html#866">apply IH to R3 A2 _ _ _.</a> <a class="tactic" href="condExpr-details.html#867">search.</a>
+   <span class="comment">%eval_P T</span>
+    <a class="tactic" href="condExpr-details.html#868">Ev1: apply drop_ext_size_evalExpr to R3.</a>
+    <a class="tactic" href="condExpr-details.html#869">apply evalExpr_isCtx to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#870">apply IH to R4 A3 _ _ _.</a>
+    <a class="tactic" href="condExpr-details.html#871">search.</a>
+   <span class="comment">%append output</span>
+    <a class="tactic" href="condExpr-details.html#872">search.</a>
+   <span class="comment">%names</span>
+    <a class="tactic" href="condExpr-details.html#873">search.</a>
+   <span class="comment">%proj</span>
+    <a class="tactic" href="condExpr-details.html#874">search.</a>
+   <span class="comment">%eval_P proj</span>
+    <a class="tactic" href="condExpr-details.html#875">L: apply length_exists_list_pair_string_value to IsEE.</a>
+    <a class="tactic" href="condExpr-details.html#876">rename N1 to Len.</a>
+    <a class="tactic" href="condExpr-details.html#877">EvD: assert evalStmt FE ([]::EE) (declare intTy X (num 0))
+                            ([(X, intVal 0)]::EE) [].</a>
+    <a class="tactic" href="condExpr-details.html#878">NNS: assert newNameScopes [[(X, intVal 0)]] Len
+                   ([(X, intVal 0)]::EE) EE.</a>
+      <a class="tactic" href="condExpr-details.html#879">unfold.</a> <a class="tactic" href="condExpr-details.html#880">exists 1, [X], Nmes.</a> <a class="tactic" href="condExpr-details.html#881">split.</a>
+        <span class="comment">%length EE Len</span>
+         <a class="tactic" href="condExpr-details.html#882">search.</a>
+        <span class="comment">%drop 1</span>
+         <a class="tactic" href="condExpr-details.html#883">search.</a>
+        <span class="comment">%take 1</span>
+         <a class="tactic" href="condExpr-details.html#884">search.</a>
+        <span class="comment">%names</span>
+         <a class="tactic" href="condExpr-details.html#885">search.</a>
+        <span class="comment">%names EE Nmes</span>
+         <a class="tactic" href="condExpr-details.html#886">search.</a>
+        <span class="comment">%not mem Nmes</span>
+         <a class="tactic" href="condExpr-details.html#887">intros MX MN.</a> <a class="tactic" href="condExpr-details.html#888">MX: case MX.</a>
+           <span class="comment">%X1 = X</span>
+            <a class="tactic" href="condExpr-details.html#889">apply fresh_name_not_mem to _ MN.</a>
+           <span class="comment">%mem []</span>
+            <a class="tactic" href="condExpr-details.html#890">case MX.</a>
+    <a class="tactic" href="condExpr-details.html#891">IsX: apply fresh_name_is to _ Fr.</a>
+    <a class="tactic" href="condExpr-details.html#892">Ev: apply drop_ext_size_evalExpr to R3.</a>
+    <a class="tactic" href="condExpr-details.html#893">Ev1: apply drop_ext_size_evalExpr to R4.</a>
+    <span class="comment">%build derivations for evaling cond and T for projection</span>
+    <a class="tactic" href="condExpr-details.html#894">apply evalExpr_isCtx to _ _ _ Ev.</a>
+    <a class="tactic" href="condExpr-details.html#895">assert is_list (is_list (is_pair is_string is_value))
+              ([]::[(X, intVal 0)]::EE).</a> <a class="tactic" href="condExpr-details.html#896">search 6.</a>
+    <a class="tactic" href="condExpr-details.html#897">EvA_ES: apply evalExpr_newNameScopes_exists_ES to _ _ _ _ R3 NNS.</a>
+    <a class="tactic" href="condExpr-details.html#898">EvA_P: apply IH to EvA_ES A2 _ _ _.</a>
+    <a class="tactic" href="condExpr-details.html#899">EvA: apply drop_ext_size_evalExpr to EvA_ES.</a>
+    <a class="tactic" href="condExpr-details.html#900">NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA Ev _.</a>
+    <a class="tactic" href="condExpr-details.html#901">NNS': case NNS' (keep).</a>
+      <span class="comment">%last</span>
+       <a class="tactic" href="condExpr-details.html#902">Take: case NNS'3.</a> <a class="tactic" href="condExpr-details.html#903">case Take1.</a> <a class="tactic" href="condExpr-details.html#904">compute Take.</a>
+       <a class="tactic" href="condExpr-details.html#905">Eq: assert L = EE3.</a>
+         <a class="tactic" href="condExpr-details.html#906">Drop: case NNS'2.</a> <a class="tactic" href="condExpr-details.html#907">apply drop_is_integer to Drop1.</a>
+         <a class="tactic" href="condExpr-details.html#908">apply plus_integer_unique_addend to _ _ _ Take Drop.</a>
+         <a class="tactic" href="condExpr-details.html#909">Drop: case Drop1.</a>
+           <span class="comment">%0</span>
+            <a class="tactic" href="condExpr-details.html#910">search.</a>
+           <span class="comment">%-1</span>
+            <a class="tactic" href="condExpr-details.html#911">P: assert 1 + -1 = 0.</a> <a class="tactic" href="condExpr-details.html#912">apply drop_is_integer to Drop2.</a>
+            <a class="tactic" href="condExpr-details.html#913">apply plus_integer_unique_addend to _ _ _ Drop1 P.</a>
+            <a class="tactic" href="condExpr-details.html#914">GEq: apply drop_geq_0 to Drop2.</a> <a class="tactic" href="condExpr-details.html#915">LEq: case GEq.</a> <a class="tactic" href="condExpr-details.html#916">case LEq.</a>
+       <a class="tactic" href="condExpr-details.html#917">case Eq.</a> <a class="tactic" href="condExpr-details.html#918">apply evalExpr_isCtx to _ _ _ EvA.</a>
+       <a class="tactic" href="condExpr-details.html#919">NNS'': assert newNameScopes [[], [(X, intVal 0)]] Len
+                        ([]::[(X, intVal 0)]::EE3) EE3.</a>
+       <a class="tactic" href="condExpr-details.html#920">EvA2_ES: apply evalExpr_newNameScopes_exists_ES to
+                   _ _ _ _ R4 NNS''.</a>
+       <a class="tactic" href="condExpr-details.html#921">EvA2_P: apply IH to EvA2_ES A3 _ _ _.</a>
+       <a class="tactic" href="condExpr-details.html#922">EvA2: apply drop_ext_size_evalExpr to EvA2_ES.</a>
+       <a class="tactic" href="condExpr-details.html#923">NNS''': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA2 Ev1 _.</a>
+       <a class="tactic" href="condExpr-details.html#924">NNS''': case NNS'''.</a>
+         <span class="comment">%last</span>
+          <a class="tactic" href="condExpr-details.html#925">T: case NNS'''2.</a> <a class="tactic" href="condExpr-details.html#926">T: case T1.</a> <a class="tactic" href="condExpr-details.html#927">case T2.</a> <a class="tactic" href="condExpr-details.html#928">compute T1.</a> <a class="tactic" href="condExpr-details.html#929">compute T.</a>
+          <a class="tactic" href="condExpr-details.html#930">Eq: assert L2 = EE'.</a>
+            <a class="tactic" href="condExpr-details.html#931">Drop: case NNS'''1.</a> <a class="tactic" href="condExpr-details.html#932">apply drop_is_integer to Drop1.</a>
+            <a class="tactic" href="condExpr-details.html#933">apply plus_integer_unique_addend to _ _ _ T Drop.</a>
+            <a class="tactic" href="condExpr-details.html#934">Drop: case Drop1.</a> <a class="tactic" href="condExpr-details.html#935">apply drop_is_integer to Drop2.</a>
+            <a class="tactic" href="condExpr-details.html#936">apply plus_integer_unique_addend to _ _ _ T1 Drop1.</a>
+            <a class="tactic" href="condExpr-details.html#937">Drop: case Drop2.</a>
+              <span class="comment">%0</span>
+               <a class="tactic" href="condExpr-details.html#938">search.</a>
+              <span class="comment">%-1</span>
+               <a class="tactic" href="condExpr-details.html#939">P: assert 1 + -1 = 0.</a> <a class="tactic" href="condExpr-details.html#940">apply drop_is_integer to Drop3.</a>
+               <a class="tactic" href="condExpr-details.html#941">apply plus_integer_unique_addend to _ _ _ P Drop2.</a>
+               <a class="tactic" href="condExpr-details.html#942">GEq: apply drop_geq_0 to Drop3.</a> <a class="tactic" href="condExpr-details.html#943">LEq: case GEq.</a>
+               <a class="tactic" href="condExpr-details.html#944">case LEq.</a>
+          <a class="tactic" href="condExpr-details.html#945">case Eq.</a>
+          <a class="tactic" href="condExpr-details.html#946">assert replaceScopes X V ([]::([(X, intVal 0)]::EE'))
+                               ([]::([(X, V)]::EE')).</a>
+          <a class="tactic" href="condExpr-details.html#947">EvA3_P: assert &lt;evalStmt {P}&gt; FE
+                            ([]::([(X, intVal 0)]::EE3))
+                             (assign X T) ([]::([(X, V)]::EE')) O3.</a>
+          <a class="tactic" href="condExpr-details.html#948">apply evalExpr_isOutput to _ _ _ EvA.</a>
+          <a class="tactic" href="condExpr-details.html#949">apply evalExpr_isOutput to _ _ _ EvA2.</a>
+          <a class="tactic" href="condExpr-details.html#950">IsO: apply append_values_is to _ _ R5.</a>
+          <a class="tactic" href="condExpr-details.html#951">App: apply append_values_total to IsO with LB = [].</a>
+          <a class="tactic" href="condExpr-details.html#952">apply append_nil_right to App.</a> <a class="tactic" href="condExpr-details.html#953">search.</a>
+         <span class="comment">%step:  impossible</span>
+          <a class="tactic" href="condExpr-details.html#954">LenEE3: apply evalExpr_keep_scopes to _ _ _ Ev L.</a>
+          <a class="tactic" href="condExpr-details.html#955">LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev1 LenEE3.</a>
+          <a class="tactic" href="condExpr-details.html#956">LenBR: case LenSBR.</a> <a class="tactic" href="condExpr-details.html#957">apply length_is to LenBR.</a>
+          <a class="tactic" href="condExpr-details.html#958">LEq: apply newNameScopes_length to NNS''' LenBR.</a>
+          <a class="tactic" href="condExpr-details.html#959">Less: apply lt_plus_one to LenBR1 _.</a>
+          <a class="tactic" href="condExpr-details.html#960">apply less_lesseq_flip_false to Less LEq.</a>
+      <span class="comment">%step:  impossible</span>
+       <a class="tactic" href="condExpr-details.html#961">LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev L.</a>
+       <a class="tactic" href="condExpr-details.html#962">LenBR: case LenSBR.</a> <a class="tactic" href="condExpr-details.html#963">apply length_is to LenBR.</a>
+       <a class="tactic" href="condExpr-details.html#964">LEq: apply newNameScopes_length to NNS'1 LenBR.</a>
+       <a class="tactic" href="condExpr-details.html#965">Less: apply lt_plus_one to LenBR1 _.</a>
+       <a class="tactic" href="condExpr-details.html#966">apply less_lesseq_flip_false to Less LEq.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#967">Names: apply names_exists to IsEE.</a> <a class="tactic" href="condExpr-details.html#968">rename N1 to Nmes.</a>
+ <a class="tactic" href="condExpr-details.html#969">IsNames: apply names_is to _ Names.</a>
+ <a class="tactic" href="condExpr-details.html#970">Fr: apply fresh_name_exists to _ IsNames with Base = "X".</a>
+ <a class="tactic" href="condExpr-details.html#971">rename F1 to X.</a>
+ <a class="tactic" href="condExpr-details.html#972">Proj: assert Nmes |{expr}- condExpr C T F ~~&gt;
+                    stmtExpr
+                       (seq (declare intTy X (num 0))
+                            (ifThenElse C (assign X T) (assign X F)))
+                       (name X).</a>
+ <span class="comment">%build `acc N2` and `acc N3`, then clean up</span>
+ <a class="tactic" href="condExpr-details.html#973">IsN2: apply ext_size_is_int_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#974">IsN3: apply ext_size_is_int_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#975">PN2: apply ext_size_pos_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#976">PN3: apply ext_size_pos_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#977">LEq2: apply lte_left to R2 _ _ _.</a> <a class="tactic" href="condExpr-details.html#978">LEq3: apply lte_right to R2 _ _ _.</a>
+ <a class="tactic" href="condExpr-details.html#979">P: apply plus_integer_is_integer to _ _ R2.</a>
+ <a class="tactic" href="condExpr-details.html#980">LN4: apply lt_plus_one to R1 _.</a>
+ <a class="tactic" href="condExpr-details.html#981">LEqN2: apply lesseq_less_integer_transitive to LEq2 LN4.</a>
+ <a class="tactic" href="condExpr-details.html#982">LEqN3: apply lesseq_less_integer_transitive to LEq3 LN4.</a>
+ <a class="tactic" href="condExpr-details.html#983">Acc: case Acc.</a> <a class="tactic" href="condExpr-details.html#984">A2: apply Acc to _ LEqN2.</a> <a class="tactic" href="condExpr-details.html#985">A3: apply Acc to _ LEqN3.</a>
+ <a class="tactic" href="condExpr-details.html#986">clear Acc LEqN3 LEqN2 LN4 P LEq3 LEq2 PN3 PN2 IsN3 IsN2.</a>
+ <span class="comment">%build derivation</span>
+ <a class="tactic" href="condExpr-details.html#987">case IsE.</a>
+ <span class="comment">%eval_P C and eval_P F</span>
+ <a class="tactic" href="condExpr-details.html#988">apply IH to R3 A2 _ _ _.</a> <a class="tactic" href="condExpr-details.html#989">Ev: apply drop_ext_size_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#990">Ev1: apply drop_ext_size_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#991">apply evalExpr_isCtx to _ _ _ Ev.</a> <a class="tactic" href="condExpr-details.html#992">apply IH to R4 A3 _ _ _.</a>
+ <span class="comment">%eval_P proj</span>
+ <a class="tactic" href="condExpr-details.html#993">L: apply length_exists_list_pair_string_value to IsEE.</a>
+ <a class="tactic" href="condExpr-details.html#994">rename N1 to Len.</a>
+ <a class="tactic" href="condExpr-details.html#995">EvD: assert evalStmt FE ([]::EE) (declare intTy X (num 0))
+                         ([(X, intVal 0)]::EE) [].</a>
+ <a class="tactic" href="condExpr-details.html#996">NNS: assert newNameScopes [[(X, intVal 0)]] Len
+                ([(X, intVal 0)]::EE) EE.</a>
+   <a class="tactic" href="condExpr-details.html#997">unfold.</a> <a class="tactic" href="condExpr-details.html#998">exists 1, [X], Nmes.</a> <a class="tactic" href="condExpr-details.html#999">split.</a>
+     <span class="comment">%length EE Len</span>
+      <a class="tactic" href="condExpr-details.html#1000">search.</a>
+     <span class="comment">%drop 1</span>
+      <a class="tactic" href="condExpr-details.html#1001">search.</a>
+     <span class="comment">%take 1</span>
+      <a class="tactic" href="condExpr-details.html#1002">search.</a>
+     <span class="comment">%names</span>
+      <a class="tactic" href="condExpr-details.html#1003">search.</a>
+     <span class="comment">%names EE Nmes</span>
+      <a class="tactic" href="condExpr-details.html#1004">search.</a>
+     <span class="comment">%not mem Nmes</span>
+      <a class="tactic" href="condExpr-details.html#1005">intros MX MN.</a> <a class="tactic" href="condExpr-details.html#1006">MX: case MX.</a>
+        <span class="comment">%X1 = X</span>
+         <a class="tactic" href="condExpr-details.html#1007">apply fresh_name_not_mem to _ MN.</a>
+        <span class="comment">%mem []</span>
+         <a class="tactic" href="condExpr-details.html#1008">case MX.</a>
+ <a class="tactic" href="condExpr-details.html#1009">IsX: apply fresh_name_is to _ Fr.</a>
+ <a class="tactic" href="condExpr-details.html#1010">assert is_list (is_list (is_pair is_string is_value))
+           ([]::[(X, intVal 0)]::EE).</a> <a class="tactic" href="condExpr-details.html#1011">search 6.</a>
+ <a class="tactic" href="condExpr-details.html#1012">EvA_ES: apply evalExpr_newNameScopes_exists_ES to _ _ _ _ R3 NNS.</a>
+ <a class="tactic" href="condExpr-details.html#1013">EvA_P: apply IH to EvA_ES A2 _ _ _.</a>
+ <a class="tactic" href="condExpr-details.html#1014">EvA: apply drop_ext_size_evalExpr to EvA_ES.</a>
+ <a class="tactic" href="condExpr-details.html#1015">NNS': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA Ev _.</a>
+ <a class="tactic" href="condExpr-details.html#1016">NNS': case NNS' (keep).</a>
+   <span class="comment">%last</span>
+    <a class="tactic" href="condExpr-details.html#1017">Take: case NNS'3.</a> <a class="tactic" href="condExpr-details.html#1018">case Take1.</a> <a class="tactic" href="condExpr-details.html#1019">compute Take.</a>
+    <a class="tactic" href="condExpr-details.html#1020">Eq: assert L = EE3.</a>
+      <a class="tactic" href="condExpr-details.html#1021">Drop: case NNS'2.</a> <a class="tactic" href="condExpr-details.html#1022">apply drop_is_integer to Drop1.</a>
+      <a class="tactic" href="condExpr-details.html#1023">apply plus_integer_unique_addend to _ _ _ Take Drop.</a>
+      <a class="tactic" href="condExpr-details.html#1024">Drop: case Drop1.</a>
+        <span class="comment">%0</span>
+         <a class="tactic" href="condExpr-details.html#1025">search.</a>
+        <span class="comment">%-1</span>
+         <a class="tactic" href="condExpr-details.html#1026">P: assert 1 + -1 = 0.</a> <a class="tactic" href="condExpr-details.html#1027">apply drop_is_integer to Drop2.</a>
+         <a class="tactic" href="condExpr-details.html#1028">apply plus_integer_unique_addend to _ _ _ Drop1 P.</a>
+         <a class="tactic" href="condExpr-details.html#1029">GEq: apply drop_geq_0 to Drop2.</a> <a class="tactic" href="condExpr-details.html#1030">LEq: case GEq.</a> <a class="tactic" href="condExpr-details.html#1031">case LEq.</a>
+    <a class="tactic" href="condExpr-details.html#1032">case Eq.</a> <a class="tactic" href="condExpr-details.html#1033">apply evalExpr_isCtx to _ _ _ EvA.</a>
+    <a class="tactic" href="condExpr-details.html#1034">NNS'': assert newNameScopes [[], [(X, intVal 0)]] Len
+                     ([]::[(X, intVal 0)]::EE3) EE3.</a>
+    <a class="tactic" href="condExpr-details.html#1035">EvA2_ES: apply evalExpr_newNameScopes_exists_ES to
+                _ _ _ _ R4 NNS''.</a>
+    <a class="tactic" href="condExpr-details.html#1036">EvA2_P: apply IH to EvA2_ES A3 _ _ _.</a>
+    <a class="tactic" href="condExpr-details.html#1037">EvA2: apply drop_ext_size_evalExpr to EvA2_ES.</a>
+    <a class="tactic" href="condExpr-details.html#1038">NNS''': apply evalExpr_newNameScopes_ctx to _ _ _ _ EvA2 Ev1 _.</a>
+    <a class="tactic" href="condExpr-details.html#1039">NNS''': case NNS'''.</a>
+      <span class="comment">%last</span>
+       <a class="tactic" href="condExpr-details.html#1040">T: case NNS'''2.</a> <a class="tactic" href="condExpr-details.html#1041">T: case T1.</a> <a class="tactic" href="condExpr-details.html#1042">case T2.</a> <a class="tactic" href="condExpr-details.html#1043">compute T1.</a> <a class="tactic" href="condExpr-details.html#1044">compute T.</a>
+       <a class="tactic" href="condExpr-details.html#1045">Eq: assert L2 = EE'.</a>
+         <a class="tactic" href="condExpr-details.html#1046">Drop: case NNS'''1.</a> <a class="tactic" href="condExpr-details.html#1047">apply drop_is_integer to Drop1.</a>
+         <a class="tactic" href="condExpr-details.html#1048">apply plus_integer_unique_addend to _ _ _ T Drop.</a>
+         <a class="tactic" href="condExpr-details.html#1049">Drop: case Drop1.</a> <a class="tactic" href="condExpr-details.html#1050">apply drop_is_integer to Drop2.</a>
+         <a class="tactic" href="condExpr-details.html#1051">apply plus_integer_unique_addend to _ _ _ T1 Drop1.</a>
+         <a class="tactic" href="condExpr-details.html#1052">Drop: case Drop2.</a>
+           <span class="comment">%0</span>
+            <a class="tactic" href="condExpr-details.html#1053">search.</a>
+           <span class="comment">%-1</span>
+            <a class="tactic" href="condExpr-details.html#1054">P: assert 1 + -1 = 0.</a> <a class="tactic" href="condExpr-details.html#1055">apply drop_is_integer to Drop3.</a>
+            <a class="tactic" href="condExpr-details.html#1056">apply plus_integer_unique_addend to _ _ _ P Drop2.</a>
+            <a class="tactic" href="condExpr-details.html#1057">GEq: apply drop_geq_0 to Drop3.</a> <a class="tactic" href="condExpr-details.html#1058">LEq: case GEq.</a>
+            <a class="tactic" href="condExpr-details.html#1059">case LEq.</a>
+       <a class="tactic" href="condExpr-details.html#1060">case Eq.</a>
+       <a class="tactic" href="condExpr-details.html#1061">assert replaceScopes X V ([]::([(X, intVal 0)]::EE'))
+                            ([]::([(X, V)]::EE')).</a>
+       <a class="tactic" href="condExpr-details.html#1062">EvA3_P: assert &lt;evalStmt {P}&gt; FE
+                         ([]::([(X, intVal 0)]::EE3))
+                          (assign X F) ([]::([(X, V)]::EE')) O3.</a>
+       <a class="tactic" href="condExpr-details.html#1063">apply evalExpr_isOutput to _ _ _ EvA.</a>
+       <a class="tactic" href="condExpr-details.html#1064">apply evalExpr_isOutput to _ _ _ EvA2.</a>
+       <a class="tactic" href="condExpr-details.html#1065">IsO: apply append_values_is to _ _ R5.</a>
+       <a class="tactic" href="condExpr-details.html#1066">App: apply append_values_total to IsO with LB = [].</a>
+       <a class="tactic" href="condExpr-details.html#1067">apply append_nil_right to App.</a> <a class="tactic" href="condExpr-details.html#1068">search.</a>
+      <span class="comment">%step:  impossible</span>
+       <a class="tactic" href="condExpr-details.html#1069">LenEE3: apply evalExpr_keep_scopes to _ _ _ Ev L.</a>
+       <a class="tactic" href="condExpr-details.html#1070">LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev1 LenEE3.</a>
+       <a class="tactic" href="condExpr-details.html#1071">LenBR: case LenSBR.</a> <a class="tactic" href="condExpr-details.html#1072">apply length_is to LenBR.</a>
+       <a class="tactic" href="condExpr-details.html#1073">LEq: apply newNameScopes_length to NNS''' LenBR.</a>
+       <a class="tactic" href="condExpr-details.html#1074">Less: apply lt_plus_one to LenBR1 _.</a>
+       <a class="tactic" href="condExpr-details.html#1075">apply less_lesseq_flip_false to Less LEq.</a>
+   <span class="comment">%step:  impossible</span>
+    <a class="tactic" href="condExpr-details.html#1076">LenSBR: apply evalExpr_keep_scopes to _ _ _ Ev L.</a>
+    <a class="tactic" href="condExpr-details.html#1077">LenBR: case LenSBR.</a> <a class="tactic" href="condExpr-details.html#1078">apply length_is to LenBR.</a>
+    <a class="tactic" href="condExpr-details.html#1079">LEq: apply newNameScopes_length to NNS'1 LenBR.</a>
+    <a class="tactic" href="condExpr-details.html#1080">Less: apply lt_plus_one to LenBR1 _.</a>
+    <a class="tactic" href="condExpr-details.html#1081">apply less_lesseq_flip_false to Less LEq.</a></div>
+
+
+<a class="command" href="condExpr-details.html#1082">Prove exactEval:host:paramName_unique.</a>
+<a class="command" href="condExpr-details.html#1083">Prove_Constraint exactEval:host:proj_paramName_forward.</a>
+<a class="command" href="condExpr-details.html#1084">Prove_Constraint exactEval:host:proj_paramName_back.</a>
+<a class="command" href="condExpr-details.html#1085">Prove exactEval:host:getFunEvalInfo_unique.</a>
+<a class="command" href="condExpr-details.html#1086">Prove_Constraint exactEval:host:proj_getFunEvalInfo_forward.</a>
+<a class="command" href="condExpr-details.html#1087">Prove_Constraint exactEval:host:proj_getFunEvalInfo_back.</a>
+
+<a class="command" href="condExpr-details.html#1088">Prove exactEval:host:evalProgram_unique.</a>
+<a class="command" href="condExpr-details.html#1089">Prove_Constraint exactEval:host:proj_evalProgram_forward.</a>
+<a class="command" href="condExpr-details.html#1090">Prove_Constraint exactEval:host:proj_evalProgram_back.</a>
+
+
+<a class="command" href="condExpr-details.html#1091">Prove exactEval:host:evalExpr_typePres_ctx,
+      exactEval:host:evalExpr_typePres,
+      exactEval:host:evalStmt_typePres,
+      exactEval:host:evalArgs_typePres_Ctx,
+      exactEval:host:evalArgs_typePres,
+      exactEval:host:evalRecFields_typePres_Ctx,
+      exactEval:host:evalRecFields_typePres.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1092);" id="toggleproof1092">[Show Proof]</a>
+<div class="proof" id="proof1092" style="display: none;">
+<span class="comment">%evalExpr_typePres_ctx</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#1092">case IsE.</a> <a class="tactic" href="condExpr-details.html#1093">Ty: case Ty.</a> <a class="tactic" href="condExpr-details.html#1094">apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _.</a>
+  <a class="tactic" href="condExpr-details.html#1095">apply evalExpr_isCtx to _ _ _ Ev1.</a>
+  <a class="tactic" href="condExpr-details.html#1096">apply IH_C_E to _ _ _ _ _ Ty1 Ev2 _ _.</a> <a class="tactic" href="condExpr-details.html#1097">search.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#1098">case IsE.</a> <a class="tactic" href="condExpr-details.html#1099">Ty: case Ty.</a> <a class="tactic" href="condExpr-details.html#1100">apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _.</a>
+  <a class="tactic" href="condExpr-details.html#1101">apply evalExpr_isCtx to _ _ _ Ev1.</a>
+  <a class="tactic" href="condExpr-details.html#1102">apply IH_C_E to _ _ _ _ _ Ty2 Ev2 _ _.</a> <a class="tactic" href="condExpr-details.html#1103">search.</a>
+<span class="comment">%evalExpr_typePres</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#1104">case IsE.</a> <a class="tactic" href="condExpr-details.html#1105">Ty: case Ty.</a> <a class="tactic" href="condExpr-details.html#1106">apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _.</a>
+  <a class="tactic" href="condExpr-details.html#1107">apply evalExpr_isCtx to _ _ _ Ev1.</a>
+  <a class="tactic" href="condExpr-details.html#1108">apply IH_T_E to _ _ _ _ _ Ty1 Ev2 _ _.</a> <a class="tactic" href="condExpr-details.html#1109">search.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#1110">case IsE.</a> <a class="tactic" href="condExpr-details.html#1111">Ty: case Ty.</a> <a class="tactic" href="condExpr-details.html#1112">apply IH_C_E to _ _ _ _ _ Ty Ev1 _ _.</a>
+  <a class="tactic" href="condExpr-details.html#1113">apply evalExpr_isCtx to _ _ _ Ev1.</a>
+  <a class="tactic" href="condExpr-details.html#1114">apply IH_T_E to _ _ _ _ _ Ty2 Ev2 _ _.</a> <a class="tactic" href="condExpr-details.html#1115">search.</a></div>
+
+<a class="command" href="condExpr-details.html#1116">Prove exactEval:host:paramTy_paramName_same.</a>
+<a class="command" href="condExpr-details.html#1117">Prove exactEval:host:funOK_getFunEvalInfo_related.</a>
+
+<a class="command" href="condExpr-details.html#1118">Prove exactEval:host:evalExpr_output_forms,
+      exactEval:host:evalStmt_output_forms,
+      exactEval:host:evalArgs_output_forms,
+      exactEval:host:evalRecFields_output_forms.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(1119);" id="toggleproof1119">[Show Proof]</a>
+<div class="proof" id="proof1119" style="display: none;">
+<span class="comment">%evalExpr_output_forms</span>
+ <span class="comment">%E-CondExpr-True</span>
+  <a class="tactic" href="condExpr-details.html#1119">case IsE.</a> <a class="tactic" href="condExpr-details.html#1120">apply IH_E to _ _ _ Ev1.</a>
+  <a class="tactic" href="condExpr-details.html#1121">apply evalExpr_isCtx to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#1122">apply IH_E to _ _ _ Ev2.</a>
+  <a class="tactic" href="condExpr-details.html#1123">apply output_forms_append to _ _ Ev3.</a> <a class="tactic" href="condExpr-details.html#1124">search.</a>
+ <span class="comment">%E-CondExpr-False</span>
+  <a class="tactic" href="condExpr-details.html#1125">case IsE.</a> <a class="tactic" href="condExpr-details.html#1126">apply IH_E to _ _ _ Ev1.</a>
+  <a class="tactic" href="condExpr-details.html#1127">apply evalExpr_isCtx to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#1128">apply IH_E to _ _ _ Ev2.</a>
+  <a class="tactic" href="condExpr-details.html#1129">apply output_forms_append to _ _ Ev3.</a> <a class="tactic" href="condExpr-details.html#1130">search.</a></div>
+
+<a class="command" href="condExpr-details.html#1131">Prove exactEval:host:evalProgram_output_forms.</a>
+<a class="command" href="condExpr-details.html#1132">Prove exactEval:host:paramName_exists.</a>
+<a class="command" href="condExpr-details.html#1133">Prove exactEval:host:getFunEvalInfo_exists.</a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

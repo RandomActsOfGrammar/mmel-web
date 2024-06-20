@@ -1,0 +1,269 @@
+Module looseEval:translation
+
+Builds on looseEval:host
+
+/*
+  We define here a "translation" from the language to itself.  This
+  represents an extension translating to another language
+  (e.g. translating to assembly) and lets us explore what we can and
+  cannot prove about a translation, but without the overhead of
+  defining another language.
+*/
+
+Judgment transE : expr* expr
+Judgment transRF : recFieldExprs* recFieldExprs
+Judgment transA : args* args
+/*the [string] argument here needs to be passed down for translation
+  in the default rule*/
+Judgment transS : [string] stmt* stmt [string] /*updates known names*/
+Judgment transF : fun* fun
+Fixed Judgment transFuns : [fun] [fun]
+Judgment transP : program* program
+
+
+-------------------- [TE-Num]
+transE num(I) num(I)
+
+
+transE E1 E11
+transE E2 E21
+---------------------------------- [TE-Plus]
+transE plus(E1, E2) plus(E11, E21)
+
+
+transE E1 E11
+transE E2 E21
+------------------------------------ [TE-Minus]
+transE minus(E1, E2) minus(E11, E21)
+
+
+transE E1 E11
+transE E2 E21
+---------------------------------- [TE-Mult]
+transE mult(E1, E2) mult(E11, E21)
+
+
+transE E1 E11
+transE E2 E21
+-------------------------------- [TE-Div]
+transE div(E1, E2) div(E11, E21)
+
+
+---------------- [TE-True]
+transE true true
+
+
+------------------ [TE-False]
+transE false false
+
+
+transE E1 E11
+transE E2 E21
+-------------------------------- [TE-And]
+transE and(E1, E2) and(E11, E21)
+
+
+transE E1 E11
+transE E2 E21
+------------------------------ [TE-Or]
+transE or(E1, E2) or(E11, E21)
+
+
+transE E E1
+--------------------- [TE-Not]
+transE not(E) not(E1)
+
+
+transE E1 E11
+transE E2 E21
+----------------------------------- [TE-Greater]
+transE greater(E1, E2) eq(E11, E21)
+
+
+transE E1 E11
+transE E2 E21
+------------------------------ [TE-Eq]
+transE eq(E1, E2) eq(E11, E21)
+
+
+-------------------------------- [TE-String]
+transE stringLit(S) stringLit(S)
+
+
+transE E1 E11
+transE E2 E21
+-------------------------------------------- [TE-StringApp]
+transE appString(E1, E2) appString(E11, E21)
+
+
+---------------------- [TE-Name]
+transE name(X) name(X)
+
+
+transA A A1
+----------------------------- [TE-Call]
+transE call(F, A) call(F, A1)
+
+
+transRF RF RF1
+--------------------------------- [TE-RecBuild]
+transE recBuild(RF) recBuild(RF1)
+
+
+transE E E1
+--------------------------------- [TE-RecFieldAccess]
+{transE recFieldAccess(E, F)
+           recFieldAccess(E1, F)}
+
+
+transE E E1
+----------------------------------------- [TE-ErrorExpr]
+transE errorExpr(E, Ty) errorExpr(E1, Ty)
+
+
+|{expr}- E ~~> E_T
+transE E_T E1
+------------------ [TE-Default]*
+transE E E1
+
+
+
+
+
+----------------------------------------- [TRF-Nil]
+transRF nilRecFieldExprs nilRecFieldExprs
+
+
+transE E E1
+transRF RF RF1
+--------------------------------------- [TRF-Cons]
+{transRF consRecFieldExprs(F, E, RF)
+         consRecFieldExprs(F, E1, RF1)}
+
+
+|{recFieldExprs}- RF ~~> RF_T
+transRF RF_T RF1
+----------------------------- [TRF-Default]*
+transRF RF RF1
+
+
+
+
+
+---------------------- [TA-Nil]
+transA nilArgs nilArgs
+
+
+transE E E1
+transA A A1
+-------------------------------------- [TA-Cons]
+transA consArgs(E, A) consArgs(E1, A1)
+
+
+|{args}- A ~~> A_T
+transA A_T A1
+------------------ [TRA-Default]*
+transA A A1
+
+
+
+
+
+---------------------------- [TS-Noop]
+transS Names noop noop Names
+
+
+transS Names S1 S11 Names1
+transS Names1 S2 S21 Names2
+--------------------------------------------- [TS-Seq]
+transS Names seq(S1, S2) seq(S11, S21) Names2
+
+
+transE E E1
+---------------------------------------------------------- [TS-Declare]
+transS Names declare(Ty, X, E) declare(Ty, X, E1) X::Names
+
+
+transE E E1
+--------------------------------------------- [TS-Assign]
+transS Names assign(X, E) assign(X, E1) Names
+
+
+transE E E1
+---------------------------------------------- [TS-RecUpdate]
+{transS Names recUpdate(Rec, Fs, E)
+                 recUpdate(Rec, Fs, E1) Names}
+
+
+transE Cond Cond1
+transS Names Th Th1 NamesTh
+transS Names El El1 NamesEl
+------------------------------------------------ [TS-If]
+{transS Names ifThenElse(Cond, Th, El)
+              ifThenElse(Cond1, Th1, El1) Names}
+
+
+transE Cond Cond1
+transS Names Body Body1 Names1
+-------------------------------------------------------- [TS-While]
+transS Names while(Cond, Body) while(Cond1, Body1) Names
+
+
+transS Names S S1 Names1
+--------------------------------------------- [TS-ScopeStmt]
+transS Names scopeStmt(S) scopeStmt(S1) Names
+
+
+transE E E1
+-------------------------------------------- [TS-Print]
+transS Names printVal(E) printVal(E1) Names1
+
+
+Names |{stmt}- S ~~> S_T
+transS Names S_T S1 Names1
+-------------------------- [TS-Default]*
+transS Names S S1 Names1
+
+
+
+
+
+paramTys Params PTys
+domain PTys Names
+transS RetVar::Names Body Body1 Names1
+--------------------------------------------------------- [TF-Fun]
+{transF fun(F, RetTy, RetVar, InitVal, Params, Body)
+           fun(F, RetTy, RetVar, InitVal, Params, Body1)}
+
+
+|{fun}- F ~~> F_T
+transF F_T F1
+----------------- [TF-Default]*
+transF F F1
+
+
+
+
+
+=============== [TFs-Nil]
+transFuns [] []
+
+
+transF F F1
+transFuns Rest Rest1
+=========================== [TFs-Cons]
+transFuns F::Rest F1::Rest1
+
+
+
+
+
+transFuns Funs Funs1
+------------------------------------------------ [TP-Program]
+transP program(Funs, Main) program(Funs1, Main1)
+
+
+|{program}- P ~~> P_T
+transP P_T P1
+--------------------- [TP-Default]*
+transP P P1

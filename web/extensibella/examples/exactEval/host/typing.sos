@@ -1,0 +1,447 @@
+Module exactEval:host
+
+/*
+  The type [[(string, typ)]] is a set of scopes for typing.  The
+  most recent scope is the first one in the list
+
+  The type [(string, (typ, [typ]))] is the function context, listing
+  the known functions with their return types and argument types
+*/
+
+                   /*funCtx,  tyCtx,  expression,  type*/
+Judgment typeOf : {[(string, (typ, [typ]))] [[(string, typ)]]
+                   expr* typ}
+               /*funCtx, tyCtx, args, types*/
+Fixed Judgment typeOfArgs : {
+               [(string, (typ, [typ]))] [[(string, typ)]]
+               args [typ]}
+               /*funCtx, tyCtx, fields, types*/
+Fixed Judgment typeOfRecFields : {
+               [(string, (typ, [typ]))] [[(string, typ)]]
+               recFieldExprs recFieldTys}
+                             /*record fields, field, type*/
+Fixed Judgment lookupRecFieldTy : recFieldTys string typ
+
+
+                   /*funCtx, starting tyCtx, statement, ending tyCtx*/
+Judgment stmtOK : {[(string, (typ, [typ]))] [[(string, typ)]]
+                   stmt* [[(string, typ)]]}
+                             /*fields, field types, final type found*/
+Fixed Judgment nestedFieldTy : [string] recFieldTys typ
+
+
+Judgment funOK : [(string, (typ, [typ]))] fun*
+Fixed Judgment paramTys : [param] [(string, typ)]
+Judgment paramTy : param* string typ /*param name and type*/
+Fixed Judgment funsOK : [(string, (typ, [typ]))] [fun]
+
+
+                /*function, name, ret ty, arg tys*/
+Judgment getFunInfo : fun* string typ [typ]
+Fixed Judgment gatherFunInfo : [fun] [(string, (typ, [typ]))]
+
+
+/*Check a full program is well-typed*/
+Judgment programOK : program*
+
+
+/********************************************************************
+ Expression Typing
+ ********************************************************************/
+
+------------------------- [T-Num]
+typeOf FC TC num(I) intTy
+
+
+
+typeOf FC TC E1 intTy
+typeOf FC TC E2 intTy
+------------------------------- [T-Plus]
+typeOf FC TC plus(E1, E2) intTy
+
+
+
+typeOf FC TC E1 intTy
+typeOf FC TC E2 intTy
+-------------------------------- [T-Minus]
+typeOf FC TC minus(E1, E2) intTy
+
+
+
+typeOf FC TC E1 intTy
+typeOf FC TC E2 intTy
+------------------------------- [T-Mult]
+typeOf FC TC mult(E1, E2) intTy
+
+
+
+typeOf FC TC E1 intTy
+typeOf FC TC E2 intTy
+------------------------------ [T-Div]
+typeOf FC TC div(E1, E2) intTy
+
+
+------------------------ [T-True]
+typeOf FC TC true boolTy
+
+
+------------------------- [T-False]
+typeOf FC TC false boolTy
+
+
+typeOf FC TC E1 boolTy
+typeOf FC TC E2 boolTy
+------------------------------- [T-And]
+typeOf FC TC and(E1, E2) boolTy
+
+
+typeOf FC TC E1 boolTy
+typeOf FC TC E2 boolTy
+------------------------------ [T-Or]
+typeOf FC TC or(E1, E2) boolTy
+
+
+typeOf FC TC E boolTy
+-------------------------- [T-Not]
+typeOf FC TC not(E) boolTy
+
+
+typeOf FC TC E1 intTy
+typeOf FC TC E2 intTy
+----------------------------------- [T-Greater]
+typeOf FC TC greater(E1, E2) boolTy
+
+
+typeOf FC TC E1 intTy
+typeOf FC TC E2 intTy
+------------------------------ [T-Eq-Int]
+typeOf FC TC eq(E1, E2) boolTy
+
+
+typeOf FC TC E1 boolTy
+typeOf FC TC E2 boolTy
+------------------------------ [T-Eq-Bool]
+typeOf FC TC eq(E1, E2) boolTy
+
+
+typeOf FC TC E1 stringTy
+typeOf FC TC E2 stringTy
+------------------------------ [T-Eq-String]
+typeOf FC TC eq(E1, E2) boolTy
+
+
+---------------------------------- [T-String]
+typeOf FC TC stringLit(S) stringTy
+
+
+typeOf FC TC E1 stringTy
+typeOf FC TC E2 stringTy
+--------------------------------------- [T-AppString]
+typeOf FC TC appString(E1, E2) stringTy
+
+
+lookupScopes X TC Ty
+----------------------- [T-Name]
+typeOf FC TC name(X) Ty
+
+
+lookup FC Fun (RetTy, ArgTys)
+typeOfArgs FC TC Args ArgTys
+---------------------------------- [T-Call]
+typeOf FC TC call(Fun, Args) RetTy
+
+
+stmtOK FC []::TC S TC1 /*stmt is a new scope, containing E*/
+typeOf FC TC1 E Ty
+------------------------------ [T-StmtExpr]
+typeOf FC TC stmtExpr(S, E) Ty
+
+
+typeOfRecFields FC TC Fields FieldTys
+--------------------------------------------- [T-RecBuild]
+typeOf FC TC recBuild(Fields) recTy(FieldTys)
+
+
+typeOf FC TC E recTy(FieldTys)
+lookupRecFieldTy FieldTys Field Ty
+---------------------------------------- [T-RecAccess]
+typeOf FC TC recFieldAccess(E, Field) Ty
+
+
+/*any type*/
+---------------------------------- [T-Error]
+typeOf GC TC errorExpr(Msg, Ty) Ty
+
+
+
+/*Arguments*/
+
+=========================== [TA-Nil]
+typeOfArgs FC TC nilArgs []
+
+
+typeOf FC TC E ETy
+typeOfArgs FC TC Rest ETys
+============================================ [TA-Cons]
+typeOfArgs FC TC consArgs(E, Rest) ETy::ETys
+
+
+
+/*Record Fields*/
+
+===================================================== [TRF-Nil]
+typeOfRecFields FC TC nilRecFieldExprs nilRecFieldTys
+
+
+typeOf FC TC E ETy
+typeOfRecFields FC TC Rest RestTys
+======================================================= [TRF-Cons]
+{typeOfRecFields FC TC consRecFieldExprs(Name, E, Rest)
+                 consRecFieldTys(Name, ETy, RestTys)}
+
+
+
+/*Record Field Types for Specific Fields*/
+
+================================================== [LRF-Here]
+lookupRecFieldTy consRecFieldTys(F, Ty, Rest) F Ty
+
+
+X != F
+lookupRecFieldTy Rest F Ty
+=================================================== [LRF-Later]
+lookupRecFieldTy consRecFieldTys(X, XTy, Rest) F Ty
+
+
+
+
+
+/********************************************************************
+ Statement Typing
+ ********************************************************************/
+
+-------------------- [T-Noop]
+stmtOK FC TC noop TC
+
+
+stmtOK FC TC S1 TC1
+stmtOK FC TC1 S2 TC2
+---------------------------- [T-Seq]
+stmtOK FC TC seq(S1, S2) TC2
+
+
+no_lookup Scope X /*can't redeclare in scope*/
+typeOf FC Scope::RestTC E Ty
+------------------------------------------ [T-Declare]
+{stmtOK FC Scope::RestTC declare(Ty, X, E)
+        ((X, Ty)::Scope)::RestTC}
+
+
+/*Implicit simplifying assumption:  Record fields are always in the
+  same order in types, so we don't have to do more than check strict
+  equality here.  If we didn't want to require the same order, we
+  could have a type equality check relation.*/
+lookupScopes X TC Ty
+typeOf FC TC E Ty
+---------------------------- [T-Assign]
+stmtOK FC TC assign(X, E) TC
+
+
+lookupScopes Rec TC recTy(FieldTys)
+typeOf FC TC E Ty
+nestedFieldTy Fields FieldTys Ty
+----------------------------------------- [T-RecUpdate]
+stmtOK FC TC recUpdate(Rec, Fields, E) TC
+
+
+typeOf FC TC Cond boolTy
+stmtOK FC []::TC Th TCTh /*branches are new scopes*/
+stmtOK FC []::TC El TCEl
+---------------------------------------- [T-IfThenElse]
+stmtOK FC TC ifThenElse(Cond, Th, El) TC
+
+
+typeOf FC TC Cond boolTy
+stmtOK FC []::TC Body TC2 /*body is new scope*/
+--------------------------------- [T-While]
+stmtOK FC TC while(Cond, Body) TC
+
+
+stmtOK FC []::TC S TC2
+---------------------------- [T-ScopeStmt]
+stmtOK FC TC scopeStmt(S) TC
+
+
+typeOf FC TC E intTy
+--------------------------- [T-Print-Int]
+stmtOK FC TC printVal(E) TC
+
+
+typeOf FC TC E boolTy
+--------------------------- [T-Print-Bool]
+stmtOK FC TC printVal(E) TC
+
+
+typeOf FC TC E stringTy
+--------------------------- [T-Print-String]
+stmtOK FC TC printVal(E) TC
+
+
+
+/*Nested Field Type*/
+
+lookupRecFieldTy FTys F Ty
+========================== [NFT-LastField]
+nestedFieldTy [F] FTys Ty
+
+
+lookupRecFieldTy FTys F recTy(NextFields)
+nestedFieldTy Rest NextFields Ty
+========================================= [NFT-StepField]
+nestedFieldTy F::Rest FTys Ty
+
+
+
+
+
+/********************************************************************
+ Function Typing
+ ********************************************************************/
+
+/*check the function is well-typed with given types*/
+paramTys Params ParamTys
+stmtOK FC [(RetVar, RetTy)::ParamTys] Body FinalTC
+/*check the function ctx contains the given types for this function*/
+lookup FC FunName (RetTy, PTys)
+values ParamTys PTys
+/*no param with same name as return variable*/
+no_lookup ParamTys RetVar
+valueType RVVal RetTy
+--------------------------------------------------------- [T-Fun]
+funOK FC fun(FunName, RetTy, RetVar, RVVal, Params, Body)
+
+
+
+/*Types in Lists of Parameters*/
+
+============== [PT-Nil]
+paramTys [] []
+
+
+paramTy P PName PTy
+paramTys Rest RestTys
+====================================== [PT-Cons]
+paramTys P::Rest (PName, PTy)::RestTys
+
+
+
+/*Types of Parameters*/
+
+------------------------------- [PT-Param]
+paramTy param(Name, Ty) Name Ty
+
+
+
+/*Types for a List of Functions*/
+
+============ [FOK-Nil]
+funsOK FC []
+
+
+funOK FC F
+funsOK FC Rest
+================= [FOK-Cons]
+funsOK FC F::Rest
+
+
+
+
+
+/********************************************************************
+ Gather Functions
+ ********************************************************************/
+
+paramTys Params NameTys
+values NameTys PTys
+------------------------------------------------------------ [GFI-Fun]
+{getFunInfo fun(FunName, RetTy, RetVar, RVVal, Params, Body)
+            FunName RetTy PTys}
+
+
+
+=================== [GFI-Nil]
+gatherFunInfo [] []
+
+
+getFunInfo F Name RetTy PTys
+gatherFunInfo Rest RestTys
+==================================================== [GFI-Cons]
+gatherFunInfo F::Rest (Name, (RetTy, PTys))::RestTys
+
+
+
+
+
+/********************************************************************
+ Program Typing
+ ********************************************************************/
+
+gatherFunInfo Funs FC
+funsOK FC Funs
+funOK FC Main
+/*Main must be named "main" and return int*/
+getFunInfo Main "main" intTy ArgTys
+----------------------------------- [T-Program]
+programOK program(Funs, Main)
+
+
+
+
+
+/********************************************************************
+ Value Typing
+ ********************************************************************/
+
+/*
+  At first glance, this primary component seems backward.  It appears
+  we should have it be that *value* forms cannot have their types
+  redefined.  However, in our language we are essentially disallowing
+  extending value forms, as an expression and its projection need to
+  evaluate to the same value.  In order to have type preservation, we
+  then need the old values forms produced by new constructs that may
+  have new types also to have those new types.  Having the type be the
+  primary component here allows us to do that.
+ */
+Judgment valueType : value typ*
+Fixed Judgment valFieldTys : [(string, value)] recFieldTys
+
+------------------------- [VT-Int]
+valueType intVal(I) intTy
+
+
+------------------------ [VT-True]
+valueType trueVal boolTy
+
+
+------------------------- [VT-False]
+valueType falseVal boolTy
+
+
+------------------------------- [VT-String]
+valueType stringVal(S) stringTy
+
+
+valFieldTys Fields FieldTys
+---------------------------------------- [VT-Rec]
+valueType recVal(Fields) recTy(FieldTys)
+
+
+
+============================= [VFT-Nil]
+valFieldTys [] nilRecFieldTys
+
+
+valueType V Ty
+valFieldTys Rest RestTys
+======================================================== [VFT-Cons]
+valFieldTys (F, V)::Rest consRecFieldTys(F, Ty, RestTys)

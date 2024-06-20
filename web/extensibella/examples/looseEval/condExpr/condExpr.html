@@ -1,0 +1,485 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  looseEval:condExpr</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  looseEval:condExpr</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  syntax.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="togglesyntax.sos" onclick="toggleFile('syntax.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="syntax.sos">[Raw File]</a>
+<pre class="code sterling" id="syntax.sos">
+Module looseEval:condExpr
+
+Builds on looseEval:host
+
+expr ::= ...
+       | condExpr(expr, expr, expr) <span class="comment">/*condExpr(C, T, F):  C ? T : F*/</span>
+
+
+------------------------------------------------------ [Proj-CondExpr]
+|{expr}- condExpr(C, T, F) ~~>
+         or(and(eq(C, true), or(eq(T, num(0)), true)),
+            eq(F, num(0)))
+
+
+
+
+vars C V1
+vars T V2
+vars F V3
+V1 ++ V2 = V4
+V4 ++ V3 = V
+------------------------ [V-CondExpr]
+vars condExpr(C, T, F) V
+
+
+
+
+typeOf FT ET C boolTy
+typeOf FT ET T Ty
+typeOf FT ET F Ty
+--------------------------------- [T-CondExpr]
+typeOf FT ET condExpr(C, T, F) Ty
+
+
+
+
+evalExpr FE EE C trueVal O1
+evalExpr FE EE T V O2
+O1 ++ O2 = O
+------------------------------------ [E-CondExpr-True]
+evalExpr FE EE condExpr(C, T, F) V O
+
+
+evalExpr FE EE C falseVal O1
+evalExpr FE EE F V O2
+O1 ++ O2 = O
+------------------------------------ [E-CondExpr-False]
+evalExpr FE EE condExpr(C, T, F) V O
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="condExpr.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="condExpr-details.html#0">Module looseEval:condExpr.</a>
+
+
+<a class="command" href="condExpr-details.html#1">Prove_Constraint looseEval:host:proj_expr_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<a class="tactic" href="condExpr-details.html#2">case PrB.</a> <a class="tactic" href="condExpr-details.html#3">search.</a></div>
+<a class="command" href="condExpr-details.html#4">Prove_Constraint looseEval:host:proj_expr_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(5);" id="toggleproof5">[Show Proof]</a>
+<div class="proof" id="proof5" style="display: none;">
+<a class="tactic" href="condExpr-details.html#5">case IsE.</a> <a class="tactic" href="condExpr-details.html#6">search 10.</a></div>
+
+<a class="command" href="condExpr-details.html#7">Prove_Constraint looseEval:host:proj_stmt_unique.</a>
+<a class="command" href="condExpr-details.html#8">Prove_Constraint looseEval:host:proj_stmt_is.</a>
+<a class="command" href="condExpr-details.html#9">Prove_Constraint looseEval:host:proj_stmt_other.</a>
+
+<a class="command" href="condExpr-details.html#10">Prove_Constraint looseEval:host:proj_fun_unique.</a>
+<a class="command" href="condExpr-details.html#11">Prove_Constraint looseEval:host:proj_fun_is.</a>
+
+<a class="command" href="condExpr-details.html#12">Prove_Constraint looseEval:host:proj_param_unique.</a>
+<a class="command" href="condExpr-details.html#13">Prove_Constraint looseEval:host:proj_param_is.</a>
+
+<a class="command" href="condExpr-details.html#14">Prove_Constraint looseEval:host:proj_program_unique.</a>
+<a class="command" href="condExpr-details.html#15">Prove_Constraint looseEval:host:proj_program_is.</a>
+
+<a class="command" href="condExpr-details.html#16">Prove_Constraint looseEval:host:proj_typ_unique.</a>
+<a class="command" href="condExpr-details.html#17">Prove_Constraint looseEval:host:proj_typ_is.</a>
+
+<a class="command" href="condExpr-details.html#18">Prove_Constraint looseEval:host:proj_value_unique.</a>
+<a class="command" href="condExpr-details.html#19">Prove_Constraint looseEval:host:proj_value_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(20);" id="toggleproof20">[Show Proof]</a>
+<div class="proof" id="proof20" style="display: none;">
+
+
+
+<span class="comment">/********************************************************************
+ Decidable Equality
+ ********************************************************************/</span>
+<a class="tactic" href="condExpr-details.html#20">Add_Proj_Rel looseEval:host:is_expr,
+             looseEval:host:is_args,
+             looseEval:host:is_recFieldExprs.</a></div>
+<a class="command" href="condExpr-details.html#21">Prove_Ext_Ind looseEval:host:is_expr,
+              looseEval:host:is_args,
+              looseEval:host:is_recFieldExprs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(22);" id="toggleproof22">[Show Proof]</a>
+<div class="proof" id="proof22" style="display: none;">
+<a class="tactic" href="condExpr-details.html#22">apply IH to R1.</a> <a class="tactic" href="condExpr-details.html#23">apply IH to R2.</a> <a class="tactic" href="condExpr-details.html#24">apply IH to R3.</a> <a class="tactic" href="condExpr-details.html#25">search 20.</a>
+
+<a class="tactic" href="condExpr-details.html#26">Add_Proj_Rel looseEval:host:is_stmt.</a></div>
+<a class="command" href="condExpr-details.html#27">Prove_Ext_Ind looseEval:host:is_stmt.</a>
+
+<a class="command" href="condExpr-details.html#28">Prove looseEval:host:is_args_nilArgs_or_consArgs.</a>
+<a class="command" href="condExpr-details.html#29">Prove looseEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(30);" id="toggleproof30">[Show Proof]</a>
+<div class="proof" id="proof30" style="display: none;">
+
+<a class="tactic" href="condExpr-details.html#30">Add_Proj_Rel looseEval:host:is_value, looseEval:host:is_recFieldVals.</a></div>
+<a class="command" href="condExpr-details.html#31">Prove_Ext_Ind looseEval:host:is_value, looseEval:host:is_recFieldVals.</a>
+<a class="command" href="condExpr-details.html#32">Prove looseEval:host:is_value_intVal_or_not.</a>
+<a class="command" href="condExpr-details.html#33">Prove looseEval:host:is_value_trueVal_or_not.</a>
+<a class="command" href="condExpr-details.html#34">Prove looseEval:host:is_value_falseVal_or_not.</a>
+<a class="command" href="condExpr-details.html#35">Prove looseEval:host:is_value_stringVal_or_not.</a>
+<a class="command" href="condExpr-details.html#36">Prove looseEval:host:is_value_recVal_or_not.</a>
+
+<a class="command" href="condExpr-details.html#37">Prove looseEval:host:is_recFieldVals_nil_or_cons.</a>
+
+<a class="command" href="condExpr-details.html#38">Prove looseEval:host:is_value_eq_or_not,
+      looseEval:host:is_recFieldVals_eq_or_not.</a>
+
+
+
+<span class="comment">/********************************************************************
+ Variables
+ ********************************************************************/</span>
+<a class="command" href="condExpr-details.html#39">Prove looseEval:host:vars_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(40);" id="toggleproof40">[Show Proof]</a>
+<div class="proof" id="proof40" style="display: none;">
+<a class="tactic" href="condExpr-details.html#40">case IsE.</a> <a class="tactic" href="condExpr-details.html#41">VarsB: case VarsB.</a> <a class="tactic" href="condExpr-details.html#42">apply IH to _ VarsA1 VarsB.</a>
+<a class="tactic" href="condExpr-details.html#43">apply IH to _ VarsA2 VarsB1.</a> <a class="tactic" href="condExpr-details.html#44">apply IH to _ VarsA3 VarsB2.</a>
+<a class="tactic" href="condExpr-details.html#45">apply append_unique to VarsA4 VarsB3.</a>
+<a class="tactic" href="condExpr-details.html#46">apply append_unique to VarsA5 VarsB4.</a> <a class="tactic" href="condExpr-details.html#47">search.</a></div>
+
+<a class="command" href="condExpr-details.html#48">Prove looseEval:host:vars_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(49);" id="toggleproof49">[Show Proof]</a>
+<div class="proof" id="proof49" style="display: none;">
+<a class="tactic" href="condExpr-details.html#49">case IsE.</a> <a class="tactic" href="condExpr-details.html#50">apply IH to _ V1.</a> <a class="tactic" href="condExpr-details.html#51">apply IH to _ V2.</a> <a class="tactic" href="condExpr-details.html#52">apply IH to _ V3.</a>
+<a class="tactic" href="condExpr-details.html#53">apply append_list_string_is to _ _ V4.</a>
+<a class="tactic" href="condExpr-details.html#54">apply append_list_string_is to _ _ V5.</a> <a class="tactic" href="condExpr-details.html#55">search.</a></div>
+
+<a class="command" href="condExpr-details.html#56">Prove looseEval:host:vars_exist,
+      looseEval:host:varsArgs_exist,
+      looseEval:host:varsRecFields_exist.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(57);" id="toggleproof57">[Show Proof]</a>
+<div class="proof" id="proof57" style="display: none;">
+<a class="tactic" href="condExpr-details.html#57">V1: apply IH to IsE1.</a> <a class="tactic" href="condExpr-details.html#58">V2: apply IH to IsE2.</a> <a class="tactic" href="condExpr-details.html#59">V3: apply IH to IsE3.</a>
+<a class="tactic" href="condExpr-details.html#60">Is1: apply vars_is to _ V1.</a> <a class="tactic" href="condExpr-details.html#61">Is2: apply vars_is to _ V2.</a>
+<a class="tactic" href="condExpr-details.html#62">Is3: apply vars_is to _ V3.</a>
+<a class="tactic" href="condExpr-details.html#63">A: apply append_list_string_total to Is1 Is2.</a>
+<a class="tactic" href="condExpr-details.html#64">IsA: apply append_list_string_is to _ _ A.</a>
+<a class="tactic" href="condExpr-details.html#65">apply append_list_string_total to IsA Is3.</a> <a class="tactic" href="condExpr-details.html#66">search.</a></div>
+
+<a class="command" href="condExpr-details.html#67">Prove_Constraint looseEval:host:proj_vars.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(68);" id="toggleproof68">[Show Proof]</a>
+<div class="proof" id="proof68" style="display: none;">
+<a class="tactic" href="condExpr-details.html#68">V: case V.</a> <a class="tactic" href="condExpr-details.html#69">V_P: case V_P.</a> <a class="tactic" href="condExpr-details.html#70">V_P: case V_P1.</a> <a class="tactic" href="condExpr-details.html#71">case V_P3.</a> <a class="tactic" href="condExpr-details.html#72">V_P: case V_P.</a>
+<a class="tactic" href="condExpr-details.html#73">V_P: case V_P.</a> <a class="tactic" href="condExpr-details.html#74">case V_P6.</a> <a class="tactic" href="condExpr-details.html#75">V_P: case V_P3.</a> <a class="tactic" href="condExpr-details.html#76">case V_P6.</a> <a class="tactic" href="condExpr-details.html#77">V_P: case V_P3.</a>
+<a class="tactic" href="condExpr-details.html#78">case V_P6.</a> <a class="tactic" href="condExpr-details.html#79">apply append_nil_right to V_P9.</a>
+<a class="tactic" href="condExpr-details.html#80">apply append_nil_right to V_P8.</a> <a class="tactic" href="condExpr-details.html#81">apply append_nil_right to V_P7.</a>
+<a class="tactic" href="condExpr-details.html#82">apply append_nil_right to V_P4.</a> <a class="tactic" href="condExpr-details.html#83">clear V_P9 V_P8 V_P7 V_P4.</a> <a class="tactic" href="condExpr-details.html#84">case IsE.</a>
+<a class="tactic" href="condExpr-details.html#85">apply vars_unique to _ V_P V.</a> <a class="tactic" href="condExpr-details.html#86">apply vars_unique to _ V_P3 V1.</a>
+<a class="tactic" href="condExpr-details.html#87">apply vars_unique to _ V_P1 V2.</a> <a class="tactic" href="condExpr-details.html#88">apply append_unique to V3 V_P5.</a>
+<a class="tactic" href="condExpr-details.html#89">apply append_unique to V4 V_P2.</a> <a class="tactic" href="condExpr-details.html#90">search.</a></div>
+
+
+
+<span class="comment">/********************************************************************
+ Typing
+ ********************************************************************/</span>
+<a class="command" href="condExpr-details.html#91">Prove looseEval:host:typeOf_isTy.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(92);" id="toggleproof92">[Show Proof]</a>
+<div class="proof" id="proof92" style="display: none;">
+<a class="tactic" href="condExpr-details.html#92">case IsE.</a> <a class="tactic" href="condExpr-details.html#93">apply IH_E to _ _ _ Ty2.</a> <a class="tactic" href="condExpr-details.html#94">search.</a></div>
+
+<a class="command" href="condExpr-details.html#95">Prove looseEval:host:stmtOK_isCtx.</a>
+<a class="command" href="condExpr-details.html#96">Prove looseEval:host:stmtOK_keep_scopes.</a>
+<a class="command" href="condExpr-details.html#97">Prove looseEval:host:stmtOK_older_scopes_same.</a>
+<a class="command" href="condExpr-details.html#98">Prove looseEval:host:stmtOK_first_scope_lookup_same.</a>
+
+<a class="command" href="condExpr-details.html#99">Prove looseEval:host:typeOf_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(100);" id="toggleproof100">[Show Proof]</a>
+<div class="proof" id="proof100" style="display: none;">
+<a class="tactic" href="condExpr-details.html#100">case IsE.</a> <a class="tactic" href="condExpr-details.html#101">TyB: case TyB.</a> <a class="tactic" href="condExpr-details.html#102">apply IH_E to _ _ _ _ TyA2 TyB1 _.</a> <a class="tactic" href="condExpr-details.html#103">search.</a></div>
+
+<a class="command" href="condExpr-details.html#104">Prove looseEval:host:stmtOK_unique.</a>
+
+<a class="command" href="condExpr-details.html#105">Prove looseEval:host:paramTy_is.</a>
+<a class="command" href="condExpr-details.html#106">Prove looseEval:host:getFunInfo_is.</a>
+<a class="command" href="condExpr-details.html#107">Prove looseEval:host:paramTy_exists.</a>
+<a class="command" href="condExpr-details.html#108">Prove looseEval:host:getFunInfo_exists.</a>
+
+
+
+<span class="comment">/********************************************************************
+ Evaluation
+ ********************************************************************/</span>
+<a class="command" href="condExpr-details.html#109">Prove looseEval:host:evalExpr_isValue,
+      looseEval:host:evalStmt_isCtx,
+      looseEval:host:evalArgs_isValue,
+      looseEval:host:evalRecFields_isValue.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(110);" id="toggleproof110">[Show Proof]</a>
+<div class="proof" id="proof110" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#110">case IsE.</a> <a class="tactic" href="condExpr-details.html#111">apply IH_V_E to _ _ _ Ev2.</a> <a class="tactic" href="condExpr-details.html#112">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#113">case IsE.</a> <a class="tactic" href="condExpr-details.html#114">apply IH_V_E to _ _ _ Ev2.</a> <a class="tactic" href="condExpr-details.html#115">search.</a></div>
+
+<a class="command" href="condExpr-details.html#116">Prove looseEval:host:evalExpr_isOutput,
+      looseEval:host:evalStmt_isOutput,
+      looseEval:host:evalArgs_isOutput,
+      looseEval:host:evalRecFields_isOutput.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(117);" id="toggleproof117">[Show Proof]</a>
+<div class="proof" id="proof117" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#117">case IsE.</a> <a class="tactic" href="condExpr-details.html#118">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#119">apply IH_E to _ _ _ Ev2.</a>
+ <a class="tactic" href="condExpr-details.html#120">apply append_values_is to _ _ Ev3.</a> <a class="tactic" href="condExpr-details.html#121">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#122">case IsE.</a> <a class="tactic" href="condExpr-details.html#123">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#124">apply IH_E to _ _ _ Ev2.</a>
+ <a class="tactic" href="condExpr-details.html#125">apply append_values_is to _ _ Ev3.</a> <a class="tactic" href="condExpr-details.html#126">search.</a></div>
+
+<a class="command" href="condExpr-details.html#127">Prove looseEval:host:paramName_is.</a>
+<a class="command" href="condExpr-details.html#128">Prove looseEval:host:getFunEvalInfo_is.</a>
+<a class="command" href="condExpr-details.html#129">Prove looseEval:host:evalProgram_isOutput.</a>
+
+<a class="command" href="condExpr-details.html#130">Prove looseEval:host:evalStmt_names_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(131);" id="toggleproof131">[Show Proof]</a>
+<div class="proof" id="proof131" style="display: none;">
+
+<a class="tactic" href="condExpr-details.html#131">Add_Ext_Size looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.</a>
+<a class="tactic" href="condExpr-details.html#132">Add_Proj_Rel looseEval:host:evalExpr,
+             looseEval:host:evalArgs,
+             looseEval:host:evalRecFields,
+             looseEval:host:evalStmt.</a></div>
+
+<a class="command" href="condExpr-details.html#133">Prove looseEval:host:evalExpr_rel,
+      looseEval:host:evalStmt_newNameScopes_output,
+      looseEval:host:evalStmt_newNameScopes,
+      looseEval:host:evalArgs_rel,
+      looseEval:host:evalRecFields_rel.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(134);" id="toggleproof134">[Show Proof]</a>
+<div class="proof" id="proof134" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#134">case IsE.</a> <a class="tactic" href="condExpr-details.html#135">Vars: case Vars.</a> <a class="tactic" href="condExpr-details.html#136">EvB: case EvB.</a>
+   <span class="comment">%E-CondExpr-True</span>
+    <a class="tactic" href="condExpr-details.html#137">apply IH_E to _ _ _ _ EvA1 EvB Vars _.</a>
+      <a class="tactic" href="condExpr-details.html#138">intros M L.</a> <a class="tactic" href="condExpr-details.html#139">M': apply mem_append_left to M Vars3.</a>
+      <a class="tactic" href="condExpr-details.html#140">M'': apply mem_append_left to M' Vars4.</a> <a class="tactic" href="condExpr-details.html#141">apply Rel to M'' L.</a>
+      <a class="tactic" href="condExpr-details.html#142">search.</a>
+    <a class="tactic" href="condExpr-details.html#143">apply IH_E to _ _ _ _ EvA2 EvB1 Vars1 _.</a>
+      <a class="tactic" href="condExpr-details.html#144">intros M L.</a> <a class="tactic" href="condExpr-details.html#145">M': apply mem_append_right to M Vars3.</a>
+      <a class="tactic" href="condExpr-details.html#146">M'': apply mem_append_left to M' Vars4.</a> <a class="tactic" href="condExpr-details.html#147">apply Rel to M'' L.</a>
+      <a class="tactic" href="condExpr-details.html#148">search.</a>
+    <a class="tactic" href="condExpr-details.html#149">apply append_unique to EvA3 EvB2.</a> <a class="tactic" href="condExpr-details.html#150">search.</a>
+   <span class="comment">%E-CondExpr-False</span>
+    <a class="tactic" href="condExpr-details.html#151">apply IH_E to _ _ _ _ EvA1 EvB Vars _.</a>
+      <a class="tactic" href="condExpr-details.html#152">intros M L.</a> <a class="tactic" href="condExpr-details.html#153">M': apply mem_append_left to M Vars3.</a>
+      <a class="tactic" href="condExpr-details.html#154">M'': apply mem_append_left to M' Vars4.</a> <a class="tactic" href="condExpr-details.html#155">apply Rel to M'' L.</a>
+      <a class="tactic" href="condExpr-details.html#156">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#157">case IsE.</a> <a class="tactic" href="condExpr-details.html#158">Vars: case Vars.</a> <a class="tactic" href="condExpr-details.html#159">EvB: case EvB.</a>
+   <span class="comment">%E-CondExpr-True</span>
+    <a class="tactic" href="condExpr-details.html#160">apply IH_E to _ _ _ _ EvA1 EvB Vars _.</a>
+      <a class="tactic" href="condExpr-details.html#161">intros M L.</a> <a class="tactic" href="condExpr-details.html#162">M': apply mem_append_left to M Vars3.</a>
+      <a class="tactic" href="condExpr-details.html#163">M'': apply mem_append_left to M' Vars4.</a> <a class="tactic" href="condExpr-details.html#164">apply Rel to M'' L.</a>
+      <a class="tactic" href="condExpr-details.html#165">search.</a>
+   <span class="comment">%E-CondExpr-False</span>
+    <a class="tactic" href="condExpr-details.html#166">apply IH_E to _ _ _ _ EvA1 EvB Vars _.</a>
+      <a class="tactic" href="condExpr-details.html#167">intros M L.</a> <a class="tactic" href="condExpr-details.html#168">M': apply mem_append_left to M Vars3.</a>
+      <a class="tactic" href="condExpr-details.html#169">M'': apply mem_append_left to M' Vars4.</a> <a class="tactic" href="condExpr-details.html#170">apply Rel to M'' L.</a>
+      <a class="tactic" href="condExpr-details.html#171">search.</a>
+    <a class="tactic" href="condExpr-details.html#172">apply IH_E to _ _ _ _ EvA2 EvB1 Vars2 _.</a>
+      <a class="tactic" href="condExpr-details.html#173">intros M L.</a> <a class="tactic" href="condExpr-details.html#174">M': apply mem_append_right to M Vars4.</a>
+      <a class="tactic" href="condExpr-details.html#175">apply Rel to M' L.</a> <a class="tactic" href="condExpr-details.html#176">search.</a>
+    <a class="tactic" href="condExpr-details.html#177">apply append_unique to EvA3 EvB2.</a> <a class="tactic" href="condExpr-details.html#178">search.</a></div>
+
+<a class="command" href="condExpr-details.html#179">Prove looseEval:host:evalExpr_rel_exists_ES,
+      looseEval:host:evalStmt_newNameScopes_exists_ES,
+      looseEval:host:evalArgs_rel_exists_ES,
+      looseEval:host:evalRecFields_rel_exists_ES.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(180);" id="toggleproof180">[Show Proof]</a>
+<div class="proof" id="proof180" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#180">case IsE.</a> <a class="tactic" href="condExpr-details.html#181">Vars: case Vars.</a>
+ <a class="tactic" href="condExpr-details.html#182">apply IH_E to _ _ _ _ EvB3 Vars _ with EE_A = EE_A.</a>
+   <a class="tactic" href="condExpr-details.html#183">intros M L.</a> <a class="tactic" href="condExpr-details.html#184">M': apply mem_append_left to M Vars3.</a>
+   <a class="tactic" href="condExpr-details.html#185">M'': apply mem_append_left to M' Vars4.</a> <a class="tactic" href="condExpr-details.html#186">apply Rel to M'' L.</a>
+   <a class="tactic" href="condExpr-details.html#187">search.</a>
+ <a class="tactic" href="condExpr-details.html#188">apply IH_E to _ _ _ _ EvB4 Vars1 _ with EE_A = EE_A.</a>
+   <a class="tactic" href="condExpr-details.html#189">intros M L.</a> <a class="tactic" href="condExpr-details.html#190">M': apply mem_append_right to M Vars3.</a>
+   <a class="tactic" href="condExpr-details.html#191">M'': apply mem_append_left to M' Vars4.</a> <a class="tactic" href="condExpr-details.html#192">apply Rel to M'' L.</a>
+   <a class="tactic" href="condExpr-details.html#193">search.</a>
+ <a class="tactic" href="condExpr-details.html#194">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#195">case IsE.</a> <a class="tactic" href="condExpr-details.html#196">Vars: case Vars.</a>
+ <a class="tactic" href="condExpr-details.html#197">apply IH_E to _ _ _ _ EvB3 Vars _ with EE_A = EE_A.</a>
+   <a class="tactic" href="condExpr-details.html#198">intros M L.</a> <a class="tactic" href="condExpr-details.html#199">M': apply mem_append_left to M Vars3.</a>
+   <a class="tactic" href="condExpr-details.html#200">M'': apply mem_append_left to M' Vars4.</a> <a class="tactic" href="condExpr-details.html#201">apply Rel to M'' L.</a>
+   <a class="tactic" href="condExpr-details.html#202">search.</a>
+ <a class="tactic" href="condExpr-details.html#203">apply IH_E to _ _ _ _ EvB4 Vars2 _ with EE_A = EE_A.</a>
+   <a class="tactic" href="condExpr-details.html#204">intros M L.</a> <a class="tactic" href="condExpr-details.html#205">M': apply mem_append_right to M Vars4.</a>
+   <a class="tactic" href="condExpr-details.html#206">apply Rel to M' L.</a> <a class="tactic" href="condExpr-details.html#207">search.</a>
+ <a class="tactic" href="condExpr-details.html#208">search.</a></div>
+
+<a class="command" href="condExpr-details.html#209">Prove looseEval:host:evalExpr_scopes_same,
+      looseEval:host:evalStmt_scopes_same,
+      looseEval:host:evalStmt_scopes_same_ctx,
+      looseEval:host:evalArgs_scopes_same,
+      looseEval:host:evalRecFields_scopes_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(210);" id="toggleproof210">[Show Proof]</a>
+<div class="proof" id="proof210" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#210">case IsE.</a> <a class="tactic" href="condExpr-details.html#211">EvB: case EvB.</a>
+   <span class="comment">%E-CondExpr-True</span>
+    <a class="tactic" href="condExpr-details.html#212">apply IH_E to _ _ _ _ SS EvA1 EvB.</a>
+    <a class="tactic" href="condExpr-details.html#213">apply IH_E to _ _ _ _ SS EvA2 EvB1.</a>
+    <a class="tactic" href="condExpr-details.html#214">apply append_unique to EvA3 EvB2.</a> <a class="tactic" href="condExpr-details.html#215">search.</a>
+   <span class="comment">%E-CondExpr-False</span>
+    <a class="tactic" href="condExpr-details.html#216">apply IH_E to _ _ _ _ SS EvA1 EvB.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#217">case IsE.</a> <a class="tactic" href="condExpr-details.html#218">EvB: case EvB.</a>
+   <span class="comment">%E-CondExpr-True</span>
+    <a class="tactic" href="condExpr-details.html#219">apply IH_E to _ _ _ _ SS EvA1 EvB.</a>
+   <span class="comment">%E-CondExpr-False</span>
+    <a class="tactic" href="condExpr-details.html#220">apply IH_E to _ _ _ _ SS EvA1 EvB.</a>
+    <a class="tactic" href="condExpr-details.html#221">apply IH_E to _ _ _ _ SS EvA2 EvB1.</a>
+    <a class="tactic" href="condExpr-details.html#222">apply append_unique to EvA3 EvB2.</a>
+    <a class="tactic" href="condExpr-details.html#223">search.</a></div>
+
+<a class="command" href="condExpr-details.html#224">Prove looseEval:host:evalExpr_scopes_same_exists,
+      looseEval:host:evalStmt_scopes_same_exists,
+      looseEval:host:evalArgs_scopes_same_exists,
+      looseEval:host:evalRecFields_scopes_same_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(225);" id="toggleproof225">[Show Proof]</a>
+<div class="proof" id="proof225" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#225">case IsE.</a> <a class="tactic" href="condExpr-details.html#226">apply IH_E to _ _ _ _ SS EvA1.</a>
+ <a class="tactic" href="condExpr-details.html#227">apply IH_E to _ _ _ _ SS EvA2.</a> <a class="tactic" href="condExpr-details.html#228">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#229">case IsE.</a> <a class="tactic" href="condExpr-details.html#230">apply IH_E to _ _ _ _ SS EvA1.</a>
+ <a class="tactic" href="condExpr-details.html#231">apply IH_E to _ _ _ _ SS EvA2.</a> <a class="tactic" href="condExpr-details.html#232">search.</a></div>
+
+<a class="command" href="condExpr-details.html#233">Theorem append_nil_output : forall O,
+  is_list is_value O -&gt; O ++ [] = O.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(234);" id="toggleproof234">[Show Proof]</a>
+<div class="proof" id="proof234" style="display: none;">
+<a class="tactic" href="condExpr-details.html#234">induction on 1.</a> <a class="tactic" href="condExpr-details.html#235">intros Is.</a> <a class="tactic" href="condExpr-details.html#236">Is: case Is.</a>
+  <span class="comment">%nil</span>
+   <a class="tactic" href="condExpr-details.html#237">search.</a>
+  <span class="comment">%cons</span>
+   <a class="tactic" href="condExpr-details.html#238">apply IH to Is1.</a> <a class="tactic" href="condExpr-details.html#239">search.</a></div>
+
+<a class="command" href="condExpr-details.html#240">Prove_Constraint looseEval:host:proj_evalExpr_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(241);" id="toggleproof241">[Show Proof]</a>
+<div class="proof" id="proof241" style="display: none;">
+<a class="tactic" href="condExpr-details.html#241">case IsE.</a> <a class="tactic" href="condExpr-details.html#242">Ev: case Ev.</a>
+  <span class="comment">%E-CondExpr-True</span>
+   <a class="tactic" href="condExpr-details.html#243">IsV: apply evalExpr_isValue to _ _ _ Ev1.</a>
+   <a class="tactic" href="condExpr-details.html#244">IsO2: apply evalExpr_isOutput to _ _ _ Ev.</a>
+   <a class="tactic" href="condExpr-details.html#245">IsO3: apply evalExpr_isOutput to _ _ _ Ev1.</a>
+   <a class="tactic" href="condExpr-details.html#246">apply append_nil_output to IsO2.</a> <a class="tactic" href="condExpr-details.html#247">apply append_nil_output to IsO3.</a>
+   <a class="tactic" href="condExpr-details.html#248">Or: apply is_value_eq_or_not to IsV _ with V2 = intVal 0.</a>
+   <a class="tactic" href="condExpr-details.html#249">E: case Or.</a>
+     <span class="comment">%V = intVal 0</span>
+      <a class="tactic" href="condExpr-details.html#250">search.</a>
+     <span class="comment">%V != intVal 0</span>
+      <a class="tactic" href="condExpr-details.html#251">search.</a>
+  <span class="comment">%E-CondExpr-False</span>
+   <a class="tactic" href="condExpr-details.html#252">IsV: apply evalExpr_isValue to _ _ _ Ev1.</a>
+   <a class="tactic" href="condExpr-details.html#253">IsO2: apply evalExpr_isOutput to _ _ _ Ev.</a>
+   <a class="tactic" href="condExpr-details.html#254">IsO3: apply evalExpr_isOutput to _ _ _ Ev1.</a>
+   <a class="tactic" href="condExpr-details.html#255">apply append_nil_output to IsO2.</a> <a class="tactic" href="condExpr-details.html#256">apply append_nil_output to IsO3.</a>
+   <a class="tactic" href="condExpr-details.html#257">Or: apply is_value_eq_or_not to IsV _ with V2 = intVal 0.</a>
+   <a class="tactic" href="condExpr-details.html#258">E: case Or.</a>
+     <span class="comment">%V = intVal 0</span>
+      <a class="tactic" href="condExpr-details.html#259">search.</a>
+     <span class="comment">%V != intVal 0</span>
+      <a class="tactic" href="condExpr-details.html#260">search.</a></div>
+
+<a class="command" href="condExpr-details.html#261">Prove_Constraint looseEval:host:proj_evalStmt_exists.</a>
+<a class="command" href="condExpr-details.html#262">Prove_Constraint looseEval:host:proj_evalStmt_rel.</a>
+
+<a class="command" href="condExpr-details.html#263">Prove_Ext_Ind looseEval:host:evalExpr,
+              looseEval:host:evalArgs,
+              looseEval:host:evalRecFields,
+              looseEval:host:evalStmt.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(264);" id="toggleproof264">[Show Proof]</a>
+<div class="proof" id="proof264" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#264">case IsE.</a> <a class="tactic" href="condExpr-details.html#265">Acc: case Acc.</a> <a class="tactic" href="condExpr-details.html#266">IsN2: apply ext_size_is_int_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#267">IsN3: apply ext_size_is_int_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#268">IsN4: apply plus_integer_is_integer to _ _ R2.</a>
+ <a class="tactic" href="condExpr-details.html#269">L: apply lt_plus_one to R1 _.</a> <a class="tactic" href="condExpr-details.html#270">apply ext_size_pos_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#271">apply ext_size_pos_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#272">LEq2: apply lte_left to R2 _ _ _.</a> <a class="tactic" href="condExpr-details.html#273">LEq3: apply lte_right to R2 _ _ _.</a>
+ <a class="tactic" href="condExpr-details.html#274">LN2: apply lesseq_less_integer_transitive to LEq2 L.</a>
+ <a class="tactic" href="condExpr-details.html#275">LN3: apply lesseq_less_integer_transitive to LEq3 L.</a>
+ <a class="tactic" href="condExpr-details.html#276">A2: apply Acc to _ LN2.</a> <a class="tactic" href="condExpr-details.html#277">A3: apply Acc to _ LN3.</a>
+ <a class="tactic" href="condExpr-details.html#278">apply IH to R3 A2 _ _ _.</a> <a class="tactic" href="condExpr-details.html#279">apply IH to R4 A3 _ _ _.</a>
+ <a class="tactic" href="condExpr-details.html#280">Ev1: apply drop_ext_size_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#281">Ev2: apply drop_ext_size_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#282">IsO2: apply evalExpr_isOutput to _ _ _ Ev1.</a>
+ <a class="tactic" href="condExpr-details.html#283">IsO3: apply evalExpr_isOutput to _ _ _ Ev2.</a>
+ <a class="tactic" href="condExpr-details.html#284">apply append_nil_output to IsO2.</a> <a class="tactic" href="condExpr-details.html#285">apply append_nil_output to IsO3.</a>
+ <a class="tactic" href="condExpr-details.html#286">IsV: apply evalExpr_isValue to _ _ _ Ev2.</a>
+ <a class="tactic" href="condExpr-details.html#287">Or: apply is_value_eq_or_not to IsV _ with V2 = intVal 0.</a> <a class="tactic" href="condExpr-details.html#288">E: case Or.</a>
+   <span class="comment">%V = intVal 0</span>
+    <a class="tactic" href="condExpr-details.html#289">search 20.</a>
+   <span class="comment">%V != intVal 0</span>
+    <a class="tactic" href="condExpr-details.html#290">search 20.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#291">case IsE.</a> <a class="tactic" href="condExpr-details.html#292">Acc: case Acc.</a> <a class="tactic" href="condExpr-details.html#293">IsN2: apply ext_size_is_int_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#294">IsN3: apply ext_size_is_int_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#295">IsN4: apply plus_integer_is_integer to _ _ R2.</a>
+ <a class="tactic" href="condExpr-details.html#296">L: apply lt_plus_one to R1 _.</a> <a class="tactic" href="condExpr-details.html#297">apply ext_size_pos_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#298">apply ext_size_pos_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#299">LEq2: apply lte_left to R2 _ _ _.</a> <a class="tactic" href="condExpr-details.html#300">LEq3: apply lte_right to R2 _ _ _.</a>
+ <a class="tactic" href="condExpr-details.html#301">LN2: apply lesseq_less_integer_transitive to LEq2 L.</a>
+ <a class="tactic" href="condExpr-details.html#302">LN3: apply lesseq_less_integer_transitive to LEq3 L.</a>
+ <a class="tactic" href="condExpr-details.html#303">A2: apply Acc to _ LN2.</a> <a class="tactic" href="condExpr-details.html#304">A3: apply Acc to _ LN3.</a>
+ <a class="tactic" href="condExpr-details.html#305">apply IH to R3 A2 _ _ _.</a> <a class="tactic" href="condExpr-details.html#306">apply IH to R4 A3 _ _ _.</a>
+ <a class="tactic" href="condExpr-details.html#307">Ev1: apply drop_ext_size_evalExpr to R3.</a>
+ <a class="tactic" href="condExpr-details.html#308">Ev2: apply drop_ext_size_evalExpr to R4.</a>
+ <a class="tactic" href="condExpr-details.html#309">IsO2: apply evalExpr_isOutput to _ _ _ Ev1.</a>
+ <a class="tactic" href="condExpr-details.html#310">IsO3: apply evalExpr_isOutput to _ _ _ Ev2.</a>
+ <a class="tactic" href="condExpr-details.html#311">apply append_nil_output to IsO2.</a> <a class="tactic" href="condExpr-details.html#312">apply append_nil_output to IsO3.</a>
+ <a class="tactic" href="condExpr-details.html#313">IsV: apply evalExpr_isValue to _ _ _ Ev2.</a>
+ <a class="tactic" href="condExpr-details.html#314">Or: apply is_value_eq_or_not to IsV _ with V2 = intVal 0.</a> <a class="tactic" href="condExpr-details.html#315">E: case Or.</a>
+   <span class="comment">%V = intVal 0</span>
+    <a class="tactic" href="condExpr-details.html#316">search 20.</a>
+   <span class="comment">%V != intVal 0</span>
+    <a class="tactic" href="condExpr-details.html#317">search 20.</a></div>
+
+
+<a class="command" href="condExpr-details.html#318">Prove looseEval:host:paramName_unique.</a>
+<a class="command" href="condExpr-details.html#319">Prove_Constraint looseEval:host:proj_paramName_forward.</a>
+<a class="command" href="condExpr-details.html#320">Prove_Constraint looseEval:host:proj_paramName_back.</a>
+<a class="command" href="condExpr-details.html#321">Prove looseEval:host:getFunEvalInfo_unique.</a>
+<a class="command" href="condExpr-details.html#322">Prove_Constraint looseEval:host:proj_getFunEvalInfo_forward.</a>
+<a class="command" href="condExpr-details.html#323">Prove_Constraint looseEval:host:proj_getFunEvalInfo_back.</a>
+<a class="command" href="condExpr-details.html#324">Prove looseEval:host:evalProgram_unique.</a>
+<a class="command" href="condExpr-details.html#325">Prove_Constraint looseEval:host:proj_evalProgram.</a>
+<a class="command" href="condExpr-details.html#326">Prove_Constraint looseEval:host:proj_evalProgram_back.</a>
+
+
+<a class="command" href="condExpr-details.html#327">Prove looseEval:host:evalExpr_typePres,
+      looseEval:host:evalStmt_typePres,
+      looseEval:host:evalArgs_typePres,
+      looseEval:host:evalRecFields_typePres.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(328);" id="toggleproof328">[Show Proof]</a>
+<div class="proof" id="proof328" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#328">case IsE.</a> <a class="tactic" href="condExpr-details.html#329">Ty: case Ty.</a> <a class="tactic" href="condExpr-details.html#330">apply IH_E to _ _ _ _ _ Ty1 Ev2 _ _.</a> <a class="tactic" href="condExpr-details.html#331">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#332">case IsE.</a> <a class="tactic" href="condExpr-details.html#333">Ty: case Ty.</a> <a class="tactic" href="condExpr-details.html#334">apply IH_E to _ _ _ _ _ Ty2 Ev2 _ _.</a> <a class="tactic" href="condExpr-details.html#335">search.</a></div>
+
+
+<a class="command" href="condExpr-details.html#336">Prove looseEval:host:paramTy_paramName_same.</a>
+<a class="command" href="condExpr-details.html#337">Prove looseEval:host:funOK_getFunEvalInfo_related.</a>
+
+
+<a class="command" href="condExpr-details.html#338">Prove looseEval:host:evalExpr_output_forms,
+      looseEval:host:evalStmt_output_forms,
+      looseEval:host:evalArgs_output_forms,
+      looseEval:host:evalRecFields_output_forms.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(339);" id="toggleproof339">[Show Proof]</a>
+<div class="proof" id="proof339" style="display: none;">
+<span class="comment">%E-CondExpr-True</span>
+ <a class="tactic" href="condExpr-details.html#339">case IsE.</a> <a class="tactic" href="condExpr-details.html#340">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#341">apply IH_E to _ _ _ Ev2.</a>
+ <a class="tactic" href="condExpr-details.html#342">apply output_forms_append to _ _ Ev3.</a> <a class="tactic" href="condExpr-details.html#343">search.</a>
+<span class="comment">%E-CondExpr-False</span>
+ <a class="tactic" href="condExpr-details.html#344">case IsE.</a> <a class="tactic" href="condExpr-details.html#345">apply IH_E to _ _ _ Ev1.</a> <a class="tactic" href="condExpr-details.html#346">apply IH_E to _ _ _ Ev2.</a>
+ <a class="tactic" href="condExpr-details.html#347">apply output_forms_append to _ _ Ev3.</a> <a class="tactic" href="condExpr-details.html#348">search.</a></div>
+
+<a class="command" href="condExpr-details.html#349">Prove looseEval:host:evalProgram_output_forms.</a>
+<a class="command" href="condExpr-details.html#350">Prove looseEval:host:paramName_exists.</a>
+<a class="command" href="condExpr-details.html#351">Prove looseEval:host:getFunEvalInfo_exists.</a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

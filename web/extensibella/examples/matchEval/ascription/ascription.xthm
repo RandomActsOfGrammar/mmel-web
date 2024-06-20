@@ -1,0 +1,284 @@
+Module matchEval:ascription.
+
+/********************************************************************
+ Basic Projection Constraints
+ ********************************************************************/
+Prove_Constraint matchEval:host:proj_expr_unique.
+%ascribe
+ case PrB. search.
+Prove_Constraint matchEval:host:proj_expr_is.
+%ascribe
+ case IsE. search.
+
+Prove_Constraint matchEval:host:proj_stmt_unique.
+Prove_Constraint matchEval:host:proj_stmt_is.
+Prove_Constraint matchEval:host:proj_stmt_other.
+
+Prove_Constraint matchEval:host:proj_fun_unique.
+Prove_Constraint matchEval:host:proj_fun_is.
+
+Prove_Constraint matchEval:host:proj_param_unique.
+Prove_Constraint matchEval:host:proj_param_is.
+
+Prove_Constraint matchEval:host:proj_program_unique.
+Prove_Constraint matchEval:host:proj_program_is.
+
+Prove_Constraint matchEval:host:proj_typ_unique.
+Prove_Constraint matchEval:host:proj_typ_is.
+
+Prove_Constraint matchEval:host:proj_value_unique.
+Prove_Constraint matchEval:host:proj_value_is.
+
+
+
+
+/********************************************************************
+ Decidable Equality
+ ********************************************************************/
+Add_Proj_Rel matchEval:host:is_expr, matchEval:host:is_args,
+             matchEval:host:is_recFieldExprs.
+Prove_Ext_Ind matchEval:host:is_expr, matchEval:host:is_args,
+   matchEval:host:is_recFieldExprs.
+apply IH to R1. search.
+Add_Proj_Rel matchEval:host:is_stmt.
+Prove_Ext_Ind matchEval:host:is_stmt.
+
+
+Prove matchEval:host:is_args_nilArgs_or_consArgs.
+Prove matchEval:host:is_recFieldExprs_nilRecFieldExprs_or_consRecFieldExprs.
+
+
+
+
+/********************************************************************
+ Variables
+ ********************************************************************/
+Prove matchEval:host:vars_unique.
+%V-Ascribe
+ case IsE. VarsB: case VarsB. apply IH to _ VarsA1 VarsB. search.
+
+Prove matchEval:host:vars_is.
+%V-Ascribe
+ case IsE. apply IH to _ V1. search.
+
+Prove matchEval:host:vars_exist,
+      matchEval:host:varsArgs_exist,
+      matchEval:host:varsRecFields_exist.
+%vars_exist
+ %ascribe
+  apply IH to IsE1. search.
+
+Prove_Constraint matchEval:host:proj_expr_vars.
+V: case V. case IsE. apply vars_unique to _ V V_P. search.
+
+
+
+
+/********************************************************************
+ Typing
+ ********************************************************************/
+Prove matchEval:host:typeOf_isTy.
+%typeOf_isTy
+ %T-Ascribe
+  case IsE. apply IH to _ _ _ Ty1. search.
+Prove matchEval:host:stmtOK_isCtx.
+
+Prove matchEval:host:stmtOK_keep_scopes.
+Prove matchEval:host:stmtOK_older_scopes_same.
+Prove matchEval:host:stmtOK_first_scope_lookup_same.
+
+Prove matchEval:host:typeOf_unique.
+%typeOf_unique
+ %T-Ascribe
+  case IsE. TyB: case TyB. apply IH_E to _ _ _ _ TyA1 TyB _. search.
+Prove matchEval:host:stmtOK_unique.
+
+Prove matchEval:host:paramTy_is.
+Prove matchEval:host:getFunInfo_is.
+Prove matchEval:host:paramTy_exists.
+Prove matchEval:host:getFunInfo_exists.
+
+
+
+
+/********************************************************************
+ Evaluation
+ ********************************************************************/
+Prove matchEval:host:matchInt_is.
+Prove matchEval:host:matchString_is.
+Prove matchEval:host:matchRec_is.
+
+Prove matchEval:host:evalExpr_isValue,
+      matchEval:host:evalStmt_isCtx,
+      matchEval:host:evalArgs_isValue,
+      matchEval:host:evalRecFields_isValue.
+%evalExpr_isValue
+ %E-Ascribe
+  case IsE. apply IH_V_E to _ _ _ Ev1. search.
+
+Prove matchEval:host:evalExpr_isOutput,
+      matchEval:host:evalStmt_isOutput,
+      matchEval:host:evalArgs_isOutput,
+      matchEval:host:evalRecFields_isOutput.
+%evalExpr_isOutput
+ %E-Ascribe
+  case IsE. apply IH_E to _ _ _ Ev1. search.
+
+Prove matchEval:host:paramName_is.
+Prove matchEval:host:getFunEvalInfo_is.
+
+Prove matchEval:host:evalProgram_isOutput.
+
+
+Prove matchEval:host:evalStmt_names_same.
+
+
+Prove matchEval:host:matchInt_unique.
+Prove matchEval:host:matchTrue_matchFalse_exclusive.
+Prove matchEval:host:matchString_unique.
+Prove matchEval:host:matchRec_unique.
+Prove matchEval:host:matchInt_matchTrue_exclusive.
+Prove matchEval:host:matchInt_matchFalse_exclusive.
+Prove matchEval:host:matchInt_matchString_exclusive.
+Prove matchEval:host:matchInt_matchRec_exclusive.
+Prove matchEval:host:matchString_matchTrue_exclusive.
+Prove matchEval:host:matchString_matchFalse_exclusive.
+Prove matchEval:host:matchString_matchRec_exclusive.
+Prove matchEval:host:matchRec_matchTrue_exclusive.
+Prove matchEval:host:matchRec_matchFalse_exclusive.
+
+
+Prove matchEval:host:evalExpr_rel,
+      matchEval:host:evalExpr_rel_output,
+      matchEval:host:evalStmt_newNameScopes_output,
+      matchEval:host:evalStmt_newNameScopes,
+      matchEval:host:evalArgs_rel,
+      matchEval:host:evalArgs_rel_output,
+      matchEval:host:evalRecFields_rel,
+      matchEval:host:evalRecFields_rel_output.
+%evalExpr_rel
+ Is: case IsE. EvB: case EvB. Vars: case Vars.
+ apply IH_V_E to _ _ _ _ EvA1 EvB _ _. search.
+%evalExpr_rel_output
+ case IsE. EvB: case EvB. Vars: case Vars.
+ apply IH_O_E to _ _ _ _ EvA1 EvB _ _. search.
+
+
+Add_Ext_Size matchEval:host:evalExpr, matchEval:host:evalStmt,
+             matchEval:host:evalArgs, matchEval:host:evalRecFields.
+Add_Proj_Rel matchEval:host:evalExpr, matchEval:host:evalStmt,
+             matchEval:host:evalArgs, matchEval:host:evalRecFields.
+
+
+Prove matchEval:host:evalExpr_rel_exists_ES,
+      matchEval:host:evalStmt_newNameScopes_exists_ES,
+      matchEval:host:evalArgs_rel_exists_ES,
+      matchEval:host:evalRecFields_rel_exists_ES.
+%E-Ascribe
+ Is: case IsE. Vars: case Vars.
+ apply IH_E to _ _ _ _ EvB2 Vars _ with EE_A = EE_A. search.
+
+
+Prove matchEval:host:evalExpr_scopes_same,
+      matchEval:host:evalStmt_scopes_same,
+      matchEval:host:evalStmt_scopes_same_ctx,
+      matchEval:host:evalArgs_scopes_same,
+      matchEval:host:evalRecFields_scopes_same.
+%evalExpr_scopes_same
+ case IsE. EvB: case EvB. apply IH_E to _ _ _ _ SS EvA1 EvB. search.
+
+Prove matchEval:host:evalExpr_scopes_same_exists,
+      matchEval:host:evalStmt_scopes_same_exists,
+      matchEval:host:evalArgs_scopes_same_exists,
+      matchEval:host:evalRecFields_scopes_same_exists.
+case IsE. apply IH_E to _ _ _ _ SS EvA1. search.
+
+
+Prove_Constraint matchEval:host:proj_matchInt.
+Prove_Constraint matchEval:host:proj_matchTrue.
+Prove_Constraint matchEval:host:proj_matchFalse.
+Prove_Constraint matchEval:host:proj_matchString.
+Prove_Constraint matchEval:host:proj_matchRec.
+Add_Proj_Rel matchEval:host:matchInt.
+Prove_Ext_Ind matchEval:host:matchInt.
+Add_Proj_Rel matchEval:host:matchTrue.
+Prove_Ext_Ind matchEval:host:matchTrue.
+Add_Proj_Rel matchEval:host:matchFalse.
+Prove_Ext_Ind matchEval:host:matchFalse.
+Add_Proj_Rel matchEval:host:matchRec.
+Prove_Ext_Ind matchEval:host:matchRec.
+Add_Proj_Rel matchEval:host:matchString.
+Prove_Ext_Ind matchEval:host:matchString.
+Prove matchEval:host:projedVal_is.
+Prove matchEval:host:projedVal_matchInt.
+Prove matchEval:host:projedVal_matchString.
+Prove matchEval:host:projedVal_matchTrue.
+Prove matchEval:host:projedVal_matchFalse.
+Prove matchEval:host:projedVal_matchRec.
+
+Prove_Constraint matchEval:host:matchInt_proj.
+Prove_Constraint matchEval:host:matchTrue_proj.
+Prove_Constraint matchEval:host:matchFalse_proj.
+Prove_Constraint matchEval:host:matchString_proj.
+Prove_Constraint matchEval:host:matchRec_proj.
+Prove matchEval:host:matchInt_projedVal.
+Prove matchEval:host:matchTrue_projedVal.
+Prove matchEval:host:matchFalse_projedVal.
+Prove matchEval:host:matchString_projedVal.
+Prove matchEval:host:matchRec_projedVal.
+
+Prove_Constraint matchEval:host:proj_evalExpr_forward.
+case IsE. Ev: case Ev. exists V. split.
+  %eval
+   search.
+  %projedVal
+   apply evalExpr_isValue to _ _ _ Ev. search.
+
+Prove_Constraint matchEval:host:proj_evalStmt_forward.
+
+
+Prove_Ext_Ind matchEval:host:evalExpr,
+              matchEval:host:evalArgs,
+              matchEval:host:evalRecFields,
+              matchEval:host:evalStmt.
+case IsE. apply ext_size_is_int_evalExpr to R2.
+L: apply lt_plus_one to R1 _. Acc: case Acc.
+apply ext_size_pos_evalExpr to R2. A: apply Acc to _ L.
+apply IH to R2 A _ _ _. Names: apply names_exists to IsEE. search.
+
+
+Prove matchEval:host:paramName_unique.
+Prove_Constraint matchEval:host:proj_paramName_forward.
+Prove_Constraint matchEval:host:proj_paramName_back.
+Prove matchEval:host:getFunEvalInfo_unique.
+Prove_Constraint matchEval:host:proj_getFunEvalInfo_forward.
+Prove_Constraint matchEval:host:proj_getFunEvalInfo_back.
+
+Prove matchEval:host:evalProgram_unique.
+Prove_Constraint matchEval:host:proj_evalProgram_forward.
+Prove_Constraint matchEval:host:proj_evalProgram_back.
+
+
+Prove matchEval:host:matchRec_typePres.
+Prove matchEval:host:evalExpr_typePres,
+      matchEval:host:evalStmt_typePres,
+      matchEval:host:evalArgs_typePres,
+      matchEval:host:evalRecFields_typePres.
+%evalExpr_typePres
+ %E-Ascribe
+  case IsE. Ty: case Ty. apply IH_E to _ _ _ _ _ Ty Ev1 _ _. search.
+
+Prove matchEval:host:paramTy_paramName_same.
+Prove matchEval:host:funOK_getFunEvalInfo_related.
+
+Prove matchEval:host:evalExpr_output_forms,
+      matchEval:host:evalStmt_output_forms,
+      matchEval:host:evalArgs_output_forms,
+      matchEval:host:evalRecFields_output_forms.
+%evalExpr_output_forms
+ %E-Ascribe
+  case IsE. apply IH_E to _ _ _ Ev1. search.
+
+Prove matchEval:host:evalProgram_output_forms.
+Prove matchEval:host:paramName_exists.
+Prove matchEval:host:getFunEvalInfo_exists.

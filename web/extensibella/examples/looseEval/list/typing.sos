@@ -1,0 +1,73 @@
+Module looseEval:list
+
+/********************************************************************
+ Expression Typing
+ ********************************************************************/
+
+------------------------------- [T-Nil]
+typeOf FC TC nil(Ty) listTy(Ty)
+
+
+typeOf FC TC E1 Ty
+typeOf FC TC E2 listTy(Ty)
+------------------------------------ [T-Cons]
+typeOf FC TC cons(E1, E2) listTy(Ty)
+
+
+typeOf FC TC E listTy(Ty)
+------------------------- [T-Head]
+typeOf FC TC head(E) Ty
+
+
+typeOf FC TC E listTy(Ty)
+------------------------------- [T-Tail]
+typeOf FC TC tail(E) listTy(Ty)
+
+
+typeOf FC TC E listTy(Ty)
+--------------------------- [T-Null]
+typeOf FC TC null(E) boolTy
+
+
+typeOf FC TC L listTy(Ty)
+typeOf FC TC I intTy
+--------------------------- [T-Index]
+typeOf FC TC index(L, I) Ty
+
+
+typeOf FC TC E listTy(Ty)
+---------------------------- [T-Length]
+typeOf FC TC length(E) intTy
+
+
+
+/********************************************************************
+ Statement Typing
+ ********************************************************************/
+
+lookupScopes L TC listTy(Ty)
+typeOf FC TC I intTy
+typeOf FC TC E Ty
+----------------------------------- [T-ListUpdate]
+stmtOK FC TC listUpdate(L, I, E) TC
+
+
+typeOf FC TC L listTy(Ty)
+stmtOK FC [(X, Ty)]::TC Body TC1
+--------------------------------------- [T-ListForeach]
+stmtOK FC TC listForeach(X, L, Body) TC
+
+
+
+/********************************************************************
+ Value Typing
+ ********************************************************************/
+
+--------------------------- [VT-Nil]
+valueType nilVal listTy(Ty)
+
+
+valueType Hd Ty
+valueType Tl listTy(Ty)
+------------------------------------ [VT-Cons]
+valueType consVal(Hd, Tl) listTy(Ty)

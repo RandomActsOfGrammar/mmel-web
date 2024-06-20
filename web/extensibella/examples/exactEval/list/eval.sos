@@ -1,0 +1,154 @@
+Module exactEval:list
+
+/********************************************************************
+ Expression Evaluation
+ ********************************************************************/
+
+-------------------------------------------------------- [E-Nil]
+evalExpr FE EE nil(Ty) recVal([("null", trueVal)]) EE []
+
+
+evalExpr FE EE E1 V1 EE1 O1
+evalExpr FE EE1 E2 V2 EE2 O2
+O1 ++ O2 = O
+--------------------------------------------- [E-Cons]
+{evalExpr FE EE cons(E1, E2)
+    recVal([("null", falseVal), ("head", V1),
+            ("tail", V2)]) EE2 O}
+
+
+evalExpr FE EE E recVal(Fields) EE1 O
+lookup Fields "head" Hd
+------------------------------------- [E-Head]
+evalExpr FE EE head(E) Hd EE1 O
+
+
+evalExpr FE EE E recVal(Fields) EE1 O
+lookup Fields "tail" Tl
+------------------------------------- [E-Tail]
+evalExpr FE EE tail(E) Tl EE1 O
+
+
+evalExpr FE EE E recVal(Fields) EE1 O
+lookup Fields "null" V
+------------------------------------- [E-Null]
+evalExpr FE EE null(E) V EE1 O
+
+
+evalExpr FE EE L LV EE1 O1
+evalExpr FE EE1 I intVal(Idx) EE2 O2
+listIndex LV Idx V
+O1 ++ O2 = O
+------------------------------------ [E-Index]
+evalExpr FE EE index(L, I) V EE2 O
+
+
+evalExpr FE EE E V EE1 O
+listLength V I
+---------------------------------------- [E-Length]
+evalExpr FE EE length(E) intVal(I) EE1 O
+
+
+Fixed Judgment listIndex : value int value
+Fixed Judgment listLength : value int
+
+lookup Fields "head" V
+============================ [LI-0]
+listIndex recVal(Fields) 0 V
+
+
+N - 1 = I
+lookup Fields "tail" Tl
+listIndex Tl I V
+============================ [LI-Step]
+listIndex recVal(Fields) N V
+
+
+
+lookup Fields "null" trueVal
+============================ [LL-Nil]
+listLength recVal(Fields) 0
+
+
+lookup Fields "null" falseVal
+lookup Fields "tail" Tl
+listLength Tl I
+I + 1 = N
+============================= [LL-Cons]
+listLength recVal(Fields) N
+
+
+
+/********************************************************************
+ Statement Evaluation
+ ********************************************************************/
+
+evalExpr FE EE I intVal(N) EE1 O1
+evalExpr FE EE1 E V EE2 O2
+lookupScopes L EE2 LV /*lookup after I and E changes to make proj eval right*/
+updateListIndex LV N V LV2 /*make the new list*/
+replaceScopes L LV2 EE2 EE3 /*put it in its place*/
+O1 ++ O2 = O
+---------------------------------------- [E-ListUpdate]
+evalStmt FE EE listUpdate(L, I, E) EE3 O
+
+
+evalExpr FE EE L LV EE1 O1
+iterateList FE EE1 LV X Body EE2 O2
+O1 ++ O2 = O
+-------------------------------------------- [E-ListForeach]
+evalStmt FE EE listForeach(X, L, Body) EE2 O
+
+
+
+                  /*original list, index, new value, new list*/
+Fixed Judgment updateListIndex : value int value value
+
+/*we need to check the null field to get projection evaluation to
+  follow from this, as it requires the null field; otherwise it is not
+  needed*/
+lookup Fields "null" falseVal
+replaceRecVal "head" VNew Fields NewFields
+======================================================= [ULI-0]
+updateListIndex recVal(Fields) 0 VNew recVal(NewFields)
+
+
+/*we need to check the null field to get projection evaluation to
+  follow from this, as it requires the null field; otherwise it is not
+  needed*/
+lookup Fields "null" falseVal
+N - 1 = I
+lookup Fields "tail" Tl
+updateListIndex Tl I V TlNew
+replaceRecVal "tail" TlNew Fields NewFields
+==================================================== [ULI-Step]
+updateListIndex recVal(Fields) N V recVal(NewFields)
+
+
+
+/*execute the body once for each element of the list:
+     iterateList (fun ctx) (init eval ctx) (list val) (name for list elements)
+                 (loop body) (final eval ctx) (printed output)*/
+Judgment iterateList : {[(string, (string, value, [string], stmt))] [[(string, value)]]
+                        value* string stmt [[(string, value)]] [value]}
+
+lookup Fields "null" trueVal
+--------------------------------------------- [IL-Nil]
+iterateList FE EE recVal(Fields) X Body EE []
+
+
+lookup Fields "null" falseVal
+lookup Fields "head" Hd
+evalStmt FE [(X, Hd)]::EE Body Scope::EE1 O1
+lookup Fields "tail" Tl
+iterateList FE EE1 Tl X Body EE2 O2
+O1 ++ O2 = O
+--------------------------------------------- [IL-Cons]
+iterateList FE EE recVal(Fields) X Body EE2 O
+
+
+/*shouldn't have any extension-introduced constructors, so default
+  rule should never hold*/
+1 = 0
+-------------------------------- [IL-Default]*
+iterateList FE EE V X Body EE1 O
