@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  mtc:natCase - Details</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h2>Reasoning Details</h2>
+<div class="section">
+<pre class="code extensibella">
+ < <b>Module mtc:natCase.</b>
+</pre>
+<pre class="code extensibella"id="1">
+ &lt; <b>Prove mtc:shared_declarations:type_preservation.</b>
+
+Subgoal 3:
+
+Variables: TG Ty EG V S X Z E1
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ty : typeOf TG (natCase E1 Z X S) Ty
+Ev : eval EG (natCase E1 Z X S) V @
+Ev1 : eval EG E1 (numVal z) *
+Ev2 : eval EG Z V *
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="2">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 3:
+
+Variables: TG Ty EG V S X Z E1
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG (natCase E1 Z X S) V @
+Ev1 : eval EG E1 (numVal z) *
+Ev2 : eval EG Z V *
+Ty : typeOf TG E1 natTy
+Ty1 : typeOf TG Z Ty
+Ty2 : typeOf ((X, natTy)::TG) S Ty
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="3">
+ &lt; <b>apply IH to _ Ty1 Ev2.</b>
+
+Subgoal 3:
+
+Variables: TG Ty EG V S X Z E1
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG (natCase E1 Z X S) V @
+Ev1 : eval EG E1 (numVal z) *
+Ev2 : eval EG Z V *
+Ty : typeOf TG E1 natTy
+Ty1 : typeOf TG Z Ty
+Ty2 : typeOf ((X, natTy)::TG) S Ty
+H1 : valueType V Ty
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="4">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: TG Ty EG V N S X Z E1
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ty : typeOf TG (natCase E1 Z X S) Ty
+Ev : eval EG (natCase E1 Z X S) V @
+Ev1 : eval EG E1 (numVal (s N)) *
+Ev2 : eval ((X, numVal N)::EG) S V *
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="5">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 4:
+
+Variables: TG Ty EG V N S X Z E1
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG (natCase E1 Z X S) V @
+Ev1 : eval EG E1 (numVal (s N)) *
+Ev2 : eval ((X, numVal N)::EG) S V *
+Ty : typeOf TG E1 natTy
+Ty1 : typeOf TG Z Ty
+Ty2 : typeOf ((X, natTy)::TG) S Ty
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="6">
+ &lt; <b>apply IH to _ Ty2 Ev2.</b>
+
+Subgoal 4:
+
+Variables: TG Ty EG V N S X Z E1
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG (natCase E1 Z X S) V @
+Ev1 : eval EG E1 (numVal (s N)) *
+Ev2 : eval ((X, numVal N)::EG) S V *
+Ty : typeOf TG E1 natTy
+Ty1 : typeOf TG Z Ty
+Ty2 : typeOf ((X, natTy)::TG) S Ty
+H1 : valueType V Ty
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="7">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

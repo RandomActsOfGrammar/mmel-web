@@ -1,0 +1,97 @@
+Module mtc:bool
+
+Builds on mtc:shared_declarations
+
+e ::= ...
+    | trueE
+    | falseE
+    | ifThenElse(e, e, e)
+
+v ::= ...
+    | trueVal
+    | falseVal
+
+ty ::= ...
+     | boolTy
+
+
+--------------------- [T-True]
+typeOf G trueE boolTy
+
+
+---------------------- [T-False]
+typeOf G falseE boolTy
+
+
+typeOf G C boolTy
+typeOf G T Ty
+typeOf G F Ty
+------------------------------- [T-IfThenElse]
+typeOf G ifThenElse(C, T, F) Ty
+
+
+
+-------------------- [E-True]
+eval G trueE trueVal
+
+
+---------------------- [E-False]
+eval G falseE falseVal
+
+
+eval G C trueVal
+eval G T V
+---------------------------- [E-IfThenElse-True]
+eval G ifThenElse(C, T, F) V
+
+
+eval G C falseVal
+eval G F V
+---------------------------- [E-IfThenElse-False]
+eval G ifThenElse(C, T, F) V
+
+
+
+------------------------ [VT-True]
+valueType trueVal boolTy
+
+
+------------------------- [VT-False]
+valueType falseVal boolTy
+
+
+
+-------------------- [C-BoolTy-True]
+canon boolTy trueVal
+
+
+--------------------- [C-BoolTy-False]
+canon boolTy falseVal
+
+
+
+
+
+
+-------------------- [Proj-True]
+|{e}- trueE ~~> nilE
+
+
+--------------------- [Proj-False]
+|{e}- falseE ~~> nilE
+
+
+---------------------------------- [Proj-IfThenElse]
+|{e}- ifThenElse(C, T, F) ~~> nilE
+
+
+---------------------- [Proj-TrueVal]
+|{v}- trueVal ~~> nilV
+
+
+----------------------- [Proj-FalseVal]
+|{v}- falseVal ~~> nilV
+
+
+----------------------- [Proj-BoolTy]
+|{ty}- boolTy ~~> nilTy

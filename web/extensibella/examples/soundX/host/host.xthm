@@ -1,0 +1,605 @@
+Module soundX:host.
+
+/********************************************************************
+ We prove properties about typing, as well as projection constraints,
+ for all constructs, regardless of which module is introducing them.
+ ********************************************************************/
+Theorem lookup_ty_is : forall Ctx X Ty,
+  is_list (is_pair is_string is_ty) Ctx -> lookup Ctx X Ty ->
+  is_ty Ty.
+induction on 2. intros Is L. L: case L.
+  %Lkp-Here
+   Is: case Is. case Is. search.
+  %Lkp-Later
+   Is: case Is. apply IH to _ L1. search.
+
+
+Projection_Constraint
+  proj_ty_is : forall Ty Ty',
+    Proj : |{ty}- Ty ~~> Ty' ->
+    IsTy : is_ty Ty ->
+    is_ty Ty'.
+
+
+/*
+  This goes before proj_is because projection might depend on the
+  context, and thus the type, so we might need this to prove that.
+*/
+Extensible_Theorem
+  type_is : forall Ctx T Ty,
+    IsCtx : is_list (is_pair is_string is_ty) Ctx ->
+    IsT : is_tm T ->
+    Ty : typeOf Ctx T Ty ->
+    is_ty Ty
+  on Ty.
+%T-Var
+ apply lookup_ty_is to _ Ty1. search.
+%T-Abs
+ Is: case IsT. apply IH to _ _ Ty1. search.
+%T-App
+ Is: case IsT. IsTy: apply IH to _ _ Ty1. case IsTy. search.
+%T-Num
+ search.
+%T-Plus
+ search.
+
+
+Projection_Constraint
+  proj_is : forall Ctx T T',
+    Proj : Ctx |{tm}- T ~~> T' ->
+    IsCtx : is_list (is_pair is_string is_ty) Ctx ->
+    IsT : is_tm T ->
+    is_tm T'.
+
+
+Extensible_Theorem
+  type_unique : forall Ctx T TyA TyB,
+    IsCtx : is_list (is_pair is_string is_ty) Ctx ->
+    IsT : is_tm T ->
+    TyA : typeOf Ctx T TyA ->
+    TyB : typeOf Ctx T TyB ->
+    TyA = TyB
+  on TyA.
+%T-Var
+ TyB: case TyB. apply lookup_unique to TyA1 TyB. search.
+%T-Abs
+ case IsT. TyB: case TyB. apply IH to _ _ TyA1 TyB. search.
+%T-App
+ case IsT. TyB: case TyB. apply IH to _ _ TyA1 TyB.
+ apply IH to _ _ TyA2 TyB1. search.
+%T-Num
+ case TyB. search.
+%T-Plus
+ case TyB. search.
+
+
+Extensible_Theorem
+  ty_lookup : forall Ctx1 Ctx2 T Ty,
+    Ty : typeOf Ctx1 T Ty ->
+    L : (forall X XTy, lookup Ctx1 X XTy -> lookup Ctx2 X XTy) ->
+    typeOf Ctx2 T Ty
+  on Ty.
+%T-Var
+ apply L to Ty1. search.
+%T-Abs
+ apply IH to Ty1 _ with Ctx2 = (X, Ty1)::Ctx2.
+   intros LkpX. LkpX: case LkpX.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply L to LkpX1. search.
+ search.
+%T-App
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+%T-Num
+ search.
+%T-Plus
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+
+
+Theorem empty_ty_any : forall T Ty Ctx,
+  typeOf [] T Ty -> typeOf Ctx T Ty.
+intros T. backchain ty_lookup. intros L. case L.
+
+
+Projection_Constraint proj_ty_unique : forall Ty TyA TyB,
+  |{ty}- Ty ~~> TyA -> |{ty}- Ty ~~> TyB -> is_ty Ty -> TyA = TyB.
+
+
+Projection_Constraint proj_tm_unique : forall Ctx T TA TB,
+  Ctx |{tm}- T ~~> TA -> Ctx |{tm}- T ~~> TB ->
+  is_tm T -> is_list (is_pair is_string is_ty) Ctx -> TA = TB.
+
+
+
+/********************************************************************
+ Everything is desugared before we get to evaluation, and we need
+ some properties about desugarings.
+ ********************************************************************/
+Theorem lookup_desugar_ctx : forall Ctx X Ty Ctx',
+  lookup Ctx X Ty -> desugar_ctx Ctx Ctx' ->
+  exists Ty', lookup Ctx' X Ty' /\ desugar_ty Ty Ty'.
+induction on 1. intros L D. L: case L.
+  %Lkp-Here
+   case D. search.
+  %Lkp-Later
+   D: case D. apply IH to L1 D1. search.
+
+Theorem desugar_ty_unique : forall Ty TyA TyB,
+  is_ty Ty -> desugar_ty Ty TyA -> desugar_ty Ty TyB -> TyA = TyB.
+induction on 2. intros IsTy DA DB. DA: case DA.
+  %DS-ArrowTy
+   DB: case DB.
+     %DS-ArrowTy
+      case IsTy. apply IH to _ DA DB. apply IH to _ DA1 DB1. search.
+     %DS-OtherTy
+      case DB.
+  %DS-IntTy
+   DB: case DB.
+     %DS-IntTy
+      search.
+     %DS-OtherTy
+      case DB.
+  %DS-OtherTy
+   DB: case DB.
+     %DS-ArrowTy
+      case DA.
+     %DS-IntTy
+      case DA.
+     %DS-OtherTy
+      apply proj_ty_unique to DA DB _. apply proj_ty_is to DA _.
+      apply IH to _ DA1 DB1. search.
+
+Theorem desugar_tm_unique : forall Ctx T TA TB,
+  is_list (is_pair is_string is_ty) Ctx -> is_tm T ->
+  desugar_tm Ctx T TA -> desugar_tm Ctx T TB -> TA = TB.
+induction on 3. intros IsCtx IsT DA DB. DA: case DA.
+  %DS-Var
+   DB: case DB.
+     %DS-Var
+      search.
+     %DS-OtherTm
+      case DB.
+  %DS-Abs
+   DB: case DB.
+     %DS-Abs
+      case IsT. apply IH to _ _ DA1 DB1.
+      apply desugar_ty_unique to _ DA DB. search.
+     %DS-OtherTm
+      case DB.
+  %DS-App
+   DB: case DB.
+     %DS-App
+      case IsT. apply IH to _ _ DA DB. apply IH to _ _ DA1 DB1.
+      search.
+     %DS-OtherTm
+      case DB.
+  %DS-Num
+   DB: case DB.
+     %DS-Num
+      search.
+     %DS-OtherTm
+      case DB.
+  %DS-Plus
+   DB: case DB.
+     %DS-Plus
+      case IsT. apply IH to _ _ DA DB. apply IH to _ _ DA1 DB1.
+      search.
+     %DS-OtherTm
+      case DB.
+  %DS-OtherTm
+   DB: case DB.
+     %DS-Var
+      case DA.
+     %DS-Abs
+      case DA.
+     %DS-App
+      case DA.
+     %DS-Num
+      case DA.
+     %DS-Plus
+      case DA.
+     %DS-OtherTm
+      apply proj_tm_unique to DA DB _ _. apply proj_is to DA _ _.
+      apply IH to _ _ DA1 DB1. search.
+
+Extensible_Theorem
+  desugar_ty_exists : forall Ty,
+    IsTy : is_ty Ty ->
+    exists Ty', desugar_ty Ty Ty'
+  on IsTy.
+%arrowTy
+ apply IH to IsTy1. apply IH to IsTy2. search.
+%intTy
+ search.
+
+
+%These are like the is_tm and is_ty predicates Sterling generates, but
+%only for the host language's constructs.
+Define host_is_ty : ty -> prop by
+host_is_ty (arrowTy Ty1 Ty2) := host_is_ty Ty1 /\ host_is_ty Ty2;
+host_is_ty intTy.
+Define host_is_tm : tm -> prop by
+host_is_tm (var X) := is_string X;
+host_is_tm (abs X Ty B) :=
+  is_string X /\ host_is_ty Ty /\ host_is_tm B;
+host_is_tm (app A B) := host_is_tm A /\ host_is_tm B;
+host_is_tm (num I) := is_integer I;
+host_is_tm (plus A B) := host_is_tm A /\ host_is_tm B.
+
+
+Theorem desugar_ty_host_is_ty : forall Ty DTy,
+  is_ty Ty -> desugar_ty Ty DTy -> host_is_ty DTy.
+induction on 2. intros IsTy DS. DS: case DS.
+  %DS-ArrowTy
+   case IsTy. apply IH to _ DS. apply IH to _ DS1. search.
+  %DS-IntTy
+   search.
+  %DS-Proj
+   apply proj_ty_is to DS _. apply IH to _ DS1. search.
+
+Theorem desugar_tm_host_is_tm : forall Ctx T DT,
+  is_tm T -> is_list (is_pair is_string is_ty) Ctx ->
+  desugar_tm Ctx T DT -> host_is_tm DT.
+induction on 3. intros IsT IsCtx DS. DS: case DS.
+  %DTm-Var
+   case IsT. search.
+  %DTm-Abs
+   case IsT. apply desugar_ty_host_is_ty to _ DS. apply IH to _ _ DS1.
+   search.
+  %DTm-App
+   case IsT. apply IH to _ _ DS. apply IH to _ _ DS1. search.
+  %DTm-Num
+   case IsT. search.
+  %DTm-Plus
+   case IsT. apply IH to _ _ DS. apply IH to _ _ DS1. search.
+  %DTm-Proj
+   apply proj_is to DS _ _. apply IH to _ _ DS1. search.
+
+
+/********************************************************************
+ SoundX's Property:
+ Desugared terms have desugared types
+ ********************************************************************/
+Extensible_Theorem
+  desugar_ty_rel : forall Ctx T Ty T' Ty' Ctx',
+    IsT : is_tm T ->
+    IsCtx : is_list (is_pair is_string is_ty) Ctx ->
+    Ty : typeOf Ctx T Ty ->
+    DT : desugar_tm Ctx T T' ->
+    DTy : desugar_ty Ty Ty' ->
+    DCtx : desugar_ctx Ctx Ctx' ->
+    typeOf Ctx' T' Ty'
+  on Ty.
+%T-Var
+ L: apply lookup_desugar_ctx to Ty1 DCtx. DT: case DT.
+   %DS-Var
+    apply lookup_ty_is to _ Ty1. apply desugar_ty_unique to _ L1 DTy.
+    search.
+   %DS-OtherTm
+    case DT.
+%T-Abs
+ case IsT. DT: case DT.
+   %DS-Abs
+    DTy: case DTy.
+      %DS-ArrowTy
+       apply desugar_ty_unique to _ DT DTy.
+       apply IH to _ _ Ty1 DT1 DTy1 _. search.
+      %DS-OtherTy
+       case DTy.
+   %DS-OtherTm
+    case DT.
+%T-App
+ case IsT. DT: case DT.
+   %DS-App
+    IsTy: apply type_is to _ _ Ty1. Is: case IsTy.
+    apply desugar_ty_exists to Is. apply desugar_ty_exists to Is1.
+    apply IH to _ _ Ty1 DT _ _. apply IH to _ _ Ty2 DT1 _ _. search.
+   %DS-OtherTm
+    case DT.
+%T-Num
+ DT: case DT.
+   %DS-Num
+    DTy: case DTy.
+      %DS-IntTy
+       search.
+      %DS-OtherTy
+       case DTy.
+   %DS-OtherTm
+    case DT.
+%T-Plus
+ case IsT. DT: case DT.
+   %DS-Plus
+    DTy: case DTy.
+      %DS-IntTy
+       apply IH to _ _ Ty1 DT _ _. apply IH to _ _ Ty2 DT1 _ _.
+       search.
+      %DS-OtherTy
+       case DTy.
+   %DS-OtherTm
+    case DT.
+
+
+/********************************************************************
+ We can prove properties about evaluation and substitution for the
+ host language alone because everything is desugared before we
+ evaluate it.
+ ********************************************************************/
+Theorem subst_is : forall X R T S,
+  is_tm T -> is_string X -> is_tm R -> subst X R T S -> is_tm S.
+induction on 4. intros IsT IsX IsR S. S: case S.
+  %S-Var-NEq
+   search.
+  %S-Var-Eq
+   search.
+  %S-Abs-NEq
+   Is: case IsT. apply IH to _ _ _ S1. search.
+  %S-Abs-Eq
+   search.
+  %S-App
+   Is: case IsT. apply IH to _ _ _ S. apply IH to _ _ _ S1. search.
+  %S-Num
+   search.
+  %S-Plus
+   Is: case IsT. apply IH to _ _ _ S. apply IH to _ _ _ S1. search.
+
+
+Theorem eval_is : forall T T',
+  is_tm T -> eval T T' -> is_tm T'.
+induction on 2. intros IsT Ev. Ev: case Ev.
+  %E-App-Step1
+   Is: case IsT. apply IH to _ Ev. search.
+  %E-App-Step2
+   Is: case IsT. apply IH to _ Ev1. search.
+  %E-App-Subst
+   Is: case IsT. case Is. apply subst_is to _ _ _ Ev1. search.
+  %E-Plus-Step1
+   Is: case IsT. apply IH to _ Ev. search.
+  %E-Plus-Step2
+   Is: case IsT. apply IH to _ Ev1. search.
+  %E-Plus-Add
+   Is: case IsT. case Is. case Is1.
+   apply plus_integer_is_integer to _ _ Ev. search.
+
+
+Theorem subst_unique : forall X R T VA VB,
+  subst X R T VA -> subst X R T VB -> VA = VB.
+induction on 1. intros SA SB. SA: case SA.
+  %S-Var-NEq
+   SB: case SB.
+     %S-Var-NEq
+      search.
+     %S-Var-Eq
+      apply SA to _.
+  %S-Var-Eq
+   SB: case SB.
+     %S-Var-NEq
+      apply SB to _.
+     %S-Var-Eq
+      search.
+  %S-Abs-NEq
+   SB: case SB.
+     %S-Abs-NEq
+      apply IH to SA1 SB1. search.
+     %S-Abs-Eq
+      apply SA to _.
+  %S-Abs-Eq
+   SB: case SB.
+     %S-Abs-NEq
+      apply SB to _.
+     %S-Abs-Eq
+      search.
+  %S-App
+   SB: case SB. apply IH to SA SB. apply IH to SA1 SB1. search.
+  %S-Num
+   SB: case SB. search.
+  %S-Plus
+   SB: case SB. apply IH to SA SB. apply IH to SA1 SB1. search.
+
+
+Theorem value_eval_false : forall T V,
+  value T -> eval T V -> false.
+intros V Ev. V: case V.
+  %V-Abs
+   case Ev.
+  %V-Num
+   case Ev.
+
+
+Theorem eval_unique : forall T VA VB,
+  eval T VA -> eval T VB -> VA = VB.
+induction on 1. intros EvA EvB. EvA: case EvA.
+  %E-App-Step1
+   EvB: case EvB.
+     %E-App-Step1
+      apply IH to EvA EvB. search.
+     %E-App-Step2
+      apply value_eval_false to EvB EvA.
+     %E-App-Subst
+      apply value_eval_false to _ EvA.
+  %E-App-Step2
+   EvB: case EvB.
+     %E-App-Step1
+      apply value_eval_false to EvA EvB.
+     %E-App-Step2
+      apply IH to EvA1 EvB1. search.
+     %E-App-Subst
+      apply value_eval_false to EvB EvA1.
+  %E-App-Subst
+   EvB: case EvB.
+     %E-App-Step1
+      case EvB.
+     %E-App-Step2
+      apply value_eval_false to EvA EvB1.
+     %E-App-Subst
+      apply subst_unique to EvA1 EvB1. search.
+  %E-Plus-Step1
+   EvB: case EvB.
+     %E-Plus-Step1
+      apply IH to EvA EvB. search.
+     %E-Plus-Step2
+      apply value_eval_false to EvB EvA.
+     %E-Plus-Add
+      case EvA.
+  %E-Plus-Step2
+   EvB: case EvB.
+     %E-Plus-Step1
+      apply value_eval_false to EvA EvB.
+     %E-Plus-Step2
+      apply IH to EvA1 EvB1. search.
+     %E-Plus-Add
+      case EvA1.
+  %E-Plus-Add
+   EvB: case EvB.
+     %E-Plus-Step1
+      case EvB.
+     %E-Plus-Step2
+      case EvB1.
+     %E-Plus-Add
+      apply plus_integer_unique to EvA EvB. search.
+
+
+Theorem subst_type_preservation : forall T Ctx X XTy Ty R S,
+  typeOf ((X, XTy)::Ctx) T Ty -> subst X R T S -> typeOf [] R XTy ->
+  typeOf Ctx S Ty.
+induction on 2. intros TTy S RTy. S: case S.
+  %S-Var-NEq
+   Ty: case TTy. Lkp: case Ty.
+     %Lkp-Here
+      apply S to _.
+     %Lkp-Later
+      search.
+  %S-Var-Eq
+   Ty: case TTy. L: case Ty.
+     %Lkp-Here
+      backchain empty_ty_any.
+     %Lkp-Later
+      apply L to _.
+  %S-Abs-NEq
+   Ty: case TTy.
+   Ty': apply ty_lookup to Ty _ with Ctx2 = (X, XTy)::(Y, Ty1)::Ctx.
+     intros L. L: case L.
+       %Lkp-Here
+        search.
+       %Lkp-Later
+        L: case L1.
+          %Lkp-Here
+           search.
+          %Lkp-Later
+           search.
+   apply IH to Ty' S1 _. search.
+  %S-Abs-Eq
+   Ty: case TTy. apply ty_lookup to Ty _ with Ctx2 = (X, Ty1)::Ctx.
+     intros L. L: case L.
+       %Lkp-Here
+        search.
+       %Lkp-Later
+        L: case L1.
+          %Lkp-Here
+           apply L to _.
+          %Lkp-Later
+           search.
+   search.
+  %S-App
+   Ty: case TTy. apply IH to Ty S _. apply IH to Ty1 S1 _. search.
+  %S-Num
+   case TTy. search.
+  %S-Plus
+   Ty: case TTy. apply IH to Ty S _. apply IH to Ty1 S1 _. search.
+  
+  
+Theorem type_preservation : forall T Ty T',
+  typeOf [] T Ty -> eval T T' -> typeOf [] T' Ty.
+induction on 2. intros Ty Ev. Ev: case Ev.
+  %E-App-Step1
+   Ty: case Ty. apply IH to Ty Ev. search.
+  %E-App-Step2
+   Ty: case Ty. apply IH to Ty1 Ev1. search.
+  %E-App-Subst
+   Ty: case Ty. Ty: case Ty.
+   apply subst_type_preservation to Ty Ev1 Ty1. search.
+  %E-Plus-Step1
+   Ty: case Ty. apply IH to Ty Ev. search.
+  %E-Plus-Step2
+   Ty: case Ty. apply IH to Ty1 Ev1. search.
+  %E-Plus-Add
+   Ty: case Ty. search.
+
+
+Theorem subst_total : forall X R T,
+  host_is_tm T -> is_string X -> exists S, subst X R T S.
+induction on 1. intros IsT IsX. IsT: case IsT.
+  %var
+   Or: apply is_string_eq_or_not to IsX IsT. E: case Or.
+     %X = S
+      search.
+     %X != S
+      search.
+  %abs
+   Or: apply is_string_eq_or_not to IsX IsT. E: case Or.
+     %X = S
+      search.
+     %X != S
+      apply IH to IsT2 IsX with R = R. search.
+  %app
+   apply IH to IsT IsX with R = R. apply IH to IsT1 IsX with R = R.
+   search.
+  %num
+   search.
+  %plus
+   apply IH to IsT IsX with R = R. apply IH to IsT1 IsX with R = R.
+   search.
+
+
+Theorem canonical_form_intTy : forall V,
+  value V -> typeOf [] V intTy -> exists I, V = num(I).
+intros V Ty. case V.
+  %abs
+   case Ty.
+  %num
+   search.
+
+Theorem canonical_form_arrowTy : forall V Ty1 Ty2,
+  value V -> typeOf [] V (arrowTy Ty1 Ty2) ->
+  exists X B, V = abs X Ty1 B.
+intros V Ty. case V.
+  %abs
+   case Ty. search.
+  %num
+   case Ty.
+
+
+Theorem progress : forall T Ty,
+  host_is_tm T -> typeOf [] T Ty -> (exists T', eval T T') \/ value T.
+induction on 1. intros IsT Ty. IsT: case IsT.
+  %var
+   Ty: case Ty. case Ty.
+  %abs
+   search.
+  %app
+   Ty: case Ty. Or1: apply IH to IsT Ty. Or2: apply IH to IsT1 Ty1.
+   Ev1: case Or1.
+     %eval A T'
+      search.
+     %value A
+      Ev2: case Or2.
+        %eval B T'
+         search.
+        %value B
+         apply canonical_form_arrowTy to _ Ty. IsAbs: case IsT.
+         apply subst_total to IsAbs2 IsAbs with R = B. search.
+  %num
+   search.
+  %plus
+   Ty: case Ty. Or1: apply IH to IsT Ty. Or2: apply IH to IsT1 Ty1.
+   Ev1: case Or1.
+     %eval A T'
+      search.
+     %value A
+      Ev2: case Or2.
+        %eval B T'
+         search.
+        %value B
+         apply canonical_form_intTy to _ Ty. Is1: case IsT.
+         apply canonical_form_intTy to _ Ty1. Is2: case IsT1.
+         apply plus_integer_total to Is1 Is2. search.

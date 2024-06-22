@@ -1,0 +1,146 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  mtc:lambda</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  mtc:lambda</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  defs.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggledefs.sos" onclick="toggleFile('defs.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="defs.sos">[Raw File]</a>
+<pre class="code sterling" id="defs.sos">
+Module mtc:lambda
+
+Builds on mtc:shared_declarations
+
+e ::= ...
+    | abs(string, ty, e)
+    | app(e, e)
+    | var(string)
+
+v ::= ...
+    | closure([(string, v)], string, e)
+
+ty ::= ...
+     | arrowTy(ty, ty)
+
+
+typeOf (X, Ty1)::G E Ty2
+----------------------------------------- [T-Abs]
+typeOf G abs(X, Ty1, E) arrowTy(Ty1, Ty2)
+
+
+typeOf G E1 arrowTy(Ty1, Ty2)
+typeOf G E2 Ty1
+----------------------------- [T-App]
+typeOf G app(E1, E2) Ty2
+
+
+lookup G X Ty
+------------------ [T-Var]
+typeOf G var(X) Ty
+
+
+
+-------------------------------------- [E-Abs]
+eval G abs(X, Ty1, E) closure(G, X, E)
+
+
+eval G E1 closure(GC, X, Body)
+eval G E2 V2
+eval (X, V2)::GC Body V
+------------------------------ [E-App]
+eval G app(E1, E2) V
+
+
+lookup G X V
+--------------- [E-Var]
+eval G var(X) V
+
+
+
+typeOfCtx TG G
+typeOf (X, Ty1)::TG E Ty2
+-------------------------------------------- [VT-Closure]
+valueType closure(G, X, E) arrowTy(Ty1, Ty2)
+
+
+
+---------------------------------------- [C-Closure]
+canon arrowTy(Ty1, Ty2) closure(G, X, E)
+
+
+
+
+
+
+---------------------------- [Proj-Abs]
+|{e}- abs(X, Ty, E) ~~> nilE
+
+
+-------------------------- [Proj-App]
+|{e}- app(E1, E2) ~~> nilE
+
+
+--------------------- [Proj-Var]
+|{e}- var(X) ~~> nilE
+
+
+------------------------------- [Proj-Closure]
+|{v}- closure(G, X, E) ~~> nilV
+
+
+---------------------------------- [Proj-ArrowTy]
+|{ty}- arrowTy(Ty1, Ty2) ~~> nilTy
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="lambda.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="lambda-details.html#0">Module mtc:lambda.</a>
+
+<a class="command" href="lambda-details.html#1">Theorem typeOfCtx_lookups : forall TG EG X Ty V,
+  typeOfCtx TG EG -&gt; lookup TG X Ty -&gt; lookup EG X V -&gt;
+  valueType V Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<a class="tactic" href="lambda-details.html#2">induction on 2.</a> <a class="tactic" href="lambda-details.html#3">intros TOC LT LV.</a> <a class="tactic" href="lambda-details.html#4">LT: case LT.</a>
+  <span class="comment">%Lkp-Here</span>
+   <a class="tactic" href="lambda-details.html#5">LV: case LV.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="lambda-details.html#6">case TOC.</a> <a class="tactic" href="lambda-details.html#7">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="lambda-details.html#8">case TOC.</a> <a class="tactic" href="lambda-details.html#9">apply LV to _.</a>
+  <span class="comment">%Lkp-Later</span>
+   <a class="tactic" href="lambda-details.html#10">LV: case LV.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="lambda-details.html#11">case TOC.</a> <a class="tactic" href="lambda-details.html#12">apply LT to _.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="lambda-details.html#13">TOC: case TOC.</a> <a class="tactic" href="lambda-details.html#14">apply IH to _ LT1 LV1.</a> <a class="tactic" href="lambda-details.html#15">search.</a></div>
+
+
+<a class="command" href="lambda-details.html#16">Prove mtc:shared_declarations:type_preservation.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(17);" id="toggleproof17">[Show Proof]</a>
+<div class="proof" id="proof17" style="display: none;">
+<span class="comment">%E-Abs</span>
+ <a class="tactic" href="lambda-details.html#17">case Ty.</a> <a class="tactic" href="lambda-details.html#18">search.</a>
+<span class="comment">%E-App</span>
+ <a class="tactic" href="lambda-details.html#19">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#20">VT1: apply IH to _ Ty Ev1.</a> <a class="tactic" href="lambda-details.html#21">VT2: apply IH to _ Ty1 Ev2.</a>
+ <a class="tactic" href="lambda-details.html#22">VTC: case VT1.</a> <a class="tactic" href="lambda-details.html#23">apply IH to _ VTC1 Ev3.</a> <a class="tactic" href="lambda-details.html#24">search.</a>
+<span class="comment">%E-Var</span>
+ <a class="tactic" href="lambda-details.html#25">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#26">apply typeOfCtx_lookups to _ Ty Ev1.</a> <a class="tactic" href="lambda-details.html#27">search.</a></div>
+<a class="command" href="lambda-details.html#28"></a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

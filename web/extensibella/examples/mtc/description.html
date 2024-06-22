@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>Extensibella Examples:  Modeling Meta-Theory a la Carte</title>
+<link href="../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../actions.js"></script>
+<link rel="icon" href="../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../index.html">
+<img class="header-logo" src="../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<div class="section">
+  <h1>Modeling Meta-Theory a la Carte</h1>
+  <p>
+    <a href="https://dl.acm.org/doi/10.1145/2429069.2429094">"Meta-Theory
+      a la Carte"</a> (MTC) uses a model of language extension where
+    modules build on a shared set of declarations of syntax categories
+    and relations, declaring new syntax constructors and rules
+    defining the relations.  The set of shared declarations also
+    includes properties, with each module adding its own part of the
+    property proof for the parts of the language it introduces, these
+    parts being composed to form a full proof for a composed language.
+  </p>
+  <p>
+    The set of shared declarations MTC uses is sort of a degenerate
+    host language, so we model it as such.  The shared declarations
+    form a module introducing the syntax categories and relations, but
+    not rules for them, other than the rules for a fixed relation we
+    use to specify the language's property we will prove.  This
+    property, type preservation, is declared by the module making
+    declarations.  Each other module then adds new syntax
+    constructors and rules, as well as a new proof of type
+    preservation for its part of the language, similar to MTC.
+  </p>
+  <p>
+    In MTC, in contrast to Extensibella's approach, only shared
+    properties can be proven completely, with any module-specific
+    properties needed to support them requiring glue code to complete
+    the proofs for a composition.  Additionally, MTC defines language
+    semantics and writes proofs using Mendler algebras, building the
+    modularity restrictions into the underlying logic.  We believe our
+    approach, which uses an encoding into our logic that is
+    substantially the same as non-extensible approaches take, leads to
+    a more readable specification of language semantics and
+    properties, and more confidence they correspond to what was
+    intended.
+  </p>
+  <ul>
+    <li><a href="shared_declarations/shared_declarations.html">Shared
+        declarations</a>:  Declarations of syntax categories,
+      semantic relations, and the type preservation property
+    <li><a href="arith/arith.html">Arithmetic extension</a>:  New
+      syntax for arithmetic expressions
+    <li><a href="bool/bool.html">Boolean extension</a>:  New syntax
+      for Boolean expressions
+    <li><a href="lambda/lambda.html">Lambda extension</a>:  New syntax
+      for lambda abstractions, applications, and variables
+    <li><a href="natCase/natCase.html">NatCase extension</a>:  New
+      syntax for pattern matching on the arithmetic extension's
+      natural numbers, branching based on a number
+      being <code>z</code> or <code>s(N)</code> for
+      some <code>N</code>
+  </ul>
+</div>
+
+<div class="section">
+  <a href="mtc.tar.gz">Download example tarball</a>
+</div>
+
+<div class="section">
+  <a class="navlink" href="../examples.html">Back to examples</a>
+</div>
+
+</body>
+</html>

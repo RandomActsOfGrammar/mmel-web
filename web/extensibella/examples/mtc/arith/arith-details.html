@@ -1,0 +1,91 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  mtc:arith - Details</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h2>Reasoning Details</h2>
+<div class="section">
+<pre class="code extensibella">
+ < <b>Module mtc:arith.</b>
+</pre>
+<pre class="code extensibella"id="1">
+ &lt; <b>Prove mtc:shared_declarations:type_preservation.</b>
+
+Subgoal 1:
+
+Variables: TG Ty EG N
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ty : typeOf TG (num N) Ty
+Ev : eval EG (num N) (numVal N) @
+============================
+ valueType (numVal N) Ty
+</pre>
+<pre class="code extensibella"id="2">
+ &lt; <b>case Ty.</b>
+
+Subgoal 1:
+
+Variables: TG EG N
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG (num N) (numVal N) @
+============================
+ valueType (numVal N) natTy
+</pre>
+<pre class="code extensibella"id="3">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: TG Ty EG N1 N2 N E2 E1
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ty : typeOf TG (plus E1 E2) Ty
+Ev : eval EG (plus E1 E2) (numVal N) @
+Ev1 : eval EG E1 (numVal N1) *
+Ev2 : eval EG E2 (numVal N2) *
+Ev3 : plusRel N1 N2 N
+============================
+ valueType (numVal N) Ty
+</pre>
+<pre class="code extensibella"id="4">
+ &lt; <b>case Ty.</b>
+
+Subgoal 2:
+
+Variables: TG EG N1 N2 N E2 E1
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG (plus E1 E2) (numVal N) @
+Ev1 : eval EG E1 (numVal N1) *
+Ev2 : eval EG E2 (numVal N2) *
+Ev3 : plusRel N1 N2 N
+H1 : typeOf TG E1 natTy
+H2 : typeOf TG E2 natTy
+============================
+ valueType (numVal N) natTy
+</pre>
+<pre class="code extensibella"id="5">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

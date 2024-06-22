@@ -1,0 +1,28 @@
+Module mtc:lambda.
+
+Theorem typeOfCtx_lookups : forall TG EG X Ty V,
+  typeOfCtx TG EG -> lookup TG X Ty -> lookup EG X V ->
+  valueType V Ty.
+induction on 2. intros TOC LT LV. LT: case LT.
+  %Lkp-Here
+   LV: case LV.
+     %Lkp-Here
+      case TOC. search.
+     %Lkp-Later
+      case TOC. apply LV to _.
+  %Lkp-Later
+   LV: case LV.
+     %Lkp-Here
+      case TOC. apply LT to _.
+     %Lkp-Later
+      TOC: case TOC. apply IH to _ LT1 LV1. search.
+
+
+Prove mtc:shared_declarations:type_preservation.
+%E-Abs
+ case Ty. search.
+%E-App
+ Ty: case Ty. VT1: apply IH to _ Ty Ev1. VT2: apply IH to _ Ty1 Ev2.
+ VTC: case VT1. apply IH to _ VTC1 Ev3. search.
+%E-Var
+ Ty: case Ty. apply typeOfCtx_lookups to _ Ty Ev1. search.

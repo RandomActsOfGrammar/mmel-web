@@ -1,0 +1,42 @@
+Module mtc:shared_declarations
+
+/*
+  On all of these types, we need a constructor, as Sterling doesn't
+  support empty type declarations.  Thus these constructors can be
+  ignored.
+
+  We also have projection relations here because Sterling requires
+  them, but our encoding doesn't use them.  Every extension-introduced
+  constructor also needs to have a new rule according to Sterling, so
+  they will all project to the one constructor we need here.
+*/
+
+e ::= nilE
+Projection e :
+
+v ::= nilV
+Projection v :
+
+ty ::= nilTy
+Projection ty :
+
+
+Judgment typeOf : [(string, ty)] e* ty
+
+Judgment eval : [(string, v)] e* v
+
+Judgment valueType : v* ty
+
+Judgment canon : ty* v
+
+
+Fixed Judgment typeOfCtx : [(string, ty)] [(string, v)]
+
+=============== [TOC-Nil]
+typeOfCtx [] []
+
+
+valueType V Ty
+typeOfCtx TRest VRest
+====================================== [TOC-Cons]
+typeOfCtx (X, Ty)::TRest (X, V)::VRest

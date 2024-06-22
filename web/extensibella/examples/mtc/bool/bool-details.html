@@ -1,0 +1,189 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  mtc:bool - Details</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h2>Reasoning Details</h2>
+<div class="section">
+<pre class="code extensibella">
+ < <b>Module mtc:bool.</b>
+</pre>
+<pre class="code extensibella"id="1">
+ &lt; <b>Prove mtc:shared_declarations:type_preservation.</b>
+
+Subgoal 1:
+
+Variables: TG Ty EG
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ty : typeOf TG trueE Ty
+Ev : eval EG trueE trueVal @
+============================
+ valueType trueVal Ty
+</pre>
+<pre class="code extensibella"id="2">
+ &lt; <b>case Ty.</b>
+
+Subgoal 1:
+
+Variables: TG EG
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG trueE trueVal @
+============================
+ valueType trueVal boolTy
+</pre>
+<pre class="code extensibella"id="3">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: TG Ty EG
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ty : typeOf TG falseE Ty
+Ev : eval EG falseE falseVal @
+============================
+ valueType falseVal Ty
+</pre>
+<pre class="code extensibella"id="4">
+ &lt; <b>case Ty.</b>
+
+Subgoal 2:
+
+Variables: TG EG
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG falseE falseVal @
+============================
+ valueType falseVal boolTy
+</pre>
+<pre class="code extensibella"id="5">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: TG Ty EG V F T C
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ty : typeOf TG (ifThenElse C T F) Ty
+Ev : eval EG (ifThenElse C T F) V @
+Ev1 : eval EG C trueVal *
+Ev2 : eval EG T V *
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="6">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 3:
+
+Variables: TG Ty EG V F T C
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG (ifThenElse C T F) V @
+Ev1 : eval EG C trueVal *
+Ev2 : eval EG T V *
+Ty : typeOf TG C boolTy
+Ty1 : typeOf TG T Ty
+Ty2 : typeOf TG F Ty
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="7">
+ &lt; <b>apply IH to _ Ty1 Ev2.</b>
+
+Subgoal 3:
+
+Variables: TG Ty EG V F T C
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG (ifThenElse C T F) V @
+Ev1 : eval EG C trueVal *
+Ev2 : eval EG T V *
+Ty : typeOf TG C boolTy
+Ty1 : typeOf TG T Ty
+Ty2 : typeOf TG F Ty
+H1 : valueType V Ty
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="8">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: TG Ty EG V F T C
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ty : typeOf TG (ifThenElse C T F) Ty
+Ev : eval EG (ifThenElse C T F) V @
+Ev1 : eval EG C falseVal *
+Ev2 : eval EG F V *
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="9">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 4:
+
+Variables: TG Ty EG V F T C
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG (ifThenElse C T F) V @
+Ev1 : eval EG C falseVal *
+Ev2 : eval EG F V *
+Ty : typeOf TG C boolTy
+Ty1 : typeOf TG T Ty
+Ty2 : typeOf TG F Ty
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="10">
+ &lt; <b>apply IH to _ Ty2 Ev2.</b>
+
+Subgoal 4:
+
+Variables: TG Ty EG V F T C
+IH : forall TG E Ty EG V,
+       typeOfCtx TG EG -&gt; typeOf TG E Ty -&gt; eval EG E V * -&gt; valueType V Ty
+Rel : typeOfCtx TG EG
+Ev : eval EG (ifThenElse C T F) V @
+Ev1 : eval EG C falseVal *
+Ev2 : eval EG F V *
+Ty : typeOf TG C boolTy
+Ty1 : typeOf TG T Ty
+Ty2 : typeOf TG F Ty
+H1 : valueType V Ty
+============================
+ valueType V Ty
+</pre>
+<pre class="code extensibella"id="11">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

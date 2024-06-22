@@ -1,0 +1,83 @@
+Module mtc:lambda
+
+Builds on mtc:shared_declarations
+
+e ::= ...
+    | abs(string, ty, e)
+    | app(e, e)
+    | var(string)
+
+v ::= ...
+    | closure([(string, v)], string, e)
+
+ty ::= ...
+     | arrowTy(ty, ty)
+
+
+typeOf (X, Ty1)::G E Ty2
+----------------------------------------- [T-Abs]
+typeOf G abs(X, Ty1, E) arrowTy(Ty1, Ty2)
+
+
+typeOf G E1 arrowTy(Ty1, Ty2)
+typeOf G E2 Ty1
+----------------------------- [T-App]
+typeOf G app(E1, E2) Ty2
+
+
+lookup G X Ty
+------------------ [T-Var]
+typeOf G var(X) Ty
+
+
+
+-------------------------------------- [E-Abs]
+eval G abs(X, Ty1, E) closure(G, X, E)
+
+
+eval G E1 closure(GC, X, Body)
+eval G E2 V2
+eval (X, V2)::GC Body V
+------------------------------ [E-App]
+eval G app(E1, E2) V
+
+
+lookup G X V
+--------------- [E-Var]
+eval G var(X) V
+
+
+
+typeOfCtx TG G
+typeOf (X, Ty1)::TG E Ty2
+-------------------------------------------- [VT-Closure]
+valueType closure(G, X, E) arrowTy(Ty1, Ty2)
+
+
+
+---------------------------------------- [C-Closure]
+canon arrowTy(Ty1, Ty2) closure(G, X, E)
+
+
+
+
+
+
+---------------------------- [Proj-Abs]
+|{e}- abs(X, Ty, E) ~~> nilE
+
+
+-------------------------- [Proj-App]
+|{e}- app(E1, E2) ~~> nilE
+
+
+--------------------- [Proj-Var]
+|{e}- var(X) ~~> nilE
+
+
+------------------------------- [Proj-Closure]
+|{v}- closure(G, X, E) ~~> nilV
+
+
+---------------------------------- [Proj-ArrowTy]
+|{ty}- arrowTy(Ty1, Ty2) ~~> nilTy

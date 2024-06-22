@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+cd shared_declarations
+sterling --extensibella -I ../../ mtc:shared_declarations
+../../../../../buildTools/main_to_html_extensibella.py 3 shared_declarations "Extensibella Example:  mtc:shared_declarations" base.xthm decls.sos
+extensibella --compile base.xthm
+cd ..
+
+cd arith
+sterling --extensibella -I ../../ mtc:arith
+../../../../../buildTools/main_to_html_extensibella.py 3 arith "Extensibella Example:  mtc:arith" arith.xthm defs.sos
+extensibella --compile arith.xthm
+cd ..
+
+cd bool
+sterling --extensibella -I ../../ mtc:bool
+../../../../../buildTools/main_to_html_extensibella.py 3 bool "Extensibella Example:  mtc:bool" bool.xthm defs.sos
+cd ..
+
+cd lambda
+sterling --extensibella -I ../../ mtc:lambda
+../../../../../buildTools/main_to_html_extensibella.py 3 lambda "Extensibella Example:  mtc:lambda" lambda.xthm defs.sos
+cd ..
+
+cd natCase
+sterling --extensibella -I ../../ mtc:natCase
+../../../../../buildTools/main_to_html_extensibella.py 3 natCase "Extensibella Example:  mtc:natCase" natCase.xthm defs.sos
+cd ..

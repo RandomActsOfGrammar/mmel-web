@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  mtc:bool</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  mtc:bool</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  defs.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggledefs.sos" onclick="toggleFile('defs.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="defs.sos">[Raw File]</a>
+<pre class="code sterling" id="defs.sos">
+Module mtc:bool
+
+Builds on mtc:shared_declarations
+
+e ::= ...
+    | trueE
+    | falseE
+    | ifThenElse(e, e, e)
+
+v ::= ...
+    | trueVal
+    | falseVal
+
+ty ::= ...
+     | boolTy
+
+
+--------------------- [T-True]
+typeOf G trueE boolTy
+
+
+---------------------- [T-False]
+typeOf G falseE boolTy
+
+
+typeOf G C boolTy
+typeOf G T Ty
+typeOf G F Ty
+------------------------------- [T-IfThenElse]
+typeOf G ifThenElse(C, T, F) Ty
+
+
+
+-------------------- [E-True]
+eval G trueE trueVal
+
+
+---------------------- [E-False]
+eval G falseE falseVal
+
+
+eval G C trueVal
+eval G T V
+---------------------------- [E-IfThenElse-True]
+eval G ifThenElse(C, T, F) V
+
+
+eval G C falseVal
+eval G F V
+---------------------------- [E-IfThenElse-False]
+eval G ifThenElse(C, T, F) V
+
+
+
+------------------------ [VT-True]
+valueType trueVal boolTy
+
+
+------------------------- [VT-False]
+valueType falseVal boolTy
+
+
+
+-------------------- [C-BoolTy-True]
+canon boolTy trueVal
+
+
+--------------------- [C-BoolTy-False]
+canon boolTy falseVal
+
+
+
+
+
+
+-------------------- [Proj-True]
+|{e}- trueE ~~> nilE
+
+
+--------------------- [Proj-False]
+|{e}- falseE ~~> nilE
+
+
+---------------------------------- [Proj-IfThenElse]
+|{e}- ifThenElse(C, T, F) ~~> nilE
+
+
+---------------------- [Proj-TrueVal]
+|{v}- trueVal ~~> nilV
+
+
+----------------------- [Proj-FalseVal]
+|{v}- falseVal ~~> nilV
+
+
+----------------------- [Proj-BoolTy]
+|{ty}- boolTy ~~> nilTy
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="bool.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="bool-details.html#0">Module mtc:bool.</a>
+
+<a class="command" href="bool-details.html#1">Prove mtc:shared_declarations:type_preservation.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<span class="comment">%E-True</span>
+ <a class="tactic" href="bool-details.html#2">case Ty.</a> <a class="tactic" href="bool-details.html#3">search.</a>
+<span class="comment">%E-False</span>
+ <a class="tactic" href="bool-details.html#4">case Ty.</a> <a class="tactic" href="bool-details.html#5">search.</a>
+<span class="comment">%E-IfThenElse-True</span>
+ <a class="tactic" href="bool-details.html#6">Ty: case Ty.</a> <a class="tactic" href="bool-details.html#7">apply IH to _ Ty1 Ev2.</a> <a class="tactic" href="bool-details.html#8">search.</a>
+<span class="comment">%E-IfThenElse-False</span>
+ <a class="tactic" href="bool-details.html#9">Ty: case Ty.</a> <a class="tactic" href="bool-details.html#10">apply IH to _ Ty2 Ev2.</a> <a class="tactic" href="bool-details.html#11">search.</a></div>
+<a class="command" href="bool-details.html#12"></a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

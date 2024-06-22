@@ -1,0 +1,80 @@
+Module mtc:arith
+
+Builds on mtc:shared_declarations
+
+e ::= ...
+    | num(nat)
+    | plus(e, e)
+
+v ::= ...
+    | numVal(nat)
+
+ty ::= ...
+     | natTy
+
+nat ::= z | s(nat)
+Projection nat :
+
+
+--------------------- [T-Num]
+typeOf G num(N) natTy
+
+
+typeOf G E1 natTy
+typeOf G E2 natTy
+--------------------------- [T-Plus]
+typeOf G plus(E1, E2) natTy
+
+
+
+----------------------- [E-Num]
+eval G num(N) numVal(N)
+
+
+eval G E1 numVal(N1)
+eval G E2 numVal(N2)
+plusRel N1 N2 N
+----------------------------- [E-Plus]
+eval G plus(E1, E2) numVal(N)
+
+
+
+Fixed Judgment plusRel : nat nat nat
+
+============= [PR-Z]
+plusRel z N N
+
+
+plusRel N1 N2 N3
+====================== [PR-S]
+plusRel s(N1) N2 s(N3)
+
+
+
+------------------------- [VT-NumVal]
+valueType numVal(N) natTy
+
+
+
+--------------------- [C-NatTy]
+canon natTy numVal(N)
+
+
+
+
+
+
+--------------------- [Proj-Num]
+|{e}- num(N) ~~> nilE
+
+
+--------------------------- [Proj-Plus]
+|{e}- plus(E1, E2) ~~> nilE
+
+
+------------------------ [Proj-NumVal]
+|{v}- numVal(N) ~~> nilV
+
+
+---------------------- [Proj-NatTy]
+|{ty}- natTy ~~> nilTy

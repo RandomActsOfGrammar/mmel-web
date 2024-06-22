@@ -1,0 +1,18 @@
+Module soundX:let
+
+Builds on soundX:host
+
+tm ::= ...
+     | let(string, tm, tm)
+
+
+typeOf Ctx T1 Ty
+----------------------------------------------------- [Proj-Let]
+Ctx |{tm}- let(X, T1, T2) ~~> app(abs(X, Ty, T2), T1)
+
+
+
+typeOf Ctx T1 Ty1
+typeOf (X, Ty1)::Ctx T2 Ty2
+----------------------------- [T-Let]
+typeOf Ctx let(X, T1, T2) Ty2
