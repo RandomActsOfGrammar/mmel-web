@@ -1,0 +1,106 @@
+Module soundX:pair.
+
+Prove_Constraint soundX:host:proj_ty_is.
+%Proj-PairTy
+ case IsTy. search.
+
+
+Prove soundX:host:type_is.
+%T-Pair
+ Is: case IsT. apply IH to _ _ Ty1. search.
+%T-Fst
+ Is: case IsT. IsTy: apply IH to _ _ Ty1. case IsTy. search.
+%T-Snd
+ Is: case IsT. IsTy: apply IH to _ _ Ty1. case IsTy. search.
+
+
+Prove_Constraint soundX:host:proj_is.
+%Proj-Pair
+ case IsT. apply type_is to _ _ Proj1. search 11.
+%Proj-Fst
+ case IsT. IsTy: apply type_is to _ _ Proj1. case IsTy. search 7.
+%Proj-Snd
+ case IsT. IsTy: apply type_is to _ _ Proj1. case IsTy. search 7.
+
+
+Prove soundX:host:type_unique.
+%T-Pair
+ case IsT. TyB: case TyB. apply IH to _ _ TyA1 TyB. search.
+%T-Fst
+ case IsT. TyB: case TyB. apply IH to _ _ TyA1 TyB. search.
+%T-Snd
+ case IsT. TyB: case TyB. apply IH to _ _ TyA1 TyB. search.
+
+
+Prove soundX:host:ty_lookup.
+%T-Pair
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+%T-Fst
+ apply IH to Ty1 L. search.
+%T-Snd
+ apply IH to Ty1 L. search.
+
+
+Prove_Constraint soundX:host:proj_ty_unique.
+%Proj-PairTy
+ case Hyp1. search.
+
+
+Prove_Constraint soundX:host:proj_tm_unique.
+%Proj-Pair
+ case Hyp1. case Hyp2. apply type_unique to _ _ Hyp4 H1. search.
+%Proj-Fst
+ case Hyp1. case Hyp2. apply type_unique to _ _ Hyp4 H1. search.
+%Proj-Snd
+ case Hyp1. case Hyp2. apply type_unique to _ _ Hyp4 H1. search.
+
+
+
+
+
+Prove soundX:host:desugar_ty_exists.
+%pairTy
+ apply IH to IsTy1. search.
+
+
+Prove soundX:host:desugar_ty_rel.
+%T-Pair
+ case IsT. DT: case DT. DT: case DT. DT: case DT1. DT: case DT1.
+ DT: case DT1. DT: case DT4. DT: case DT5. DT: case DT5.
+ DT: case DT6. DT: case DT7. DT: case DT6. DT: case DT8.
+ DT: case DT6. DT: case DT10. DTy: case DTy. DTy: case DTy.
+ DTy: case DTy1. DTy: case DTy. DTy: case DTy2.
+ apply type_is to _ _ DT. apply type_unique to _ _ Ty1 DT.
+ apply desugar_ty_unique to _ DT1 DT4. apply desugar_ty_unique to _ DT1 DT5.
+ apply desugar_ty_unique to _ DT1 DT7. apply desugar_ty_unique to _ DT1 DT9.
+ apply desugar_ty_unique to _ DT1 DTy1. apply desugar_ty_unique to _ DT1 DTy.
+ apply desugar_ty_unique to _ DT1 DTy2. apply desugar_ty_unique to _ DT1 DTy3.
+ apply IH to _ _ Ty1 DT3 _ _. apply IH to _ _ Ty2 DT2 _ _. search 11.
+ %now clear a bunch more impossible cases
+ case DTy2. case DTy. case DTy. case DT6. case DT6. case DT8. case DT6.
+ case DT7. case DT6. case DT5. case DT5. case DT4. case DT1. case DT1.
+ case DT1.
+%T-Fst
+ case IsT. DT: case DT. DT: case DT. DT: case DT1. DT: case DT2.
+ DT: case DT3. DT: case DT4. apply type_unique to _ _ DT Ty1.
+ IsP: apply type_is to _ _ Ty1. case IsP.
+ DP: apply desugar_ty_exists to _ with Ty = pairTy Ty.
+ apply IH to _ _ Ty1 DT1 _ _. DP: case DP. DP: case DP. DP: case DP1.
+ DP: case DP. DP: case DP2. apply desugar_ty_unique to _ DTy DT2.
+ apply desugar_ty_unique to _ DTy DT3. apply desugar_ty_unique to _ DTy DP1.
+ apply desugar_ty_unique to _ DTy DP. apply desugar_ty_unique to _ DTy DP2.
+ apply desugar_ty_unique to _ DTy DP3. search 6.
+ %now clear a bunch more impossible cases
+ case DP2. case DP. case DP. case DT4. case DT3. case DT2. case DT1.
+%T-Snd
+ case IsT. DT: case DT. DT: case DT. DT: case DT1. DT: case DT2.
+ DT: case DT3. DT: case DT4. apply type_unique to _ _ DT Ty1.
+ IsP: apply type_is to _ _ Ty1. case IsP.
+ DP: apply desugar_ty_exists to _ with Ty = pairTy Ty.
+ apply IH to _ _ Ty1 DT1 _ _. DP: case DP. DP: case DP. DP: case DP1.
+ DP: case DP. DP: case DP2. apply desugar_ty_unique to _ DTy DT2.
+ apply desugar_ty_unique to _ DTy DT3. apply desugar_ty_unique to _ DTy DP1.
+ apply desugar_ty_unique to _ DTy DP. apply desugar_ty_unique to _ DTy DP2.
+ apply desugar_ty_unique to _ DTy DP3. search 6.
+ %now clear a bunch more impossible cases
+ case DP2. case DP. case DP. case DT4. case DT3. case DT2. case DT1.

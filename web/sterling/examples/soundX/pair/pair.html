@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  soundX:pair</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  soundX:pair</h1><div class="section">
+<h3>File:  def.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggledef.sos" onclick="toggleFile('def.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="def.sos">[Raw File]</a>
+<pre class="code sterling" id="def.sos">
+Module soundX:pair
+
+Builds on soundX:host
+
+tm ::= ...
+     | pair(tm, tm)
+     | fst(tm)
+     | snd(tm)
+
+
+ty ::= ...
+     | pairTy(ty)
+
+
+typeOf Ctx T1 Ty
+----------------------------------------------------------- [Proj-Pair]
+Ctx |{tm}- pair(T1, T2) ~~>
+     app(
+       app(
+         abs("A", Ty, abs("B", Ty,
+             abs("S", arrowTy(Ty, arrowTy(Ty, Ty)),
+                 app(app(var("S"), var("A")), var("B"))))),
+         T1),
+       T2)
+
+
+typeOf Ctx T pairTy(Ty)
+------------------------------------------------- [Proj-Fst]
+Ctx |{tm}- fst(T) ~~>
+     app(T, abs("A", Ty, abs("B", Ty, var("A"))))
+
+
+typeOf Ctx T pairTy(Ty)
+------------------------------------------------- [Proj-Snd]
+Ctx |{tm}- snd(T) ~~>
+     app(T, abs("A", Ty, abs("B", Ty, var("B"))))
+
+
+------------------------------------------------ [Proj-PairTy]
+|{ty}- pairTy(Ty) ~~>
+       arrowTy(arrowTy(Ty, arrowTy(Ty, Ty)), Ty)
+
+
+
+typeOf Ctx T1 Ty
+typeOf Ctx T2 Ty
+---------------------------------- [T-Pair]
+typeOf Ctx pair(T1, T2) pairTy(Ty)
+
+
+typeOf Ctx T pairTy(Ty)
+----------------------- [T-Fst]
+typeOf Ctx fst(T) Ty
+
+
+typeOf Ctx T pairTy(Ty)
+----------------------- [T-Snd]
+typeOf Ctx snd(T) Ty
+</pre>
+<div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

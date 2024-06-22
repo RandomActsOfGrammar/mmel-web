@@ -1,0 +1,229 @@
+<html>
+<head>
+<title>Sterling:  Sterling Example:  soundX:host</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="sterling">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Sterling.png" alt="Sterling logo">
+</a>
+</div>
+<h1>Sterling Example:  soundX:host</h1><div class="section">
+<h3>File:  def.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggledef.sos" onclick="toggleFile('def.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="def.sos">[Raw File]</a>
+<pre class="code sterling" id="def.sos">
+Module soundX:host
+
+tm ::= var(string)
+     | abs(string, ty, tm)
+     | app(tm, tm)
+     | num(int)
+     | plus(tm, tm)
+
+Projection tm : [(string, ty)]
+
+ty ::= arrowTy(ty, ty)
+     | intTy
+
+Projection ty :
+
+
+
+Judgment typeOf : [(string, ty)] tm* ty
+
+lookup Ctx X Ty
+-------------------- [T-Var]
+typeOf Ctx var(X) Ty
+
+
+typeOf (X, Ty1)::Ctx Body Ty2
+---------------------------------------------- [T-Abs]
+typeOf Ctx abs(X, Ty1, Body) arrowTy(Ty1, Ty2)
+
+
+typeOf Ctx T1 arrowTy(Ty1, Ty2)
+typeOf Ctx T2 Ty1
+------------------------------- [T-App]
+typeOf Ctx app(T1, T2) Ty2
+
+
+----------------------- [T-Num]
+typeOf Ctx num(I) intTy
+
+
+typeOf Ctx T1 intTy
+typeOf Ctx T2 intTy
+----------------------------- [T-Plus]
+typeOf Ctx plus(T1, T2) intTy
+
+
+
+
+
+<span class="comment">/*
+  Desugaring removes all the extension-introduced syntax constructors
+  by desugaring sub-terms of known constructors and projecting terms
+  built by extension-introduced constructors, then desugaring their
+  projections.
+*/</span>
+Fixed Judgment desugar_tm : [(string, ty)] tm tm
+Fixed Judgment desugar_ty : ty ty
+Fixed Judgment desugar_ctx : [(string, ty)] [(string, ty)]
+
+============================ [DTm-Var]
+desugar_tm Ctx var(X) var(X)
+
+
+desugar_ty Ty DTy
+desugar_tm (X, Ty)::Ctx Tm DTm
+============================================== [DTm-Abs]
+desugar_tm Ctx abs(X, Ty, Tm) abs(X, DTy, DTm)
+
+
+desugar_tm Ctx A DA
+desugar_tm Ctx B DB
+==================================== [DTm-App]
+desugar_tm Ctx app(A, B) app(DA, DB)
+
+
+============================ [DTm-Num]
+desugar_tm Ctx num(I) num(I)
+
+
+desugar_tm Ctx A DA
+desugar_tm Ctx B DB
+====================================== [DTm-Plus]
+desugar_tm Ctx plus(A, B) plus(DA, DB)
+
+
+Ctx |{tm}- T ~~> T_P
+desugar_tm Ctx T_P DT
+===================== [DTm-Proj]
+desugar_tm Ctx T DT
+
+
+
+desugar_ty A DA
+desugar_ty B DB
+======================================== [DTy-Arrow]
+desugar_ty arrowTy(A, B) arrowTy(DA, DB)
+
+
+====================== [DTy-Int]
+desugar_ty intTy intTy
+
+
+|{ty}- Ty ~~> Ty_P
+desugar_ty Ty_P DTy
+=================== [DTy-Proj]
+desugar_ty Ty DTy
+
+
+
+================= [DCtx-Nil]
+desugar_ctx [] []
+
+
+desugar_ty Ty DTy
+desugar_ctx Rest DRest
+========================================= [DCtx-Cons]
+desugar_ctx (X, Ty)::Rest (X, DTy)::DRest
+
+
+
+
+
+<span class="comment">/*
+  Because extensions can only add new constructs and typing rules,
+  evaluation and related judgments are defined as fixed.
+*/</span>
+Fixed Judgment eval : tm tm
+Fixed Judgment subst : string tm tm tm
+Fixed Judgment value : tm
+
+eval T1 T11
+============================= [E-App-Step1]
+eval app(T1, T2) app(T11, T2)
+
+
+value T1
+eval T2 T21
+============================= [E-App-Step2]
+eval app(T1, T2) app(T1, T21)
+
+
+value T2
+subst X T2 Body V
+================================ [E-App-Subst]
+eval app(abs(X, Ty, Body), T2) V
+
+
+eval T1 T11
+=============================== [E-Plus-Step1]
+eval plus(T1, T2) plus(T11, T2)
+
+
+value T1
+eval T2 T21
+=============================== [E-Plus-Step2]
+eval plus(T1, T2) plus(T1, T21)
+
+
+I1 + I2 = I
+================================== [E-Plus-Add]
+eval plus(num(I1), num(I2)) num(I)
+
+
+
+X != Y
+======================= [S-Var-NEq]
+subst X R var(Y) var(Y)
+
+
+================== [S-Var-Eq]
+subst X R var(X) R
+
+
+X != Y
+subst X R B S
+===================================== [S-Abs-NEq]
+subst X R abs(Y, Ty, B) abs(Y, Ty, S)
+
+
+===================================== [S-Abs-Eq]
+subst X R abs(X, Ty, B) abs(X, Ty, B)
+
+
+subst X R T1 S1
+subst X R T2 S2
+================================= [S-App]
+subst X R app(T1, T2) app(S1, S2)
+
+
+======================= [S-Num]
+subst X R num(I) num(I)
+
+
+subst X R T1 S1
+subst X R T2 S2
+=================================== [S-Plus]
+subst X R plus(T1, T2) plus(S1, S2)
+
+
+
+=================== [V-Abs]
+value abs(X, Ty, T)
+
+
+============ [V-Num]
+value num(I)
+</pre>
+<div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

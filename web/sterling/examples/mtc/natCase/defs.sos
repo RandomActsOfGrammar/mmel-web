@@ -1,0 +1,35 @@
+Module mtc:natCase
+
+Builds on mtc:arith
+
+e ::= ...
+    | natCase(e, e, string, e)
+    /*case E of {z => Z; s X => S}  is  natCase(E, Z, X, S)*/
+
+
+typeOf G E natTy
+typeOf G Z Ty
+typeOf (X, natTy)::G S Ty
+------------------------------- [T-NatCase]
+typeOf G natCase(E, Z, X, S) Ty
+
+
+
+eval G E numVal(z)
+eval G Z V
+---------------------------- [E-NatCase-Z]
+eval G natCase(E, Z, X, S) V
+
+
+eval G E numVal(s(N))
+eval (X, numVal(N))::G S V
+---------------------------- [E-NatCase-S]
+eval G natCase(E, Z, X, S) V
+
+
+
+
+
+
+---------------------------------- [Proj-NatCase]
+|{e}- natCase(E, Z, X, S) ~~> nilE
