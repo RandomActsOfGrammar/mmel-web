@@ -60,8 +60,9 @@ def readSpace(fContents):
 def isTopCommand(s):
     topCommandStart = ["Theorem", "Define", "CoDefine", "Query",
                        "Kind", "Type", "Close", "Import", "Split",
-                       "Extensible", "Translation", "Ext_Ind",
-                       "Prove"]
+                       "Extensible", "Projection", "Ext_Ind",
+                       "Prove", "Ext_Size", "Proj_Rel",
+                       "Add_Ext_Size", "Add_Proj_Rel"]
     for x in topCommandStart:
         if s.startswith(x):
             return True

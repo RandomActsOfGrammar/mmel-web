@@ -1511,7 +1511,7 @@ adds_ S U := exists S', S ++ "_" = S' /\ adds_ S' U.</a>
    <a class="tactic" href="host-details.html#224">apply append_nil_right to A.</a> <a class="tactic" href="host-details.html#225">search.</a>
   <span class="comment">%FN-Step</span>
    <a class="tactic" href="host-details.html#226">apply append_string_is to _ _ F1.</a> <a class="tactic" href="host-details.html#227">A: apply IH to _ F2.</a>
-   <a class="tactic" href="host-details.html#228">apply append_associative to F1 A.</a> <a class="tactic" href="host-details.html#229">search.</a>
+   <a class="tactic" href="host-details.html#228">apply append_associative to F1 A.</a> <a class="tactic" href="host-details.html#229">search.</a></div>
 
 
 
@@ -1536,17 +1536,17 @@ adds_ S U := exists S', S ++ "_" = S' /\ adds_ S' U.</a>
 
  Basic Projection Constraints
  ********************************************************************/</span>
-<a class="tactic" href="host-details.html#230">Projection_Constraint proj_expr_unique : forall E E1 E2,
+<a class="command" href="host-details.html#230">Projection_Constraint proj_expr_unique : forall E E1 E2,
   PrA : |{expr}- E ~~&gt; E1 -&gt;
   PrB : |{expr}- E ~~&gt; E2 -&gt;
   IsE : is_expr E -&gt;
   E1 = E2.</a>
-<a class="tactic" href="host-details.html#231">Projection_Constraint proj_expr_is : forall E E',
+<a class="command" href="host-details.html#231">Projection_Constraint proj_expr_is : forall E E',
   Pr : |{expr}- E ~~&gt; E' -&gt;
   IsE : is_expr E -&gt;
   is_expr E'.</a>
 
-<a class="tactic" href="host-details.html#232">Projection_Constraint proj_stmt_unique : forall L1 L2 S S1 S2,
+<a class="command" href="host-details.html#232">Projection_Constraint proj_stmt_unique : forall L1 L2 S S1 S2,
   PrA : L1 |{stmt}- S ~~&gt; S1 -&gt;
   PrB : L2 |{stmt}- S ~~&gt; S2 -&gt;
   IsS : is_stmt S -&gt;
@@ -1555,67 +1555,67 @@ adds_ S U := exists S', S ++ "_" = S' /\ adds_ S' U.</a>
   Rel12 : (forall X, mem X L1 -&gt; mem X L2) -&gt;
   Rel21 : (forall X, mem X L2 -&gt; mem X L1) -&gt;
   S1 = S2.</a>
-<a class="tactic" href="host-details.html#233">Projection_Constraint proj_stmt_is : forall L S S',
+<a class="command" href="host-details.html#233">Projection_Constraint proj_stmt_is : forall L S S',
   Pr : L |{stmt}- S ~~&gt; S' -&gt;
   IsS : is_stmt S -&gt;
   IsL : is_list is_string L -&gt;
   is_stmt S'.</a>
-<a class="tactic" href="host-details.html#234">Projection_Constraint proj_stmt_other : forall L S S' L',
+<a class="command" href="host-details.html#234">Projection_Constraint proj_stmt_other : forall L S S' L',
   Pr : L |{stmt}- S ~~&gt; S' -&gt;
   IsS : is_stmt S -&gt;
   IsL : is_list is_string L -&gt;
   IsL' : is_list is_string L' -&gt;
   exists S'', L' |{stmt}- S ~~&gt; S''.</a>
 
-<a class="tactic" href="host-details.html#235">Projection_Constraint proj_fun_unique : forall F F1 F2,
+<a class="command" href="host-details.html#235">Projection_Constraint proj_fun_unique : forall F F1 F2,
   PrA : |{fun}- F ~~&gt; F1 -&gt;
   PrB : |{fun}- F ~~&gt; F2 -&gt;
   IsF : is_fun F -&gt;
   F1 = F2.</a>
-<a class="tactic" href="host-details.html#236">Projection_Constraint proj_fun_is : forall F F',
+<a class="command" href="host-details.html#236">Projection_Constraint proj_fun_is : forall F F',
   Pr : |{fun}- F ~~&gt; F' -&gt;
   IsF : is_fun F -&gt;
   is_fun F'.</a>
 
-<a class="tactic" href="host-details.html#237">Projection_Constraint proj_param_unique : forall P P1 P2,
+<a class="command" href="host-details.html#237">Projection_Constraint proj_param_unique : forall P P1 P2,
   PrA : |{param}- P ~~&gt; P1 -&gt;
   PrB : |{param}- P ~~&gt; P2 -&gt;
   IsP : is_param P -&gt;
   P1 = P2.</a>
-<a class="tactic" href="host-details.html#238">Projection_Constraint proj_param_is : forall P P',
+<a class="command" href="host-details.html#238">Projection_Constraint proj_param_is : forall P P',
   Pr : |{param}- P ~~&gt; P' -&gt;
   IsP : is_param P -&gt;
   is_param P'.</a>
 
-<a class="tactic" href="host-details.html#239">Projection_Constraint proj_program_unique : forall P P1 P2,
+<a class="command" href="host-details.html#239">Projection_Constraint proj_program_unique : forall P P1 P2,
   PrA : |{program}- P ~~&gt; P1 -&gt;
   PrB : |{program}- P ~~&gt; P2 -&gt;
   IsP : is_program P -&gt;
   P1 = P2.</a>
-<a class="tactic" href="host-details.html#240">Projection_Constraint proj_program_is : forall P P',
+<a class="command" href="host-details.html#240">Projection_Constraint proj_program_is : forall P P',
   Pr : |{program}- P ~~&gt; P' -&gt;
   IsP : is_program P -&gt;
   is_program P'.</a>
 
-<a class="tactic" href="host-details.html#241">Projection_Constraint proj_typ_unique : forall T T1 T2,
+<a class="command" href="host-details.html#241">Projection_Constraint proj_typ_unique : forall T T1 T2,
   PrA : |{typ}- T ~~&gt; T1 -&gt;
   PrB : |{typ}- T ~~&gt; T2 -&gt;
   IsT : is_typ T -&gt;
   T1 = T2.</a>
-<a class="tactic" href="host-details.html#242">Projection_Constraint proj_typ_is : forall T T',
+<a class="command" href="host-details.html#242">Projection_Constraint proj_typ_is : forall T T',
   Pr : |{typ}- T ~~&gt; T' -&gt;
   IsT : is_typ T -&gt;
   is_typ T'.</a>
 
-<a class="tactic" href="host-details.html#243">Projection_Constraint proj_value_unique : forall V V1 V2,
+<a class="command" href="host-details.html#243">Projection_Constraint proj_value_unique : forall V V1 V2,
   PrA : |{value}- V ~~&gt; V1 -&gt;
   PrB : |{value}- V ~~&gt; V2 -&gt;
   IsV : is_value V -&gt;
   V1 = V2.</a>
-<a class="tactic" href="host-details.html#244">Projection_Constraint proj_value_is : forall V V',
+<a class="command" href="host-details.html#244">Projection_Constraint proj_value_is : forall V V',
   Pr : |{value}- V ~~&gt; V' -&gt;
   IsV : is_value V -&gt;
-  is_value V'.</a></div>
+  is_value V'.</a>
 
 
 
@@ -1660,11 +1660,11 @@ adds_ S U := exists S', S ++ "_" = S' /\ adds_ S' U.</a>
            <span class="comment">%T != T1</span>
             <a class="tactic" href="host-details.html#259">right.</a> <a class="tactic" href="host-details.html#260">intros E.</a> <a class="tactic" href="host-details.html#261">case E.</a> <a class="tactic" href="host-details.html#262">backchain N.</a>
         <span class="comment">%H != H1</span>
-         <a class="tactic" href="host-details.html#263">right.</a> <a class="tactic" href="host-details.html#264">intros E.</a> <a class="tactic" href="host-details.html#265">case E.</a> <a class="tactic" href="host-details.html#266">backchain N.</a>
+         <a class="tactic" href="host-details.html#263">right.</a> <a class="tactic" href="host-details.html#264">intros E.</a> <a class="tactic" href="host-details.html#265">case E.</a> <a class="tactic" href="host-details.html#266">backchain N.</a></div>
 
 
 
-<a class="tactic" href="host-details.html#267">Proj_Rel is_expr E, is_args A, is_recFieldExprs RF.</a></div>
+<a class="command" href="host-details.html#267">Proj_Rel is_expr E, is_args A, is_recFieldExprs RF.</a>
 <a class="command" href="host-details.html#268">Ext_Ind forall E, is_expr E; forall A, is_args A;
         forall RF, is_recFieldExprs RF.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(269);" id="toggleproof269">[Show Proof]</a>
 <div class="proof" id="proof269" style="display: none;">
@@ -1716,9 +1716,9 @@ adds_ S U := exists S', S ++ "_" = S' /\ adds_ S' U.</a>
  <span class="comment">%nilRecFieldExprs</span>
   <a class="tactic" href="host-details.html#315">search.</a>
  <span class="comment">%consRecFieldExprs</span>
-  <a class="tactic" href="host-details.html#316">apply IH to R2.</a> <a class="tactic" href="host-details.html#317">apply IH2 to R3.</a> <a class="tactic" href="host-details.html#318">search.</a>
+  <a class="tactic" href="host-details.html#316">apply IH to R2.</a> <a class="tactic" href="host-details.html#317">apply IH2 to R3.</a> <a class="tactic" href="host-details.html#318">search.</a></div>
 
-<a class="tactic" href="host-details.html#319">Proj_Rel is_stmt S.</a></div>
+<a class="command" href="host-details.html#319">Proj_Rel is_stmt S.</a>
 <a class="command" href="host-details.html#320">Ext_Ind forall S, is_stmt S.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(321);" id="toggleproof321">[Show Proof]</a>
 <div class="proof" id="proof321" style="display: none;">
 <span class="comment">%is_stmt</span>
@@ -1766,10 +1766,10 @@ adds_ S U := exists S', S ++ "_" = S' /\ adds_ S' U.</a>
 <span class="comment">%nilRecFieldExprs</span>
  <a class="tactic" href="host-details.html#340">search.</a>
 <span class="comment">%consRecFieldExprs</span>
- <a class="tactic" href="host-details.html#341">search.</a>
+ <a class="tactic" href="host-details.html#341">search.</a></div>
 
 
-<a class="tactic" href="host-details.html#342">Proj_Rel is_value V, is_recFieldVals RFVs.</a></div>
+<a class="command" href="host-details.html#342">Proj_Rel is_value V, is_recFieldVals RFVs.</a>
 <a class="command" href="host-details.html#343">Ext_Ind forall V, is_value V; forall RFVs, is_recFieldVals RFVs.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(344);" id="toggleproof344">[Show Proof]</a>
 <div class="proof" id="proof344" style="display: none;">
 <span class="comment">%is_value</span>
@@ -2517,7 +2517,7 @@ also
  <span class="comment">%VRF-Cons</span>
   <a class="tactic" href="host-details.html#945">VE: apply IH to IsRF2.</a> <a class="tactic" href="host-details.html#946">VRF: apply IH2 to IsRF3.</a>
   <a class="tactic" href="host-details.html#947">IsVE: apply vars_is to _ VE.</a> <a class="tactic" href="host-details.html#948">IsVRF: apply varsRecFields_is to _ VRF.</a>
-  <a class="tactic" href="host-details.html#949">apply append_list_string_total to IsVE IsVRF.</a> <a class="tactic" href="host-details.html#950">search.</a>
+  <a class="tactic" href="host-details.html#949">apply append_list_string_total to IsVE IsVRF.</a> <a class="tactic" href="host-details.html#950">search.</a></div>
 
 
 
@@ -2526,13 +2526,13 @@ also
  Projection Constraint for Variables
  ********************************************************************/</span>
 <span class="comment">%projection maintains the set of variables</span>
-<a class="tactic" href="host-details.html#951">Projection_Constraint proj_vars : forall E E_P V V_P X,
+<a class="command" href="host-details.html#951">Projection_Constraint proj_vars : forall E E_P V V_P X,
   Pr : |{expr}- E ~~&gt; E_P -&gt;
   IsE : is_expr E -&gt;
   V : vars E V -&gt;
   V_P : vars E_P V_P -&gt;
   Mem : mem X V -&gt;
-  mem X V_P.</a></div>
+  mem X V_P.</a>
 
 <span class="comment">%Note we don't have versions for args and recFieldExprs because we</span>
 <span class="comment">%made those types nonextensible above</span>
@@ -4524,7 +4524,7 @@ names_same (A::ARest) (B::BRest) :=
       <a class="tactic" href="host-details.html#2347">case UA1.</a>
      <span class="comment">%URF-Step</span>
       <a class="tactic" href="host-details.html#2348">apply lookupRecFieldVal_unique to UA UB.</a> <a class="tactic" href="host-details.html#2349">apply IH to UA1 UB1.</a>
-      <a class="tactic" href="host-details.html#2350">apply replaceRecVal_unique to UA2 UB2.</a> <a class="tactic" href="host-details.html#2351">search.</a>
+      <a class="tactic" href="host-details.html#2350">apply replaceRecVal_unique to UA2 UB2.</a> <a class="tactic" href="host-details.html#2351">search.</a></div>
 
 
 
@@ -4532,14 +4532,14 @@ names_same (A::ARest) (B::BRest) :=
 <span class="comment">/********************************************************************
  Extension size and projection version for evaluation
  ********************************************************************/</span>
-<a class="tactic" href="host-details.html#2352">Ext_Size evalExpr FE EE E V O,
+<a class="command" href="host-details.html#2352">Ext_Size evalExpr FE EE E V O,
          evalArgs FE EE E V O,
          evalRecFields FE EE E F O,
          evalStmt FE EE S EE' O.</a>
-<a class="tactic" href="host-details.html#2353">Proj_Rel evalExpr FE EE E V O,
+<a class="command" href="host-details.html#2353">Proj_Rel evalExpr FE EE E V O,
          evalArgs FE EE E V O,
          evalRecFields FE EE E F O,
-         evalStmt FE EE S EE' O.</a></div>
+         evalStmt FE EE S EE' O.</a>
 
 
 
@@ -7068,7 +7068,7 @@ newNameScopes Scopes Len (S::AR) (S::BR) :=
   <a class="tactic" href="host-details.html#4714">search.</a>
  <span class="comment">%ERF-Cons</span>
   <a class="tactic" href="host-details.html#4715">case IsRF.</a> <a class="tactic" href="host-details.html#4716">EvB1: apply IH_E to _ _ _ _ SS EvA1.</a>
-  <a class="tactic" href="host-details.html#4717">apply IH_RF to _ _ _ _ SS EvA2.</a> <a class="tactic" href="host-details.html#4718">search.</a>
+  <a class="tactic" href="host-details.html#4717">apply IH_RF to _ _ _ _ SS EvA2.</a> <a class="tactic" href="host-details.html#4718">search.</a></div>
 
 
 
@@ -7077,7 +7077,7 @@ newNameScopes Scopes Len (S::AR) (S::BR) :=
  Projection Constraints for Evaluation
  ********************************************************************/</span>
 <span class="comment">%projection evaluates with same output</span>
-<a class="tactic" href="host-details.html#4719">Projection_Constraint proj_evalExpr_exists :
+<a class="command" href="host-details.html#4719">Projection_Constraint proj_evalExpr_exists :
   forall E E' FE EE V O,
     Pr : |{expr}- E ~~&gt; E' -&gt;
     IsE : is_expr E -&gt;
@@ -7091,7 +7091,7 @@ newNameScopes Scopes Len (S::AR) (S::BR) :=
 
 
 <span class="comment">%projection evaluates</span>
-<a class="tactic" href="host-details.html#4720">Projection_Constraint proj_evalStmt_exists :
+<a class="command" href="host-details.html#4720">Projection_Constraint proj_evalStmt_exists :
   forall Names S S' FE EE EE' O,
     Pr : Names |{stmt}- S ~~&gt; S' -&gt;
     Names : names EE Names -&gt;
@@ -7104,7 +7104,7 @@ newNameScopes Scopes Len (S::AR) (S::BR) :=
     Ev : evalStmt FE EE S EE' O -&gt;
     exists EE'', evalStmt FE EE S' EE'' O.</a>
 <span class="comment">%projection evaluates to a related context</span>
-<a class="tactic" href="host-details.html#4721">Projection_Constraint proj_evalStmt_rel :
+<a class="command" href="host-details.html#4721">Projection_Constraint proj_evalStmt_rel :
   forall Names S S' FE EE EE' O EE_P O_P,
     Pr : Names |{stmt}- S ~~&gt; S' -&gt;
     Names : names EE Names -&gt;
@@ -7116,7 +7116,7 @@ newNameScopes Scopes Len (S::AR) (S::BR) :=
     IsEE : is_list (is_list (is_pair is_string is_value)) EE -&gt;
     Ev : evalStmt FE EE S EE' O -&gt;
     Ev_P : evalStmt FE EE S' EE_P O_P -&gt;
-    scopes_same EE' EE_P.</a></div>
+    scopes_same EE' EE_P.</a>
 
 
 <span class="comment">/*
@@ -7694,23 +7694,23 @@ newNameScopes Scopes Len (S::AR) (S::BR) :=
    <a class="tactic" href="host-details.html#5325">case PB.</a> <a class="tactic" href="host-details.html#5326">search.</a>
   <span class="comment">%PNs-Cons</span>
    <a class="tactic" href="host-details.html#5327">PB: case PB.</a> <a class="tactic" href="host-details.html#5328">case IsP.</a> <a class="tactic" href="host-details.html#5329">apply paramName_unique to _ PA PB.</a>
-   <a class="tactic" href="host-details.html#5330">apply IH to _ PA1 PB1.</a> <a class="tactic" href="host-details.html#5331">search.</a>
+   <a class="tactic" href="host-details.html#5330">apply IH to _ PA1 PB1.</a> <a class="tactic" href="host-details.html#5331">search.</a></div>
 
 
 <span class="comment">%a parameter's projection has the same name as it;</span>
 <span class="comment">%new parameter constructors should just be extra info around same name</span>
-<a class="tactic" href="host-details.html#5332">Projection_Constraint proj_paramName_forward : forall P P' N,
+<a class="command" href="host-details.html#5332">Projection_Constraint proj_paramName_forward : forall P P' N,
   Pr : |{param}- P ~~&gt; P' -&gt;
   IsP : is_param P -&gt;
   PN : paramName P N -&gt;
   paramName P' N.</a>
 
 <span class="comment">%if a parameter's projection gives info, the original gives the same</span>
-<a class="tactic" href="host-details.html#5333">Projection_Constraint proj_paramName_back : forall P P' N,
+<a class="command" href="host-details.html#5333">Projection_Constraint proj_paramName_back : forall P P' N,
   Pr : |{param}- P ~~&gt; P' -&gt;
   IsP : is_param P -&gt;
   PN : paramName P' N -&gt;
-  paramName P N.</a></div>
+  paramName P N.</a>
 
 
 <a class="command" href="host-details.html#5334">Extensible_Theorem
@@ -7736,11 +7736,11 @@ newNameScopes Scopes Len (S::AR) (S::BR) :=
   <span class="comment">%GFEC-Cons</span>
    <a class="tactic" href="host-details.html#5345">GFECB: case GFECB.</a> <a class="tactic" href="host-details.html#5346">case IsFs.</a>
    <a class="tactic" href="host-details.html#5347">apply getFunEvalInfo_unique to _ GFECA GFECB.</a>
-   <a class="tactic" href="host-details.html#5348">apply IH to _ GFECA1 GFECB1.</a> <a class="tactic" href="host-details.html#5349">search.</a>
+   <a class="tactic" href="host-details.html#5348">apply IH to _ GFECA1 GFECB1.</a> <a class="tactic" href="host-details.html#5349">search.</a></div>
 
 
 <span class="comment">%a function's projection gives the same information as it</span>
-<a class="tactic" href="host-details.html#5350">Projection_Constraint proj_getFunEvalInfo_forward :
+<a class="command" href="host-details.html#5350">Projection_Constraint proj_getFunEvalInfo_forward :
   forall F F' N R V P B,
     Pr : |{fun}- F ~~&gt; F' -&gt;
     IsF : is_fun F -&gt;
@@ -7748,12 +7748,12 @@ newNameScopes Scopes Len (S::AR) (S::BR) :=
     getFunEvalInfo F' N R V P B.</a>
 
 <span class="comment">%if a function's projection gives info, the original gives the same</span>
-<a class="tactic" href="host-details.html#5351">Projection_Constraint proj_getFunEvalInfo_back :
+<a class="command" href="host-details.html#5351">Projection_Constraint proj_getFunEvalInfo_back :
   forall F F' N R V P B,
     Pr : |{fun}- F ~~&gt; F' -&gt;
     IsF : is_fun F -&gt;
     GFEI : getFunEvalInfo F' N R V P B -&gt;
-    getFunEvalInfo F N R V P B.</a></div>
+    getFunEvalInfo F N R V P B.</a>
 
 
 
@@ -7775,11 +7775,11 @@ newNameScopes Scopes Len (S::AR) (S::BR) :=
  <a class="tactic" href="host-details.html#5356">apply getFunEvalInfo_unique to _ EvA2 EvB1.</a>
  <a class="tactic" href="host-details.html#5357">apply zip_unique to EvA3 EvB2.</a> <a class="tactic" href="host-details.html#5358">apply getFunEvalCtx_is to _ EvA1.</a>
  <a class="tactic" href="host-details.html#5359">apply getFunEvalInfo_is to _ EvA2.</a> <a class="tactic" href="host-details.html#5360">apply zip_is to _ _ EvA3.</a>
- <a class="tactic" href="host-details.html#5361">apply evalStmt_unique to _ _ _ EvA4 EvB3.</a> <a class="tactic" href="host-details.html#5362">search.</a>
+ <a class="tactic" href="host-details.html#5361">apply evalStmt_unique to _ _ _ EvA4 EvB3.</a> <a class="tactic" href="host-details.html#5362">search.</a></div>
 
 
 <span class="comment">%a program's projection evaluates the same as it</span>
-<a class="tactic" href="host-details.html#5363">Projection_Constraint proj_evalProgram : forall P P' A O,
+<a class="command" href="host-details.html#5363">Projection_Constraint proj_evalProgram : forall P P' A O,
   Pr : |{program}- P ~~&gt; P' -&gt;
   IsP : is_program P -&gt;
   IsA : is_list is_value A -&gt;
@@ -7787,12 +7787,12 @@ newNameScopes Scopes Len (S::AR) (S::BR) :=
   evalProgram A P' O.</a>
 
 <span class="comment">%if a program's projection evaluates, the original evaluates the same</span>
-<a class="tactic" href="host-details.html#5364">Projection_Constraint proj_evalProgram_back : forall P P' A O,
+<a class="command" href="host-details.html#5364">Projection_Constraint proj_evalProgram_back : forall P P' A O,
   Pr : |{program}- P ~~&gt; P' -&gt;
   IsP : is_program P -&gt;
   IsA : is_list is_value A -&gt;
   Ev : evalProgram A P' O -&gt;
-  evalProgram A P O.</a></div>
+  evalProgram A P O.</a>
 
 
 
