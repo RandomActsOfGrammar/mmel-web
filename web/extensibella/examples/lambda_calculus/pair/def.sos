@@ -1,0 +1,75 @@
+Module lambda_calculus:pair
+
+Builds on lambda_calculus:host
+
+e ::= ...
+    | pair(e, e)
+    | fst(e)
+    | snd(e)
+
+
+---------------------------------------------------- [Proj-Pair]
+|{e}- pair(T1, T2) ~~>
+  app(
+    app(
+      abs("A", abs("B", abs("S",
+          app(app(var("S"), var("A")), var("B"))))),
+      T1),
+    T2)
+
+
+------------------------------------------ [Proj-Fst]
+|{e}- fst(T) ~~>
+      app(T, abs("A", abs("B", var("A"))))
+
+
+------------------------------------------ [Proj-Snd]
+|{e}- snd(T) ~~>
+      app(T, abs("A", abs("B", var("B"))))
+
+
+
+{eval
+  app(
+    app(
+      abs("A", abs("B", abs("S",
+          app(app(var("S"), var("A")), var("B"))))),
+      T1),
+    T2) V}
+---------------------------------------------------- [E-Pair]
+eval pair(T1, T2) V
+
+
+eval app(T, abs("A", abs("B", var("A")))) V
+------------------------------------------- [E-Fst]
+eval fst(T) V
+
+
+eval app(T, abs("A", abs("B", var("B")))) V
+------------------------------------------- [E-Snd]
+eval snd(T) V
+
+
+
+subst X R T1 S1
+subst X R T2 S2
+---------------------------------------------------- [S-Pair]
+{subst X R pair(T1, T2)
+  app(
+    app(
+      abs("A", abs("B", abs("S",
+          app(app(var("S"), var("A")), var("B"))))),
+      S1),
+    S2)}
+
+
+subst X R T S
+------------------------------------------ [S-Fst]
+{subst X R fst(T)
+      app(S, abs("A", abs("B",var("A"))))}
+
+
+subst X R T S
+------------------------------------------ [S-Snd]
+{subst X R snd(T)
+      app(S, abs("A", abs("B",var("B"))))}

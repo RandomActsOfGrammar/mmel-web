@@ -113,16 +113,70 @@ H2 : &lt;is_e {P}&gt; E2
 <pre class="code extensibella"id="9">
  &lt; <b>search.</b>
 
-Proof completed.
+Subgoal 4:
+
+Variables: I
+IH : forall E, is_e E * -&gt; &lt;is_e {P}&gt; E
+R : is_e (intE I) @
+R1 : is_integer I
+============================
+ &lt;is_e {P}&gt; (intE I)
 </pre>
 <pre class="code extensibella"id="10">
+ &lt; <b>search.</b>
+
+Subgoal 5:
+
+Variables: E2 E1
+IH : forall E, is_e E * -&gt; &lt;is_e {P}&gt; E
+R : is_e (plus E1 E2) @
+R1 : is_e E1 *
+R2 : is_e E2 *
+============================
+ &lt;is_e {P}&gt; (plus E1 E2)
+</pre>
+<pre class="code extensibella"id="11">
+ &lt; <b>apply IH to R1.</b>
+
+Subgoal 5:
+
+Variables: E2 E1
+IH : forall E, is_e E * -&gt; &lt;is_e {P}&gt; E
+R : is_e (plus E1 E2) @
+R1 : is_e E1 *
+R2 : is_e E2 *
+H1 : &lt;is_e {P}&gt; E1
+============================
+ &lt;is_e {P}&gt; (plus E1 E2)
+</pre>
+<pre class="code extensibella"id="12">
+ &lt; <b>apply IH to R2.</b>
+
+Subgoal 5:
+
+Variables: E2 E1
+IH : forall E, is_e E * -&gt; &lt;is_e {P}&gt; E
+R : is_e (plus E1 E2) @
+R1 : is_e E1 *
+R2 : is_e E2 *
+H1 : &lt;is_e {P}&gt; E1
+H2 : &lt;is_e {P}&gt; E2
+============================
+ &lt;is_e {P}&gt; (plus E1 E2)
+</pre>
+<pre class="code extensibella"id="13">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="14">
  &lt; <b>Projection_Constraint proj_same :
    forall E E1 E2,
    |{e}- E ~~&gt; E1 -&gt; |{e}- E ~~&gt; E2 -&gt; E1 = E2.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="11">
+<pre class="code extensibella"id="15">
  &lt; <b>Extensible_Theorem
       subst_exists : forall X R E,
          IsE : is_e E -&gt;
@@ -143,7 +197,7 @@ IsE1 : is_string S
 ============================
  exists S1, subst X R (var S) S1
 </pre>
-<pre class="code extensibella"id="12">
+<pre class="code extensibella"id="16">
  &lt; <b>Or: apply is_string_eq_or_not to IsX IsE1.</b>
 
 Subgoal 1:
@@ -158,7 +212,7 @@ Or : X = S \/ (X = S -&gt; false)
 ============================
  exists S1, subst X R (var S) S1
 </pre>
-<pre class="code extensibella"id="13">
+<pre class="code extensibella"id="17">
  &lt; <b>Eq: case Or.</b>
 
 Subgoal 1.1:
@@ -172,7 +226,7 @@ IsE1 : is_string S
 ============================
  exists S1, subst S R (var S) S1
 </pre>
-<pre class="code extensibella"id="14">
+<pre class="code extensibella"id="18">
  &lt; <b>search.</b>
 
 Subgoal 1.2:
@@ -187,7 +241,7 @@ Eq : X = S -&gt; false
 ============================
  exists S1, subst X R (var S) S1
 </pre>
-<pre class="code extensibella"id="15">
+<pre class="code extensibella"id="19">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -202,7 +256,7 @@ IsE2 : is_e E1 *
 ============================
  exists S1, subst X R (abs S E1) S1
 </pre>
-<pre class="code extensibella"id="16">
+<pre class="code extensibella"id="20">
  &lt; <b>Or: apply is_string_eq_or_not to IsX IsE1.</b>
 
 Subgoal 2:
@@ -218,7 +272,7 @@ Or : X = S \/ (X = S -&gt; false)
 ============================
  exists S1, subst X R (abs S E1) S1
 </pre>
-<pre class="code extensibella"id="17">
+<pre class="code extensibella"id="21">
  &lt; <b>Eq: case Or.</b>
 
 Subgoal 2.1:
@@ -233,7 +287,7 @@ IsE2 : is_e E1 *
 ============================
  exists S1, subst S R (abs S E1) S1
 </pre>
-<pre class="code extensibella"id="18">
+<pre class="code extensibella"id="22">
  &lt; <b>search.</b>
 
 Subgoal 2.2:
@@ -249,7 +303,7 @@ Eq : X = S -&gt; false
 ============================
  exists S1, subst X R (abs S E1) S1
 </pre>
-<pre class="code extensibella"id="19">
+<pre class="code extensibella"id="23">
  &lt; <b>apply IH to IsE2 IsX IsR.</b>
 
 Subgoal 2.2:
@@ -266,7 +320,7 @@ H1 : subst X R E1 S1
 ============================
  exists S1, subst X R (abs S E1) S1
 </pre>
-<pre class="code extensibella"id="20">
+<pre class="code extensibella"id="24">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -281,7 +335,7 @@ IsE2 : is_e E2 *
 ============================
  exists S, subst X R (app E1 E2) S
 </pre>
-<pre class="code extensibella"id="21">
+<pre class="code extensibella"id="25">
  &lt; <b>apply IH to IsE1 IsX IsR.</b>
 
 Subgoal 3:
@@ -297,7 +351,7 @@ H1 : subst X R E1 S
 ============================
  exists S, subst X R (app E1 E2) S
 </pre>
-<pre class="code extensibella"id="22">
+<pre class="code extensibella"id="26">
  &lt; <b>apply IH to IsE2 IsX IsR.</b>
 
 Subgoal 3:
@@ -314,12 +368,74 @@ H2 : subst X R E2 S1
 ============================
  exists S, subst X R (app E1 E2) S
 </pre>
-<pre class="code extensibella"id="23">
+<pre class="code extensibella"id="27">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: X R I
+IH : forall X R E, is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists S, subst X R E S
+IsE : is_e (intE I) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_integer I
+============================
+ exists S, subst X R (intE I) S
+</pre>
+<pre class="code extensibella"id="28">
+ &lt; <b>search.</b>
+
+Subgoal 5:
+
+Variables: X R E2 E1
+IH : forall X R E, is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists S, subst X R E S
+IsE : is_e (plus E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E1 *
+IsE2 : is_e E2 *
+============================
+ exists S, subst X R (plus E1 E2) S
+</pre>
+<pre class="code extensibella"id="29">
+ &lt; <b>apply IH to IsE1 IsX IsR.</b>
+
+Subgoal 5:
+
+Variables: X R E2 E1 S
+IH : forall X R E, is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists S, subst X R E S
+IsE : is_e (plus E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E1 *
+IsE2 : is_e E2 *
+H1 : subst X R E1 S
+============================
+ exists S, subst X R (plus E1 E2) S
+</pre>
+<pre class="code extensibella"id="30">
+ &lt; <b>apply IH to IsE2 IsX IsR.</b>
+
+Subgoal 5:
+
+Variables: X R E2 E1 S S1
+IH : forall X R E, is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists S, subst X R E S
+IsE : is_e (plus E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E1 *
+IsE2 : is_e E2 *
+H1 : subst X R E1 S
+H2 : subst X R E2 S1
+============================
+ exists S, subst X R (plus E1 E2) S
+</pre>
+<pre class="code extensibella"id="31">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="24">
+<pre class="code extensibella"id="32">
  &lt; <b>Extensible_Theorem
       subst_is : forall X R E S,
          IsE : is_e E -&gt;
@@ -341,7 +457,7 @@ S : subst X S (var X) S @
 ============================
  is_e S
 </pre>
-<pre class="code extensibella"id="25">
+<pre class="code extensibella"id="33">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -357,7 +473,7 @@ S1 : X = Y -&gt; false
 ============================
  is_e (var Y)
 </pre>
-<pre class="code extensibella"id="26">
+<pre class="code extensibella"id="34">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -372,7 +488,7 @@ S : subst X R (abs X Body) (abs X Body) @
 ============================
  is_e (abs X Body)
 </pre>
-<pre class="code extensibella"id="27">
+<pre class="code extensibella"id="35">
  &lt; <b>search.</b>
 
 Subgoal 4:
@@ -389,7 +505,7 @@ S2 : subst X R Body B *
 ============================
  is_e (abs Y B)
 </pre>
-<pre class="code extensibella"id="28">
+<pre class="code extensibella"id="36">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 4:
@@ -407,7 +523,7 @@ Is1 : is_e Body
 ============================
  is_e (abs Y B)
 </pre>
-<pre class="code extensibella"id="29">
+<pre class="code extensibella"id="37">
  &lt; <b>apply IH to _ _ _ S2.</b>
 
 Subgoal 4:
@@ -426,7 +542,7 @@ H1 : is_e B
 ============================
  is_e (abs Y B)
 </pre>
-<pre class="code extensibella"id="30">
+<pre class="code extensibella"id="38">
  &lt; <b>search.</b>
 
 Subgoal 5:
@@ -443,7 +559,7 @@ S2 : subst X R E2 S2 *
 ============================
  is_e (app S1 S2)
 </pre>
-<pre class="code extensibella"id="31">
+<pre class="code extensibella"id="39">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 5:
@@ -461,7 +577,7 @@ Is1 : is_e E2
 ============================
  is_e (app S1 S2)
 </pre>
-<pre class="code extensibella"id="32">
+<pre class="code extensibella"id="40">
  &lt; <b>apply IH to _ _ _ S1.</b>
 
 Subgoal 5:
@@ -480,7 +596,7 @@ H1 : is_e S1
 ============================
  is_e (app S1 S2)
 </pre>
-<pre class="code extensibella"id="33">
+<pre class="code extensibella"id="41">
  &lt; <b>apply IH to _ _ _ S2.</b>
 
 Subgoal 5:
@@ -500,12 +616,116 @@ H2 : is_e S2
 ============================
  is_e (app S1 S2)
 </pre>
-<pre class="code extensibella"id="34">
+<pre class="code extensibella"id="42">
+ &lt; <b>search.</b>
+
+Subgoal 6:
+
+Variables: X R I
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsE : is_e (intE I)
+IsX : is_string X
+IsR : is_e R
+S : subst X R (intE I) (intE I) @
+============================
+ is_e (intE I)
+</pre>
+<pre class="code extensibella"id="43">
+ &lt; <b>case IsE.</b>
+
+Subgoal 6:
+
+Variables: X R I
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsX : is_string X
+IsR : is_e R
+S : subst X R (intE I) (intE I) @
+H1 : is_integer I
+============================
+ is_e (intE I)
+</pre>
+<pre class="code extensibella"id="44">
+ &lt; <b>search.</b>
+
+Subgoal 7:
+
+Variables: X R S2 S1 E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsE : is_e (plus E1 E2)
+IsX : is_string X
+IsR : is_e R
+S : subst X R (plus E1 E2) (plus S1 S2) @
+S1 : subst X R E1 S1 *
+S2 : subst X R E2 S2 *
+============================
+ is_e (plus S1 S2)
+</pre>
+<pre class="code extensibella"id="45">
+ &lt; <b>case IsE.</b>
+
+Subgoal 7:
+
+Variables: X R S2 S1 E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsX : is_string X
+IsR : is_e R
+S : subst X R (plus E1 E2) (plus S1 S2) @
+S1 : subst X R E1 S1 *
+S2 : subst X R E2 S2 *
+H1 : is_e E1
+H2 : is_e E2
+============================
+ is_e (plus S1 S2)
+</pre>
+<pre class="code extensibella"id="46">
+ &lt; <b>apply IH to _ _ _ S1.</b>
+
+Subgoal 7:
+
+Variables: X R S2 S1 E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsX : is_string X
+IsR : is_e R
+S : subst X R (plus E1 E2) (plus S1 S2) @
+S1 : subst X R E1 S1 *
+S2 : subst X R E2 S2 *
+H1 : is_e E1
+H2 : is_e E2
+H3 : is_e S1
+============================
+ is_e (plus S1 S2)
+</pre>
+<pre class="code extensibella"id="47">
+ &lt; <b>apply IH to _ _ _ S2.</b>
+
+Subgoal 7:
+
+Variables: X R S2 S1 E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsX : is_string X
+IsR : is_e R
+S : subst X R (plus E1 E2) (plus S1 S2) @
+S1 : subst X R E1 S1 *
+S2 : subst X R E2 S2 *
+H1 : is_e E1
+H2 : is_e E2
+H3 : is_e S1
+H4 : is_e S2
+============================
+ is_e (plus S1 S2)
+</pre>
+<pre class="code extensibella"id="48">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="35">
+<pre class="code extensibella"id="49">
  &lt; <b>Extensible_Theorem
       eval_is : forall E V,
          IsE : is_e E -&gt;
@@ -522,7 +742,7 @@ Ev : eval (abs X Body) (abs X Body) @
 ============================
  is_e (abs X Body)
 </pre>
-<pre class="code extensibella"id="36">
+<pre class="code extensibella"id="50">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -538,7 +758,7 @@ Ev4 : eval B V *
 ============================
  is_e V
 </pre>
-<pre class="code extensibella"id="37">
+<pre class="code extensibella"id="51">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 2:
@@ -555,7 +775,7 @@ Is1 : is_e E2
 ============================
  is_e V
 </pre>
-<pre class="code extensibella"id="38">
+<pre class="code extensibella"id="52">
  &lt; <b>IsAbs: apply IH to _ Ev1.</b>
 
 Subgoal 2:
@@ -573,7 +793,7 @@ IsAbs : is_e (abs X Body)
 ============================
  is_e V
 </pre>
-<pre class="code extensibella"id="39">
+<pre class="code extensibella"id="53">
  &lt; <b>apply IH to _ Ev2.</b>
 
 Subgoal 2:
@@ -592,7 +812,7 @@ H1 : is_e V2
 ============================
  is_e V
 </pre>
-<pre class="code extensibella"id="40">
+<pre class="code extensibella"id="54">
  &lt; <b>case IsAbs.</b>
 
 Subgoal 2:
@@ -612,7 +832,7 @@ H3 : is_e Body
 ============================
  is_e V
 </pre>
-<pre class="code extensibella"id="41">
+<pre class="code extensibella"id="55">
  &lt; <b>apply subst_is to _ _ _ Ev3.</b>
 
 Subgoal 2:
@@ -633,7 +853,7 @@ H4 : is_e B
 ============================
  is_e V
 </pre>
-<pre class="code extensibella"id="42">
+<pre class="code extensibella"id="56">
  &lt; <b>apply IH to _ Ev4.</b>
 
 Subgoal 2:
@@ -655,12 +875,145 @@ H5 : is_e V
 ============================
  is_e V
 </pre>
-<pre class="code extensibella"id="43">
+<pre class="code extensibella"id="57">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: I
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+IsE : is_e (intE I)
+Ev : eval (intE I) (intE I) @
+============================
+ is_e (intE I)
+</pre>
+<pre class="code extensibella"id="58">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: I1 I2 I E2 E1
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+IsE : is_e (plus E1 E2)
+Ev : eval (plus E1 E2) (intE I) @
+Ev1 : eval E1 (intE I1) *
+Ev2 : eval E2 (intE I2) *
+Ev3 : I1 + I2 = I
+============================
+ is_e (intE I)
+</pre>
+<pre class="code extensibella"id="59">
+ &lt; <b>case IsE.</b>
+
+Subgoal 4:
+
+Variables: I1 I2 I E2 E1
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+Ev : eval (plus E1 E2) (intE I) @
+Ev1 : eval E1 (intE I1) *
+Ev2 : eval E2 (intE I2) *
+Ev3 : I1 + I2 = I
+H1 : is_e E1
+H2 : is_e E2
+============================
+ is_e (intE I)
+</pre>
+<pre class="code extensibella"id="60">
+ &lt; <b>Is1: apply IH to _ Ev1.</b>
+
+Subgoal 4:
+
+Variables: I1 I2 I E2 E1
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+Ev : eval (plus E1 E2) (intE I) @
+Ev1 : eval E1 (intE I1) *
+Ev2 : eval E2 (intE I2) *
+Ev3 : I1 + I2 = I
+H1 : is_e E1
+H2 : is_e E2
+Is1 : is_e (intE I1)
+============================
+ is_e (intE I)
+</pre>
+<pre class="code extensibella"id="61">
+ &lt; <b>Is2: apply IH to _ Ev2.</b>
+
+Subgoal 4:
+
+Variables: I1 I2 I E2 E1
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+Ev : eval (plus E1 E2) (intE I) @
+Ev1 : eval E1 (intE I1) *
+Ev2 : eval E2 (intE I2) *
+Ev3 : I1 + I2 = I
+H1 : is_e E1
+H2 : is_e E2
+Is1 : is_e (intE I1)
+Is2 : is_e (intE I2)
+============================
+ is_e (intE I)
+</pre>
+<pre class="code extensibella"id="62">
+ &lt; <b>case Is1.</b>
+
+Subgoal 4:
+
+Variables: I1 I2 I E2 E1
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+Ev : eval (plus E1 E2) (intE I) @
+Ev1 : eval E1 (intE I1) *
+Ev2 : eval E2 (intE I2) *
+Ev3 : I1 + I2 = I
+H1 : is_e E1
+H2 : is_e E2
+Is2 : is_e (intE I2)
+H3 : is_integer I1
+============================
+ is_e (intE I)
+</pre>
+<pre class="code extensibella"id="63">
+ &lt; <b>case Is2.</b>
+
+Subgoal 4:
+
+Variables: I1 I2 I E2 E1
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+Ev : eval (plus E1 E2) (intE I) @
+Ev1 : eval E1 (intE I1) *
+Ev2 : eval E2 (intE I2) *
+Ev3 : I1 + I2 = I
+H1 : is_e E1
+H2 : is_e E2
+H3 : is_integer I1
+H4 : is_integer I2
+============================
+ is_e (intE I)
+</pre>
+<pre class="code extensibella"id="64">
+ &lt; <b>apply plus_integer_is_integer to _ _ Ev3.</b>
+
+Subgoal 4:
+
+Variables: I1 I2 I E2 E1
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+Ev : eval (plus E1 E2) (intE I) @
+Ev1 : eval E1 (intE I1) *
+Ev2 : eval E2 (intE I2) *
+Ev3 : I1 + I2 = I
+H1 : is_e E1
+H2 : is_e E2
+H3 : is_integer I1
+H4 : is_integer I2
+H5 : is_integer I
+============================
+ is_e (intE I)
+</pre>
+<pre class="code extensibella"id="65">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="44">
+<pre class="code extensibella"id="66">
  &lt; <b>Extensible_Theorem
       subst_unique : forall X R E SA SB,
          IsE : is_e E -&gt;
@@ -684,7 +1037,7 @@ SB : subst X SA (var X) SB
 ============================
  SA = SB
 </pre>
-<pre class="code extensibella"id="45">
+<pre class="code extensibella"id="67">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 1.1:
@@ -699,7 +1052,7 @@ SA : subst X SB (var X) SB @
 ============================
  SB = SB
 </pre>
-<pre class="code extensibella"id="46">
+<pre class="code extensibella"id="68">
  &lt; <b>search.</b>
 
 Subgoal 1.2:
@@ -715,7 +1068,7 @@ SB : X = X -&gt; false
 ============================
  SA = var X
 </pre>
-<pre class="code extensibella"id="47">
+<pre class="code extensibella"id="69">
  &lt; <b>apply SB to _.</b>
 
 Subgoal 2:
@@ -732,7 +1085,7 @@ SA1 : X = Y -&gt; false
 ============================
  var Y = SB
 </pre>
-<pre class="code extensibella"id="48">
+<pre class="code extensibella"id="70">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 2.1:
@@ -748,7 +1101,7 @@ SA1 : Y = Y -&gt; false
 ============================
  var Y = SB
 </pre>
-<pre class="code extensibella"id="49">
+<pre class="code extensibella"id="71">
  &lt; <b>apply SA1 to _.</b>
 
 Subgoal 2.2:
@@ -765,7 +1118,7 @@ SB : X = Y -&gt; false
 ============================
  var Y = var Y
 </pre>
-<pre class="code extensibella"id="50">
+<pre class="code extensibella"id="72">
  &lt; <b>search.</b>
 
 Subgoal 3:
@@ -781,7 +1134,7 @@ SB : subst X R (abs X Body) SB
 ============================
  abs X Body = SB
 </pre>
-<pre class="code extensibella"id="51">
+<pre class="code extensibella"id="73">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 3.1:
@@ -796,7 +1149,7 @@ SA : subst X R (abs X Body) (abs X Body) @
 ============================
  abs X Body = abs X Body
 </pre>
-<pre class="code extensibella"id="52">
+<pre class="code extensibella"id="74">
  &lt; <b>search.</b>
 
 Subgoal 3.2:
@@ -813,7 +1166,7 @@ SB1 : subst X R Body B
 ============================
  abs X Body = abs X B
 </pre>
-<pre class="code extensibella"id="53">
+<pre class="code extensibella"id="75">
  &lt; <b>apply SB to _.</b>
 
 Subgoal 4:
@@ -831,7 +1184,7 @@ SA2 : subst X R Body B *
 ============================
  abs Y B = SB
 </pre>
-<pre class="code extensibella"id="54">
+<pre class="code extensibella"id="76">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 4.1:
@@ -848,7 +1201,7 @@ SA2 : subst Y R Body B *
 ============================
  abs Y B = abs Y Body
 </pre>
-<pre class="code extensibella"id="55">
+<pre class="code extensibella"id="77">
  &lt; <b>apply SA1 to _.</b>
 
 Subgoal 4.2:
@@ -867,7 +1220,7 @@ SB1 : subst X R Body B1
 ============================
  abs Y B = abs Y B1
 </pre>
-<pre class="code extensibella"id="56">
+<pre class="code extensibella"id="78">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 4.2:
@@ -887,7 +1240,7 @@ Is1 : is_e Body
 ============================
  abs Y B = abs Y B1
 </pre>
-<pre class="code extensibella"id="57">
+<pre class="code extensibella"id="79">
  &lt; <b>apply IH to _ _ _ SA2 SB1.</b>
 
 Subgoal 4.2:
@@ -907,7 +1260,7 @@ Is1 : is_e Body
 ============================
  abs Y B1 = abs Y B1
 </pre>
-<pre class="code extensibella"id="58">
+<pre class="code extensibella"id="80">
  &lt; <b>search.</b>
 
 Subgoal 5:
@@ -925,7 +1278,7 @@ SA2 : subst X R E2 S2 *
 ============================
  app S1 S2 = SB
 </pre>
-<pre class="code extensibella"id="59">
+<pre class="code extensibella"id="81">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 5:
@@ -944,7 +1297,7 @@ Is1 : is_e E2
 ============================
  app S1 S2 = SB
 </pre>
-<pre class="code extensibella"id="60">
+<pre class="code extensibella"id="82">
  &lt; <b>SB: case SB.</b>
 
 Subgoal 5:
@@ -964,7 +1317,7 @@ SB1 : subst X R E2 S4
 ============================
  app S1 S2 = app S3 S4
 </pre>
-<pre class="code extensibella"id="61">
+<pre class="code extensibella"id="83">
  &lt; <b>apply IH to _ _ _ SA1 SB.</b>
 
 Subgoal 5:
@@ -984,7 +1337,7 @@ SB1 : subst X R E2 S4
 ============================
  app S3 S2 = app S3 S4
 </pre>
-<pre class="code extensibella"id="62">
+<pre class="code extensibella"id="84">
  &lt; <b>apply IH to _ _ _ SA2 SB1.</b>
 
 Subgoal 5:
@@ -1004,12 +1357,140 @@ SB1 : subst X R E2 S4
 ============================
  app S3 S4 = app S3 S4
 </pre>
-<pre class="code extensibella"id="63">
+<pre class="code extensibella"id="85">
+ &lt; <b>search.</b>
+
+Subgoal 6:
+
+Variables: X R SB I
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsE : is_e (intE I)
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (intE I) (intE I) @
+SB : subst X R (intE I) SB
+============================
+ intE I = SB
+</pre>
+<pre class="code extensibella"id="86">
+ &lt; <b>case SB.</b>
+
+Subgoal 6:
+
+Variables: X R I
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsE : is_e (intE I)
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (intE I) (intE I) @
+============================
+ intE I = intE I
+</pre>
+<pre class="code extensibella"id="87">
+ &lt; <b>search.</b>
+
+Subgoal 7:
+
+Variables: X R SB S2 S1 E2 E1
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsE : is_e (plus E1 E2)
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (plus E1 E2) (plus S1 S2) @
+SB : subst X R (plus E1 E2) SB
+SA1 : subst X R E1 S1 *
+SA2 : subst X R E2 S2 *
+============================
+ plus S1 S2 = SB
+</pre>
+<pre class="code extensibella"id="88">
+ &lt; <b>case IsE.</b>
+
+Subgoal 7:
+
+Variables: X R SB S2 S1 E2 E1
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (plus E1 E2) (plus S1 S2) @
+SB : subst X R (plus E1 E2) SB
+SA1 : subst X R E1 S1 *
+SA2 : subst X R E2 S2 *
+H1 : is_e E1
+H2 : is_e E2
+============================
+ plus S1 S2 = SB
+</pre>
+<pre class="code extensibella"id="89">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 7:
+
+Variables: X R S2 S1 E2 E1 S4 S3
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (plus E1 E2) (plus S1 S2) @
+SA1 : subst X R E1 S1 *
+SA2 : subst X R E2 S2 *
+H1 : is_e E1
+H2 : is_e E2
+SB : subst X R E1 S3
+SB1 : subst X R E2 S4
+============================
+ plus S1 S2 = plus S3 S4
+</pre>
+<pre class="code extensibella"id="90">
+ &lt; <b>apply IH to _ _ _ SA1 SB.</b>
+
+Subgoal 7:
+
+Variables: X R S2 E2 E1 S4 S3
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (plus E1 E2) (plus S3 S2) @
+SA1 : subst X R E1 S3 *
+SA2 : subst X R E2 S2 *
+H1 : is_e E1
+H2 : is_e E2
+SB : subst X R E1 S3
+SB1 : subst X R E2 S4
+============================
+ plus S3 S2 = plus S3 S4
+</pre>
+<pre class="code extensibella"id="91">
+ &lt; <b>apply IH to _ _ _ SA2 SB1.</b>
+
+Subgoal 7:
+
+Variables: X R E2 E1 S4 S3
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (plus E1 E2) (plus S3 S4) @
+SA1 : subst X R E1 S3 *
+SA2 : subst X R E2 S4 *
+H1 : is_e E1
+H2 : is_e E2
+SB : subst X R E1 S3
+SB1 : subst X R E2 S4
+============================
+ plus S3 S4 = plus S3 S4
+</pre>
+<pre class="code extensibella"id="92">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="64">
+<pre class="code extensibella"id="93">
  &lt; <b>Extensible_Theorem
       eval_unique : forall E VA VB,
          IsE : is_e E -&gt;
@@ -1028,7 +1509,7 @@ EvB : eval (abs X Body) VB
 ============================
  abs X Body = VB
 </pre>
-<pre class="code extensibella"id="65">
+<pre class="code extensibella"id="94">
  &lt; <b>EvB: case EvB.</b>
 
 Subgoal 1:
@@ -1040,7 +1521,7 @@ EvA : eval (abs X Body) (abs X Body) @
 ============================
  abs X Body = abs X Body
 </pre>
-<pre class="code extensibella"id="66">
+<pre class="code extensibella"id="95">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1057,7 +1538,7 @@ EvA4 : eval B VA *
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="67">
+<pre class="code extensibella"id="96">
  &lt; <b>Is: case IsE.</b>
 
 Subgoal 2:
@@ -1075,7 +1556,7 @@ Is1 : is_e E2
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="68">
+<pre class="code extensibella"id="97">
  &lt; <b>EvB: case EvB.</b>
 
 Subgoal 2:
@@ -1096,7 +1577,7 @@ EvB3 : eval B1 VB
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="69">
+<pre class="code extensibella"id="98">
  &lt; <b>apply IH to _ EvA1 EvB.</b>
 
 Subgoal 2:
@@ -1117,7 +1598,7 @@ EvB3 : eval B1 VB
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="70">
+<pre class="code extensibella"id="99">
  &lt; <b>apply IH to _ EvA2 EvB1.</b>
 
 Subgoal 2:
@@ -1138,7 +1619,7 @@ EvB3 : eval B1 VB
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="71">
+<pre class="code extensibella"id="100">
  &lt; <b>IsAbs: apply eval_is to _ EvA1.</b>
 
 Subgoal 2:
@@ -1160,7 +1641,7 @@ IsAbs : is_e (abs X1 Body1)
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="72">
+<pre class="code extensibella"id="101">
  &lt; <b>case IsAbs.</b>
 
 Subgoal 2:
@@ -1183,7 +1664,7 @@ H2 : is_e Body1
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="73">
+<pre class="code extensibella"id="102">
  &lt; <b>apply eval_is to _ EvA2.</b>
 
 Subgoal 2:
@@ -1207,7 +1688,7 @@ H3 : is_e V1
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="74">
+<pre class="code extensibella"id="103">
  &lt; <b>apply subst_is to _ _ _ EvA3.</b>
 
 Subgoal 2:
@@ -1232,7 +1713,7 @@ H4 : is_e B
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="75">
+<pre class="code extensibella"id="104">
  &lt; <b>apply subst_unique to _ _ _ EvA3 EvB2.</b>
 
 Subgoal 2:
@@ -1257,7 +1738,7 @@ H4 : is_e B1
 ============================
  VA = VB
 </pre>
-<pre class="code extensibella"id="76">
+<pre class="code extensibella"id="105">
  &lt; <b>apply IH to _ EvA4 EvB3.</b>
 
 Subgoal 2:
@@ -1282,12 +1763,146 @@ H4 : is_e B1
 ============================
  VB = VB
 </pre>
-<pre class="code extensibella"id="77">
+<pre class="code extensibella"id="106">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: VB I
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+IsE : is_e (intE I)
+EvA : eval (intE I) (intE I) @
+EvB : eval (intE I) VB
+============================
+ intE I = VB
+</pre>
+<pre class="code extensibella"id="107">
+ &lt; <b>case EvB.</b>
+
+Subgoal 3:
+
+Variables: I
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+IsE : is_e (intE I)
+EvA : eval (intE I) (intE I) @
+============================
+ intE I = intE I
+</pre>
+<pre class="code extensibella"id="108">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: VB I1 I2 I E2 E1
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+IsE : is_e (plus E1 E2)
+EvA : eval (plus E1 E2) (intE I) @
+EvB : eval (plus E1 E2) VB
+EvA1 : eval E1 (intE I1) *
+EvA2 : eval E2 (intE I2) *
+EvA3 : I1 + I2 = I
+============================
+ intE I = VB
+</pre>
+<pre class="code extensibella"id="109">
+ &lt; <b>case IsE.</b>
+
+Subgoal 4:
+
+Variables: VB I1 I2 I E2 E1
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (plus E1 E2) (intE I) @
+EvB : eval (plus E1 E2) VB
+EvA1 : eval E1 (intE I1) *
+EvA2 : eval E2 (intE I2) *
+EvA3 : I1 + I2 = I
+H1 : is_e E1
+H2 : is_e E2
+============================
+ intE I = VB
+</pre>
+<pre class="code extensibella"id="110">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 4:
+
+Variables: I1 I2 I E2 E1 I4 I5 I3
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (plus E1 E2) (intE I) @
+EvA1 : eval E1 (intE I1) *
+EvA2 : eval E2 (intE I2) *
+EvA3 : I1 + I2 = I
+H1 : is_e E1
+H2 : is_e E2
+EvB : eval E1 (intE I4)
+EvB1 : eval E2 (intE I5)
+EvB2 : I4 + I5 = I3
+============================
+ intE I = intE I3
+</pre>
+<pre class="code extensibella"id="111">
+ &lt; <b>apply IH to _ EvA1 EvB.</b>
+
+Subgoal 4:
+
+Variables: I2 I E2 E1 I4 I5 I3
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (plus E1 E2) (intE I) @
+EvA1 : eval E1 (intE I4) *
+EvA2 : eval E2 (intE I2) *
+EvA3 : I4 + I2 = I
+H1 : is_e E1
+H2 : is_e E2
+EvB : eval E1 (intE I4)
+EvB1 : eval E2 (intE I5)
+EvB2 : I4 + I5 = I3
+============================
+ intE I = intE I3
+</pre>
+<pre class="code extensibella"id="112">
+ &lt; <b>apply IH to _ EvA2 EvB1.</b>
+
+Subgoal 4:
+
+Variables: I E2 E1 I4 I5 I3
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (plus E1 E2) (intE I) @
+EvA1 : eval E1 (intE I4) *
+EvA2 : eval E2 (intE I5) *
+EvA3 : I4 + I5 = I
+H1 : is_e E1
+H2 : is_e E2
+EvB : eval E1 (intE I4)
+EvB1 : eval E2 (intE I5)
+EvB2 : I4 + I5 = I3
+============================
+ intE I = intE I3
+</pre>
+<pre class="code extensibella"id="113">
+ &lt; <b>apply plus_integer_unique to EvA3 EvB2.</b>
+
+Subgoal 4:
+
+Variables: E2 E1 I4 I5 I3
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (plus E1 E2) (intE I3) @
+EvA1 : eval E1 (intE I4) *
+EvA2 : eval E2 (intE I5) *
+EvA3 : I4 + I5 = I3
+H1 : is_e E1
+H2 : is_e E2
+EvB : eval E1 (intE I4)
+EvB1 : eval E2 (intE I5)
+EvB2 : I4 + I5 = I3
+============================
+ intE I3 = intE I3
+</pre>
+<pre class="code extensibella"id="114">
  &lt; <b>search.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="78">
+<pre class="code extensibella"id="115">
  &lt; <b>Projection_Constraint proj_subst :
    forall X R E S E',
    Proj : |{e}- E ~~&gt; E' -&gt;
@@ -1300,12 +1915,12 @@ Proof completed.
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="79">
+<pre class="code extensibella"id="116">
  &lt; <b>Projection_Constraint proj_subst_same :
    forall X R E S E' S',
    Proj : |{e}- E ~~&gt; E' -&gt;
    IsE : is_e E -&gt;
-   isX : is_string X -&gt;
+   IsX : is_string X -&gt;
    IsR : is_e R -&gt;
    S : subst X R E S -&gt;
    S' : subst X R E' S' -&gt;
@@ -1313,7 +1928,7 @@ Proof completed.
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="80">
+<pre class="code extensibella"id="117">
  &lt; <b>Projection_Constraint proj_eval :
    forall E E' V,
    Proj : |{e}- E ~~&gt; E' -&gt;
@@ -1324,7 +1939,7 @@ Proof completed.
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="81">
+<pre class="code extensibella"id="118">
  &lt; <b>Projection_Constraint proj_eval_same :
    forall E E' V V',
    Proj : |{e}- E ~~&gt; E' -&gt;
@@ -1335,17 +1950,17 @@ Proof completed.
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="82">
+<pre class="code extensibella"id="119">
  &lt; <b>Ext_Size eval E V.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="83">
+<pre class="code extensibella"id="120">
  &lt; <b>Proj_Rel eval E V.</b>
 
 Proof completed.
 </pre>
-<pre class="code extensibella"id="84">
+<pre class="code extensibella"id="121">
  &lt; <b>Ext_Ind forall E V, eval E V.</b>
 
 Subgoal 1:
@@ -1358,7 +1973,7 @@ Acc : acc 0 @
 ============================
  &lt;eval {P}&gt; (abs X Body) (abs X Body)
 </pre>
-<pre class="code extensibella"id="85">
+<pre class="code extensibella"id="122">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1377,7 +1992,7 @@ R6 : &lt;eval {ES}&gt; B V N4 **
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="86">
+<pre class="code extensibella"id="123">
  &lt; <b>apply ext_size_is_int_eval to R3.</b>
 
 Subgoal 2:
@@ -1397,7 +2012,7 @@ H1 : is_integer N3
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="87">
+<pre class="code extensibella"id="124">
  &lt; <b>apply ext_size_is_int_eval to R4.</b>
 
 Subgoal 2:
@@ -1418,7 +2033,7 @@ H2 : is_integer N2
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="88">
+<pre class="code extensibella"id="125">
  &lt; <b>apply ext_size_is_int_eval to R6.</b>
 
 Subgoal 2:
@@ -1440,7 +2055,7 @@ H3 : is_integer N4
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="89">
+<pre class="code extensibella"id="126">
  &lt; <b>apply ext_size_pos_eval to R3.</b>
 
 Subgoal 2:
@@ -1463,7 +2078,7 @@ H4 : 0 &lt;= N3
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="90">
+<pre class="code extensibella"id="127">
  &lt; <b>apply ext_size_pos_eval to R4.</b>
 
 Subgoal 2:
@@ -1487,7 +2102,7 @@ H5 : 0 &lt;= N2
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="91">
+<pre class="code extensibella"id="128">
  &lt; <b>apply ext_size_pos_eval to R6.</b>
 
 Subgoal 2:
@@ -1512,7 +2127,7 @@ H6 : 0 &lt;= N4
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="92">
+<pre class="code extensibella"id="129">
  &lt; <b>Or2: apply lt_left to R2 _ _.</b>
 
 Subgoal 2:
@@ -1538,7 +2153,7 @@ Or2 : N2 &lt; N5 \/ N2 = N5
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="93">
+<pre class="code extensibella"id="130">
  &lt; <b>Or4: apply lt_right to R2 _ _ _.</b>
 
 Subgoal 2:
@@ -1565,7 +2180,7 @@ Or4 : N4 &lt; N5 \/ N4 = N5
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="94">
+<pre class="code extensibella"id="131">
  &lt; <b>apply lesseq_integer__add_positive to _ _ R2.</b>
 
 Subgoal 2:
@@ -1593,7 +2208,7 @@ H7 : 0 &lt;= N5
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="95">
+<pre class="code extensibella"id="132">
  &lt; <b>Or3: apply lt_left to R1 _ _.</b>
 
 Subgoal 2:
@@ -1622,7 +2237,7 @@ Or3 : N3 &lt; N \/ N3 = N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="96">
+<pre class="code extensibella"id="133">
  &lt; <b>apply plus_integer_is_integer to _ _ R2.</b>
 
 Subgoal 2:
@@ -1652,7 +2267,7 @@ H8 : is_integer N5
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="97">
+<pre class="code extensibella"id="134">
  &lt; <b>LeN5: apply lte_right to R1 _ _ _.</b>
 
 Subgoal 2:
@@ -1683,7 +2298,7 @@ LeN5 : N5 &lt;= N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="98">
+<pre class="code extensibella"id="135">
  &lt; <b>A: case Acc (keep).</b>
 
 Subgoal 2:
@@ -1715,7 +2330,7 @@ A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="99">
+<pre class="code extensibella"id="136">
  &lt; <b>Or2: case Or2.</b>
 
 Subgoal 2.1:
@@ -1747,7 +2362,7 @@ Or2 : N2 &lt; N5
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="100">
+<pre class="code extensibella"id="137">
  &lt; <b>LN2: apply less_lesseq_integer_transitive to Or2 LeN5.</b>
 
 Subgoal 2.1:
@@ -1780,7 +2395,7 @@ LN2 : N2 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="101">
+<pre class="code extensibella"id="138">
  &lt; <b>AN2: apply A to _ LN2.</b>
 
 Subgoal 2.1:
@@ -1814,7 +2429,7 @@ AN2 : acc N2 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="102">
+<pre class="code extensibella"id="139">
  &lt; <b>apply IH to R4 AN2.</b>
 
 Subgoal 2.1:
@@ -1849,7 +2464,7 @@ H9 : &lt;eval {P}&gt; E2 V2
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="103">
+<pre class="code extensibella"id="140">
  &lt; <b>Or4: case Or4.</b>
 
 Subgoal 2.1.1:
@@ -1884,7 +2499,7 @@ Or4 : N4 &lt; N5
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="104">
+<pre class="code extensibella"id="141">
  &lt; <b>LN4: apply less_lesseq_integer_transitive to Or4 LeN5.</b>
 
 Subgoal 2.1.1:
@@ -1920,7 +2535,7 @@ LN4 : N4 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="105">
+<pre class="code extensibella"id="142">
  &lt; <b>AN4: apply A to _ LN4.</b>
 
 Subgoal 2.1.1:
@@ -1957,7 +2572,7 @@ AN4 : acc N4 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="106">
+<pre class="code extensibella"id="143">
  &lt; <b>apply IH to R6 AN4.</b>
 
 Subgoal 2.1.1:
@@ -1995,7 +2610,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="107">
+<pre class="code extensibella"id="144">
  &lt; <b>Or3: case Or3.</b>
 
 Subgoal 2.1.1.1:
@@ -2033,7 +2648,7 @@ Or3 : N3 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="108">
+<pre class="code extensibella"id="145">
  &lt; <b>AN3: apply A to _ Or3.</b>
 
 Subgoal 2.1.1.1:
@@ -2072,7 +2687,7 @@ AN3 : acc N3 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="109">
+<pre class="code extensibella"id="146">
  &lt; <b>apply IH to R3 AN3.</b>
 
 Subgoal 2.1.1.1:
@@ -2112,7 +2727,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="110">
+<pre class="code extensibella"id="147">
  &lt; <b>search.</b>
 
 Subgoal 2.1.1.2:
@@ -2149,7 +2764,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="111">
+<pre class="code extensibella"id="148">
  &lt; <b>apply IH1 to R3 Acc.</b>
 
 Subgoal 2.1.1.2:
@@ -2187,7 +2802,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="112">
+<pre class="code extensibella"id="149">
  &lt; <b>search.</b>
 
 Subgoal 2.1.2:
@@ -2221,7 +2836,7 @@ H9 : &lt;eval {P}&gt; E2 V2
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="113">
+<pre class="code extensibella"id="150">
  &lt; <b>Or5: apply lesseq_integer_less_or_eq to LeN5.</b>
 
 Subgoal 2.1.2:
@@ -2256,7 +2871,7 @@ Or5 : N5 &lt; N \/ N5 = N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="114">
+<pre class="code extensibella"id="151">
  &lt; <b>Or5: case Or5.</b>
 
 Subgoal 2.1.2.1:
@@ -2291,7 +2906,7 @@ Or5 : N5 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="115">
+<pre class="code extensibella"id="152">
  &lt; <b>AN5: apply A to _ Or5.</b>
 
 Subgoal 2.1.2.1:
@@ -2327,7 +2942,7 @@ AN5 : acc N5 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="116">
+<pre class="code extensibella"id="153">
  &lt; <b>apply IH to R6 AN5.</b>
 
 Subgoal 2.1.2.1:
@@ -2364,7 +2979,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="117">
+<pre class="code extensibella"id="154">
  &lt; <b>Or3: case Or3.</b>
 
 Subgoal 2.1.2.1.1:
@@ -2401,7 +3016,7 @@ Or3 : N3 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="118">
+<pre class="code extensibella"id="155">
  &lt; <b>AN3: apply A to _ Or3.</b>
 
 Subgoal 2.1.2.1.1:
@@ -2439,7 +3054,7 @@ AN3 : acc N3 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="119">
+<pre class="code extensibella"id="156">
  &lt; <b>apply IH to R3 AN3.</b>
 
 Subgoal 2.1.2.1.1:
@@ -2478,7 +3093,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="120">
+<pre class="code extensibella"id="157">
  &lt; <b>search.</b>
 
 Subgoal 2.1.2.1.2:
@@ -2514,7 +3129,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="121">
+<pre class="code extensibella"id="158">
  &lt; <b>apply IH1 to R3 Acc.</b>
 
 Subgoal 2.1.2.1.2:
@@ -2551,7 +3166,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="122">
+<pre class="code extensibella"id="159">
  &lt; <b>search.</b>
 
 Subgoal 2.1.2.2:
@@ -2585,7 +3200,7 @@ H9 : &lt;eval {P}&gt; E2 V2
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="123">
+<pre class="code extensibella"id="160">
  &lt; <b>apply IH1 to R6 Acc.</b>
 
 Subgoal 2.1.2.2:
@@ -2620,7 +3235,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="124">
+<pre class="code extensibella"id="161">
  &lt; <b>Or3: case Or3.</b>
 
 Subgoal 2.1.2.2.1:
@@ -2655,7 +3270,7 @@ Or3 : N3 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="125">
+<pre class="code extensibella"id="162">
  &lt; <b>AN3: apply A to _ Or3.</b>
 
 Subgoal 2.1.2.2.1:
@@ -2691,7 +3306,7 @@ AN3 : acc N3 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="126">
+<pre class="code extensibella"id="163">
  &lt; <b>apply IH to R3 AN3.</b>
 
 Subgoal 2.1.2.2.1:
@@ -2728,7 +3343,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="127">
+<pre class="code extensibella"id="164">
  &lt; <b>search.</b>
 
 Subgoal 2.1.2.2.2:
@@ -2762,7 +3377,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="128">
+<pre class="code extensibella"id="165">
  &lt; <b>apply IH1 to R3 Acc.</b>
 
 Subgoal 2.1.2.2.2:
@@ -2797,7 +3412,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="129">
+<pre class="code extensibella"id="166">
  &lt; <b>search.</b>
 
 Subgoal 2.2:
@@ -2828,7 +3443,7 @@ A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="130">
+<pre class="code extensibella"id="167">
  &lt; <b>Or5: apply lesseq_integer_less_or_eq to LeN5.</b>
 
 Subgoal 2.2:
@@ -2860,7 +3475,7 @@ Or5 : N5 &lt; N \/ N5 = N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="131">
+<pre class="code extensibella"id="168">
  &lt; <b>Or5: case Or5.</b>
 
 Subgoal 2.2.1:
@@ -2892,7 +3507,7 @@ Or5 : N5 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="132">
+<pre class="code extensibella"id="169">
  &lt; <b>AN5: apply A to _ Or5.</b>
 
 Subgoal 2.2.1:
@@ -2925,7 +3540,7 @@ AN5 : acc N5 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="133">
+<pre class="code extensibella"id="170">
  &lt; <b>apply IH1 to R4 AN5.</b>
 
 Subgoal 2.2.1:
@@ -2959,7 +3574,7 @@ H9 : &lt;eval {P}&gt; E2 V2
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="134">
+<pre class="code extensibella"id="171">
  &lt; <b>Or4: case Or4.</b>
 
 Subgoal 2.2.1.1:
@@ -2993,7 +3608,7 @@ Or4 : N4 &lt; N5
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="135">
+<pre class="code extensibella"id="172">
  &lt; <b>LN4: apply less_integer_transitive to Or4 Or5.</b>
 
 Subgoal 2.2.1.1:
@@ -3028,7 +3643,7 @@ LN4 : N4 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="136">
+<pre class="code extensibella"id="173">
  &lt; <b>AN4: apply A to _ LN4.</b>
 
 Subgoal 2.2.1.1:
@@ -3064,7 +3679,7 @@ AN4 : acc N4 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="137">
+<pre class="code extensibella"id="174">
  &lt; <b>apply IH to R6 AN4.</b>
 
 Subgoal 2.2.1.1:
@@ -3101,7 +3716,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="138">
+<pre class="code extensibella"id="175">
  &lt; <b>Or3: case Or3.</b>
 
 Subgoal 2.2.1.1.1:
@@ -3138,7 +3753,7 @@ Or3 : N3 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="139">
+<pre class="code extensibella"id="176">
  &lt; <b>AN3: apply A to _ Or3.</b>
 
 Subgoal 2.2.1.1.1:
@@ -3176,7 +3791,7 @@ AN3 : acc N3 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="140">
+<pre class="code extensibella"id="177">
  &lt; <b>apply IH to R3 AN3.</b>
 
 Subgoal 2.2.1.1.1:
@@ -3215,7 +3830,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="141">
+<pre class="code extensibella"id="178">
  &lt; <b>search.</b>
 
 Subgoal 2.2.1.1.2:
@@ -3251,7 +3866,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="142">
+<pre class="code extensibella"id="179">
  &lt; <b>apply IH1 to R3 Acc.</b>
 
 Subgoal 2.2.1.1.2:
@@ -3288,7 +3903,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="143">
+<pre class="code extensibella"id="180">
  &lt; <b>search.</b>
 
 Subgoal 2.2.1.2:
@@ -3321,7 +3936,7 @@ H9 : &lt;eval {P}&gt; E2 V2
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="144">
+<pre class="code extensibella"id="181">
  &lt; <b>apply IH to R6 AN5.</b>
 
 Subgoal 2.2.1.2:
@@ -3355,7 +3970,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="145">
+<pre class="code extensibella"id="182">
  &lt; <b>Or3: case Or3.</b>
 
 Subgoal 2.2.1.2.1:
@@ -3389,7 +4004,7 @@ Or3 : N3 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="146">
+<pre class="code extensibella"id="183">
  &lt; <b>AN3: apply A to _ Or3.</b>
 
 Subgoal 2.2.1.2.1:
@@ -3424,7 +4039,7 @@ AN3 : acc N3 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="147">
+<pre class="code extensibella"id="184">
  &lt; <b>apply IH to R3 AN3.</b>
 
 Subgoal 2.2.1.2.1:
@@ -3460,7 +4075,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="148">
+<pre class="code extensibella"id="185">
  &lt; <b>search.</b>
 
 Subgoal 2.2.1.2.2:
@@ -3493,7 +4108,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="149">
+<pre class="code extensibella"id="186">
  &lt; <b>apply IH1 to R3 Acc.</b>
 
 Subgoal 2.2.1.2.2:
@@ -3527,7 +4142,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="150">
+<pre class="code extensibella"id="187">
  &lt; <b>search.</b>
 
 Subgoal 2.2.2:
@@ -3558,7 +4173,7 @@ A : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="151">
+<pre class="code extensibella"id="188">
  &lt; <b>apply IH1 to R4 Acc.</b>
 
 Subgoal 2.2.2:
@@ -3590,7 +4205,7 @@ H9 : &lt;eval {P}&gt; E2 V2
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="152">
+<pre class="code extensibella"id="189">
  &lt; <b>Or4: case Or4.</b>
 
 Subgoal 2.2.2.1:
@@ -3622,7 +4237,7 @@ Or4 : N4 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="153">
+<pre class="code extensibella"id="190">
  &lt; <b>AN4: apply A to _ Or4.</b>
 
 Subgoal 2.2.2.1:
@@ -3655,7 +4270,7 @@ AN4 : acc N4 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="154">
+<pre class="code extensibella"id="191">
  &lt; <b>apply IH to R6 AN4.</b>
 
 Subgoal 2.2.2.1:
@@ -3689,7 +4304,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="155">
+<pre class="code extensibella"id="192">
  &lt; <b>Or3: case Or3.</b>
 
 Subgoal 2.2.2.1.1:
@@ -3723,7 +4338,7 @@ Or3 : N3 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="156">
+<pre class="code extensibella"id="193">
  &lt; <b>AN3: apply A to _ Or3.</b>
 
 Subgoal 2.2.2.1.1:
@@ -3758,7 +4373,7 @@ AN3 : acc N3 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="157">
+<pre class="code extensibella"id="194">
  &lt; <b>apply IH to R3 AN3.</b>
 
 Subgoal 2.2.2.1.1:
@@ -3794,7 +4409,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="158">
+<pre class="code extensibella"id="195">
  &lt; <b>search.</b>
 
 Subgoal 2.2.2.1.2:
@@ -3827,7 +4442,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="159">
+<pre class="code extensibella"id="196">
  &lt; <b>apply IH1 to R3 Acc.</b>
 
 Subgoal 2.2.2.1.2:
@@ -3861,7 +4476,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="160">
+<pre class="code extensibella"id="197">
  &lt; <b>search.</b>
 
 Subgoal 2.2.2.2:
@@ -3892,7 +4507,7 @@ H9 : &lt;eval {P}&gt; E2 V2
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="161">
+<pre class="code extensibella"id="198">
  &lt; <b>apply IH1 to R6 Acc.</b>
 
 Subgoal 2.2.2.2:
@@ -3924,7 +4539,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="162">
+<pre class="code extensibella"id="199">
  &lt; <b>Or3: case Or3.</b>
 
 Subgoal 2.2.2.2.1:
@@ -3956,7 +4571,7 @@ Or3 : N3 &lt; N
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="163">
+<pre class="code extensibella"id="200">
  &lt; <b>AN3: apply A to _ Or3.</b>
 
 Subgoal 2.2.2.2.1:
@@ -3989,7 +4604,7 @@ AN3 : acc N3 *
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="164">
+<pre class="code extensibella"id="201">
  &lt; <b>apply IH to R3 AN3.</b>
 
 Subgoal 2.2.2.2.1:
@@ -4023,7 +4638,7 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="165">
+<pre class="code extensibella"id="202">
  &lt; <b>search.</b>
 
 Subgoal 2.2.2.2.2:
@@ -4054,7 +4669,7 @@ H10 : &lt;eval {P}&gt; B V
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="166">
+<pre class="code extensibella"id="203">
  &lt; <b>apply IH1 to R3 Acc.</b>
 
 Subgoal 2.2.2.2.2:
@@ -4086,7 +4701,560 @@ H11 : &lt;eval {P}&gt; E1 (abs X Body)
 ============================
  &lt;eval {P}&gt; (app E1 E2) V
 </pre>
-<pre class="code extensibella"id="167">
+<pre class="code extensibella"id="204">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: I
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (intE I) (intE I) 0 @@
+Acc : acc 0 @
+============================
+ &lt;eval {P}&gt; (intE I) (intE I)
+</pre>
+<pre class="code extensibella"id="205">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="206">
+ &lt; <b>apply ext_size_is_int_eval to R2.</b>
+
+Subgoal 4:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="207">
+ &lt; <b>apply ext_size_is_int_eval to R3.</b>
+
+Subgoal 4:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="208">
+ &lt; <b>apply ext_size_pos_eval to R2.</b>
+
+Subgoal 4:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="209">
+ &lt; <b>apply ext_size_pos_eval to R3.</b>
+
+Subgoal 4:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N3
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="210">
+ &lt; <b>Or2: apply lt_left to R1 _ _.</b>
+
+Subgoal 4:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N3
+Or2 : N2 &lt; N \/ N2 = N
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="211">
+ &lt; <b>Or3: apply lt_right to R1 _ _ _.</b>
+
+Subgoal 4:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N3
+Or2 : N2 &lt; N \/ N2 = N
+Or3 : N3 &lt; N \/ N3 = N
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="212">
+ &lt; <b>Acc': case Acc (keep).</b>
+
+Subgoal 4:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N3
+Or2 : N2 &lt; N \/ N2 = N
+Or3 : N3 &lt; N \/ N3 = N
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="213">
+ &lt; <b>L2: case Or2.</b>
+
+Subgoal 4.1:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N3
+Or3 : N3 &lt; N \/ N3 = N
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L2 : N2 &lt; N
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="214">
+ &lt; <b>A2: apply Acc' to _ L2.</b>
+
+Subgoal 4.1:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N3
+Or3 : N3 &lt; N \/ N3 = N
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L2 : N2 &lt; N
+A2 : acc N2 *
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="215">
+ &lt; <b>apply IH to R2 A2.</b>
+
+Subgoal 4.1:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N3
+Or3 : N3 &lt; N \/ N3 = N
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L2 : N2 &lt; N
+A2 : acc N2 *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="216">
+ &lt; <b>L3: case Or3.</b>
+
+Subgoal 4.1.1:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N3
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L2 : N2 &lt; N
+A2 : acc N2 *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+L3 : N3 &lt; N
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="217">
+ &lt; <b>A3: apply Acc' to _ L3.</b>
+
+Subgoal 4.1.1:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N3
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L2 : N2 &lt; N
+A2 : acc N2 *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+L3 : N3 &lt; N
+A3 : acc N3 *
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="218">
+ &lt; <b>apply IH to R3 A3.</b>
+
+Subgoal 4.1.1:
+
+Variables: N N2 N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N3
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L2 : N2 &lt; N
+A2 : acc N2 *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+L3 : N3 &lt; N
+A3 : acc N3 *
+H6 : &lt;eval {P}&gt; E2 (intE I2)
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="219">
+ &lt; <b>search.</b>
+
+Subgoal 4.1.2:
+
+Variables: N N2 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L2 : N2 &lt; N
+A2 : acc N2 *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="220">
+ &lt; <b>apply IH1 to R3 Acc.</b>
+
+Subgoal 4.1.2:
+
+Variables: N N2 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N2 + N = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N2 **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N **
+R4 : I1 + I2 = I
+H1 : is_integer N2
+H2 : is_integer N
+H3 : 0 &lt;= N2
+H4 : 0 &lt;= N
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+L2 : N2 &lt; N
+A2 : acc N2 *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+H6 : &lt;eval {P}&gt; E2 (intE I2)
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="221">
+ &lt; <b>search.</b>
+
+Subgoal 4.2:
+
+Variables: N N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N
+H2 : is_integer N3
+H3 : 0 &lt;= N
+H4 : 0 &lt;= N3
+Or3 : N3 &lt; N \/ N3 = N
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="222">
+ &lt; <b>apply IH1 to R2 Acc.</b>
+
+Subgoal 4.2:
+
+Variables: N N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N
+H2 : is_integer N3
+H3 : 0 &lt;= N
+H4 : 0 &lt;= N3
+Or3 : N3 &lt; N \/ N3 = N
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="223">
+ &lt; <b>L3: case Or3.</b>
+
+Subgoal 4.2.1:
+
+Variables: N N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N
+H2 : is_integer N3
+H3 : 0 &lt;= N
+H4 : 0 &lt;= N3
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+L3 : N3 &lt; N
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="224">
+ &lt; <b>A3: apply Acc' to _ L3.</b>
+
+Subgoal 4.2.1:
+
+Variables: N N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N
+H2 : is_integer N3
+H3 : 0 &lt;= N
+H4 : 0 &lt;= N3
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+L3 : N3 &lt; N
+A3 : acc N3 *
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="225">
+ &lt; <b>apply IH to R3 A3.</b>
+
+Subgoal 4.2.1:
+
+Variables: N N3 I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N + N3 = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N3 **
+R4 : I1 + I2 = I
+H1 : is_integer N
+H2 : is_integer N3
+H3 : 0 &lt;= N
+H4 : 0 &lt;= N3
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+L3 : N3 &lt; N
+A3 : acc N3 *
+H6 : &lt;eval {P}&gt; E2 (intE I2)
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="226">
+ &lt; <b>search.</b>
+
+Subgoal 4.2.2:
+
+Variables: N I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N + N = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N **
+R4 : I1 + I2 = I
+H1 : is_integer N
+H2 : is_integer N
+H3 : 0 &lt;= N
+H4 : 0 &lt;= N
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="227">
+ &lt; <b>apply IH1 to R3 Acc.</b>
+
+Subgoal 4.2.2:
+
+Variables: N I1 I2 I E2 E1
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (plus E1 E2) (intE I) N @@
+Acc : acc N @
+R1 : N + N = N
+R2 : &lt;eval {ES}&gt; E1 (intE I1) N **
+R3 : &lt;eval {ES}&gt; E2 (intE I2) N **
+R4 : I1 + I2 = I
+H1 : is_integer N
+H2 : is_integer N
+H3 : 0 &lt;= N
+H4 : 0 &lt;= N
+Acc' : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+H5 : &lt;eval {P}&gt; E1 (intE I1)
+H6 : &lt;eval {P}&gt; E2 (intE I2)
+============================
+ &lt;eval {P}&gt; (plus E1 E2) (intE I)
+</pre>
+<pre class="code extensibella"id="228">
  &lt; <b>search.</b>
 
 Proof completed.

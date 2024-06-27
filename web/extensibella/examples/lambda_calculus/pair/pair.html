@@ -1,0 +1,348 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  lambda_calculus:pair</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  lambda_calculus:pair</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  def.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggledef.sos" onclick="toggleFile('def.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="def.sos">[Raw File]</a>
+<pre class="code sterling" id="def.sos">
+Module lambda_calculus:pair
+
+Builds on lambda_calculus:host
+
+e ::= ...
+    | pair(e, e)
+    | fst(e)
+    | snd(e)
+
+
+---------------------------------------------------- [Proj-Pair]
+|{e}- pair(T1, T2) ~~>
+  app(
+    app(
+      abs("A", abs("B", abs("S",
+          app(app(var("S"), var("A")), var("B"))))),
+      T1),
+    T2)
+
+
+------------------------------------------ [Proj-Fst]
+|{e}- fst(T) ~~>
+      app(T, abs("A", abs("B", var("A"))))
+
+
+------------------------------------------ [Proj-Snd]
+|{e}- snd(T) ~~>
+      app(T, abs("A", abs("B", var("B"))))
+
+
+
+{eval
+  app(
+    app(
+      abs("A", abs("B", abs("S",
+          app(app(var("S"), var("A")), var("B"))))),
+      T1),
+    T2) V}
+---------------------------------------------------- [E-Pair]
+eval pair(T1, T2) V
+
+
+eval app(T, abs("A", abs("B", var("A")))) V
+------------------------------------------- [E-Fst]
+eval fst(T) V
+
+
+eval app(T, abs("A", abs("B", var("B")))) V
+------------------------------------------- [E-Snd]
+eval snd(T) V
+
+
+
+subst X R T1 S1
+subst X R T2 S2
+---------------------------------------------------- [S-Pair]
+{subst X R pair(T1, T2)
+  app(
+    app(
+      abs("A", abs("B", abs("S",
+          app(app(var("S"), var("A")), var("B"))))),
+      S1),
+    S2)}
+
+
+subst X R T S
+------------------------------------------ [S-Fst]
+{subst X R fst(T)
+      app(S, abs("A", abs("B",var("A"))))}
+
+
+subst X R T S
+------------------------------------------ [S-Snd]
+{subst X R snd(T)
+      app(S, abs("A", abs("B",var("B"))))}
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="pair.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="pair-details.html#0">Module lambda_calculus:pair.</a>
+
+
+<a class="command" href="pair-details.html#1">Prove_Constraint lambda_calculus:host:proj_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<span class="comment">%Proj-Pair</span>
+ <a class="tactic" href="pair-details.html#2">case Hyp1.</a> <a class="tactic" href="pair-details.html#3">search 20.</a>
+<span class="comment">%Proj-Fst</span>
+ <a class="tactic" href="pair-details.html#4">case Hyp1.</a> <a class="tactic" href="pair-details.html#5">search 10.</a>
+<span class="comment">%Proj-Snd</span>
+ <a class="tactic" href="pair-details.html#6">case Hyp1.</a> <a class="tactic" href="pair-details.html#7">search 10.</a>
+
+
+<a class="tactic" href="pair-details.html#8">Add_Proj_Rel lambda_calculus:host:is_e.</a></div>
+
+
+<a class="command" href="pair-details.html#9">Prove_Ext_Ind lambda_calculus:host:is_e.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(10);" id="toggleproof10">[Show Proof]</a>
+<div class="proof" id="proof10" style="display: none;">
+<span class="comment">%pair</span>
+ <a class="tactic" href="pair-details.html#10">apply IH to R1.</a> <a class="tactic" href="pair-details.html#11">apply IH to R2.</a> <a class="tactic" href="pair-details.html#12">search 20.</a>
+<span class="comment">%fst</span>
+ <a class="tactic" href="pair-details.html#13">apply IH to R1.</a> <a class="tactic" href="pair-details.html#14">search 10.</a>
+<span class="comment">%snd</span>
+ <a class="tactic" href="pair-details.html#15">apply IH to R1.</a> <a class="tactic" href="pair-details.html#16">search 10.</a></div>
+
+
+<a class="command" href="pair-details.html#17">Prove_Constraint lambda_calculus:host:proj_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(18);" id="toggleproof18">[Show Proof]</a>
+<div class="proof" id="proof18" style="display: none;">
+<span class="comment">%Proj-Pair</span>
+ <a class="tactic" href="pair-details.html#18">case Hyp1.</a> <a class="tactic" href="pair-details.html#19">search.</a>
+<span class="comment">%Proj-Fst</span>
+ <a class="tactic" href="pair-details.html#20">case Hyp1.</a> <a class="tactic" href="pair-details.html#21">search.</a>
+<span class="comment">%Proj-Snd</span>
+ <a class="tactic" href="pair-details.html#22">case Hyp1.</a> <a class="tactic" href="pair-details.html#23">search.</a></div>
+
+
+<a class="command" href="pair-details.html#24">Prove lambda_calculus:host:subst_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(25);" id="toggleproof25">[Show Proof]</a>
+<div class="proof" id="proof25" style="display: none;">
+<span class="comment">%pair</span>
+ <a class="tactic" href="pair-details.html#25">apply IH to IsE1 IsX IsR.</a> <a class="tactic" href="pair-details.html#26">apply IH to IsE2 IsX IsR.</a> <a class="tactic" href="pair-details.html#27">search.</a>
+<span class="comment">%fst</span>
+ <a class="tactic" href="pair-details.html#28">apply IH to IsE1 IsX IsR.</a> <a class="tactic" href="pair-details.html#29">search.</a>
+<span class="comment">%snd</span>
+ <a class="tactic" href="pair-details.html#30">apply IH to IsE1 IsX IsR.</a> <a class="tactic" href="pair-details.html#31">search.</a></div>
+
+
+<a class="command" href="pair-details.html#32">Prove lambda_calculus:host:subst_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(33);" id="toggleproof33">[Show Proof]</a>
+<div class="proof" id="proof33" style="display: none;">
+<span class="comment">%S-Pair</span>
+ <a class="tactic" href="pair-details.html#33">case IsE.</a> <a class="tactic" href="pair-details.html#34">apply IH to _ _ _ S1.</a> <a class="tactic" href="pair-details.html#35">apply IH to _ _ _ S2.</a> <a class="tactic" href="pair-details.html#36">search 20.</a>
+<span class="comment">%S-Fst</span>
+ <a class="tactic" href="pair-details.html#37">case IsE.</a> <a class="tactic" href="pair-details.html#38">apply IH to _ _ _ S1.</a> <a class="tactic" href="pair-details.html#39">search 10.</a>
+<span class="comment">%S-Snd</span>
+ <a class="tactic" href="pair-details.html#40">case IsE.</a> <a class="tactic" href="pair-details.html#41">apply IH to _ _ _ S1.</a> <a class="tactic" href="pair-details.html#42">search 10.</a></div>
+
+
+<a class="command" href="pair-details.html#43">Prove lambda_calculus:host:eval_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(44);" id="toggleproof44">[Show Proof]</a>
+<div class="proof" id="proof44" style="display: none;">
+<span class="comment">%E-Pair</span>
+ <a class="tactic" href="pair-details.html#44">case IsE.</a> <a class="tactic" href="pair-details.html#45">apply IH to _ Ev1.</a> <a class="tactic" href="pair-details.html#46">search 20.</a> <a class="tactic" href="pair-details.html#47">search.</a>
+<span class="comment">%E-Fst</span>
+ <a class="tactic" href="pair-details.html#48">case IsE.</a> <a class="tactic" href="pair-details.html#49">apply IH to _ Ev1.</a> <a class="tactic" href="pair-details.html#50">search 10.</a> <a class="tactic" href="pair-details.html#51">search.</a>
+<span class="comment">%E-Snd</span>
+ <a class="tactic" href="pair-details.html#52">case IsE.</a> <a class="tactic" href="pair-details.html#53">apply IH to _ Ev1.</a> <a class="tactic" href="pair-details.html#54">search 10.</a> <a class="tactic" href="pair-details.html#55">search.</a></div>
+
+
+<a class="command" href="pair-details.html#56">Prove lambda_calculus:host:subst_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(57);" id="toggleproof57">[Show Proof]</a>
+<div class="proof" id="proof57" style="display: none;">
+<span class="comment">%S-Pair</span>
+ <a class="tactic" href="pair-details.html#57">case IsE.</a> <a class="tactic" href="pair-details.html#58">SB: case SB.</a> <a class="tactic" href="pair-details.html#59">apply IH to _ _ _ SA1 SB.</a>
+ <a class="tactic" href="pair-details.html#60">apply IH to _ _ _ SA2 SB1.</a> <a class="tactic" href="pair-details.html#61">search 20.</a>
+<span class="comment">%S-Fst</span>
+ <a class="tactic" href="pair-details.html#62">case IsE.</a> <a class="tactic" href="pair-details.html#63">SB: case SB.</a> <a class="tactic" href="pair-details.html#64">apply IH to _ _ _ SA1 SB.</a> <a class="tactic" href="pair-details.html#65">search.</a>
+<span class="comment">%S-Snd</span>
+ <a class="tactic" href="pair-details.html#66">case IsE.</a> <a class="tactic" href="pair-details.html#67">SB: case SB.</a> <a class="tactic" href="pair-details.html#68">apply IH to _ _ _ SA1 SB.</a> <a class="tactic" href="pair-details.html#69">search.</a></div>
+
+
+<a class="command" href="pair-details.html#70">Prove lambda_calculus:host:eval_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(71);" id="toggleproof71">[Show Proof]</a>
+<div class="proof" id="proof71" style="display: none;">
+<span class="comment">%E-Pair</span>
+ <a class="tactic" href="pair-details.html#71">case IsE.</a> <a class="tactic" href="pair-details.html#72">EvB: case EvB.</a> <a class="tactic" href="pair-details.html#73">apply IH to _ EvA1 EvB.</a> <a class="tactic" href="pair-details.html#74">search 20.</a> <a class="tactic" href="pair-details.html#75">search.</a>
+<span class="comment">%E-Fst</span>
+ <a class="tactic" href="pair-details.html#76">case IsE.</a> <a class="tactic" href="pair-details.html#77">EvB: case EvB.</a> <a class="tactic" href="pair-details.html#78">apply IH to _ EvA1 EvB.</a> <a class="tactic" href="pair-details.html#79">search 10.</a> <a class="tactic" href="pair-details.html#80">search.</a>
+<span class="comment">%E-Snd</span>
+ <a class="tactic" href="pair-details.html#81">case IsE.</a> <a class="tactic" href="pair-details.html#82">EvB: case EvB.</a> <a class="tactic" href="pair-details.html#83">apply IH to _ EvA1 EvB.</a> <a class="tactic" href="pair-details.html#84">search 10.</a> <a class="tactic" href="pair-details.html#85">search.</a></div>
+
+
+<a class="command" href="pair-details.html#86">Prove_Constraint lambda_calculus:host:proj_subst.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(87);" id="toggleproof87">[Show Proof]</a>
+<div class="proof" id="proof87" style="display: none;">
+<span class="comment">%Proj-Pair</span>
+ <a class="tactic" href="pair-details.html#87">case IsE.</a> <a class="tactic" href="pair-details.html#88">S: case S.</a>
+ <a class="tactic" href="pair-details.html#89">OrA: apply is_string_eq_or_not to IsX _ with S2 = "A".</a>
+ <a class="tactic" href="pair-details.html#90">OrB: apply is_string_eq_or_not to IsX _ with S2 = "B".</a>
+ <a class="tactic" href="pair-details.html#91">OrS: apply is_string_eq_or_not to IsX _ with S2 = "S".</a>
+ <a class="tactic" href="pair-details.html#92">case OrA.</a>
+   <span class="comment">%X = "A"</span>
+    <a class="tactic" href="pair-details.html#93">search 20.</a>
+   <span class="comment">%X != "A"</span>
+    <a class="tactic" href="pair-details.html#94">case OrB.</a>
+      <span class="comment">%X = "B"</span>
+       <a class="tactic" href="pair-details.html#95">search 20.</a>
+      <span class="comment">%X != "B"</span>
+       <a class="tactic" href="pair-details.html#96">case OrS.</a>
+         <span class="comment">%X = "S"</span>
+          <a class="tactic" href="pair-details.html#97">search 20.</a>
+         <span class="comment">%X != "S"</span>
+          <a class="tactic" href="pair-details.html#98">search 20.</a>
+<span class="comment">%Proj-Fst</span>
+ <a class="tactic" href="pair-details.html#99">case IsE.</a> <a class="tactic" href="pair-details.html#100">S: case S.</a>
+ <a class="tactic" href="pair-details.html#101">OrA: apply is_string_eq_or_not to IsX _ with S2 = "A".</a>
+ <a class="tactic" href="pair-details.html#102">OrB: apply is_string_eq_or_not to IsX _ with S2 = "B".</a>
+ <a class="tactic" href="pair-details.html#103">case OrA.</a>
+   <span class="comment">%X = "A"</span>
+    <a class="tactic" href="pair-details.html#104">search 10.</a>
+   <span class="comment">%X != "A"</span>
+    <a class="tactic" href="pair-details.html#105">case OrB.</a>
+      <span class="comment">%X = "B"</span>
+       <a class="tactic" href="pair-details.html#106">search 10.</a>
+      <span class="comment">%X != "B"</span>
+       <a class="tactic" href="pair-details.html#107">search 10.</a>
+<span class="comment">%Proj-Snd</span>
+ <a class="tactic" href="pair-details.html#108">case IsE.</a> <a class="tactic" href="pair-details.html#109">S: case S.</a>
+ <a class="tactic" href="pair-details.html#110">OrA: apply is_string_eq_or_not to IsX _ with S2 = "A".</a>
+ <a class="tactic" href="pair-details.html#111">OrB: apply is_string_eq_or_not to IsX _ with S2 = "B".</a>
+ <a class="tactic" href="pair-details.html#112">case OrA.</a>
+   <span class="comment">%X = "A"</span>
+    <a class="tactic" href="pair-details.html#113">search 10.</a>
+   <span class="comment">%X != "A"</span>
+    <a class="tactic" href="pair-details.html#114">case OrB.</a>
+      <span class="comment">%X = "B"</span>
+       <a class="tactic" href="pair-details.html#115">search 10.</a>
+      <span class="comment">%X != "B"</span>
+       <a class="tactic" href="pair-details.html#116">search 10.</a></div>
+
+
+<a class="command" href="pair-details.html#117">Prove_Constraint lambda_calculus:host:proj_subst_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(118);" id="toggleproof118">[Show Proof]</a>
+<div class="proof" id="proof118" style="display: none;">
+<span class="comment">%Proj-Pair</span>
+ <a class="tactic" href="pair-details.html#118">case IsE.</a> <a class="tactic" href="pair-details.html#119">S: case S.</a> <a class="tactic" href="pair-details.html#120">S': case S'.</a> <a class="tactic" href="pair-details.html#121">apply subst_unique to _ _ _ S1 S'1.</a>
+ <a class="tactic" href="pair-details.html#122">clear S'1.</a> <a class="tactic" href="pair-details.html#123">S': case S'.</a> <a class="tactic" href="pair-details.html#124">apply subst_unique to _ _ _ S S'1.</a> <a class="tactic" href="pair-details.html#125">clear S'1.</a>
+ <a class="tactic" href="pair-details.html#126">S': case S'.</a>
+   <span class="comment">%S-Abs-Eq</span>
+    <a class="tactic" href="pair-details.html#127">search 20.</a>
+   <span class="comment">%S-Abs-NEq</span>
+    <a class="tactic" href="pair-details.html#128">S': case S'1.</a>
+      <span class="comment">%S-Abs-Eq</span>
+       <a class="tactic" href="pair-details.html#129">search 20.</a>
+      <span class="comment">%S-Abs-NEq</span>
+       <a class="tactic" href="pair-details.html#130">S': case S'2.</a>
+         <span class="comment">%S-Abs-Eq</span>
+          <a class="tactic" href="pair-details.html#131">search 20.</a>
+         <span class="comment">%S-Abs-NEq</span>
+          <a class="tactic" href="pair-details.html#132">S': case S'3.</a> <a class="tactic" href="pair-details.html#133">S': case S'3.</a> <a class="tactic" href="pair-details.html#134">case S'4.</a>
+            <span class="comment">%S-Var-Eq</span>
+             <a class="tactic" href="pair-details.html#135">apply S'1 to _.</a>
+            <span class="comment">%S-Var-NEq</span>
+             <a class="tactic" href="pair-details.html#136">case S'3.</a>
+               <span class="comment">%S-Var-Eq</span>
+                <a class="tactic" href="pair-details.html#137">apply S'2 to _.</a>
+               <span class="comment">%S-Var-NEq</span>
+                <a class="tactic" href="pair-details.html#138">case S'5.</a>
+                  <span class="comment">%S-Var-Eq</span>
+                   <a class="tactic" href="pair-details.html#139">apply S' to _.</a>
+                  <span class="comment">%S-Var-NEq</span>
+                   <a class="tactic" href="pair-details.html#140">search 20.</a>
+<span class="comment">%Proj-Fst</span>
+ <a class="tactic" href="pair-details.html#141">case IsE.</a> <a class="tactic" href="pair-details.html#142">S: case S.</a> <a class="tactic" href="pair-details.html#143">S': case S'.</a> <a class="tactic" href="pair-details.html#144">apply subst_unique to _ _ _ S S'.</a>
+ <a class="tactic" href="pair-details.html#145">clear S'.</a> <a class="tactic" href="pair-details.html#146">S': case S'1.</a>
+   <span class="comment">%S-Abs-Eq</span>
+    <a class="tactic" href="pair-details.html#147">search 10.</a>
+   <span class="comment">%S-Abs-NEq</span>
+    <a class="tactic" href="pair-details.html#148">S': case S'1.</a>
+      <span class="comment">%S-Abs-Eq</span>
+       <a class="tactic" href="pair-details.html#149">search 10.</a>
+      <span class="comment">%S-Abs-NEq</span>
+       <a class="tactic" href="pair-details.html#150">case S'2.</a>
+         <span class="comment">%S-Var-Eq</span>
+          <a class="tactic" href="pair-details.html#151">apply S' to _.</a>
+         <span class="comment">%S-Var-NEq</span>
+          <a class="tactic" href="pair-details.html#152">search 10.</a>
+<span class="comment">%Proj-Snd</span>
+ <a class="tactic" href="pair-details.html#153">case IsE.</a> <a class="tactic" href="pair-details.html#154">S: case S.</a> <a class="tactic" href="pair-details.html#155">S': case S'.</a> <a class="tactic" href="pair-details.html#156">apply subst_unique to _ _ _ S S'.</a>
+ <a class="tactic" href="pair-details.html#157">clear S'.</a> <a class="tactic" href="pair-details.html#158">S': case S'1.</a>
+   <span class="comment">%S-Abs-Eq</span>
+    <a class="tactic" href="pair-details.html#159">search 10.</a>
+   <span class="comment">%S-Abs-NEq</span>
+    <a class="tactic" href="pair-details.html#160">S': case S'1.</a>
+      <span class="comment">%S-Abs-Eq</span>
+       <a class="tactic" href="pair-details.html#161">search 10.</a>
+      <span class="comment">%S-Abs-NEq</span>
+       <a class="tactic" href="pair-details.html#162">case S'2.</a>
+         <span class="comment">%S-Var-Eq</span>
+          <a class="tactic" href="pair-details.html#163">apply S'1 to _.</a>
+         <span class="comment">%S-Var-NEq</span>
+          <a class="tactic" href="pair-details.html#164">search 10.</a></div>
+
+
+<a class="command" href="pair-details.html#165">Prove_Constraint lambda_calculus:host:proj_eval.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(166);" id="toggleproof166">[Show Proof]</a>
+<div class="proof" id="proof166" style="display: none;">
+<span class="comment">%Proj-Pair</span>
+ <a class="tactic" href="pair-details.html#166">case Ev.</a> <a class="tactic" href="pair-details.html#167">search.</a>
+<span class="comment">%Proj-Fst</span>
+ <a class="tactic" href="pair-details.html#168">case Ev.</a> <a class="tactic" href="pair-details.html#169">search.</a>
+<span class="comment">%Proj-Snd</span>
+ <a class="tactic" href="pair-details.html#170">case Ev.</a> <a class="tactic" href="pair-details.html#171">search.</a></div>
+
+
+<a class="command" href="pair-details.html#172">Prove_Constraint lambda_calculus:host:proj_eval_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(173);" id="toggleproof173">[Show Proof]</a>
+<div class="proof" id="proof173" style="display: none;">
+<span class="comment">%Proj-Pair</span>
+ <a class="tactic" href="pair-details.html#173">case IsE.</a> <a class="tactic" href="pair-details.html#174">Ev: case Ev.</a> <a class="tactic" href="pair-details.html#175">apply eval_unique to _ Ev Ev'.</a> <a class="tactic" href="pair-details.html#176">search 20.</a>
+ <a class="tactic" href="pair-details.html#177">search.</a>
+<span class="comment">%Proj-Fst</span>
+ <a class="tactic" href="pair-details.html#178">case IsE.</a> <a class="tactic" href="pair-details.html#179">Ev: case Ev.</a> <a class="tactic" href="pair-details.html#180">apply eval_unique to _ Ev Ev'.</a> <a class="tactic" href="pair-details.html#181">search 20.</a>
+ <a class="tactic" href="pair-details.html#182">search.</a>
+<span class="comment">%Proj-Snd</span>
+ <a class="tactic" href="pair-details.html#183">case IsE.</a> <a class="tactic" href="pair-details.html#184">Ev: case Ev.</a> <a class="tactic" href="pair-details.html#185">apply eval_unique to _ Ev Ev'.</a> <a class="tactic" href="pair-details.html#186">search 20.</a>
+ <a class="tactic" href="pair-details.html#187">search.</a>
+
+
+<a class="tactic" href="pair-details.html#188">Add_Ext_Size lambda_calculus:host:eval.</a>
+
+
+<a class="tactic" href="pair-details.html#189">Add_Proj_Rel lambda_calculus:host:eval.</a></div>
+
+
+<a class="command" href="pair-details.html#190">Prove_Ext_Ind lambda_calculus:host:eval.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(191);" id="toggleproof191">[Show Proof]</a>
+<div class="proof" id="proof191" style="display: none;">
+<span class="comment">%E-Pair</span>
+ <a class="tactic" href="pair-details.html#191">apply ext_size_is_int_eval to R2.</a> <a class="tactic" href="pair-details.html#192">L: apply lt_plus_one to R1 _.</a>
+ <a class="tactic" href="pair-details.html#193">apply ext_size_pos_eval to R2.</a> <a class="tactic" href="pair-details.html#194">Acc: case Acc.</a> <a class="tactic" href="pair-details.html#195">A: apply Acc to _ L.</a>
+ <a class="tactic" href="pair-details.html#196">apply IH to R2 A.</a> <a class="tactic" href="pair-details.html#197">search.</a>
+<span class="comment">%E-Fst</span>
+ <a class="tactic" href="pair-details.html#198">apply ext_size_is_int_eval to R2.</a> <a class="tactic" href="pair-details.html#199">L: apply lt_plus_one to R1 _.</a>
+ <a class="tactic" href="pair-details.html#200">apply ext_size_pos_eval to R2.</a> <a class="tactic" href="pair-details.html#201">Acc: case Acc.</a> <a class="tactic" href="pair-details.html#202">A: apply Acc to _ L.</a>
+ <a class="tactic" href="pair-details.html#203">apply IH to R2 A.</a> <a class="tactic" href="pair-details.html#204">search.</a>
+<span class="comment">%E-Snd</span>
+ <a class="tactic" href="pair-details.html#205">apply ext_size_is_int_eval to R2.</a> <a class="tactic" href="pair-details.html#206">L: apply lt_plus_one to R1 _.</a>
+ <a class="tactic" href="pair-details.html#207">apply ext_size_pos_eval to R2.</a> <a class="tactic" href="pair-details.html#208">Acc: case Acc.</a> <a class="tactic" href="pair-details.html#209">A: apply Acc to _ L.</a>
+ <a class="tactic" href="pair-details.html#210">apply IH to R2 A.</a> <a class="tactic" href="pair-details.html#211">search.</a></div>
+<a class="command" href="pair-details.html#212"></a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

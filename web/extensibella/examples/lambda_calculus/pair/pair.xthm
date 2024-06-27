@@ -1,0 +1,227 @@
+Module lambda_calculus:pair.
+
+
+Prove_Constraint lambda_calculus:host:proj_is.
+%Proj-Pair
+ case Hyp1. search 20.
+%Proj-Fst
+ case Hyp1. search 10.
+%Proj-Snd
+ case Hyp1. search 10.
+
+
+Add_Proj_Rel lambda_calculus:host:is_e.
+
+
+Prove_Ext_Ind lambda_calculus:host:is_e.
+%pair
+ apply IH to R1. apply IH to R2. search 20.
+%fst
+ apply IH to R1. search 10.
+%snd
+ apply IH to R1. search 10.
+
+
+Prove_Constraint lambda_calculus:host:proj_same.
+%Proj-Pair
+ case Hyp1. search.
+%Proj-Fst
+ case Hyp1. search.
+%Proj-Snd
+ case Hyp1. search.
+
+
+Prove lambda_calculus:host:subst_exists.
+%pair
+ apply IH to IsE1 IsX IsR. apply IH to IsE2 IsX IsR. search.
+%fst
+ apply IH to IsE1 IsX IsR. search.
+%snd
+ apply IH to IsE1 IsX IsR. search.
+
+
+Prove lambda_calculus:host:subst_is.
+%S-Pair
+ case IsE. apply IH to _ _ _ S1. apply IH to _ _ _ S2. search 20.
+%S-Fst
+ case IsE. apply IH to _ _ _ S1. search 10.
+%S-Snd
+ case IsE. apply IH to _ _ _ S1. search 10.
+
+
+Prove lambda_calculus:host:eval_is.
+%E-Pair
+ case IsE. apply IH to _ Ev1. search 20. search.
+%E-Fst
+ case IsE. apply IH to _ Ev1. search 10. search.
+%E-Snd
+ case IsE. apply IH to _ Ev1. search 10. search.
+
+
+Prove lambda_calculus:host:subst_unique.
+%S-Pair
+ case IsE. SB: case SB. apply IH to _ _ _ SA1 SB.
+ apply IH to _ _ _ SA2 SB1. search 20.
+%S-Fst
+ case IsE. SB: case SB. apply IH to _ _ _ SA1 SB. search.
+%S-Snd
+ case IsE. SB: case SB. apply IH to _ _ _ SA1 SB. search.
+
+
+Prove lambda_calculus:host:eval_unique.
+%E-Pair
+ case IsE. EvB: case EvB. apply IH to _ EvA1 EvB. search 20. search.
+%E-Fst
+ case IsE. EvB: case EvB. apply IH to _ EvA1 EvB. search 10. search.
+%E-Snd
+ case IsE. EvB: case EvB. apply IH to _ EvA1 EvB. search 10. search.
+
+
+Prove_Constraint lambda_calculus:host:proj_subst.
+%Proj-Pair
+ case IsE. S: case S.
+ OrA: apply is_string_eq_or_not to IsX _ with S2 = "A".
+ OrB: apply is_string_eq_or_not to IsX _ with S2 = "B".
+ OrS: apply is_string_eq_or_not to IsX _ with S2 = "S".
+ case OrA.
+   %X = "A"
+    search 20.
+   %X != "A"
+    case OrB.
+      %X = "B"
+       search 20.
+      %X != "B"
+       case OrS.
+         %X = "S"
+          search 20.
+         %X != "S"
+          search 20.
+%Proj-Fst
+ case IsE. S: case S.
+ OrA: apply is_string_eq_or_not to IsX _ with S2 = "A".
+ OrB: apply is_string_eq_or_not to IsX _ with S2 = "B".
+ case OrA.
+   %X = "A"
+    search 10.
+   %X != "A"
+    case OrB.
+      %X = "B"
+       search 10.
+      %X != "B"
+       search 10.
+%Proj-Snd
+ case IsE. S: case S.
+ OrA: apply is_string_eq_or_not to IsX _ with S2 = "A".
+ OrB: apply is_string_eq_or_not to IsX _ with S2 = "B".
+ case OrA.
+   %X = "A"
+    search 10.
+   %X != "A"
+    case OrB.
+      %X = "B"
+       search 10.
+      %X != "B"
+       search 10.
+
+
+Prove_Constraint lambda_calculus:host:proj_subst_same.
+%Proj-Pair
+ case IsE. S: case S. S': case S'. apply subst_unique to _ _ _ S1 S'1.
+ clear S'1. S': case S'. apply subst_unique to _ _ _ S S'1. clear S'1.
+ S': case S'.
+   %S-Abs-Eq
+    search 20.
+   %S-Abs-NEq
+    S': case S'1.
+      %S-Abs-Eq
+       search 20.
+      %S-Abs-NEq
+       S': case S'2.
+         %S-Abs-Eq
+          search 20.
+         %S-Abs-NEq
+          S': case S'3. S': case S'3. case S'4.
+            %S-Var-Eq
+             apply S'1 to _.
+            %S-Var-NEq
+             case S'3.
+               %S-Var-Eq
+                apply S'2 to _.
+               %S-Var-NEq
+                case S'5.
+                  %S-Var-Eq
+                   apply S' to _.
+                  %S-Var-NEq
+                   search 20.
+%Proj-Fst
+ case IsE. S: case S. S': case S'. apply subst_unique to _ _ _ S S'.
+ clear S'. S': case S'1.
+   %S-Abs-Eq
+    search 10.
+   %S-Abs-NEq
+    S': case S'1.
+      %S-Abs-Eq
+       search 10.
+      %S-Abs-NEq
+       case S'2.
+         %S-Var-Eq
+          apply S' to _.
+         %S-Var-NEq
+          search 10.
+%Proj-Snd
+ case IsE. S: case S. S': case S'. apply subst_unique to _ _ _ S S'.
+ clear S'. S': case S'1.
+   %S-Abs-Eq
+    search 10.
+   %S-Abs-NEq
+    S': case S'1.
+      %S-Abs-Eq
+       search 10.
+      %S-Abs-NEq
+       case S'2.
+         %S-Var-Eq
+          apply S'1 to _.
+         %S-Var-NEq
+          search 10.
+
+
+Prove_Constraint lambda_calculus:host:proj_eval.
+%Proj-Pair
+ case Ev. search.
+%Proj-Fst
+ case Ev. search.
+%Proj-Snd
+ case Ev. search.
+
+
+Prove_Constraint lambda_calculus:host:proj_eval_same.
+%Proj-Pair
+ case IsE. Ev: case Ev. apply eval_unique to _ Ev Ev'. search 20.
+ search.
+%Proj-Fst
+ case IsE. Ev: case Ev. apply eval_unique to _ Ev Ev'. search 20.
+ search.
+%Proj-Snd
+ case IsE. Ev: case Ev. apply eval_unique to _ Ev Ev'. search 20.
+ search.
+
+
+Add_Ext_Size lambda_calculus:host:eval.
+
+
+Add_Proj_Rel lambda_calculus:host:eval.
+
+
+Prove_Ext_Ind lambda_calculus:host:eval.
+%E-Pair
+ apply ext_size_is_int_eval to R2. L: apply lt_plus_one to R1 _.
+ apply ext_size_pos_eval to R2. Acc: case Acc. A: apply Acc to _ L.
+ apply IH to R2 A. search.
+%E-Fst
+ apply ext_size_is_int_eval to R2. L: apply lt_plus_one to R1 _.
+ apply ext_size_pos_eval to R2. Acc: case Acc. A: apply Acc to _ L.
+ apply IH to R2 A. search.
+%E-Snd
+ apply ext_size_is_int_eval to R2. L: apply lt_plus_one to R1 _.
+ apply ext_size_pos_eval to R2. Acc: case Acc. A: apply Acc to _ L.
+ apply IH to R2 A. search.

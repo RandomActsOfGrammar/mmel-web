@@ -1,0 +1,121 @@
+Module lambda_calculus:let.
+
+
+Prove_Constraint lambda_calculus:host:proj_is.
+case Hyp1. search.
+
+
+Add_Proj_Rel lambda_calculus:host:is_e.
+
+
+Prove_Ext_Ind lambda_calculus:host:is_e.
+apply IH to R2. apply IH to R3. search.
+
+
+Prove_Constraint lambda_calculus:host:proj_same.
+case Hyp1. search.
+
+
+Prove lambda_calculus:host:subst_exists.
+apply IH to IsE2 IsX IsR. apply IH to IsE3 IsX IsR.
+Or: apply is_string_eq_or_not to IsX IsE1. case Or.
+  %X = S
+   search.
+  %X != S
+   search.
+
+
+Prove lambda_calculus:host:subst_is.
+%S-Let-NEq
+ case IsE. apply IH to _ _ _ S2. apply IH to _ _ _ S3. search.
+%S-Let-Eq
+ case IsE. apply IH to _ _ _ S1. search.
+
+
+Prove lambda_calculus:host:eval_is.
+case IsE. apply IH to _ Ev1. apply subst_is to _ _ _ Ev2.
+apply IH to _ Ev3. search.
+
+
+Prove lambda_calculus:host:subst_unique.
+%S-Let-NEq
+ case IsE. SB: case SB.
+   %S-Let-NEq
+    apply IH to _ _ _ SA2 SB1. apply IH to _ _ _ SA3 SB2. search.
+   %S-Let-Eq
+    apply SA1 to _.
+%S-Let-Eq
+ case IsE. SB: case SB.
+   %S-Let-NEq
+    apply SB to _.
+   %S-Let-Eq
+    apply IH to _ _ _ SA1 SB. search.
+
+
+Prove lambda_calculus:host:eval_unique.
+case IsE. EvB: case EvB. apply IH to _ EvA1 EvB.
+apply eval_is to _ EvA1. apply subst_unique to _ _ _ EvA2 EvB1.
+apply subst_is to _ _ _ EvA2. apply IH to _ EvA3 EvB2. search.
+
+
+Prove_Constraint lambda_calculus:host:proj_subst.
+case IsE. S: case S.
+  %S-Let-NEq
+   search.
+  %S-Let-Eq
+   search.
+
+
+Prove_Constraint lambda_calculus:host:proj_subst_same.
+case IsE. S: case S.
+  %S-Let-NEq
+   S': case S'. S': case S'.
+     %S-Abs-Eq
+      apply S to _.
+     %S-Abs-NEq
+      apply subst_unique to _ _ _ S1 S'1.
+      apply subst_unique to _ _ _ S2 S'2. search.
+  %S-Let-Eq
+   S': case S'. S': case S'.
+     %S-Abs-Eq
+      apply subst_unique to _ _ _ S S'1. search.
+     %S-Abs-NEq
+      apply S' to _.
+
+
+Prove_Constraint lambda_calculus:host:proj_eval.
+Ev: case Ev. search.
+
+
+Prove_Constraint lambda_calculus:host:proj_eval_same.
+case IsE. Ev: case Ev. Ev': case Ev'. Ev': case Ev'.
+apply eval_unique to _ Ev Ev'1. apply eval_is to _ Ev.
+apply subst_unique to _ _ _ Ev1 Ev'2. apply subst_is to _ _ _ Ev1.
+apply eval_unique to _ Ev2 Ev'3. search.
+
+
+Add_Ext_Size lambda_calculus:host:eval.
+
+
+Add_Proj_Rel lambda_calculus:host:eval.
+
+
+Prove_Ext_Ind lambda_calculus:host:eval.
+apply ext_size_is_int_eval to R3. apply ext_size_is_int_eval to R5.
+apply plus_integer_is_integer to _ _ R2.
+L4: apply lt_plus_one to R1 _.
+apply ext_size_pos_eval to R3. apply ext_size_pos_eval to R5.
+L2: assert N2 < N.
+  Or: apply lt_left to R2 _ _. L: case Or.
+    %N2 < N4
+     apply less_integer_transitive to L L4. search.
+    %N2 = N4
+     search.
+L3: assert N3 < N.
+  Or: apply lt_right to R2 _ _ _. L: case Or.
+    %N3 < N4
+     apply less_integer_transitive to L L4. search.
+    %N3 = N4
+     search.
+Acc: case Acc. A2: apply Acc to _ L2. A3: apply Acc to _ L3.
+apply IH to R3 A2. apply IH to R5 A3. search.

@@ -1,0 +1,31 @@
+Module lambda_calculus:let
+
+Builds on lambda_calculus:host
+
+e ::= ...
+    | let(string, e, e)
+
+
+-------------------------------------------- [Proj-Let]
+|{e}- let(X, E1, E2) ~~> app(abs(X, E2), E1)
+
+
+
+eval E1 E11
+subst X E11 E2 E
+eval E V
+--------------------- [E-Let]
+eval let(X, E1, E2) V
+
+
+
+X != Y
+subst X R E1 S1
+subst X R E2 S2
+-------------------------------------------- [S-Let-NEq]
+subst X R let(Y, E1, E2) app(abs(Y, S2), S1)
+
+
+subst X R E1 S1
+-------------------------------------------- [S-Let-Eq]
+subst X R let(X, E1, E2) app(abs(X, E2), S1)

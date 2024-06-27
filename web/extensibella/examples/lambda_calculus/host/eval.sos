@@ -14,6 +14,17 @@ eval B V
 eval app(E1, E2) V
 
 
+-------------------- [E-Int]
+eval intE(I) intE(I)
+
+
+eval E1 intE(I1)
+eval E2 intE(I2)
+I1 + I2 = I
+------------------------- [E-Plus]
+eval plus(E1, E2) intE(I)
+
+
 Extensibella_Stand_In {
   |{e}- E ~~> E_T
   eval E_T V
@@ -48,3 +59,13 @@ subst X R E1 S1
 subst X R E2 S2
 --------------------------------- [S-App]
 subst X R app(E1, E2) app(S1, S2)
+
+
+------------------------- [S-Int]
+subst X R intE(I) intE(I)
+
+
+subst X R E1 S1
+subst X R E2 S2
+----------------------------------- [S-Plus]
+subst X R plus(E1, E2) plus(S1, S2)

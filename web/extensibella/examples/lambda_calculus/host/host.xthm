@@ -14,6 +14,10 @@ Ext_Ind forall E, is_e E.
  apply IH to R2. search.
 %app
  apply IH to R1. apply IH to R2. search.
+%intE
+ search.
+%plus
+ apply IH to R1. apply IH to R2. search.
 
 
 Projection_Constraint proj_same : forall E E1 E2,
@@ -41,6 +45,10 @@ Extensible_Theorem
     apply IH to IsE2 IsX IsR. search.
 %app
  apply IH to IsE1 IsX IsR. apply IH to IsE2 IsX IsR. search.
+%intE
+ search.
+%plus
+ apply IH to IsE1 IsX IsR. apply IH to IsE2 IsX IsR. search.
 
 
 Extensible_Theorem
@@ -61,6 +69,10 @@ Extensible_Theorem
  Is: case IsE. apply IH to _ _ _ S2. search.
 %S-App
  Is: case IsE. apply IH to _ _ _ S1. apply IH to _ _ _ S2. search.
+%S-Int
+ case IsE. search.
+%S-Plus
+ case IsE. apply IH to _ _ _ S1. apply IH to _ _ _ S2. search.
 
 
 Extensible_Theorem
@@ -74,6 +86,11 @@ Extensible_Theorem
 %E-App
  Is: case IsE. IsAbs: apply IH to _ Ev1. apply IH to _ Ev2.
  case IsAbs. apply subst_is to _ _ _ Ev3. apply IH to _ Ev4. search.
+%E-Int
+ search.
+%E-Plus
+ case IsE. Is1: apply IH to _ Ev1. Is2: apply IH to _ Ev2. case Is1.
+ case Is2. apply plus_integer_is_integer to _ _ Ev3. search.
 
 
 Extensible_Theorem
@@ -112,6 +129,11 @@ Extensible_Theorem
 %S-App
  Is: case IsE. SB: case SB. apply IH to _ _ _ SA1 SB.
  apply IH to _ _ _ SA2 SB1. search.
+%S-Int
+ case SB. search.
+%S-Plus
+ case IsE. SB: case SB. apply IH to _ _ _ SA1 SB.
+ apply IH to _ _ _ SA2 SB1. search.
 
 
 Extensible_Theorem
@@ -129,6 +151,12 @@ Extensible_Theorem
  apply eval_is to _ EvA2. apply subst_is to _ _ _ EvA3.
  apply subst_unique to _ _ _ EvA3 EvB2. apply IH to _ EvA4 EvB3.
  search.
+%E-Int
+ case EvB. search.
+%E-Plus
+ case IsE. EvB: case EvB. apply IH to _ EvA1 EvB.
+ apply IH to _ EvA2 EvB1. apply plus_integer_unique to EvA3 EvB2.
+ search.
 
 
 %anything evaluation-related must be the same across projection
@@ -142,7 +170,7 @@ Projection_Constraint proj_subst : forall X R E S E',
 Projection_Constraint proj_subst_same : forall X R E S E' S',
   Proj : |{e}- E ~~> E' ->
   IsE : is_e E ->
-  isX : is_string X ->
+  IsX : is_string X ->
   IsR : is_e R ->
   S : subst X R E S ->
   S' : subst X R E' S' ->
@@ -230,3 +258,22 @@ Ext_Ind forall E V, eval E V.
              AN3: apply A to _ Or3. apply IH to R3 AN3. search.
             %N3 = N
              apply IH1 to R3 Acc. search.
+%E-Int
+ search.
+%E-Plus
+ apply ext_size_is_int_eval to R2. apply ext_size_is_int_eval to R3.
+ apply ext_size_pos_eval to R2. apply ext_size_pos_eval to R3.
+ Or2: apply lt_left to R1 _ _. Or3: apply lt_right to R1 _ _ _.
+ Acc': case Acc (keep). L2: case Or2.
+   %N2 < N
+    A2: apply Acc' to _ L2. apply IH to R2 A2. L3: case Or3.
+      %N3 < N
+       A3: apply Acc' to _ L3. apply IH to R3 A3. search.
+      %N3 = N
+       apply IH1 to R3 Acc. search.
+   %N2 = N
+    apply IH1 to R2 Acc. L3: case Or3.
+      %N3 < N
+       A3: apply Acc' to _ L3. apply IH to R3 A3. search.
+      %N3 = N
+       apply IH1 to R3 Acc. search.

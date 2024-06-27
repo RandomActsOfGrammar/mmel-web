@@ -129,6 +129,10 @@ Extensible_Theorem
  search.
 %T-App
  Is: case IsE. apply IH to _ Ty1 _. apply IH to _ Ty2 _. search.
+%T-Int
+ search.
+%T-App
+ case IsE. apply IH to _ Ty1 Lkp. apply IH to _ Ty2 Lkp. search.
 %T-D
  apply proj_is to Ty1 IsE. apply IH to _ Ty2 _. search.
 
@@ -149,6 +153,10 @@ Extensible_Theorem
  right. intros E. case E.
 %app
  right. intros E. case E.
+%int
+ search.
+%plus
+ search.
 %tyabs
  search.
 %other
@@ -208,6 +216,11 @@ Extensible_Theorem
 %T-App
  Is: case IsE. S: case S. apply IH to _ _ _ S TyE1 _ _ _.
  apply IH to _ _ _ S1 TyE2 _ _ _. search.
+%T-Int
+ case S. search.
+%T-Plus
+ case IsE. S: case S. apply IH to _ _ _ S TyE1 _ _ _.
+ apply IH to _ _ _ S1 TyE2 _ _ _. search.
 %T-D
  ST: apply proj_subst to TyE1 _ _ _ S. apply proj_is to TyE1 _.
  apply proj_subst_same to TyE1 _ _ _ S ST.
@@ -229,6 +242,10 @@ Extensible_Theorem
  IsAbs: apply eval_is to _ Ev1. case IsAbs.
  TyB: apply subst_type_preservation to _ _ _ Ev3 Ty' _ _ _.
  apply subst_is to _ _ _ Ev3. apply IH to _ TyB Ev4. search.
+%E-Int
+ case Ty. search.
+%E-Plus
+ case Ty. search.
 %E-Tyabs
  case Ty. search.
 %E-Q

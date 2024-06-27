@@ -1,0 +1,198 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  lambda_calculus:let</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h1>Extensibella Example:  lambda_calculus:let</h1><div class="section specification">
+<h2>Language Specification</h2>
+<h3>File:  def.sos</h3>
+<a class="fold-link" href="javascript:void(0)" id="toggledef.sos" onclick="toggleFile('def.sos')">[Reduce File]</a><span> </span><a class="fold-link" href="def.sos">[Raw File]</a>
+<pre class="code sterling" id="def.sos">
+Module lambda_calculus:let
+
+Builds on lambda_calculus:host
+
+e ::= ...
+    | let(string, e, e)
+
+
+-------------------------------------------- [Proj-Let]
+|{e}- let(X, E1, E2) ~~> app(abs(X, E2), E1)
+
+
+
+eval E1 E11
+subst X E11 E2 E
+eval E V
+--------------------- [E-Let]
+eval let(X, E1, E2) V
+
+
+
+X != Y
+subst X R E1 S1
+subst X R E2 S2
+-------------------------------------------- [S-Let-NEq]
+subst X R let(Y, E1, E2) app(abs(Y, S2), S1)
+
+
+subst X R E1 S1
+-------------------------------------------- [S-Let-Eq]
+subst X R let(X, E1, E2) app(abs(X, E2), S1)
+</pre>
+</div>
+<div class="section reasoning">
+<h2>Reasoning</h2>
+<a class="fold-link" href="javascript:void(0)" onclick="allProofShow();">[Show All Proofs]</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="allProofHide();">[Hide All Proofs]</a>
+<span> </span><a class="fold-link" href="let.xthm">[Raw File]</a>
+<p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
+<a class="command" href="let-details.html#0">Module lambda_calculus:let.</a>
+
+
+<a class="command" href="let-details.html#1">Prove_Constraint lambda_calculus:host:proj_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
+<div class="proof" id="proof2" style="display: none;">
+<a class="tactic" href="let-details.html#2">case Hyp1.</a> <a class="tactic" href="let-details.html#3">search.</a>
+
+
+<a class="tactic" href="let-details.html#4">Add_Proj_Rel lambda_calculus:host:is_e.</a></div>
+
+
+<a class="command" href="let-details.html#5">Prove_Ext_Ind lambda_calculus:host:is_e.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(6);" id="toggleproof6">[Show Proof]</a>
+<div class="proof" id="proof6" style="display: none;">
+<a class="tactic" href="let-details.html#6">apply IH to R2.</a> <a class="tactic" href="let-details.html#7">apply IH to R3.</a> <a class="tactic" href="let-details.html#8">search.</a></div>
+
+
+<a class="command" href="let-details.html#9">Prove_Constraint lambda_calculus:host:proj_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(10);" id="toggleproof10">[Show Proof]</a>
+<div class="proof" id="proof10" style="display: none;">
+<a class="tactic" href="let-details.html#10">case Hyp1.</a> <a class="tactic" href="let-details.html#11">search.</a></div>
+
+
+<a class="command" href="let-details.html#12">Prove lambda_calculus:host:subst_exists.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(13);" id="toggleproof13">[Show Proof]</a>
+<div class="proof" id="proof13" style="display: none;">
+<a class="tactic" href="let-details.html#13">apply IH to IsE2 IsX IsR.</a> <a class="tactic" href="let-details.html#14">apply IH to IsE3 IsX IsR.</a>
+<a class="tactic" href="let-details.html#15">Or: apply is_string_eq_or_not to IsX IsE1.</a> <a class="tactic" href="let-details.html#16">case Or.</a>
+  <span class="comment">%X = S</span>
+   <a class="tactic" href="let-details.html#17">search.</a>
+  <span class="comment">%X != S</span>
+   <a class="tactic" href="let-details.html#18">search.</a></div>
+
+
+<a class="command" href="let-details.html#19">Prove lambda_calculus:host:subst_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(20);" id="toggleproof20">[Show Proof]</a>
+<div class="proof" id="proof20" style="display: none;">
+<span class="comment">%S-Let-NEq</span>
+ <a class="tactic" href="let-details.html#20">case IsE.</a> <a class="tactic" href="let-details.html#21">apply IH to _ _ _ S2.</a> <a class="tactic" href="let-details.html#22">apply IH to _ _ _ S3.</a> <a class="tactic" href="let-details.html#23">search.</a>
+<span class="comment">%S-Let-Eq</span>
+ <a class="tactic" href="let-details.html#24">case IsE.</a> <a class="tactic" href="let-details.html#25">apply IH to _ _ _ S1.</a> <a class="tactic" href="let-details.html#26">search.</a></div>
+
+
+<a class="command" href="let-details.html#27">Prove lambda_calculus:host:eval_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(28);" id="toggleproof28">[Show Proof]</a>
+<div class="proof" id="proof28" style="display: none;">
+<a class="tactic" href="let-details.html#28">case IsE.</a> <a class="tactic" href="let-details.html#29">apply IH to _ Ev1.</a> <a class="tactic" href="let-details.html#30">apply subst_is to _ _ _ Ev2.</a>
+<a class="tactic" href="let-details.html#31">apply IH to _ Ev3.</a> <a class="tactic" href="let-details.html#32">search.</a></div>
+
+
+<a class="command" href="let-details.html#33">Prove lambda_calculus:host:subst_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(34);" id="toggleproof34">[Show Proof]</a>
+<div class="proof" id="proof34" style="display: none;">
+<span class="comment">%S-Let-NEq</span>
+ <a class="tactic" href="let-details.html#34">case IsE.</a> <a class="tactic" href="let-details.html#35">SB: case SB.</a>
+   <span class="comment">%S-Let-NEq</span>
+    <a class="tactic" href="let-details.html#36">apply IH to _ _ _ SA2 SB1.</a> <a class="tactic" href="let-details.html#37">apply IH to _ _ _ SA3 SB2.</a> <a class="tactic" href="let-details.html#38">search.</a>
+   <span class="comment">%S-Let-Eq</span>
+    <a class="tactic" href="let-details.html#39">apply SA1 to _.</a>
+<span class="comment">%S-Let-Eq</span>
+ <a class="tactic" href="let-details.html#40">case IsE.</a> <a class="tactic" href="let-details.html#41">SB: case SB.</a>
+   <span class="comment">%S-Let-NEq</span>
+    <a class="tactic" href="let-details.html#42">apply SB to _.</a>
+   <span class="comment">%S-Let-Eq</span>
+    <a class="tactic" href="let-details.html#43">apply IH to _ _ _ SA1 SB.</a> <a class="tactic" href="let-details.html#44">search.</a></div>
+
+
+<a class="command" href="let-details.html#45">Prove lambda_calculus:host:eval_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(46);" id="toggleproof46">[Show Proof]</a>
+<div class="proof" id="proof46" style="display: none;">
+<a class="tactic" href="let-details.html#46">case IsE.</a> <a class="tactic" href="let-details.html#47">EvB: case EvB.</a> <a class="tactic" href="let-details.html#48">apply IH to _ EvA1 EvB.</a>
+<a class="tactic" href="let-details.html#49">apply eval_is to _ EvA1.</a> <a class="tactic" href="let-details.html#50">apply subst_unique to _ _ _ EvA2 EvB1.</a>
+<a class="tactic" href="let-details.html#51">apply subst_is to _ _ _ EvA2.</a> <a class="tactic" href="let-details.html#52">apply IH to _ EvA3 EvB2.</a> <a class="tactic" href="let-details.html#53">search.</a></div>
+
+
+<a class="command" href="let-details.html#54">Prove_Constraint lambda_calculus:host:proj_subst.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(55);" id="toggleproof55">[Show Proof]</a>
+<div class="proof" id="proof55" style="display: none;">
+<a class="tactic" href="let-details.html#55">case IsE.</a> <a class="tactic" href="let-details.html#56">S: case S.</a>
+  <span class="comment">%S-Let-NEq</span>
+   <a class="tactic" href="let-details.html#57">search.</a>
+  <span class="comment">%S-Let-Eq</span>
+   <a class="tactic" href="let-details.html#58">search.</a></div>
+
+
+<a class="command" href="let-details.html#59">Prove_Constraint lambda_calculus:host:proj_subst_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(60);" id="toggleproof60">[Show Proof]</a>
+<div class="proof" id="proof60" style="display: none;">
+<a class="tactic" href="let-details.html#60">case IsE.</a> <a class="tactic" href="let-details.html#61">S: case S.</a>
+  <span class="comment">%S-Let-NEq</span>
+   <a class="tactic" href="let-details.html#62">S': case S'.</a> <a class="tactic" href="let-details.html#63">S': case S'.</a>
+     <span class="comment">%S-Abs-Eq</span>
+      <a class="tactic" href="let-details.html#64">apply S to _.</a>
+     <span class="comment">%S-Abs-NEq</span>
+      <a class="tactic" href="let-details.html#65">apply subst_unique to _ _ _ S1 S'1.</a>
+      <a class="tactic" href="let-details.html#66">apply subst_unique to _ _ _ S2 S'2.</a> <a class="tactic" href="let-details.html#67">search.</a>
+  <span class="comment">%S-Let-Eq</span>
+   <a class="tactic" href="let-details.html#68">S': case S'.</a> <a class="tactic" href="let-details.html#69">S': case S'.</a>
+     <span class="comment">%S-Abs-Eq</span>
+      <a class="tactic" href="let-details.html#70">apply subst_unique to _ _ _ S S'1.</a> <a class="tactic" href="let-details.html#71">search.</a>
+     <span class="comment">%S-Abs-NEq</span>
+      <a class="tactic" href="let-details.html#72">apply S' to _.</a></div>
+
+
+<a class="command" href="let-details.html#73">Prove_Constraint lambda_calculus:host:proj_eval.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(74);" id="toggleproof74">[Show Proof]</a>
+<div class="proof" id="proof74" style="display: none;">
+<a class="tactic" href="let-details.html#74">Ev: case Ev.</a> <a class="tactic" href="let-details.html#75">search.</a></div>
+
+
+<a class="command" href="let-details.html#76">Prove_Constraint lambda_calculus:host:proj_eval_same.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(77);" id="toggleproof77">[Show Proof]</a>
+<div class="proof" id="proof77" style="display: none;">
+<a class="tactic" href="let-details.html#77">case IsE.</a> <a class="tactic" href="let-details.html#78">Ev: case Ev.</a> <a class="tactic" href="let-details.html#79">Ev': case Ev'.</a> <a class="tactic" href="let-details.html#80">Ev': case Ev'.</a>
+<a class="tactic" href="let-details.html#81">apply eval_unique to _ Ev Ev'1.</a> <a class="tactic" href="let-details.html#82">apply eval_is to _ Ev.</a>
+<a class="tactic" href="let-details.html#83">apply subst_unique to _ _ _ Ev1 Ev'2.</a> <a class="tactic" href="let-details.html#84">apply subst_is to _ _ _ Ev1.</a>
+<a class="tactic" href="let-details.html#85">apply eval_unique to _ Ev2 Ev'3.</a> <a class="tactic" href="let-details.html#86">search.</a>
+
+
+<a class="tactic" href="let-details.html#87">Add_Ext_Size lambda_calculus:host:eval.</a>
+
+
+<a class="tactic" href="let-details.html#88">Add_Proj_Rel lambda_calculus:host:eval.</a></div>
+
+
+<a class="command" href="let-details.html#89">Prove_Ext_Ind lambda_calculus:host:eval.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(90);" id="toggleproof90">[Show Proof]</a>
+<div class="proof" id="proof90" style="display: none;">
+<a class="tactic" href="let-details.html#90">apply ext_size_is_int_eval to R3.</a> <a class="tactic" href="let-details.html#91">apply ext_size_is_int_eval to R5.</a>
+<a class="tactic" href="let-details.html#92">apply plus_integer_is_integer to _ _ R2.</a>
+<a class="tactic" href="let-details.html#93">L4: apply lt_plus_one to R1 _.</a>
+<a class="tactic" href="let-details.html#94">apply ext_size_pos_eval to R3.</a> <a class="tactic" href="let-details.html#95">apply ext_size_pos_eval to R5.</a>
+<a class="tactic" href="let-details.html#96">L2: assert N2 &lt; N.</a>
+  <a class="tactic" href="let-details.html#97">Or: apply lt_left to R2 _ _.</a> <a class="tactic" href="let-details.html#98">L: case Or.</a>
+    <span class="comment">%N2 &lt; N4</span>
+     <a class="tactic" href="let-details.html#99">apply less_integer_transitive to L L4.</a> <a class="tactic" href="let-details.html#100">search.</a>
+    <span class="comment">%N2 = N4</span>
+     <a class="tactic" href="let-details.html#101">search.</a>
+<a class="tactic" href="let-details.html#102">L3: assert N3 &lt; N.</a>
+  <a class="tactic" href="let-details.html#103">Or: apply lt_right to R2 _ _ _.</a> <a class="tactic" href="let-details.html#104">L: case Or.</a>
+    <span class="comment">%N3 &lt; N4</span>
+     <a class="tactic" href="let-details.html#105">apply less_integer_transitive to L L4.</a> <a class="tactic" href="let-details.html#106">search.</a>
+    <span class="comment">%N3 = N4</span>
+     <a class="tactic" href="let-details.html#107">search.</a>
+<a class="tactic" href="let-details.html#108">Acc: case Acc.</a> <a class="tactic" href="let-details.html#109">A2: apply Acc to _ L2.</a> <a class="tactic" href="let-details.html#110">A3: apply Acc to _ L3.</a>
+<a class="tactic" href="let-details.html#111">apply IH to R3 A2.</a> <a class="tactic" href="let-details.html#112">apply IH to R5 A3.</a> <a class="tactic" href="let-details.html#113">search.</a></div>
+<a class="command" href="let-details.html#114"></a>
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>

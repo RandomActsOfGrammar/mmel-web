@@ -1,0 +1,1977 @@
+<html>
+<head>
+<title>Extensibella:  Extensibella Example:  lambda_calculus:let - Details</title>
+<link href="../../../../style.css" rel="stylesheet" type="text/css">
+<script src="../../../../actions.js"></script>
+<link rel="icon" href="../../../images/favicon.png" type="image/x-icon">
+</head>
+<body class="extensibella">
+<div id="header-logo">
+<a href="../../../index.html">
+<img class="header-logo" src="../../../images/Extensibella.png" alt="Extensibella logo">
+</a>
+</div>
+<h2>Reasoning Details</h2>
+<div class="section">
+<pre class="code extensibella">
+ < <b>Module lambda_calculus:let.</b>
+</pre>
+<pre class="code extensibella"id="1">
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_is.</b>
+
+Variables: E1 E2 X
+Hyp : |{e}- let X E1 E2 ~~&gt; app (abs X E2) E1
+Hyp1 : is_e (let X E1 E2)
+============================
+ is_e (app (abs X E2) E1)
+</pre>
+<pre class="code extensibella"id="2">
+ &lt; <b>case Hyp1.</b>
+
+Variables: E1 E2 X
+Hyp : |{e}- let X E1 E2 ~~&gt; app (abs X E2) E1
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+============================
+ is_e (app (abs X E2) E1)
+</pre>
+<pre class="code extensibella"id="3">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="4">
+ &lt; <b>Add_Proj_Rel lambda_calculus:host:is_e.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="5">
+ &lt; <b>Prove_Ext_Ind lambda_calculus:host:is_e.</b>
+
+Warning:  No definition of Ext Size for all relations in Ext Ind; defaulting to proving Ext Ind without Ext Size
+Subgoal 6:
+
+Variables: E2 E1 S
+IH : forall E, is_e E * -&gt; &lt;is_e {P}&gt; E
+R : is_e (let S E1 E2) @
+R1 : is_string S
+R2 : is_e E1 *
+R3 : is_e E2 *
+============================
+ &lt;is_e {P}&gt; (let S E1 E2)
+</pre>
+<pre class="code extensibella"id="6">
+ &lt; <b>apply IH to R2.</b>
+
+Subgoal 6:
+
+Variables: E2 E1 S
+IH : forall E, is_e E * -&gt; &lt;is_e {P}&gt; E
+R : is_e (let S E1 E2) @
+R1 : is_string S
+R2 : is_e E1 *
+R3 : is_e E2 *
+H1 : &lt;is_e {P}&gt; E1
+============================
+ &lt;is_e {P}&gt; (let S E1 E2)
+</pre>
+<pre class="code extensibella"id="7">
+ &lt; <b>apply IH to R3.</b>
+
+Subgoal 6:
+
+Variables: E2 E1 S
+IH : forall E, is_e E * -&gt; &lt;is_e {P}&gt; E
+R : is_e (let S E1 E2) @
+R1 : is_string S
+R2 : is_e E1 *
+R3 : is_e E2 *
+H1 : &lt;is_e {P}&gt; E1
+H2 : &lt;is_e {P}&gt; E2
+============================
+ &lt;is_e {P}&gt; (let S E1 E2)
+</pre>
+<pre class="code extensibella"id="8">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="9">
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_same.</b>
+
+Variables: E2 E3 E4 X
+Hyp : |{e}- let X E3 E4 ~~&gt; app (abs X E4) E3
+Hyp1 : |{e}- let X E3 E4 ~~&gt; E2
+============================
+ app (abs X E4) E3 = E2
+</pre>
+<pre class="code extensibella"id="10">
+ &lt; <b>case Hyp1.</b>
+
+Variables: E3 E4 X
+Hyp : |{e}- let X E3 E4 ~~&gt; app (abs X E4) E3
+============================
+ app (abs X E4) E3 = app (abs X E4) E3
+</pre>
+<pre class="code extensibella"id="11">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="12">
+ &lt; <b>Prove lambda_calculus:host:subst_exists.</b>
+
+Subgoal 6:
+
+Variables: X R E2 E1 S
+IH : forall X R E, is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists S, subst X R E S
+IsE : is_e (let S E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_e E1 *
+IsE3 : is_e E2 *
+============================
+ exists S1, subst X R (let S E1 E2) S1
+</pre>
+<pre class="code extensibella"id="13">
+ &lt; <b>apply IH to IsE2 IsX IsR.</b>
+
+Subgoal 6:
+
+Variables: X R E2 E1 S S1
+IH : forall X R E, is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists S, subst X R E S
+IsE : is_e (let S E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_e E1 *
+IsE3 : is_e E2 *
+H1 : subst X R E1 S1
+============================
+ exists S1, subst X R (let S E1 E2) S1
+</pre>
+<pre class="code extensibella"id="14">
+ &lt; <b>apply IH to IsE3 IsX IsR.</b>
+
+Subgoal 6:
+
+Variables: X R E2 E1 S S1 S2
+IH : forall X R E, is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists S, subst X R E S
+IsE : is_e (let S E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_e E1 *
+IsE3 : is_e E2 *
+H1 : subst X R E1 S1
+H2 : subst X R E2 S2
+============================
+ exists S1, subst X R (let S E1 E2) S1
+</pre>
+<pre class="code extensibella"id="15">
+ &lt; <b>Or: apply is_string_eq_or_not to IsX IsE1.</b>
+
+Subgoal 6:
+
+Variables: X R E2 E1 S S1 S2
+IH : forall X R E, is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists S, subst X R E S
+IsE : is_e (let S E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_e E1 *
+IsE3 : is_e E2 *
+H1 : subst X R E1 S1
+H2 : subst X R E2 S2
+Or : X = S \/ (X = S -&gt; false)
+============================
+ exists S1, subst X R (let S E1 E2) S1
+</pre>
+<pre class="code extensibella"id="16">
+ &lt; <b>case Or.</b>
+
+Subgoal 6.1:
+
+Variables: R E2 E1 S S1 S2
+IH : forall X R E, is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists S, subst X R E S
+IsE : is_e (let S E1 E2) @
+IsX : is_string S
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_e E1 *
+IsE3 : is_e E2 *
+H1 : subst S R E1 S1
+H2 : subst S R E2 S2
+============================
+ exists S1, subst S R (let S E1 E2) S1
+</pre>
+<pre class="code extensibella"id="17">
+ &lt; <b>search.</b>
+
+Subgoal 6.2:
+
+Variables: X R E2 E1 S S1 S2
+IH : forall X R E, is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists S, subst X R E S
+IsE : is_e (let S E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_e E1 *
+IsE3 : is_e E2 *
+H1 : subst X R E1 S1
+H2 : subst X R E2 S2
+H3 : X = S -&gt; false
+============================
+ exists S1, subst X R (let S E1 E2) S1
+</pre>
+<pre class="code extensibella"id="18">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="19">
+ &lt; <b>Prove lambda_calculus:host:subst_is.</b>
+
+Subgoal 8:
+
+Variables: X R S1 S2 Y E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsE : is_e (let Y E1 E2)
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let Y E1 E2) (app (abs Y S2) S1) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 S1 *
+S3 : subst X R E2 S2 *
+============================
+ is_e (app (abs Y S2) S1)
+</pre>
+<pre class="code extensibella"id="20">
+ &lt; <b>case IsE.</b>
+
+Subgoal 8:
+
+Variables: X R S1 S2 Y E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let Y E1 E2) (app (abs Y S2) S1) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 S1 *
+S3 : subst X R E2 S2 *
+H1 : is_string Y
+H2 : is_e E1
+H3 : is_e E2
+============================
+ is_e (app (abs Y S2) S1)
+</pre>
+<pre class="code extensibella"id="21">
+ &lt; <b>apply IH to _ _ _ S2.</b>
+
+Subgoal 8:
+
+Variables: X R S1 S2 Y E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let Y E1 E2) (app (abs Y S2) S1) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 S1 *
+S3 : subst X R E2 S2 *
+H1 : is_string Y
+H2 : is_e E1
+H3 : is_e E2
+H4 : is_e S1
+============================
+ is_e (app (abs Y S2) S1)
+</pre>
+<pre class="code extensibella"id="22">
+ &lt; <b>apply IH to _ _ _ S3.</b>
+
+Subgoal 8:
+
+Variables: X R S1 S2 Y E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let Y E1 E2) (app (abs Y S2) S1) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 S1 *
+S3 : subst X R E2 S2 *
+H1 : is_string Y
+H2 : is_e E1
+H3 : is_e E2
+H4 : is_e S1
+H5 : is_e S2
+============================
+ is_e (app (abs Y S2) S1)
+</pre>
+<pre class="code extensibella"id="23">
+ &lt; <b>search.</b>
+
+Subgoal 9:
+
+Variables: X R S1 E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsE : is_e (let X E1 E2)
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let X E1 E2) (app (abs X E2) S1) @
+S1 : subst X R E1 S1 *
+============================
+ is_e (app (abs X E2) S1)
+</pre>
+<pre class="code extensibella"id="24">
+ &lt; <b>case IsE.</b>
+
+Subgoal 9:
+
+Variables: X R S1 E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let X E1 E2) (app (abs X E2) S1) @
+S1 : subst X R E1 S1 *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+============================
+ is_e (app (abs X E2) S1)
+</pre>
+<pre class="code extensibella"id="25">
+ &lt; <b>apply IH to _ _ _ S1.</b>
+
+Subgoal 9:
+
+Variables: X R S1 E2 E1
+IH : forall X R E S,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E S * -&gt; is_e S
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let X E1 E2) (app (abs X E2) S1) @
+S1 : subst X R E1 S1 *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+H4 : is_e S1
+============================
+ is_e (app (abs X E2) S1)
+</pre>
+<pre class="code extensibella"id="26">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="27">
+ &lt; <b>Prove lambda_calculus:host:eval_is.</b>
+
+Subgoal 5:
+
+Variables: V E11 E3 E2 E1 X
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+IsE : is_e (let X E1 E2)
+Ev : eval (let X E1 E2) V @
+Ev1 : eval E1 E11 *
+Ev2 : subst X E11 E2 E3
+Ev3 : eval E3 V *
+============================
+ is_e V
+</pre>
+<pre class="code extensibella"id="28">
+ &lt; <b>case IsE.</b>
+
+Subgoal 5:
+
+Variables: V E11 E3 E2 E1 X
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+Ev : eval (let X E1 E2) V @
+Ev1 : eval E1 E11 *
+Ev2 : subst X E11 E2 E3
+Ev3 : eval E3 V *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+============================
+ is_e V
+</pre>
+<pre class="code extensibella"id="29">
+ &lt; <b>apply IH to _ Ev1.</b>
+
+Subgoal 5:
+
+Variables: V E11 E3 E2 E1 X
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+Ev : eval (let X E1 E2) V @
+Ev1 : eval E1 E11 *
+Ev2 : subst X E11 E2 E3
+Ev3 : eval E3 V *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+H4 : is_e E11
+============================
+ is_e V
+</pre>
+<pre class="code extensibella"id="30">
+ &lt; <b>apply subst_is to _ _ _ Ev2.</b>
+
+Subgoal 5:
+
+Variables: V E11 E3 E2 E1 X
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+Ev : eval (let X E1 E2) V @
+Ev1 : eval E1 E11 *
+Ev2 : subst X E11 E2 E3
+Ev3 : eval E3 V *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+H4 : is_e E11
+H5 : is_e E3
+============================
+ is_e V
+</pre>
+<pre class="code extensibella"id="31">
+ &lt; <b>apply IH to _ Ev3.</b>
+
+Subgoal 5:
+
+Variables: V E11 E3 E2 E1 X
+IH : forall E V, is_e E -&gt; eval E V * -&gt; is_e V
+Ev : eval (let X E1 E2) V @
+Ev1 : eval E1 E11 *
+Ev2 : subst X E11 E2 E3
+Ev3 : eval E3 V *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+H4 : is_e E11
+H5 : is_e E3
+H6 : is_e V
+============================
+ is_e V
+</pre>
+<pre class="code extensibella"id="32">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="33">
+ &lt; <b>Prove lambda_calculus:host:subst_unique.</b>
+
+Subgoal 8:
+
+Variables: X R SB S1 S2 Y E2 E1
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsE : is_e (let Y E1 E2)
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (let Y E1 E2) (app (abs Y S2) S1) @
+SB : subst X R (let Y E1 E2) SB
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 S1 *
+SA3 : subst X R E2 S2 *
+============================
+ app (abs Y S2) S1 = SB
+</pre>
+<pre class="code extensibella"id="34">
+ &lt; <b>case IsE.</b>
+
+Subgoal 8:
+
+Variables: X R SB S1 S2 Y E2 E1
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (let Y E1 E2) (app (abs Y S2) S1) @
+SB : subst X R (let Y E1 E2) SB
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 S1 *
+SA3 : subst X R E2 S2 *
+H1 : is_string Y
+H2 : is_e E1
+H3 : is_e E2
+============================
+ app (abs Y S2) S1 = SB
+</pre>
+<pre class="code extensibella"id="35">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 8.1:
+
+Variables: X R S1 S2 Y E2 E1 S4 S3
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (let Y E1 E2) (app (abs Y S2) S1) @
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 S1 *
+SA3 : subst X R E2 S2 *
+H1 : is_string Y
+H2 : is_e E1
+H3 : is_e E2
+SB : X = Y -&gt; false
+SB1 : subst X R E1 S4
+SB2 : subst X R E2 S3
+============================
+ app (abs Y S2) S1 = app (abs Y S3) S4
+</pre>
+<pre class="code extensibella"id="36">
+ &lt; <b>apply IH to _ _ _ SA2 SB1.</b>
+
+Subgoal 8.1:
+
+Variables: X R S2 Y E2 E1 S4 S3
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (let Y E1 E2) (app (abs Y S2) S4) @
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 S4 *
+SA3 : subst X R E2 S2 *
+H1 : is_string Y
+H2 : is_e E1
+H3 : is_e E2
+SB : X = Y -&gt; false
+SB1 : subst X R E1 S4
+SB2 : subst X R E2 S3
+============================
+ app (abs Y S2) S4 = app (abs Y S3) S4
+</pre>
+<pre class="code extensibella"id="37">
+ &lt; <b>apply IH to _ _ _ SA3 SB2.</b>
+
+Subgoal 8.1:
+
+Variables: X R Y E2 E1 S4 S3
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (let Y E1 E2) (app (abs Y S3) S4) @
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 S4 *
+SA3 : subst X R E2 S3 *
+H1 : is_string Y
+H2 : is_e E1
+H3 : is_e E2
+SB : X = Y -&gt; false
+SB1 : subst X R E1 S4
+SB2 : subst X R E2 S3
+============================
+ app (abs Y S3) S4 = app (abs Y S3) S4
+</pre>
+<pre class="code extensibella"id="38">
+ &lt; <b>search.</b>
+
+Subgoal 8.2:
+
+Variables: R S1 S2 Y E2 E1 S3
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string Y
+IsR : is_e R
+SA : subst Y R (let Y E1 E2) (app (abs Y S2) S1) @
+SA1 : Y = Y -&gt; false
+SA2 : subst Y R E1 S1 *
+SA3 : subst Y R E2 S2 *
+H1 : is_string Y
+H2 : is_e E1
+H3 : is_e E2
+SB : subst Y R E1 S3
+============================
+ app (abs Y S2) S1 = app (abs Y E2) S3
+</pre>
+<pre class="code extensibella"id="39">
+ &lt; <b>apply SA1 to _.</b>
+
+Subgoal 9:
+
+Variables: X R SB S1 E2 E1
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsE : is_e (let X E1 E2)
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (let X E1 E2) (app (abs X E2) S1) @
+SB : subst X R (let X E1 E2) SB
+SA1 : subst X R E1 S1 *
+============================
+ app (abs X E2) S1 = SB
+</pre>
+<pre class="code extensibella"id="40">
+ &lt; <b>case IsE.</b>
+
+Subgoal 9:
+
+Variables: X R SB S1 E2 E1
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (let X E1 E2) (app (abs X E2) S1) @
+SB : subst X R (let X E1 E2) SB
+SA1 : subst X R E1 S1 *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+============================
+ app (abs X E2) S1 = SB
+</pre>
+<pre class="code extensibella"id="41">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 9.1:
+
+Variables: X R S1 E2 E1 S3 S2
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (let X E1 E2) (app (abs X E2) S1) @
+SA1 : subst X R E1 S1 *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+SB : X = X -&gt; false
+SB1 : subst X R E1 S3
+SB2 : subst X R E2 S2
+============================
+ app (abs X E2) S1 = app (abs X S2) S3
+</pre>
+<pre class="code extensibella"id="42">
+ &lt; <b>apply SB to _.</b>
+
+Subgoal 9.2:
+
+Variables: X R S1 E2 E1 S2
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (let X E1 E2) (app (abs X E2) S1) @
+SA1 : subst X R E1 S1 *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+SB : subst X R E1 S2
+============================
+ app (abs X E2) S1 = app (abs X E2) S2
+</pre>
+<pre class="code extensibella"id="43">
+ &lt; <b>apply IH to _ _ _ SA1 SB.</b>
+
+Subgoal 9.2:
+
+Variables: X R E2 E1 S2
+IH : forall X R E SA SB,
+       is_e E -&gt; is_string X -&gt; is_e R -&gt; subst X R E SA * -&gt; subst X R E SB -&gt; SA = SB
+IsX : is_string X
+IsR : is_e R
+SA : subst X R (let X E1 E2) (app (abs X E2) S2) @
+SA1 : subst X R E1 S2 *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+SB : subst X R E1 S2
+============================
+ app (abs X E2) S2 = app (abs X E2) S2
+</pre>
+<pre class="code extensibella"id="44">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="45">
+ &lt; <b>Prove lambda_calculus:host:eval_unique.</b>
+
+Subgoal 5:
+
+Variables: VA VB E11 E3 E2 E1 X
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+IsE : is_e (let X E1 E2)
+EvA : eval (let X E1 E2) VA @
+EvB : eval (let X E1 E2) VB
+EvA1 : eval E1 E11 *
+EvA2 : subst X E11 E2 E3
+EvA3 : eval E3 VA *
+============================
+ VA = VB
+</pre>
+<pre class="code extensibella"id="46">
+ &lt; <b>case IsE.</b>
+
+Subgoal 5:
+
+Variables: VA VB E11 E3 E2 E1 X
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (let X E1 E2) VA @
+EvB : eval (let X E1 E2) VB
+EvA1 : eval E1 E11 *
+EvA2 : subst X E11 E2 E3
+EvA3 : eval E3 VA *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+============================
+ VA = VB
+</pre>
+<pre class="code extensibella"id="47">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 5:
+
+Variables: VA VB E11 E3 E2 E1 X E4 E5
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (let X E1 E2) VA @
+EvA1 : eval E1 E11 *
+EvA2 : subst X E11 E2 E3
+EvA3 : eval E3 VA *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+EvB : eval E1 E4
+EvB1 : subst X E4 E2 E5
+EvB2 : eval E5 VB
+============================
+ VA = VB
+</pre>
+<pre class="code extensibella"id="48">
+ &lt; <b>apply IH to _ EvA1 EvB.</b>
+
+Subgoal 5:
+
+Variables: VA VB E3 E2 E1 X E4 E5
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (let X E1 E2) VA @
+EvA1 : eval E1 E4 *
+EvA2 : subst X E4 E2 E3
+EvA3 : eval E3 VA *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+EvB : eval E1 E4
+EvB1 : subst X E4 E2 E5
+EvB2 : eval E5 VB
+============================
+ VA = VB
+</pre>
+<pre class="code extensibella"id="49">
+ &lt; <b>apply eval_is to _ EvA1.</b>
+
+Subgoal 5:
+
+Variables: VA VB E3 E2 E1 X E4 E5
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (let X E1 E2) VA @
+EvA1 : eval E1 E4 *
+EvA2 : subst X E4 E2 E3
+EvA3 : eval E3 VA *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+EvB : eval E1 E4
+EvB1 : subst X E4 E2 E5
+EvB2 : eval E5 VB
+H4 : is_e E4
+============================
+ VA = VB
+</pre>
+<pre class="code extensibella"id="50">
+ &lt; <b>apply subst_unique to _ _ _ EvA2 EvB1.</b>
+
+Subgoal 5:
+
+Variables: VA VB E2 E1 X E4 E5
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (let X E1 E2) VA @
+EvA1 : eval E1 E4 *
+EvA2 : subst X E4 E2 E5
+EvA3 : eval E5 VA *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+EvB : eval E1 E4
+EvB1 : subst X E4 E2 E5
+EvB2 : eval E5 VB
+H4 : is_e E4
+============================
+ VA = VB
+</pre>
+<pre class="code extensibella"id="51">
+ &lt; <b>apply subst_is to _ _ _ EvA2.</b>
+
+Subgoal 5:
+
+Variables: VA VB E2 E1 X E4 E5
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (let X E1 E2) VA @
+EvA1 : eval E1 E4 *
+EvA2 : subst X E4 E2 E5
+EvA3 : eval E5 VA *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+EvB : eval E1 E4
+EvB1 : subst X E4 E2 E5
+EvB2 : eval E5 VB
+H4 : is_e E4
+H5 : is_e E5
+============================
+ VA = VB
+</pre>
+<pre class="code extensibella"id="52">
+ &lt; <b>apply IH to _ EvA3 EvB2.</b>
+
+Subgoal 5:
+
+Variables: VB E2 E1 X E4 E5
+IH : forall E VA VB, is_e E -&gt; eval E VA * -&gt; eval E VB -&gt; VA = VB
+EvA : eval (let X E1 E2) VB @
+EvA1 : eval E1 E4 *
+EvA2 : subst X E4 E2 E5
+EvA3 : eval E5 VB *
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+EvB : eval E1 E4
+EvB1 : subst X E4 E2 E5
+EvB2 : eval E5 VB
+H4 : is_e E4
+H5 : is_e E5
+============================
+ VB = VB
+</pre>
+<pre class="code extensibella"id="53">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="54">
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_subst.</b>
+
+Variables: X R S E1 E2 X1
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsE : is_e (let X1 E1 E2)
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let X1 E1 E2) S
+============================
+ exists S', subst X R (app (abs X1 E2) E1) S'
+</pre>
+<pre class="code extensibella"id="55">
+ &lt; <b>case IsE.</b>
+
+Variables: X R S E1 E2 X1
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let X1 E1 E2) S
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+============================
+ exists S', subst X R (app (abs X1 E2) E1) S'
+</pre>
+<pre class="code extensibella"id="56">
+ &lt; <b>S: case S.</b>
+
+Subgoal 1:
+
+Variables: X R E1 E2 X1 S1 S2
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : X = X1 -&gt; false
+S1 : subst X R E1 S1
+S2 : subst X R E2 S2
+============================
+ exists S', subst X R (app (abs X1 E2) E1) S'
+</pre>
+<pre class="code extensibella"id="57">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: R E1 E2 X1 S1
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X1
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : subst X1 R E1 S1
+============================
+ exists S', subst X1 R (app (abs X1 E2) E1) S'
+</pre>
+<pre class="code extensibella"id="58">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="59">
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_subst_same.</b>
+
+Variables: X R S S' E1 E2 X1
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsE : is_e (let X1 E1 E2)
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let X1 E1 E2) S
+S' : subst X R (app (abs X1 E2) E1) S'
+============================
+ S = S'
+</pre>
+<pre class="code extensibella"id="60">
+ &lt; <b>case IsE.</b>
+
+Variables: X R S S' E1 E2 X1
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X
+IsR : is_e R
+S : subst X R (let X1 E1 E2) S
+S' : subst X R (app (abs X1 E2) E1) S'
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+============================
+ S = S'
+</pre>
+<pre class="code extensibella"id="61">
+ &lt; <b>S: case S.</b>
+
+Subgoal 1:
+
+Variables: X R S' E1 E2 X1 S1 S2
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X
+IsR : is_e R
+S' : subst X R (app (abs X1 E2) E1) S'
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : X = X1 -&gt; false
+S1 : subst X R E1 S1
+S2 : subst X R E2 S2
+============================
+ app (abs X1 S2) S1 = S'
+</pre>
+<pre class="code extensibella"id="62">
+ &lt; <b>S': case S'.</b>
+
+Subgoal 1:
+
+Variables: X R E1 E2 X1 S1 S2 S4 S3
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : X = X1 -&gt; false
+S1 : subst X R E1 S1
+S2 : subst X R E2 S2
+S' : subst X R (abs X1 E2) S3
+S'1 : subst X R E1 S4
+============================
+ app (abs X1 S2) S1 = app S3 S4
+</pre>
+<pre class="code extensibella"id="63">
+ &lt; <b>S': case S'.</b>
+
+Subgoal 1.1:
+
+Variables: R E1 E2 X1 S1 S2 S4
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X1
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : X1 = X1 -&gt; false
+S1 : subst X1 R E1 S1
+S2 : subst X1 R E2 S2
+S'1 : subst X1 R E1 S4
+============================
+ app (abs X1 S2) S1 = app (abs X1 E2) S4
+</pre>
+<pre class="code extensibella"id="64">
+ &lt; <b>apply S to _.</b>
+
+Subgoal 1.2:
+
+Variables: X R E1 E2 X1 S1 S2 S4 B
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : X = X1 -&gt; false
+S1 : subst X R E1 S1
+S2 : subst X R E2 S2
+S'1 : subst X R E1 S4
+S' : X = X1 -&gt; false
+S'2 : subst X R E2 B
+============================
+ app (abs X1 S2) S1 = app (abs X1 B) S4
+</pre>
+<pre class="code extensibella"id="65">
+ &lt; <b>apply subst_unique to _ _ _ S1 S'1.</b>
+
+Subgoal 1.2:
+
+Variables: X R E1 E2 X1 S2 S4 B
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : X = X1 -&gt; false
+S1 : subst X R E1 S4
+S2 : subst X R E2 S2
+S'1 : subst X R E1 S4
+S' : X = X1 -&gt; false
+S'2 : subst X R E2 B
+============================
+ app (abs X1 S2) S4 = app (abs X1 B) S4
+</pre>
+<pre class="code extensibella"id="66">
+ &lt; <b>apply subst_unique to _ _ _ S2 S'2.</b>
+
+Subgoal 1.2:
+
+Variables: X R E1 E2 X1 S4 B
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : X = X1 -&gt; false
+S1 : subst X R E1 S4
+S2 : subst X R E2 B
+S'1 : subst X R E1 S4
+S' : X = X1 -&gt; false
+S'2 : subst X R E2 B
+============================
+ app (abs X1 B) S4 = app (abs X1 B) S4
+</pre>
+<pre class="code extensibella"id="67">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: R S' E1 E2 X1 S1
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X1
+IsR : is_e R
+S' : subst X1 R (app (abs X1 E2) E1) S'
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : subst X1 R E1 S1
+============================
+ app (abs X1 E2) S1 = S'
+</pre>
+<pre class="code extensibella"id="68">
+ &lt; <b>S': case S'.</b>
+
+Subgoal 2:
+
+Variables: R E1 E2 X1 S1 S3 S2
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X1
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : subst X1 R E1 S1
+S' : subst X1 R (abs X1 E2) S2
+S'1 : subst X1 R E1 S3
+============================
+ app (abs X1 E2) S1 = app S2 S3
+</pre>
+<pre class="code extensibella"id="69">
+ &lt; <b>S': case S'.</b>
+
+Subgoal 2.1:
+
+Variables: R E1 E2 X1 S1 S3
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X1
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : subst X1 R E1 S1
+S'1 : subst X1 R E1 S3
+============================
+ app (abs X1 E2) S1 = app (abs X1 E2) S3
+</pre>
+<pre class="code extensibella"id="70">
+ &lt; <b>apply subst_unique to _ _ _ S S'1.</b>
+
+Subgoal 2.1:
+
+Variables: R E1 E2 X1 S3
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X1
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : subst X1 R E1 S3
+S'1 : subst X1 R E1 S3
+============================
+ app (abs X1 E2) S3 = app (abs X1 E2) S3
+</pre>
+<pre class="code extensibella"id="71">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: R E1 E2 X1 S1 S3 B
+Proj : |{e}- let X1 E1 E2 ~~&gt; app (abs X1 E2) E1
+IsX : is_string X1
+IsR : is_e R
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e E2
+S : subst X1 R E1 S1
+S'1 : subst X1 R E1 S3
+S' : X1 = X1 -&gt; false
+S'2 : subst X1 R E2 B
+============================
+ app (abs X1 E2) S1 = app (abs X1 B) S3
+</pre>
+<pre class="code extensibella"id="72">
+ &lt; <b>apply S' to _.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="73">
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_eval.</b>
+
+Variables: V E1 E2 X
+Proj : |{e}- let X E1 E2 ~~&gt; app (abs X E2) E1
+IsE : is_e (let X E1 E2)
+Ev : eval (let X E1 E2) V
+============================
+ exists V', eval (app (abs X E2) E1) V'
+</pre>
+<pre class="code extensibella"id="74">
+ &lt; <b>Ev: case Ev.</b>
+
+Variables: V E1 E2 X E11 E3
+Proj : |{e}- let X E1 E2 ~~&gt; app (abs X E2) E1
+IsE : is_e (let X E1 E2)
+Ev : eval E1 E11
+Ev1 : subst X E11 E2 E3
+Ev2 : eval E3 V
+============================
+ exists V', eval (app (abs X E2) E1) V'
+</pre>
+<pre class="code extensibella"id="75">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="76">
+ &lt; <b>Prove_Constraint lambda_calculus:host:proj_eval_same.</b>
+
+Variables: V V' E1 E2 X
+Proj : |{e}- let X E1 E2 ~~&gt; app (abs X E2) E1
+IsE : is_e (let X E1 E2)
+Ev : eval (let X E1 E2) V
+Ev' : eval (app (abs X E2) E1) V'
+============================
+ V = V'
+</pre>
+<pre class="code extensibella"id="77">
+ &lt; <b>case IsE.</b>
+
+Variables: V V' E1 E2 X
+Proj : |{e}- let X E1 E2 ~~&gt; app (abs X E2) E1
+Ev : eval (let X E1 E2) V
+Ev' : eval (app (abs X E2) E1) V'
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+============================
+ V = V'
+</pre>
+<pre class="code extensibella"id="78">
+ &lt; <b>Ev: case Ev.</b>
+
+Variables: V V' E1 E2 X E11 E3
+Proj : |{e}- let X E1 E2 ~~&gt; app (abs X E2) E1
+Ev' : eval (app (abs X E2) E1) V'
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+Ev : eval E1 E11
+Ev1 : subst X E11 E2 E3
+Ev2 : eval E3 V
+============================
+ V = V'
+</pre>
+<pre class="code extensibella"id="79">
+ &lt; <b>Ev': case Ev'.</b>
+
+Variables: V V' E1 E2 X E11 E3 X1 Body V2 B
+Proj : |{e}- let X E1 E2 ~~&gt; app (abs X E2) E1
+H1 : is_string X
+H2 : is_e E1
+H3 : is_e E2
+Ev : eval E1 E11
+Ev1 : subst X E11 E2 E3
+Ev2 : eval E3 V
+Ev' : eval (abs X E2) (abs X1 Body)
+Ev'1 : eval E1 V2
+Ev'2 : subst X1 V2 Body B
+Ev'3 : eval B V'
+============================
+ V = V'
+</pre>
+<pre class="code extensibella"id="80">
+ &lt; <b>Ev': case Ev'.</b>
+
+Variables: V V' E1 E11 E3 X1 Body V2 B
+Proj : |{e}- let X1 E1 Body ~~&gt; app (abs X1 Body) E1
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e Body
+Ev : eval E1 E11
+Ev1 : subst X1 E11 Body E3
+Ev2 : eval E3 V
+Ev'1 : eval E1 V2
+Ev'2 : subst X1 V2 Body B
+Ev'3 : eval B V'
+============================
+ V = V'
+</pre>
+<pre class="code extensibella"id="81">
+ &lt; <b>apply eval_unique to _ Ev Ev'1.</b>
+
+Variables: V V' E1 E3 X1 Body V2 B
+Proj : |{e}- let X1 E1 Body ~~&gt; app (abs X1 Body) E1
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e Body
+Ev : eval E1 V2
+Ev1 : subst X1 V2 Body E3
+Ev2 : eval E3 V
+Ev'1 : eval E1 V2
+Ev'2 : subst X1 V2 Body B
+Ev'3 : eval B V'
+============================
+ V = V'
+</pre>
+<pre class="code extensibella"id="82">
+ &lt; <b>apply eval_is to _ Ev.</b>
+
+Variables: V V' E1 E3 X1 Body V2 B
+Proj : |{e}- let X1 E1 Body ~~&gt; app (abs X1 Body) E1
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e Body
+Ev : eval E1 V2
+Ev1 : subst X1 V2 Body E3
+Ev2 : eval E3 V
+Ev'1 : eval E1 V2
+Ev'2 : subst X1 V2 Body B
+Ev'3 : eval B V'
+H4 : is_e V2
+============================
+ V = V'
+</pre>
+<pre class="code extensibella"id="83">
+ &lt; <b>apply subst_unique to _ _ _ Ev1 Ev'2.</b>
+
+Variables: V V' E1 X1 Body V2 B
+Proj : |{e}- let X1 E1 Body ~~&gt; app (abs X1 Body) E1
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e Body
+Ev : eval E1 V2
+Ev1 : subst X1 V2 Body B
+Ev2 : eval B V
+Ev'1 : eval E1 V2
+Ev'2 : subst X1 V2 Body B
+Ev'3 : eval B V'
+H4 : is_e V2
+============================
+ V = V'
+</pre>
+<pre class="code extensibella"id="84">
+ &lt; <b>apply subst_is to _ _ _ Ev1.</b>
+
+Variables: V V' E1 X1 Body V2 B
+Proj : |{e}- let X1 E1 Body ~~&gt; app (abs X1 Body) E1
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e Body
+Ev : eval E1 V2
+Ev1 : subst X1 V2 Body B
+Ev2 : eval B V
+Ev'1 : eval E1 V2
+Ev'2 : subst X1 V2 Body B
+Ev'3 : eval B V'
+H4 : is_e V2
+H5 : is_e B
+============================
+ V = V'
+</pre>
+<pre class="code extensibella"id="85">
+ &lt; <b>apply eval_unique to _ Ev2 Ev'3.</b>
+
+Variables: V' E1 X1 Body V2 B
+Proj : |{e}- let X1 E1 Body ~~&gt; app (abs X1 Body) E1
+H1 : is_string X1
+H2 : is_e E1
+H3 : is_e Body
+Ev : eval E1 V2
+Ev1 : subst X1 V2 Body B
+Ev2 : eval B V'
+Ev'1 : eval E1 V2
+Ev'2 : subst X1 V2 Body B
+Ev'3 : eval B V'
+H4 : is_e V2
+H5 : is_e B
+============================
+ V' = V'
+</pre>
+<pre class="code extensibella"id="86">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="87">
+ &lt; <b>Add_Ext_Size lambda_calculus:host:eval.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="88">
+ &lt; <b>Add_Proj_Rel lambda_calculus:host:eval.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="89">
+ &lt; <b>Prove_Ext_Ind lambda_calculus:host:eval.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="90">
+ &lt; <b>apply ext_size_is_int_eval to R3.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="91">
+ &lt; <b>apply ext_size_is_int_eval to R5.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="92">
+ &lt; <b>apply plus_integer_is_integer to _ _ R2.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="93">
+ &lt; <b>L4: apply lt_plus_one to R1 _.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="94">
+ &lt; <b>apply ext_size_pos_eval to R3.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="95">
+ &lt; <b>apply ext_size_pos_eval to R5.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="96">
+ &lt; <b>L2: assert N2 &lt; N.</b>
+
+Subgoal 5.1:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+============================
+ N2 &lt; N
+</pre>
+<pre class="code extensibella"id="97">
+ &lt; <b>Or: apply lt_left to R2 _ _.</b>
+
+Subgoal 5.1:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+Or : N2 &lt; N4 \/ N2 = N4
+============================
+ N2 &lt; N
+</pre>
+<pre class="code extensibella"id="98">
+ &lt; <b>L: case Or.</b>
+
+Subgoal 5.1.1:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L : N2 &lt; N4
+============================
+ N2 &lt; N
+</pre>
+<pre class="code extensibella"id="99">
+ &lt; <b>apply less_integer_transitive to L L4.</b>
+
+Subgoal 5.1.1:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L : N2 &lt; N4
+H6 : N2 &lt; N
+============================
+ N2 &lt; N
+</pre>
+<pre class="code extensibella"id="100">
+ &lt; <b>search.</b>
+
+Subgoal 5.1.2:
+
+Variables: N V N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N4 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N4 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N4
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N4
+H5 : 0 &lt;= N3
+============================
+ N4 &lt; N
+</pre>
+<pre class="code extensibella"id="101">
+ &lt; <b>search.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="102">
+ &lt; <b>L3: assert N3 &lt; N.</b>
+
+Subgoal 5.2:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+============================
+ N3 &lt; N
+</pre>
+<pre class="code extensibella"id="103">
+ &lt; <b>Or: apply lt_right to R2 _ _ _.</b>
+
+Subgoal 5.2:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+Or : N3 &lt; N4 \/ N3 = N4
+============================
+ N3 &lt; N
+</pre>
+<pre class="code extensibella"id="104">
+ &lt; <b>L: case Or.</b>
+
+Subgoal 5.2.1:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+L : N3 &lt; N4
+============================
+ N3 &lt; N
+</pre>
+<pre class="code extensibella"id="105">
+ &lt; <b>apply less_integer_transitive to L L4.</b>
+
+Subgoal 5.2.1:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+L : N3 &lt; N4
+H6 : N3 &lt; N
+============================
+ N3 &lt; N
+</pre>
+<pre class="code extensibella"id="106">
+ &lt; <b>search.</b>
+
+Subgoal 5.2.2:
+
+Variables: N V N2 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N4 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N4 **
+H1 : is_integer N2
+H2 : is_integer N4
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N4
+L2 : N2 &lt; N
+============================
+ N4 &lt; N
+</pre>
+<pre class="code extensibella"id="107">
+ &lt; <b>search.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+Acc : acc N @
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+L3 : N3 &lt; N
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="108">
+ &lt; <b>Acc: case Acc.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+L3 : N3 &lt; N
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="109">
+ &lt; <b>A2: apply Acc to _ L2.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+L3 : N3 &lt; N
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+A2 : acc N2 *
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="110">
+ &lt; <b>A3: apply Acc to _ L3.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+L3 : N3 &lt; N
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+A2 : acc N2 *
+A3 : acc N3 *
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="111">
+ &lt; <b>apply IH to R3 A2.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+L3 : N3 &lt; N
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+A2 : acc N2 *
+A3 : acc N3 *
+H6 : &lt;eval {P}&gt; E1 E11
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="112">
+ &lt; <b>apply IH to R5 A3.</b>
+
+Subgoal 5:
+
+Variables: N V N2 N3 N4 E11 E3 E2 E1 X
+IH : forall N E V, &lt;eval {ES}&gt; E V N -&gt; acc N * -&gt; &lt;eval {P}&gt; E V
+IH1 : forall N E V, &lt;eval {ES}&gt; E V N ** -&gt; acc N @ -&gt; &lt;eval {P}&gt; E V
+R : &lt;eval {ES}&gt; (let X E1 E2) V N @@
+R1 : 1 + N4 = N
+R2 : N2 + N3 = N4
+R3 : &lt;eval {ES}&gt; E1 E11 N2 **
+R4 : subst X E11 E2 E3
+R5 : &lt;eval {ES}&gt; E3 V N3 **
+H1 : is_integer N2
+H2 : is_integer N3
+H3 : is_integer N4
+L4 : N4 &lt; N
+H4 : 0 &lt;= N2
+H5 : 0 &lt;= N3
+L2 : N2 &lt; N
+L3 : N3 &lt; N
+Acc : forall M, 0 &lt;= M -&gt; M &lt; N -&gt; acc M *
+A2 : acc N2 *
+A3 : acc N3 *
+H6 : &lt;eval {P}&gt; E1 E11
+H7 : &lt;eval {P}&gt; E3 V
+============================
+ &lt;eval {P}&gt; (let X E1 E2) V
+</pre>
+<pre class="code extensibella"id="113">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+</div>
+<div class="section">
+<a class="navlink" href="../description.html">Back to example home</a>
+</div>
+</body>
+</html>
