@@ -17,6 +17,11 @@
  < <b>Module mtc:natCase.</b>
 </pre>
 <pre class="code extensibella"id="1">
+ &lt; <b>Prove mtc:arith:fix_nat.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="2">
  &lt; <b>Prove mtc:shared_declarations:type_preservation.</b>
 
 Subgoal 3:
@@ -32,7 +37,7 @@ Ev2 : eval EG Z V *
 ============================
  valueType V Ty
 </pre>
-<pre class="code extensibella"id="2">
+<pre class="code extensibella"id="3">
  &lt; <b>Ty: case Ty.</b>
 
 Subgoal 3:
@@ -50,7 +55,7 @@ Ty2 : typeOf ((X, natTy)::TG) S Ty
 ============================
  valueType V Ty
 </pre>
-<pre class="code extensibella"id="3">
+<pre class="code extensibella"id="4">
  &lt; <b>apply IH to _ Ty1 Ev2.</b>
 
 Subgoal 3:
@@ -69,7 +74,7 @@ H1 : valueType V Ty
 ============================
  valueType V Ty
 </pre>
-<pre class="code extensibella"id="4">
+<pre class="code extensibella"id="5">
  &lt; <b>search.</b>
 
 Subgoal 4:
@@ -85,7 +90,7 @@ Ev2 : eval ((X, numVal N)::EG) S V *
 ============================
  valueType V Ty
 </pre>
-<pre class="code extensibella"id="5">
+<pre class="code extensibella"id="6">
  &lt; <b>Ty: case Ty.</b>
 
 Subgoal 4:
@@ -103,7 +108,7 @@ Ty2 : typeOf ((X, natTy)::TG) S Ty
 ============================
  valueType V Ty
 </pre>
-<pre class="code extensibella"id="6">
+<pre class="code extensibella"id="7">
  &lt; <b>apply IH to _ Ty2 Ev2.</b>
 
 Subgoal 4:
@@ -122,7 +127,1915 @@ H1 : valueType V Ty
 ============================
  valueType V Ty
 </pre>
-<pre class="code extensibella"id="7">
+<pre class="code extensibella"id="8">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="9">
+ &lt; <b>Prove mtc:shared_declarations:value_evalStep_false.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="10">
+ &lt; <b>Prove mtc:shared_declarations:subst_unique.</b>
+
+Subgoal 3:
+
+Variables: X R EB S Z1 E2 Z E1
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+SB : subst X R (natCase E1 Z X S) EB
+SA1 : subst X R E1 E2 *
+SA2 : subst X R Z Z1 *
+============================
+ natCase E2 Z1 X S = EB
+</pre>
+<pre class="code extensibella"id="11">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 3.1:
+
+Variables: X R S Z1 E2 Z E1 Z3 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+SA1 : subst X R E1 E2 *
+SA2 : subst X R Z Z1 *
+SB : subst X R E1 E4
+SB1 : subst X R Z Z3
+============================
+ natCase E2 Z1 X S = natCase E4 Z3 X S
+</pre>
+<pre class="code extensibella"id="12">
+ &lt; <b>apply IH to SA1 SB.</b>
+
+Subgoal 3.1:
+
+Variables: X R S Z1 Z E1 Z3 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (natCase E1 Z X S) (natCase E4 Z1 X S) @
+SA1 : subst X R E1 E4 *
+SA2 : subst X R Z Z1 *
+SB : subst X R E1 E4
+SB1 : subst X R Z Z3
+============================
+ natCase E4 Z1 X S = natCase E4 Z3 X S
+</pre>
+<pre class="code extensibella"id="13">
+ &lt; <b>apply IH to SA2 SB1.</b>
+
+Subgoal 3.1:
+
+Variables: X R S Z E1 Z3 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (natCase E1 Z X S) (natCase E4 Z3 X S) @
+SA1 : subst X R E1 E4 *
+SA2 : subst X R Z Z3 *
+SB : subst X R E1 E4
+SB1 : subst X R Z Z3
+============================
+ natCase E4 Z3 X S = natCase E4 Z3 X S
+</pre>
+<pre class="code extensibella"id="14">
+ &lt; <b>search.</b>
+
+Subgoal 3.2:
+
+Variables: X R S Z1 E2 Z E1 S2 Z3 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+SA1 : subst X R E1 E2 *
+SA2 : subst X R Z Z1 *
+SB : X = X -&gt; false
+SB1 : subst X R E1 E4
+SB2 : subst X R Z Z3
+SB3 : subst X R S S2
+============================
+ natCase E2 Z1 X S = natCase E4 Z3 X S2
+</pre>
+<pre class="code extensibella"id="15">
+ &lt; <b>apply SB to _.</b>
+
+Subgoal 4:
+
+Variables: X R EB S1 Y Z1 E2 S Z E1
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+SB : subst X R (natCase E1 Z Y S) EB
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 E2 *
+SA3 : subst X R Z Z1 *
+SA4 : subst X R S S1 *
+============================
+ natCase E2 Z1 Y S1 = EB
+</pre>
+<pre class="code extensibella"id="16">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 4.1:
+
+Variables: R S1 Y Z1 E2 S Z E1 Z3 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst Y R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+SA1 : Y = Y -&gt; false
+SA2 : subst Y R E1 E2 *
+SA3 : subst Y R Z Z1 *
+SA4 : subst Y R S S1 *
+SB : subst Y R E1 E4
+SB1 : subst Y R Z Z3
+============================
+ natCase E2 Z1 Y S1 = natCase E4 Z3 Y S
+</pre>
+<pre class="code extensibella"id="17">
+ &lt; <b>apply SA1 to _.</b>
+
+Subgoal 4.2:
+
+Variables: X R S1 Y Z1 E2 S Z E1 S3 Z3 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 E2 *
+SA3 : subst X R Z Z1 *
+SA4 : subst X R S S1 *
+SB : X = Y -&gt; false
+SB1 : subst X R E1 E4
+SB2 : subst X R Z Z3
+SB3 : subst X R S S3
+============================
+ natCase E2 Z1 Y S1 = natCase E4 Z3 Y S3
+</pre>
+<pre class="code extensibella"id="18">
+ &lt; <b>apply IH to SA2 SB1.</b>
+
+Subgoal 4.2:
+
+Variables: X R S1 Y Z1 S Z E1 S3 Z3 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (natCase E1 Z Y S) (natCase E4 Z1 Y S1) @
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 E4 *
+SA3 : subst X R Z Z1 *
+SA4 : subst X R S S1 *
+SB : X = Y -&gt; false
+SB1 : subst X R E1 E4
+SB2 : subst X R Z Z3
+SB3 : subst X R S S3
+============================
+ natCase E4 Z1 Y S1 = natCase E4 Z3 Y S3
+</pre>
+<pre class="code extensibella"id="19">
+ &lt; <b>apply IH to SA3 SB2.</b>
+
+Subgoal 4.2:
+
+Variables: X R S1 Y S Z E1 S3 Z3 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (natCase E1 Z Y S) (natCase E4 Z3 Y S1) @
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 E4 *
+SA3 : subst X R Z Z3 *
+SA4 : subst X R S S1 *
+SB : X = Y -&gt; false
+SB1 : subst X R E1 E4
+SB2 : subst X R Z Z3
+SB3 : subst X R S S3
+============================
+ natCase E4 Z3 Y S1 = natCase E4 Z3 Y S3
+</pre>
+<pre class="code extensibella"id="20">
+ &lt; <b>apply IH to SA4 SB3.</b>
+
+Subgoal 4.2:
+
+Variables: X R Y S Z E1 S3 Z3 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (natCase E1 Z Y S) (natCase E4 Z3 Y S3) @
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 E4 *
+SA3 : subst X R Z Z3 *
+SA4 : subst X R S S3 *
+SB : X = Y -&gt; false
+SB1 : subst X R E1 E4
+SB2 : subst X R Z Z3
+SB3 : subst X R S S3
+============================
+ natCase E4 Z3 Y S3 = natCase E4 Z3 Y S3
+</pre>
+<pre class="code extensibella"id="21">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="22">
+ &lt; <b>Prove mtc:shared_declarations:evalStep_unique.</b>
+
+Subgoal 4:
+
+Variables: EB S X Z E2 E1
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase E1 Z X S) (natCase E2 Z X S) @
+EvB : evalStep (natCase E1 Z X S) EB
+EvA1 : evalStep E1 E2 *
+============================
+ natCase E2 Z X S = EB
+</pre>
+<pre class="code extensibella"id="23">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 4.1:
+
+Variables: S X Z E2 E1 E4
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase E1 Z X S) (natCase E2 Z X S) @
+EvA1 : evalStep E1 E2 *
+EvB : evalStep E1 E4
+============================
+ natCase E2 Z X S = natCase E4 Z X S
+</pre>
+<pre class="code extensibella"id="24">
+ &lt; <b>apply IH to EvA1 EvB.</b>
+
+Subgoal 4.1:
+
+Variables: S X Z E1 E4
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase E1 Z X S) (natCase E4 Z X S) @
+EvA1 : evalStep E1 E4 *
+EvB : evalStep E1 E4
+============================
+ natCase E4 Z X S = natCase E4 Z X S
+</pre>
+<pre class="code extensibella"id="25">
+ &lt; <b>search.</b>
+
+Subgoal 4.2:
+
+Variables: EB S X E2
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase (num z) EB X S) (natCase E2 EB X S) @
+EvA1 : evalStep (num z) E2 *
+============================
+ natCase E2 EB X S = EB
+</pre>
+<pre class="code extensibella"id="26">
+ &lt; <b>case EvA1.</b>
+
+Subgoal 4.3:
+
+Variables: EB S X Z E2 N
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase (num (s N)) Z X S) (natCase E2 Z X S) @
+EvA1 : evalStep (num (s N)) E2 *
+EvB : subst X (num N) S EB
+============================
+ natCase E2 Z X S = EB
+</pre>
+<pre class="code extensibella"id="27">
+ &lt; <b>case EvA1.</b>
+
+Subgoal 5:
+
+Variables: EA EB S X
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase (num z) EA X S) EA @
+EvB : evalStep (natCase (num z) EA X S) EB
+============================
+ EA = EB
+</pre>
+<pre class="code extensibella"id="28">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 5.1:
+
+Variables: EA S X E2
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase (num z) EA X S) EA @
+EvB : evalStep (num z) E2
+============================
+ EA = natCase E2 EA X S
+</pre>
+<pre class="code extensibella"id="29">
+ &lt; <b>case EvB.</b>
+
+Subgoal 5.2:
+
+Variables: EB S X
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase (num z) EB X S) EB @
+============================
+ EB = EB
+</pre>
+<pre class="code extensibella"id="30">
+ &lt; <b>search.</b>
+
+Subgoal 6:
+
+Variables: EA EB S X Z N
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase (num (s N)) Z X S) EA @
+EvB : evalStep (natCase (num (s N)) Z X S) EB
+EvA1 : subst X (num N) S EA
+============================
+ EA = EB
+</pre>
+<pre class="code extensibella"id="31">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 6.1:
+
+Variables: EA S X Z N E2
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase (num (s N)) Z X S) EA @
+EvA1 : subst X (num N) S EA
+EvB : evalStep (num (s N)) E2
+============================
+ EA = natCase E2 Z X S
+</pre>
+<pre class="code extensibella"id="32">
+ &lt; <b>case EvB.</b>
+
+Subgoal 6.2:
+
+Variables: EA EB S X Z N
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase (num (s N)) Z X S) EA @
+EvA1 : subst X (num N) S EA
+EvB : subst X (num N) S EB
+============================
+ EA = EB
+</pre>
+<pre class="code extensibella"id="33">
+ &lt; <b>apply subst_unique to EvA1 EvB.</b>
+
+Subgoal 6.2:
+
+Variables: EB S X Z N
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (natCase (num (s N)) Z X S) EB @
+EvA1 : subst X (num N) S EB
+EvB : subst X (num N) S EB
+============================
+ EB = EB
+</pre>
+<pre class="code extensibella"id="34">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="35">
+ &lt; <b>Prove mtc:shared_declarations:ty_lookup.</b>
+
+Subgoal 3:
+
+Variables: G1 G2 Ty S X Z E1
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (natCase E1 Z X S) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 natTy *
+Ty2 : typeOf G1 Z Ty *
+Ty3 : typeOf ((X, natTy)::G1) S Ty *
+============================
+ typeOf G2 (natCase E1 Z X S) Ty
+</pre>
+<pre class="code extensibella"id="36">
+ &lt; <b>apply IH to Ty1 L.</b>
+
+Subgoal 3:
+
+Variables: G1 G2 Ty S X Z E1
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (natCase E1 Z X S) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 natTy *
+Ty2 : typeOf G1 Z Ty *
+Ty3 : typeOf ((X, natTy)::G1) S Ty *
+H1 : typeOf G2 E1 natTy
+============================
+ typeOf G2 (natCase E1 Z X S) Ty
+</pre>
+<pre class="code extensibella"id="37">
+ &lt; <b>apply IH to Ty2 L.</b>
+
+Subgoal 3:
+
+Variables: G1 G2 Ty S X Z E1
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (natCase E1 Z X S) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 natTy *
+Ty2 : typeOf G1 Z Ty *
+Ty3 : typeOf ((X, natTy)::G1) S Ty *
+H1 : typeOf G2 E1 natTy
+H2 : typeOf G2 Z Ty
+============================
+ typeOf G2 (natCase E1 Z X S) Ty
+</pre>
+<pre class="code extensibella"id="38">
+ &lt; <b>apply IH to Ty3 _ with
+     G2 = (X, natTy)::G2.</b>
+
+Subgoal 3.1:
+
+Variables: G1 G2 Ty S X Z E1
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (natCase E1 Z X S) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 natTy *
+Ty2 : typeOf G1 Z Ty *
+Ty3 : typeOf ((X, natTy)::G1) S Ty *
+H1 : typeOf G2 E1 natTy
+H2 : typeOf G2 Z Ty
+============================
+ forall X1 XTy, lookup ((X, natTy)::G1) X1 XTy -&gt; lookup ((X, natTy)::G2) X1 XTy
+</pre>
+<pre class="code extensibella"id="39">
+ &lt; <b>intros L'.</b>
+
+Subgoal 3.1:
+
+Variables: G1 G2 Ty S X Z E1 X1 XTy
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (natCase E1 Z X S) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 natTy *
+Ty2 : typeOf G1 Z Ty *
+Ty3 : typeOf ((X, natTy)::G1) S Ty *
+H1 : typeOf G2 E1 natTy
+H2 : typeOf G2 Z Ty
+L' : lookup ((X, natTy)::G1) X1 XTy
+============================
+ lookup ((X, natTy)::G2) X1 XTy
+</pre>
+<pre class="code extensibella"id="40">
+ &lt; <b>L': case L'.</b>
+
+Subgoal 3.1.1:
+
+Variables: G1 G2 Ty S Z E1 X1
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (natCase E1 Z X1 S) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 natTy *
+Ty2 : typeOf G1 Z Ty *
+Ty3 : typeOf ((X1, natTy)::G1) S Ty *
+H1 : typeOf G2 E1 natTy
+H2 : typeOf G2 Z Ty
+============================
+ lookup ((X1, natTy)::G2) X1 natTy
+</pre>
+<pre class="code extensibella"id="41">
+ &lt; <b>search.</b>
+
+Subgoal 3.1.2:
+
+Variables: G1 G2 Ty S X Z E1 X1 XTy
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (natCase E1 Z X S) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 natTy *
+Ty2 : typeOf G1 Z Ty *
+Ty3 : typeOf ((X, natTy)::G1) S Ty *
+H1 : typeOf G2 E1 natTy
+H2 : typeOf G2 Z Ty
+L' : X = X1 -&gt; false
+L'1 : lookup G1 X1 XTy
+============================
+ lookup ((X, natTy)::G2) X1 XTy
+</pre>
+<pre class="code extensibella"id="42">
+ &lt; <b>apply L to L'1.</b>
+
+Subgoal 3.1.2:
+
+Variables: G1 G2 Ty S X Z E1 X1 XTy
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (natCase E1 Z X S) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 natTy *
+Ty2 : typeOf G1 Z Ty *
+Ty3 : typeOf ((X, natTy)::G1) S Ty *
+H1 : typeOf G2 E1 natTy
+H2 : typeOf G2 Z Ty
+L' : X = X1 -&gt; false
+L'1 : lookup G1 X1 XTy
+H3 : lookup G2 X1 XTy
+============================
+ lookup ((X, natTy)::G2) X1 XTy
+</pre>
+<pre class="code extensibella"id="43">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: G1 G2 Ty S X Z E1
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (natCase E1 Z X S) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 natTy *
+Ty2 : typeOf G1 Z Ty *
+Ty3 : typeOf ((X, natTy)::G1) S Ty *
+H1 : typeOf G2 E1 natTy
+H2 : typeOf G2 Z Ty
+H3 : typeOf ((X, natTy)::G2) S Ty
+============================
+ typeOf G2 (natCase E1 Z X S) Ty
+</pre>
+<pre class="code extensibella"id="44">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="45">
+ &lt; <b>Prove mtc:shared_declarations:subst_preservation.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R S Z1 E2 Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+Ty : typeOf ((X, XTy)::TG) (natCase E1 Z X S) Ty
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+============================
+ typeOf TG (natCase E2 Z1 X S) Ty
+</pre>
+<pre class="code extensibella"id="46">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R S Z1 E2 Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((X, natTy)::((X, XTy)::TG)) S Ty
+============================
+ typeOf TG (natCase E2 Z1 X S) Ty
+</pre>
+<pre class="code extensibella"id="47">
+ &lt; <b>apply IH to Ty S1 RTy.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R S Z1 E2 Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((X, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+============================
+ typeOf TG (natCase E2 Z1 X S) Ty
+</pre>
+<pre class="code extensibella"id="48">
+ &lt; <b>apply IH to Ty1 S2 RTy.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R S Z1 E2 Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((X, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+============================
+ typeOf TG (natCase E2 Z1 X S) Ty
+</pre>
+<pre class="code extensibella"id="49">
+ &lt; <b>apply ty_lookup to Ty2 _ with
+     G2 = (X, natTy)::TG.</b>
+
+Subgoal 3.1:
+
+Variables: X XTy TG Ty R S Z1 E2 Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((X, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+============================
+ forall X1 XTy1,
+   lookup ((X, natTy)::((X, XTy)::TG)) X1 XTy1 -&gt; lookup ((X, natTy)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="50">
+ &lt; <b>intros L.</b>
+
+Subgoal 3.1:
+
+Variables: X XTy TG Ty R S Z1 E2 Z E1 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((X, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+L : lookup ((X, natTy)::((X, XTy)::TG)) X1 XTy1
+============================
+ lookup ((X, natTy)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="51">
+ &lt; <b>L: case L.</b>
+
+Subgoal 3.1.1:
+
+Variables: XTy TG Ty R S Z1 E2 Z E1 X1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X1 R (natCase E1 Z X1 S) (natCase E2 Z1 X1 S) @
+RTy : typeOf [] R XTy
+S1 : subst X1 R E1 E2 *
+S2 : subst X1 R Z Z1 *
+Ty : typeOf ((X1, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X1, XTy)::TG) Z Ty
+Ty2 : typeOf ((X1, natTy)::((X1, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+============================
+ lookup ((X1, natTy)::TG) X1 natTy
+</pre>
+<pre class="code extensibella"id="52">
+ &lt; <b>search.</b>
+
+Subgoal 3.1.2:
+
+Variables: X XTy TG Ty R S Z1 E2 Z E1 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((X, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+L : X = X1 -&gt; false
+L1 : lookup ((X, XTy)::TG) X1 XTy1
+============================
+ lookup ((X, natTy)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="53">
+ &lt; <b>L': case L1.</b>
+
+Subgoal 3.1.2.1:
+
+Variables: TG Ty R S Z1 E2 Z E1 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X1 R (natCase E1 Z X1 S) (natCase E2 Z1 X1 S) @
+RTy : typeOf [] R XTy1
+S1 : subst X1 R E1 E2 *
+S2 : subst X1 R Z Z1 *
+Ty : typeOf ((X1, XTy1)::TG) E1 natTy
+Ty1 : typeOf ((X1, XTy1)::TG) Z Ty
+Ty2 : typeOf ((X1, natTy)::((X1, XTy1)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+L : X1 = X1 -&gt; false
+============================
+ lookup ((X1, natTy)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="54">
+ &lt; <b>apply L to _.</b>
+
+Subgoal 3.1.2.2:
+
+Variables: X XTy TG Ty R S Z1 E2 Z E1 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((X, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+L : X = X1 -&gt; false
+L' : X = X1 -&gt; false
+L'1 : lookup TG X1 XTy1
+============================
+ lookup ((X, natTy)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="55">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R S Z1 E2 Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((X, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+H3 : typeOf ((X, natTy)::TG) S Ty
+============================
+ typeOf TG (natCase E2 Z1 X S) Ty
+</pre>
+<pre class="code extensibella"id="56">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: X XTy TG Ty R S1 Y Z1 E2 S Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+Ty : typeOf ((X, XTy)::TG) (natCase E1 Z Y S) Ty
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+============================
+ typeOf TG (natCase E2 Z1 Y S1) Ty
+</pre>
+<pre class="code extensibella"id="57">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 4:
+
+Variables: X XTy TG Ty R S1 Y Z1 E2 S Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((Y, natTy)::((X, XTy)::TG)) S Ty
+============================
+ typeOf TG (natCase E2 Z1 Y S1) Ty
+</pre>
+<pre class="code extensibella"id="58">
+ &lt; <b>apply IH to Ty S2 RTy.</b>
+
+Subgoal 4:
+
+Variables: X XTy TG Ty R S1 Y Z1 E2 S Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((Y, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+============================
+ typeOf TG (natCase E2 Z1 Y S1) Ty
+</pre>
+<pre class="code extensibella"id="59">
+ &lt; <b>apply IH to Ty1 S3 RTy.</b>
+
+Subgoal 4:
+
+Variables: X XTy TG Ty R S1 Y Z1 E2 S Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((Y, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+============================
+ typeOf TG (natCase E2 Z1 Y S1) Ty
+</pre>
+<pre class="code extensibella"id="60">
+ &lt; <b>Ty': apply ty_lookup to Ty2 _ with
+          G2 = (X, XTy)::((Y, natTy)::TG).</b>
+
+Subgoal 4.1:
+
+Variables: X XTy TG Ty R S1 Y Z1 E2 S Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((Y, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+============================
+ forall X1 XTy1,
+   lookup ((Y, natTy)::((X, XTy)::TG)) X1 XTy1 -&gt; lookup ((X, XTy)::((Y, natTy)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="61">
+ &lt; <b>intros L.</b>
+
+Subgoal 4.1:
+
+Variables: X XTy TG Ty R S1 Y Z1 E2 S Z E1 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((Y, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+L : lookup ((Y, natTy)::((X, XTy)::TG)) X1 XTy1
+============================
+ lookup ((X, XTy)::((Y, natTy)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="62">
+ &lt; <b>L: case L.</b>
+
+Subgoal 4.1.1:
+
+Variables: X XTy TG Ty R S1 Z1 E2 S Z E1 X1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z X1 S) (natCase E2 Z1 X1 S1) @
+RTy : typeOf [] R XTy
+S1 : X = X1 -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((X1, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+============================
+ lookup ((X, XTy)::((X1, natTy)::TG)) X1 natTy
+</pre>
+<pre class="code extensibella"id="63">
+ &lt; <b>search.</b>
+
+Subgoal 4.1.2:
+
+Variables: X XTy TG Ty R S1 Y Z1 E2 S Z E1 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((Y, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+L : Y = X1 -&gt; false
+L1 : lookup ((X, XTy)::TG) X1 XTy1
+============================
+ lookup ((X, XTy)::((Y, natTy)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="64">
+ &lt; <b>L': case L1.</b>
+
+Subgoal 4.1.2.1:
+
+Variables: TG Ty R S1 Y Z1 E2 S Z E1 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X1 R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy1
+S1 : X1 = Y -&gt; false
+S2 : subst X1 R E1 E2 *
+S3 : subst X1 R Z Z1 *
+S4 : subst X1 R S S1 *
+Ty : typeOf ((X1, XTy1)::TG) E1 natTy
+Ty1 : typeOf ((X1, XTy1)::TG) Z Ty
+Ty2 : typeOf ((Y, natTy)::((X1, XTy1)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+L : Y = X1 -&gt; false
+============================
+ lookup ((X1, XTy1)::((Y, natTy)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="65">
+ &lt; <b>search.</b>
+
+Subgoal 4.1.2.2:
+
+Variables: X XTy TG Ty R S1 Y Z1 E2 S Z E1 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((Y, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+L : Y = X1 -&gt; false
+L' : X = X1 -&gt; false
+L'1 : lookup TG X1 XTy1
+============================
+ lookup ((X, XTy)::((Y, natTy)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="66">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: X XTy TG Ty R S1 Y Z1 E2 S Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((Y, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+Ty' : typeOf ((X, XTy)::((Y, natTy)::TG)) S Ty
+============================
+ typeOf TG (natCase E2 Z1 Y S1) Ty
+</pre>
+<pre class="code extensibella"id="67">
+ &lt; <b>apply IH to Ty' S4 RTy.</b>
+
+Subgoal 4:
+
+Variables: X XTy TG Ty R S1 Y Z1 E2 S Z E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+Ty : typeOf ((X, XTy)::TG) E1 natTy
+Ty1 : typeOf ((X, XTy)::TG) Z Ty
+Ty2 : typeOf ((Y, natTy)::((X, XTy)::TG)) S Ty
+H1 : typeOf TG E2 natTy
+H2 : typeOf TG Z1 Ty
+Ty' : typeOf ((X, XTy)::((Y, natTy)::TG)) S Ty
+H3 : typeOf ((Y, natTy)::TG) S1 Ty
+============================
+ typeOf TG (natCase E2 Z1 Y S1) Ty
+</pre>
+<pre class="code extensibella"id="68">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="69">
+ &lt; <b>Prove mtc:shared_declarations:evalStep_type_preservation.</b>
+
+Subgoal 4:
+
+Variables: Ty S X Z E2 E1
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ty : typeOf [] (natCase E1 Z X S) Ty
+Ev : evalStep (natCase E1 Z X S) (natCase E2 Z X S) @
+Ev1 : evalStep E1 E2 *
+============================
+ typeOf [] (natCase E2 Z X S) Ty
+</pre>
+<pre class="code extensibella"id="70">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 4:
+
+Variables: Ty S X Z E2 E1
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (natCase E1 Z X S) (natCase E2 Z X S) @
+Ev1 : evalStep E1 E2 *
+Ty : typeOf [] E1 natTy
+Ty1 : typeOf [] Z Ty
+Ty2 : typeOf [(X, natTy)] S Ty
+============================
+ typeOf [] (natCase E2 Z X S) Ty
+</pre>
+<pre class="code extensibella"id="71">
+ &lt; <b>apply IH to Ty Ev1.</b>
+
+Subgoal 4:
+
+Variables: Ty S X Z E2 E1
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (natCase E1 Z X S) (natCase E2 Z X S) @
+Ev1 : evalStep E1 E2 *
+Ty : typeOf [] E1 natTy
+Ty1 : typeOf [] Z Ty
+Ty2 : typeOf [(X, natTy)] S Ty
+H1 : typeOf [] E2 natTy
+============================
+ typeOf [] (natCase E2 Z X S) Ty
+</pre>
+<pre class="code extensibella"id="72">
+ &lt; <b>search.</b>
+
+Subgoal 5:
+
+Variables: Ty E' S X
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ty : typeOf [] (natCase (num z) E' X S) Ty
+Ev : evalStep (natCase (num z) E' X S) E' @
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="73">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 5:
+
+Variables: Ty E' S X
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (natCase (num z) E' X S) E' @
+Ty : typeOf [] (num z) natTy
+Ty1 : typeOf [] E' Ty
+Ty2 : typeOf [(X, natTy)] S Ty
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="74">
+ &lt; <b>search.</b>
+
+Subgoal 6:
+
+Variables: Ty E' S X Z N
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ty : typeOf [] (natCase (num (s N)) Z X S) Ty
+Ev : evalStep (natCase (num (s N)) Z X S) E' @
+Ev1 : subst X (num N) S E'
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="75">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 6:
+
+Variables: Ty E' S X Z N
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (natCase (num (s N)) Z X S) E' @
+Ev1 : subst X (num N) S E'
+Ty : typeOf [] (num (s N)) natTy
+Ty1 : typeOf [] Z Ty
+Ty2 : typeOf [(X, natTy)] S Ty
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="76">
+ &lt; <b>apply subst_preservation to Ty2 Ev1 _.</b>
+
+Subgoal 6:
+
+Variables: Ty E' S X Z N
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (natCase (num (s N)) Z X S) E' @
+Ev1 : subst X (num N) S E'
+Ty : typeOf [] (num (s N)) natTy
+Ty1 : typeOf [] Z Ty
+Ty2 : typeOf [(X, natTy)] S Ty
+H1 : typeOf [] E' Ty
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="77">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="78">
+ &lt; <b>Prove mtc:shared_declarations:canonical_form.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="79">
+ &lt; <b>Prove mtc:shared_declarations:subst_is.</b>
+
+Subgoal 3:
+
+Variables: X R S Z1 E2 Z E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsE : is_e (natCase E1 Z X S)
+IsR : is_e R
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+============================
+ is_e (natCase E2 Z1 X S)
+</pre>
+<pre class="code extensibella"id="80">
+ &lt; <b>case IsE.</b>
+
+Subgoal 3:
+
+Variables: X R S Z1 E2 Z E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+H1 : is_e E1
+H2 : is_e Z
+H3 : is_string X
+H4 : is_e S
+============================
+ is_e (natCase E2 Z1 X S)
+</pre>
+<pre class="code extensibella"id="81">
+ &lt; <b>apply IH to _ _ S1.</b>
+
+Subgoal 3:
+
+Variables: X R S Z1 E2 Z E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+H1 : is_e E1
+H2 : is_e Z
+H3 : is_string X
+H4 : is_e S
+H5 : is_e E2
+============================
+ is_e (natCase E2 Z1 X S)
+</pre>
+<pre class="code extensibella"id="82">
+ &lt; <b>apply IH to _ _ S2.</b>
+
+Subgoal 3:
+
+Variables: X R S Z1 E2 Z E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (natCase E1 Z X S) (natCase E2 Z1 X S) @
+S1 : subst X R E1 E2 *
+S2 : subst X R Z Z1 *
+H1 : is_e E1
+H2 : is_e Z
+H3 : is_string X
+H4 : is_e S
+H5 : is_e E2
+H6 : is_e Z1
+============================
+ is_e (natCase E2 Z1 X S)
+</pre>
+<pre class="code extensibella"id="83">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: X R S1 Y Z1 E2 S Z E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsE : is_e (natCase E1 Z Y S)
+IsR : is_e R
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+============================
+ is_e (natCase E2 Z1 Y S1)
+</pre>
+<pre class="code extensibella"id="84">
+ &lt; <b>case IsE.</b>
+
+Subgoal 4:
+
+Variables: X R S1 Y Z1 E2 S Z E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+H1 : is_e E1
+H2 : is_e Z
+H3 : is_string Y
+H4 : is_e S
+============================
+ is_e (natCase E2 Z1 Y S1)
+</pre>
+<pre class="code extensibella"id="85">
+ &lt; <b>apply IH to _ _ S2.</b>
+
+Subgoal 4:
+
+Variables: X R S1 Y Z1 E2 S Z E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+H1 : is_e E1
+H2 : is_e Z
+H3 : is_string Y
+H4 : is_e S
+H5 : is_e E2
+============================
+ is_e (natCase E2 Z1 Y S1)
+</pre>
+<pre class="code extensibella"id="86">
+ &lt; <b>apply IH to _ _ S3.</b>
+
+Subgoal 4:
+
+Variables: X R S1 Y Z1 E2 S Z E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+H1 : is_e E1
+H2 : is_e Z
+H3 : is_string Y
+H4 : is_e S
+H5 : is_e E2
+H6 : is_e Z1
+============================
+ is_e (natCase E2 Z1 Y S1)
+</pre>
+<pre class="code extensibella"id="87">
+ &lt; <b>apply IH to _ _ S4.</b>
+
+Subgoal 4:
+
+Variables: X R S1 Y Z1 E2 S Z E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (natCase E1 Z Y S) (natCase E2 Z1 Y S1) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+S3 : subst X R Z Z1 *
+S4 : subst X R S S1 *
+H1 : is_e E1
+H2 : is_e Z
+H3 : is_string Y
+H4 : is_e S
+H5 : is_e E2
+H6 : is_e Z1
+H7 : is_e S1
+============================
+ is_e (natCase E2 Z1 Y S1)
+</pre>
+<pre class="code extensibella"id="88">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="89">
+ &lt; <b>Prove mtc:shared_declarations:evalStep_is.</b>
+
+Subgoal 4:
+
+Variables: S X Z E2 E1
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+IsE : is_e (natCase E1 Z X S)
+Ev : evalStep (natCase E1 Z X S) (natCase E2 Z X S) @
+Ev1 : evalStep E1 E2 *
+============================
+ is_e (natCase E2 Z X S)
+</pre>
+<pre class="code extensibella"id="90">
+ &lt; <b>case IsE.</b>
+
+Subgoal 4:
+
+Variables: S X Z E2 E1
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (natCase E1 Z X S) (natCase E2 Z X S) @
+Ev1 : evalStep E1 E2 *
+H1 : is_e E1
+H2 : is_e Z
+H3 : is_string X
+H4 : is_e S
+============================
+ is_e (natCase E2 Z X S)
+</pre>
+<pre class="code extensibella"id="91">
+ &lt; <b>apply IH to _ Ev1.</b>
+
+Subgoal 4:
+
+Variables: S X Z E2 E1
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (natCase E1 Z X S) (natCase E2 Z X S) @
+Ev1 : evalStep E1 E2 *
+H1 : is_e E1
+H2 : is_e Z
+H3 : is_string X
+H4 : is_e S
+H5 : is_e E2
+============================
+ is_e (natCase E2 Z X S)
+</pre>
+<pre class="code extensibella"id="92">
+ &lt; <b>search.</b>
+
+Subgoal 5:
+
+Variables: E' S X
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+IsE : is_e (natCase (num z) E' X S)
+Ev : evalStep (natCase (num z) E' X S) E' @
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="93">
+ &lt; <b>case IsE.</b>
+
+Subgoal 5:
+
+Variables: E' S X
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (natCase (num z) E' X S) E' @
+H1 : is_e (num z)
+H2 : is_e E'
+H3 : is_string X
+H4 : is_e S
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="94">
+ &lt; <b>search.</b>
+
+Subgoal 6:
+
+Variables: E' S X Z N
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+IsE : is_e (natCase (num (s N)) Z X S)
+Ev : evalStep (natCase (num (s N)) Z X S) E' @
+Ev1 : subst X (num N) S E'
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="95">
+ &lt; <b>Is: case IsE.</b>
+
+Subgoal 6:
+
+Variables: E' S X Z N
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (natCase (num (s N)) Z X S) E' @
+Ev1 : subst X (num N) S E'
+Is : is_e (num (s N))
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="96">
+ &lt; <b>Is: case Is.</b>
+
+Subgoal 6:
+
+Variables: E' S X Z N
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (natCase (num (s N)) Z X S) E' @
+Ev1 : subst X (num N) S E'
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Is : is_nat (s N)
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="97">
+ &lt; <b>case Is.</b>
+
+Subgoal 6:
+
+Variables: E' S X Z N
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (natCase (num (s N)) Z X S) E' @
+Ev1 : subst X (num N) S E'
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+H1 : is_nat N
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="98">
+ &lt; <b>apply subst_is to _ _ Ev1.</b>
+
+Subgoal 6:
+
+Variables: E' S X Z N
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (natCase (num (s N)) Z X S) E' @
+Ev1 : subst X (num N) S E'
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+H1 : is_nat N
+H2 : is_e E'
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="99">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="100">
+ &lt; <b>Prove mtc:shared_declarations:subst_total.</b>
+
+Subgoal 4:
+
+Variables: X R E3 S E1 E2
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (natCase E2 E1 S E3) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_string S
+IsE4 : is_e E3 *
+============================
+ exists E', subst X R (natCase E2 E1 S E3) E'
+</pre>
+<pre class="code extensibella"id="101">
+ &lt; <b>apply IH to IsE1 IsX IsR.</b>
+
+Subgoal 4:
+
+Variables: X R E3 S E1 E2 E'
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (natCase E2 E1 S E3) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_string S
+IsE4 : is_e E3 *
+H1 : subst X R E2 E'
+============================
+ exists E', subst X R (natCase E2 E1 S E3) E'
+</pre>
+<pre class="code extensibella"id="102">
+ &lt; <b>apply IH to IsE2 IsX IsR.</b>
+
+Subgoal 4:
+
+Variables: X R E3 S E1 E2 E' E'1
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (natCase E2 E1 S E3) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_string S
+IsE4 : is_e E3 *
+H1 : subst X R E2 E'
+H2 : subst X R E1 E'1
+============================
+ exists E', subst X R (natCase E2 E1 S E3) E'
+</pre>
+<pre class="code extensibella"id="103">
+ &lt; <b>apply IH to IsE4 IsX IsR.</b>
+
+Subgoal 4:
+
+Variables: X R E3 S E1 E2 E' E'1 E'2
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (natCase E2 E1 S E3) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_string S
+IsE4 : is_e E3 *
+H1 : subst X R E2 E'
+H2 : subst X R E1 E'1
+H3 : subst X R E3 E'2
+============================
+ exists E', subst X R (natCase E2 E1 S E3) E'
+</pre>
+<pre class="code extensibella"id="104">
+ &lt; <b>Or: apply is_string_eq_or_not to IsX IsE3.</b>
+
+Subgoal 4:
+
+Variables: X R E3 S E1 E2 E' E'1 E'2
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (natCase E2 E1 S E3) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_string S
+IsE4 : is_e E3 *
+H1 : subst X R E2 E'
+H2 : subst X R E1 E'1
+H3 : subst X R E3 E'2
+Or : X = S \/ (X = S -&gt; false)
+============================
+ exists E', subst X R (natCase E2 E1 S E3) E'
+</pre>
+<pre class="code extensibella"id="105">
+ &lt; <b>case Or.</b>
+
+Subgoal 4.1:
+
+Variables: R E3 S E1 E2 E' E'1 E'2
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (natCase E2 E1 S E3) @
+IsX : is_string S
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_string S
+IsE4 : is_e E3 *
+H1 : subst S R E2 E'
+H2 : subst S R E1 E'1
+H3 : subst S R E3 E'2
+============================
+ exists E', subst S R (natCase E2 E1 S E3) E'
+</pre>
+<pre class="code extensibella"id="106">
+ &lt; <b>search.</b>
+
+Subgoal 4.2:
+
+Variables: X R E3 S E1 E2 E' E'1 E'2
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (natCase E2 E1 S E3) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_string S
+IsE4 : is_e E3 *
+H1 : subst X R E2 E'
+H2 : subst X R E1 E'1
+H3 : subst X R E3 E'2
+H4 : X = S -&gt; false
+============================
+ exists E', subst X R (natCase E2 E1 S E3) E'
+</pre>
+<pre class="code extensibella"id="107">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="108">
+ &lt; <b>Prove mtc:shared_declarations:progress.</b>
+
+Subgoal 3:
+
+Variables: Ty S X Z E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+IsE : is_e (natCase E1 Z X S)
+Ty : typeOf [] (natCase E1 Z X S) Ty @
+Ty1 : typeOf [] E1 natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+============================
+ value (natCase E1 Z X S) \/ (exists E', evalStep (natCase E1 Z X S) E')
+</pre>
+<pre class="code extensibella"id="109">
+ &lt; <b>Is: case IsE.</b>
+
+Subgoal 3:
+
+Variables: Ty S X Z E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase E1 Z X S) Ty @
+Ty1 : typeOf [] E1 natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is : is_e E1
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+============================
+ value (natCase E1 Z X S) \/ (exists E', evalStep (natCase E1 Z X S) E')
+</pre>
+<pre class="code extensibella"id="110">
+ &lt; <b>Or: apply IH to _ Ty1.</b>
+
+Subgoal 3:
+
+Variables: Ty S X Z E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase E1 Z X S) Ty @
+Ty1 : typeOf [] E1 natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is : is_e E1
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Or : value E1 \/ (exists E', evalStep E1 E')
+============================
+ value (natCase E1 Z X S) \/ (exists E', evalStep (natCase E1 Z X S) E')
+</pre>
+<pre class="code extensibella"id="111">
+ &lt; <b>Ev: case Or.</b>
+
+Subgoal 3.1:
+
+Variables: Ty S X Z E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase E1 Z X S) Ty @
+Ty1 : typeOf [] E1 natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is : is_e E1
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Ev : value E1
+============================
+ value (natCase E1 Z X S) \/ (exists E', evalStep (natCase E1 Z X S) E')
+</pre>
+<pre class="code extensibella"id="112">
+ &lt; <b>C: apply canonical_form to Ev Ty1.</b>
+
+Subgoal 3.1:
+
+Variables: Ty S X Z E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase E1 Z X S) Ty @
+Ty1 : typeOf [] E1 natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is : is_e E1
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Ev : value E1
+C : canon natTy E1
+============================
+ value (natCase E1 Z X S) \/ (exists E', evalStep (natCase E1 Z X S) E')
+</pre>
+<pre class="code extensibella"id="113">
+ &lt; <b>case C.</b>
+
+Subgoal 3.1:
+
+Variables: Ty S X Z N
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase (num N) Z X S) Ty @
+Ty1 : typeOf [] (num N) natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is : is_e (num N)
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Ev : value (num N)
+============================
+ value (natCase (num N) Z X S) \/
+ (exists E', evalStep (natCase (num N) Z X S) E')
+</pre>
+<pre class="code extensibella"id="114">
+ &lt; <b>IsN: case Is.</b>
+
+Subgoal 3.1:
+
+Variables: Ty S X Z N
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase (num N) Z X S) Ty @
+Ty1 : typeOf [] (num N) natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Ev : value (num N)
+IsN : is_nat N
+============================
+ value (natCase (num N) Z X S) \/
+ (exists E', evalStep (natCase (num N) Z X S) E')
+</pre>
+<pre class="code extensibella"id="115">
+ &lt; <b>Or: apply fix_nat to IsN.</b>
+
+Subgoal 3.1:
+
+Variables: Ty S X Z N
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase (num N) Z X S) Ty @
+Ty1 : typeOf [] (num N) natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Ev : value (num N)
+IsN : is_nat N
+Or : N = z \/ (exists N', N = s N')
+============================
+ value (natCase (num N) Z X S) \/
+ (exists E', evalStep (natCase (num N) Z X S) E')
+</pre>
+<pre class="code extensibella"id="116">
+ &lt; <b>case Or.</b>
+
+Subgoal 3.1.1:
+
+Variables: Ty S X Z
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase (num z) Z X S) Ty @
+Ty1 : typeOf [] (num z) natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Ev : value (num z)
+IsN : is_nat z
+============================
+ value (natCase (num z) Z X S) \/
+ (exists E', evalStep (natCase (num z) Z X S) E')
+</pre>
+<pre class="code extensibella"id="117">
+ &lt; <b>search.</b>
+
+Subgoal 3.1.2:
+
+Variables: Ty S X Z N'
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase (num (s N')) Z X S) Ty @
+Ty1 : typeOf [] (num (s N')) natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Ev : value (num (s N'))
+IsN : is_nat (s N')
+============================
+ value (natCase (num (s N')) Z X S) \/
+ (exists E', evalStep (natCase (num (s N')) Z X S) E')
+</pre>
+<pre class="code extensibella"id="118">
+ &lt; <b>case IsN.</b>
+
+Subgoal 3.1.2:
+
+Variables: Ty S X Z N'
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase (num (s N')) Z X S) Ty @
+Ty1 : typeOf [] (num (s N')) natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Ev : value (num (s N'))
+H1 : is_nat N'
+============================
+ value (natCase (num (s N')) Z X S) \/
+ (exists E', evalStep (natCase (num (s N')) Z X S) E')
+</pre>
+<pre class="code extensibella"id="119">
+ &lt; <b>apply subst_total to Is3 Is2 _ with
+     R = num N'.</b>
+
+Subgoal 3.1.2:
+
+Variables: Ty S X Z N' E'
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase (num (s N')) Z X S) Ty @
+Ty1 : typeOf [] (num (s N')) natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Ev : value (num (s N'))
+H1 : is_nat N'
+H2 : subst X (num N') S E'
+============================
+ value (natCase (num (s N')) Z X S) \/
+ (exists E', evalStep (natCase (num (s N')) Z X S) E')
+</pre>
+<pre class="code extensibella"id="120">
+ &lt; <b>search.</b>
+
+Subgoal 3.2:
+
+Variables: Ty S X Z E1 E'
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (natCase E1 Z X S) Ty @
+Ty1 : typeOf [] E1 natTy *
+Ty2 : typeOf [] Z Ty *
+Ty3 : typeOf [(X, natTy)] S Ty *
+Is : is_e E1
+Is1 : is_e Z
+Is2 : is_string X
+Is3 : is_e S
+Ev : evalStep E1 E'
+============================
+ value (natCase E1 Z X S) \/ (exists E', evalStep (natCase E1 Z X S) E')
+</pre>
+<pre class="code extensibella"id="121">
  &lt; <b>search.</b>
 
 Proof completed.

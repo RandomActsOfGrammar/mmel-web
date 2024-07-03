@@ -181,6 +181,1234 @@ H1 : valueType V Ty
 
 Proof completed.
 </pre>
+<pre class="code extensibella"id="12">
+ &lt; <b>Prove mtc:shared_declarations:value_evalStep_false.</b>
+
+Subgoal 1:
+
+Variables: E'
+IH : forall E E', value E * -&gt; evalStep E E' -&gt; false
+V : value trueE @
+Ev : evalStep trueE E'
+============================
+ false
+</pre>
+<pre class="code extensibella"id="13">
+ &lt; <b>case Ev.</b>
+
+Subgoal 2:
+
+Variables: E'
+IH : forall E E', value E * -&gt; evalStep E E' -&gt; false
+V : value falseE @
+Ev : evalStep falseE E'
+============================
+ false
+</pre>
+<pre class="code extensibella"id="14">
+ &lt; <b>case Ev.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="15">
+ &lt; <b>Prove mtc:shared_declarations:subst_unique.</b>
+
+Subgoal 1:
+
+Variables: X R EB
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R trueE trueE @
+SB : subst X R trueE EB
+============================
+ trueE = EB
+</pre>
+<pre class="code extensibella"id="16">
+ &lt; <b>case SB.</b>
+
+Subgoal 1:
+
+Variables: X R
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R trueE trueE @
+============================
+ trueE = trueE
+</pre>
+<pre class="code extensibella"id="17">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: X R EB
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R falseE falseE @
+SB : subst X R falseE EB
+============================
+ falseE = EB
+</pre>
+<pre class="code extensibella"id="18">
+ &lt; <b>case SB.</b>
+
+Subgoal 2:
+
+Variables: X R
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R falseE falseE @
+============================
+ falseE = falseE
+</pre>
+<pre class="code extensibella"id="19">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: X R EB F1 T1 C1 F T C
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+SB : subst X R (ifThenElse C T F) EB
+SA1 : subst X R C C1 *
+SA2 : subst X R T T1 *
+SA3 : subst X R F F1 *
+============================
+ ifThenElse C1 T1 F1 = EB
+</pre>
+<pre class="code extensibella"id="20">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 3:
+
+Variables: X R F1 T1 C1 F T C F3 T3 C3
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+SA1 : subst X R C C1 *
+SA2 : subst X R T T1 *
+SA3 : subst X R F F1 *
+SB : subst X R C C3
+SB1 : subst X R T T3
+SB2 : subst X R F F3
+============================
+ ifThenElse C1 T1 F1 = ifThenElse C3 T3 F3
+</pre>
+<pre class="code extensibella"id="21">
+ &lt; <b>apply IH to SA1 SB.</b>
+
+Subgoal 3:
+
+Variables: X R F1 T1 F T C F3 T3 C3
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (ifThenElse C T F) (ifThenElse C3 T1 F1) @
+SA1 : subst X R C C3 *
+SA2 : subst X R T T1 *
+SA3 : subst X R F F1 *
+SB : subst X R C C3
+SB1 : subst X R T T3
+SB2 : subst X R F F3
+============================
+ ifThenElse C3 T1 F1 = ifThenElse C3 T3 F3
+</pre>
+<pre class="code extensibella"id="22">
+ &lt; <b>apply IH to SA2 SB1.</b>
+
+Subgoal 3:
+
+Variables: X R F1 F T C F3 T3 C3
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (ifThenElse C T F) (ifThenElse C3 T3 F1) @
+SA1 : subst X R C C3 *
+SA2 : subst X R T T3 *
+SA3 : subst X R F F1 *
+SB : subst X R C C3
+SB1 : subst X R T T3
+SB2 : subst X R F F3
+============================
+ ifThenElse C3 T3 F1 = ifThenElse C3 T3 F3
+</pre>
+<pre class="code extensibella"id="23">
+ &lt; <b>apply IH to SA3 SB2.</b>
+
+Subgoal 3:
+
+Variables: X R F T C F3 T3 C3
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (ifThenElse C T F) (ifThenElse C3 T3 F3) @
+SA1 : subst X R C C3 *
+SA2 : subst X R T T3 *
+SA3 : subst X R F F3 *
+SB : subst X R C C3
+SB1 : subst X R T T3
+SB2 : subst X R F F3
+============================
+ ifThenElse C3 T3 F3 = ifThenElse C3 T3 F3
+</pre>
+<pre class="code extensibella"id="24">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="25">
+ &lt; <b>Prove mtc:shared_declarations:evalStep_unique.</b>
+
+Subgoal 1:
+
+Variables: EB F T C1 C
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse C T F) (ifThenElse C1 T F) @
+EvB : evalStep (ifThenElse C T F) EB
+EvA1 : evalStep C C1 *
+============================
+ ifThenElse C1 T F = EB
+</pre>
+<pre class="code extensibella"id="26">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 1.1:
+
+Variables: F T C1 C C3
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse C T F) (ifThenElse C1 T F) @
+EvA1 : evalStep C C1 *
+EvB : evalStep C C3
+============================
+ ifThenElse C1 T F = ifThenElse C3 T F
+</pre>
+<pre class="code extensibella"id="27">
+ &lt; <b>apply IH to EvA1 EvB.</b>
+
+Subgoal 1.1:
+
+Variables: F T C C3
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse C T F) (ifThenElse C3 T F) @
+EvA1 : evalStep C C3 *
+EvB : evalStep C C3
+============================
+ ifThenElse C3 T F = ifThenElse C3 T F
+</pre>
+<pre class="code extensibella"id="28">
+ &lt; <b>search.</b>
+
+Subgoal 1.2:
+
+Variables: EB F C1
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse trueE EB F) (ifThenElse C1 EB F) @
+EvA1 : evalStep trueE C1 *
+============================
+ ifThenElse C1 EB F = EB
+</pre>
+<pre class="code extensibella"id="29">
+ &lt; <b>case EvA1.</b>
+
+Subgoal 1.3:
+
+Variables: EB T C1
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse falseE T EB) (ifThenElse C1 T EB) @
+EvA1 : evalStep falseE C1 *
+============================
+ ifThenElse C1 T EB = EB
+</pre>
+<pre class="code extensibella"id="30">
+ &lt; <b>case EvA1.</b>
+
+Subgoal 2:
+
+Variables: EA EB F
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse trueE EA F) EA @
+EvB : evalStep (ifThenElse trueE EA F) EB
+============================
+ EA = EB
+</pre>
+<pre class="code extensibella"id="31">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 2.1:
+
+Variables: EA F C1
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse trueE EA F) EA @
+EvB : evalStep trueE C1
+============================
+ EA = ifThenElse C1 EA F
+</pre>
+<pre class="code extensibella"id="32">
+ &lt; <b>case EvB.</b>
+
+Subgoal 2.2:
+
+Variables: EB F
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse trueE EB F) EB @
+============================
+ EB = EB
+</pre>
+<pre class="code extensibella"id="33">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: EA EB T
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse falseE T EA) EA @
+EvB : evalStep (ifThenElse falseE T EA) EB
+============================
+ EA = EB
+</pre>
+<pre class="code extensibella"id="34">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 3.1:
+
+Variables: EA T C1
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse falseE T EA) EA @
+EvB : evalStep falseE C1
+============================
+ EA = ifThenElse C1 T EA
+</pre>
+<pre class="code extensibella"id="35">
+ &lt; <b>case EvB.</b>
+
+Subgoal 3.2:
+
+Variables: EB T
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (ifThenElse falseE T EB) EB @
+============================
+ EB = EB
+</pre>
+<pre class="code extensibella"id="36">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="37">
+ &lt; <b>Prove mtc:shared_declarations:ty_lookup.</b>
+
+Subgoal 1:
+
+Variables: G1 G2
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 trueE boolTy @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+============================
+ typeOf G2 trueE boolTy
+</pre>
+<pre class="code extensibella"id="38">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: G1 G2
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 falseE boolTy @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+============================
+ typeOf G2 falseE boolTy
+</pre>
+<pre class="code extensibella"id="39">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: G1 G2 Ty F T C
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (ifThenElse C T F) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 C boolTy *
+Ty2 : typeOf G1 T Ty *
+Ty3 : typeOf G1 F Ty *
+============================
+ typeOf G2 (ifThenElse C T F) Ty
+</pre>
+<pre class="code extensibella"id="40">
+ &lt; <b>apply IH to Ty1 L.</b>
+
+Subgoal 3:
+
+Variables: G1 G2 Ty F T C
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (ifThenElse C T F) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 C boolTy *
+Ty2 : typeOf G1 T Ty *
+Ty3 : typeOf G1 F Ty *
+H1 : typeOf G2 C boolTy
+============================
+ typeOf G2 (ifThenElse C T F) Ty
+</pre>
+<pre class="code extensibella"id="41">
+ &lt; <b>apply IH to Ty2 L.</b>
+
+Subgoal 3:
+
+Variables: G1 G2 Ty F T C
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (ifThenElse C T F) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 C boolTy *
+Ty2 : typeOf G1 T Ty *
+Ty3 : typeOf G1 F Ty *
+H1 : typeOf G2 C boolTy
+H2 : typeOf G2 T Ty
+============================
+ typeOf G2 (ifThenElse C T F) Ty
+</pre>
+<pre class="code extensibella"id="42">
+ &lt; <b>apply IH to Ty3 L.</b>
+
+Subgoal 3:
+
+Variables: G1 G2 Ty F T C
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (ifThenElse C T F) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 C boolTy *
+Ty2 : typeOf G1 T Ty *
+Ty3 : typeOf G1 F Ty *
+H1 : typeOf G2 C boolTy
+H2 : typeOf G2 T Ty
+H3 : typeOf G2 F Ty
+============================
+ typeOf G2 (ifThenElse C T F) Ty
+</pre>
+<pre class="code extensibella"id="43">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="44">
+ &lt; <b>Prove mtc:shared_declarations:subst_preservation.</b>
+
+Subgoal 1:
+
+Variables: X XTy TG Ty R
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+Ty : typeOf ((X, XTy)::TG) trueE Ty
+S : subst X R trueE trueE @
+RTy : typeOf [] R XTy
+============================
+ typeOf TG trueE Ty
+</pre>
+<pre class="code extensibella"id="45">
+ &lt; <b>case Ty.</b>
+
+Subgoal 1:
+
+Variables: X XTy TG R
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R trueE trueE @
+RTy : typeOf [] R XTy
+============================
+ typeOf TG trueE boolTy
+</pre>
+<pre class="code extensibella"id="46">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: X XTy TG Ty R
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+Ty : typeOf ((X, XTy)::TG) falseE Ty
+S : subst X R falseE falseE @
+RTy : typeOf [] R XTy
+============================
+ typeOf TG falseE Ty
+</pre>
+<pre class="code extensibella"id="47">
+ &lt; <b>case Ty.</b>
+
+Subgoal 2:
+
+Variables: X XTy TG R
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R falseE falseE @
+RTy : typeOf [] R XTy
+============================
+ typeOf TG falseE boolTy
+</pre>
+<pre class="code extensibella"id="48">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R F1 T1 C1 F T C
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+Ty : typeOf ((X, XTy)::TG) (ifThenElse C T F) Ty
+S : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+RTy : typeOf [] R XTy
+S1 : subst X R C C1 *
+S2 : subst X R T T1 *
+S3 : subst X R F F1 *
+============================
+ typeOf TG (ifThenElse C1 T1 F1) Ty
+</pre>
+<pre class="code extensibella"id="49">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R F1 T1 C1 F T C
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+RTy : typeOf [] R XTy
+S1 : subst X R C C1 *
+S2 : subst X R T T1 *
+S3 : subst X R F F1 *
+Ty : typeOf ((X, XTy)::TG) C boolTy
+Ty1 : typeOf ((X, XTy)::TG) T Ty
+Ty2 : typeOf ((X, XTy)::TG) F Ty
+============================
+ typeOf TG (ifThenElse C1 T1 F1) Ty
+</pre>
+<pre class="code extensibella"id="50">
+ &lt; <b>apply IH to Ty S1 RTy.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R F1 T1 C1 F T C
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+RTy : typeOf [] R XTy
+S1 : subst X R C C1 *
+S2 : subst X R T T1 *
+S3 : subst X R F F1 *
+Ty : typeOf ((X, XTy)::TG) C boolTy
+Ty1 : typeOf ((X, XTy)::TG) T Ty
+Ty2 : typeOf ((X, XTy)::TG) F Ty
+H1 : typeOf TG C1 boolTy
+============================
+ typeOf TG (ifThenElse C1 T1 F1) Ty
+</pre>
+<pre class="code extensibella"id="51">
+ &lt; <b>apply IH to Ty1 S2 RTy.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R F1 T1 C1 F T C
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+RTy : typeOf [] R XTy
+S1 : subst X R C C1 *
+S2 : subst X R T T1 *
+S3 : subst X R F F1 *
+Ty : typeOf ((X, XTy)::TG) C boolTy
+Ty1 : typeOf ((X, XTy)::TG) T Ty
+Ty2 : typeOf ((X, XTy)::TG) F Ty
+H1 : typeOf TG C1 boolTy
+H2 : typeOf TG T1 Ty
+============================
+ typeOf TG (ifThenElse C1 T1 F1) Ty
+</pre>
+<pre class="code extensibella"id="52">
+ &lt; <b>apply IH to Ty2 S3 RTy.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R F1 T1 C1 F T C
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+RTy : typeOf [] R XTy
+S1 : subst X R C C1 *
+S2 : subst X R T T1 *
+S3 : subst X R F F1 *
+Ty : typeOf ((X, XTy)::TG) C boolTy
+Ty1 : typeOf ((X, XTy)::TG) T Ty
+Ty2 : typeOf ((X, XTy)::TG) F Ty
+H1 : typeOf TG C1 boolTy
+H2 : typeOf TG T1 Ty
+H3 : typeOf TG F1 Ty
+============================
+ typeOf TG (ifThenElse C1 T1 F1) Ty
+</pre>
+<pre class="code extensibella"id="53">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="54">
+ &lt; <b>Prove mtc:shared_declarations:evalStep_type_preservation.</b>
+
+Subgoal 1:
+
+Variables: Ty F T C1 C
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ty : typeOf [] (ifThenElse C T F) Ty
+Ev : evalStep (ifThenElse C T F) (ifThenElse C1 T F) @
+Ev1 : evalStep C C1 *
+============================
+ typeOf [] (ifThenElse C1 T F) Ty
+</pre>
+<pre class="code extensibella"id="55">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 1:
+
+Variables: Ty F T C1 C
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (ifThenElse C T F) (ifThenElse C1 T F) @
+Ev1 : evalStep C C1 *
+Ty : typeOf [] C boolTy
+Ty1 : typeOf [] T Ty
+Ty2 : typeOf [] F Ty
+============================
+ typeOf [] (ifThenElse C1 T F) Ty
+</pre>
+<pre class="code extensibella"id="56">
+ &lt; <b>apply IH to Ty Ev1.</b>
+
+Subgoal 1:
+
+Variables: Ty F T C1 C
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (ifThenElse C T F) (ifThenElse C1 T F) @
+Ev1 : evalStep C C1 *
+Ty : typeOf [] C boolTy
+Ty1 : typeOf [] T Ty
+Ty2 : typeOf [] F Ty
+H1 : typeOf [] C1 boolTy
+============================
+ typeOf [] (ifThenElse C1 T F) Ty
+</pre>
+<pre class="code extensibella"id="57">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: Ty E' F
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ty : typeOf [] (ifThenElse trueE E' F) Ty
+Ev : evalStep (ifThenElse trueE E' F) E' @
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="58">
+ &lt; <b>case Ty.</b>
+
+Subgoal 2:
+
+Variables: Ty E' F
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (ifThenElse trueE E' F) E' @
+H1 : typeOf [] trueE boolTy
+H2 : typeOf [] E' Ty
+H3 : typeOf [] F Ty
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="59">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: Ty E' T
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ty : typeOf [] (ifThenElse falseE T E') Ty
+Ev : evalStep (ifThenElse falseE T E') E' @
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="60">
+ &lt; <b>case Ty.</b>
+
+Subgoal 3:
+
+Variables: Ty E' T
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (ifThenElse falseE T E') E' @
+H1 : typeOf [] falseE boolTy
+H2 : typeOf [] T Ty
+H3 : typeOf [] E' Ty
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="61">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="62">
+ &lt; <b>Prove mtc:shared_declarations:canonical_form.</b>
+
+Subgoal 1:
+
+Variables: Ty
+IH : forall V Ty, value V * -&gt; typeOf [] V Ty -&gt; canon Ty V
+V : value trueE @
+Ty : typeOf [] trueE Ty
+============================
+ canon Ty trueE
+</pre>
+<pre class="code extensibella"id="63">
+ &lt; <b>case Ty.</b>
+
+Subgoal 1:
+
+IH : forall V Ty, value V * -&gt; typeOf [] V Ty -&gt; canon Ty V
+V : value trueE @
+============================
+ canon boolTy trueE
+</pre>
+<pre class="code extensibella"id="64">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: Ty
+IH : forall V Ty, value V * -&gt; typeOf [] V Ty -&gt; canon Ty V
+V : value falseE @
+Ty : typeOf [] falseE Ty
+============================
+ canon Ty falseE
+</pre>
+<pre class="code extensibella"id="65">
+ &lt; <b>case Ty.</b>
+
+Subgoal 2:
+
+IH : forall V Ty, value V * -&gt; typeOf [] V Ty -&gt; canon Ty V
+V : value falseE @
+============================
+ canon boolTy falseE
+</pre>
+<pre class="code extensibella"id="66">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="67">
+ &lt; <b>Prove mtc:shared_declarations:subst_is.</b>
+
+Subgoal 1:
+
+Variables: X R
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsE : is_e trueE
+IsR : is_e R
+S : subst X R trueE trueE @
+============================
+ is_e trueE
+</pre>
+<pre class="code extensibella"id="68">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: X R
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsE : is_e falseE
+IsR : is_e R
+S : subst X R falseE falseE @
+============================
+ is_e falseE
+</pre>
+<pre class="code extensibella"id="69">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: X R F1 T1 C1 F T C
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsE : is_e (ifThenElse C T F)
+IsR : is_e R
+S : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+S1 : subst X R C C1 *
+S2 : subst X R T T1 *
+S3 : subst X R F F1 *
+============================
+ is_e (ifThenElse C1 T1 F1)
+</pre>
+<pre class="code extensibella"id="70">
+ &lt; <b>case IsE.</b>
+
+Subgoal 3:
+
+Variables: X R F1 T1 C1 F T C
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+S1 : subst X R C C1 *
+S2 : subst X R T T1 *
+S3 : subst X R F F1 *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+============================
+ is_e (ifThenElse C1 T1 F1)
+</pre>
+<pre class="code extensibella"id="71">
+ &lt; <b>apply IH to _ _ S1.</b>
+
+Subgoal 3:
+
+Variables: X R F1 T1 C1 F T C
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+S1 : subst X R C C1 *
+S2 : subst X R T T1 *
+S3 : subst X R F F1 *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+H4 : is_e C1
+============================
+ is_e (ifThenElse C1 T1 F1)
+</pre>
+<pre class="code extensibella"id="72">
+ &lt; <b>apply IH to _ _ S2.</b>
+
+Subgoal 3:
+
+Variables: X R F1 T1 C1 F T C
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+S1 : subst X R C C1 *
+S2 : subst X R T T1 *
+S3 : subst X R F F1 *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+H4 : is_e C1
+H5 : is_e T1
+============================
+ is_e (ifThenElse C1 T1 F1)
+</pre>
+<pre class="code extensibella"id="73">
+ &lt; <b>apply IH to _ _ S3.</b>
+
+Subgoal 3:
+
+Variables: X R F1 T1 C1 F T C
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (ifThenElse C T F) (ifThenElse C1 T1 F1) @
+S1 : subst X R C C1 *
+S2 : subst X R T T1 *
+S3 : subst X R F F1 *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+H4 : is_e C1
+H5 : is_e T1
+H6 : is_e F1
+============================
+ is_e (ifThenElse C1 T1 F1)
+</pre>
+<pre class="code extensibella"id="74">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="75">
+ &lt; <b>Prove mtc:shared_declarations:evalStep_is.</b>
+
+Subgoal 1:
+
+Variables: F T C1 C
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+IsE : is_e (ifThenElse C T F)
+Ev : evalStep (ifThenElse C T F) (ifThenElse C1 T F) @
+Ev1 : evalStep C C1 *
+============================
+ is_e (ifThenElse C1 T F)
+</pre>
+<pre class="code extensibella"id="76">
+ &lt; <b>case IsE.</b>
+
+Subgoal 1:
+
+Variables: F T C1 C
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (ifThenElse C T F) (ifThenElse C1 T F) @
+Ev1 : evalStep C C1 *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+============================
+ is_e (ifThenElse C1 T F)
+</pre>
+<pre class="code extensibella"id="77">
+ &lt; <b>apply IH to _ Ev1.</b>
+
+Subgoal 1:
+
+Variables: F T C1 C
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (ifThenElse C T F) (ifThenElse C1 T F) @
+Ev1 : evalStep C C1 *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+H4 : is_e C1
+============================
+ is_e (ifThenElse C1 T F)
+</pre>
+<pre class="code extensibella"id="78">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: E' F
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+IsE : is_e (ifThenElse trueE E' F)
+Ev : evalStep (ifThenElse trueE E' F) E' @
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="79">
+ &lt; <b>case IsE.</b>
+
+Subgoal 2:
+
+Variables: E' F
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (ifThenElse trueE E' F) E' @
+H1 : is_e trueE
+H2 : is_e E'
+H3 : is_e F
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="80">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: E' T
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+IsE : is_e (ifThenElse falseE T E')
+Ev : evalStep (ifThenElse falseE T E') E' @
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="81">
+ &lt; <b>case IsE.</b>
+
+Subgoal 3:
+
+Variables: E' T
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (ifThenElse falseE T E') E' @
+H1 : is_e falseE
+H2 : is_e T
+H3 : is_e E'
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="82">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="83">
+ &lt; <b>Prove mtc:shared_declarations:subst_total.</b>
+
+Subgoal 2:
+
+Variables: X R
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e trueE @
+IsX : is_string X
+IsR : is_e R
+============================
+ exists E', subst X R trueE E'
+</pre>
+<pre class="code extensibella"id="84">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: X R
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e falseE @
+IsX : is_string X
+IsR : is_e R
+============================
+ exists E', subst X R falseE E'
+</pre>
+<pre class="code extensibella"id="85">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: X R E3 E1 E2
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (ifThenElse E2 E1 E3) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_e E3 *
+============================
+ exists E', subst X R (ifThenElse E2 E1 E3) E'
+</pre>
+<pre class="code extensibella"id="86">
+ &lt; <b>apply IH to IsE1 IsX IsR.</b>
+
+Subgoal 4:
+
+Variables: X R E3 E1 E2 E'
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (ifThenElse E2 E1 E3) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_e E3 *
+H1 : subst X R E2 E'
+============================
+ exists E', subst X R (ifThenElse E2 E1 E3) E'
+</pre>
+<pre class="code extensibella"id="87">
+ &lt; <b>apply IH to IsE2 IsX IsR.</b>
+
+Subgoal 4:
+
+Variables: X R E3 E1 E2 E' E'1
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (ifThenElse E2 E1 E3) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_e E3 *
+H1 : subst X R E2 E'
+H2 : subst X R E1 E'1
+============================
+ exists E', subst X R (ifThenElse E2 E1 E3) E'
+</pre>
+<pre class="code extensibella"id="88">
+ &lt; <b>apply IH to IsE3 IsX IsR.</b>
+
+Subgoal 4:
+
+Variables: X R E3 E1 E2 E' E'1 E'2
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (ifThenElse E2 E1 E3) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E2 *
+IsE2 : is_e E1 *
+IsE3 : is_e E3 *
+H1 : subst X R E2 E'
+H2 : subst X R E1 E'1
+H3 : subst X R E3 E'2
+============================
+ exists E', subst X R (ifThenElse E2 E1 E3) E'
+</pre>
+<pre class="code extensibella"id="89">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="90">
+ &lt; <b>Prove mtc:shared_declarations:progress.</b>
+
+Subgoal 1:
+
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+IsE : is_e trueE
+Ty : typeOf [] trueE boolTy @
+============================
+ value trueE \/ (exists E', evalStep trueE E')
+</pre>
+<pre class="code extensibella"id="91">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+IsE : is_e falseE
+Ty : typeOf [] falseE boolTy @
+============================
+ value falseE \/ (exists E', evalStep falseE E')
+</pre>
+<pre class="code extensibella"id="92">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: Ty F T C
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+IsE : is_e (ifThenElse C T F)
+Ty : typeOf [] (ifThenElse C T F) Ty @
+Ty1 : typeOf [] C boolTy *
+Ty2 : typeOf [] T Ty *
+Ty3 : typeOf [] F Ty *
+============================
+ value (ifThenElse C T F) \/ (exists E', evalStep (ifThenElse C T F) E')
+</pre>
+<pre class="code extensibella"id="93">
+ &lt; <b>case IsE.</b>
+
+Subgoal 3:
+
+Variables: Ty F T C
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (ifThenElse C T F) Ty @
+Ty1 : typeOf [] C boolTy *
+Ty2 : typeOf [] T Ty *
+Ty3 : typeOf [] F Ty *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+============================
+ value (ifThenElse C T F) \/ (exists E', evalStep (ifThenElse C T F) E')
+</pre>
+<pre class="code extensibella"id="94">
+ &lt; <b>Or: apply IH to _ Ty1.</b>
+
+Subgoal 3:
+
+Variables: Ty F T C
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (ifThenElse C T F) Ty @
+Ty1 : typeOf [] C boolTy *
+Ty2 : typeOf [] T Ty *
+Ty3 : typeOf [] F Ty *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+Or : value C \/ (exists E', evalStep C E')
+============================
+ value (ifThenElse C T F) \/ (exists E', evalStep (ifThenElse C T F) E')
+</pre>
+<pre class="code extensibella"id="95">
+ &lt; <b>E: case Or.</b>
+
+Subgoal 3.1:
+
+Variables: Ty F T C
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (ifThenElse C T F) Ty @
+Ty1 : typeOf [] C boolTy *
+Ty2 : typeOf [] T Ty *
+Ty3 : typeOf [] F Ty *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+E : value C
+============================
+ value (ifThenElse C T F) \/ (exists E', evalStep (ifThenElse C T F) E')
+</pre>
+<pre class="code extensibella"id="96">
+ &lt; <b>C: apply canonical_form to E Ty1.</b>
+
+Subgoal 3.1:
+
+Variables: Ty F T C
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (ifThenElse C T F) Ty @
+Ty1 : typeOf [] C boolTy *
+Ty2 : typeOf [] T Ty *
+Ty3 : typeOf [] F Ty *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+E : value C
+C : canon boolTy C
+============================
+ value (ifThenElse C T F) \/ (exists E', evalStep (ifThenElse C T F) E')
+</pre>
+<pre class="code extensibella"id="97">
+ &lt; <b>case C.</b>
+
+Subgoal 3.1.1:
+
+Variables: Ty F T
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (ifThenElse trueE T F) Ty @
+Ty1 : typeOf [] trueE boolTy *
+Ty2 : typeOf [] T Ty *
+Ty3 : typeOf [] F Ty *
+H1 : is_e trueE
+H2 : is_e T
+H3 : is_e F
+E : value trueE
+============================
+ value (ifThenElse trueE T F) \/ (exists E', evalStep (ifThenElse trueE T F) E')
+</pre>
+<pre class="code extensibella"id="98">
+ &lt; <b>search.</b>
+
+Subgoal 3.1.2:
+
+Variables: Ty F T
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (ifThenElse falseE T F) Ty @
+Ty1 : typeOf [] falseE boolTy *
+Ty2 : typeOf [] T Ty *
+Ty3 : typeOf [] F Ty *
+H1 : is_e falseE
+H2 : is_e T
+H3 : is_e F
+E : value falseE
+============================
+ value (ifThenElse falseE T F) \/
+ (exists E', evalStep (ifThenElse falseE T F) E')
+</pre>
+<pre class="code extensibella"id="99">
+ &lt; <b>search.</b>
+
+Subgoal 3.2:
+
+Variables: Ty F T C E'
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (ifThenElse C T F) Ty @
+Ty1 : typeOf [] C boolTy *
+Ty2 : typeOf [] T Ty *
+Ty3 : typeOf [] F Ty *
+H1 : is_e C
+H2 : is_e T
+H3 : is_e F
+E : evalStep C E'
+============================
+ value (ifThenElse C T F) \/ (exists E', evalStep (ifThenElse C T F) E')
+</pre>
+<pre class="code extensibella"id="100">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
 </div>
 <div class="section">
 <a class="navlink" href="../description.html">Back to example home</a>

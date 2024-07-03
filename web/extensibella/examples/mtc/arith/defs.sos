@@ -56,6 +56,44 @@ valueType numVal(N) natTy
 
 
 
+evalStep E1 E11
+----------------------------------- [ES-Plus-Step1]
+evalStep plus(E1, E2) plus(E11, E2)
+
+
+value E1
+evalStep E2 E21
+----------------------------------- [ES-Plus-Step2]
+evalStep plus(E1, E2) plus(E1, E21)
+
+
+plusRel N1 N2 N
+-------------------------------------- [ES-Plus-Add]
+evalStep plus(num(N1), num(N2)) num(N)
+
+
+
+------------ [V-Num]
+value num(N)
+
+
+
+----------------------- [S-Num]
+subst X R num(N) num(N)
+
+
+subst X R E1 E11
+subst X R E2 E21
+------------------------------------- [S-Plus]
+subst X R plus(E1, E2) plus(E11, E21)
+
+
+
+------------------ [C-NatTy]
+canon natTy num(N)
+
+
+
 
 
 

@@ -39,11 +39,24 @@ ty ::= nilTy
 Projection ty :
 
 
+<span class="comment">/*Typing:*/</span>
 Judgment typeOf : [(string, ty)] e* ty
 
+Judgment valueType : v* ty
+
+
+<span class="comment">/*Big-Step Evaluation:*/</span>
 Judgment eval : [(string, v)] e* v
 
-Judgment valueType : v* ty
+
+<span class="comment">/*Small-Step Evaluation:*/</span>
+Judgment evalStep : e* e
+
+Judgment value : e*
+
+Judgment subst : string e e* e
+
+Judgment canon : ty* e <span class="comment">/*for canonical form lemmas*/</span>
 
 
 Fixed Judgment typeOfCtx : [(string, ty)] [(string, v)]
@@ -72,6 +85,108 @@ typeOfCtx (X, Ty)::TRest (X, V)::VRest
     Ev : eval EG E V -&gt;
     valueType V Ty
   on Ev.</a>
+
+
+
+<a class="command" href="shared_declarations-details.html#2">Extensible_Theorem
+  value_evalStep_false : forall E E',
+    V : value E -&gt;
+    Ev : evalStep E E' -&gt;
+    false
+  on V.</a>
+
+
+<a class="command" href="shared_declarations-details.html#3">Extensible_Theorem
+  subst_unique : forall X R E EA EB,
+    SA : subst X R E EA -&gt;
+    SB : subst X R E EB -&gt;
+    EA = EB
+  on SA.</a>
+
+
+<a class="command" href="shared_declarations-details.html#4">Extensible_Theorem
+  evalStep_unique : forall E EA EB,
+    EvA : evalStep E EA -&gt;
+    EvB : evalStep E EB -&gt;
+    EA = EB
+  on EvA.</a>
+
+
+<a class="command" href="shared_declarations-details.html#5">Extensible_Theorem
+  ty_lookup : forall G1 G2 E Ty,
+    Ty : typeOf G1 E Ty -&gt;
+    L : (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+    typeOf G2 E Ty
+  on Ty.</a>
+
+
+<span class="comment">/*corollary of ty_lookup*/</span>
+<a class="command" href="shared_declarations-details.html#6">Theorem empty_ty_any : forall E Ty G,
+  typeOf [] E Ty -&gt; typeOf G E Ty.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(7);" id="toggleproof7">[Show Proof]</a>
+<div class="proof" id="proof7" style="display: none;">
+<a class="tactic" href="shared_declarations-details.html#7">intros T.</a> <a class="tactic" href="shared_declarations-details.html#8">backchain ty_lookup.</a> <a class="tactic" href="shared_declarations-details.html#9">intros L.</a> <a class="tactic" href="shared_declarations-details.html#10">case L.</a></div>
+
+
+<a class="command" href="shared_declarations-details.html#11">Extensible_Theorem
+  subst_preservation : forall X XTy TG E Ty R E',
+    Ty : typeOf ((X, XTy)::TG) E Ty -&gt;
+    S : subst X R E E' -&gt;
+    RTy : typeOf [] R XTy -&gt;
+    typeOf TG E' Ty
+  on S.</a>
+
+
+<a class="command" href="shared_declarations-details.html#12">Extensible_Theorem
+  evalStep_type_preservation : forall E Ty E',
+    Ty : typeOf [] E Ty -&gt;
+    Ev : evalStep E E' -&gt;
+    typeOf [] E' Ty
+  on Ev.</a>
+
+
+<a class="command" href="shared_declarations-details.html#13">Extensible_Theorem
+  canonical_form : forall V Ty,
+    V : value V -&gt;
+    Ty : typeOf [] V Ty -&gt;
+    canon Ty V
+  on V.</a>
+
+
+<a class="command" href="shared_declarations-details.html#14">Extensible_Theorem
+  subst_is : forall X R E E',
+    IsE : is_e E -&gt;
+    IsR : is_e R -&gt;
+    S : subst X R E E' -&gt;
+    is_e E'
+  on S.</a>
+
+
+<a class="command" href="shared_declarations-details.html#15">Extensible_Theorem
+  evalStep_is : forall E E',
+    IsE : is_e E -&gt;
+    Ev : evalStep E E' -&gt;
+    is_e E'
+  on Ev.</a>
+
+
+<a class="command" href="shared_declarations-details.html#16">Extensible_Theorem
+  subst_total : forall X R E,
+    IsE : is_e E -&gt;
+    IsX : is_string X -&gt;
+    IsR : is_e R -&gt;
+    exists E', subst X R E E'
+  on IsE.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(17);" id="toggleproof17">[Show Proof]</a>
+<div class="proof" id="proof17" style="display: none;">
+<a class="tactic" href="shared_declarations-details.html#17">skip.</a></div> <span class="comment">%This is a fake case we are forced into having that isn't</span>
+      <span class="comment">%actually part of the language.</span>
+
+
+<a class="command" href="shared_declarations-details.html#18">Extensible_Theorem
+  progress : forall E Ty,
+    IsE : is_e E -&gt;
+    Ty : typeOf [] E Ty -&gt;
+    value E \/ exists E', evalStep E E'
+  on Ty.</a>
 </pre>
 </div>
 <div class="section">

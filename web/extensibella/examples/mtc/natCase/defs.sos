@@ -28,6 +28,36 @@ eval G natCase(E, Z, X, S) V
 
 
 
+evalStep E E1
+------------------------------------------------- [ES-NatCase-Step]
+evalStep natCase(E, Z, X, S) natCase(E1, Z, X, S)
+
+
+----------------------------------- [ES-NatCase-Z]
+evalStep natCase(num(z), Z, X, S) Z
+
+
+subst X num(N) S S1
+--------------------------------------- [ES-NatCase-S]
+evalStep natCase(num(s(N)), Z, X, S) S1
+
+
+
+subst X R E E1
+subst X R Z Z1
+--------------------------------------------------- [S-NatCase-Same]
+subst X R natCase(E, Z, X, S) natCase(E1, Z1, X, S)
+
+
+X != Y
+subst X R E E1
+subst X R Z Z1
+subst X R S S1
+---------------------------------------------------- [S-NatCase-Diff]
+subst X R natCase(E, Z, Y, S) natCase(E1, Z1, Y, S1)
+
+
+
 
 
 

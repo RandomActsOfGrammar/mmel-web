@@ -21,11 +21,24 @@ ty ::= nilTy
 Projection ty :
 
 
+/*Typing:*/
 Judgment typeOf : [(string, ty)] e* ty
 
+Judgment valueType : v* ty
+
+
+/*Big-Step Evaluation:*/
 Judgment eval : [(string, v)] e* v
 
-Judgment valueType : v* ty
+
+/*Small-Step Evaluation:*/
+Judgment evalStep : e* e
+
+Judgment value : e*
+
+Judgment subst : string e e* e
+
+Judgment canon : ty* e /*for canonical form lemmas*/
 
 
 Fixed Judgment typeOfCtx : [(string, ty)] [(string, v)]

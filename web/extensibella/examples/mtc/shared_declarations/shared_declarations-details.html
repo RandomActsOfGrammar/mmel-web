@@ -27,6 +27,171 @@
 
 Proof completed.
 </pre>
+<pre class="code extensibella"id="2">
+ &lt; <b>Extensible_Theorem
+      value_evalStep_false : forall E E',
+         V : value E -&gt;
+         Ev : evalStep E E' -&gt;
+         false
+      on V.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="3">
+ &lt; <b>Extensible_Theorem
+      subst_unique : forall X R E EA EB,
+         SA : subst X R E EA -&gt;
+         SB : subst X R E EB -&gt;
+         EA = EB
+      on SA.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="4">
+ &lt; <b>Extensible_Theorem
+      evalStep_unique : forall E EA EB,
+         EvA : evalStep E EA -&gt;
+         EvB : evalStep E EB -&gt;
+         EA = EB
+      on EvA.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="5">
+ &lt; <b>Extensible_Theorem
+      ty_lookup : forall G1 G2 E Ty,
+         Ty : typeOf G1 E Ty -&gt;
+         L : (forall X XTy,
+           lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+         typeOf G2 E Ty
+      on Ty.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="6">
+ &lt; <b>Theorem empty_ty_any :
+     forall E Ty G, typeOf [] E Ty -&gt; typeOf G E Ty.</b>
+
+============================
+ forall E Ty G, typeOf [] E Ty -&gt; typeOf G E Ty
+</pre>
+<pre class="code extensibella"id="7">
+ &lt; <b>intros T.</b>
+
+Variables: E Ty G
+T : typeOf [] E Ty
+============================
+ typeOf G E Ty
+</pre>
+<pre class="code extensibella"id="8">
+ &lt; <b>backchain ty_lookup.</b>
+
+Variables: E Ty G
+T : typeOf [] E Ty
+============================
+ forall X XTy, lookup [] X XTy -&gt; lookup G X XTy
+</pre>
+<pre class="code extensibella"id="9">
+ &lt; <b>intros L.</b>
+
+Variables: E Ty G X XTy
+T : typeOf [] E Ty
+L : lookup [] X XTy
+============================
+ lookup G X XTy
+</pre>
+<pre class="code extensibella"id="10">
+ &lt; <b>case L.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="11">
+ &lt; <b>Extensible_Theorem
+      subst_preservation : forall X XTy TG E Ty R E',
+         Ty : typeOf ((X, XTy)::TG) E Ty -&gt;
+         S : subst X R E E' -&gt;
+         RTy : typeOf [] R XTy -&gt;
+         typeOf TG E' Ty
+      on S.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="12">
+ &lt; <b>Extensible_Theorem
+      evalStep_type_preservation : forall E Ty E',
+         Ty : typeOf [] E Ty -&gt;
+         Ev : evalStep E E' -&gt;
+         typeOf [] E' Ty
+      on Ev.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="13">
+ &lt; <b>Extensible_Theorem
+      canonical_form : forall V Ty,
+         V : value V -&gt;
+         Ty : typeOf [] V Ty -&gt;
+         canon Ty V
+      on V.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="14">
+ &lt; <b>Extensible_Theorem
+      subst_is : forall X R E E',
+         IsE : is_e E -&gt;
+         IsR : is_e R -&gt;
+         S : subst X R E E' -&gt;
+         is_e E'
+      on S.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="15">
+ &lt; <b>Extensible_Theorem
+      evalStep_is : forall E E',
+         IsE : is_e E -&gt;
+         Ev : evalStep E E' -&gt;
+         is_e E'
+      on Ev.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="16">
+ &lt; <b>Extensible_Theorem
+      subst_total : forall X R E,
+         IsE : is_e E -&gt;
+         IsX : is_string X -&gt;
+         IsR : is_e R -&gt;
+         exists E',
+           subst X R E E'
+      on IsE.</b>
+
+Variables: X R
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e nilE @
+IsX : is_string X
+IsR : is_e R
+============================
+ exists E', subst X R nilE E'
+</pre>
+<pre class="code extensibella"id="17">
+ &lt; <b>skip.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="18">
+ &lt; <b>Extensible_Theorem
+      progress : forall E Ty,
+         IsE : is_e E -&gt;
+         Ty : typeOf [] E Ty -&gt;
+         value E \/
+         (exists E', evalStep E E')
+      on Ty.</b>
+
+Proof completed.
+</pre>
 </div>
 <div class="section">
 <a class="navlink" href="../description.html">Back to example home</a>

@@ -55,6 +55,60 @@ valueType closure(G, X, E) arrowTy(Ty1, Ty2)
 
 
 
+evalStep E1 E11
+--------------------------------- [ES-App-Step1]
+evalStep app(E1, E2) app(E11, E2)
+
+
+value E1
+evalStep E2 E21
+--------------------------------- [ES-App-Step2]
+evalStep app(E1, E2) app(E1, E21)
+
+
+value E2
+subst X E2 E1 E
+---------------------------------- [ES-App-Subst]
+evalStep app(abs(X, Ty, E1), E2) E
+
+
+
+------------------- [V-Abs]
+value abs(X, Ty, E)
+
+
+
+------------------------------------- [S-Abs-Same]
+subst X R abs(X, Ty, E) abs(X, Ty, E)
+
+
+X != Y
+subst X R E E1
+-------------------------------------- [S-Abs-Diff]
+subst X R abs(Y, Ty, E) abs(Y, Ty, E1)
+
+
+subst X R E1 E11
+subst X R E2 E21
+----------------------------------- [S-App]
+subst X R app(E1, E2) app(E11, E21)
+
+
+------------------ [S-Var-Same]
+subst X R var(X) R
+
+
+X != Y
+----------------------- [S-Var-Diff]
+subst X R var(Y) var(Y)
+
+
+
+-------------------------------------- [C-ArrowTy]
+canon arrowTy(Ty1, Ty2) abs(X, Ty1, E)
+
+
+
 
 
 

@@ -1,7 +1,144 @@
 Module mtc:arith.
 
+/*
+  Sterling doesn't let us declare fixed types, but we can fix a type
+  by introducing a property like this
+*/
+Extensible_Theorem
+  fix_nat : forall N,
+    IsN : is_nat N ->
+    N = z \/ exists N', N = s N'
+  on IsN.
+search. search.
+
+
 Prove mtc:shared_declarations:type_preservation.
 %E-Num
  case Ty. search.
 %E-Plus
  case Ty. search.
+
+
+Prove mtc:shared_declarations:value_evalStep_false.
+%V-Num
+ case Ev.
+
+
+Theorem plusRel_unique : forall N1 N2 A B,
+  plusRel N1 N2 A -> plusRel N1 N2 B -> A = B.
+induction on 1. intros PA PB. PA: case PA.
+  %PR-Z
+   case PB. search.
+  %PR-S
+   PB: case PB. apply IH to PA PB. search.
+
+
+Prove mtc:shared_declarations:subst_unique.
+%S-Num
+ case SB. search.
+%S-Plus
+ SB: case SB. apply IH to SA1 SB. apply IH to SA2 SB1. search.
+
+
+Prove mtc:shared_declarations:evalStep_unique.
+%ES-Plus-Step1
+ EvB: case EvB.
+   %ES-Plus-Step1
+    apply IH to EvA1 EvB. search.
+   %ES-Plus-Step2
+    apply value_evalStep_false to EvB EvA1.
+   %ES-Plus-Add
+    case EvA1.
+%ES-Plus-Step2
+ EvB: case EvB.
+   %ES-Plus-Step1
+    apply value_evalStep_false to EvA1 EvB.
+   %ES-Plus-Step2
+    apply IH to EvA2 EvB1. search.
+   %ES-Plus-Add
+    case EvA2.
+%ES-Plus-Add
+ EvB: case EvB.
+   %ES-Plus-Step1
+    case EvB.
+   %ES-Plus-Step2
+    case EvB1.
+   %ES-Plus-Add
+    apply plusRel_unique to EvA1 EvB. search.
+
+
+Prove mtc:shared_declarations:ty_lookup.
+%T-Num
+ search.
+%T-Plus
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+
+
+Prove mtc:shared_declarations:subst_preservation.
+%S-Num
+ case Ty. search.
+%S-Plus
+ Ty: case Ty. apply IH to Ty S1 RTy. apply IH to Ty1 S2 RTy. search.
+
+
+Prove mtc:shared_declarations:evalStep_type_preservation.
+%ES-Plus-Step1
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%ES-Plus-Step2
+ Ty: case Ty. apply IH to Ty1 Ev2. search.
+%ES-Plus-Add
+ case Ty. search.
+
+
+Prove mtc:shared_declarations:canonical_form.
+%C-NatTy
+ case Ty. search.
+
+
+Prove mtc:shared_declarations:subst_is.
+%S-Num
+ search.
+%S-Plus
+ case IsE. apply IH to _ _ S1. apply IH to _ _ S2. search.
+
+
+Theorem plusRel_is : forall A B C,
+  is_nat A -> is_nat B -> plusRel A B C -> is_nat C.
+induction on 3. intros IsA IsB P. P: case P.
+  %PR-Z
+   search.
+  %PR-S
+   case IsA. apply IH to _ _ P. search.
+
+
+Prove mtc:shared_declarations:evalStep_is.
+%ES-Plus-Step1
+ case IsE. apply IH to _ Ev1. search.
+%ES-Plus-Step2
+ case IsE. apply IH to _ Ev2. search.
+%ES-Plus-Add
+ Is: case IsE. case Is. case Is1. apply plusRel_is to _ _ Ev1. search.
+
+
+Prove mtc:shared_declarations:subst_total.
+%num
+ search.
+%plus
+ apply IH to IsE1 IsX IsR. apply IH to IsE2 IsX IsR. search.
+
+
+Prove mtc:shared_declarations:progress.
+%T-Num
+ search.
+%T-Plus
+ case IsE. Or1: apply IH to _ Ty1. Or2: apply IH to _ Ty2.
+ Ev1: case Or1.
+   %value E1
+    Ev2: case Or2.
+      %value E2
+       C1: apply canonical_form to Ev1 Ty1. case C1.
+       C2: apply canonical_form to Ev2 Ty2. case C2. skip.
+      %eval E2 E'
+       search.
+   %eval E1 E'
+    search.

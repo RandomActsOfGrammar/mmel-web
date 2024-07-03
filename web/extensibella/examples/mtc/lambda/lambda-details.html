@@ -409,6 +409,2127 @@ H1 : valueType V Ty
 
 Proof completed.
 </pre>
+<pre class="code extensibella"id="28">
+ &lt; <b>Prove mtc:shared_declarations:value_evalStep_false.</b>
+
+Subgoal 1:
+
+Variables: E' E1 Ty X
+IH : forall E E', value E * -&gt; evalStep E E' -&gt; false
+V : value (abs X Ty E1) @
+Ev : evalStep (abs X Ty E1) E'
+============================
+ false
+</pre>
+<pre class="code extensibella"id="29">
+ &lt; <b>case Ev.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="30">
+ &lt; <b>Prove mtc:shared_declarations:subst_unique.</b>
+
+Subgoal 1:
+
+Variables: X R EB E1 Ty
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (abs X Ty E1) (abs X Ty E1) @
+SB : subst X R (abs X Ty E1) EB
+============================
+ abs X Ty E1 = EB
+</pre>
+<pre class="code extensibella"id="31">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 1.1:
+
+Variables: X R E1 Ty
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (abs X Ty E1) (abs X Ty E1) @
+============================
+ abs X Ty E1 = abs X Ty E1
+</pre>
+<pre class="code extensibella"id="32">
+ &lt; <b>search.</b>
+
+Subgoal 1.2:
+
+Variables: X R E1 Ty E3
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (abs X Ty E1) (abs X Ty E1) @
+SB : X = X -&gt; false
+SB1 : subst X R E1 E3
+============================
+ abs X Ty E1 = abs X Ty E3
+</pre>
+<pre class="code extensibella"id="33">
+ &lt; <b>apply SB to _.</b>
+
+Subgoal 2:
+
+Variables: X R EB E2 Ty Y E1
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (abs Y Ty E1) (abs Y Ty E2) @
+SB : subst X R (abs Y Ty E1) EB
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 E2 *
+============================
+ abs Y Ty E2 = EB
+</pre>
+<pre class="code extensibella"id="34">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 2.1:
+
+Variables: R E2 Ty Y E1
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst Y R (abs Y Ty E1) (abs Y Ty E2) @
+SA1 : Y = Y -&gt; false
+SA2 : subst Y R E1 E2 *
+============================
+ abs Y Ty E2 = abs Y Ty E1
+</pre>
+<pre class="code extensibella"id="35">
+ &lt; <b>apply SA1 to _.</b>
+
+Subgoal 2.2:
+
+Variables: X R E2 Ty Y E1 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (abs Y Ty E1) (abs Y Ty E2) @
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 E2 *
+SB : X = Y -&gt; false
+SB1 : subst X R E1 E4
+============================
+ abs Y Ty E2 = abs Y Ty E4
+</pre>
+<pre class="code extensibella"id="36">
+ &lt; <b>apply IH to SA2 SB1.</b>
+
+Subgoal 2.2:
+
+Variables: X R Ty Y E1 E4
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (abs Y Ty E1) (abs Y Ty E4) @
+SA1 : X = Y -&gt; false
+SA2 : subst X R E1 E4 *
+SB : X = Y -&gt; false
+SB1 : subst X R E1 E4
+============================
+ abs Y Ty E4 = abs Y Ty E4
+</pre>
+<pre class="code extensibella"id="37">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: X R EB E21 E11 E2 E1
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (app E1 E2) (app E11 E21) @
+SB : subst X R (app E1 E2) EB
+SA1 : subst X R E1 E11 *
+SA2 : subst X R E2 E21 *
+============================
+ app E11 E21 = EB
+</pre>
+<pre class="code extensibella"id="38">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 3:
+
+Variables: X R E21 E11 E2 E1 E6 E5
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (app E1 E2) (app E11 E21) @
+SA1 : subst X R E1 E11 *
+SA2 : subst X R E2 E21 *
+SB : subst X R E1 E5
+SB1 : subst X R E2 E6
+============================
+ app E11 E21 = app E5 E6
+</pre>
+<pre class="code extensibella"id="39">
+ &lt; <b>apply IH to SA1 SB.</b>
+
+Subgoal 3:
+
+Variables: X R E21 E2 E1 E6 E5
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (app E1 E2) (app E5 E21) @
+SA1 : subst X R E1 E5 *
+SA2 : subst X R E2 E21 *
+SB : subst X R E1 E5
+SB1 : subst X R E2 E6
+============================
+ app E5 E21 = app E5 E6
+</pre>
+<pre class="code extensibella"id="40">
+ &lt; <b>apply IH to SA2 SB1.</b>
+
+Subgoal 3:
+
+Variables: X R E2 E1 E6 E5
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (app E1 E2) (app E5 E6) @
+SA1 : subst X R E1 E5 *
+SA2 : subst X R E2 E6 *
+SB : subst X R E1 E5
+SB1 : subst X R E2 E6
+============================
+ app E5 E6 = app E5 E6
+</pre>
+<pre class="code extensibella"id="41">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: X EA EB
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X EA (var X) EA @
+SB : subst X EA (var X) EB
+============================
+ EA = EB
+</pre>
+<pre class="code extensibella"id="42">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 4.1:
+
+Variables: X EB
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X EB (var X) EB @
+============================
+ EB = EB
+</pre>
+<pre class="code extensibella"id="43">
+ &lt; <b>search.</b>
+
+Subgoal 4.2:
+
+Variables: X EA
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X EA (var X) EA @
+SB : X = X -&gt; false
+============================
+ EA = var X
+</pre>
+<pre class="code extensibella"id="44">
+ &lt; <b>apply SB to _.</b>
+
+Subgoal 5:
+
+Variables: X R EB Y
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (var Y) (var Y) @
+SB : subst X R (var Y) EB
+SA1 : X = Y -&gt; false
+============================
+ var Y = EB
+</pre>
+<pre class="code extensibella"id="45">
+ &lt; <b>SB: case SB.</b>
+
+Subgoal 5.1:
+
+Variables: EB Y
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst Y EB (var Y) (var Y) @
+SA1 : Y = Y -&gt; false
+============================
+ var Y = EB
+</pre>
+<pre class="code extensibella"id="46">
+ &lt; <b>apply SA1 to _.</b>
+
+Subgoal 5.2:
+
+Variables: X R Y
+IH : forall X R E EA EB, subst X R E EA * -&gt; subst X R E EB -&gt; EA = EB
+SA : subst X R (var Y) (var Y) @
+SA1 : X = Y -&gt; false
+SB : X = Y -&gt; false
+============================
+ var Y = var Y
+</pre>
+<pre class="code extensibella"id="47">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="48">
+ &lt; <b>Prove mtc:shared_declarations:evalStep_unique.</b>
+
+Subgoal 1:
+
+Variables: EB E2 E11 E1
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app E1 E2) (app E11 E2) @
+EvB : evalStep (app E1 E2) EB
+EvA1 : evalStep E1 E11 *
+============================
+ app E11 E2 = EB
+</pre>
+<pre class="code extensibella"id="49">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 1.1:
+
+Variables: E2 E11 E1 E5
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app E1 E2) (app E11 E2) @
+EvA1 : evalStep E1 E11 *
+EvB : evalStep E1 E5
+============================
+ app E11 E2 = app E5 E2
+</pre>
+<pre class="code extensibella"id="50">
+ &lt; <b>apply IH to EvA1 EvB.</b>
+
+Subgoal 1.1:
+
+Variables: E2 E1 E5
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app E1 E2) (app E5 E2) @
+EvA1 : evalStep E1 E5 *
+EvB : evalStep E1 E5
+============================
+ app E5 E2 = app E5 E2
+</pre>
+<pre class="code extensibella"id="51">
+ &lt; <b>search.</b>
+
+Subgoal 1.2:
+
+Variables: E2 E11 E1 E21
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app E1 E2) (app E11 E2) @
+EvA1 : evalStep E1 E11 *
+EvB : value E1
+EvB1 : evalStep E2 E21
+============================
+ app E11 E2 = app E1 E21
+</pre>
+<pre class="code extensibella"id="52">
+ &lt; <b>apply value_evalStep_false to EvB EvA1.</b>
+
+Subgoal 1.3:
+
+Variables: EB E2 E11 E3 Ty X
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app (abs X Ty E3) E2) (app E11 E2) @
+EvA1 : evalStep (abs X Ty E3) E11 *
+EvB : value E2
+EvB1 : subst X E2 E3 EB
+============================
+ app E11 E2 = EB
+</pre>
+<pre class="code extensibella"id="53">
+ &lt; <b>case EvA1.</b>
+
+Subgoal 2:
+
+Variables: EB E21 E1 E2
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app E1 E2) (app E1 E21) @
+EvB : evalStep (app E1 E2) EB
+EvA1 : value E1
+EvA2 : evalStep E2 E21 *
+============================
+ app E1 E21 = EB
+</pre>
+<pre class="code extensibella"id="54">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 2.1:
+
+Variables: E21 E1 E2 E11
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app E1 E2) (app E1 E21) @
+EvA1 : value E1
+EvA2 : evalStep E2 E21 *
+EvB : evalStep E1 E11
+============================
+ app E1 E21 = app E11 E2
+</pre>
+<pre class="code extensibella"id="55">
+ &lt; <b>apply value_evalStep_false to EvA1 EvB.</b>
+
+Subgoal 2.2:
+
+Variables: E21 E1 E2 E5
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app E1 E2) (app E1 E21) @
+EvA1 : value E1
+EvA2 : evalStep E2 E21 *
+EvB : value E1
+EvB1 : evalStep E2 E5
+============================
+ app E1 E21 = app E1 E5
+</pre>
+<pre class="code extensibella"id="56">
+ &lt; <b>apply IH to EvA2 EvB1.</b>
+
+Subgoal 2.2:
+
+Variables: E1 E2 E5
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app E1 E2) (app E1 E5) @
+EvA1 : value E1
+EvA2 : evalStep E2 E5 *
+EvB : value E1
+EvB1 : evalStep E2 E5
+============================
+ app E1 E5 = app E1 E5
+</pre>
+<pre class="code extensibella"id="57">
+ &lt; <b>search.</b>
+
+Subgoal 2.3:
+
+Variables: EB E21 E2 E3 Ty X
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app (abs X Ty E3) E2) (app (abs X Ty E3) E21) @
+EvA1 : value (abs X Ty E3)
+EvA2 : evalStep E2 E21 *
+EvB : value E2
+EvB1 : subst X E2 E3 EB
+============================
+ app (abs X Ty E3) E21 = EB
+</pre>
+<pre class="code extensibella"id="58">
+ &lt; <b>apply value_evalStep_false to EvB EvA2.</b>
+
+Subgoal 3:
+
+Variables: EA EB E2 E1 Ty X
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app (abs X Ty E1) E2) EA @
+EvB : evalStep (app (abs X Ty E1) E2) EB
+EvA1 : value E2
+EvA2 : subst X E2 E1 EA
+============================
+ EA = EB
+</pre>
+<pre class="code extensibella"id="59">
+ &lt; <b>EvB: case EvB.</b>
+
+Subgoal 3.1:
+
+Variables: EA E2 E1 Ty X E11
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app (abs X Ty E1) E2) EA @
+EvA1 : value E2
+EvA2 : subst X E2 E1 EA
+EvB : evalStep (abs X Ty E1) E11
+============================
+ EA = app E11 E2
+</pre>
+<pre class="code extensibella"id="60">
+ &lt; <b>case EvB.</b>
+
+Subgoal 3.2:
+
+Variables: EA E2 E1 Ty X E21
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app (abs X Ty E1) E2) EA @
+EvA1 : value E2
+EvA2 : subst X E2 E1 EA
+EvB : value (abs X Ty E1)
+EvB1 : evalStep E2 E21
+============================
+ EA = app (abs X Ty E1) E21
+</pre>
+<pre class="code extensibella"id="61">
+ &lt; <b>apply value_evalStep_false to EvA1 EvB1.</b>
+
+Subgoal 3.3:
+
+Variables: EA EB E2 E1 Ty X
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app (abs X Ty E1) E2) EA @
+EvA1 : value E2
+EvA2 : subst X E2 E1 EA
+EvB : value E2
+EvB1 : subst X E2 E1 EB
+============================
+ EA = EB
+</pre>
+<pre class="code extensibella"id="62">
+ &lt; <b>apply subst_unique to EvA2 EvB1.</b>
+
+Subgoal 3.3:
+
+Variables: EB E2 E1 Ty X
+IH : forall E EA EB, evalStep E EA * -&gt; evalStep E EB -&gt; EA = EB
+EvA : evalStep (app (abs X Ty E1) E2) EB @
+EvA1 : value E2
+EvA2 : subst X E2 E1 EB
+EvB : value E2
+EvB1 : subst X E2 E1 EB
+============================
+ EB = EB
+</pre>
+<pre class="code extensibella"id="63">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="64">
+ &lt; <b>Prove mtc:shared_declarations:ty_lookup.</b>
+
+Subgoal 1:
+
+Variables: G1 G2 Ty2 Ty1 E1 X
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (abs X Ty1 E1) (arrowTy Ty1 Ty2) @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf ((X, Ty1)::G1) E1 Ty2 *
+============================
+ typeOf G2 (abs X Ty1 E1) (arrowTy Ty1 Ty2)
+</pre>
+<pre class="code extensibella"id="65">
+ &lt; <b>apply IH to Ty1 _ with
+     G2 = (X, Ty1)::G2.</b>
+
+Subgoal 1.1:
+
+Variables: G1 G2 Ty2 Ty1 E1 X
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (abs X Ty1 E1) (arrowTy Ty1 Ty2) @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf ((X, Ty1)::G1) E1 Ty2 *
+============================
+ forall X1 XTy, lookup ((X, Ty1)::G1) X1 XTy -&gt; lookup ((X, Ty1)::G2) X1 XTy
+</pre>
+<pre class="code extensibella"id="66">
+ &lt; <b>intros L'.</b>
+
+Subgoal 1.1:
+
+Variables: G1 G2 Ty2 Ty1 E1 X X1 XTy
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (abs X Ty1 E1) (arrowTy Ty1 Ty2) @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf ((X, Ty1)::G1) E1 Ty2 *
+L' : lookup ((X, Ty1)::G1) X1 XTy
+============================
+ lookup ((X, Ty1)::G2) X1 XTy
+</pre>
+<pre class="code extensibella"id="67">
+ &lt; <b>L': case L'.</b>
+
+Subgoal 1.1.1:
+
+Variables: G1 G2 Ty2 E1 X1 XTy
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (abs X1 XTy E1) (arrowTy XTy Ty2) @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf ((X1, XTy)::G1) E1 Ty2 *
+============================
+ lookup ((X1, XTy)::G2) X1 XTy
+</pre>
+<pre class="code extensibella"id="68">
+ &lt; <b>search.</b>
+
+Subgoal 1.1.2:
+
+Variables: G1 G2 Ty2 Ty1 E1 X X1 XTy
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (abs X Ty1 E1) (arrowTy Ty1 Ty2) @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf ((X, Ty1)::G1) E1 Ty2 *
+L' : X = X1 -&gt; false
+L'1 : lookup G1 X1 XTy
+============================
+ lookup ((X, Ty1)::G2) X1 XTy
+</pre>
+<pre class="code extensibella"id="69">
+ &lt; <b>apply L to L'1.</b>
+
+Subgoal 1.1.2:
+
+Variables: G1 G2 Ty2 Ty1 E1 X X1 XTy
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (abs X Ty1 E1) (arrowTy Ty1 Ty2) @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf ((X, Ty1)::G1) E1 Ty2 *
+L' : X = X1 -&gt; false
+L'1 : lookup G1 X1 XTy
+H1 : lookup G2 X1 XTy
+============================
+ lookup ((X, Ty1)::G2) X1 XTy
+</pre>
+<pre class="code extensibella"id="70">
+ &lt; <b>search.</b>
+
+Subgoal 1:
+
+Variables: G1 G2 Ty2 Ty1 E1 X
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (abs X Ty1 E1) (arrowTy Ty1 Ty2) @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf ((X, Ty1)::G1) E1 Ty2 *
+H1 : typeOf ((X, Ty1)::G2) E1 Ty2
+============================
+ typeOf G2 (abs X Ty1 E1) (arrowTy Ty1 Ty2)
+</pre>
+<pre class="code extensibella"id="71">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: G1 G2 Ty Ty1 E2 E1
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (app E1 E2) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf G1 E2 Ty1 *
+============================
+ typeOf G2 (app E1 E2) Ty
+</pre>
+<pre class="code extensibella"id="72">
+ &lt; <b>apply IH to Ty1 L.</b>
+
+Subgoal 2:
+
+Variables: G1 G2 Ty Ty1 E2 E1
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (app E1 E2) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf G1 E2 Ty1 *
+H1 : typeOf G2 E1 (arrowTy Ty1 Ty)
+============================
+ typeOf G2 (app E1 E2) Ty
+</pre>
+<pre class="code extensibella"id="73">
+ &lt; <b>apply IH to Ty2 L.</b>
+
+Subgoal 2:
+
+Variables: G1 G2 Ty Ty1 E2 E1
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (app E1 E2) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : typeOf G1 E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf G1 E2 Ty1 *
+H1 : typeOf G2 E1 (arrowTy Ty1 Ty)
+H2 : typeOf G2 E2 Ty1
+============================
+ typeOf G2 (app E1 E2) Ty
+</pre>
+<pre class="code extensibella"id="74">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: G1 G2 Ty X
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (var X) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : lookup G1 X Ty
+============================
+ typeOf G2 (var X) Ty
+</pre>
+<pre class="code extensibella"id="75">
+ &lt; <b>apply L to Ty1.</b>
+
+Subgoal 3:
+
+Variables: G1 G2 Ty X
+IH : forall G1 G2 E Ty,
+       typeOf G1 E Ty * -&gt; (forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy) -&gt;
+       typeOf G2 E Ty
+Ty : typeOf G1 (var X) Ty @
+L : forall X XTy, lookup G1 X XTy -&gt; lookup G2 X XTy
+Ty1 : lookup G1 X Ty
+H1 : lookup G2 X Ty
+============================
+ typeOf G2 (var X) Ty
+</pre>
+<pre class="code extensibella"id="76">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="77">
+ &lt; <b>Prove mtc:shared_declarations:subst_preservation.</b>
+
+Subgoal 1:
+
+Variables: X XTy TG Ty R E1 Ty1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+Ty : typeOf ((X, XTy)::TG) (abs X Ty1 E1) Ty
+S : subst X R (abs X Ty1 E1) (abs X Ty1 E1) @
+RTy : typeOf [] R XTy
+============================
+ typeOf TG (abs X Ty1 E1) Ty
+</pre>
+<pre class="code extensibella"id="78">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 1:
+
+Variables: X XTy TG R E1 Ty1 Ty3
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs X Ty1 E1) (abs X Ty1 E1) @
+RTy : typeOf [] R XTy
+Ty : typeOf ((X, Ty1)::((X, XTy)::TG)) E1 Ty3
+============================
+ typeOf TG (abs X Ty1 E1) (arrowTy Ty1 Ty3)
+</pre>
+<pre class="code extensibella"id="79">
+ &lt; <b>apply ty_lookup to Ty _ with
+     G2 = (X, Ty1)::TG.</b>
+
+Subgoal 1.1:
+
+Variables: X XTy TG R E1 Ty1 Ty3
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs X Ty1 E1) (abs X Ty1 E1) @
+RTy : typeOf [] R XTy
+Ty : typeOf ((X, Ty1)::((X, XTy)::TG)) E1 Ty3
+============================
+ forall X1 XTy1,
+   lookup ((X, Ty1)::((X, XTy)::TG)) X1 XTy1 -&gt; lookup ((X, Ty1)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="80">
+ &lt; <b>intros L.</b>
+
+Subgoal 1.1:
+
+Variables: X XTy TG R E1 Ty1 Ty3 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs X Ty1 E1) (abs X Ty1 E1) @
+RTy : typeOf [] R XTy
+Ty : typeOf ((X, Ty1)::((X, XTy)::TG)) E1 Ty3
+L : lookup ((X, Ty1)::((X, XTy)::TG)) X1 XTy1
+============================
+ lookup ((X, Ty1)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="81">
+ &lt; <b>L: case L.</b>
+
+Subgoal 1.1.1:
+
+Variables: XTy TG R E1 Ty3 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X1 R (abs X1 XTy1 E1) (abs X1 XTy1 E1) @
+RTy : typeOf [] R XTy
+Ty : typeOf ((X1, XTy1)::((X1, XTy)::TG)) E1 Ty3
+============================
+ lookup ((X1, XTy1)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="82">
+ &lt; <b>search.</b>
+
+Subgoal 1.1.2:
+
+Variables: X XTy TG R E1 Ty1 Ty3 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs X Ty1 E1) (abs X Ty1 E1) @
+RTy : typeOf [] R XTy
+Ty : typeOf ((X, Ty1)::((X, XTy)::TG)) E1 Ty3
+L : X = X1 -&gt; false
+L1 : lookup ((X, XTy)::TG) X1 XTy1
+============================
+ lookup ((X, Ty1)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="83">
+ &lt; <b>L': case L1.</b>
+
+Subgoal 1.1.2.1:
+
+Variables: TG R E1 Ty1 Ty3 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X1 R (abs X1 Ty1 E1) (abs X1 Ty1 E1) @
+RTy : typeOf [] R XTy1
+Ty : typeOf ((X1, Ty1)::((X1, XTy1)::TG)) E1 Ty3
+L : X1 = X1 -&gt; false
+============================
+ lookup ((X1, Ty1)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="84">
+ &lt; <b>apply L to _.</b>
+
+Subgoal 1.1.2.2:
+
+Variables: X XTy TG R E1 Ty1 Ty3 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs X Ty1 E1) (abs X Ty1 E1) @
+RTy : typeOf [] R XTy
+Ty : typeOf ((X, Ty1)::((X, XTy)::TG)) E1 Ty3
+L : X = X1 -&gt; false
+L' : X = X1 -&gt; false
+L'1 : lookup TG X1 XTy1
+============================
+ lookup ((X, Ty1)::TG) X1 XTy1
+</pre>
+<pre class="code extensibella"id="85">
+ &lt; <b>search.</b>
+
+Subgoal 1:
+
+Variables: X XTy TG R E1 Ty1 Ty3
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs X Ty1 E1) (abs X Ty1 E1) @
+RTy : typeOf [] R XTy
+Ty : typeOf ((X, Ty1)::((X, XTy)::TG)) E1 Ty3
+H1 : typeOf ((X, Ty1)::TG) E1 Ty3
+============================
+ typeOf TG (abs X Ty1 E1) (arrowTy Ty1 Ty3)
+</pre>
+<pre class="code extensibella"id="86">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: X XTy TG Ty R E2 Ty1 Y E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+Ty : typeOf ((X, XTy)::TG) (abs Y Ty1 E1) Ty
+S : subst X R (abs Y Ty1 E1) (abs Y Ty1 E2) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+============================
+ typeOf TG (abs Y Ty1 E2) Ty
+</pre>
+<pre class="code extensibella"id="87">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 2:
+
+Variables: X XTy TG R E2 Ty1 Y E1 Ty3
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs Y Ty1 E1) (abs Y Ty1 E2) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+Ty : typeOf ((Y, Ty1)::((X, XTy)::TG)) E1 Ty3
+============================
+ typeOf TG (abs Y Ty1 E2) (arrowTy Ty1 Ty3)
+</pre>
+<pre class="code extensibella"id="88">
+ &lt; <b>Ty': apply ty_lookup to Ty _ with
+          G2 = (X, XTy)::((Y, Ty1)::TG).</b>
+
+Subgoal 2.1:
+
+Variables: X XTy TG R E2 Ty1 Y E1 Ty3
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs Y Ty1 E1) (abs Y Ty1 E2) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+Ty : typeOf ((Y, Ty1)::((X, XTy)::TG)) E1 Ty3
+============================
+ forall X1 XTy1,
+   lookup ((Y, Ty1)::((X, XTy)::TG)) X1 XTy1 -&gt; lookup ((X, XTy)::((Y, Ty1)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="89">
+ &lt; <b>intros L.</b>
+
+Subgoal 2.1:
+
+Variables: X XTy TG R E2 Ty1 Y E1 Ty3 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs Y Ty1 E1) (abs Y Ty1 E2) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+Ty : typeOf ((Y, Ty1)::((X, XTy)::TG)) E1 Ty3
+L : lookup ((Y, Ty1)::((X, XTy)::TG)) X1 XTy1
+============================
+ lookup ((X, XTy)::((Y, Ty1)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="90">
+ &lt; <b>L: case L.</b>
+
+Subgoal 2.1.1:
+
+Variables: X XTy TG R E2 E1 Ty3 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs X1 XTy1 E1) (abs X1 XTy1 E2) @
+RTy : typeOf [] R XTy
+S1 : X = X1 -&gt; false
+S2 : subst X R E1 E2 *
+Ty : typeOf ((X1, XTy1)::((X, XTy)::TG)) E1 Ty3
+============================
+ lookup ((X, XTy)::((X1, XTy1)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="91">
+ &lt; <b>search.</b>
+
+Subgoal 2.1.2:
+
+Variables: X XTy TG R E2 Ty1 Y E1 Ty3 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs Y Ty1 E1) (abs Y Ty1 E2) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+Ty : typeOf ((Y, Ty1)::((X, XTy)::TG)) E1 Ty3
+L : Y = X1 -&gt; false
+L1 : lookup ((X, XTy)::TG) X1 XTy1
+============================
+ lookup ((X, XTy)::((Y, Ty1)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="92">
+ &lt; <b>L': case L1.</b>
+
+Subgoal 2.1.2.1:
+
+Variables: TG R E2 Ty1 Y E1 Ty3 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X1 R (abs Y Ty1 E1) (abs Y Ty1 E2) @
+RTy : typeOf [] R XTy1
+S1 : X1 = Y -&gt; false
+S2 : subst X1 R E1 E2 *
+Ty : typeOf ((Y, Ty1)::((X1, XTy1)::TG)) E1 Ty3
+L : Y = X1 -&gt; false
+============================
+ lookup ((X1, XTy1)::((Y, Ty1)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="93">
+ &lt; <b>search.</b>
+
+Subgoal 2.1.2.2:
+
+Variables: X XTy TG R E2 Ty1 Y E1 Ty3 X1 XTy1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs Y Ty1 E1) (abs Y Ty1 E2) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+Ty : typeOf ((Y, Ty1)::((X, XTy)::TG)) E1 Ty3
+L : Y = X1 -&gt; false
+L' : X = X1 -&gt; false
+L'1 : lookup TG X1 XTy1
+============================
+ lookup ((X, XTy)::((Y, Ty1)::TG)) X1 XTy1
+</pre>
+<pre class="code extensibella"id="94">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: X XTy TG R E2 Ty1 Y E1 Ty3
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs Y Ty1 E1) (abs Y Ty1 E2) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+Ty : typeOf ((Y, Ty1)::((X, XTy)::TG)) E1 Ty3
+Ty' : typeOf ((X, XTy)::((Y, Ty1)::TG)) E1 Ty3
+============================
+ typeOf TG (abs Y Ty1 E2) (arrowTy Ty1 Ty3)
+</pre>
+<pre class="code extensibella"id="95">
+ &lt; <b>apply IH to Ty' S2 RTy.</b>
+
+Subgoal 2:
+
+Variables: X XTy TG R E2 Ty1 Y E1 Ty3
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (abs Y Ty1 E1) (abs Y Ty1 E2) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+Ty : typeOf ((Y, Ty1)::((X, XTy)::TG)) E1 Ty3
+Ty' : typeOf ((X, XTy)::((Y, Ty1)::TG)) E1 Ty3
+H1 : typeOf ((Y, Ty1)::TG) E2 Ty3
+============================
+ typeOf TG (abs Y Ty1 E2) (arrowTy Ty1 Ty3)
+</pre>
+<pre class="code extensibella"id="96">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R E21 E11 E2 E1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+Ty : typeOf ((X, XTy)::TG) (app E1 E2) Ty
+S : subst X R (app E1 E2) (app E11 E21) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E11 *
+S2 : subst X R E2 E21 *
+============================
+ typeOf TG (app E11 E21) Ty
+</pre>
+<pre class="code extensibella"id="97">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R E21 E11 E2 E1 Ty1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (app E1 E2) (app E11 E21) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E11 *
+S2 : subst X R E2 E21 *
+Ty : typeOf ((X, XTy)::TG) E1 (arrowTy Ty1 Ty)
+Ty1 : typeOf ((X, XTy)::TG) E2 Ty1
+============================
+ typeOf TG (app E11 E21) Ty
+</pre>
+<pre class="code extensibella"id="98">
+ &lt; <b>apply IH to Ty S1 RTy.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R E21 E11 E2 E1 Ty1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (app E1 E2) (app E11 E21) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E11 *
+S2 : subst X R E2 E21 *
+Ty : typeOf ((X, XTy)::TG) E1 (arrowTy Ty1 Ty)
+Ty1 : typeOf ((X, XTy)::TG) E2 Ty1
+H1 : typeOf TG E11 (arrowTy Ty1 Ty)
+============================
+ typeOf TG (app E11 E21) Ty
+</pre>
+<pre class="code extensibella"id="99">
+ &lt; <b>apply IH to Ty1 S2 RTy.</b>
+
+Subgoal 3:
+
+Variables: X XTy TG Ty R E21 E11 E2 E1 Ty1
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (app E1 E2) (app E11 E21) @
+RTy : typeOf [] R XTy
+S1 : subst X R E1 E11 *
+S2 : subst X R E2 E21 *
+Ty : typeOf ((X, XTy)::TG) E1 (arrowTy Ty1 Ty)
+Ty1 : typeOf ((X, XTy)::TG) E2 Ty1
+H1 : typeOf TG E11 (arrowTy Ty1 Ty)
+H2 : typeOf TG E21 Ty1
+============================
+ typeOf TG (app E11 E21) Ty
+</pre>
+<pre class="code extensibella"id="100">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: X XTy TG Ty E'
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+Ty : typeOf ((X, XTy)::TG) (var X) Ty
+S : subst X E' (var X) E' @
+RTy : typeOf [] E' XTy
+============================
+ typeOf TG E' Ty
+</pre>
+<pre class="code extensibella"id="101">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 4:
+
+Variables: X XTy TG Ty E'
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X E' (var X) E' @
+RTy : typeOf [] E' XTy
+Ty : lookup ((X, XTy)::TG) X Ty
+============================
+ typeOf TG E' Ty
+</pre>
+<pre class="code extensibella"id="102">
+ &lt; <b>L: case Ty.</b>
+
+Subgoal 4.1:
+
+Variables: X TG Ty E'
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X E' (var X) E' @
+RTy : typeOf [] E' Ty
+============================
+ typeOf TG E' Ty
+</pre>
+<pre class="code extensibella"id="103">
+ &lt; <b>backchain empty_ty_any.</b>
+
+Subgoal 4.2:
+
+Variables: X XTy TG Ty E'
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X E' (var X) E' @
+RTy : typeOf [] E' XTy
+L : X = X -&gt; false
+L1 : lookup TG X Ty
+============================
+ typeOf TG E' Ty
+</pre>
+<pre class="code extensibella"id="104">
+ &lt; <b>apply L to _.</b>
+
+Subgoal 5:
+
+Variables: X XTy TG Ty R Y
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+Ty : typeOf ((X, XTy)::TG) (var Y) Ty
+S : subst X R (var Y) (var Y) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+============================
+ typeOf TG (var Y) Ty
+</pre>
+<pre class="code extensibella"id="105">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 5:
+
+Variables: X XTy TG Ty R Y
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (var Y) (var Y) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+Ty : lookup ((X, XTy)::TG) Y Ty
+============================
+ typeOf TG (var Y) Ty
+</pre>
+<pre class="code extensibella"id="106">
+ &lt; <b>L: case Ty.</b>
+
+Subgoal 5.1:
+
+Variables: TG Ty R Y
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst Y R (var Y) (var Y) @
+RTy : typeOf [] R Ty
+S1 : Y = Y -&gt; false
+============================
+ typeOf TG (var Y) Ty
+</pre>
+<pre class="code extensibella"id="107">
+ &lt; <b>apply S1 to _.</b>
+
+Subgoal 5.2:
+
+Variables: X XTy TG Ty R Y
+IH : forall X XTy TG E Ty R E',
+       typeOf ((X, XTy)::TG) E Ty -&gt; subst X R E E' * -&gt; typeOf [] R XTy -&gt; typeOf TG E' Ty
+S : subst X R (var Y) (var Y) @
+RTy : typeOf [] R XTy
+S1 : X = Y -&gt; false
+L : X = Y -&gt; false
+L1 : lookup TG Y Ty
+============================
+ typeOf TG (var Y) Ty
+</pre>
+<pre class="code extensibella"id="108">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="109">
+ &lt; <b>Prove mtc:shared_declarations:evalStep_type_preservation.</b>
+
+Subgoal 1:
+
+Variables: Ty E2 E11 E1
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ty : typeOf [] (app E1 E2) Ty
+Ev : evalStep (app E1 E2) (app E11 E2) @
+Ev1 : evalStep E1 E11 *
+============================
+ typeOf [] (app E11 E2) Ty
+</pre>
+<pre class="code extensibella"id="110">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 1:
+
+Variables: Ty E2 E11 E1 Ty1
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (app E1 E2) (app E11 E2) @
+Ev1 : evalStep E1 E11 *
+Ty : typeOf [] E1 (arrowTy Ty1 Ty)
+Ty1 : typeOf [] E2 Ty1
+============================
+ typeOf [] (app E11 E2) Ty
+</pre>
+<pre class="code extensibella"id="111">
+ &lt; <b>apply IH to Ty Ev1.</b>
+
+Subgoal 1:
+
+Variables: Ty E2 E11 E1 Ty1
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (app E1 E2) (app E11 E2) @
+Ev1 : evalStep E1 E11 *
+Ty : typeOf [] E1 (arrowTy Ty1 Ty)
+Ty1 : typeOf [] E2 Ty1
+H1 : typeOf [] E11 (arrowTy Ty1 Ty)
+============================
+ typeOf [] (app E11 E2) Ty
+</pre>
+<pre class="code extensibella"id="112">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: Ty E21 E1 E2
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ty : typeOf [] (app E1 E2) Ty
+Ev : evalStep (app E1 E2) (app E1 E21) @
+Ev1 : value E1
+Ev2 : evalStep E2 E21 *
+============================
+ typeOf [] (app E1 E21) Ty
+</pre>
+<pre class="code extensibella"id="113">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 2:
+
+Variables: Ty E21 E1 E2 Ty1
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (app E1 E2) (app E1 E21) @
+Ev1 : value E1
+Ev2 : evalStep E2 E21 *
+Ty : typeOf [] E1 (arrowTy Ty1 Ty)
+Ty1 : typeOf [] E2 Ty1
+============================
+ typeOf [] (app E1 E21) Ty
+</pre>
+<pre class="code extensibella"id="114">
+ &lt; <b>apply IH to Ty1 Ev2.</b>
+
+Subgoal 2:
+
+Variables: Ty E21 E1 E2 Ty1
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (app E1 E2) (app E1 E21) @
+Ev1 : value E1
+Ev2 : evalStep E2 E21 *
+Ty : typeOf [] E1 (arrowTy Ty1 Ty)
+Ty1 : typeOf [] E2 Ty1
+H1 : typeOf [] E21 Ty1
+============================
+ typeOf [] (app E1 E21) Ty
+</pre>
+<pre class="code extensibella"id="115">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: Ty E' E2 E1 Ty1 X
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ty : typeOf [] (app (abs X Ty1 E1) E2) Ty
+Ev : evalStep (app (abs X Ty1 E1) E2) E' @
+Ev1 : value E2
+Ev2 : subst X E2 E1 E'
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="116">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 3:
+
+Variables: Ty E' E2 E1 Ty1 X Ty2
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (app (abs X Ty1 E1) E2) E' @
+Ev1 : value E2
+Ev2 : subst X E2 E1 E'
+Ty : typeOf [] (abs X Ty1 E1) (arrowTy Ty2 Ty)
+Ty1 : typeOf [] E2 Ty2
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="117">
+ &lt; <b>Ty: case Ty.</b>
+
+Subgoal 3:
+
+Variables: Ty E' E2 E1 X Ty2
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (app (abs X Ty2 E1) E2) E' @
+Ev1 : value E2
+Ev2 : subst X E2 E1 E'
+Ty1 : typeOf [] E2 Ty2
+Ty : typeOf [(X, Ty2)] E1 Ty
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="118">
+ &lt; <b>apply subst_preservation to Ty Ev2 Ty1.</b>
+
+Subgoal 3:
+
+Variables: Ty E' E2 E1 X Ty2
+IH : forall E Ty E', typeOf [] E Ty -&gt; evalStep E E' * -&gt; typeOf [] E' Ty
+Ev : evalStep (app (abs X Ty2 E1) E2) E' @
+Ev1 : value E2
+Ev2 : subst X E2 E1 E'
+Ty1 : typeOf [] E2 Ty2
+Ty : typeOf [(X, Ty2)] E1 Ty
+H1 : typeOf [] E' Ty
+============================
+ typeOf [] E' Ty
+</pre>
+<pre class="code extensibella"id="119">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="120">
+ &lt; <b>Prove mtc:shared_declarations:canonical_form.</b>
+
+Subgoal 1:
+
+Variables: Ty E Ty1 X
+IH : forall V Ty, value V * -&gt; typeOf [] V Ty -&gt; canon Ty V
+V : value (abs X Ty1 E) @
+Ty : typeOf [] (abs X Ty1 E) Ty
+============================
+ canon Ty (abs X Ty1 E)
+</pre>
+<pre class="code extensibella"id="121">
+ &lt; <b>case Ty.</b>
+
+Subgoal 1:
+
+Variables: E Ty1 X Ty3
+IH : forall V Ty, value V * -&gt; typeOf [] V Ty -&gt; canon Ty V
+V : value (abs X Ty1 E) @
+H1 : typeOf [(X, Ty1)] E Ty3
+============================
+ canon (arrowTy Ty1 Ty3) (abs X Ty1 E)
+</pre>
+<pre class="code extensibella"id="122">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="123">
+ &lt; <b>Prove mtc:shared_declarations:subst_is.</b>
+
+Subgoal 1:
+
+Variables: X R E1 Ty
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsE : is_e (abs X Ty E1)
+IsR : is_e R
+S : subst X R (abs X Ty E1) (abs X Ty E1) @
+============================
+ is_e (abs X Ty E1)
+</pre>
+<pre class="code extensibella"id="124">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: X R E2 Ty Y E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsE : is_e (abs Y Ty E1)
+IsR : is_e R
+S : subst X R (abs Y Ty E1) (abs Y Ty E2) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+============================
+ is_e (abs Y Ty E2)
+</pre>
+<pre class="code extensibella"id="125">
+ &lt; <b>Is: case IsE.</b>
+
+Subgoal 2:
+
+Variables: X R E2 Ty Y E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (abs Y Ty E1) (abs Y Ty E2) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+Is : is_string Y
+Is1 : is_ty Ty
+Is2 : is_e E1
+============================
+ is_e (abs Y Ty E2)
+</pre>
+<pre class="code extensibella"id="126">
+ &lt; <b>apply IH to _ _ S2.</b>
+
+Subgoal 2:
+
+Variables: X R E2 Ty Y E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (abs Y Ty E1) (abs Y Ty E2) @
+S1 : X = Y -&gt; false
+S2 : subst X R E1 E2 *
+Is : is_string Y
+Is1 : is_ty Ty
+Is2 : is_e E1
+H1 : is_e E2
+============================
+ is_e (abs Y Ty E2)
+</pre>
+<pre class="code extensibella"id="127">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: X R E21 E11 E2 E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsE : is_e (app E1 E2)
+IsR : is_e R
+S : subst X R (app E1 E2) (app E11 E21) @
+S1 : subst X R E1 E11 *
+S2 : subst X R E2 E21 *
+============================
+ is_e (app E11 E21)
+</pre>
+<pre class="code extensibella"id="128">
+ &lt; <b>case IsE.</b>
+
+Subgoal 3:
+
+Variables: X R E21 E11 E2 E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (app E1 E2) (app E11 E21) @
+S1 : subst X R E1 E11 *
+S2 : subst X R E2 E21 *
+H1 : is_e E1
+H2 : is_e E2
+============================
+ is_e (app E11 E21)
+</pre>
+<pre class="code extensibella"id="129">
+ &lt; <b>apply IH to _ _ S1.</b>
+
+Subgoal 3:
+
+Variables: X R E21 E11 E2 E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (app E1 E2) (app E11 E21) @
+S1 : subst X R E1 E11 *
+S2 : subst X R E2 E21 *
+H1 : is_e E1
+H2 : is_e E2
+H3 : is_e E11
+============================
+ is_e (app E11 E21)
+</pre>
+<pre class="code extensibella"id="130">
+ &lt; <b>apply IH to _ _ S2.</b>
+
+Subgoal 3:
+
+Variables: X R E21 E11 E2 E1
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsR : is_e R
+S : subst X R (app E1 E2) (app E11 E21) @
+S1 : subst X R E1 E11 *
+S2 : subst X R E2 E21 *
+H1 : is_e E1
+H2 : is_e E2
+H3 : is_e E11
+H4 : is_e E21
+============================
+ is_e (app E11 E21)
+</pre>
+<pre class="code extensibella"id="131">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: X E'
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsE : is_e (var X)
+IsR : is_e E'
+S : subst X E' (var X) E' @
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="132">
+ &lt; <b>search.</b>
+
+Subgoal 5:
+
+Variables: X R Y
+IH : forall X R E E', is_e E -&gt; is_e R -&gt; subst X R E E' * -&gt; is_e E'
+IsE : is_e (var Y)
+IsR : is_e R
+S : subst X R (var Y) (var Y) @
+S1 : X = Y -&gt; false
+============================
+ is_e (var Y)
+</pre>
+<pre class="code extensibella"id="133">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="134">
+ &lt; <b>Prove mtc:shared_declarations:evalStep_is.</b>
+
+Subgoal 1:
+
+Variables: E2 E11 E1
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+IsE : is_e (app E1 E2)
+Ev : evalStep (app E1 E2) (app E11 E2) @
+Ev1 : evalStep E1 E11 *
+============================
+ is_e (app E11 E2)
+</pre>
+<pre class="code extensibella"id="135">
+ &lt; <b>case IsE.</b>
+
+Subgoal 1:
+
+Variables: E2 E11 E1
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (app E1 E2) (app E11 E2) @
+Ev1 : evalStep E1 E11 *
+H1 : is_e E1
+H2 : is_e E2
+============================
+ is_e (app E11 E2)
+</pre>
+<pre class="code extensibella"id="136">
+ &lt; <b>apply IH to _ Ev1.</b>
+
+Subgoal 1:
+
+Variables: E2 E11 E1
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (app E1 E2) (app E11 E2) @
+Ev1 : evalStep E1 E11 *
+H1 : is_e E1
+H2 : is_e E2
+H3 : is_e E11
+============================
+ is_e (app E11 E2)
+</pre>
+<pre class="code extensibella"id="137">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: E21 E1 E2
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+IsE : is_e (app E1 E2)
+Ev : evalStep (app E1 E2) (app E1 E21) @
+Ev1 : value E1
+Ev2 : evalStep E2 E21 *
+============================
+ is_e (app E1 E21)
+</pre>
+<pre class="code extensibella"id="138">
+ &lt; <b>case IsE.</b>
+
+Subgoal 2:
+
+Variables: E21 E1 E2
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (app E1 E2) (app E1 E21) @
+Ev1 : value E1
+Ev2 : evalStep E2 E21 *
+H1 : is_e E1
+H2 : is_e E2
+============================
+ is_e (app E1 E21)
+</pre>
+<pre class="code extensibella"id="139">
+ &lt; <b>apply IH to _ Ev2.</b>
+
+Subgoal 2:
+
+Variables: E21 E1 E2
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (app E1 E2) (app E1 E21) @
+Ev1 : value E1
+Ev2 : evalStep E2 E21 *
+H1 : is_e E1
+H2 : is_e E2
+H3 : is_e E21
+============================
+ is_e (app E1 E21)
+</pre>
+<pre class="code extensibella"id="140">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: E' E2 E1 Ty X
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+IsE : is_e (app (abs X Ty E1) E2)
+Ev : evalStep (app (abs X Ty E1) E2) E' @
+Ev1 : value E2
+Ev2 : subst X E2 E1 E'
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="141">
+ &lt; <b>Is: case IsE.</b>
+
+Subgoal 3:
+
+Variables: E' E2 E1 Ty X
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (app (abs X Ty E1) E2) E' @
+Ev1 : value E2
+Ev2 : subst X E2 E1 E'
+Is : is_e (abs X Ty E1)
+Is1 : is_e E2
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="142">
+ &lt; <b>case Is.</b>
+
+Subgoal 3:
+
+Variables: E' E2 E1 Ty X
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (app (abs X Ty E1) E2) E' @
+Ev1 : value E2
+Ev2 : subst X E2 E1 E'
+Is1 : is_e E2
+H1 : is_string X
+H2 : is_ty Ty
+H3 : is_e E1
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="143">
+ &lt; <b>apply subst_is to _ _ Ev2.</b>
+
+Subgoal 3:
+
+Variables: E' E2 E1 Ty X
+IH : forall E E', is_e E -&gt; evalStep E E' * -&gt; is_e E'
+Ev : evalStep (app (abs X Ty E1) E2) E' @
+Ev1 : value E2
+Ev2 : subst X E2 E1 E'
+Is1 : is_e E2
+H1 : is_string X
+H2 : is_ty Ty
+H3 : is_e E1
+H4 : is_e E'
+============================
+ is_e E'
+</pre>
+<pre class="code extensibella"id="144">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="145">
+ &lt; <b>Prove mtc:shared_declarations:subst_total.</b>
+
+Subgoal 2:
+
+Variables: X R E1 Ty S
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (abs S Ty E1) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_ty Ty
+IsE3 : is_e E1 *
+============================
+ exists E', subst X R (abs S Ty E1) E'
+</pre>
+<pre class="code extensibella"id="146">
+ &lt; <b>Or: apply is_string_eq_or_not to IsX IsE1.</b>
+
+Subgoal 2:
+
+Variables: X R E1 Ty S
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (abs S Ty E1) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_ty Ty
+IsE3 : is_e E1 *
+Or : X = S \/ (X = S -&gt; false)
+============================
+ exists E', subst X R (abs S Ty E1) E'
+</pre>
+<pre class="code extensibella"id="147">
+ &lt; <b>case Or.</b>
+
+Subgoal 2.1:
+
+Variables: R E1 Ty S
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (abs S Ty E1) @
+IsX : is_string S
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_ty Ty
+IsE3 : is_e E1 *
+============================
+ exists E', subst S R (abs S Ty E1) E'
+</pre>
+<pre class="code extensibella"id="148">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: X R E1 Ty S
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (abs S Ty E1) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_ty Ty
+IsE3 : is_e E1 *
+H1 : X = S -&gt; false
+============================
+ exists E', subst X R (abs S Ty E1) E'
+</pre>
+<pre class="code extensibella"id="149">
+ &lt; <b>apply IH to IsE3 IsX IsR.</b>
+
+Subgoal 2.2:
+
+Variables: X R E1 Ty S E'
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (abs S Ty E1) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+IsE2 : is_ty Ty
+IsE3 : is_e E1 *
+H1 : X = S -&gt; false
+H2 : subst X R E1 E'
+============================
+ exists E', subst X R (abs S Ty E1) E'
+</pre>
+<pre class="code extensibella"id="150">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: X R E2 E1
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (app E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E1 *
+IsE2 : is_e E2 *
+============================
+ exists E', subst X R (app E1 E2) E'
+</pre>
+<pre class="code extensibella"id="151">
+ &lt; <b>apply IH to IsE1 IsX IsR.</b>
+
+Subgoal 3:
+
+Variables: X R E2 E1 E'
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (app E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E1 *
+IsE2 : is_e E2 *
+H1 : subst X R E1 E'
+============================
+ exists E', subst X R (app E1 E2) E'
+</pre>
+<pre class="code extensibella"id="152">
+ &lt; <b>apply IH to IsE2 IsX IsR.</b>
+
+Subgoal 3:
+
+Variables: X R E2 E1 E' E'1
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (app E1 E2) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_e E1 *
+IsE2 : is_e E2 *
+H1 : subst X R E1 E'
+H2 : subst X R E2 E'1
+============================
+ exists E', subst X R (app E1 E2) E'
+</pre>
+<pre class="code extensibella"id="153">
+ &lt; <b>search.</b>
+
+Subgoal 4:
+
+Variables: X R S
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (var S) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+============================
+ exists E', subst X R (var S) E'
+</pre>
+<pre class="code extensibella"id="154">
+ &lt; <b>Or: apply is_string_eq_or_not to IsX IsE1.</b>
+
+Subgoal 4:
+
+Variables: X R S
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (var S) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+Or : X = S \/ (X = S -&gt; false)
+============================
+ exists E', subst X R (var S) E'
+</pre>
+<pre class="code extensibella"id="155">
+ &lt; <b>case Or.</b>
+
+Subgoal 4.1:
+
+Variables: R S
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (var S) @
+IsX : is_string S
+IsR : is_e R
+IsE1 : is_string S
+============================
+ exists E', subst S R (var S) E'
+</pre>
+<pre class="code extensibella"id="156">
+ &lt; <b>search.</b>
+
+Subgoal 4.2:
+
+Variables: X R S
+IH : forall X R E,
+       is_e E * -&gt; is_string X -&gt; is_e R -&gt; exists E', subst X R E E'
+IsE : is_e (var S) @
+IsX : is_string X
+IsR : is_e R
+IsE1 : is_string S
+H1 : X = S -&gt; false
+============================
+ exists E', subst X R (var S) E'
+</pre>
+<pre class="code extensibella"id="157">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="158">
+ &lt; <b>Prove mtc:shared_declarations:progress.</b>
+
+Subgoal 1:
+
+Variables: Ty2 Ty1 E1 X
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+IsE : is_e (abs X Ty1 E1)
+Ty : typeOf [] (abs X Ty1 E1) (arrowTy Ty1 Ty2) @
+Ty1 : typeOf [(X, Ty1)] E1 Ty2 *
+============================
+ value (abs X Ty1 E1) \/ (exists E', evalStep (abs X Ty1 E1) E')
+</pre>
+<pre class="code extensibella"id="159">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: Ty Ty1 E2 E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+IsE : is_e (app E1 E2)
+Ty : typeOf [] (app E1 E2) Ty @
+Ty1 : typeOf [] E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+============================
+ value (app E1 E2) \/ (exists E', evalStep (app E1 E2) E')
+</pre>
+<pre class="code extensibella"id="160">
+ &lt; <b>Is: case IsE.</b>
+
+Subgoal 2:
+
+Variables: Ty Ty1 E2 E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app E1 E2) Ty @
+Ty1 : typeOf [] E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is : is_e E1
+Is1 : is_e E2
+============================
+ value (app E1 E2) \/ (exists E', evalStep (app E1 E2) E')
+</pre>
+<pre class="code extensibella"id="161">
+ &lt; <b>Or1: apply IH to _ Ty1.</b>
+
+Subgoal 2:
+
+Variables: Ty Ty1 E2 E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app E1 E2) Ty @
+Ty1 : typeOf [] E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is : is_e E1
+Is1 : is_e E2
+Or1 : value E1 \/ (exists E', evalStep E1 E')
+============================
+ value (app E1 E2) \/ (exists E', evalStep (app E1 E2) E')
+</pre>
+<pre class="code extensibella"id="162">
+ &lt; <b>Or2: apply IH to _ Ty2.</b>
+
+Subgoal 2:
+
+Variables: Ty Ty1 E2 E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app E1 E2) Ty @
+Ty1 : typeOf [] E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is : is_e E1
+Is1 : is_e E2
+Or1 : value E1 \/ (exists E', evalStep E1 E')
+Or2 : value E2 \/ (exists E', evalStep E2 E')
+============================
+ value (app E1 E2) \/ (exists E', evalStep (app E1 E2) E')
+</pre>
+<pre class="code extensibella"id="163">
+ &lt; <b>Ev1: case Or1.</b>
+
+Subgoal 2.1:
+
+Variables: Ty Ty1 E2 E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app E1 E2) Ty @
+Ty1 : typeOf [] E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is : is_e E1
+Is1 : is_e E2
+Or2 : value E2 \/ (exists E', evalStep E2 E')
+Ev1 : value E1
+============================
+ value (app E1 E2) \/ (exists E', evalStep (app E1 E2) E')
+</pre>
+<pre class="code extensibella"id="164">
+ &lt; <b>Ev2: case Or2.</b>
+
+Subgoal 2.1.1:
+
+Variables: Ty Ty1 E2 E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app E1 E2) Ty @
+Ty1 : typeOf [] E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is : is_e E1
+Is1 : is_e E2
+Ev1 : value E1
+Ev2 : value E2
+============================
+ value (app E1 E2) \/ (exists E', evalStep (app E1 E2) E')
+</pre>
+<pre class="code extensibella"id="165">
+ &lt; <b>C: apply canonical_form to Ev1 Ty1.</b>
+
+Subgoal 2.1.1:
+
+Variables: Ty Ty1 E2 E1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app E1 E2) Ty @
+Ty1 : typeOf [] E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is : is_e E1
+Is1 : is_e E2
+Ev1 : value E1
+Ev2 : value E2
+C : canon (arrowTy Ty1 Ty) E1
+============================
+ value (app E1 E2) \/ (exists E', evalStep (app E1 E2) E')
+</pre>
+<pre class="code extensibella"id="166">
+ &lt; <b>case C.</b>
+
+Subgoal 2.1.1:
+
+Variables: Ty Ty1 E2 E3 X
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app (abs X Ty1 E3) E2) Ty @
+Ty1 : typeOf [] (abs X Ty1 E3) (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is : is_e (abs X Ty1 E3)
+Is1 : is_e E2
+Ev1 : value (abs X Ty1 E3)
+Ev2 : value E2
+============================
+ value (app (abs X Ty1 E3) E2) \/
+ (exists E', evalStep (app (abs X Ty1 E3) E2) E')
+</pre>
+<pre class="code extensibella"id="167">
+ &lt; <b>IsAbs: case Is.</b>
+
+Subgoal 2.1.1:
+
+Variables: Ty Ty1 E2 E3 X
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app (abs X Ty1 E3) E2) Ty @
+Ty1 : typeOf [] (abs X Ty1 E3) (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is1 : is_e E2
+Ev1 : value (abs X Ty1 E3)
+Ev2 : value E2
+IsAbs : is_string X
+IsAbs1 : is_ty Ty1
+IsAbs2 : is_e E3
+============================
+ value (app (abs X Ty1 E3) E2) \/
+ (exists E', evalStep (app (abs X Ty1 E3) E2) E')
+</pre>
+<pre class="code extensibella"id="168">
+ &lt; <b>apply subst_total to IsAbs2 IsAbs Is1.</b>
+
+Subgoal 2.1.1:
+
+Variables: Ty Ty1 E2 E3 X E'
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app (abs X Ty1 E3) E2) Ty @
+Ty1 : typeOf [] (abs X Ty1 E3) (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is1 : is_e E2
+Ev1 : value (abs X Ty1 E3)
+Ev2 : value E2
+IsAbs : is_string X
+IsAbs1 : is_ty Ty1
+IsAbs2 : is_e E3
+H1 : subst X E2 E3 E'
+============================
+ value (app (abs X Ty1 E3) E2) \/
+ (exists E', evalStep (app (abs X Ty1 E3) E2) E')
+</pre>
+<pre class="code extensibella"id="169">
+ &lt; <b>search.</b>
+
+Subgoal 2.1.2:
+
+Variables: Ty Ty1 E2 E1 E'
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app E1 E2) Ty @
+Ty1 : typeOf [] E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is : is_e E1
+Is1 : is_e E2
+Ev1 : value E1
+Ev2 : evalStep E2 E'
+============================
+ value (app E1 E2) \/ (exists E', evalStep (app E1 E2) E')
+</pre>
+<pre class="code extensibella"id="170">
+ &lt; <b>search.</b>
+
+Subgoal 2.2:
+
+Variables: Ty Ty1 E2 E1 E'
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (app E1 E2) Ty @
+Ty1 : typeOf [] E1 (arrowTy Ty1 Ty) *
+Ty2 : typeOf [] E2 Ty1 *
+Is : is_e E1
+Is1 : is_e E2
+Or2 : value E2 \/ (exists E', evalStep E2 E')
+Ev1 : evalStep E1 E'
+============================
+ value (app E1 E2) \/ (exists E', evalStep (app E1 E2) E')
+</pre>
+<pre class="code extensibella"id="171">
+ &lt; <b>search.</b>
+
+Subgoal 3:
+
+Variables: Ty X
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+IsE : is_e (var X)
+Ty : typeOf [] (var X) Ty @
+Ty1 : lookup [] X Ty
+============================
+ value (var X) \/ (exists E', evalStep (var X) E')
+</pre>
+<pre class="code extensibella"id="172">
+ &lt; <b>case Ty1.</b>
+
+Proof completed.
+</pre>
 </div>
 <div class="section">
 <a class="navlink" href="../description.html">Back to example home</a>

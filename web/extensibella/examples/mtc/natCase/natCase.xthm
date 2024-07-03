@@ -1,7 +1,149 @@
 Module mtc:natCase.
 
+Prove mtc:arith:fix_nat.
+
+
 Prove mtc:shared_declarations:type_preservation.
 %E-NatCase-Z
  Ty: case Ty. apply IH to _ Ty1 Ev2. search.
 %E-NatCase-S
  Ty: case Ty. apply IH to _ Ty2 Ev2. search.
+
+
+Prove mtc:shared_declarations:value_evalStep_false.
+
+
+Prove mtc:shared_declarations:subst_unique.
+%S-NatCase-Same
+ SB: case SB.
+   %S-NatCase-Same
+    apply IH to SA1 SB. apply IH to SA2 SB1. search.
+   %S-NatCase-Diff
+    apply SB to _.
+%S-NatCase-Diff
+ SB: case SB.
+   %S-NatCase-Same
+    apply SA1 to _.
+   %S-NatCase-Diff
+    apply IH to SA2 SB1. apply IH to SA3 SB2. apply IH to SA4 SB3.
+    search.
+
+
+Prove mtc:shared_declarations:evalStep_unique.
+%ES-NatCase-Step
+ EvB: case EvB.
+   %ES-NatCase-Step
+    apply IH to EvA1 EvB. search.
+   %ES-NatCase-Z
+    case EvA1.
+   %ES-NatCase-S
+    case EvA1.
+%ES-NatCase-Z
+ EvB: case EvB.
+   %ES-NatCase-Step
+    case EvB.
+   %ES-NatCase-Z
+    search.
+%ES-NatCase-S
+ EvB: case EvB.
+   %ES-NatCase-Step
+    case EvB.
+   %ES-NatCase-S
+    apply subst_unique to EvA1 EvB. search.
+
+
+Prove mtc:shared_declarations:ty_lookup.
+%T-NatCase
+ apply IH to Ty1 L. apply IH to Ty2 L.
+ apply IH to Ty3 _ with G2 = (X, natTy)::G2.
+   intros L'. L': case L'.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply L to L'1. search.
+ search.
+
+
+Prove mtc:shared_declarations:subst_preservation.
+%S-NatCase-Same
+ Ty: case Ty. apply IH to Ty S1 RTy. apply IH to Ty1 S2 RTy.
+ apply ty_lookup to Ty2 _ with G2 = (X, natTy)::TG.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      L': case L1.
+        %Lkp-Here
+         apply L to _.
+        %Lkp-Later
+         search.
+ search.
+%S-NatCase-Diff
+ Ty: case Ty. apply IH to Ty S2 RTy. apply IH to Ty1 S3 RTy.
+ Ty': apply ty_lookup to Ty2 _ with G2 = (X, XTy)::(Y, natTy)::TG.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      L': case L1.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         search.
+ apply IH to Ty' S4 RTy. search.
+
+
+Prove mtc:shared_declarations:evalStep_type_preservation.
+%ES-NatCase-Step
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%ES-NatCase-Z
+ Ty: case Ty. search.
+%ES-NatCase-S
+ Ty: case Ty. apply subst_preservation to Ty2 Ev1 _. search.
+
+
+Prove mtc:shared_declarations:canonical_form.
+
+
+Prove mtc:shared_declarations:subst_is.
+%S-NatCase-Same
+ case IsE. apply IH to _ _ S1. apply IH to _ _ S2. search.
+%S-NatCase-Diff
+ case IsE. apply IH to _ _ S2. apply IH to _ _ S3. apply IH to _ _ S4.
+ search.
+
+
+Prove mtc:shared_declarations:evalStep_is.
+%ES-NatCase-Step
+ case IsE. apply IH to _ Ev1. search.
+%ES-NatCase-Z
+ case IsE. search.
+%ES-NatCase-S
+ Is: case IsE. Is: case Is. case Is. apply subst_is to _ _ Ev1.
+ search.
+
+
+Prove mtc:shared_declarations:subst_total.
+%natCase
+ apply IH to IsE1 IsX IsR. apply IH to IsE2 IsX IsR.
+ apply IH to IsE4 IsX IsR. Or: apply is_string_eq_or_not to IsX IsE3.
+ case Or.
+   %X = S
+    search.
+   %X != S
+    search.
+
+
+Prove mtc:shared_declarations:progress.
+%T-NatCase
+ Is: case IsE. Or: apply IH to _ Ty1. Ev: case Or.
+   %value E1
+    C: apply canonical_form to Ev Ty1. case C. IsN: case Is.
+    Or: apply fix_nat to IsN. case Or.
+      %N = z
+       search.
+      %N = s N'
+       case IsN. apply subst_total to Is3 Is2 _ with R = num N'.
+       search.
+   %evalStep E1 E'
+    search.

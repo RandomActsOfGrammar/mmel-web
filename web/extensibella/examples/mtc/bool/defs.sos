@@ -61,6 +61,54 @@ valueType falseVal boolTy
 
 
 
+evalStep C C1
+------------------------------------------------- [ES-If-Step]
+evalStep ifThenElse(C, T, F) ifThenElse(C1, T, F)
+
+
+---------------------------------- [ES-If-True]
+evalStep ifThenElse(trueE, T, F) T
+
+
+----------------------------------- [ES-If-False]
+evalStep ifThenElse(falseE, T, F) F
+
+
+
+----------- [V-True]
+value trueE
+
+
+------------ [V-False]
+value falseE
+
+
+
+--------------------- [S-True]
+subst X R trueE trueE
+
+
+----------------------- [S-False]
+subst X R falseE falseE
+
+
+subst X R C C1
+subst X R T T1
+subst X R F F1
+---------------------------------------------------- [S-If]
+subst X R ifThenElse(C, T, F) ifThenElse(C1, T1, F1)
+
+
+
+------------------ [C-BoolTy-True]
+canon boolTy trueE
+
+
+------------------- [T-BoolTy-False]
+canon boolTy falseE
+
+
+
 
 
 

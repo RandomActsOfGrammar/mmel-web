@@ -7,3 +7,103 @@ Extensible_Theorem
     Ev : eval EG E V ->
     valueType V Ty
   on Ev.
+
+
+
+Extensible_Theorem
+  value_evalStep_false : forall E E',
+    V : value E ->
+    Ev : evalStep E E' ->
+    false
+  on V.
+
+
+Extensible_Theorem
+  subst_unique : forall X R E EA EB,
+    SA : subst X R E EA ->
+    SB : subst X R E EB ->
+    EA = EB
+  on SA.
+
+
+Extensible_Theorem
+  evalStep_unique : forall E EA EB,
+    EvA : evalStep E EA ->
+    EvB : evalStep E EB ->
+    EA = EB
+  on EvA.
+
+
+Extensible_Theorem
+  ty_lookup : forall G1 G2 E Ty,
+    Ty : typeOf G1 E Ty ->
+    L : (forall X XTy, lookup G1 X XTy -> lookup G2 X XTy) ->
+    typeOf G2 E Ty
+  on Ty.
+
+
+/*corollary of ty_lookup*/
+Theorem empty_ty_any : forall E Ty G,
+  typeOf [] E Ty -> typeOf G E Ty.
+intros T. backchain ty_lookup. intros L. case L.
+
+
+Extensible_Theorem
+  subst_preservation : forall X XTy TG E Ty R E',
+    Ty : typeOf ((X, XTy)::TG) E Ty ->
+    S : subst X R E E' ->
+    RTy : typeOf [] R XTy ->
+    typeOf TG E' Ty
+  on S.
+
+
+Extensible_Theorem
+  evalStep_type_preservation : forall E Ty E',
+    Ty : typeOf [] E Ty ->
+    Ev : evalStep E E' ->
+    typeOf [] E' Ty
+  on Ev.
+
+
+Extensible_Theorem
+  canonical_form : forall V Ty,
+    V : value V ->
+    Ty : typeOf [] V Ty ->
+    canon Ty V
+  on V.
+
+
+Extensible_Theorem
+  subst_is : forall X R E E',
+    IsE : is_e E ->
+    IsR : is_e R ->
+    S : subst X R E E' ->
+    is_e E'
+  on S.
+
+
+Extensible_Theorem
+  evalStep_is : forall E E',
+    IsE : is_e E ->
+    Ev : evalStep E E' ->
+    is_e E'
+  on Ev.
+
+
+Extensible_Theorem
+  subst_total : forall X R E,
+    IsE : is_e E ->
+    IsX : is_string X ->
+    IsR : is_e R ->
+    exists E', subst X R E E'
+  on IsE.
+skip. %This is a fake case we are forced into having that isn't
+      %actually part of the language.
+
+
+Extensible_Theorem
+  progress : forall E Ty,
+    IsE : is_e E ->
+    Ty : typeOf [] E Ty ->
+    value E \/ exists E', evalStep E E'
+  on Ty.

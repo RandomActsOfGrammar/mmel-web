@@ -46,6 +46,36 @@ eval G natCase(E, Z, X, S) V
 
 
 
+evalStep E E1
+------------------------------------------------- [ES-NatCase-Step]
+evalStep natCase(E, Z, X, S) natCase(E1, Z, X, S)
+
+
+----------------------------------- [ES-NatCase-Z]
+evalStep natCase(num(z), Z, X, S) Z
+
+
+subst X num(N) S S1
+--------------------------------------- [ES-NatCase-S]
+evalStep natCase(num(s(N)), Z, X, S) S1
+
+
+
+subst X R E E1
+subst X R Z Z1
+--------------------------------------------------- [S-NatCase-Same]
+subst X R natCase(E, Z, X, S) natCase(E1, Z1, X, S)
+
+
+X != Y
+subst X R E E1
+subst X R Z Z1
+subst X R S S1
+---------------------------------------------------- [S-NatCase-Diff]
+subst X R natCase(E, Z, Y, S) natCase(E1, Z1, Y, S1)
+
+
+
 
 
 
@@ -60,13 +90,164 @@ eval G natCase(E, Z, X, S) V
 <p>Click on a command or tactic to see a detailed view of its use.</p><pre class="code extensibella">
 <a class="command" href="natCase-details.html#0">Module mtc:natCase.</a>
 
-<a class="command" href="natCase-details.html#1">Prove mtc:shared_declarations:type_preservation.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(2);" id="toggleproof2">[Show Proof]</a>
-<div class="proof" id="proof2" style="display: none;">
+<a class="command" href="natCase-details.html#1">Prove mtc:arith:fix_nat.</a>
+
+
+<a class="command" href="natCase-details.html#2">Prove mtc:shared_declarations:type_preservation.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(3);" id="toggleproof3">[Show Proof]</a>
+<div class="proof" id="proof3" style="display: none;">
 <span class="comment">%E-NatCase-Z</span>
- <a class="tactic" href="natCase-details.html#2">Ty: case Ty.</a> <a class="tactic" href="natCase-details.html#3">apply IH to _ Ty1 Ev2.</a> <a class="tactic" href="natCase-details.html#4">search.</a>
+ <a class="tactic" href="natCase-details.html#3">Ty: case Ty.</a> <a class="tactic" href="natCase-details.html#4">apply IH to _ Ty1 Ev2.</a> <a class="tactic" href="natCase-details.html#5">search.</a>
 <span class="comment">%E-NatCase-S</span>
- <a class="tactic" href="natCase-details.html#5">Ty: case Ty.</a> <a class="tactic" href="natCase-details.html#6">apply IH to _ Ty2 Ev2.</a> <a class="tactic" href="natCase-details.html#7">search.</a></div>
-<a class="command" href="natCase-details.html#8"></a>
+ <a class="tactic" href="natCase-details.html#6">Ty: case Ty.</a> <a class="tactic" href="natCase-details.html#7">apply IH to _ Ty2 Ev2.</a> <a class="tactic" href="natCase-details.html#8">search.</a></div>
+
+
+<a class="command" href="natCase-details.html#9">Prove mtc:shared_declarations:value_evalStep_false.</a>
+
+
+<a class="command" href="natCase-details.html#10">Prove mtc:shared_declarations:subst_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(11);" id="toggleproof11">[Show Proof]</a>
+<div class="proof" id="proof11" style="display: none;">
+<span class="comment">%S-NatCase-Same</span>
+ <a class="tactic" href="natCase-details.html#11">SB: case SB.</a>
+   <span class="comment">%S-NatCase-Same</span>
+    <a class="tactic" href="natCase-details.html#12">apply IH to SA1 SB.</a> <a class="tactic" href="natCase-details.html#13">apply IH to SA2 SB1.</a> <a class="tactic" href="natCase-details.html#14">search.</a>
+   <span class="comment">%S-NatCase-Diff</span>
+    <a class="tactic" href="natCase-details.html#15">apply SB to _.</a>
+<span class="comment">%S-NatCase-Diff</span>
+ <a class="tactic" href="natCase-details.html#16">SB: case SB.</a>
+   <span class="comment">%S-NatCase-Same</span>
+    <a class="tactic" href="natCase-details.html#17">apply SA1 to _.</a>
+   <span class="comment">%S-NatCase-Diff</span>
+    <a class="tactic" href="natCase-details.html#18">apply IH to SA2 SB1.</a> <a class="tactic" href="natCase-details.html#19">apply IH to SA3 SB2.</a> <a class="tactic" href="natCase-details.html#20">apply IH to SA4 SB3.</a>
+    <a class="tactic" href="natCase-details.html#21">search.</a></div>
+
+
+<a class="command" href="natCase-details.html#22">Prove mtc:shared_declarations:evalStep_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(23);" id="toggleproof23">[Show Proof]</a>
+<div class="proof" id="proof23" style="display: none;">
+<span class="comment">%ES-NatCase-Step</span>
+ <a class="tactic" href="natCase-details.html#23">EvB: case EvB.</a>
+   <span class="comment">%ES-NatCase-Step</span>
+    <a class="tactic" href="natCase-details.html#24">apply IH to EvA1 EvB.</a> <a class="tactic" href="natCase-details.html#25">search.</a>
+   <span class="comment">%ES-NatCase-Z</span>
+    <a class="tactic" href="natCase-details.html#26">case EvA1.</a>
+   <span class="comment">%ES-NatCase-S</span>
+    <a class="tactic" href="natCase-details.html#27">case EvA1.</a>
+<span class="comment">%ES-NatCase-Z</span>
+ <a class="tactic" href="natCase-details.html#28">EvB: case EvB.</a>
+   <span class="comment">%ES-NatCase-Step</span>
+    <a class="tactic" href="natCase-details.html#29">case EvB.</a>
+   <span class="comment">%ES-NatCase-Z</span>
+    <a class="tactic" href="natCase-details.html#30">search.</a>
+<span class="comment">%ES-NatCase-S</span>
+ <a class="tactic" href="natCase-details.html#31">EvB: case EvB.</a>
+   <span class="comment">%ES-NatCase-Step</span>
+    <a class="tactic" href="natCase-details.html#32">case EvB.</a>
+   <span class="comment">%ES-NatCase-S</span>
+    <a class="tactic" href="natCase-details.html#33">apply subst_unique to EvA1 EvB.</a> <a class="tactic" href="natCase-details.html#34">search.</a></div>
+
+
+<a class="command" href="natCase-details.html#35">Prove mtc:shared_declarations:ty_lookup.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(36);" id="toggleproof36">[Show Proof]</a>
+<div class="proof" id="proof36" style="display: none;">
+<span class="comment">%T-NatCase</span>
+ <a class="tactic" href="natCase-details.html#36">apply IH to Ty1 L.</a> <a class="tactic" href="natCase-details.html#37">apply IH to Ty2 L.</a>
+ <a class="tactic" href="natCase-details.html#38">apply IH to Ty3 _ with G2 = (X, natTy)::G2.</a>
+   <a class="tactic" href="natCase-details.html#39">intros L'.</a> <a class="tactic" href="natCase-details.html#40">L': case L'.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="natCase-details.html#41">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="natCase-details.html#42">apply L to L'1.</a> <a class="tactic" href="natCase-details.html#43">search.</a>
+ <a class="tactic" href="natCase-details.html#44">search.</a></div>
+
+
+<a class="command" href="natCase-details.html#45">Prove mtc:shared_declarations:subst_preservation.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(46);" id="toggleproof46">[Show Proof]</a>
+<div class="proof" id="proof46" style="display: none;">
+<span class="comment">%S-NatCase-Same</span>
+ <a class="tactic" href="natCase-details.html#46">Ty: case Ty.</a> <a class="tactic" href="natCase-details.html#47">apply IH to Ty S1 RTy.</a> <a class="tactic" href="natCase-details.html#48">apply IH to Ty1 S2 RTy.</a>
+ <a class="tactic" href="natCase-details.html#49">apply ty_lookup to Ty2 _ with G2 = (X, natTy)::TG.</a>
+   <a class="tactic" href="natCase-details.html#50">intros L.</a> <a class="tactic" href="natCase-details.html#51">L: case L.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="natCase-details.html#52">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="natCase-details.html#53">L': case L1.</a>
+        <span class="comment">%Lkp-Here</span>
+         <a class="tactic" href="natCase-details.html#54">apply L to _.</a>
+        <span class="comment">%Lkp-Later</span>
+         <a class="tactic" href="natCase-details.html#55">search.</a>
+ <a class="tactic" href="natCase-details.html#56">search.</a>
+<span class="comment">%S-NatCase-Diff</span>
+ <a class="tactic" href="natCase-details.html#57">Ty: case Ty.</a> <a class="tactic" href="natCase-details.html#58">apply IH to Ty S2 RTy.</a> <a class="tactic" href="natCase-details.html#59">apply IH to Ty1 S3 RTy.</a>
+ <a class="tactic" href="natCase-details.html#60">Ty': apply ty_lookup to Ty2 _ with G2 = (X, XTy)::(Y, natTy)::TG.</a>
+   <a class="tactic" href="natCase-details.html#61">intros L.</a> <a class="tactic" href="natCase-details.html#62">L: case L.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="natCase-details.html#63">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="natCase-details.html#64">L': case L1.</a>
+        <span class="comment">%Lkp-Here</span>
+         <a class="tactic" href="natCase-details.html#65">search.</a>
+        <span class="comment">%Lkp-Later</span>
+         <a class="tactic" href="natCase-details.html#66">search.</a>
+ <a class="tactic" href="natCase-details.html#67">apply IH to Ty' S4 RTy.</a> <a class="tactic" href="natCase-details.html#68">search.</a></div>
+
+
+<a class="command" href="natCase-details.html#69">Prove mtc:shared_declarations:evalStep_type_preservation.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(70);" id="toggleproof70">[Show Proof]</a>
+<div class="proof" id="proof70" style="display: none;">
+<span class="comment">%ES-NatCase-Step</span>
+ <a class="tactic" href="natCase-details.html#70">Ty: case Ty.</a> <a class="tactic" href="natCase-details.html#71">apply IH to Ty Ev1.</a> <a class="tactic" href="natCase-details.html#72">search.</a>
+<span class="comment">%ES-NatCase-Z</span>
+ <a class="tactic" href="natCase-details.html#73">Ty: case Ty.</a> <a class="tactic" href="natCase-details.html#74">search.</a>
+<span class="comment">%ES-NatCase-S</span>
+ <a class="tactic" href="natCase-details.html#75">Ty: case Ty.</a> <a class="tactic" href="natCase-details.html#76">apply subst_preservation to Ty2 Ev1 _.</a> <a class="tactic" href="natCase-details.html#77">search.</a></div>
+
+
+<a class="command" href="natCase-details.html#78">Prove mtc:shared_declarations:canonical_form.</a>
+
+
+<a class="command" href="natCase-details.html#79">Prove mtc:shared_declarations:subst_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(80);" id="toggleproof80">[Show Proof]</a>
+<div class="proof" id="proof80" style="display: none;">
+<span class="comment">%S-NatCase-Same</span>
+ <a class="tactic" href="natCase-details.html#80">case IsE.</a> <a class="tactic" href="natCase-details.html#81">apply IH to _ _ S1.</a> <a class="tactic" href="natCase-details.html#82">apply IH to _ _ S2.</a> <a class="tactic" href="natCase-details.html#83">search.</a>
+<span class="comment">%S-NatCase-Diff</span>
+ <a class="tactic" href="natCase-details.html#84">case IsE.</a> <a class="tactic" href="natCase-details.html#85">apply IH to _ _ S2.</a> <a class="tactic" href="natCase-details.html#86">apply IH to _ _ S3.</a> <a class="tactic" href="natCase-details.html#87">apply IH to _ _ S4.</a>
+ <a class="tactic" href="natCase-details.html#88">search.</a></div>
+
+
+<a class="command" href="natCase-details.html#89">Prove mtc:shared_declarations:evalStep_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(90);" id="toggleproof90">[Show Proof]</a>
+<div class="proof" id="proof90" style="display: none;">
+<span class="comment">%ES-NatCase-Step</span>
+ <a class="tactic" href="natCase-details.html#90">case IsE.</a> <a class="tactic" href="natCase-details.html#91">apply IH to _ Ev1.</a> <a class="tactic" href="natCase-details.html#92">search.</a>
+<span class="comment">%ES-NatCase-Z</span>
+ <a class="tactic" href="natCase-details.html#93">case IsE.</a> <a class="tactic" href="natCase-details.html#94">search.</a>
+<span class="comment">%ES-NatCase-S</span>
+ <a class="tactic" href="natCase-details.html#95">Is: case IsE.</a> <a class="tactic" href="natCase-details.html#96">Is: case Is.</a> <a class="tactic" href="natCase-details.html#97">case Is.</a> <a class="tactic" href="natCase-details.html#98">apply subst_is to _ _ Ev1.</a>
+ <a class="tactic" href="natCase-details.html#99">search.</a></div>
+
+
+<a class="command" href="natCase-details.html#100">Prove mtc:shared_declarations:subst_total.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(101);" id="toggleproof101">[Show Proof]</a>
+<div class="proof" id="proof101" style="display: none;">
+<span class="comment">%natCase</span>
+ <a class="tactic" href="natCase-details.html#101">apply IH to IsE1 IsX IsR.</a> <a class="tactic" href="natCase-details.html#102">apply IH to IsE2 IsX IsR.</a>
+ <a class="tactic" href="natCase-details.html#103">apply IH to IsE4 IsX IsR.</a> <a class="tactic" href="natCase-details.html#104">Or: apply is_string_eq_or_not to IsX IsE3.</a>
+ <a class="tactic" href="natCase-details.html#105">case Or.</a>
+   <span class="comment">%X = S</span>
+    <a class="tactic" href="natCase-details.html#106">search.</a>
+   <span class="comment">%X != S</span>
+    <a class="tactic" href="natCase-details.html#107">search.</a></div>
+
+
+<a class="command" href="natCase-details.html#108">Prove mtc:shared_declarations:progress.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(109);" id="toggleproof109">[Show Proof]</a>
+<div class="proof" id="proof109" style="display: none;">
+<span class="comment">%T-NatCase</span>
+ <a class="tactic" href="natCase-details.html#109">Is: case IsE.</a> <a class="tactic" href="natCase-details.html#110">Or: apply IH to _ Ty1.</a> <a class="tactic" href="natCase-details.html#111">Ev: case Or.</a>
+   <span class="comment">%value E1</span>
+    <a class="tactic" href="natCase-details.html#112">C: apply canonical_form to Ev Ty1.</a> <a class="tactic" href="natCase-details.html#113">case C.</a> <a class="tactic" href="natCase-details.html#114">IsN: case Is.</a>
+    <a class="tactic" href="natCase-details.html#115">Or: apply fix_nat to IsN.</a> <a class="tactic" href="natCase-details.html#116">case Or.</a>
+      <span class="comment">%N = z</span>
+       <a class="tactic" href="natCase-details.html#117">search.</a>
+      <span class="comment">%N = s N'</span>
+       <a class="tactic" href="natCase-details.html#118">case IsN.</a> <a class="tactic" href="natCase-details.html#119">apply subst_total to Is3 Is2 _ with R = num N'.</a>
+       <a class="tactic" href="natCase-details.html#120">search.</a>
+   <span class="comment">%evalStep E1 E'</span>
+    <a class="tactic" href="natCase-details.html#121">search.</a></div>
+<a class="command" href="natCase-details.html#122"></a>
 </pre>
 </div>
 <div class="section">

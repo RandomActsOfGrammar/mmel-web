@@ -73,6 +73,60 @@ valueType closure(G, X, E) arrowTy(Ty1, Ty2)
 
 
 
+evalStep E1 E11
+--------------------------------- [ES-App-Step1]
+evalStep app(E1, E2) app(E11, E2)
+
+
+value E1
+evalStep E2 E21
+--------------------------------- [ES-App-Step2]
+evalStep app(E1, E2) app(E1, E21)
+
+
+value E2
+subst X E2 E1 E
+---------------------------------- [ES-App-Subst]
+evalStep app(abs(X, Ty, E1), E2) E
+
+
+
+------------------- [V-Abs]
+value abs(X, Ty, E)
+
+
+
+------------------------------------- [S-Abs-Same]
+subst X R abs(X, Ty, E) abs(X, Ty, E)
+
+
+X != Y
+subst X R E E1
+-------------------------------------- [S-Abs-Diff]
+subst X R abs(Y, Ty, E) abs(Y, Ty, E1)
+
+
+subst X R E1 E11
+subst X R E2 E21
+----------------------------------- [S-App]
+subst X R app(E1, E2) app(E11, E21)
+
+
+------------------ [S-Var-Same]
+subst X R var(X) R
+
+
+X != Y
+----------------------- [S-Var-Diff]
+subst X R var(Y) var(Y)
+
+
+
+-------------------------------------- [C-ArrowTy]
+canon arrowTy(Ty1, Ty2) abs(X, Ty1, E)
+
+
+
 
 
 
@@ -131,7 +185,209 @@ valueType closure(G, X, E) arrowTy(Ty1, Ty2)
  <a class="tactic" href="lambda-details.html#22">VTC: case VT1.</a> <a class="tactic" href="lambda-details.html#23">apply IH to _ VTC1 Ev3.</a> <a class="tactic" href="lambda-details.html#24">search.</a>
 <span class="comment">%E-Var</span>
  <a class="tactic" href="lambda-details.html#25">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#26">apply typeOfCtx_lookups to _ Ty Ev1.</a> <a class="tactic" href="lambda-details.html#27">search.</a></div>
-<a class="command" href="lambda-details.html#28"></a>
+
+
+<a class="command" href="lambda-details.html#28">Prove mtc:shared_declarations:value_evalStep_false.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(29);" id="toggleproof29">[Show Proof]</a>
+<div class="proof" id="proof29" style="display: none;">
+<span class="comment">%V-Abs</span>
+ <a class="tactic" href="lambda-details.html#29">case Ev.</a></div>
+
+
+<a class="command" href="lambda-details.html#30">Prove mtc:shared_declarations:subst_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(31);" id="toggleproof31">[Show Proof]</a>
+<div class="proof" id="proof31" style="display: none;">
+<span class="comment">%S-Abs-Same</span>
+ <a class="tactic" href="lambda-details.html#31">SB: case SB.</a>
+   <span class="comment">%S-Abs-Same</span>
+    <a class="tactic" href="lambda-details.html#32">search.</a>
+   <span class="comment">%S-Abs-Diff</span>
+    <a class="tactic" href="lambda-details.html#33">apply SB to _.</a>
+<span class="comment">%S-Abs-Diff</span>
+ <a class="tactic" href="lambda-details.html#34">SB: case SB.</a>
+   <span class="comment">%S-Abs-Same</span>
+    <a class="tactic" href="lambda-details.html#35">apply SA1 to _.</a>
+   <span class="comment">%S-Abs-Diff</span>
+    <a class="tactic" href="lambda-details.html#36">apply IH to SA2 SB1.</a> <a class="tactic" href="lambda-details.html#37">search.</a>
+<span class="comment">%S-App</span>
+ <a class="tactic" href="lambda-details.html#38">SB: case SB.</a> <a class="tactic" href="lambda-details.html#39">apply IH to SA1 SB.</a> <a class="tactic" href="lambda-details.html#40">apply IH to SA2 SB1.</a> <a class="tactic" href="lambda-details.html#41">search.</a>
+<span class="comment">%S-Var-Same</span>
+ <a class="tactic" href="lambda-details.html#42">SB: case SB.</a>
+   <span class="comment">%S-Var-Same</span>
+    <a class="tactic" href="lambda-details.html#43">search.</a>
+   <span class="comment">%S-Var-Diff</span>
+    <a class="tactic" href="lambda-details.html#44">apply SB to _.</a>
+<span class="comment">%S-Var-Diff</span>
+ <a class="tactic" href="lambda-details.html#45">SB: case SB.</a>
+   <span class="comment">%S-Var-Same</span>
+    <a class="tactic" href="lambda-details.html#46">apply SA1 to _.</a>
+   <span class="comment">%S-Var-Diff</span>
+    <a class="tactic" href="lambda-details.html#47">search.</a></div>
+
+
+<a class="command" href="lambda-details.html#48">Prove mtc:shared_declarations:evalStep_unique.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(49);" id="toggleproof49">[Show Proof]</a>
+<div class="proof" id="proof49" style="display: none;">
+<span class="comment">%ES-App-Step1</span>
+ <a class="tactic" href="lambda-details.html#49">EvB: case EvB.</a>
+   <span class="comment">%ES-App-Step1</span>
+    <a class="tactic" href="lambda-details.html#50">apply IH to EvA1 EvB.</a> <a class="tactic" href="lambda-details.html#51">search.</a>
+   <span class="comment">%ES-App-Step2</span>
+    <a class="tactic" href="lambda-details.html#52">apply value_evalStep_false to EvB EvA1.</a>
+   <span class="comment">%ES-App-Subst</span>
+    <a class="tactic" href="lambda-details.html#53">case EvA1.</a>
+<span class="comment">%ES-App-Step2</span>
+ <a class="tactic" href="lambda-details.html#54">EvB: case EvB.</a>
+   <span class="comment">%ES-App-Step1</span>
+    <a class="tactic" href="lambda-details.html#55">apply value_evalStep_false to EvA1 EvB.</a>
+   <span class="comment">%ES-App-Step2</span>
+    <a class="tactic" href="lambda-details.html#56">apply IH to EvA2 EvB1.</a> <a class="tactic" href="lambda-details.html#57">search.</a>
+   <span class="comment">%ES-App-Subst</span>
+    <a class="tactic" href="lambda-details.html#58">apply value_evalStep_false to EvB EvA2.</a>
+<span class="comment">%ES-App-Subst</span>
+ <a class="tactic" href="lambda-details.html#59">EvB: case EvB.</a>
+   <span class="comment">%ES-App-Step1</span>
+    <a class="tactic" href="lambda-details.html#60">case EvB.</a>
+   <span class="comment">%ES-App-Step2</span>
+    <a class="tactic" href="lambda-details.html#61">apply value_evalStep_false to EvA1 EvB1.</a>
+   <span class="comment">%ES-App-Subst</span>
+    <a class="tactic" href="lambda-details.html#62">apply subst_unique to EvA2 EvB1.</a> <a class="tactic" href="lambda-details.html#63">search.</a></div>
+
+
+<a class="command" href="lambda-details.html#64">Prove mtc:shared_declarations:ty_lookup.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(65);" id="toggleproof65">[Show Proof]</a>
+<div class="proof" id="proof65" style="display: none;">
+<span class="comment">%T-Abs</span>
+ <a class="tactic" href="lambda-details.html#65">apply IH to Ty1 _ with G2 = (X, Ty1)::G2.</a>
+   <a class="tactic" href="lambda-details.html#66">intros L'.</a> <a class="tactic" href="lambda-details.html#67">L': case L'.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="lambda-details.html#68">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="lambda-details.html#69">apply L to L'1.</a> <a class="tactic" href="lambda-details.html#70">search.</a>
+ <a class="tactic" href="lambda-details.html#71">search.</a>
+<span class="comment">%T-App</span>
+ <a class="tactic" href="lambda-details.html#72">apply IH to Ty1 L.</a> <a class="tactic" href="lambda-details.html#73">apply IH to Ty2 L.</a> <a class="tactic" href="lambda-details.html#74">search.</a>
+<span class="comment">%T-Var</span>
+ <a class="tactic" href="lambda-details.html#75">apply L to Ty1.</a> <a class="tactic" href="lambda-details.html#76">search.</a></div>
+
+
+<a class="command" href="lambda-details.html#77">Prove mtc:shared_declarations:subst_preservation.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(78);" id="toggleproof78">[Show Proof]</a>
+<div class="proof" id="proof78" style="display: none;">
+<span class="comment">%S-Abs-Same</span>
+ <a class="tactic" href="lambda-details.html#78">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#79">apply ty_lookup to Ty _ with G2 = (X, Ty1)::TG.</a>
+   <a class="tactic" href="lambda-details.html#80">intros L.</a> <a class="tactic" href="lambda-details.html#81">L: case L.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="lambda-details.html#82">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="lambda-details.html#83">L': case L1.</a>
+        <span class="comment">%Lkp-Here</span>
+         <a class="tactic" href="lambda-details.html#84">apply L to _.</a>
+        <span class="comment">%Lkp-Later</span>
+         <a class="tactic" href="lambda-details.html#85">search.</a>
+ <a class="tactic" href="lambda-details.html#86">search.</a>
+<span class="comment">%S-Abs-Diff</span>
+ <a class="tactic" href="lambda-details.html#87">Ty: case Ty.</a>
+ <a class="tactic" href="lambda-details.html#88">Ty': apply ty_lookup to Ty _ with G2 = (X, XTy)::(Y, Ty1)::TG.</a>
+   <a class="tactic" href="lambda-details.html#89">intros L.</a> <a class="tactic" href="lambda-details.html#90">L: case L.</a>
+     <span class="comment">%Lkp-Here</span>
+      <a class="tactic" href="lambda-details.html#91">search.</a>
+     <span class="comment">%Lkp-Later</span>
+      <a class="tactic" href="lambda-details.html#92">L': case L1.</a>
+        <span class="comment">%Lkp-Here</span>
+         <a class="tactic" href="lambda-details.html#93">search.</a>
+        <span class="comment">%Lkp-Later</span>
+         <a class="tactic" href="lambda-details.html#94">search.</a>
+ <a class="tactic" href="lambda-details.html#95">apply IH to Ty' S2 RTy.</a> <a class="tactic" href="lambda-details.html#96">search.</a>
+<span class="comment">%S-App</span>
+ <a class="tactic" href="lambda-details.html#97">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#98">apply IH to Ty S1 RTy.</a> <a class="tactic" href="lambda-details.html#99">apply IH to Ty1 S2 RTy.</a> <a class="tactic" href="lambda-details.html#100">search.</a>
+<span class="comment">%S-Var-Same</span>
+ <a class="tactic" href="lambda-details.html#101">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#102">L: case Ty.</a>
+   <span class="comment">%Lkp-Here</span>
+    <a class="tactic" href="lambda-details.html#103">backchain empty_ty_any.</a>
+   <span class="comment">%Lkp-Later</span>
+    <a class="tactic" href="lambda-details.html#104">apply L to _.</a>
+<span class="comment">%S-Var-Diff</span>
+ <a class="tactic" href="lambda-details.html#105">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#106">L: case Ty.</a>
+   <span class="comment">%Lkp-Here</span>
+    <a class="tactic" href="lambda-details.html#107">apply S1 to _.</a>
+   <span class="comment">%Lkp-Later</span>
+    <a class="tactic" href="lambda-details.html#108">search.</a></div>
+
+
+<a class="command" href="lambda-details.html#109">Prove mtc:shared_declarations:evalStep_type_preservation.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(110);" id="toggleproof110">[Show Proof]</a>
+<div class="proof" id="proof110" style="display: none;">
+<span class="comment">%ES-App-Step1</span>
+ <a class="tactic" href="lambda-details.html#110">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#111">apply IH to Ty Ev1.</a> <a class="tactic" href="lambda-details.html#112">search.</a>
+<span class="comment">%ES-App-Step2</span>
+ <a class="tactic" href="lambda-details.html#113">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#114">apply IH to Ty1 Ev2.</a> <a class="tactic" href="lambda-details.html#115">search.</a>
+<span class="comment">%ES-App-Subst</span>
+ <a class="tactic" href="lambda-details.html#116">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#117">Ty: case Ty.</a> <a class="tactic" href="lambda-details.html#118">apply subst_preservation to Ty Ev2 Ty1.</a>
+ <a class="tactic" href="lambda-details.html#119">search.</a></div>
+
+
+<a class="command" href="lambda-details.html#120">Prove mtc:shared_declarations:canonical_form.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(121);" id="toggleproof121">[Show Proof]</a>
+<div class="proof" id="proof121" style="display: none;">
+<span class="comment">%V-Abs</span>
+ <a class="tactic" href="lambda-details.html#121">case Ty.</a> <a class="tactic" href="lambda-details.html#122">search.</a></div>
+
+
+<a class="command" href="lambda-details.html#123">Prove mtc:shared_declarations:subst_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(124);" id="toggleproof124">[Show Proof]</a>
+<div class="proof" id="proof124" style="display: none;">
+<span class="comment">%S-Abs-Same</span>
+ <a class="tactic" href="lambda-details.html#124">search.</a>
+<span class="comment">%S-Abs-Diff</span>
+ <a class="tactic" href="lambda-details.html#125">Is: case IsE.</a> <a class="tactic" href="lambda-details.html#126">apply IH to _ _ S2.</a> <a class="tactic" href="lambda-details.html#127">search.</a>
+<span class="comment">%S-App</span>
+ <a class="tactic" href="lambda-details.html#128">case IsE.</a> <a class="tactic" href="lambda-details.html#129">apply IH to _ _ S1.</a> <a class="tactic" href="lambda-details.html#130">apply IH to _ _ S2.</a> <a class="tactic" href="lambda-details.html#131">search.</a>
+<span class="comment">%S-Var-Same</span>
+ <a class="tactic" href="lambda-details.html#132">search.</a>
+<span class="comment">%S-Var-Diff</span>
+ <a class="tactic" href="lambda-details.html#133">search.</a></div>
+
+
+<a class="command" href="lambda-details.html#134">Prove mtc:shared_declarations:evalStep_is.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(135);" id="toggleproof135">[Show Proof]</a>
+<div class="proof" id="proof135" style="display: none;">
+<span class="comment">%ES-App-Step1</span>
+ <a class="tactic" href="lambda-details.html#135">case IsE.</a> <a class="tactic" href="lambda-details.html#136">apply IH to _ Ev1.</a> <a class="tactic" href="lambda-details.html#137">search.</a>
+<span class="comment">%ES-App-Step2</span>
+ <a class="tactic" href="lambda-details.html#138">case IsE.</a> <a class="tactic" href="lambda-details.html#139">apply IH to _ Ev2.</a> <a class="tactic" href="lambda-details.html#140">search.</a>
+<span class="comment">%ES-App-Subst</span>
+ <a class="tactic" href="lambda-details.html#141">Is: case IsE.</a> <a class="tactic" href="lambda-details.html#142">case Is.</a> <a class="tactic" href="lambda-details.html#143">apply subst_is to _ _ Ev2.</a> <a class="tactic" href="lambda-details.html#144">search.</a></div>
+
+
+<a class="command" href="lambda-details.html#145">Prove mtc:shared_declarations:subst_total.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(146);" id="toggleproof146">[Show Proof]</a>
+<div class="proof" id="proof146" style="display: none;">
+<span class="comment">%abs</span>
+ <a class="tactic" href="lambda-details.html#146">Or: apply is_string_eq_or_not to IsX IsE1.</a> <a class="tactic" href="lambda-details.html#147">case Or.</a>
+   <span class="comment">%X = S</span>
+    <a class="tactic" href="lambda-details.html#148">search.</a>
+   <span class="comment">%X != S</span>
+    <a class="tactic" href="lambda-details.html#149">apply IH to IsE3 IsX IsR.</a> <a class="tactic" href="lambda-details.html#150">search.</a>
+<span class="comment">%app</span>
+ <a class="tactic" href="lambda-details.html#151">apply IH to IsE1 IsX IsR.</a> <a class="tactic" href="lambda-details.html#152">apply IH to IsE2 IsX IsR.</a> <a class="tactic" href="lambda-details.html#153">search.</a>
+<span class="comment">%var</span>
+ <a class="tactic" href="lambda-details.html#154">Or: apply is_string_eq_or_not to IsX IsE1.</a> <a class="tactic" href="lambda-details.html#155">case Or.</a>
+   <span class="comment">%X = S</span>
+    <a class="tactic" href="lambda-details.html#156">search.</a>
+   <span class="comment">%X != S</span>
+    <a class="tactic" href="lambda-details.html#157">search.</a></div>
+
+
+<a class="command" href="lambda-details.html#158">Prove mtc:shared_declarations:progress.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(159);" id="toggleproof159">[Show Proof]</a>
+<div class="proof" id="proof159" style="display: none;">
+<span class="comment">%T-Abs</span>
+ <a class="tactic" href="lambda-details.html#159">search.</a>
+<span class="comment">%T-App</span>
+ <a class="tactic" href="lambda-details.html#160">Is: case IsE.</a> <a class="tactic" href="lambda-details.html#161">Or1: apply IH to _ Ty1.</a> <a class="tactic" href="lambda-details.html#162">Or2: apply IH to _ Ty2.</a>
+ <a class="tactic" href="lambda-details.html#163">Ev1: case Or1.</a>
+   <span class="comment">%value E1</span>
+    <a class="tactic" href="lambda-details.html#164">Ev2: case Or2.</a>
+      <span class="comment">%value E2</span>
+       <a class="tactic" href="lambda-details.html#165">C: apply canonical_form to Ev1 Ty1.</a> <a class="tactic" href="lambda-details.html#166">case C.</a> <a class="tactic" href="lambda-details.html#167">IsAbs: case Is.</a>
+       <a class="tactic" href="lambda-details.html#168">apply subst_total to IsAbs2 IsAbs Is1.</a> <a class="tactic" href="lambda-details.html#169">search.</a>
+      <span class="comment">%evalStep E2 E'</span>
+       <a class="tactic" href="lambda-details.html#170">search.</a>
+   <span class="comment">%evalStep E1 E'</span>
+    <a class="tactic" href="lambda-details.html#171">search.</a>
+<span class="comment">%T-Var</span>
+ <a class="tactic" href="lambda-details.html#172">case Ty1.</a></div>
+<a class="command" href="lambda-details.html#173"></a>
 </pre>
 </div>
 <div class="section">

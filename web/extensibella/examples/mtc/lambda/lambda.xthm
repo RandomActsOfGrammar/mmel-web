@@ -26,3 +26,194 @@ Prove mtc:shared_declarations:type_preservation.
  VTC: case VT1. apply IH to _ VTC1 Ev3. search.
 %E-Var
  Ty: case Ty. apply typeOfCtx_lookups to _ Ty Ev1. search.
+
+
+Prove mtc:shared_declarations:value_evalStep_false.
+%V-Abs
+ case Ev.
+
+
+Prove mtc:shared_declarations:subst_unique.
+%S-Abs-Same
+ SB: case SB.
+   %S-Abs-Same
+    search.
+   %S-Abs-Diff
+    apply SB to _.
+%S-Abs-Diff
+ SB: case SB.
+   %S-Abs-Same
+    apply SA1 to _.
+   %S-Abs-Diff
+    apply IH to SA2 SB1. search.
+%S-App
+ SB: case SB. apply IH to SA1 SB. apply IH to SA2 SB1. search.
+%S-Var-Same
+ SB: case SB.
+   %S-Var-Same
+    search.
+   %S-Var-Diff
+    apply SB to _.
+%S-Var-Diff
+ SB: case SB.
+   %S-Var-Same
+    apply SA1 to _.
+   %S-Var-Diff
+    search.
+
+
+Prove mtc:shared_declarations:evalStep_unique.
+%ES-App-Step1
+ EvB: case EvB.
+   %ES-App-Step1
+    apply IH to EvA1 EvB. search.
+   %ES-App-Step2
+    apply value_evalStep_false to EvB EvA1.
+   %ES-App-Subst
+    case EvA1.
+%ES-App-Step2
+ EvB: case EvB.
+   %ES-App-Step1
+    apply value_evalStep_false to EvA1 EvB.
+   %ES-App-Step2
+    apply IH to EvA2 EvB1. search.
+   %ES-App-Subst
+    apply value_evalStep_false to EvB EvA2.
+%ES-App-Subst
+ EvB: case EvB.
+   %ES-App-Step1
+    case EvB.
+   %ES-App-Step2
+    apply value_evalStep_false to EvA1 EvB1.
+   %ES-App-Subst
+    apply subst_unique to EvA2 EvB1. search.
+
+
+Prove mtc:shared_declarations:ty_lookup.
+%T-Abs
+ apply IH to Ty1 _ with G2 = (X, Ty1)::G2.
+   intros L'. L': case L'.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      apply L to L'1. search.
+ search.
+%T-App
+ apply IH to Ty1 L. apply IH to Ty2 L. search.
+%T-Var
+ apply L to Ty1. search.
+
+
+Prove mtc:shared_declarations:subst_preservation.
+%S-Abs-Same
+ Ty: case Ty. apply ty_lookup to Ty _ with G2 = (X, Ty1)::TG.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      L': case L1.
+        %Lkp-Here
+         apply L to _.
+        %Lkp-Later
+         search.
+ search.
+%S-Abs-Diff
+ Ty: case Ty.
+ Ty': apply ty_lookup to Ty _ with G2 = (X, XTy)::(Y, Ty1)::TG.
+   intros L. L: case L.
+     %Lkp-Here
+      search.
+     %Lkp-Later
+      L': case L1.
+        %Lkp-Here
+         search.
+        %Lkp-Later
+         search.
+ apply IH to Ty' S2 RTy. search.
+%S-App
+ Ty: case Ty. apply IH to Ty S1 RTy. apply IH to Ty1 S2 RTy. search.
+%S-Var-Same
+ Ty: case Ty. L: case Ty.
+   %Lkp-Here
+    backchain empty_ty_any.
+   %Lkp-Later
+    apply L to _.
+%S-Var-Diff
+ Ty: case Ty. L: case Ty.
+   %Lkp-Here
+    apply S1 to _.
+   %Lkp-Later
+    search.
+
+
+Prove mtc:shared_declarations:evalStep_type_preservation.
+%ES-App-Step1
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%ES-App-Step2
+ Ty: case Ty. apply IH to Ty1 Ev2. search.
+%ES-App-Subst
+ Ty: case Ty. Ty: case Ty. apply subst_preservation to Ty Ev2 Ty1.
+ search.
+
+
+Prove mtc:shared_declarations:canonical_form.
+%V-Abs
+ case Ty. search.
+
+
+Prove mtc:shared_declarations:subst_is.
+%S-Abs-Same
+ search.
+%S-Abs-Diff
+ Is: case IsE. apply IH to _ _ S2. search.
+%S-App
+ case IsE. apply IH to _ _ S1. apply IH to _ _ S2. search.
+%S-Var-Same
+ search.
+%S-Var-Diff
+ search.
+
+
+Prove mtc:shared_declarations:evalStep_is.
+%ES-App-Step1
+ case IsE. apply IH to _ Ev1. search.
+%ES-App-Step2
+ case IsE. apply IH to _ Ev2. search.
+%ES-App-Subst
+ Is: case IsE. case Is. apply subst_is to _ _ Ev2. search.
+
+
+Prove mtc:shared_declarations:subst_total.
+%abs
+ Or: apply is_string_eq_or_not to IsX IsE1. case Or.
+   %X = S
+    search.
+   %X != S
+    apply IH to IsE3 IsX IsR. search.
+%app
+ apply IH to IsE1 IsX IsR. apply IH to IsE2 IsX IsR. search.
+%var
+ Or: apply is_string_eq_or_not to IsX IsE1. case Or.
+   %X = S
+    search.
+   %X != S
+    search.
+
+
+Prove mtc:shared_declarations:progress.
+%T-Abs
+ search.
+%T-App
+ Is: case IsE. Or1: apply IH to _ Ty1. Or2: apply IH to _ Ty2.
+ Ev1: case Or1.
+   %value E1
+    Ev2: case Or2.
+      %value E2
+       C: apply canonical_form to Ev1 Ty1. case C. IsAbs: case Is.
+       apply subst_total to IsAbs2 IsAbs Is1. search.
+      %evalStep E2 E'
+       search.
+   %evalStep E1 E'
+    search.
+%T-Var
+ case Ty1.

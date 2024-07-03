@@ -9,3 +9,124 @@ Prove mtc:shared_declarations:type_preservation.
  Ty: case Ty. apply IH to _ Ty1 Ev2. search.
 %E-IfThenElse-False
  Ty: case Ty. apply IH to _ Ty2 Ev2. search.
+
+
+Prove mtc:shared_declarations:value_evalStep_false.
+%V-True
+ case Ev.
+%V-False
+ case Ev.
+
+
+Prove mtc:shared_declarations:subst_unique.
+%S-True
+ case SB. search.
+%S-False
+ case SB. search.
+%S-If
+ SB: case SB. apply IH to SA1 SB. apply IH to SA2 SB1.
+ apply IH to SA3 SB2. search.
+
+
+Prove mtc:shared_declarations:evalStep_unique.
+%ES-If-Step
+ EvB: case EvB.
+   %ES-If-Step
+    apply IH to EvA1 EvB. search.
+   %ES-If-True
+    case EvA1.
+   %ES-If-False
+    case EvA1.
+%ES-If-True
+ EvB: case EvB.
+   %ES-If-Step
+    case EvB.
+   %ES-If-True
+    search.
+%ES-If-False
+ EvB: case EvB.
+   %ES-If-Step
+    case EvB.
+   %ES-If-False
+    search.
+
+
+Prove mtc:shared_declarations:ty_lookup.
+%T-True
+ search.
+%T-False
+ search.
+%T-IfThenElse
+ apply IH to Ty1 L. apply IH to Ty2 L. apply IH to Ty3 L. search.
+
+
+Prove mtc:shared_declarations:subst_preservation.
+%S-True
+ case Ty. search.
+%S-False
+ case Ty. search.
+%S-If
+ Ty: case Ty. apply IH to Ty S1 RTy. apply IH to Ty1 S2 RTy.
+ apply IH to Ty2 S3 RTy. search.
+
+
+Prove mtc:shared_declarations:evalStep_type_preservation.
+%ES-If-Step
+ Ty: case Ty. apply IH to Ty Ev1. search.
+%IS-If-True
+ case Ty. search.
+%ES-If-False
+ case Ty. search.
+
+
+Prove mtc:shared_declarations:canonical_form.
+%C-BoolTy-True
+ case Ty. search.
+%C-BoolTy-False
+ case Ty. search.
+
+
+Prove mtc:shared_declarations:subst_is.
+%S-True
+ search.
+%S-False
+ search.
+%S-If
+ case IsE. apply IH to _ _ S1. apply IH to _ _ S2. apply IH to _ _ S3.
+ search.
+
+
+Prove mtc:shared_declarations:evalStep_is.
+%ES-If-Step
+ case IsE. apply IH to _ Ev1. search.
+%ES-If-True
+ case IsE. search.
+%ES-If-False
+ case IsE. search.
+
+
+Prove mtc:shared_declarations:subst_total.
+%trueE
+ search.
+%falseE
+ search.
+%ifThenElse
+ apply IH to IsE1 IsX IsR. apply IH to IsE2 IsX IsR.
+ apply IH to IsE3 IsX IsR. search.
+
+
+Prove mtc:shared_declarations:progress.
+%T-True
+ search.
+%T-False
+ search.
+%T-IfThenElse
+ case IsE. Or: apply IH to _ Ty1. E: case Or.
+   %value C
+    C: apply canonical_form to E Ty1. case C.
+      %C-BoolTy-True
+       search.
+      %C-BoolTy-False
+       search.
+   %evalStep C E'
+    search.
