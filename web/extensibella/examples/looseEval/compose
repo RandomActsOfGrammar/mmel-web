@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. looseEval:host
+extensibella --check --compile host/host.xthm
+
+sterling --extensibella -I .. looseEval:ascription
+extensibella --check --compile ascription/ascription.xthm
+
+sterling --extensibella -I .. looseEval:assert
+extensibella --check --compile assert/assert.xthm
+
+sterling --extensibella -I .. looseEval:condExpr
+extensibella --check --compile condExpr/condExpr.xthm
+
+sterling --extensibella -I .. looseEval:list
+extensibella --check --compile list/list.xthm
+
+sterling --extensibella -I .. looseEval:security
+extensibella --check --compile security/security.xthm
+
+sterling --extensibella -I .. looseEval:translation
+extensibella --check --compile translation/translation.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module looseEval:composed\nBuilds on looseEval:ascription\nBuilds on looseEval:assert\nBuilds on looseEval:condExpr\nBuilds on looseEval:list\nBuilds on looseEval:security\nBuilds on looseEval:translation\n" > composed/composed.sos
+sterling --extensibella -I .. looseEval:composed
+sterling --extensibellaFull -I .. looseEval:composed
+extensibella --generate looseEval:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm looseEval:composed host/host.xthm ascription/ascription.xthm assert/assert.xthm condExpr/condExpr.xthm list/list.xthm security/security.xthm translation/translation.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm

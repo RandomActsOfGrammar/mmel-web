@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. unsat_proofs:lrat
+extensibella --check --compile lrat/lrat.xthm
+
+sterling --extensibella -I .. unsat_proofs:clauses
+extensibella --check --compile clauses/clauses.xthm
+
+sterling --extensibella -I .. unsat_proofs:drat
+extensibella --check --compile drat/drat.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module unsat_proofs:composed\nBuilds on unsat_proofs:lrat\nBuilds on unsat_proofs:clauses\nBuilds on unsat_proofs:drat\n" > composed/composed.sos
+sterling --extensibella -I .. unsat_proofs:composed
+sterling --extensibellaFull -I .. unsat_proofs:composed
+extensibella --generate unsat_proofs:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm unsat_proofs:composed lrat/lrat.xthm clauses/clauses.xthm drat/drat.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm

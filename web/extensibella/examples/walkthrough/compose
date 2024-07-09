@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. walkthrough:host
+extensibella --check --compile host/host.xthm
+
+sterling --extensibella -I .. walkthrough:let
+extensibella --check --compile let/let.xthm
+
+sterling --extensibella -I .. walkthrough:big_step
+extensibella --check --compile big_step/big_step.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module walkthrough:composed\nBuilds on walkthrough:let\nBuilds on walkthrough:big_step\n" > composed/composed.sos
+sterling --extensibella -I .. walkthrough:composed
+sterling --extensibellaFull -I .. walkthrough:composed
+extensibella --generate walkthrough:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm walkthrough:composed host/host.xthm let/let.xthm big_step/big_step.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm

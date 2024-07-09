@@ -127,17 +127,27 @@ Prove mtc:shared_declarations:subst_total.
  apply IH to IsE1 IsX IsR. apply IH to IsE2 IsX IsR. search.
 
 
+Theorem plusRel_total : forall N1 N2,
+  is_nat N1 -> exists N, plusRel N1 N2 N.
+induction on 1. intros Is. Or: apply fix_nat to Is. case Or.
+  %z
+   search.
+  %s
+   Is: case Is. apply IH to Is with N2 = N2. search.
+
+
 Prove mtc:shared_declarations:progress.
 %T-Num
  search.
 %T-Plus
- case IsE. Or1: apply IH to _ Ty1. Or2: apply IH to _ Ty2.
+ Is: case IsE. Or1: apply IH to _ Ty1. Or2: apply IH to _ Ty2.
  Ev1: case Or1.
    %value E1
     Ev2: case Or2.
       %value E2
        C1: apply canonical_form to Ev1 Ty1. case C1.
-       C2: apply canonical_form to Ev2 Ty2. case C2. skip.
+       C2: apply canonical_form to Ev2 Ty2. case C2.
+       Is: case Is. apply plusRel_total to Is with N2 = N1. search.
       %eval E2 E'
        search.
    %eval E1 E'

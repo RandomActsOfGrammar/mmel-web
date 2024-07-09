@@ -1,0 +1,40 @@
+#!/bin/bash
+
+dirs=( "nonExtensible" "walkthrough" "library" "simple_imp" "lambda_calculus" "stlc"
+       "unsat_proofs" "looseEval" "matchEval" "exactEval" "soundX" "mtc")
+
+
+### Find the location of Sterling's standard library theorem file to
+### pass to the composition scripts
+STERLING_SCRIPT_LOCATION="$HOME/bin/sterling"
+#These next lines modified from the Silver script
+# ~/bin/sterling should be a link to somewhere, find out where!
+STERLING_EXECUTABLE=$(readlink -f $STERLING_SCRIPT_LOCATION)
+#Set Sterling's home
+STERLING_HOME=${STERLING_EXECUTABLE%"sterling"}
+#Set Sterling's standard library .xthm file location
+STERLING_STDLIB_LOC=$STERLING_HOME/stdLib/stdLib.xthm
+
+
+### Go through all the examples and compose and check them
+for dir in "${dirs[@]}"
+do
+    cd "$dir"
+    ./compose $STERLING_STDLIB_LOC
+    #check for failure to stop here
+    if [[ $? -ne 0 ]] ; then
+        echo "Error processing $dir; build failed"
+        exit 1
+    fi
+    #display the successful completion
+    echo ""
+    echo ""
+    echo "============================================================"
+    echo "************************************************************"
+    echo "Composed $dir"
+    echo "************************************************************"
+    echo "============================================================"
+    echo ""
+    echo ""
+    cd ..
+done

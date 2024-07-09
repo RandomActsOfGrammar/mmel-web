@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. exactEval:host
+extensibella --check --compile host/host.xthm
+
+sterling --extensibella -I .. exactEval:ascription
+extensibella --check --compile ascription/ascription.xthm
+
+sterling --extensibella -I .. exactEval:assert
+extensibella --check --compile assert/assert.xthm
+
+sterling --extensibella -I .. exactEval:condExpr
+extensibella --check --compile condExpr/condExpr.xthm
+
+sterling --extensibella -I .. exactEval:list
+extensibella --check --compile list/list.xthm
+
+sterling --extensibella -I .. exactEval:security
+extensibella --check --compile security/security.xthm
+
+sterling --extensibella -I .. exactEval:translation
+extensibella --check --compile translation/translation.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module exactEval:composed\nBuilds on exactEval:ascription\nBuilds on exactEval:assert\nBuilds on exactEval:condExpr\nBuilds on exactEval:list\nBuilds on exactEval:security\nBuilds on exactEval:translation\n" > composed/composed.sos
+sterling --extensibella -I .. exactEval:composed
+sterling --extensibellaFull -I .. exactEval:composed
+extensibella --generate exactEval:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm exactEval:composed host/host.xthm ascription/ascription.xthm assert/assert.xthm condExpr/condExpr.xthm list/list.xthm security/security.xthm translation/translation.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm

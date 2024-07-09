@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. matchEval:host
+extensibella --check --compile host/host.xthm
+
+sterling --extensibella -I .. matchEval:ascription
+extensibella --check --compile ascription/ascription.xthm
+
+sterling --extensibella -I .. matchEval:assert
+extensibella --check --compile assert/assert.xthm
+
+sterling --extensibella -I .. matchEval:wrapper
+extensibella --check --compile wrapper/wrapper.xthm
+
+sterling --extensibella -I .. matchEval:list
+extensibella --check --compile list/list.xthm
+
+sterling --extensibella -I .. matchEval:security
+extensibella --check --compile security/security.xthm
+
+sterling --extensibella -I .. matchEval:translation
+extensibella --check --compile translation/translation.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module matchEval:composed\nBuilds on matchEval:ascription\nBuilds on matchEval:assert\nBuilds on matchEval:wrapper\nBuilds on matchEval:list\nBuilds on matchEval:security\nBuilds on matchEval:translation\n" > composed/composed.sos
+sterling --extensibella -I .. matchEval:composed
+sterling --extensibellaFull -I .. matchEval:composed
+extensibella --generate matchEval:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm matchEval:composed host/host.xthm ascription/ascription.xthm assert/assert.xthm wrapper/wrapper.xthm list/list.xthm security/security.xthm translation/translation.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm
