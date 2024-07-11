@@ -18,8 +18,16 @@ Options for this script:
 If the Extensibella and/or Sterling directories are given, it tries to
 go to them and build the distribution tarballs and copy them into the
 website.  If they are not given, it tries to find the directories as
-siblings of this repository.  Messages are printed at the end if the
-tarballs are not built and added to the web directory.
+siblings of this repository, that is, it expects the directory
+structure to be
+```
+<parent dir>
+  |- extensibella
+  |- sterling
+  |- mmel-web
+```
+Messages are printed at the end if the tarballs are not built and
+added to the web directory.
 
 To move the website to the hosting directory, run
 ```
