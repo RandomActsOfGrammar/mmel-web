@@ -1233,6 +1233,90 @@ H2 : subst X R E2 E'1
 Proof completed.
 </pre>
 <pre class="code extensibella"id="98">
+ &lt; <b>Theorem plusRel_total :
+     forall N1 N2, is_nat N1 -&gt; exists N, plusRel N1 N2 N.</b>
+
+============================
+ forall N1 N2, is_nat N1 -&gt; exists N, plusRel N1 N2 N
+</pre>
+<pre class="code extensibella"id="99">
+ &lt; <b>induction on 1.</b>
+
+IH : forall N1 N2, is_nat N1 * -&gt; exists N, plusRel N1 N2 N
+============================
+ forall N1 N2, is_nat N1 @ -&gt; exists N, plusRel N1 N2 N
+</pre>
+<pre class="code extensibella"id="100">
+ &lt; <b>intros Is.</b>
+
+Variables: N1 N2
+IH : forall N1 N2, is_nat N1 * -&gt; exists N, plusRel N1 N2 N
+Is : is_nat N1 @
+============================
+ exists N, plusRel N1 N2 N
+</pre>
+<pre class="code extensibella"id="101">
+ &lt; <b>Or: apply fix_nat to Is.</b>
+
+Variables: N1 N2
+IH : forall N1 N2, is_nat N1 * -&gt; exists N, plusRel N1 N2 N
+Is : is_nat N1 @
+Or : N1 = z \/ (exists N', N1 = s N')
+============================
+ exists N, plusRel N1 N2 N
+</pre>
+<pre class="code extensibella"id="102">
+ &lt; <b>case Or.</b>
+
+Subgoal 1:
+
+Variables: N2
+IH : forall N1 N2, is_nat N1 * -&gt; exists N, plusRel N1 N2 N
+Is : is_nat z @
+============================
+ exists N, plusRel z N2 N
+</pre>
+<pre class="code extensibella"id="103">
+ &lt; <b>search.</b>
+
+Subgoal 2:
+
+Variables: N2 N'
+IH : forall N1 N2, is_nat N1 * -&gt; exists N, plusRel N1 N2 N
+Is : is_nat (s N') @
+============================
+ exists N, plusRel (s N') N2 N
+</pre>
+<pre class="code extensibella"id="104">
+ &lt; <b>Is: case Is.</b>
+
+Subgoal 2:
+
+Variables: N2 N'
+IH : forall N1 N2, is_nat N1 * -&gt; exists N, plusRel N1 N2 N
+Is : is_nat N' *
+============================
+ exists N, plusRel (s N') N2 N
+</pre>
+<pre class="code extensibella"id="105">
+ &lt; <b>apply IH to Is with
+     N2 = N2.</b>
+
+Subgoal 2:
+
+Variables: N2 N' N
+IH : forall N1 N2, is_nat N1 * -&gt; exists N, plusRel N1 N2 N
+Is : is_nat N' *
+H1 : plusRel N' N2 N
+============================
+ exists N, plusRel (s N') N2 N
+</pre>
+<pre class="code extensibella"id="106">
+ &lt; <b>search.</b>
+
+Proof completed.
+</pre>
+<pre class="code extensibella"id="107">
  &lt; <b>Prove mtc:shared_declarations:progress.</b>
 
 Subgoal 1:
@@ -1245,7 +1329,7 @@ Ty : typeOf [] (num N) natTy @
 ============================
  value (num N) \/ (exists E', evalStep (num N) E')
 </pre>
-<pre class="code extensibella"id="99">
+<pre class="code extensibella"id="108">
  &lt; <b>search.</b>
 
 Subgoal 2:
@@ -1260,8 +1344,8 @@ Ty2 : typeOf [] E2 natTy *
 ============================
  value (plus E1 E2) \/ (exists E', evalStep (plus E1 E2) E')
 </pre>
-<pre class="code extensibella"id="100">
- &lt; <b>case IsE.</b>
+<pre class="code extensibella"id="109">
+ &lt; <b>Is: case IsE.</b>
 
 Subgoal 2:
 
@@ -1271,12 +1355,12 @@ IH : forall E Ty,
 Ty : typeOf [] (plus E1 E2) natTy @
 Ty1 : typeOf [] E1 natTy *
 Ty2 : typeOf [] E2 natTy *
-H1 : is_e E1
-H2 : is_e E2
+Is : is_e E1
+Is1 : is_e E2
 ============================
  value (plus E1 E2) \/ (exists E', evalStep (plus E1 E2) E')
 </pre>
-<pre class="code extensibella"id="101">
+<pre class="code extensibella"id="110">
  &lt; <b>Or1: apply IH to _ Ty1.</b>
 
 Subgoal 2:
@@ -1287,13 +1371,13 @@ IH : forall E Ty,
 Ty : typeOf [] (plus E1 E2) natTy @
 Ty1 : typeOf [] E1 natTy *
 Ty2 : typeOf [] E2 natTy *
-H1 : is_e E1
-H2 : is_e E2
+Is : is_e E1
+Is1 : is_e E2
 Or1 : value E1 \/ (exists E', evalStep E1 E')
 ============================
  value (plus E1 E2) \/ (exists E', evalStep (plus E1 E2) E')
 </pre>
-<pre class="code extensibella"id="102">
+<pre class="code extensibella"id="111">
  &lt; <b>Or2: apply IH to _ Ty2.</b>
 
 Subgoal 2:
@@ -1304,14 +1388,14 @@ IH : forall E Ty,
 Ty : typeOf [] (plus E1 E2) natTy @
 Ty1 : typeOf [] E1 natTy *
 Ty2 : typeOf [] E2 natTy *
-H1 : is_e E1
-H2 : is_e E2
+Is : is_e E1
+Is1 : is_e E2
 Or1 : value E1 \/ (exists E', evalStep E1 E')
 Or2 : value E2 \/ (exists E', evalStep E2 E')
 ============================
  value (plus E1 E2) \/ (exists E', evalStep (plus E1 E2) E')
 </pre>
-<pre class="code extensibella"id="103">
+<pre class="code extensibella"id="112">
  &lt; <b>Ev1: case Or1.</b>
 
 Subgoal 2.1:
@@ -1322,14 +1406,14 @@ IH : forall E Ty,
 Ty : typeOf [] (plus E1 E2) natTy @
 Ty1 : typeOf [] E1 natTy *
 Ty2 : typeOf [] E2 natTy *
-H1 : is_e E1
-H2 : is_e E2
+Is : is_e E1
+Is1 : is_e E2
 Or2 : value E2 \/ (exists E', evalStep E2 E')
 Ev1 : value E1
 ============================
  value (plus E1 E2) \/ (exists E', evalStep (plus E1 E2) E')
 </pre>
-<pre class="code extensibella"id="104">
+<pre class="code extensibella"id="113">
  &lt; <b>Ev2: case Or2.</b>
 
 Subgoal 2.1.1:
@@ -1340,14 +1424,14 @@ IH : forall E Ty,
 Ty : typeOf [] (plus E1 E2) natTy @
 Ty1 : typeOf [] E1 natTy *
 Ty2 : typeOf [] E2 natTy *
-H1 : is_e E1
-H2 : is_e E2
+Is : is_e E1
+Is1 : is_e E2
 Ev1 : value E1
 Ev2 : value E2
 ============================
  value (plus E1 E2) \/ (exists E', evalStep (plus E1 E2) E')
 </pre>
-<pre class="code extensibella"id="105">
+<pre class="code extensibella"id="114">
  &lt; <b>C1: apply canonical_form to Ev1 Ty1.</b>
 
 Subgoal 2.1.1:
@@ -1358,15 +1442,15 @@ IH : forall E Ty,
 Ty : typeOf [] (plus E1 E2) natTy @
 Ty1 : typeOf [] E1 natTy *
 Ty2 : typeOf [] E2 natTy *
-H1 : is_e E1
-H2 : is_e E2
+Is : is_e E1
+Is1 : is_e E2
 Ev1 : value E1
 Ev2 : value E2
 C1 : canon natTy E1
 ============================
  value (plus E1 E2) \/ (exists E', evalStep (plus E1 E2) E')
 </pre>
-<pre class="code extensibella"id="106">
+<pre class="code extensibella"id="115">
  &lt; <b>case C1.</b>
 
 Subgoal 2.1.1:
@@ -1377,14 +1461,14 @@ IH : forall E Ty,
 Ty : typeOf [] (plus (num N) E2) natTy @
 Ty1 : typeOf [] (num N) natTy *
 Ty2 : typeOf [] E2 natTy *
-H1 : is_e (num N)
-H2 : is_e E2
+Is : is_e (num N)
+Is1 : is_e E2
 Ev1 : value (num N)
 Ev2 : value E2
 ============================
  value (plus (num N) E2) \/ (exists E', evalStep (plus (num N) E2) E')
 </pre>
-<pre class="code extensibella"id="107">
+<pre class="code extensibella"id="116">
  &lt; <b>C2: apply canonical_form to Ev2 Ty2.</b>
 
 Subgoal 2.1.1:
@@ -1395,15 +1479,15 @@ IH : forall E Ty,
 Ty : typeOf [] (plus (num N) E2) natTy @
 Ty1 : typeOf [] (num N) natTy *
 Ty2 : typeOf [] E2 natTy *
-H1 : is_e (num N)
-H2 : is_e E2
+Is : is_e (num N)
+Is1 : is_e E2
 Ev1 : value (num N)
 Ev2 : value E2
 C2 : canon natTy E2
 ============================
  value (plus (num N) E2) \/ (exists E', evalStep (plus (num N) E2) E')
 </pre>
-<pre class="code extensibella"id="108">
+<pre class="code extensibella"id="117">
  &lt; <b>case C2.</b>
 
 Subgoal 2.1.1:
@@ -1414,16 +1498,56 @@ IH : forall E Ty,
 Ty : typeOf [] (plus (num N) (num N1)) natTy @
 Ty1 : typeOf [] (num N) natTy *
 Ty2 : typeOf [] (num N1) natTy *
-H1 : is_e (num N)
-H2 : is_e (num N1)
+Is : is_e (num N)
+Is1 : is_e (num N1)
 Ev1 : value (num N)
 Ev2 : value (num N1)
 ============================
  value (plus (num N) (num N1)) \/
  (exists E', evalStep (plus (num N) (num N1)) E')
 </pre>
-<pre class="code extensibella"id="109">
- &lt; <b>skip.</b>
+<pre class="code extensibella"id="118">
+ &lt; <b>Is: case Is.</b>
+
+Subgoal 2.1.1:
+
+Variables: N N1
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (plus (num N) (num N1)) natTy @
+Ty1 : typeOf [] (num N) natTy *
+Ty2 : typeOf [] (num N1) natTy *
+Is1 : is_e (num N1)
+Ev1 : value (num N)
+Ev2 : value (num N1)
+Is : is_nat N
+============================
+ value (plus (num N) (num N1)) \/
+ (exists E', evalStep (plus (num N) (num N1)) E')
+</pre>
+<pre class="code extensibella"id="119">
+ &lt; <b>apply plusRel_total to Is with
+     N2 = N1.</b>
+
+Subgoal 2.1.1:
+
+Variables: N N1 N2
+IH : forall E Ty,
+       is_e E -&gt; typeOf [] E Ty * -&gt; value E \/ (exists E', evalStep E E')
+Ty : typeOf [] (plus (num N) (num N1)) natTy @
+Ty1 : typeOf [] (num N) natTy *
+Ty2 : typeOf [] (num N1) natTy *
+Is1 : is_e (num N1)
+Ev1 : value (num N)
+Ev2 : value (num N1)
+Is : is_nat N
+H1 : plusRel N N1 N2
+============================
+ value (plus (num N) (num N1)) \/
+ (exists E', evalStep (plus (num N) (num N1)) E')
+</pre>
+<pre class="code extensibella"id="120">
+ &lt; <b>search.</b>
 
 Subgoal 2.1.2:
 
@@ -1433,14 +1557,14 @@ IH : forall E Ty,
 Ty : typeOf [] (plus E1 E2) natTy @
 Ty1 : typeOf [] E1 natTy *
 Ty2 : typeOf [] E2 natTy *
-H1 : is_e E1
-H2 : is_e E2
+Is : is_e E1
+Is1 : is_e E2
 Ev1 : value E1
 Ev2 : evalStep E2 E'
 ============================
  value (plus E1 E2) \/ (exists E', evalStep (plus E1 E2) E')
 </pre>
-<pre class="code extensibella"id="110">
+<pre class="code extensibella"id="121">
  &lt; <b>search.</b>
 
 Subgoal 2.2:
@@ -1451,14 +1575,14 @@ IH : forall E Ty,
 Ty : typeOf [] (plus E1 E2) natTy @
 Ty1 : typeOf [] E1 natTy *
 Ty2 : typeOf [] E2 natTy *
-H1 : is_e E1
-H2 : is_e E2
+Is : is_e E1
+Is1 : is_e E2
 Or2 : value E2 \/ (exists E', evalStep E2 E')
 Ev1 : evalStep E1 E'
 ============================
  value (plus E1 E2) \/ (exists E', evalStep (plus E1 E2) E')
 </pre>
-<pre class="code extensibella"id="111">
+<pre class="code extensibella"id="122">
  &lt; <b>search.</b>
 
 Proof completed.

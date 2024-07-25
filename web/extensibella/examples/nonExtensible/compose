@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. nonExtensible:lists
+extensibella --check --compile lists/thms.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module nonExtensible:composed\nBuilds on nonExtensible:lists\n" > composed/composed.sos
+sterling --extensibella -I .. nonExtensible:composed
+sterling --extensibellaFull -I .. nonExtensible:composed
+extensibella --generate nonExtensible:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm nonExtensible:composed lists/thms.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm

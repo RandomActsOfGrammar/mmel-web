@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. library:host
+extensibella --check --compile host/host.xthm
+
+sterling --extensibella -I .. library:list
+extensibella --check --compile list/list.xthm
+
+sterling --extensibella -I .. library:security
+extensibella --check --compile security/security.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module library:composed\nBuilds on library:host\nBuilds on library:list\nBuilds on library:security\n" > composed/composed.sos
+sterling --extensibella -I .. library:composed
+sterling --extensibellaFull -I .. library:composed
+extensibella --generate library:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm library:composed host/host.xthm list/list.xthm security/security.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm

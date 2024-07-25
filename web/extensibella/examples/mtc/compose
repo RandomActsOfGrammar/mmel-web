@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. mtc:shared_declarations
+extensibella --check --compile shared_declarations/base.xthm
+
+sterling --extensibella -I .. mtc:arith
+extensibella --check --compile arith/arith.xthm
+
+sterling --extensibella -I .. mtc:bool
+extensibella --check --compile bool/bool.xthm
+
+sterling --extensibella -I .. mtc:lambda
+extensibella --check --compile lambda/lambda.xthm
+
+sterling --extensibella -I .. mtc:natCase
+extensibella --check --compile natCase/natCase.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module mtc:composed\nBuilds on mtc:arith\nBuilds on mtc:bool\nBuilds on mtc:lambda\nBuilds on mtc:natCase\n" > composed/composed.sos
+sterling --extensibella -I .. mtc:composed
+sterling --extensibellaFull -I .. mtc:composed
+extensibella --generate mtc:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm mtc:composed shared_declarations/base.xthm arith/arith.xthm bool/bool.xthm lambda/lambda.xthm natCase/natCase.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm

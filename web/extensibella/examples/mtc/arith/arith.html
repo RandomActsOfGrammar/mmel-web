@@ -279,23 +279,34 @@ canon natTy num(N)
  <a class="tactic" href="arith-details.html#95">apply IH to IsE1 IsX IsR.</a> <a class="tactic" href="arith-details.html#96">apply IH to IsE2 IsX IsR.</a> <a class="tactic" href="arith-details.html#97">search.</a></div>
 
 
-<a class="command" href="arith-details.html#98">Prove mtc:shared_declarations:progress.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(99);" id="toggleproof99">[Show Proof]</a>
+<a class="command" href="arith-details.html#98">Theorem plusRel_total : forall N1 N2,
+  is_nat N1 -&gt; exists N, plusRel N1 N2 N.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(99);" id="toggleproof99">[Show Proof]</a>
 <div class="proof" id="proof99" style="display: none;">
+<a class="tactic" href="arith-details.html#99">induction on 1.</a> <a class="tactic" href="arith-details.html#100">intros Is.</a> <a class="tactic" href="arith-details.html#101">Or: apply fix_nat to Is.</a> <a class="tactic" href="arith-details.html#102">case Or.</a>
+  <span class="comment">%z</span>
+   <a class="tactic" href="arith-details.html#103">search.</a>
+  <span class="comment">%s</span>
+   <a class="tactic" href="arith-details.html#104">Is: case Is.</a> <a class="tactic" href="arith-details.html#105">apply IH to Is with N2 = N2.</a> <a class="tactic" href="arith-details.html#106">search.</a></div>
+
+
+<a class="command" href="arith-details.html#107">Prove mtc:shared_declarations:progress.</a><span> </span><a class="fold-link" href="javascript:void(0)" onclick="proofToggle(108);" id="toggleproof108">[Show Proof]</a>
+<div class="proof" id="proof108" style="display: none;">
 <span class="comment">%T-Num</span>
- <a class="tactic" href="arith-details.html#99">search.</a>
+ <a class="tactic" href="arith-details.html#108">search.</a>
 <span class="comment">%T-Plus</span>
- <a class="tactic" href="arith-details.html#100">case IsE.</a> <a class="tactic" href="arith-details.html#101">Or1: apply IH to _ Ty1.</a> <a class="tactic" href="arith-details.html#102">Or2: apply IH to _ Ty2.</a>
- <a class="tactic" href="arith-details.html#103">Ev1: case Or1.</a>
+ <a class="tactic" href="arith-details.html#109">Is: case IsE.</a> <a class="tactic" href="arith-details.html#110">Or1: apply IH to _ Ty1.</a> <a class="tactic" href="arith-details.html#111">Or2: apply IH to _ Ty2.</a>
+ <a class="tactic" href="arith-details.html#112">Ev1: case Or1.</a>
    <span class="comment">%value E1</span>
-    <a class="tactic" href="arith-details.html#104">Ev2: case Or2.</a>
+    <a class="tactic" href="arith-details.html#113">Ev2: case Or2.</a>
       <span class="comment">%value E2</span>
-       <a class="tactic" href="arith-details.html#105">C1: apply canonical_form to Ev1 Ty1.</a> <a class="tactic" href="arith-details.html#106">case C1.</a>
-       <a class="tactic" href="arith-details.html#107">C2: apply canonical_form to Ev2 Ty2.</a> <a class="tactic" href="arith-details.html#108">case C2.</a> <a class="tactic" href="arith-details.html#109">skip.</a>
+       <a class="tactic" href="arith-details.html#114">C1: apply canonical_form to Ev1 Ty1.</a> <a class="tactic" href="arith-details.html#115">case C1.</a>
+       <a class="tactic" href="arith-details.html#116">C2: apply canonical_form to Ev2 Ty2.</a> <a class="tactic" href="arith-details.html#117">case C2.</a>
+       <a class="tactic" href="arith-details.html#118">Is: case Is.</a> <a class="tactic" href="arith-details.html#119">apply plusRel_total to Is with N2 = N1.</a> <a class="tactic" href="arith-details.html#120">search.</a>
       <span class="comment">%eval E2 E'</span>
-       <a class="tactic" href="arith-details.html#110">search.</a>
+       <a class="tactic" href="arith-details.html#121">search.</a>
    <span class="comment">%eval E1 E'</span>
-    <a class="tactic" href="arith-details.html#111">search.</a></div>
-<a class="command" href="arith-details.html#112"></a>
+    <a class="tactic" href="arith-details.html#122">search.</a></div>
+<a class="command" href="arith-details.html#123"></a>
 </pre>
 </div>
 <div class="section">

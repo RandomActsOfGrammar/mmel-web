@@ -56,9 +56,13 @@ cp -R web $WEB_DIR
 cd $WEB_DIR
 
 #delete build scripts and Emacs save files because we don't want them
-#on the web
+#on the web, as well as composition testing files
 find . -name "*~" -delete
 find . -name "build" -delete
+find . -name "compose" -delete
+find . -name "out.thm" -delete
+find . -name "out.thc" -delete
+find . -name "composed" -type d -exec rm -r {} +
 
 
 #build the tarballs for Extensibella examples

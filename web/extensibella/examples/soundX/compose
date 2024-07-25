@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. soundX:host
+extensibella --check --compile host/host.xthm
+
+sterling --extensibella -I .. soundX:let
+extensibella --check --compile let/let.xthm
+
+sterling --extensibella -I .. soundX:pair
+extensibella --check --compile pair/pair.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module soundX:composed\nBuilds on soundX:host\nBuilds on soundX:let\nBuilds on soundX:pair\n" > composed/composed.sos
+sterling --extensibella -I .. soundX:composed
+sterling --extensibellaFull -I .. soundX:composed
+extensibella --generate soundX:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm soundX:composed host/host.xthm let/let.xthm pair/pair.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm

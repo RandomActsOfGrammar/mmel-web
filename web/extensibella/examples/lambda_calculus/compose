@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. lambda_calculus:host
+extensibella --check --compile host/host.xthm
+
+sterling --extensibella -I .. lambda_calculus:typing
+extensibella --check --compile typing/typing.xthm
+
+sterling --extensibella -I .. lambda_calculus:bool
+extensibella --check --compile bool/bool.xthm
+
+sterling --extensibella -I .. lambda_calculus:let
+extensibella --check --compile let/let.xthm
+
+sterling --extensibella -I .. lambda_calculus:pair
+extensibella --check --compile pair/pair.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module lambda_calculus:composed\nBuilds on lambda_calculus:host\nBuilds on lambda_calculus:typing\nBuilds on lambda_calculus:bool\nBuilds on lambda_calculus:let\nBuilds on lambda_calculus:pair\n" > composed/composed.sos
+sterling --extensibella -I .. lambda_calculus:composed
+sterling --extensibellaFull -I .. lambda_calculus:composed
+extensibella --generate lambda_calculus:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm lambda_calculus:composed host/host.xthm typing/typing.xthm bool/bool.xthm let/let.xthm pair/pair.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm

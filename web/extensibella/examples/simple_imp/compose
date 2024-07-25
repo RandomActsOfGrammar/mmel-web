@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+sterling --extensibella -I .. simple_imp:host
+extensibella --check --compile host/host_thms.xthm
+
+sterling --extensibella -I .. simple_imp:list
+extensibella --check --compile list/list_thms.xthm
+
+sterling --extensibella -I .. simple_imp:security
+extensibella --check --compile security/security_thms.xthm
+
+sterling --extensibella -I .. simple_imp:repeatWhile
+extensibella --check --compile repeatWhile/repeatWhile_thms.xthm
+
+sterling --extensibella -I .. simple_imp:assert
+extensibella --check --compile assert/assert_thms.xthm
+
+#Remove an existing composed and create a new one with all that is needed
+rm -rf composed
+mkdir composed
+echo -e "Module simple_imp:composed\nBuilds on simple_imp:host\nBuilds on simple_imp:list\nBuilds on simple_imp:security\nBuilds on simple_imp:repeatWhile\nBuilds on simple_imp:assert\n" > composed/composed.sos
+sterling --extensibella -I .. simple_imp:composed
+sterling --extensibellaFull -I .. simple_imp:composed
+extensibella --generate simple_imp:composed composed/composed.xthm
+extensibella --check --compile composed/composed.xthm
+
+#Build the composition
+extensibella --compose out.thm simple_imp:composed host/host_thms.xthm list/list_thms.xthm security/security_thms.xthm repeatWhile/repeatWhile_thms.xthm assert/assert_thms.xthm composed/composed.xthm $1
+
+#Check the composition
+abella out.thm
