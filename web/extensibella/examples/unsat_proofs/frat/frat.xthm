@@ -1,0 +1,2590 @@
+Module unsat_proofs:frat.
+
+
+Prove_Constraint unsat_proofs:lrat:proj_lit_unique.
+Prove_Constraint unsat_proofs:lrat:proj_lit_is.
+
+
+Prove_Constraint unsat_proofs:lrat:proj_clause_unique.
+Prove_Constraint unsat_proofs:lrat:proj_clause_is.
+
+
+Prove_Constraint unsat_proofs:lrat:proj_formula_unique.
+Prove_Constraint unsat_proofs:lrat:proj_formula_is.
+
+
+Add_Proj_Rel unsat_proofs:lrat:is_clause.
+Prove_Ext_Ind unsat_proofs:lrat:is_clause.
+
+Add_Proj_Rel unsat_proofs:lrat:is_formula.
+Prove_Ext_Ind unsat_proofs:lrat:is_formula.
+
+
+Prove unsat_proofs:lrat:is_lit_pos_or_neg.
+
+Prove unsat_proofs:lrat:is_clause_empty_or_not.
+Prove unsat_proofs:lrat:is_clause_or_or_not.
+Prove unsat_proofs:lrat:is_clause_eq_or_not.
+
+Prove unsat_proofs:lrat:is_formula_empty_or_not.
+Prove unsat_proofs:lrat:is_formula_and_or_not.
+Prove unsat_proofs:lrat:is_formula_eq_or_not.
+
+Extensible_Theorem
+  is_finalClauses_addFClause_or_not : forall F,
+    IsF : is_finalClauses F ->
+    (exists ID C F', F = addFClause ID C F') \/
+    ((exists ID C F', F = addFClause ID C F') -> false)
+  on IsF.
+search. search.
+Extensible_Theorem
+  is_finalClauses_endFClause_or_not : forall F,
+    IsF : is_finalClauses F ->
+    F = endFClause \/ (F = endFClause -> false)
+  on IsF.
+search. search.
+Extensible_Theorem
+  is_finalClauses_eq_or_not : forall F1 F2,
+    IsF1 : is_finalClauses F1 ->
+    IsF2 : is_finalClauses F2 ->
+    F1 = F2 \/ (F1 = F2 -> false)
+  on IsF1.
+%addFClause
+ Or: apply is_finalClauses_addFClause_or_not to IsF2. N: case Or.
+   %addFClause
+    Is': case IsF2. Or: apply is_integer_eq_or_not to IsF3 Is'.
+    N: case Or.
+      %I = ID
+       Or: apply is_clause_eq_or_not to IsF4 Is'1. N: case Or.
+         %Clause = C
+          Or: apply IH to IsF5 Is'2. N: case Or.
+            %FinalClauses = F'
+             search.
+            %FinalClauses != F'
+             right. intros E. case E. backchain N.
+         %Clause != C
+          right. intros E. case E. backchain N.
+      %I != ID
+       right. intros E. case E. backchain N.
+   %not addFClause
+    right. intros E. case E. backchain N.
+%endFClause
+ Or: apply is_finalClauses_endFClause_or_not to IsF2. N: case Or.
+   %endFClause
+    search.
+   %not endFClause
+    right. intros E. case E. backchain N.
+
+
+Prove unsat_proofs:lrat:negate_lit_unique.
+Prove unsat_proofs:lrat:negate_lit_reverse.
+Prove unsat_proofs:lrat:negate_lit_not_same.
+Prove unsat_proofs:lrat:negate_lit_is_lit.
+Prove unsat_proofs:lrat:negate_lit_is_lit_back.
+Prove unsat_proofs:lrat:negate_lit_exists.
+
+
+Prove_Constraint unsat_proofs:lrat:sat_clause_ext_to_proj.
+Prove_Constraint unsat_proofs:lrat:sat_clause_proj_to_ext.
+Prove_Constraint unsat_proofs:lrat:unsat_clause_ext_to_proj.
+Prove_Constraint unsat_proofs:lrat:unsat_clause_proj_to_ext.
+
+
+Prove_Constraint unsat_proofs:lrat:sat_formula_ext_to_proj.
+Prove_Constraint unsat_proofs:lrat:sat_formula_proj_to_ext.
+
+
+Prove unsat_proofs:lrat:unsat_sat_clause.
+
+
+Prove unsat_proofs:lrat:sat_clause_orderless.
+Prove unsat_proofs:lrat:sat_formula_orderless.
+
+
+Prove unsat_proofs:lrat:unsat_clause_orderless.
+
+
+Prove unsat_proofs:lrat:unit_clause_is.
+Prove unsat_proofs:lrat:unit_clause_unique.
+Prove unsat_proofs:lrat:unit_clause_not_assigned.
+Prove unsat_proofs:lrat:unit_clause_not_assigned_negate.
+Prove unsat_proofs:lrat:unit_clause_expand.
+Prove unsat_proofs:lrat:unit_clause_add.
+
+
+Prove unsat_proofs:lrat:gatherLits_is.
+Prove unsat_proofs:lrat:gatherLits_exists.
+Prove unsat_proofs:lrat:gatherLits_permutation.
+
+Prove_Constraint unsat_proofs:lrat:proj_gatherLits.
+Prove_Constraint unsat_proofs:lrat:proj_gatherLits_permutation.
+
+Prove unsat_proofs:lrat:gatherLits_sat.
+Prove unsat_proofs:lrat:gatherLits_mem_sat.
+Prove unsat_proofs:lrat:gatherLits_unsat.
+Prove unsat_proofs:lrat:negate_lits_unsat.
+
+
+Extensible_Theorem
+  checkFinalClauses_orderless : forall K1 K2 FC,
+    IsK1 : is_list (is_pair is_integer is_clause) K1 ->
+    IsK2 : is_list (is_pair is_integer is_clause) K2 ->
+    CFC : checkFinalClauses K1 FC ->
+    Prm : permutation K1 K2 ->
+    checkFinalClauses K2 FC
+  on CFC.
+%CFC-AddFClause
+ M1: apply select_mem to CFC1. M2: apply permutation_mem to Prm M1.
+ S: apply mem_select to M2. apply selects_permutation to _ _ Prm _ _ .
+ apply select_is to IsK1 _. apply select_is to IsK2 _.
+ apply IH to _ _ CFC2 _. search.
+%CFC-EndOriginal
+ case Prm. search.
+
+
+%Reasonable to require is for arguments to show is for projection,
+%since we might use things from the arguments.
+Prove_Constraint unsat_proofs:lrat:proj_proof_is.
+%endFrat
+ Is: case IsP. apply rupProof_is to Proj1 IsKnown. search.
+%endFratPrf
+ Is: case IsP. search.
+%addProofless
+ Is: case IsP. apply rupProof_is to Proj1 IsKnown. search.
+%relocateClause
+ Is: case IsP. IsFC: apply mem_is to IsKnown Proj2. search.
+%relocateClause
+ Is: case IsP. search.
+%deleteFrat
+ case IsP. search.
+%commentProof
+ case IsP. search.
+
+
+Prove_Constraint unsat_proofs:lrat:proj_proof_extend.
+%endFrat
+ apply rupProof_orderless to _ IsKnown' _ Proj1 _. search.
+%endFratPrf
+ search.
+%addProofless
+ apply rupProof_orderless to _ IsKnown' _ Proj1 _. search.
+%relocateClause
+ apply Mems to Proj2. search.
+%relocateClause
+ search.
+%deleteFrat
+ search.
+%commentProof
+ search.
+
+
+Prove unsat_proofs:lrat:check_proof_correct.
+%CP-EndFrat
+ GA_Empty: assert good_assignment []. unfold. intros M. case M.
+ ExpASat: assert forall L, mem L [] -> mem L Sat. intros M. case M.
+ S: apply rupProof_maintains_sat to _ _ CP2 Sat _ IsSat GA_Sat.
+ case S3.
+%CP-EndFratPrf
+ GA_Empty: assert good_assignment []. unfold. intros M. case M.
+ ExpASat: assert forall L, mem L [] -> mem L Sat. intros M. case M.
+ S: apply rupProof_maintains_sat to _ _ CP2 Sat _ IsSat GA_Sat.
+ case S3.
+%CP-AddProofless
+ GA_Empty: assert good_assignment []. unfold. intros M. case M.
+ ExpEmpty: assert forall L, mem L [] -> mem L Sat. intros M. case M.
+ Is: case IsP.
+ S: apply rupProof_maintains_sat to _ _ CP2 Sat _ IsSat GA_Sat.
+ NewSat: assert forall CID InC, lookup ((ID, C)::Known) CID InC ->
+                                sat_clause S InC.
+   intros Lkp. Lkp: case Lkp.
+     %CID = ID, InC = C
+      search.
+     %lookup Known CID InC
+      SC: apply Sat to Lkp1. M: apply lookup_mem to Lkp1.
+      Is: apply mem_is to _ M.
+      apply sat_clause_orderless to _ _ _ SC _. search.
+ GCL_New: apply good_clause_list_remove_all_add to GCL CP1 with C = C.
+ NewSat': assert forall CID C1,
+                   lookup ((ID, C)::KRest) CID C1 -> sat_clause S C1.
+   intros Lkp. Lkp: case Lkp.
+     %Lkp-Here
+      backchain NewSat.
+     %Lkp-Later
+      apply remove_all_lookup_after to CP1 Lkp1. backchain NewSat.
+ assert is_list (is_pair is_integer is_clause) ((ID, C)::KRest).
+   apply remove_all_is to _ CP1. search.
+ apply IH to Is2 S S1 GCL_New _ CP3 _.
+%CP-RelocateClause
+ Is: case IsP.
+ assert forall CID C1,
+          lookup ((To, C)::KRest2) CID C1 -> sat_clause Sat C1.
+   intros Lkp. Lkp: case Lkp.
+     %Lkp-Here
+      backchain Sat with CID = From. M: apply select_mem to CP3.
+      M1: apply remove_all_mem_after to CP2 M.
+      Lkp': apply is_list_mem_lookup to IsKnown M1 _.
+      M': apply lookup_mem to Lkp'.
+      apply good_clause_list_mems to GCL M1 M'. search.
+     %Lkp-Later
+      assert CID = From -> false.
+        M: apply lookup_mem to Lkp1. intros E. case E.
+        GCL': apply good_clause_list_remove_all to GCL CP2.
+        GCL': case GCL'. apply GCL' to CP3 M.
+      Lkp2: apply lookup_after_select_before to Lkp1 CP3 _.
+      apply remove_all_lookup_after to CP2 Lkp2. backchain Sat.
+ assert is_list (is_pair is_integer is_clause) ((To, C)::KRest2).
+   IsKR: apply remove_all_is to _ CP2. apply select_is to _ CP3.
+   IsPr: apply select_is_picked to _ CP3. case IsPr. search.
+ assert good_clause_list ((To, C)::KRest2).
+   GCL1: apply good_clause_list_remove_all to GCL CP2.
+   GCL2: apply good_clause_list_select to GCL1 CP3. unfold.
+   intros S M. S: case S.
+     %Slct-First (ID = To)
+      MKR: apply mem_after_select_before to CP3 M.
+      apply remove_all_no_mem to CP2 MKR.
+     %Slct-Later
+      M: case M.
+        %Mem-Here (ID = To)
+         M: apply select_mem to S.
+         M': apply mem_after_select_before to CP3 M.
+         apply remove_all_no_mem to CP2 M'.
+        %Mem-Later
+         GCL': case GCL2. apply GCL' to S M.
+ apply IH to Is2 IsSat GA_Sat _ _ CP4 _.
+%CP-RelocateClauseSame
+ Is: case IsP. apply IH to _ _ _ _ _ CP2 _.
+%CP-DeleteFrat
+ Is: case IsP. IsKRest: apply select_is to _ CP1.
+ GCL_KRest: apply good_clause_list_select to GCL CP1.
+ assert forall CID C, lookup KRest CID C -> sat_clause Sat C.
+   intros L. M: apply lookup_mem to L. apply mem_is to _ M.
+   assert forall I C1 C2,
+            mem (I, C1) Known -> mem (I, C2) Known -> C1 = C2.
+     intros M1 M2. apply good_clause_list_mems to _ M1 M2. search.
+   L': apply lookup_after_select to _ _ _ CP1 L. apply Sat to L'.
+   search.
+ apply IH to Is2 IsSat GA_Sat GCL_KRest IsKRest CP2 _.
+%CP-CommentProof
+ Is: case IsP. apply IH to Is1 _ _ _ _ CP1 _.
+
+
+Prove unsat_proofs:lrat:checkProof_orderless.
+%CP-EndFrat
+ Is: case IsP. apply rupProof_permutation to IsK1 IsK2 GCL CP2 Prm.
+ Prm': apply remove_all_permutation to _ _ CP1 Prm.
+ apply remove_all_is to _ Prm'. apply remove_all_is to _ CP1.
+ apply checkFinalClauses_orderless to _ _ CP3 _. search.
+%CP-EndFratPrf
+ Is: case IsP. apply rupProof_permutation to IsK1 IsK2 GCL CP2 Prm.
+ Prm': apply remove_all_permutation to _ _ CP1 Prm.
+ apply remove_all_is to _ Prm'. apply remove_all_is to _ CP1.
+ apply checkFinalClauses_orderless to _ _ CP3 _. search.
+%CP-AddProofless
+ Is: case IsP. apply rupProof_permutation to IsK1 IsK2 GCL CP2 Prm.
+ Prm': apply remove_all_permutation to _ _ CP1 Prm.
+ apply remove_all_is to _ Prm'. apply remove_all_is to _ CP1.
+ apply good_clause_list_remove_all_add to GCL Prm' with C = C.
+ apply IH to _ _ _ _ CP3 _. search.
+%CP-RelocateClause
+ Is: case IsP. M: apply select_mem to CP3.
+ Prm': apply remove_all_permutation to _ _ CP2 _.
+ M2: apply permutation_mem to Prm'1 M. S: apply mem_select to M2.
+ IsKR: apply remove_all_is to _ CP2.
+ IsP': apply remove_all_is to _ Prm'.
+ Prm'': apply selects_permutation to _ _ Prm'1 CP3 S.
+ Prm_Final: assert permutation ((To, C)::KRest2) ((To, C)::L').
+ IsPr: apply select_is_picked to _ CP3. Is: case IsPr.
+ IsKR2: apply select_is to _ CP3. IsL': apply select_is to _ S.
+ GCL_P': apply good_clause_list_remove_all to _ Prm'.
+ GCL_L': apply good_clause_list_select to _ S.
+ assert good_clause_list ((To, C)::L').
+   unfold. intros S' M'. S': case S'.
+     %Slct-First (ID = To)
+      MKR: apply mem_after_select_before to S M'.
+      apply remove_all_no_mem to Prm' MKR.
+     %Slct-Later
+      M': case M'.
+        %Mem-Here
+         M': apply select_mem to S'.
+         M'': apply mem_after_select_before to S M'.
+         apply remove_all_no_mem to Prm' M''.
+        %Mem-Later
+         GCL': case GCL_L'. apply GCL' to S' M'.
+  apply IH to Is2 _ _ _ CP4 Prm_Final. search.
+%CP-RelocateClauseSame
+ Is: case IsP. M2: apply permutation_mem to Prm CP1.
+ apply IH to _ _ _ _ CP2 _. search.
+%CP-DeleteFrat
+ Is: case IsP. IsKRest: apply select_is to _ CP1.
+ MK1: apply select_mem to CP1.
+ MK2: apply permutation_mem to Prm MK1. S: apply mem_select to MK2.
+ Prm': apply permutation_symmetric to Prm.
+ GCL_K1: apply permutation_good_clause_list to _ Prm' GCL.
+ GCL_L': apply good_clause_list_select to GCL S.
+ IsL': apply select_is to _ S.
+ P': apply selects_permutation to _ _ Prm' _ _.
+ PrmSub: apply permutation_symmetric to P'.
+ apply IH to Is2 _ _ GCL_L' CP2 PrmSub. search.
+%CP-CommentProof
+ case IsP. apply IH to _ _ _ _ CP1 _. search.
+
+
+Theorem rupProof_self : forall Known ID C,
+  is_clause C -> lookup Known ID C -> rupProof Known C [ID].
+intros IsC Lkp. GL: apply gatherLits_exists to IsC.
+IsL: apply gatherLits_is to IsC GL. apply negateLitList_exists to IsL.
+unfold. exists L, NL. split.
+  %gatherLits C L
+   search.
+  %negateLitList L NL
+   search.
+  %rupProof_help Known NL [ID]
+   unfold. exists C. split.
+     %lookup Known ID C
+      search.
+     %unsat_clause NL C
+      apply negate_lits_unsat to _ GL _. search.
+
+
+Theorem mem_lookup : forall K ID C,
+  is_list (is_pair is_integer is_clause) K -> mem (ID, C) K ->
+  exists C', lookup K ID C'.
+induction on 2. intros Is M. M: case M.
+  %Mem-Here
+   search.
+  %Mem-Later
+   Is: case Is. IsP: case Is. IsID: apply mem_is to _ M.
+   Or: apply is_integer_eq_or_not to IsP IsID. N: case Or.
+     %A = ID1
+      search.
+     %A != ID1
+      apply IH to _ M. search.
+
+
+Add_Ext_Size unsat_proofs:lrat:checkProof.
+Add_Proj_Rel unsat_proofs:lrat:checkProof.
+Prove_Ext_Ind unsat_proofs:lrat:checkProof.
+%CP-EndFrat
+ search.
+%CP-EndFratPrf
+ search.
+%CP-AddProofless
+ case IsP. Acc: case Acc. apply ext_size_is_int_checkProof to R4.
+ L: apply lt_plus_one to R1 _. apply ext_size_pos_checkProof to R4.
+ A: apply Acc to _ L. apply remove_all_is to _ R2.
+ apply good_clause_list_remove_all_add to GCL R2 with C = C.
+ apply IH to R4 A _ _ _. search.
+%CP-RelocateClause
+ case IsP. Acc: case Acc. apply ext_size_is_int_checkProof to R5.
+ L: apply lt_plus_one to R1 _. apply ext_size_pos_checkProof to R5.
+ A: apply Acc to _ L. apply remove_all_is to _ R3.
+ apply select_is to _ R4. IsIDC: apply select_is_picked to _ R4.
+ IsIDC: case IsIDC.
+ assert good_clause_list ((To, C)::KRest2).
+   GCL1: apply good_clause_list_remove_all to GCL R3.
+   GCL2: apply good_clause_list_select to GCL1 R4. unfold.
+   intros S M. S: case S.
+     %Slct-First (ID = To)
+      MKR: apply mem_after_select_before to R4 M.
+      apply remove_all_no_mem to R3 MKR.
+     %Slct-Later
+      M: case M.
+        %Mem-Here (ID = To)
+         M: apply select_mem to S.
+         M': apply mem_after_select_before to R4 M.
+         apply remove_all_no_mem to R3 M'.
+        %Mem-Later
+         GCL': case GCL2. apply GCL' to S M.
+ apply IH to R5 A _ _ _. MKR: apply select_mem to R4.
+ MK: apply remove_all_mem_after to R3 MKR.
+ LK: apply mem_lookup to _ MK. MK': apply lookup_mem to LK.
+ apply good_clause_list_mems to GCL MK' MK.
+ apply rupProof_self to IsIDC1 _ with Known = Known, ID = From.
+ Proj: assert Known |{proof}- relocateClause From To Rest ~~>
+                        addLrupProof To C [From]
+                           (deleteLratProof From Rest).
+ unfold. exists addLrupProof To C [From] (deleteLratProof From Rest).
+ exists KRest, C, KRest2. split.
+   %To != From
+    search.
+   %remove_all To
+    search.
+   %select From
+    search.
+   %check rest
+    search.
+   %projection
+    search.
+   %check projection
+    unfold. exists KRest. split.
+      %remove_all To
+       search.
+      %rup
+       search.
+      %check delete
+       unfold. exists C, (To, C)::KRest2. split.
+         %select
+          search.
+         %check rest
+          search.
+%CP-RelocateClauseSame
+ Acc: case Acc. apply ext_size_is_int_checkProof to R3.
+ L: apply lt_plus_one to R1 _. apply ext_size_pos_checkProof to R3.
+ A: apply Acc to _ L. case IsP. apply IH to R3 A _ _ _.
+ Proj: assert Known |{proof}- relocateClause ID ID Rest ~~> Rest.
+ search.
+%CP-DeleteFrat
+ Proj: assert Known |{proof}- deleteFrat ID C Rest ~~>
+                               deleteLratProof ID Rest.
+ Acc: case Acc. apply ext_size_is_int_checkProof to R3.
+ L: apply lt_plus_one to R1 _. apply ext_size_pos_checkProof to R3.
+ A: apply Acc to _ L. case IsP. apply select_is to _ R2.
+ apply good_clause_list_select to GCL R2.
+ apply IH to R3 A _ _ _. search.
+%CP-CommentProof
+ Acc: case Acc. apply ext_size_is_int_checkProof to R2.
+ L: apply lt_plus_one to R1 _. apply ext_size_pos_checkProof to R2.
+ A: apply Acc to _ L. case IsP. apply IH to R2 A _ _ _. search.
+
+
+Prove_Constraint unsat_proofs:lrat:proj_checkProof.
+%Proj-EndFrat
+ case Hyp1. search.
+%Proj-EndFratPrf
+ case Hyp1. search.
+%Proj-AddProofless
+ case Hyp1. search.
+%Proj-RelocateProof
+ Prf: case Hyp1.
+   %CP-RelocateClause
+    M: apply select_mem to Prf2.
+    M': apply remove_all_mem_after to Prf1 M.
+    apply good_clause_list_mems to _ Hyp5 M'.
+    Is: apply mem_is to _ M'. apply remove_all_is to _ Prf1.
+    L: apply is_list_mem_lookup to _ M _. M2: apply lookup_mem to L.
+    apply good_clause_list_remove_all to _ Prf1.
+    apply good_clause_list_mems to _ M2 M.
+    L': apply remove_all_lookup_after to Prf1 L.
+    RUP: apply rupProof_self to Is1 L'. search.
+   %CP-RelocateClauseSame
+    apply Hyp4 to _.
+%Proj-RelocateProofSame
+ Prf: case Hyp1.
+   %CP-RelocateClause
+    apply Prf to _.
+   %CP-RelocateClauseSame
+    search.
+%Proj-DeleteFrat
+ case Hyp1. search.
+%Proj-CommentProof
+ case Hyp1. search.
+
+
+Prove unsat_proofs:lrat:formulaToKnown_unique.
+Prove unsat_proofs:lrat:formulaToKnown_all_greater.
+Prove unsat_proofs:lrat:formulaToKnown_all_unique.
+Prove unsat_proofs:lrat:formulaToKnown_sat_formula.
+Prove unsat_proofs:lrat:formulaToKnown_is.
+
+
+Extensible_Theorem
+  checkFratProof_correct : forall FormulaClauses Known FP Sat,
+    IsFP : is_fratProof FP ->
+    IsSat : is_list is_lit Sat ->
+    GA_Sat : good_assignment Sat ->
+    GCL_K : good_clause_list Known ->
+    GCL_FC : good_clause_list FormulaClauses ->
+    IsKnown : is_list (is_pair is_integer is_clause) Known ->
+    IsFC : is_list (is_pair is_integer is_clause) FormulaClauses ->
+    NoMem : (forall ID CK CFC, mem (ID, CK) Known ->
+               mem (ID, CFC) FormulaClauses -> false) ->
+    %The unsat proof checks out
+    CFP : checkFratProof FormulaClauses Known FP ->
+    %and there is a satisfying assignment for the existing clauses---
+    SatK : (forall CID C, lookup Known CID C -> sat_clause Sat C) ->
+    SatFC : (forall CID C, lookup FormulaClauses CID C ->
+                           sat_clause Sat C) ->
+    %this is impossible
+    false
+  on CFP.
+%CFP-AddOriginal
+ IsFP: case IsFP.
+ SatC: assert sat_clause Sat C.
+   M1: apply select_mem to CFP1. Is: apply select_is_picked to _ CFP1.
+   Is: case Is. Lkp: apply is_list_mem_lookup to IsFC M1 _.
+   M2: apply lookup_mem to Lkp.
+   apply good_clause_list_mems to _ M1 M2. apply SatFC to Lkp. search.
+ assert forall CID C, lookup CRest CID C -> sat_clause Sat C.
+   intros Lkp. M: apply lookup_mem to Lkp. apply select_is to _ CFP1.
+   apply mem_is to _ M.
+   assert forall I C1 C2, mem (I, C1) FormulaClauses ->
+            mem (I, C2) FormulaClauses -> C1 = C2.
+     intros MA MB. apply good_clause_list_mems to _ MA MB. search.
+   Lkp': apply lookup_after_select to IsFC _ _ CFP1 Lkp.
+   apply SatFC to Lkp'. search.
+ assert  forall CID C1, lookup ((ID, C)::Known) CID C1 ->
+                        sat_clause Sat C1.
+   intros Lkp. Lkp: case Lkp. search. apply SatK to Lkp1. search.
+ apply select_is to _ CFP1. apply good_clause_list_select to _ CFP1.
+ assert good_clause_list ((ID, C)::Known).
+   unfold. intros S M. S: case S.
+     %Slct-First
+      M': apply select_mem to CFP1. apply NoMem to M M'.
+     %Slct-Later
+      M: case M.
+        %Mem-Here
+         MS: apply select_mem to S. M': apply select_mem to CFP1.
+         apply NoMem to MS M'.
+        %Mem-Later
+         GCL: case GCL_K. apply GCL to S M.
+ assert forall ID1 CK CFC, mem (ID1, CK) ((ID, C)::Known) ->
+                           mem (ID1, CFC) CRest -> false.
+   intros MA MB. MA: case MA.
+     %Mem-Here (ID1 = ID)
+      GCL: case GCL_FC. apply GCL to CFP1 MB.
+     %Mem-Later
+      MFC: apply mem_after_select_before to CFP1 MB.
+      apply NoMem to MA MFC.
+ apply IH to IsFP2 _ GA_Sat _ _ _ _ _ CFP2 _ _.
+%CFP-EndOriginal
+ IsP: case IsFP. apply check_proof_correct to
+                    IsP IsSat GA_Sat GCL_K IsKnown CFP1 SatK.
+
+
+Theorem fratProveFormula_correct : forall F FPrf Sat,
+  is_formula F -> is_fratProof FPrf -> is_list is_lit Sat ->
+  good_assignment Sat ->
+  %proof checking out  and  formula satisfiable
+  fratProveFormula F FPrf -> sat_formula Sat F ->
+  %is impossible
+  false.
+intros IsF IsFPrf IsSat GA_Sat FPF SatF. Check: case FPF.
+assert forall CID C, lookup KnownClauses CID C -> sat_clause Sat C.
+  intros Lkp. M: apply lookup_mem to Lkp.
+  apply formulaToKnown_sat_formula to Check SatF M. search.
+assert forall (CID : integer) C, lookup [] CID C -> sat_clause Sat C.
+  intros Lkp. case Lkp.
+assert forall ID (CK : clause) CFC,
+         mem (ID, CK) [] -> mem (ID, CFC) KnownClauses -> false.
+  intros M. case M.
+apply formulaToKnown_is to IsF _ Check.
+assert good_clause_list KnownClauses.
+  unfold. intros MA MB. backchain formulaToKnown_all_unique.
+assert good_clause_list [].
+  unfold. intros M. case M.
+apply checkFratProof_correct to
+   IsFPrf IsSat GA_Sat _ _ _ _ _ Check1 _ _.
+
+
+
+Theorem select_is_clauseUsedness : forall L X Rest,
+  is_list (is_pair is_integer is_clauseUsedness) L ->
+  select X Rest L ->
+  is_list (is_pair is_integer is_clauseUsedness) Rest.
+induction on 2. intros Is S. S: case S.
+  %Slct-First
+   case Is. search.
+  %Slct-Later
+   case Is. apply IH to _ S. search.
+
+
+Theorem select_is_clauseUsedness_item : forall L X Rest,
+  is_list (is_pair is_integer is_clauseUsedness) L ->
+  select X Rest L ->
+  is_pair is_integer is_clauseUsedness X.
+induction on 2. intros Is S. S: case S.
+  %Slct-First
+   case Is. search.
+  %Slct-Later
+   case Is. apply IH to _ S. search.
+
+
+Theorem makeUsed_is : forall L P U,
+  is_list (is_pair is_integer is_clauseUsedness) L ->
+  makeUsed L P U ->
+  is_list (is_pair is_integer is_clauseUsedness) U.
+induction on 2. intros Is MU. MU: case MU.
+  %MU-Nil
+   search.
+  %MU-ConsNeeded
+   apply select_is_clauseUsedness to _ MU. apply IH to _ MU1. 
+   apply select_is_clauseUsedness_item to _ MU. search.
+  %MU-ConsUnknown
+   IsPair: apply select_is_clauseUsedness_item to Is MU.
+   I: case IsPair. case I1.
+   apply select_is_clauseUsedness to Is MU.
+   apply IH to _ MU1. search.
+
+
+Theorem makeUsed_needed : forall L P U ID,
+  makeUsed L P U -> mem ID P -> mem (ID, needed) U.
+induction on 1. intros MU Mem. MU: case MU.
+  %MU-Nil
+   case Mem.
+  %MU-ConsNeeded
+   Mem: case Mem.
+     %Mem-Here
+      search.
+     %Mem-Later
+      apply IH to MU1 Mem. search.
+  %MU-Cons-Unknown
+   Mem: case Mem.
+     %Mem-Here
+      search.
+     %Mem-Later
+      apply IH to MU1 Mem. search.
+
+
+Extensible_Theorem
+   endKnownClauses_is : forall F K,
+     IsF : is_finalClauses F ->
+     EKC : endKnownClauses F K ->
+     is_list (is_pair is_integer is_clauseUsedness) K
+   on EKC.
+%EKC-End
+ search.
+%EKC-AddEmpty
+ case IsF. apply IH to _ EKC2. search.
+%EKC-AddNonEmpty
+ case IsF. apply IH to _ EKC2. search.
+
+
+Extensible_Theorem
+   elaboration_is_needed : forall Known P Needed E,
+     IsKnown : is_list (is_pair is_integer is_clause) Known ->
+     GCL : good_clause_list Known ->
+     IsP : is_proof P ->
+     Ela : elaborate Known P Needed E ->
+     is_list (is_pair is_integer is_clauseUsedness) Needed
+   on Ela.
+%Ela-EndFrat
+ Is: case IsP. IsNeeded: apply endKnownClauses_is to _ Ela1.
+ apply select_is_clauseUsedness to _ Ela2.
+ apply makeUsed_is to _ Ela4. search.
+%Ela-EndFratPrf
+ Is: case IsP. IsNeeded: apply endKnownClauses_is to _ Ela1.
+ apply select_is_clauseUsedness to _ Ela2.
+ apply makeUsed_is to _ Ela3. search.
+%Ela-DeletFrat
+ Is: case IsP. apply select_is to _ Ela1.
+ apply good_clause_list_select to _ Ela1. apply IH to _ _ _ Ela2.
+ search.
+%Ela-DeleteLratProof
+ Is: case IsP. apply select_is to _ Ela1.
+ apply good_clause_list_select to _ Ela1. apply IH to _ _ _ Ela2.
+ search.
+%Ela-AddLrupProofNeeded
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply IH to _ _ _ Ela2. apply select_is_clauseUsedness to _ Ela3.
+ apply makeUsed_is to _ Ela4. search.
+%Ela-AddLrupProofUnknown
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply IH to _ _ _ Ela2. apply select_is_clauseUsedness to _ Ela3.
+ search.
+%Ela-AddProoflessNeeded
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply IH to _ _ _ Ela2. apply select_is_clauseUsedness to _ Ela3.
+ apply makeUsed_is to _ Ela5. search.
+%Ela-AddProoflessUnknown
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply IH to _ _ _ Ela2. apply select_is_clauseUsedness to _ Ela3.
+ search.
+%Ela-RelocateNeeded-Diff
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply select_is to _ Ela2. M: apply select_mem to Ela2.
+ GCLR: apply good_clause_list_remove_all to _ Ela1.
+ GCLS: apply good_clause_list_select to GCLR Ela2.
+ apply good_clause_list_add to GCLS _ with ID = To, C = C.
+   intros M'. M': case M'.
+   M'': apply mem_after_select_before to Ela2 M'.
+   apply remove_all_no_mem to Ela1 M''.
+ apply mem_is to _ M. apply IH to _ _ _ Ela3.
+ apply select_is_clauseUsedness to _ Ela4. search.
+%Ela-RelocateNeeded-Same
+ Is: case IsP. apply IH to _ _ _ Ela1. search.
+%Ela-RelocateUnknown
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply select_is to _ Ela2. M: apply select_mem to Ela2.
+ GCLR: apply good_clause_list_remove_all to _ Ela1.
+ GCLS: apply good_clause_list_select to GCLR Ela2.
+ apply good_clause_list_add to GCLS _ with ID = To, C = C.
+   intros M'. M': case M'.
+   M'': apply mem_after_select_before to Ela2 M'.
+   apply remove_all_no_mem to Ela1 M''.
+ apply mem_is to _ M. apply IH to _ _ _ Ela3.
+ apply select_is_clauseUsedness to _ Ela4. search.
+%Ela-Comment
+ case IsP. apply IH to _ _ _ Ela1. search.
+%Preservability
+ apply proj_proof_is to Ela1 _ _ _. apply IH to _ _ _ Ela2. search.
+
+
+Extensible_Theorem
+   elaboration_is : forall Known P Needed E,
+     IsKnown : is_list (is_pair is_integer is_clause) Known ->
+     GCL : good_clause_list Known ->
+     IsP : is_proof P ->
+     Ela : elaborate Known P Needed E ->
+     is_proof E
+   on Ela.
+%Ela-EndFrat
+ Is: case IsP. apply rupProof_is to Ela3 _. search.
+%Ela-EndFratPrf
+ Is: case IsP. search.
+%Ela-DeletFrat
+ Is: case IsP. apply select_is to _ Ela1.
+ apply good_clause_list_select to _ Ela1. apply IH to _ _ _ Ela2.
+ search.
+%Ela-DeleteLratProof
+ Is: case IsP. apply select_is to _ Ela1.
+ apply good_clause_list_select to _ Ela1. apply IH to _ _ _ Ela2.
+ search.
+%Ela-AddLrupProofNeeded
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply IH to _ _ _ Ela2. search.
+%Ela-AddLrupProofUnknown
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply IH to _ _ _ Ela2. search.
+%Ela-AddProoflessNeeded
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply IH to _ _ _ Ela2. apply rupProof_is to Ela4 _. search.
+%Ela-AddProoflessUnknown
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply IH to _ _ _ Ela2. search.
+%Ela-RelocateNeeded-Diff
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply select_is to _ Ela2. M: apply select_mem to Ela2.
+ GCLR: apply good_clause_list_remove_all to _ Ela1.
+ GCLS: apply good_clause_list_select to GCLR Ela2.
+ apply good_clause_list_add to GCLS _ with ID = To, C = C.
+   intros M'. M': case M'.
+   M'': apply mem_after_select_before to Ela2 M'.
+   apply remove_all_no_mem to Ela1 M''.
+ apply mem_is to _ M. apply IH to _ _ _ Ela3. search.
+%Ela-RelocateNeeded-Same
+ case IsP. apply IH to _ _ _ Ela1. search.
+%Ela-RelocateUnknown
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply select_is to _ Ela2. M: apply select_mem to Ela2.
+ GCLR: apply good_clause_list_remove_all to _ Ela1.
+ GCLS: apply good_clause_list_select to GCLR Ela2.
+ apply good_clause_list_add to GCLS _ with ID = To, C = C.
+   intros M'. M': case M'.
+   M'': apply mem_after_select_before to Ela2 M'.
+   apply remove_all_no_mem to Ela1 M''.
+ apply mem_is to _ M. apply IH to _ _ _ Ela3. search.
+%Ela-Comment
+ Is: case IsP. apply IH to _ _ _ Ela1. search.
+%Preservability
+ apply proj_proof_is to Ela1 _ _ _. apply IH to _ _ _ Ela2. search.
+
+
+%Get only the clauses we need out of a list
+Define gatherNeeded : list (pair integer clause) ->
+                      list (pair integer clauseUsedness) ->
+                      list (pair integer clause) -> prop by
+  gatherNeeded K [] [];
+  gatherNeeded K ((ID, needed)::CURest) ((ID, C)::NRest) :=
+    mem (ID, C) K /\ gatherNeeded K CURest NRest;
+  gatherNeeded K ((ID, NotNeeded)::CURest) NRest :=
+    gatherNeeded K CURest NRest /\ (NotNeeded = needed -> false).
+
+
+Define good_used_list : list (pair integer clauseUsedness) -> prop by
+  good_used_list CU :=
+    forall ID U1 CURest U2,
+       select (ID, U1) CURest CU -> mem (ID, U2) CURest -> false.
+
+
+Theorem good_used_list_drop : forall L IDN,
+  good_used_list ((IDN)::L) -> good_used_list L.
+intros GCL. GCL: case GCL. unfold. intros S M.
+backchain GCL with ID = ID, U1 = U1.
+
+
+Theorem good_used_list_select : forall L Rest ID U,
+  good_used_list L -> select (ID, U) Rest L ->
+  good_used_list Rest.
+induction on 2. intros GCL S. S: case S.
+  %Slct-First
+   apply good_used_list_drop to GCL. search.
+  %Slct-Later
+   GCL': apply good_used_list_drop to GCL. GCL1: apply IH to GCL' S.
+   unfold. intros Slct M. Slct: case Slct.
+     %Slct-First
+      M': apply mem_after_select_before to S M. GCL: case GCL.
+      apply GCL to _ M'.
+     %Slct-Later
+      M: case M.
+        %Mem-Here
+         MS: apply select_mem to Slct.
+         M': apply mem_after_select_before to S MS. GCL: case GCL.
+         backchain GCL.
+        %Mem-Later
+         GCL1: case GCL1. apply GCL1 to Slct M.
+
+
+Theorem makeUsed_member : forall Needed Prf Updated ID U,
+  makeUsed Needed Prf Updated -> mem (ID, U) Updated ->
+  exists U', mem (ID, U') Needed.
+induction on 1. intros MU M. MU: case MU.
+  %MU-Nil
+   search.
+  %MU-ConsNeeded
+   M: case M.
+     %Mem-Here
+      apply select_mem to MU. search.
+     %Mem-Later
+      M': apply IH to MU1 M. apply mem_after_select_before to MU M'.
+      search.
+  %MU-ConsUnknown
+   M: case M.
+     %Mem-Here
+      apply select_mem to MU. search.
+     %Mem-Later
+      M': apply IH to MU1 M. apply mem_after_select_before to MU M'.
+      search.
+
+
+Theorem makeUsed_good_used_list : forall Needed Prf Updated,
+  good_used_list Needed -> makeUsed Needed Prf Updated ->
+  good_used_list Updated.
+induction on 2. intros GUL MU. MU: case MU.
+  %MU-Nil
+   search.
+  %MU-ConsNeeded
+   GUL': apply good_used_list_select to GUL MU.
+   GUL'': apply IH to _ MU1. unfold. intros S M. S: case S.
+     %Slct-First
+      M': apply makeUsed_member to MU1 M. GUL: case GUL.
+      apply GUL to MU M'.
+     %Slct-Later
+      M: case M.
+        %Mem-Here
+         M': apply select_mem to S.
+         M'': apply makeUsed_member to MU1 M'. GUL: case GUL.
+         apply GUL to MU M''.
+        %Mem-Later
+         GUL_Sub: apply IH to _ MU1. GUL_Sub: case GUL_Sub.
+         backchain GUL_Sub.
+  %MU-ConsUnknown
+   GUL': apply good_used_list_select to GUL MU.
+   GUL'': apply IH to _ MU1. unfold. intros S M. S: case S.
+     %Slct-First
+      M': apply makeUsed_member to MU1 M. GUL: case GUL.
+      apply GUL to MU M'.
+     %Slct-Later
+      M: case M.
+        %Mem-Here
+         M': apply select_mem to S.
+         M'': apply makeUsed_member to MU1 M'. GUL: case GUL.
+         apply GUL to MU M''.
+        %Mem-Later
+         GUL_Sub: apply IH to _ MU1. GUL_Sub: case GUL_Sub.
+         backchain GUL_Sub.
+
+
+Theorem domain_is : forall L D,
+  is_list (is_pair is_integer is_clause) L -> domain L D ->
+  is_list is_integer D.
+induction on 2. intros Is D. D: case D.
+  %Dmn-Nil
+   search.
+  %Dmn-Cons
+   Is: case Is. case Is. apply IH to _ D. search.
+
+
+Extensible_Theorem
+  endKnownClauses_related : forall Known FC CU DK DCU,
+    IsFC : is_finalClauses FC ->
+    IsKnown : is_list (is_pair is_integer is_clause) Known ->
+    CFC : checkFinalClauses Known FC ->
+    EKC : endKnownClauses FC CU ->
+    DmnCU : domain CU DCU ->
+    DmnK : domain Known DK ->
+    permutation DCU DK
+  on EKC.
+%EKC-End
+ CFC: case CFC. case DmnCU. case DmnK. search.
+%EKC-AddEmpty
+ CFC: case CFC. Is: case IsFC. DmnCU: case DmnCU.
+ DmnK': apply domain_select to DmnK CFC.
+ IsKRest1: apply select_is to _ CFC.
+ P: apply IH to Is2 IsKRest1 CFC1 EKC2 DmnCU DmnK'1.
+ IsDK: apply domain_is to _ DmnK. search.
+%EKC-AddNonEmpty
+ CFC: case CFC. Is: case IsFC. DmnCU: case DmnCU.
+ DmnK': apply domain_select to DmnK CFC.
+ IsKRest1: apply select_is to _ CFC.
+ P: apply IH to Is2 IsKRest1 CFC1 EKC2 DmnCU DmnK'1.
+ IsDK: apply domain_is to _ DmnK. search.
+
+
+Theorem mem_is_clauseUsedness : forall CU IDC,
+  is_list (is_pair is_integer is_clauseUsedness) CU -> mem IDC CU ->
+  exists ID C, IDC = (ID, C) /\ is_integer ID /\ is_clauseUsedness C.
+induction on 2. intros Is Mem. Mem: case Mem.
+  %Mem-Here
+   Is: case Is. case Is. search.
+  %Mem-Later
+   Is: case Is. apply IH to _ Mem. search.
+
+
+Theorem makeUsed_subset : forall CU Prf CU' ID,
+  is_list (is_pair is_integer is_clauseUsedness) CU ->
+  is_integer ID -> makeUsed CU Prf CU' -> mem (ID, needed) CU ->
+  mem (ID, needed) CU'.
+induction on 3. intros IsCU IsID MU Mem. MU: case MU.
+  %MU-Nil
+   search.
+  %MU-ConsNeeded
+   MemCU: apply select_mem to MU.
+   Is: apply mem_is_clauseUsedness to _ MemCU.
+   Or: apply is_integer_eq_or_not to Is IsID. E: case Or.
+     %ID2 = ID
+      search.
+     %ID2 != ID
+      NEq: assert (ID2, needed) = (ID, needed) -> false.
+        intros Eq. case Eq. backchain E.
+      MemKRest: apply mem_before_select_after to MU Mem _.
+      apply select_is_clauseUsedness to _ MU.
+      apply IH to _ IsID MU1 MemKRest. search.
+  %MU-ConsUnknown
+   apply select_is_clauseUsedness to _ MU.
+   apply mem_before_select_after to MU Mem _.
+   apply IH to _ IsID MU1 _. search.
+
+
+Extensible_Theorem
+  clauseUsedness_is_needed_or_not : forall CU,
+    Is : is_clauseUsedness CU ->
+    CU = needed \/ (CU = needed -> false)
+  on Is.
+%needed
+ search.
+%unknown
+ right. intros E. case E.
+
+
+Extensible_Theorem
+  endKnownClauses_all_mem : forall Known FC CU ID U,
+    CFC : checkFinalClauses Known FC ->
+    EKC : endKnownClauses FC CU ->
+    Mem : mem (ID, U) CU ->
+    exists C, mem (ID, C) Known
+  on EKC.
+%EKC-End
+ case Mem.
+%EKC-AddEmpty
+ Mem: case Mem.
+   %Mem-Here
+    CFC: case CFC. apply select_mem to CFC. search.
+   %Mem-Later
+    CFC: case CFC. M: apply IH to CFC1 EKC2 _.
+    apply mem_after_select_before to CFC M. search.
+%EKC-AddNonEmpty
+ Mem: case Mem.
+   %Mem-Here
+    CFC: case CFC. apply select_mem to CFC. search.
+   %Mem-Later
+    CFC: case CFC. M: apply IH to CFC1 EKC2 _.
+    apply mem_after_select_before to CFC M. search.
+
+
+Extensible_Theorem
+  endKnownClauses_good_used_list : forall Known FC CU,
+    IsFC : is_finalClauses FC ->
+    IsKnown : is_list (is_pair is_integer is_clause) Known ->
+    GCL : good_clause_list Known ->
+    CFC : checkFinalClauses Known FC ->
+    EKC : endKnownClauses FC CU ->
+    good_used_list CU
+  on EKC.
+%EKC-End
+ unfold. intros S. case S.
+%EKC-AddEmpty
+ IsFC: case IsFC. CFC: case CFC. Is: apply select_is to _ CFC.
+ GCL': apply good_clause_list_select to _ CFC.
+ GUL: apply IH to _ _ _ CFC1 EKC2. unfold. intros S M. S: case S.
+   %Slct-First
+    MKR1: apply endKnownClauses_all_mem to CFC1 EKC2 M. GCL: case GCL.
+    apply GCL to CFC MKR1.
+   %Slct-Later
+    M: case M.
+      %Mem-Here
+       M: apply select_mem to S. GCL: case GCL.
+       MKR1: apply endKnownClauses_all_mem to CFC1 EKC2 M.
+       apply GCL to CFC MKR1.
+      %Mem-Later
+       GUL: case GUL. backchain GUL.
+%EKC-AddNonEmpty
+ IsFC: case IsFC. CFC: case CFC. Is: apply select_is to _ CFC.
+ GCL': apply good_clause_list_select to _ CFC.
+ GUL: apply IH to _ _ _ CFC1 EKC2. unfold. intros S M. S: case S.
+   %Slct-First
+    MKR1: apply endKnownClauses_all_mem to CFC1 EKC2 M. GCL: case GCL.
+    apply GCL to CFC MKR1.
+   %Slct-Later
+    M: case M.
+      %Mem-Here
+       M: apply select_mem to S. GCL: case GCL.
+       MKR1: apply endKnownClauses_all_mem to CFC1 EKC2 M.
+       apply GCL to CFC MKR1.
+      %Mem-Later
+       GUL: case GUL. backchain GUL.
+
+
+Theorem good_clause_list_double_select : forall K ID CA CB RA RB,
+  is_list (is_pair is_integer is_clause) K -> good_clause_list K ->
+  select (ID, CA) RA K -> select (ID, CB) RB K -> CA = CB /\ RA = RB.
+induction on 3. intros Is GCL SA SB. SA: case SA.
+  %Slct-First
+   SB: case SB.
+     %Slct-First
+      search.
+     %Slct-Later
+      M: apply select_mem to SB. GCL: case GCL. apply GCL to _ M.
+  %Slct-Later
+   SB: case SB.
+     %Slct-First
+      M: apply select_mem to SA. GCL: case GCL. apply GCL to _ M.
+     %Slct-Later
+      Is: case Is. case Is. apply good_clause_list_select to GCL _.
+      apply IH to _ _ SA SB. search.
+
+
+Theorem remove_all_unique : forall K ID RA RB,
+  remove_all K ID RA -> remove_all K ID RB -> RA = RB.
+induction on 1. intros RA RB. RA: case RA.
+  %RA-Nil
+   case RB. search.
+  %RA-Remove
+   RB: case RB.
+     %RA-Remove
+      apply IH to RA RB. search.
+     %RA-Step
+      apply RB to _.
+  %RA-Step
+   RB: case RB.
+     %RA-Remove
+      apply RA to _.
+     %RA-Step
+      apply IH to RA1 RB1. search.
+
+
+Theorem good_clause_list_selects : forall L X CA CB LA LB,
+  good_clause_list L -> select (X, CA) LA L -> select (X, CB) LB L ->
+  LA = LB /\ CA = CB.
+induction on 2. intros GCL SA SB. SA: case SA.
+  %Slct-First
+   SB: case SB.
+     %Slct-First
+      search.
+     %Slct-Later
+      M: apply select_mem to SB. GCL: case GCL. apply GCL to _ M.
+  %Slct-Later
+   SB: case SB.
+     %Slct-First
+      M: apply select_mem to SA. GCL: case GCL. apply GCL to _ M.
+     %Slct-Later
+      apply good_clause_list_drop to GCL. apply IH to _ SA SB. search.
+
+
+Theorem mem_needed_is : forall L I,
+  is_list (is_pair is_integer is_clauseUsedness) L -> mem I L ->
+  is_pair is_integer is_clauseUsedness I.
+induction on 2. intros IsL M. M: case M.
+  %Mem-Here
+   case IsL. search.
+  %Mem-Later
+   case IsL. apply IH to _ M. search.
+
+
+Extensible_Theorem
+  elaboration_all_mem : forall Known P CU E ID U,
+    IsP : is_proof P ->
+    GCL : good_clause_list Known ->
+    IsKnown : is_list (is_pair is_integer is_clause) Known ->
+    CP : checkProof Known P ->
+    Ela : elaborate Known P CU E ->
+    Mem : mem (ID, U) CU ->
+    exists C, mem (ID, C) Known
+  on Ela,
+  elaboration_good_used_list : forall Known P CU E,
+    IsP : is_proof P ->
+    IsKnown : is_list (is_pair is_integer is_clause) Known ->
+    GCL : good_clause_list Known ->
+    CP : checkProof Known P ->
+    Ela : elaborate Known P CU E ->
+    good_used_list CU
+  on Ela.
+%elaboration_all_mem
+ %Ela-EndFrat
+  Is: case IsP. CP: case CP. M: apply makeUsed_member to Ela4 Mem.
+  M': apply mem_after_select_before to Ela2 M.
+  M+: apply endKnownClauses_all_mem to CP2 Ela1 M'. M2: case M+.
+    %Mem-Here
+     apply good_clause_list_remove_all_add to _ CP
+        with C = emptyClause. apply remove_all_is to _ CP.
+     GUL: apply endKnownClauses_good_used_list to _ _ _ CP2 Ela1.
+     GUL: case GUL. apply GUL to Ela2 M.
+    %Mem-Later
+     apply remove_all_mem_after to CP M2. search.
+ %Ela-EndFratPrf
+  Is: case IsP. CP: case CP. M: apply makeUsed_member to Ela3 Mem.
+  M': apply mem_after_select_before to Ela2 M.
+  M+: apply endKnownClauses_all_mem to CP2 Ela1 M'. M2: case M+.
+    %Mem-Here
+     apply good_clause_list_remove_all_add to _ CP
+        with C = emptyClause. apply remove_all_is to _ CP.
+     GUL: apply endKnownClauses_good_used_list to _ _ _ CP2 Ela1.
+     GUL: case GUL. apply GUL to Ela2 M.
+    %Mem-Later
+     apply remove_all_mem_after to CP M2. search.
+ %Ela-DeleteFrat
+  Is: case IsP. CP: case CP. Mem: case Mem.
+    %Mem-Here
+     apply select_mem to CP. search.
+    %Mem-Later
+     apply good_clause_list_double_select to _ _ CP Ela1.
+     apply select_is to _ CP. apply good_clause_list_select to _ CP.
+     M: apply IH to _ _ _ CP1 Ela2 Mem.
+     apply mem_after_select_before to CP M. search.
+ %Ela-DeleteLratProof
+  Is: case IsP. CP: case CP. Mem: case Mem.
+    %Mem-Here
+     apply select_mem to CP. search.
+    %Mem-Later
+     apply good_clause_list_double_select to _ _ CP Ela1.
+     apply select_is to _ CP. apply good_clause_list_select to _ CP.
+     M: apply IH to _ _ _ CP1 Ela2 Mem.
+     apply mem_after_select_before to CP M. search.
+ %Ela-AddLrupProofNeeded
+  Is: case IsP. CP: case CP. apply remove_all_unique to CP Ela1.
+  MNR: apply makeUsed_member to Ela4 Mem.
+  MN: apply mem_after_select_before to Ela3 MNR.
+  apply remove_all_is to _ CP.
+  apply good_clause_list_remove_all_add to _ CP with C = C.
+  M: apply IH to _ _ _ CP2 Ela2 MN. M: case M.
+    %Mem-Here
+     GUL: apply IH1 to _ _ _ CP2 Ela2. GUL: case GUL.
+     apply GUL to Ela3 MNR.
+    %Mem-Later
+     apply remove_all_mem_after to CP M. search.
+ %Ela-AddLrupProofUnknown
+  Is: case IsP. CP: case CP. apply remove_all_unique to CP Ela1.
+  MN: apply mem_after_select_before to Ela3 Mem.
+  apply remove_all_is to _ CP.
+  apply good_clause_list_remove_all_add to _ CP with C = C.
+  M: apply IH to _ _ _ CP2 Ela2 MN. M: case M.
+    %Mem-Here
+     GUL: apply IH1 to _ _ _ CP2 Ela2. GUL: case GUL.
+     apply GUL to Ela3 Mem.
+    %Mem-Later
+     apply remove_all_mem_after to CP M. search.
+ %Ela-AddProoflessNeeded
+  Is: case IsP. CP: case CP. apply remove_all_unique to CP Ela1.
+  MNR: apply makeUsed_member to Ela5 Mem.
+  MN: apply mem_after_select_before to Ela3 MNR.
+  apply remove_all_is to _ CP.
+  apply good_clause_list_remove_all_add to _ CP with C = C.
+  M: apply IH to _ _ _ CP2 Ela2 MN. M: case M.
+    %Mem-Here
+     GUL: apply IH1 to _ _ _ CP2 Ela2. GUL: case GUL.
+     apply GUL to Ela3 MNR.
+    %Mem-Later
+     apply remove_all_mem_after to CP M. search.
+ %Ela-AddProoflessUnknown
+  Is: case IsP. CP: case CP. apply remove_all_unique to CP Ela1.
+  MN: apply mem_after_select_before to Ela3 Mem.
+  apply remove_all_is to _ CP.
+  apply good_clause_list_remove_all_add to _ CP with C = C.
+  M: apply IH to _ _ _ CP2 Ela2 MN. M: case M.
+    %Mem-Here
+     GUL: apply IH1 to _ _ _ CP2 Ela2. GUL: case GUL.
+     apply GUL to Ela3 Mem.
+    %Mem-Later
+     apply remove_all_mem_after to CP M. search.
+ %Ela-RelocateNeeded-Diff
+  Is: case IsP. CP: case CP.
+    %CP-RelocateClause
+     Mem: case Mem.
+       %Mem-Here
+        M: apply select_mem to CP2.
+        apply remove_all_mem_after to CP1 M. search.
+       %Mem-Later
+        apply remove_all_unique to CP1 Ela1.
+        GCLR: apply good_clause_list_remove_all to _ Ela1.
+        apply good_clause_list_selects to _ Ela2 CP2.
+        Mem': apply mem_after_select_before to Ela4 Mem.
+        apply remove_all_is to _ Ela1. apply select_is to _ Ela2.
+        Is': apply select_is_picked to _ Ela2. case Is'.
+        GCLS: apply good_clause_list_select to GCLR Ela2.
+        apply good_clause_list_add to GCLS _ with ID = To, C = C1.
+           intros M. M: case M.
+           M': apply mem_after_select_before to Ela2 M.
+           apply remove_all_no_mem to Ela1 M'.
+        IsNeeded: apply elaboration_is_needed to _ _ _ Ela3.
+        apply mem_needed_is to IsNeeded Mem'.
+        M: apply IH to _ _ _ CP3 Ela3 Mem'. M: case M.
+          %Mem-Here
+           GUL: apply IH1 to _ _ _ CP3 Ela3.
+           GUL: case GUL. apply GUL to Ela4 _.
+          %Mem-Later
+           M': apply mem_after_select_before to Ela2 M.
+           apply remove_all_mem_after to Ela1 M'. search.
+    %CP-RelocateClauseSame
+     M: apply select_mem to Ela2. apply remove_all_no_mem to Ela1 M.
+ %Ela-RelocateNeeded-Same
+  Is: case IsP. CP: case CP.
+    %CP-RelocateClause
+     apply CP to _.
+    %CP-RelocateClause-Same
+     apply IH to _ _ _ CP1 Ela1 Mem. search.
+ %Ela-RelocateUnknown
+  Is: case IsP. CP: case CP.
+    %CP-RelocateClause
+     Mem: case Mem.
+       %Mem-Here
+        M: apply select_mem to CP2.
+        apply remove_all_mem_after to CP1 M. search.
+       %Mem-Later
+        apply remove_all_unique to CP1 Ela1.
+        GCLR: apply good_clause_list_remove_all to _ Ela1.
+        apply good_clause_list_selects to _ Ela2 CP2.
+        Mem': apply mem_after_select_before to Ela4 Mem.
+        apply remove_all_is to _ Ela1. apply select_is to _ Ela2.
+        Is': apply select_is_picked to _ Ela2. case Is'.
+        GCLS: apply good_clause_list_select to GCLR Ela2.
+        apply good_clause_list_add to GCLS _ with ID = To, C = C1.
+           intros M. M: case M.
+           M': apply mem_after_select_before to Ela2 M.
+           apply remove_all_no_mem to Ela1 M'.
+        IsNeeded: apply elaboration_is_needed to _ _ _ Ela3.
+        apply mem_needed_is to IsNeeded Mem'.
+        M: apply IH to _ _ _ CP3 Ela3 Mem'. M: case M.
+          %Mem-Here
+           GUL: apply IH1 to _ _ _ CP3 Ela3.
+           GUL: case GUL. apply GUL to Ela4 _.
+          %Mem-Later
+           M': apply mem_after_select_before to Ela2 M.
+           apply remove_all_mem_after to Ela1 M'. search.
+    %CP-RelocateClause-Same
+     M: apply select_mem to Ela2. apply remove_all_no_mem to Ela1 M.
+ %Ela-Comment
+  Is: case IsP. CP: case CP. apply IH to _ _ _ CP Ela1 _. search.
+ %Preservability
+  Is: apply proj_proof_is to Ela1 IsP IsKnown _.
+  CP': apply proj_checkProof to Ela1 CP _ _.
+  apply IH to _ _ _ _ Ela2 Mem. search.
+%elaboration_good_used_list
+ %Ela-EndFrat
+  case IsP. CP: case CP.
+  apply good_clause_list_remove_all_add to _ CP
+        with C = emptyClause. apply remove_all_is to _ CP.
+  apply endKnownClauses_good_used_list to _ _ _ CP2 Ela1.
+  apply good_used_list_select to _ Ela2.
+  apply makeUsed_good_used_list to _ Ela4. search.
+ %Ela-EndFratPrf
+  case IsP. CP: case CP.
+  apply good_clause_list_remove_all_add to _ CP
+        with C = emptyClause. apply remove_all_is to _ CP.
+  apply endKnownClauses_good_used_list to _ _ _ CP2 Ela1.
+  apply good_used_list_select to _ Ela2.
+  apply makeUsed_good_used_list to _ Ela3. search.
+ %Ela-DeleteFrat
+  case IsP. CP: case CP. apply good_clause_list_selects to _ CP Ela1.
+  apply select_is to _ Ela1. apply good_clause_list_select to _ CP.
+  GUL: apply IH1 to _ _ _ CP1 Ela2. unfold. intros S M. S: case S.
+    %Slct-First
+     MKR: apply IH to _ _ _ CP1 Ela2 M. GCL: case GCL.
+     apply GCL to Ela1 MKR.
+    %Slct-Later
+     M: case M.
+       %Mem-Here
+        Mem: apply select_mem to S.
+        MKR: apply IH to _ _ _ CP1 Ela2 Mem. GCL: case GCL.
+        apply GCL to Ela1 MKR.
+       %Mem-Later
+        GUL: case GUL. apply GUL to S M.
+ %Ela-DeleteLratProof
+  case IsP. CP: case CP. apply good_clause_list_selects to _ CP Ela1.
+  apply good_clause_list_select to _ Ela1. apply select_is to _ Ela1.
+  GUL: apply IH1 to _ _ _ CP1 Ela2. unfold. intros S M. S: case S.
+    %Slct-First
+     MKR: apply IH to _ _ _ CP1 Ela2 M. GCL: case GCL.
+     apply GCL to Ela1 MKR.
+    %Slct-Later
+     M: case M.
+       %Mem-Here
+        Mem: apply select_mem to S.
+        MKR: apply IH to _ _ _ CP1 Ela2 Mem. GCL: case GCL.
+        apply GCL to Ela1 MKR.
+       %Mem-Later
+        GUL: case GUL. apply GUL to S M.
+ %Ela-AddLrupProofNeeded
+  case IsP. CP: case CP. apply remove_all_is to _ CP.
+  apply good_clause_list_remove_all_add to _ CP with C = C.
+  apply remove_all_unique to CP Ela1.
+  GUL: apply IH1 to _ _ _ CP2 Ela2.
+  apply good_used_list_select to _ Ela3.
+  apply makeUsed_good_used_list to _ Ela4. search.
+ %Ela-AddLrupProofUnknown
+  case IsP. CP: case CP. apply remove_all_is to _ CP.
+  apply remove_all_unique to CP Ela1.
+  apply good_clause_list_remove_all_add to _ CP with C = C.
+  GUL: apply IH1 to _ _ _ CP2 Ela2.
+  apply good_used_list_select to _ Ela3. search.
+ %Ela-AddProoflessNeeded
+  case IsP. CP: case CP. apply remove_all_is to _ CP.
+  apply good_clause_list_remove_all_add to _ CP with C = C.
+  apply remove_all_unique to CP Ela1.
+  GUL: apply IH1 to _ _ _ CP2 Ela2.
+  apply good_used_list_select to _ Ela3.
+  apply makeUsed_good_used_list to _ Ela5. search.
+ %Ela-AddProoflessUnknown
+  case IsP. CP: case CP. apply remove_all_is to _ CP.
+  apply remove_all_unique to CP Ela1.
+  apply good_clause_list_remove_all_add to _ CP with C = C.
+  GUL: apply IH1 to _ _ _ CP2 Ela2.
+  apply good_used_list_select to _ Ela3. search.
+ %Ela-RelocateNeeded-Diff
+  case IsP. CP: case CP.
+    %CP-RelocateClause
+     apply remove_all_unique to CP1 Ela1.
+     apply remove_all_is to _ CP1.
+     GCL': apply good_clause_list_remove_all to _ Ela1.
+     apply good_clause_list_selects to _ CP2 Ela2.
+     apply select_is to _ CP2.
+     GCLS: apply good_clause_list_select to _ CP2.
+     apply good_clause_list_add to GCLS _ with ID = To, C = C.
+       intros M. M: case M.
+       M': apply mem_after_select_before to Ela2 M.
+       apply remove_all_no_mem to Ela1 M'.
+     IsPr: apply select_is_picked to _ Ela2. case IsPr.
+     GUL: apply IH1 to _ _ _ CP3 Ela3.
+     GUL': apply good_used_list_select to _ Ela4. unfold. intros S M.
+     S: case S.
+       %Slct-First
+        MN: apply mem_after_select_before to Ela4 M.
+        MKR+: apply IH to _ _ _ CP3 Ela3 MN. MKR2: case MKR+.
+          %Mem-Here
+           apply CP to _.
+          %Mem-Later
+           GCL': case GCL'. apply GCL' to Ela2 MKR2.
+       %Slct-Later
+        M: case M.
+          %Mem-Here
+           MNR: apply select_mem to S.
+           MN: apply mem_after_select_before to Ela4 MNR.
+           MKR+: apply IH to _ _ _ CP3 Ela3 MN. MKR2: case MKR+.
+             %Mem-Here
+              apply CP to _.
+             %Mem-Later
+              GCL': case GCL'. apply GCL' to Ela2 MKR2.
+          %Mem-Later
+           GUL': case GUL'. apply GUL' to S M.
+    %CP-RelocateClauseSame
+     M: apply select_mem to Ela2. apply remove_all_no_mem to Ela1 M.
+ %Ela-RelocateNeeded-Same
+  case IsP. CP: case CP.
+    %CP-RelocateClause
+     apply CP to _.
+    %CP-RelocateClauseSame
+     apply IH1 to _ _ _ CP1 Ela1. search.
+ %Ela-RelocateUnknown
+  case IsP. CP: case CP.
+    %CP-RelocateClause
+     apply remove_all_unique to CP1 Ela1.
+     apply remove_all_is to _ CP1.
+     GCL': apply good_clause_list_remove_all to _ Ela1.
+     apply good_clause_list_selects to _ CP2 Ela2.
+     apply select_is to _ CP2.
+     GCLS: apply good_clause_list_select to _ CP2.
+     apply good_clause_list_add to GCLS _ with ID = To, C = C.
+       intros M. M: case M.
+       M': apply mem_after_select_before to Ela2 M.
+       apply remove_all_no_mem to Ela1 M'.
+     IsPr: apply select_is_picked to _ Ela2. case IsPr.
+     GUL: apply IH1 to _ _ _ CP3 Ela3.
+     GUL': apply good_used_list_select to _ Ela4. unfold. intros S M.
+     S: case S.
+       %Slct-First
+        MN: apply mem_after_select_before to Ela4 M.
+        MKR+: apply IH to _ _ _ CP3 Ela3 MN. MKR2: case MKR+.
+          %Mem-Here
+           apply CP to _.
+          %Mem-Later
+           GCL': case GCL'. apply GCL' to Ela2 MKR2.
+       %Slct-Later
+        M: case M.
+          %Mem-Here
+           MNR: apply select_mem to S.
+           MN: apply mem_after_select_before to Ela4 MNR.
+           MKR+: apply IH to _ _ _ CP3 Ela3 MN. MKR2: case MKR+.
+             %Mem-Here
+              apply CP to _.
+             %Mem-Later
+              GCL': case GCL'. apply GCL' to Ela2 MKR2.
+          %Mem-Later
+           GUL': case GUL'. apply GUL' to S M.
+    %CP-RelocateClauseSame
+     M: apply select_mem to Ela2. apply remove_all_no_mem to Ela1 M.
+ %Ela-Comment
+  case IsP. CP: case CP. apply IH1 to _ _ _ CP Ela1. search.
+ %Preservability
+  Is: apply proj_proof_is to Ela1 IsP IsKnown _.
+  CP': apply proj_checkProof to Ela1 CP _ _.
+  apply IH1 to _ _ _ CP' Ela2. search.
+
+
+Theorem select_mem_or[A] : forall (A B : A) K KRest,
+  select A KRest K -> mem B K -> B = A \/ mem B KRest.
+induction on 1. intros S M. S: case S.
+  %Slct-First
+   M: case M.
+     %Mem-Here
+      search.
+     %Mem-Later
+      search.
+  %Slct-Later
+   M: case M.
+     %Mem-Here
+      search.
+     %Mem-Later
+      Or: apply IH to S M. case Or. search. search.
+
+
+Theorem remove_all_exists : forall K ID,
+  is_list (is_pair is_integer is_clause) K -> is_integer ID ->
+  exists KR, remove_all K ID KR.
+induction on 1. intros IsK IsID. IsK: case IsK.
+  %nil
+   search.
+  %cons
+   apply IH to IsK1 IsID. IsP: case IsK.
+   Or: apply is_integer_eq_or_not to IsP IsID. case Or.
+     %A = ID
+      search.
+     %A != ID
+      search.
+
+
+Theorem permutation_transitive_clauses : forall A B C,
+  is_list (is_pair is_integer is_clause) A ->
+  is_list (is_pair is_integer is_clause) B ->
+  is_list (is_pair is_integer is_clause) C ->
+  permutation A B -> permutation B C -> permutation A C.
+intros IsA IsB IsC PAB PBC.
+assert forall I N1 N2, is_pair is_integer is_clause I ->
+         count I A N1 -> count I C N2 -> N1 = N2.
+  intros IsI CA CC. CB: apply is_count_exists to IsB IsI.
+  apply permutation_counts to PAB CA CB.
+  apply permutation_counts to PBC CB CC. search.
+apply counts_permutation to IsA IsC _. search.
+
+
+Extensible_Theorem
+  checkFinalClauses_perm_help : forall A B FC,
+    IsFC : is_finalClauses FC ->
+    IsA : is_list (is_pair is_integer is_clause) A ->
+    IsB : is_list (is_pair is_integer is_clause) B ->
+    CFCA : checkFinalClauses A FC ->
+    CFCB : checkFinalClauses B FC ->
+    exists L, permutation L A /\ permutation L B
+  on CFCA.
+%CFC-AddFClause
+ case IsFC. CFCB: case CFCB. apply select_is to _ CFCA1.
+ apply select_is to _ CFCB. apply IH to _ _ _ CFCA2 CFCB1.
+ exists (ID, C)::L. search.
+%CFC-EndOriginal
+ case CFCB. search.
+
+
+Theorem checkFinalClauses_perm : forall A B FC,
+  is_finalClauses FC -> is_list (is_pair is_integer is_clause) A ->
+  is_list (is_pair is_integer is_clause) B ->
+  checkFinalClauses A FC -> checkFinalClauses B FC ->
+  permutation A B.
+intros IsFC IsA IsB CFCA CFCB.
+P: apply checkFinalClauses_perm_help to _ _ _ CFCA CFCB.
+P': apply permutation_symmetric to P.
+apply permutation_is to _ P1.
+apply permutation_transitive_clauses to _ _ _ P' P1. search.
+
+
+Define hasNeeded : list (pair integer clause) ->
+                   list (pair integer clauseUsedness) ->
+                   list (pair integer clause) -> prop by
+  hasNeeded K CU N :=
+    (forall ID, mem (ID, needed) CU -> exists C, mem (ID, C) N) /\
+    (forall ID CN CK, mem (ID, CN) N -> mem (ID, CK) K -> CN = CK).
+
+
+Theorem hasNeeded_mem : forall K CU N ID,
+  hasNeeded K CU N -> mem (ID, needed) CU ->
+  exists C, mem (ID, C) N.
+intros HN M. HN: case HN. apply HN to M. search.
+
+
+Theorem hasNeeded_lookup : forall K CU N ID C,
+  is_list (is_pair is_integer is_clause) K -> good_clause_list K ->
+  is_list (is_pair is_integer is_clause) N -> good_clause_list N ->
+  good_used_list CU -> hasNeeded K CU N -> lookup K ID C ->
+  mem (ID, needed) CU -> lookup N ID C.
+intros IsK GCLK IsN GCLN GUL HN Lkp Mem. HN: case HN.
+MN: apply HN to Mem. LN: apply mem_lookup to _ MN.
+MK: apply lookup_mem to Lkp. MN': apply lookup_mem to LN.
+apply HN1 to MN' MK. search.
+
+
+Theorem hasNeeded_drop : forall K ID U CU N,
+  hasNeeded K ((ID, U)::CU) N -> hasNeeded K CU N.
+intros HN. HN: case HN. unfold.
+  %mem CU -> mem N
+   intros M. backchain HN.
+  %mem N CN -> mem K CK -> CN = CK
+   search.
+
+
+Theorem rupProof_help_hasNeeded : forall K A Prf Needed Updated KN,
+  is_list (is_pair is_integer is_clause) K -> good_clause_list K ->
+  good_used_list Needed ->
+  is_list (is_pair is_integer is_clause) KN -> good_clause_list KN ->
+  rupProof_help K A Prf ->
+  makeUsed Needed Prf Updated -> hasNeeded K Updated KN ->
+  rupProof_help KN A Prf.
+induction on 6. intros IsK GCL GUL IsKN GCL_KN RUPPH MU HN.
+GUL': apply makeUsed_good_used_list to GUL MU. RUP: case RUPPH.
+  %RUPPH-End
+   M: assert mem ID [ID]. M': apply makeUsed_needed to MU M.
+   apply hasNeeded_mem to HN M'.
+   apply hasNeeded_lookup to _ _ _ _ _ HN RUP _. search.
+  %RUPPH-Step
+   M: assert mem ID (ID::Prf1). M': apply makeUsed_needed to MU M.
+   apply hasNeeded_mem to HN M'.
+   L: apply hasNeeded_lookup to _ _ _ _ _ HN RUP _.
+   MU': case MU (keep).
+     %MU-ConsNeeded
+      apply good_used_list_select to GUL MU'.
+      HN': apply hasNeeded_drop to HN.
+      R: apply IH to _ _ _ _ _ RUP2 MU'1 HN'.
+      R': apply rupProof_help_orderless to _ _ GCL_KN R _. search.
+     %MU-ConsUnknown
+      apply good_used_list_select to GUL MU'.
+      HN': apply hasNeeded_drop to HN.
+      R: apply IH to _ _ _ _ _ RUP2 MU'1 HN'.
+      R': apply rupProof_help_orderless to _ _ GCL_KN R _. search.
+
+
+Theorem rupProof_hasNeeded : forall K C Prf Needed Updated KN,
+  is_list (is_pair is_integer is_clause) K -> good_clause_list K ->
+  good_used_list Needed ->
+  is_list (is_pair is_integer is_clause) KN -> good_clause_list KN ->
+  rupProof K C Prf ->
+  makeUsed Needed Prf Updated -> hasNeeded K Updated KN ->
+  rupProof KN C Prf.
+intros IsK GCL GUL IsKN GCL_KN RUP MU HN. RUP: case RUP.
+apply rupProof_help_hasNeeded to IsK GCL GUL IsKN GCL_KN RUP2 MU HN.
+search.
+
+
+Theorem hasNeeded_select_known : forall K CU N ID C KRest,
+  hasNeeded K ((ID, unknown)::CU) N -> select (ID, C) KRest K ->
+  good_used_list ((ID, unknown)::CU) ->
+  hasNeeded KRest CU N.
+intros HN S GUL. HN': apply hasNeeded_drop to HN. HN': case HN'.
+unfold.
+  %mem CU -> mem N
+   search.
+  %mem N CN -> mem KRest CK -> CN = CK
+   intros MN MKR. MK: apply mem_after_select_before to S MKR.
+   apply HN'1 to MN MK. search.
+
+
+Theorem good_used_list_mems : forall L X UA UB,
+  good_used_list L -> mem (X, UA) L -> mem (X, UB) L -> UA = UB.
+induction on 2. intros GUL MA MB. MA: case MA.
+  %MA by Mem-Here
+   MB: case MB.
+     %MB by Mem-Here
+      search.
+     %MB by Mem-Later
+      GUL: case GUL. apply GUL to _ MB.
+  %MA by Mem-Later
+   MB: case MB.
+     %MB by Mem-Here
+      GUL: case GUL. apply GUL to _ MA.
+     %MB by Mem-Later
+      GUL': apply good_used_list_drop to GUL.
+      apply IH to GUL' MA MB. search.
+
+
+Extensible_Theorem
+  elaboration_check_add : forall KA KB KC P CU E,
+    IsP : is_proof P ->
+    IsKA : is_list (is_pair is_integer is_clause) KA ->
+    IsKB : is_list (is_pair is_integer is_clause) KB ->
+    IsKC : is_list (is_pair is_integer is_clause) KC ->
+    GCLA : good_clause_list KA ->
+    GCLB : good_clause_list KB ->
+    GCLC : good_clause_list KC ->
+    Ela : elaborate KA P CU E ->
+    CP : checkProof KB E ->
+    Mems : (forall ID C, mem (ID, C) KB -> mem (ID, C) KC) ->
+    checkProof KC E
+  on Ela.
+%Ela-EndFrat
+ CP: case CP (keep).
+ apply rupProof_orderless to _ _ _ CP1 _ with K2 = KC. search.
+%Ela-EndFratPrf
+ CP: case CP (keep).
+ apply rupProof_orderless to _ _ _ CP1 _ with K2 = KC. search.
+%Ela-DeleteFrat
+ Is: case IsP. apply good_clause_list_select to _ Ela1.
+ apply select_is to _ Ela1. apply IH to _ _ _ _ _ _ _ Ela2 CP _.
+ search.
+%Ela-DeleteLratProof
+ Is: case IsP. apply good_clause_list_select to _ Ela1.
+ apply select_is to _ Ela1. apply IH to _ _ _ _ _ _ _ Ela2 CP _.
+ search.
+%Ela-AddLrupProofNeeded
+ Is: case IsP. CP: case CP (keep).
+ %
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply remove_all_is to _ Ela1.
+ %
+ apply good_clause_list_remove_all_add to _ CP1 with C = C.
+ apply remove_all_is to _ CP1.
+ %
+ RAC: apply remove_all_exists to IsKC Is.
+ GCLC': apply good_clause_list_remove_all_add to _ RAC with C = C.
+ apply remove_all_is to _ RAC.
+ %
+ apply IH to _ _ _ _ _ _ GCLC' Ela2 CP3 _.
+   intros MKR1+. MKR1: case MKR1+.
+     %Mem-Here
+      search.
+     %Mem-Later
+      MB: apply remove_all_mem_after to CP1 MKR1.
+      MC: apply Mems to MB. apply remove_all_still_mem to RAC MC _.
+        intros E. case E. apply remove_all_no_mem to CP1 MKR1.
+      search.
+ %
+ apply rupProof_orderless to _ _ _ CP2 Mems. search.
+%Ela-AddLrupProofUnknown
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ %
+ apply IH to _ _ _ _ _ _ GCLC Ela2 CP _. search.
+%Ela-AddProoflessNeeded
+ Is: case IsP. CP: case CP (keep).
+ %
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply remove_all_is to _ Ela1.
+ %
+ apply good_clause_list_remove_all_add to _ CP1 with C = C.
+ apply remove_all_is to _ CP1.
+ %
+ RAC: apply remove_all_exists to IsKC Is.
+ GCLC': apply good_clause_list_remove_all_add to _ RAC with C = C.
+ apply remove_all_is to _ RAC.
+ %
+ apply IH to _ _ _ _ _ _ GCLC' Ela2 CP3 _.
+   intros MKR1+. MKR1: case MKR1+.
+     %Mem-Here
+      search.
+     %Mem-Later
+      MB: apply remove_all_mem_after to CP1 MKR1.
+      MC: apply Mems to MB. apply remove_all_still_mem to RAC MC _.
+        intros E. case E. apply remove_all_no_mem to CP1 MKR1.
+      search.
+ %
+ apply rupProof_orderless to _ _ _ CP2 Mems. search.
+%Ela-AddProoflessUnknown
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ %
+ apply IH to _ _ _ _ _ _ GCLC Ela2 CP _. search.
+%Ela-RelocateNeeded-Diff
+ Is: case IsP. CP: case CP (keep).
+   %CP-RelocateClause
+    apply remove_all_is to _ Ela1. apply select_is to _ Ela2.
+    assert good_clause_list ((To, C)::KRest2).
+      unfold. intros S M. S: case S.
+        %Slct-First
+         M': apply mem_after_select_before to Ela2 M.
+         apply remove_all_no_mem to Ela1 M'.
+        %Slct-Later
+         M: case M.
+           %Mem-Here
+            M: apply select_mem to S.
+            M': apply mem_after_select_before to Ela2 M.
+            M'': apply remove_all_no_mem to Ela1 M'.
+           %Mem-Later
+            apply good_clause_list_remove_all to _ Ela1.
+            GCL': apply good_clause_list_select to _ Ela2.
+            GCL': case GCL'. apply GCL' to S M.
+    %
+    apply remove_all_is to _ CP2. apply select_is to _ CP3.
+    assert good_clause_list ((To, C1)::KRest3).
+      unfold. intros S M. S: case S.
+        %Slct-First
+         M': apply mem_after_select_before to CP3 M.
+         apply remove_all_no_mem to CP2 M'.
+        %Slct-Later
+         M: case M.
+           %Mem-Here
+            M: apply select_mem to S.
+            M': apply mem_after_select_before to CP3 M.
+            M'': apply remove_all_no_mem to CP2 M'.
+           %Mem-Later
+            apply good_clause_list_remove_all to _ CP2.
+            GCL': apply good_clause_list_select to _ CP3.
+            GCL': case GCL'. apply GCL' to S M.
+    %
+    RAC: apply remove_all_exists to IsKC Is1.
+    MKR1: apply select_mem to CP3.
+    MB: apply remove_all_mem_after to CP2 MKR1. MC: apply Mems to MB.
+    MKR: apply remove_all_still_mem to RAC MC _.
+    SC: apply mem_select to MKR.
+    apply remove_all_is to _ RAC. apply select_is to _ SC.
+    GCLC': assert good_clause_list ((To, C1)::L').
+      unfold. intros S M. S: case S.
+        %Slct-First
+         M': apply mem_after_select_before to SC M.
+         apply remove_all_no_mem to RAC M'.
+        %Slct-Later
+         M: case M.
+           %Mem-Here
+            M: apply select_mem to S.
+            M': apply mem_after_select_before to SC M.
+            M'': apply remove_all_no_mem to RAC M'.
+           %Mem-Later
+            apply good_clause_list_remove_all to _ RAC.
+            GCL': apply good_clause_list_select to _ SC.
+            GCL': case GCL'. apply GCL' to S M.
+    %
+    apply mem_is to _ MC. Is': apply select_is_picked to _ Ela2.
+    case Is'. apply IH to _ _ _ _ _ _ GCLC' Ela3 CP4 _.
+      intros M. M: case M.
+        %Mem-Here
+         search.
+        %Mem-Later
+         clear MKR1 MB MC MKR.
+         MKR1: apply mem_after_select_before to CP3 M.
+         MB: apply remove_all_mem_after to CP2 MKR1.
+         MC: apply Mems to MB. Is': apply mem_is to _ MB.
+         Or: apply is_integer_eq_or_not to Is1 Is'. N: case Or.
+           %To = ID1
+            apply remove_all_no_mem to CP2 _.
+           %To != ID1
+            MKR: apply remove_all_still_mem to RAC MC _.
+            Or: apply is_integer_eq_or_not to Is Is'. N': case Or.
+              %From = ID1
+               GCL: apply good_clause_list_remove_all to _ CP2.
+               GCL: case GCL. apply GCL to CP3 _.
+              %From != ID1
+               apply mem_before_select_after to SC MKR _.
+                 intros E. case E. backchain N'.
+               search.
+    search.
+   %CP-RelocateClause-Same
+    M: apply select_mem to Ela2. apply remove_all_no_mem to Ela1 M.
+%Ela-RelocateNeeded-Same
+ Is: case IsP. apply IH to _ _ _ _ _ _ GCLC Ela1 CP _. search.
+%Ela-RelocateUnknown
+ Is: case IsP. apply remove_all_is to _ Ela1.
+ apply select_is to _ Ela2. assert good_clause_list ((To, C)::KRest2).
+   unfold. intros S M. S: case S.
+     %Slct-First
+      M': apply mem_after_select_before to Ela2 M.
+      apply remove_all_no_mem to Ela1 M'.
+     %Slct-Later
+      M: case M.
+        %Mem-Here
+         M: apply select_mem to S.
+         M': apply mem_after_select_before to Ela2 M.
+         M'': apply remove_all_no_mem to Ela1 M'.
+        %Mem-Later
+         apply good_clause_list_remove_all to _ Ela1.
+         GCL': apply good_clause_list_select to _ Ela2.
+         GCL': case GCL'. apply GCL' to S M.
+ IsP: apply select_is_picked to _ Ela2. case IsP.
+ apply IH to _ _ _ _ _ _ GCLC Ela3 CP _. search.
+%Ela-Comment
+ case IsP. apply IH to _ _ _ _ _ _ GCLC Ela1 CP _. search.
+%Ela-Default
+ apply proj_proof_is to Ela1 _ _ _.
+ apply IH to _ _ _ _ _ _ GCLC Ela2 CP _. search.
+
+
+Extensible_Theorem
+   elaboration_valid : forall Known P CU E Needed,
+     IsP : is_proof P ->
+     IsKnown : is_list (is_pair is_integer is_clause) Known ->
+     IsNeeded : is_list (is_pair is_integer is_clause) Needed ->
+     GCL : good_clause_list Known ->
+     GCL_N : good_clause_list Needed ->
+     CP : checkProof Known P ->
+     Ela : elaborate Known P CU E ->
+     HN : hasNeeded Known CU Needed ->
+     checkProof Needed E
+   on Ela.
+%Ela-EndFrat
+ case IsP. CP: case CP (keep). IsKR: apply remove_all_is to _ CP1.
+ GCLKR: apply good_clause_list_remove_all_add to _ CP1 with
+    C = emptyClause.
+ GULN1: apply endKnownClauses_good_used_list to _ _ _ CP3 Ela1.
+ apply good_used_list_select to _ Ela2.
+ apply rupProof_hasNeeded to _ _ _ _ _ Ela3 Ela4 HN. search.
+%Ela-EndFratPrf
+ case IsP. CP: case CP (keep). IsKR: apply remove_all_is to _ CP1.
+ GCLKR: apply good_clause_list_remove_all_add to _ CP1 with
+    C = emptyClause.
+ GULN1: apply endKnownClauses_good_used_list to _ _ _ CP3 Ela1.
+ apply good_used_list_select to _ Ela2.
+ apply rupProof_hasNeeded to _ _ _ _ _ CP2 Ela3 HN. search.
+%Ela-DeleteFrat
+ case IsP. CP: case CP (keep). apply select_is to _ CP1.
+ apply good_clause_list_selects to GCL CP1 Ela1.
+ apply good_clause_list_select to _ Ela1. apply select_is to _ Ela1.
+ GUL: apply elaboration_good_used_list to _ _ _ CP Ela.
+ HN': apply hasNeeded_select_known to HN _ _.
+ apply IH to _ _ _ _ _ CP2 Ela2 HN'. search.
+%Ela-DeleteLratProof
+ case IsP. CP: case CP (keep). apply select_is to _ CP1.
+ apply good_clause_list_selects to GCL CP1 Ela1.
+ apply good_clause_list_select to _ Ela1. apply select_is to _ Ela1.
+ GUL: apply elaboration_good_used_list to _ _ _ CP Ela.
+ HN': apply hasNeeded_select_known to HN _ _.
+ apply IH to _ _ _ _ _ CP2 Ela2 HN'. search.
+%Ela-AddLrupProofNeeded
+ Is: case IsP. CP: case CP (keep).
+ apply remove_all_unique to CP1 Ela1. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply elaboration_is_needed to _ _ _ Ela2.
+ apply select_is_clauseUsedness to _ Ela3.
+ %
+ RA: apply remove_all_exists to IsNeeded Is.
+ apply remove_all_is to _ RA.
+ apply good_clause_list_remove_all_add to _ RA with C = C.
+ %
+ GUL: apply elaboration_good_used_list to _ _ _ CP3 Ela2.
+ apply good_used_list_select to GUL Ela3.
+ %
+ apply IH to _ _ _ _ _ CP3 Ela2 _ with Needed = (ID, C)::KR.
+   unfold.
+     %mem Needed1 -> mem (ID, C)::KR
+      intros MN1. apply mem_is_clauseUsedness to _ MN1.
+      Or: apply is_integer_eq_or_not to Is _ with I2 = ID2.
+      N: case Or.
+        %ID = ID2
+         search.
+        %ID != ID2
+         MNR: apply mem_before_select_after to Ela3 MN1 _.
+           intros E. case E. backchain N.
+         MCU: apply makeUsed_subset to _ _ Ela4 MNR.
+         HN: case HN. MN: apply HN to MCU.
+         apply remove_all_still_mem to RA MN _. search.
+     %mem CN (ID, C)::KR -> mem CK (ID, C)::KRest -> CN = CK
+      intros MKR+ MKRest+. MKR: case MKR+.
+        %Mem-Here
+         MKRest: case MKRest+.
+           %Mem-Here
+            search.
+           %Mem-Later
+            apply remove_all_no_mem to Ela1 MKRest.
+        %Mem-Later
+         MKRest: case MKRest+.
+           %Mem-Here
+            apply remove_all_no_mem to RA MKR.
+           %Mem-Later
+            MN: apply remove_all_mem_after to RA MKR.
+            MK: apply remove_all_mem_after to Ela1 MKRest.
+            HN: case HN. apply HN1 to MN MK. search.
+ %
+ apply rupProof_hasNeeded to _ _ _ _ _ CP2 Ela4 HN. search.
+%Ela-AddLrupProofUnknown
+ Is: case IsP. CP: case CP (keep).
+ apply remove_all_unique to CP1 Ela1. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply elaboration_is_needed to _ _ _ Ela2.
+ apply select_is_clauseUsedness to _ Ela3.
+ %
+ GUL: apply elaboration_good_used_list to _ _ _ CP3 Ela2.
+ apply good_used_list_select to GUL Ela3.
+ %
+ RA: apply remove_all_exists to IsNeeded Is.
+ apply good_clause_list_remove_all to _ RA.
+ apply remove_all_is to _ RA.
+ CP': apply IH to _ _ _ _ _ CP3 Ela2 _ with Needed = KR.
+   unfold.
+     %mem Needed1 -> mem KR
+      intros MN1. apply mem_is_clauseUsedness to _ MN1.
+      Or: apply is_integer_eq_or_not to Is _ with I2 = ID2.
+      N: case Or.
+        %ID = ID2
+         MN1': apply select_mem to Ela3.
+         apply good_used_list_mems to GUL MN1 MN1'.
+        %ID != ID2
+         MCU: apply mem_before_select_after to Ela3 MN1 _.
+         HN: case HN. MN: apply HN to MCU.
+         apply remove_all_still_mem to RA MN _. search.
+     %mem CN KR -> mem CK (ID, C)::KRest -> CN = CK
+      intros ML' MKRest+. MKRest: case MKRest+.
+        %Mem-Here
+         apply remove_all_no_mem to RA ML'.
+        %Mem-Later
+         MK: apply remove_all_mem_after to Ela1 MKRest.
+         MN: apply remove_all_mem_after to RA ML'.
+         HN: case HN. apply HN1 to MN MK. search.
+ apply elaboration_check_add to _ _ _ _ _ _ GCL_N Ela2 CP' _.
+   intros MKR. apply remove_all_mem_after to RA MKR. search.
+ search.
+%Ela-AddProoflessNeeded
+ Is: case IsP. CP: case CP (keep).
+ apply remove_all_unique to CP1 Ela1. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply elaboration_is_needed to _ _ _ Ela2.
+ apply select_is_clauseUsedness to _ Ela3.
+ %
+ RA: apply remove_all_exists to IsNeeded Is.
+ apply remove_all_is to _ RA.
+ apply good_clause_list_remove_all_add to _ RA with C = C.
+ %
+ GUL: apply elaboration_good_used_list to _ _ _ CP3 Ela2.
+ apply good_used_list_select to GUL Ela3.
+ %
+ apply IH to _ _ _ _ _ CP3 Ela2 _ with Needed = (ID, C)::KR.
+   unfold.
+     %mem Needed1 -> mem (ID, C)::KR
+      intros MN1. apply mem_is_clauseUsedness to _ MN1.
+      Or: apply is_integer_eq_or_not to Is _ with I2 = ID2.
+      N: case Or.
+        %ID = ID2
+         search.
+        %ID != ID2
+         MNR: apply mem_before_select_after to Ela3 MN1 _.
+           intros E. case E. backchain N.
+         MCU: apply makeUsed_subset to _ _ Ela5 MNR.
+         HN: case HN. MN: apply HN to MCU.
+         apply remove_all_still_mem to RA MN _. search.
+     %mem CN (ID, C)::KR -> mem CK (ID, C)::KRest -> CN = CK
+      intros MKR+ MKRest+. MKR: case MKR+.
+        %Mem-Here
+         MKRest: case MKRest+.
+           %Mem-Here
+            search.
+           %Mem-Later
+            apply remove_all_no_mem to Ela1 MKRest.
+        %Mem-Later
+         MKRest: case MKRest+.
+           %Mem-Here
+            apply remove_all_no_mem to RA MKR.
+           %Mem-Later
+            MN: apply remove_all_mem_after to RA MKR.
+            MK: apply remove_all_mem_after to Ela1 MKRest.
+            HN: case HN. apply HN1 to MN MK. search.
+ %
+ apply rupProof_hasNeeded to _ _ _ _ _ Ela4 Ela5 HN. search.
+%Ela-AddProoflessUnknown
+ Is: case IsP. CP: case CP (keep).
+ apply remove_all_unique to CP1 Ela1. apply remove_all_is to _ Ela1.
+ apply good_clause_list_remove_all_add to _ Ela1 with C = C.
+ apply elaboration_is_needed to _ _ _ Ela2.
+ apply select_is_clauseUsedness to _ Ela3.
+ %
+ GUL: apply elaboration_good_used_list to _ _ _ CP3 Ela2.
+ apply good_used_list_select to GUL Ela3.
+ %
+ RA: apply remove_all_exists to IsNeeded Is.
+ apply good_clause_list_remove_all to _ RA.
+ apply remove_all_is to _ RA.
+ CP': apply IH to _ _ _ _ _ CP3 Ela2 _ with Needed = KR.
+   unfold.
+     %mem Needed1 -> mem KR
+      intros MN1. apply mem_is_clauseUsedness to _ MN1.
+      Or: apply is_integer_eq_or_not to Is _ with I2 = ID2.
+      N: case Or.
+        %ID = ID2
+         MN1': apply select_mem to Ela3.
+         apply good_used_list_mems to GUL MN1 MN1'.
+        %ID != ID2
+         MCU: apply mem_before_select_after to Ela3 MN1 _.
+         HN: case HN. MN: apply HN to MCU.
+         apply remove_all_still_mem to RA MN _. search.
+     %mem CN KR -> mem CK (ID, C)::KRest -> CN = CK
+      intros ML' MKRest+. MKRest: case MKRest+.
+        %Mem-Here
+         apply remove_all_no_mem to RA ML'.
+        %Mem-Later
+         MK: apply remove_all_mem_after to Ela1 MKRest.
+         MN: apply remove_all_mem_after to RA ML'.
+         HN: case HN. apply HN1 to MN MK. search.
+ apply elaboration_check_add to _ _ _ _ _ _ GCL_N Ela2 CP' _.
+   intros MKR. apply remove_all_mem_after to RA MKR. search.
+ search.
+%Ela-RelocateNeeded-Diff
+ Is: case IsP. CP: case CP (keep).
+   %CP-RelocateClause
+    apply remove_all_is to _ Ela1.
+    apply remove_all_unique to CP2 Ela1.
+    apply good_clause_list_remove_all to _ CP2.
+    apply good_clause_list_selects to _ Ela2 CP3.
+    apply select_is to _ Ela2. IsP: apply select_is_picked to _ Ela2.
+    Is': case IsP. GCLKR+: assert good_clause_list ((To, C1)::KRest3).
+      unfold. intros S M. S: case S.
+        %Slct-First
+         M': apply mem_after_select_before to Ela2 M.
+         apply remove_all_no_mem to Ela1 M'.
+        %Slct-Later
+         M: case M.
+           %Mem-Here
+            M: apply select_mem to S.
+            M': apply mem_after_select_before to Ela2 M.
+            M'': apply remove_all_no_mem to Ela1 M'.
+           %Mem-Later
+            apply good_clause_list_remove_all to _ Ela1.
+            GCL': apply good_clause_list_select to _ Ela2.
+            GCL': case GCL'. apply GCL' to S M.
+    %
+    RA: apply remove_all_exists to IsNeeded Is1.
+    apply good_clause_list_remove_all to _ RA.
+    apply remove_all_is to _ RA. MKRest: apply select_mem to Ela2.
+    MK: apply remove_all_mem_after to Ela1 MKRest.
+    HN': case HN (keep). MN: apply HN' to _ with ID = From.
+    apply HN'1 to MN MK. MKR: apply remove_all_still_mem to RA MN _.
+    SN: apply mem_select to MKR. apply select_is to _ SN.
+    GCLL'+: assert good_clause_list ((To, C1)::L').
+      unfold. intros S M. S: case S.
+        %Slct-First
+         M': apply mem_after_select_before to SN M.
+         apply remove_all_no_mem to RA M'.
+        %Slct-Later
+         M: case M.
+           %Mem-Here
+            M: apply select_mem to S.
+            M': apply mem_after_select_before to SN M.
+            M'': apply remove_all_no_mem to RA M'.
+           %Mem-Later
+            apply good_clause_list_remove_all to _ RA.
+            GCL': apply good_clause_list_select to _ SN.
+            GCL': case GCL'. apply GCL' to S M.
+    %
+    clear MN MKR MK MKRest HN' HN'1.
+    GUL: apply elaboration_good_used_list to _ _ _ CP Ela.
+    assert hasNeeded ((To, C1)::KRest3) Needed1 ((To, C1)::L').
+      unfold.
+        %mem Needed1 -> mem To::L'
+         intros MN. Or: apply select_mem_or to Ela4 MN. MNR: case Or.
+           %(ID, needed) = (To, needed)
+            search.
+           %mem (ID, needed) NRest
+            HN: case HN. MNeeded: apply HN to _ with ID = ID.
+            Is'': apply mem_is to _ MNeeded.
+            Or: apply is_integer_eq_or_not to Is1 Is''. case Or.
+              %To = ID1
+               search.
+              %To != ID1
+               MKR: apply remove_all_still_mem to RA MNeeded _.
+               Or: apply select_mem_or to SN MKR. case Or.
+                 %(ID1, C4) = (From, C1)
+                  GUL: case GUL. apply GUL to _ MNR.
+                 %mem (ID1, C4) L'
+                  search.
+        %mem CN To::L' -> mem CK To::KRest3 -> CN = CK
+         intros ML'+ MKR3+. ML': case ML'+.
+           %Mem-Here
+            MKR3: case MKR3+.
+              %Mem-Here
+               search.
+              %Mem-Later
+               GCL': case GCLKR+. apply GCL' to _ MKR3.
+           %Mem-Later
+            MKR3: case MKR3+.
+              %Mem-Here
+               GCL': case GCLL'+. apply GCL' to _ ML'.
+              %Mem-Later
+               MKR: apply mem_after_select_before to SN ML'.
+               MN: apply remove_all_mem_after to RA MKR.
+               MKRest: apply mem_after_select_before to Ela2 MKR3.
+               MK: apply remove_all_mem_after to Ela1 MKRest.
+               HN: case HN. apply HN1 to MN MK. search.
+    %
+    apply IH to _ _ _ _ _ CP4 Ela3 _ with Needed = (To, C1)::L'.
+    search.
+   %CP-RelocateClauseSame
+    M: apply select_mem to Ela2. apply remove_all_no_mem to Ela1 M.
+%Ela-RelocateNeeded-Same
+ Is: case IsP. CP: case CP (keep).
+   %CP-RelocateClause
+    apply CP1 to _.
+   %CP-RelocateClause-Same
+    apply IH to _ _ _ _ _ CP2 Ela1 HN. search.
+%Ela-RelocateUnknown
+ Is: case IsP. CP: case CP (keep).
+   %CP-RelocateClause
+    apply remove_all_is to _ Ela1.
+    apply remove_all_unique to CP2 Ela1.
+    apply good_clause_list_remove_all to _ CP2.
+    apply good_clause_list_selects to _ Ela2 CP3.
+    apply select_is to _ Ela2. IsP: apply select_is_picked to _ Ela2.
+    Is': case IsP. GCLKR+: assert good_clause_list ((To, C1)::KRest3).
+      unfold. intros S M. S: case S.
+        %Slct-First
+         M': apply mem_after_select_before to Ela2 M.
+         apply remove_all_no_mem to Ela1 M'.
+        %Slct-Later
+         M: case M.
+           %Mem-Here
+            M: apply select_mem to S.
+            M': apply mem_after_select_before to Ela2 M.
+            M'': apply remove_all_no_mem to Ela1 M'.
+           %Mem-Later
+            apply good_clause_list_remove_all to _ Ela1.
+            GCL': apply good_clause_list_select to _ Ela2.
+            GCL': case GCL'. apply GCL' to S M.
+    %
+    RA: apply remove_all_exists to IsNeeded Is1.
+    apply good_clause_list_remove_all to _ RA.
+    apply remove_all_is to _ RA.
+    %
+    GUL: apply elaboration_good_used_list to _ _ _ CP4 Ela3.
+    HN': assert hasNeeded ((To, C1)::KRest3) Needed1 KR.
+      unfold.
+        %mem ID Needed1 -> mem ID KR
+         intros MN1. HN: case HN. Or: apply select_mem_or to Ela4 MN1.
+         MNR: case Or. MN: apply HN to _ with ID = ID.
+         apply remove_all_still_mem to RA MN _.
+           intros E. case E.
+           MN': apply mem_after_select_before to Ela4 MNR.
+           MN'': apply select_mem to Ela4.
+           apply good_used_list_mems to _ MN' MN''.
+         search.
+        %mem CN KR -> mem CK To::KRest3 -> CN = CK
+         intros MKR MKR3+. MKR3: case MKR3+.
+           %Mem-Here
+            apply remove_all_no_mem to RA MKR.
+           %Mem-Later
+            MKRest: apply mem_after_select_before to Ela2 MKR3.
+            MK: apply remove_all_mem_after to Ela1 MKRest.
+            MN: apply remove_all_mem_after to RA MKR.
+            HN: case HN. apply HN1 to MN MK. search.
+    %
+    CP': apply IH to _ _ _ _ _ CP4 Ela3 HN'.
+    apply elaboration_check_add to _ _ _ _ _ _ GCL_N Ela3 CP' _.
+      intros M. apply remove_all_mem_after to RA M. search.
+    search.
+   %CP-RelocateClauseSame
+    M: apply select_mem to Ela2. apply remove_all_no_mem to Ela1 M.
+%Ela-Comment
+ case IsP. CP: case CP. apply IH to _ _ _ _ _ CP Ela1 HN. search.
+%Preservability
+ apply proj_proof_is to Ela1 _ _ _.
+ CP': apply proj_checkProof to Ela1 CP _ _.
+ apply IH to _ _ _ _ _ CP' Ela2 HN. search.
+
+
+Theorem full_elaboration_valid : forall F P P',
+  is_formula F -> is_proof P -> proveFormula F P ->
+  fullElaborate F P P' -> proveFormula F P'.
+intros IsF IsP PF FE. PF: case PF. FE: case FE.
+apply formulaToKnown_is to _ _ PF.
+GCL: assert good_clause_list KnownClauses.
+  unfold. intros S M. backchain formulaToKnown_all_unique.
+apply formulaToKnown_unique to _ _ PF FE.
+HN: assert hasNeeded Known Needed Known.
+  unfold.
+    %mem Needed -> mem Known
+     intros M. apply elaboration_all_mem to _ _ _ PF1 FE1 M. search.
+    %mem CN Known -> mem CK Known -> CN = CK
+     intros M M'. apply good_clause_list_mems to _ M M'. search.
+apply elaboration_valid to _ _ _ _ _ PF1 FE1 HN. search.
+
+
+Extensible_Theorem
+  elaborationFrat_all_mem : forall Clauses Known P CU E ID U,
+    IsP : is_fratProof P ->
+    GCL : good_clause_list Known ->
+    IsKnown : is_list (is_pair is_integer is_clause) Known ->
+    GCLC : good_clause_list Clauses ->
+    IsClauses : is_list (is_pair is_integer is_clause) Clauses ->
+    CP : checkFratProof Clauses Known P ->
+    Ela : elaborateFratProof Clauses Known P CU E ->
+    NoMem : (forall ID CK CC, mem (ID, CK) Known ->
+                              mem (ID, CC) Clauses -> false) ->
+    Mem : mem (ID, U) CU ->
+    exists C, mem (ID, C) Known
+  on Ela,
+  elaborationFrat_good_used_list : forall Clauses Known P CU E,
+    IsP : is_fratProof P ->
+    GCL : good_clause_list Known ->
+    IsKnown : is_list (is_pair is_integer is_clause) Known ->
+    GCLC : good_clause_list Clauses ->
+    IsClauses : is_list (is_pair is_integer is_clause) Clauses ->
+    CP : checkFratProof Clauses Known P ->
+    Ela : elaborateFratProof Clauses Known P CU E ->
+    NoMem : (forall ID CK CC, mem (ID, CK) Known ->
+                              mem (ID, CC) Clauses -> false) ->
+    good_used_list CU
+  on Ela.
+%elaborationFrat_all_mem
+ %EFP-AddNeeded
+  Is: case IsP. CP: case CP. apply select_is to _ Ela1.
+  Is': apply select_is_picked to _ Ela1. case Is'.
+  apply good_clause_list_select to _ Ela1.
+  apply good_clause_list_selects to _ CP Ela1.
+  assert good_clause_list ((ID1, C)::Known).
+    unfold. intros S M'. S: case S.
+      %Slct-First
+       M'': apply select_mem to Ela1. apply NoMem to M' M''.
+      %Slct-Later
+       M': case M'.
+         %Mem-Here
+          MS: apply select_mem to S. M'': apply select_mem to Ela1.
+          apply NoMem to MS M''.
+         %Mem-Later
+          GCL: case GCL. apply GCL to S M'.
+  %
+  assert forall ID CK CC, mem (ID, CK) ((ID1, C)::Known) ->
+                          mem (ID, CC) CRest -> false.
+    intros MK+ MCR. MK: case MK+.
+      %Mem-Here
+       GCLC: case GCLC. apply GCLC to Ela1 MCR.
+      %Mem-Later
+       MC: apply mem_after_select_before to Ela1 MCR.
+       apply NoMem to MK MC.
+  %
+  GUL: apply IH1 to _ _ _ _ _ CP1 Ela2 _.
+  MN: apply mem_after_select_before to Ela3 Mem.
+  %
+  MK+: apply IH to _ _ _ _ _ CP1 Ela2 _ MN. MK: case MK+.
+    %Mem-Here
+     GUL: case GUL. apply GUL to Ela3 Mem.
+    %Mem-Later
+     search.
+ %EFP-AddUnknown
+  Is: case IsP. CP: case CP. apply select_is to _ Ela1.
+  Is': apply select_is_picked to _ Ela1. case Is'.
+  apply good_clause_list_select to _ Ela1.
+  apply good_clause_list_selects to _ CP Ela1.
+  assert good_clause_list ((ID1, C)::Known).
+    unfold. intros S M'. S: case S.
+      %Slct-First
+       M'': apply select_mem to Ela1. apply NoMem to M' M''.
+      %Slct-Later
+       M': case M'.
+         %Mem-Here
+          MS: apply select_mem to S. M'': apply select_mem to Ela1.
+          apply NoMem to MS M''.
+         %Mem-Later
+          GCL: case GCL. apply GCL to S M'.
+  %
+  assert forall ID CK CC, mem (ID, CK) ((ID1, C)::Known) ->
+                          mem (ID, CC) CRest -> false.
+    intros MK+ MCR. MK: case MK+.
+      %Mem-Here
+       GCLC: case GCLC. apply GCLC to Ela1 MCR.
+      %Mem-Later
+       MC: apply mem_after_select_before to Ela1 MCR.
+       apply NoMem to MK MC.
+  %
+  GUL: apply IH1 to _ _ _ _ _ CP1 Ela2 _.
+  MN: apply mem_after_select_before to Ela3 Mem.
+  %
+  MK+: apply IH to _ _ _ _ _ CP1 Ela2 _ MN. MK: case MK+.
+    %Mem-Here
+     GUL: case GUL. apply GUL to Ela3 Mem.
+    %Mem-Later
+     search.
+ %EFP-End
+  Is: case IsP. CP: case CP.
+  apply elaboration_all_mem to _ _ _ CP Ela1 Mem. search.
+%elaborationFrat_good_used_list
+ %EFP-AddNeeded
+  Is: case IsP. CP: case CP. apply select_is to _ Ela1.
+  Is': apply select_is_picked to _ Ela1. case Is'.
+  apply good_clause_list_select to _ Ela1.
+  apply good_clause_list_selects to _ CP Ela1.
+  assert good_clause_list ((ID, C)::Known).
+    unfold. intros S M. S: case S.
+      %Slct-First
+       M': apply select_mem to Ela1. apply NoMem to M M'.
+      %Slct-Later
+       M: case M.
+         %Mem-Here
+          MS: apply select_mem to S. M': apply select_mem to Ela1.
+          apply NoMem to MS M'.
+         %Mem-Later
+          GCL: case GCL. apply GCL to S M.
+  %
+  assert forall ID1 CK CC, mem (ID1, CK) ((ID, C)::Known) ->
+                           mem (ID1, CC) CRest -> false.
+    intros MK+ MCR. MK: case MK+.
+      %Mem-Here
+       GCLC: case GCLC. apply GCLC to Ela1 MCR.
+      %Mem-Later
+       MC: apply mem_after_select_before to Ela1 MCR.
+       apply NoMem to MK MC.
+  %
+  GUL: apply IH1 to _ _ _ _ _ CP1 Ela2 _.
+  apply good_used_list_select to GUL Ela3. search.
+ %EFP-AddUnknown
+  Is: case IsP. CP: case CP. apply select_is to _ Ela1.
+  Is': apply select_is_picked to _ Ela1. case Is'.
+  apply good_clause_list_select to _ Ela1.
+  apply good_clause_list_selects to _ CP Ela1.
+  assert good_clause_list ((ID, C)::Known).
+    unfold. intros S M. S: case S.
+      %Slct-First
+       M': apply select_mem to Ela1. apply NoMem to M M'.
+      %Slct-Later
+       M: case M.
+         %Mem-Here
+          MS: apply select_mem to S. M': apply select_mem to Ela1.
+          apply NoMem to MS M'.
+         %Mem-Later
+          GCL: case GCL. apply GCL to S M.
+  %
+  assert forall ID1 CK CC, mem (ID1, CK) ((ID, C)::Known) ->
+                           mem (ID1, CC) CRest -> false.
+    intros MK+ MCR. MK: case MK+.
+      %Mem-Here
+       GCLC: case GCLC. apply GCLC to Ela1 MCR.
+      %Mem-Later
+       MC: apply mem_after_select_before to Ela1 MCR.
+       apply NoMem to MK MC.
+  %
+  GUL: apply IH1 to _ _ _ _ _ CP1 Ela2 _.
+  apply good_used_list_select to GUL Ela3. search.
+ %EFP-End
+  case IsP. CP: case CP.
+  apply elaboration_good_used_list to _ _ _ CP Ela1. search.
+
+
+Extensible_Theorem
+  elaborationFrat_valid : forall Clauses Known P CU E Needed Clauses',
+    IsP : is_fratProof P ->
+    IsClauses : is_list (is_pair is_integer is_clause) Clauses ->
+    IsKnown : is_list (is_pair is_integer is_clause) Known ->
+    IsClauses' : is_list (is_pair is_integer is_clause) Clauses' ->
+    IsNeeded : is_list (is_pair is_integer is_clause) Needed ->
+    GCL_C : good_clause_list Clauses ->
+    GCL : good_clause_list Known ->
+    GCL_C' : good_clause_list Clauses' ->
+    GCL_N : good_clause_list Needed ->
+    CP : checkFratProof Clauses Known P ->
+    Ela : elaborateFratProof Clauses Known P CU E ->
+    NoMem : (forall ID CK CC, mem (ID, CK) Known ->
+                              mem (ID, CC) Clauses -> false) ->
+    NoMemN : (forall ID CK CC, mem (ID, CK) Needed ->
+                               mem (ID, CC) Clauses -> false) ->
+    MemsC : (forall ID C, mem (ID, C) Clauses ->
+                          mem (ID, C) Clauses') ->
+    HN : hasNeeded Known CU Needed ->
+    checkFratProof Clauses' Needed E
+  on Ela.
+%EFP-AddNeeded
+ Is: case IsP. CP: case CP (keep). apply select_is to _ CP1.
+ apply good_clause_list_selects to _ CP1 Ela1.
+ Is': apply select_is_picked to _ CP1. case Is'.
+ MC: apply select_mem to Ela1. MC': apply MemsC to MC.
+ S: apply mem_select to MC'. apply select_is to _ S.
+ %
+ assert good_clause_list ((ID, C)::Known).
+   unfold. intros S' M. S': case S'.
+     %Slct-First
+      M': apply select_mem to Ela1. apply NoMem to M M'.
+     %Slct-Later
+      M: case M.
+        %Mem-Here
+         MS: apply select_mem to S'. M': apply select_mem to Ela1.
+         apply NoMem to MS M'.
+        %Mem-Later
+         GCL: case GCL. apply GCL to S' M.
+ %
+ assert forall ID1 CK CC, mem (ID1, CK) ((ID, C)::Known) ->
+                          mem (ID1, CC) CRest -> false.
+   intros MK+ MCR. MK: case MK+.
+      %Mem-Here
+       GCLC: case GCL_C. apply GCLC to Ela1 MCR.
+      %Mem-Later
+       MC'': apply mem_after_select_before to Ela1 MCR.
+       apply NoMem to MK MC''.
+ %
+ apply good_clause_list_select to _ Ela1.
+ assert hasNeeded ((ID, C)::Known) Needed1 ((ID, C)::Needed).
+   unfold.
+     %mem Needed1 -> mem ID::Needed
+      intros MN. Or: apply select_mem_or to Ela3 MN. MCU: case Or.
+        %(ID1, needed) = (ID, needed)
+         search.
+        %mem (ID1, needed) CU
+         HN: case HN. apply HN to MCU. search.
+     %mem CN ID::Needed -> mem CK ID::Known -> CN = CK
+      intros MN+ MK+. MN: case MN+.
+        %Mem-Here
+         MK: case MK+.
+           %Mem-Here
+            search.
+           %Mem-Later
+            apply NoMem to MK MC.
+        %Mem-Later
+         MK: case MK+.
+           %Mem-Here
+            apply NoMemN to MN MC.
+           %Mem-Later
+            HN: case HN. apply HN1 to MN MK. search.
+ %
+ assert forall ID1 C1, mem (ID1, C1) CRest -> mem (ID1, C1) L'.
+   intros MCR. MCl: apply mem_after_select_before to _ MCR.
+   MCl': apply MemsC to MCl. Or: apply select_mem_or to S MCl'.
+   ML': case Or.
+     %(ID1, C1) = (ID, C)
+      GCL_C: case GCL_C. apply GCL_C to _ MCR.
+     %mem (ID1, C1) L'
+      search.
+ %
+ assert forall ID1 CK CC, mem (ID1, CK) ((ID, C)::Needed) ->
+                          mem (ID1, CC) CRest -> false.
+   intros MN+ MCR. MN: case MN+.
+     %Mem-Here
+      GCL_C: case GCL_C. apply GCL_C to _ MCR.
+     %Mem-Later
+      MCl: apply mem_after_select_before to _ MCR.
+      apply NoMemN to MN MCl.
+ %
+ assert good_clause_list ((ID, C)::Needed).
+   unfold. intros SN+ MKR. SN: case SN+.
+     %Slct-First
+      apply NoMemN to MKR _.
+     %Slct-Later
+      MKR: case MKR.
+        %Mem-Here
+         MN: apply select_mem to SN. apply NoMemN to MN _.
+        %Mem-Later
+         GCL_N: case GCL_N. apply GCL_N to SN MKR.
+ %
+ apply good_clause_list_select to _ S.
+ apply IH to _ _ _ _ _ _ _ _ _ CP2 Ela2 _ _ _ _ with
+    Needed = (ID, C)::Needed, Clauses' = L'. search.
+%EFP-AddUnknown
+ Is: case IsP. CP: case CP (keep). apply select_is to _ CP1.
+ apply good_clause_list_selects to _ CP1 Ela1.
+ Is': apply select_is_picked to _ CP1. case Is'.
+ %
+ assert good_clause_list ((ID, C)::Known).
+   unfold. intros S' M. S': case S'.
+     %Slct-First
+      M': apply select_mem to Ela1. apply NoMem to M M'.
+     %Slct-Later
+      M: case M.
+        %Mem-Here
+         MS: apply select_mem to S'. M': apply select_mem to Ela1.
+         apply NoMem to MS M'.
+        %Mem-Later
+         GCL: case GCL. apply GCL to S' M.
+ %
+ assert forall ID1 CK CC, mem (ID1, CK) ((ID, C)::Known) ->
+                          mem (ID1, CC) CRest -> false.
+   intros MK+ MCR. MK: case MK+.
+      %Mem-Here
+       GCLC: case GCL_C. apply GCLC to Ela1 MCR.
+      %Mem-Later
+       MC'': apply mem_after_select_before to Ela1 MCR.
+       apply NoMem to MK MC''.
+ %
+ apply good_clause_list_select to _ Ela1.
+ assert hasNeeded ((ID, C)::Known) Needed1 ((ID, C)::Needed).
+   unfold.
+     %mem Needed1 -> mem ID::Needed
+      intros MN. Or: apply select_mem_or to Ela3 MN. MCU: case Or.
+      HN: case HN. apply HN to MCU. search.
+     %mem CN ID::Needed -> mem CK ID::Known -> CN = CK
+      intros MN+ MK+. MN: case MN+.
+        %Mem-Here
+         MK: case MK+.
+           %Mem-Here
+            search.
+           %Mem-Later
+            MC: apply select_mem to Ela1. apply NoMem to MK MC.
+        %Mem-Later
+         MK: case MK+.
+           %Mem-Here
+            MC: apply select_mem to Ela1. apply NoMemN to MN MC.
+           %Mem-Later
+            HN: case HN. apply HN1 to MN MK. search.
+ %
+ assert hasNeeded ((ID, C)::Known) Needed1 Needed.
+   unfold.
+     %mem Needed1 -> mem Needed
+      intros M. HN: case HN. Or: apply select_mem_or to Ela3 M.
+      M': case Or. apply HN to M'. search.
+     %mem CN Needed -> mem CK ID::Known -> CN = CK
+      intros MN MK+. MK: case MK+.
+        %Mem-Here
+         MC: apply select_mem to CP1. apply NoMemN to MN MC.
+        %Mem-Later
+         HN: case HN. apply HN1 to MN MK. search.
+ %
+ assert forall ID C, mem (ID, C) CRest -> mem (ID, C) Clauses'.
+   intros MCR. apply mem_after_select_before to _ MCR.
+   backchain MemsC.
+ %
+ assert forall ID CK CC, mem (ID, CK) Needed ->
+                         mem (ID, CC) CRest -> false.
+   intros MN MCR. MC: apply mem_after_select_before to _ MCR.
+   apply NoMemN to MN MC.
+ %
+ apply IH to _ _ _ _ _ _ _ _ _ CP2 Ela2 _ _ _ _ with
+    Needed = Needed, Clauses' = Clauses'. search.
+%EFP-End
+ case IsP. CP: case CP.
+ apply elaboration_valid to _ _ _ _ _ CP Ela1 HN. search.
+
+
+Theorem full_elaborationFrat_valid : forall F P P',
+  is_formula F -> is_fratProof P -> fratProveFormula F P ->
+  fullElaborateFrat F P P' -> fratProveFormula F P'.
+intros IsF IsP PF FE. PF: case PF. FE: case FE.
+apply formulaToKnown_is to _ _ PF.
+GCL: assert good_clause_list KnownClauses.
+  unfold. intros S M. backchain formulaToKnown_all_unique.
+apply formulaToKnown_unique to _ _ PF FE.
+HN: assert hasNeeded Known Needed Known.
+  unfold.
+    %mem Needed -> mem Known
+     intros M. M': apply elaborationFrat_all_mem to
+                      _ _ _ _ _ PF1 FE1 _ M.
+       intros M'. case M'.
+       unfold. intros S M'. S: case S.
+     case M'.
+    %mem CN Known -> mem CK Known -> CN = CK
+     intros M M'. apply good_clause_list_mems to _ M M'. search.
+assert good_clause_list [].
+  unfold. intros S. case S.
+apply elaborationFrat_valid to _ _ _ _ _ _ _ _ _ PF1 FE1 _ _ _ _ with
+   Needed = [].
+  %hasNeeded [] Needed []
+   unfold.
+     %mem Needed -> mem []
+      intros M. M'': apply elaborationFrat_all_mem to
+                        _ _ _ _ _ PF1 FE1 _ M.
+        intros M'. case M'.
+      case M''.
+     %mem CN [] -> mem CK [] -> CN = CK
+      intros MK MK'. apply good_clause_list_mems to _ MK MK'. search.
+  %mem CK [] -> mem CC Known -> false
+   intros M. case M.
+  %mem CK [] -> mem CC Known -> false
+   intros M. case M.
+search.

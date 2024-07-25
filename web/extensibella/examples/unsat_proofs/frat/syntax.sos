@@ -1,0 +1,138 @@
+Module unsat_proofs:frat
+
+Builds on unsat_proofs:lrat
+
+
+/*original clauses (o lines) at the start of the proof
+  Note that, unlike regular FRAT, we require all o lines to be at the
+  start (in full FRAT, o lines may mix with a and d lines).*/
+fratProof ::= addOriginal(int, clause, fratProof)
+            | endOriginal(proof)
+
+Projection fratProof :
+
+
+
+
+
+proof ::= ...
+        /*final clauses (f lines) at the end of the proof, with and
+          without hints*/
+        | endFrat(int, finalClauses)
+        | endFratPrf(int, [int], finalClauses)
+        /*add a middle clause without a hint*/
+        | addProofless(int, clause, proof)
+        /*move a known clause from one ID to another
+          (relocateClause(From, To, Rest)*/
+        | relocateClause(int, int, proof)
+        /*delete the specific clause with its ID*/
+        | deleteFrat(int, clause, proof)
+        /*text comment in the proof (c lines)*/
+        | commentProof(string, proof)
+
+
+rupProof Known emptyClause Prf
+------------------------------------------------------ [Proj-EndFrat]
+Known |{proof}- endFrat(ID, FC) ~~> emptyLrat(ID, Prf)
+
+
+------------------------------------------- [Proj-EndFratPrf]
+Known |{proof}- endFratPrf(ID, Prf, FC) ~~>
+                emptyLrat(ID, Prf)
+
+
+rupProof Known C Prf
+---------------------------------------------- [Proj-AddProofless]
+Known |{proof}- addProofless(ID, C, Rest) ~~>
+                addLrupProof(ID, C, Prf, Rest)
+
+
+/*
+  Adds clause again, but with the new ID, then deletes the original
+*/
+T != F
+mem (F, C) Known
+---------------------------------------------- [Proj-RelocateProof]
+Known |{proof}- relocateClause(F, T, Rest) ~~>
+                addLrupProof(T, C, [F],
+                     deleteLratProof(F, Rest))
+
+
+----------------------------------------------------- [Proj-RelocateProofSame]
+Known |{proof}- relocateClause(ID, ID, Rest) ~~> Rest
+
+
+--------------------------------------- [Proj-DeleteFrat]
+K |{proof}- deleteFrat(ID, C, Rest) ~~>
+            deleteLratProof(ID, Rest)
+
+
+------------------------------------------------ [Proj-CommentProof]
+K |{proof}- commentProof(Comment, Rest) ~~> Rest
+
+
+
+
+
+finalClauses ::= addFClause(int, clause, finalClauses)
+               | endFClause
+
+Projection finalClauses :
+
+
+
+
+
+/*Replace the first ID with the second one, yielding the last proof
+  Has known clauses for translation*/
+Judgment replaceID : [(int, clause)] int int proof* proof
+/*Replace the first ID with the second one in the proof*/
+Fixed Judgment replaceIDProof : int int [int] [int]
+
+
+replaceIDProof From To Prf NewPrf
+----------------------------------------------- [RID-EmptyLrat]
+{replaceID Known From To emptyLrat(ID, Prf)
+                         emptyLrat(ID, NewPrf)}
+
+
+replaceIDProof From To Prf NewPrf
+replaceID Known From To Rest NewRest
+------------------------------------------------------- [RID-AddLrup]
+{replaceID Known From To addLrupProof(ID, C, Prf, Rest)
+              addLrupProof(ID, C, NewPrf, NewRest)}
+
+
+ID != From
+replaceID Known From To Rest NewRest
+-------------------------------------------------- [RID-DeleteOther]
+{replaceID Known From To deleteLratProof(ID, Rest)
+              deleteLratProof(ID, NewRest)}
+
+
+replaceID Known From To Rest NewRest
+---------------------------------------------------- [RID-DeleteFrom]
+{replaceID Known From To deleteLratProof(From, Rest)
+              deleteLratProof(To, NewRest)}
+
+
+Known |{proof}- P ~~> PT
+replaceID Known From To PT NewP
+------------------------------- [RID-Default]*
+replaceID Known From To P NewP
+
+
+
+============================ [RIDP-Nil]
+replaceIDProof From To [] []
+
+
+replaceIDProof From To Rest NewRest
+============================================= [RIDP-ConsReplace]
+replaceIDProof From To From::Rest To::NewRest
+
+
+From != ID
+replaceIDProof From To Rest NewRest
+=========================================== [RIDP-ConsDiff]
+replaceIDProof From To ID::Rest ID::NewRest

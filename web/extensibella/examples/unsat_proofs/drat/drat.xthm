@@ -12,14 +12,19 @@ Prove_Constraint unsat_proofs:lrat:proj_formula_is.
 Add_Proj_Rel unsat_proofs:lrat:is_clause.
 Prove_Ext_Ind unsat_proofs:lrat:is_clause.
 
+Add_Proj_Rel unsat_proofs:lrat:is_formula.
+Prove_Ext_Ind unsat_proofs:lrat:is_formula.
 
-Prove unsat_proofs:lrat:is_lit_eq_or_not__pos.
-Prove unsat_proofs:lrat:is_lit_eq_or_not__neg.
-Prove unsat_proofs:lrat:is_lit_eq_or_not.
+
+Prove unsat_proofs:lrat:is_lit_pos_or_neg.
 
 Prove unsat_proofs:lrat:is_clause_empty_or_not.
 Prove unsat_proofs:lrat:is_clause_or_or_not.
 Prove unsat_proofs:lrat:is_clause_eq_or_not.
+
+Prove unsat_proofs:lrat:is_formula_empty_or_not.
+Prove unsat_proofs:lrat:is_formula_and_or_not.
+Prove unsat_proofs:lrat:is_formula_eq_or_not.
 
 
 Prove unsat_proofs:lrat:negate_lit_unique.
@@ -68,6 +73,7 @@ Prove unsat_proofs:lrat:negate_lits_unsat.
 
 
 Prove_Constraint unsat_proofs:lrat:proj_proof_is.
+Prove_Constraint unsat_proofs:lrat:proj_proof_extend.
 
 
 Prove unsat_proofs:lrat:check_proof_correct.
@@ -82,6 +88,7 @@ Prove_Ext_Ind unsat_proofs:lrat:checkProof.
 Prove_Constraint unsat_proofs:lrat:proj_checkProof.
 
 
+Prove unsat_proofs:lrat:formulaToKnown_unique.
 Prove unsat_proofs:lrat:formulaToKnown_all_greater.
 Prove unsat_proofs:lrat:formulaToKnown_all_unique.
 Prove unsat_proofs:lrat:formulaToKnown_sat_formula.
@@ -534,7 +541,7 @@ Extensible_Theorem
         %NB = 0
          search.
  apply IH to _ IsL' Is1 CP1 _ TD2 VS1 _. search.
-%CP-Q
+%preservability
  CP': apply proj_checkProof to TD1 CP _ _.
- apply proj_proof_is to TD1 IsP _. apply IH to _ _ _ CP' _ TD2 _ _.
+ apply proj_proof_is to TD1 IsP _ _. apply IH to _ _ _ CP' _ TD2 _ _.
  search.

@@ -37,105 +37,83 @@ Prove_Constraint unsat_proofs:lrat:proj_formula_is.
 Add_Proj_Rel unsat_proofs:lrat:is_clause.
 Prove_Ext_Ind unsat_proofs:lrat:is_clause.
 %is_clause (rangeClause I1 I)
- Set search_depth 2. %make the next part not hang
  Helper: assert forall Low High R,
            is_integer Low -> is_integer High -> range Low High R ->
            <is_clause {P}> (rangeClause Low High).
-   Set search_depth 5. %back to normal
-   clear R R1 R2. %remove the outer things
-   induction on 3. intros IsLow IsHigh R. R: case R.
+   induction on 3. intros IsLow IsHigh Range. Range: case Range.
      %Range-End
       unfold. exists emptyClause. search.
      %Range-Step
-      unfold. IsPlusOne: apply plus_integer_is_integer to _ _ R1.
-      IsCT: apply IH1 to _ _ R2.
+      unfold. IsPlusOne: apply plus_integer_is_integer to _ _ Range1.
+      IsCT: apply IH1 to _ _ Range2.
       Tr: assert |{clause}- rangeClause Low High ~~>
                             or (pos Low) (rangeClause PlusOne High).
-      exists or (pos Low) (rangeClause PlusOne High). search.
- R': apply range_exists to R1 R2. apply Helper to _ _ R'. search 2.
+      search.
+ Range: apply range_exists to R1 R2. apply Helper to _ _ Range.
+ search.
 %is_clause (noteClause S Clause)
  assert |{clause}- noteClause S Clause ~~> Clause. apply IH to R2.
  search.
 
+Add_Proj_Rel unsat_proofs:lrat:is_formula.
+Prove_Ext_Ind unsat_proofs:lrat:is_formula.
 
-Prove unsat_proofs:lrat:is_lit_eq_or_not__pos.
-Prove unsat_proofs:lrat:is_lit_eq_or_not__neg.
-Prove unsat_proofs:lrat:is_lit_eq_or_not.
 
+Prove unsat_proofs:lrat:is_lit_pos_or_neg.
 
 Prove unsat_proofs:lrat:is_clause_empty_or_not.
-%rangeClause I1 I
- search.
-%noteClause S Clause
- search.
+search. search.
 Prove unsat_proofs:lrat:is_clause_or_or_not.
-%rangeClause I1 I
- search.
-%noteClause S Clause
- search.
+search. search.
 Extensible_Theorem
   is_clause_rangeClause_or_not : forall C,
     IsC : is_clause C ->
-    (exists L H, C = rangeClause L H) \/
-    ((exists L H, C = rangeClause L H) -> false)
+    (exists Low High, C = rangeClause Low High) \/
+    ((exists Low High, C = rangeClause Low High) -> false)
   on IsC.
-%emptyClause
- search.
-%or
- search.
-%rangeCLsaue
- search.
-%noteClause
- search.
-%generic
- search.
+search. search. search. search. search.
 Extensible_Theorem
   is_clause_noteClause_or_not : forall C,
     IsC : is_clause C ->
     (exists Note C', C = noteClause Note C') \/
     ((exists Note C', C = noteClause Note C') -> false)
   on IsC.
-%emptyClause
- search.
-%or
- search.
-%rangeClause
- search.
-%noteClause
- search.
-%generic
- search.
+search. search. search. search. search.
 Prove unsat_proofs:lrat:is_clause_eq_or_not.
-%is_clause (rangeClause I1 I)
- Or: apply is_clause_rangeClause_or_not to IsC2. E: case Or.
-   %C2 = rangeClause L H
-    Is: case IsC2. Or: apply is_integer_eq_or_not to IsC3 Is.
-    E: case Or.
-      %I1 = L
-       Or: apply is_integer_eq_or_not to IsC4 Is1. E: case Or.
-         %I = H
+%rangeClause
+ Or: apply is_clause_rangeClause_or_not to IsC2. N: case Or.
+   %rangeClause
+    Is': case IsC2. Or: apply is_integer_eq_or_not to IsC3 Is'.
+    N: case Or.
+      %I1 = Low
+       Or: apply is_integer_eq_or_not to IsC4 Is'1. N: case Or.
+         %I = High
           search.
-         %I != H
-          right. intros Eq. case Eq. backchain E.
-      %I1 != L
-       right. intros Eq. case Eq. backchain E.
-   %C2 != rangeClause L H
-    right. intros Eq. case Eq. backchain E.
-%is_clause (noteClause S Clause)
- Or: apply is_clause_noteClause_or_not to IsC2. E: case Or.
-   %C2 = noteClause Note C'
-    Is: case IsC2. Or: apply is_string_eq_or_not to IsC3 Is.
-    E: case Or.
+         %I != High
+          right. intros E. case E. backchain N.
+      %I1 != Low
+       right. intros E. case E. backchain N.
+   %not rangeClause
+    right. intros E. case E. backchain N.
+%noteClause
+ Or: apply is_clause_noteClause_or_not to IsC2. N: case Or.
+   %noteClause
+    Is': case IsC2. Or: apply is_string_eq_or_not to IsC3 Is'.
+    N: case Or.
       %S = Note
-       Or: apply IH to IsC4 Is1. E: case Or.
+       Or: apply IH to IsC4 Is'1. N: case Or.
          %Clause = C'
           search.
          %Clause != C'
-          right. intros Eq. case Eq. backchain E.
+          right. intros E. case E. backchain N.
       %S != Note
-       right. intros Eq. case Eq. backchain E.
-   %C2 != noteClause Note C'
-    right. intros Eq. case Eq. backchain E.
+       right. intros E. case E. backchain N.
+   %not noteClause
+    right. intros E. case E. backchain N.
+
+Prove unsat_proofs:lrat:is_formula_empty_or_not.
+Prove unsat_proofs:lrat:is_formula_and_or_not.
+Prove unsat_proofs:lrat:is_formula_eq_or_not.
 
 
 Prove unsat_proofs:lrat:negate_lit_unique.
@@ -552,20 +530,18 @@ Prove unsat_proofs:lrat:negate_lits_unsat.
 
 
 Prove_Constraint unsat_proofs:lrat:proj_proof_is.
+Prove_Constraint unsat_proofs:lrat:proj_proof_extend.
 Prove unsat_proofs:lrat:check_proof_correct.
 Prove unsat_proofs:lrat:checkProof_orderless.
-
 
 Add_Ext_Size unsat_proofs:lrat:checkProof.
 Add_Proj_Rel unsat_proofs:lrat:checkProof.
 Prove_Ext_Ind unsat_proofs:lrat:checkProof.
-
-
 Prove_Constraint unsat_proofs:lrat:proj_checkProof.
 
 
+Prove unsat_proofs:lrat:formulaToKnown_unique.
 Prove unsat_proofs:lrat:formulaToKnown_all_greater.
 Prove unsat_proofs:lrat:formulaToKnown_all_unique.
 Prove unsat_proofs:lrat:formulaToKnown_sat_formula.
 Prove unsat_proofs:lrat:formulaToKnown_is.
-

@@ -23,7 +23,7 @@ Projection_Constraint proj_clause_is : forall C CT,
 
 Projection_Constraint proj_formula_unique : forall F FA FB,
   ProjA : |{formula}- F ~~> FA ->
-  projB : |{formula}- F ~~> FB ->
+  ProjB : |{formula}- F ~~> FB ->
   FA = FB.
 Projection_Constraint proj_formula_is : forall F FT,
   Proj : |{formula}- F ~~> FT ->
@@ -35,6 +35,9 @@ Projection_Constraint proj_formula_is : forall F FT,
 %that use them, and then we want properties of them.
 
 
+/********************************************************************
+ *                           IS EXT_INDS                            *
+ ********************************************************************/
 Proj_Rel is_clause C.
 Ext_Ind forall C, is_clause C.
 %emptyClause
@@ -42,68 +45,61 @@ Ext_Ind forall C, is_clause C.
 %or
  apply IH to R2. search.
 
-
+Proj_Rel is_formula F.
+Ext_Ind forall F, is_formula F.
+%emptyFormula
+ search.
+%and
+ apply IH to R2. search.
 
 /*
-  We can prove is_<type>_eq_or_not, as long as it is introduced by the
-  module introducing the type.  The strategy is to introduce lemmas
-  that a term of that type either has each possible form or not, then
-  to use these lemmas to break down the second one in the actual
-  theorem.  This type of lemma can also be proven in extensions, since
-  thi unknown constructor in the generic case is different from
-  any known constructor.
- */
-/*
-  The property is_lit_eq_or_not is an example of a property where we
-  need to pull the subcases out into separate properties
+  Don't have Ext_Ind for is_proof because the projection can depend on
+  the provability of the clause, so getting that for arbitrary proofs
+  without adding checkProof is not possible, and adding checkProof is
+  an unreasonable addition for Ext_Ind for is_proof.
 */
-Extensible_Theorem
-  is_lit_eq_or_not__pos : forall L I,
-    IsL : is_lit L ->
-    IsI : is_integer I ->
-    L = pos I \/ (L = pos I -> false)
-  on IsL.
-%pos
- Or: apply is_integer_eq_or_not to IsI IsL1. Eq: case Or.
-   %I = I1
-    search.
-   %I = I1 -> false
-    right. intros E. case E. backchain Eq.
-%neg
- search.
-Extensible_Theorem
-  is_lit_eq_or_not__neg : forall L I,
-    IsL : is_lit L ->
-    IsI : is_integer I ->
-    L = neg I \/ (L = neg I -> false)
-  on IsL.
-%pos
- search.
-%neg
- Or: apply is_integer_eq_or_not to IsI IsL1. Eq: case Or.
-   %I = I1
-    search.
-   %I = I1 -> false
-    right. intros E. case E. backchain Eq.
 
+
+/********************************************************************
+ *                        DECIDABLE EQUALITY                        *
+ ********************************************************************/
+%Make this a fixed type as there is nothing else reasonable to add
 Extensible_Theorem
-  is_lit_eq_or_not : forall L1 L2,
-    IsL1 : is_lit L1 ->
-    IsL2 : is_lit L2 ->
-    L1 = L2 \/ (L1 = L2 -> false)
-  on IsL1.
+  is_lit_pos_or_neg : forall L,
+    IsL : is_lit L ->
+    exists I, L = pos I \/ L = neg I
+  on IsL.
 %pos
- Or: apply is_lit_eq_or_not__pos to IsL2 IsL3. E: case Or.
-   %equal
-    search.
-   %not equal
-    right. intros Eq. case Eq. backchain E.
+ search.
 %neg
- Or: apply is_lit_eq_or_not__neg to IsL2 IsL3. E: case Or.
-   %equal
-    search.
-   %not equal
-    right. intros Eq. case Eq. backchain E.
+ search.
+
+Theorem is_lit_eq_or_not : forall L1 L2,
+  is_lit L1 -> is_lit L2 -> L1 = L2 \/ (L1 = L2 -> false).
+intros IsL1 IsL2. Or1: apply is_lit_pos_or_neg to IsL1.
+Or2: apply is_lit_pos_or_neg to IsL2. case Or1.
+  %pos
+   case Or2.
+     %pos
+      Is1: case IsL1. Is2: case IsL2.
+      Or: apply is_integer_eq_or_not to Is1 Is2. N: case Or.
+        %I = I1
+         search.
+        %I != I1
+         right. intros E. case E. backchain N.
+     %neg
+      right. intros E. case E.
+  %neg
+   case Or2.
+     %pos
+      right. intros E. case E.
+     %neg
+      Is1: case IsL1. Is2: case IsL2.
+      Or: apply is_integer_eq_or_not to Is1 Is2. N: case Or.
+        %I = I1
+         search.
+        %I != I1
+         right. intros E. case E. backchain N.
 
 
 Extensible_Theorem
@@ -111,18 +107,18 @@ Extensible_Theorem
     IsC : is_clause C ->
     emptyClause = C \/ (emptyClause = C -> false)
   on IsC.
-%is_clause emptyClause
+%emptyClause
  search.
-%is_clause or
+%or
  right. intros E. case E.
 Extensible_Theorem
   is_clause_or_or_not : forall C,
     IsC : is_clause C ->
     (exists L R, or L R = C) \/ ((exists L R, or L R = C) -> false)
   on IsC.
-%is_clause emptyClause
+%emptyClause
  right. intros E. case E.
-%is_clause or
+%or
  search.
 Extensible_Theorem
   is_clause_eq_or_not : forall C1 C2,
@@ -139,7 +135,8 @@ Extensible_Theorem
 %or
  Or: apply is_clause_or_or_not to IsC2. Form: case Or.
    %has form
-    Is: case IsC2. Or: apply is_lit_eq_or_not to Is IsC3. NEq: case Or.
+    Is: case IsC2. Or: apply is_lit_eq_or_not to Is IsC3.
+    NEq: case Or.
       %lits equal
        Or: apply IH to IsC4 Is1. NEq: case Or.
          %rest of clause equal
@@ -150,6 +147,80 @@ Extensible_Theorem
        right. intros E. case E. backchain NEq.
    %does not have form
     right. intros E. case E. backchain Form.
+
+
+Extensible_Theorem
+  is_formula_empty_or_not : forall F,
+    IsF : is_formula F ->
+    F = emptyFormula \/ (F = emptyFormula -> false)
+  on IsF.
+%emptyFormula
+ search.
+%and
+ search.
+Extensible_Theorem
+  is_formula_and_or_not : forall F,
+    IsF : is_formula F ->
+    (exists C F', F = unsat_proofs:lrat:and C F') \/
+    ((exists C F', F = unsat_proofs:lrat:and C F') -> false)
+  on IsF.
+%emptyFormula
+ search.
+%and
+ search.
+Extensible_Theorem
+  is_formula_eq_or_not : forall F1 F2,
+    IsF1 : is_formula F1 ->
+    IsF2 : is_formula F2 ->
+    F1 = F2 \/ (F1 = F2 -> false)
+  on IsF1.
+%emptyFormula
+ Or: apply is_formula_empty_or_not to IsF2. N: case Or.
+   %emptyFormula
+    search.
+   %not emptyFormula
+    right. intros E. case E. backchain N.
+%and
+ Or: apply is_formula_and_or_not to IsF2. N: case Or.
+   %and
+    Is': case IsF2. Or: apply is_clause_eq_or_not to IsF3 Is'.
+    N: case Or.
+      %Clause = C
+       Or: apply IH to IsF4 Is'1. N: case Or.
+         %Formula = F'
+          search.
+         %Formula != F'
+          right. intros E. case E. backchain N.
+      %Clause != C
+       right. intros E. case E. backchain N.
+   %not and
+    right. intros E. case E. backchain N.
+
+
+Theorem is_list_integer_eq_or_not : forall L1 L2,
+  is_list is_integer L1 -> is_list is_integer L2 ->
+  L1 = L2 \/ (L1 = L2 -> false).
+induction on 1. intros IsL1 IsL2. Is: case IsL1.
+  %nil
+   Is': case IsL2.
+     %nil
+      search.
+     %cons
+      search.
+  %cons
+   Is': case IsL2.
+     %nil
+      search.
+     %cons
+      Or: apply is_integer_eq_or_not to Is Is'. N: case Or.
+        %H = H1
+         Or: apply IH to Is1 Is'1. N: case Or.
+           %T = T1
+            search.
+           %T != T1
+            right. intros E. case E. backchain N.
+        %H != H1
+         right. intros E. case E. backchain N.
 
 
 
@@ -1408,13 +1479,30 @@ Projection_Constraint proj_proof_is : forall Known P PT,
   Proj : Known |{proof}- P ~~> PT ->
   IsP : is_proof P ->
   IsKnown : is_list (is_pair is_integer is_clause) Known ->
+  GCL : good_clause_list Known ->
   is_proof PT.
+
+
+/*
+ While it isn't unique, we can get the same projection with an
+ extended clause set, since all the clauses we need for the proof are
+ present in both.
+*/
+Projection_Constraint proj_proof_extend : forall Known P PT Known',
+  Proj : Known |{proof}- P ~~> PT ->
+  IsP : is_proof P ->
+  IsKnown : is_list (is_pair is_integer is_clause) Known ->
+  IsKnown' : is_list (is_pair is_integer is_clause) Known' ->
+  GCL : good_clause_list Known ->
+  GCL' : good_clause_list Known' ->
+  Mems : (forall ID C, mem (ID, C) Known -> mem (ID, C) Known') ->
+  Known' |{proof}- P ~~> PT.
 
 
 %lemma for the next theorem
 Theorem sat_lemma : forall ID C Known KRest S,
-  (forall CID InC, lookup ((ID, C)::Known) CID InC -> sat_clause S InC) ->
-  remove_all Known ID KRest ->
+  (forall CID InC, lookup ((ID, C)::Known) CID InC ->
+  sat_clause S InC) -> remove_all Known ID KRest ->
   forall CID InC, lookup ((ID, C)::KRest) CID InC -> sat_clause S InC.
 intros AllSat RA Lkp. Lkp: case Lkp.
   %Lkp-Here
@@ -1510,14 +1598,20 @@ Extensible_Theorem
 
 Ext_Size checkProof Known P.
 Proj_Rel checkProof Known P.
-
-Ext_Ind forall Known P, checkProof Known P.
+Ext_Ind forall Known P, checkProof Known P with
+           IsP : is_proof P,
+           IsKnown : is_list (is_pair is_integer is_clause) Known,
+           GCL : good_clause_list Known.
 %CP-EmptyLrat
  search.
 %CP-AddLrup
- apply IH1 to R3 Acc. search.
+ case IsP. apply remove_all_is to _ R1.
+ apply good_clause_list_remove_all_add to GCL R1 with C = C.
+ apply IH1 to R3 Acc _ _ _. search.
 %CP-DeleteLrat
- apply IH1 to R2 Acc. search.
+ case IsP. apply select_is to _ R1.
+ apply good_clause_list_select to GCL R1. apply IH1 to R2 Acc _ _ _.
+ search.
 
 
 %Projected proof still checks out
@@ -1534,6 +1628,22 @@ Projection_Constraint proj_checkProof : forall Known P P',
 /********************************************************************
  *                         PROVE FORMULA                            *
  ********************************************************************/
+Extensible_Theorem
+  formulaToKnown_unique : forall F ID KA KB,
+    IsF : is_formula F ->
+    IsID : is_integer ID ->
+    FTKA : formulaToKnown ID F KA ->
+    FTKB : formulaToKnown ID F KB ->
+    KA = KB
+  on FTKA.
+%FTK-Empty
+ case FTKB. search.
+%FTK-And
+ FTKB: case FTKB. apply plus_integer_unique to FTKA1 FTKB.
+ apply plus_integer_is_integer to _ _ FTKA1. case IsF.
+ apply IH to _ _ FTKA2 FTKB1. search.
+
+
 Extensible_Theorem
   formulaToKnown_all_greater : forall F ID K CID C,
     FTK : formulaToKnown ID F K ->
